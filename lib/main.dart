@@ -2,11 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'dependency_injection.dart';
 import 'firebase_options.dart';
 import 'ui/config/theme/theme.dart';
 import 'ui/config/theme/theme_notifier.dart';
 
 void main() async {
+  configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

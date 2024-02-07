@@ -45,4 +45,5 @@ app.*.map.json
 # Additional
 *.g.dart
 *.freezed.dart
+*.config.dart
 firebase_options.dart
