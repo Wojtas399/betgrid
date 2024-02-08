@@ -17,22 +17,20 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: _MyApp(),
     ),
   );
 }
 
 class _MyApp extends ConsumerWidget {
-  final _appRouter = AppRouter();
-
-  _MyApp();
+  const _MyApp();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       title: 'BetGrid',
-      routerConfig: _appRouter.config(),
+      routerConfig: getIt<AppRouter>().config(),
       localizationsDelegates: const [
         Str.delegate,
         GlobalMaterialLocalizations.delegate,

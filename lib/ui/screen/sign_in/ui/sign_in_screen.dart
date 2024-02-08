@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/router/app_router.dart';
+import '../../../service/dialog_service.dart';
 import '../view_model/sign_in_state.dart';
 import '../view_model/sign_in_view_model.dart';
 import 'sign_in_app_bar.dart';
@@ -17,8 +18,9 @@ class SignInScreen extends ConsumerWidget {
       case SignInStateInitial():
         break;
       case SignInStateLoading():
-      //TODO: Show loading dialog
+        showLoadingDialog();
       case SignInStateUserIsSignedIn():
+        closeLoadingDialog();
         context.replaceRoute(const HomeRoute());
     }
   }

@@ -1,5 +1,7 @@
 {
     "signInScreenTitle": "Logowanie",
     "signInScreenInfo": "Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google",
-    "signInScreenSignInButtonLabel": "Zaloguj"
+    "signInScreenSignInButtonLabel": "Zaloguj",
+    "@__________COMMON__________": {},
+    "loading": "Ładowanie"
 }
