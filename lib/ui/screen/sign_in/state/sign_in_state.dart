@@ -11,8 +11,8 @@ class SignInStateInitial extends SignInState {
   const SignInStateInitial();
 }
 
-class SignInStateLoading extends SignInState {
-  const SignInStateLoading();
+class SignInStateComplete extends SignInState {
+  const SignInStateComplete();
 }
 
 class SignInStateUserIsSignedIn extends SignInState {
