@@ -1,16 +1,20 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../auth/auth_service.dart';
+import '../../../../model/user.dart';
+import 'sign_in_state.dart';
 
 part 'sign_in_view_model.g.dart';
 
 @riverpod
 class SignInViewModel extends _$SignInViewModel {
   @override
-  void build() {}
+  SignInState build() => const SignInStateInitial();
 
   Future<void> signInWithGoogle() async {
-    print('I was here');
-    await ref.read(authServiceProvider).signInWithGoogle();
+    final User? user = await ref.read(authServiceProvider).signInWithGoogle();
+    if (user != null) {
+      state = const SignInStateUserIsSignedIn();
+    }
   }
 }
