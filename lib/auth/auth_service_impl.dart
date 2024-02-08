@@ -10,6 +10,12 @@ class AuthServiceImpl implements AuthService {
       : _firebaseAuthService = firebaseAuthService;
 
   @override
+  Stream<User?> get loggedUser$ => _firebaseAuthService.loggedUser$.map(
+        (UserDto? userDto) =>
+            userDto != null ? User(id: userDto.id, email: userDto.email) : null,
+      );
+
+  @override
   Future<User?> signInWithGoogle() async {
     final UserDto? userDto = await _firebaseAuthService.signInWithGoogle();
     if (userDto == null) return null;

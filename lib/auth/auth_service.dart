@@ -11,5 +11,7 @@ AuthService authService(AuthServiceRef ref) =>
     AuthServiceImpl(FirebaseAuthService());
 
 abstract interface class AuthService {
+  Stream<User?> get loggedUser$;
+
   Future<User?> signInWithGoogle();
 }

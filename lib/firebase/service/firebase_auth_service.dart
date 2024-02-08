@@ -6,6 +6,12 @@ import '../model/user_dto/user_dto.dart';
 
 @injectable
 class FirebaseAuthService {
+  Stream<UserDto?> get loggedUser$ =>
+      FirebaseAuth.instance.authStateChanges().map(
+            (User? user) =>
+                user != null ? UserDto.fromFirebaseUser(user) : null,
+          );
+
   Future<UserDto?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
