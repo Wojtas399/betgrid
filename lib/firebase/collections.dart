@@ -6,8 +6,9 @@ CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
     FirebaseFirestore.instance
         .collection('GrandPrixes')
         .withConverter<GrandPrixDto>(
-          fromFirestore: (snapshot, _) => GrandPrixDto.fromJson(
-            snapshot.data()!,
+          fromFirestore: (snapshot, _) => GrandPrixDto.fromIdAndJson(
+            snapshot.id,
+            snapshot.data(),
           ),
           toFirestore: (GrandPrixDto grandPrixDto, _) => grandPrixDto.toJson(),
         );
