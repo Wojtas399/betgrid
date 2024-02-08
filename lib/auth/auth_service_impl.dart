@@ -1,11 +1,8 @@
-import 'package:injectable/injectable.dart';
-
 import '../firebase/model/user_dto/user_dto.dart';
 import '../firebase/service/firebase_auth_service.dart';
 import '../model/user.dart';
 import 'auth_service.dart';
 
-@injectable
 class AuthServiceImpl implements AuthService {
   final FirebaseAuthService _firebaseAuthService;
 

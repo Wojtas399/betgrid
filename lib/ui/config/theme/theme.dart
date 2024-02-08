@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static Color get _seedColor => Colors.red;
+  static Color get _seedColor => const Color(0xFFD13317);
 
   static ThemeData get lightTheme => ThemeData(
-        colorSchemeSeed: _seedColor,
-        useMaterial3: true,
+        colorScheme: ColorScheme.light(primary: _seedColor),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _seedColor,
+            foregroundColor: Colors.white,
+          ),
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
-        colorSchemeSeed: _seedColor,
-        useMaterial3: true,
-        brightness: Brightness.dark,
+        colorScheme: ColorScheme.dark(
+          primary: _seedColor,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _seedColor,
+            foregroundColor: Colors.white,
+          ),
+        ),
       );
 }

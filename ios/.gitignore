@@ -38,3 +38,4 @@ GoogleService-Info.plist
 Podfile
 Podfile.lock
 firebase_app_id_file.json
+Keys.xcconfig
