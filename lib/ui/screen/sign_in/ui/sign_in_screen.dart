@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../config/router/app_router.dart';
 import '../view_model/sign_in_state.dart';
 import '../view_model/sign_in_view_model.dart';
 import 'sign_in_app_bar.dart';
@@ -12,8 +13,13 @@ class SignInScreen extends ConsumerWidget {
   const SignInScreen({super.key});
 
   void _manageViewModelState(SignInState state, BuildContext context) {
-    if (state is SignInStateUserIsSignedIn) {
-      //TODO: Navigate to home screen
+    switch (state) {
+      case SignInStateInitial():
+        break;
+      case SignInStateLoading():
+      //TODO: Show loading dialog
+      case SignInStateUserIsSignedIn():
+        context.replaceRoute(const HomeRoute());
     }
   }
 

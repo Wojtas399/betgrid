@@ -12,6 +12,7 @@ class SignInViewModel extends _$SignInViewModel {
   SignInState build() => const SignInStateInitial();
 
   Future<void> signInWithGoogle() async {
+    state = const SignInStateLoading();
     final User? user = await ref.read(authServiceProvider).signInWithGoogle();
     if (user != null) {
       state = const SignInStateUserIsSignedIn();
