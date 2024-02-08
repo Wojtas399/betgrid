@@ -9,8 +9,12 @@ part 'sign_in_controller.g.dart';
 @riverpod
 class SignInController extends _$SignInController {
   @override
-  FutureOr<SignInState> build() {
-    return const SignInStateInitial();
+  Future<SignInState> build() async {
+    final User? loggedUser =
+        await ref.read(authServiceProvider).loggedUser$.first;
+    return loggedUser != null
+        ? const SignInStateUserIsSignedIn()
+        : const SignInStateComplete();
   }
 
   Future<void> signInWithGoogle() async {
