@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../model/grand_prix.dart';
-import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/gap/gap_vertical.dart';
 import '../controller/home_controller.dart';
 import '../state/home_state.dart';
+import 'grand_prix_item.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -15,10 +15,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home screen'),
+        title: const Text('2024 season'),
       ),
-      body: const Center(
-        child: _GrandPrixes(),
+      body: const SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: _GrandPrixes(),
+        ),
       ),
     );
   }
@@ -37,39 +40,12 @@ class _GrandPrixes extends ConsumerWidget {
         children: [
           if (homeState is HomeStateDataLoaded)
             ...homeState.grandPrixes.map(
-              (e) => _GrandPrixItem(grandPrix: e),
+              (e) => GrandPrixItem(grandPrix: e),
             ),
+          const GapVertical64(),
         ],
       );
     }
     return const CircularProgressIndicator();
-  }
-}
-
-class _GrandPrixItem extends StatelessWidget {
-  final GrandPrix grandPrix;
-
-  const _GrandPrixItem({required this.grandPrix});
-
-  String _formatDate(DateTime date) {
-    return '${date.year}.${_twoDigits(date.month)}.${_twoDigits(date.day)}';
-  }
-
-  String _twoDigits(int number) {
-    return number.toString().padLeft(2, '0');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(grandPrix.name),
-        const GapHorizontal16(),
-        Text(_formatDate(grandPrix.startDate)),
-        const GapHorizontal8(),
-        Text(_formatDate(grandPrix.endDate)),
-      ],
-    );
   }
 }

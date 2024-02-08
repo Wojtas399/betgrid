@@ -11,6 +11,10 @@ class AppTheme {
             foregroundColor: Colors.white,
           ),
         ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: _seedColor,
+          foregroundColor: Colors.white,
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -22,6 +26,10 @@ class AppTheme {
             backgroundColor: _seedColor,
             foregroundColor: Colors.white,
           ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: _seedColor,
+          foregroundColor: Colors.white,
         ),
       );
 }
