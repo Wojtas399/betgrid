@@ -31,7 +31,7 @@ void main() {
   test(
     'build, '
     'should load all grand prixes from GrandPrixRepository and '
-    'should emit them in HomeStateDataLoaded state sorted by date',
+    'should return them in HomeStateDataLoaded state sorted by date',
     () async {
       final GrandPrix gp1 = GrandPrix(
         id: 'gp1',
