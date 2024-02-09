@@ -16,15 +16,15 @@ class GrandPrixBet extends Equatable {
   const GrandPrixBet({
     required this.id,
     required this.grandPrixId,
-    required this.qualiStandingsByDriverIds,
-    required this.p1DriverId,
-    required this.p2DriverId,
-    required this.p3DriverId,
-    required this.p10DriverId,
-    required this.fastestLapDriverId,
-    required this.willBeDnf,
-    required this.willBeSafetyCar,
-    required this.willBeRedFlag,
+    this.qualiStandingsByDriverIds,
+    this.p1DriverId,
+    this.p2DriverId,
+    this.p3DriverId,
+    this.p10DriverId,
+    this.fastestLapDriverId,
+    this.willBeDnf,
+    this.willBeSafetyCar,
+    this.willBeRedFlag,
   });
 
   @override
