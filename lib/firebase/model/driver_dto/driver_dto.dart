@@ -28,6 +28,7 @@ enum TeamDto {
   alpine,
   haasF1Team,
   redBullRacing,
+  mcLaren,
   astonMartin,
   rb,
   ferrari,
