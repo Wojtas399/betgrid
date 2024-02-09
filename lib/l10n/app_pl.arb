@@ -1,7 +1,10 @@
 {
+    "@__________SIGN_IN__________": {},
     "signInScreenTitle": "Logowanie",
     "signInScreenInfo": "Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google",
     "signInScreenSignInButtonLabel": "Zaloguj",
+    "@__________HOME__________": {},
+    "homeScreenTitle": "Sezon 2024",
     "@__________COMMON__________": {},
     "loading": "Ładowanie"
 }

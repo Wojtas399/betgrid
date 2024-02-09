@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../config/theme/theme_notifier.dart';
@@ -15,11 +16,11 @@ class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(Str.of(context).signInScreenTitle),
-      actions: const [
-        Icon(Icons.contrast),
-        GapHorizontal8(),
-        _ThemeSwitch(),
-        GapHorizontal8(),
+      actions: [
+        Icon(MdiIcons.themeLightDark, color: Colors.white),
+        const GapHorizontal8(),
+        const _ThemeSwitch(),
+        const GapHorizontal8(),
       ],
     );
   }
