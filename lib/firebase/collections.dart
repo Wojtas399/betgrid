@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'model/driver_dto/driver_dto.dart';
+import 'model/grand_prix_bet/grand_prix_bet_dto.dart';
 import 'model/grand_prix_dto/grand_prix_dto.dart';
 
 CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
@@ -11,7 +12,7 @@ CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
             snapshot.id,
             snapshot.data(),
           ),
-          toFirestore: (GrandPrixDto grandPrixDto, _) => grandPrixDto.toJson(),
+          toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
         );
 
 CollectionReference<DriverDto> getDriversRef() =>
@@ -20,5 +21,18 @@ CollectionReference<DriverDto> getDriversRef() =>
             snapshot.id,
             snapshot.data(),
           ),
-          toFirestore: (DriverDto driverDto, _) => driverDto.toJson(),
+          toFirestore: (DriverDto dto, _) => dto.toJson(),
+        );
+
+CollectionReference<GrandPrixBetDto> getGrandPrixBetsRef(String userId) =>
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('GrandPrixBets')
+        .withConverter<GrandPrixBetDto>(
+          fromFirestore: (snapshot, _) => GrandPrixBetDto.fromIdAndJson(
+            snapshot.id,
+            snapshot.data(),
+          ),
+          toFirestore: (GrandPrixBetDto dto, _) => dto.toJson(),
         );
