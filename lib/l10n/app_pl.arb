@@ -6,5 +6,8 @@
     "@__________HOME__________": {},
     "homeScreenTitle": "Sezon 2024",
     "@__________COMMON__________": {},
-    "loading": "Ładowanie"
+    "loading": "Ładowanie",
+    "qualifications": "Kwalifikacje",
+    "race": "Wyścig",
+    "other": "Inne"
 }
