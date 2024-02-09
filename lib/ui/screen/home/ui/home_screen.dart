@@ -72,14 +72,13 @@ class _GrandPrixes extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<HomeState> asyncVal = ref.watch(homeControllerProvider);
 
-    if (asyncVal.hasValue) {
-      final HomeState homeState = asyncVal.value!;
+    final HomeState? state = asyncVal.value;
+    if (state != null && state is HomeStateDataLoaded) {
       return Column(
         children: [
-          if (homeState is HomeStateDataLoaded)
-            ...homeState.grandPrixes.map(
-              (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
-            ),
+          ...state.grandPrixes.map(
+            (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
+          ),
           const GapVertical64(),
         ],
       );
