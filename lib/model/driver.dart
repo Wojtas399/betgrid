@@ -1,13 +1,12 @@
-import 'package:equatable/equatable.dart';
+import 'entity.dart';
 
-class Driver extends Equatable {
-  final String id;
+class Driver extends Entity {
   final String name;
   final String surname;
   final Team team;
 
   const Driver({
-    required this.id,
+    required super.id,
     required this.name,
     required this.surname,
     required this.team,
