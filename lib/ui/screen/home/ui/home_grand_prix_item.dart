@@ -1,13 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/grand_prix.dart';
+import '../../../config/router/app_router.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../service/formatter_service.dart';
 
-class GrandPrixItem extends StatelessWidget {
+class HomeGrandPrixItem extends StatelessWidget {
   final GrandPrix grandPrix;
 
-  const GrandPrixItem({super.key, required this.grandPrix});
+  const HomeGrandPrixItem({super.key, required this.grandPrix});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,20 @@ class GrandPrixItem extends StatelessWidget {
             ),
           ),
           children: [
-            _BetSection(title: context.str.qualifications),
-            _BetSection(title: context.str.race),
-            _BetSection(title: context.str.other),
+            _BetSection(
+              title: context.str.qualifications,
+              onPressed: () {
+                context.navigateTo(const QualificationsBetRoute());
+              },
+            ),
+            _BetSection(
+              title: context.str.race,
+              onPressed: () {},
+            ),
+            _BetSection(
+              title: context.str.other,
+              onPressed: () {},
+            ),
           ],
         ),
       ),
@@ -46,8 +59,9 @@ class GrandPrixItem extends StatelessWidget {
 
 class _BetSection extends StatelessWidget {
   final String title;
+  final VoidCallback onPressed;
 
-  const _BetSection({required this.title});
+  const _BetSection({required this.title, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +71,7 @@ class _BetSection extends StatelessWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       trailing: const Icon(Icons.circle_outlined),
-      onTap: () {
-        //TODO
-      },
+      onTap: onPressed,
     );
   }
 }

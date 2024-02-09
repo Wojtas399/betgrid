@@ -9,7 +9,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../config/theme/theme_notifier.dart';
 import '../controller/home_controller.dart';
 import '../state/home_state.dart';
-import 'grand_prix_item.dart';
+import 'home_grand_prix_item.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -78,7 +78,7 @@ class _GrandPrixes extends ConsumerWidget {
         children: [
           if (homeState is HomeStateDataLoaded)
             ...homeState.grandPrixes.map(
-              (e) => GrandPrixItem(grandPrix: e),
+              (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
             ),
           const GapVertical64(),
         ],
