@@ -17,6 +17,43 @@ void main() {
   const bool willBeRedFlag = false;
 
   test(
+    'mapGrandPrixBetFromDto, '
+    'should map GrandPrixBetDto model to GrandPrixBet model',
+    () {
+      const GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        willBeDnf: willBeDnf,
+        willBeSafetyCar: willBeSafetyCar,
+        willBeRedFlag: willBeRedFlag,
+      );
+      const GrandPrixBet expectedGrandPrixBet = GrandPrixBet(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        willBeDnf: willBeDnf,
+        willBeSafetyCar: willBeSafetyCar,
+        willBeRedFlag: willBeRedFlag,
+      );
+
+      final GrandPrixBet grandPrixBet = mapGrandPrixBetFromDto(grandPrixBetDto);
+
+      expect(grandPrixBet, expectedGrandPrixBet);
+    },
+  );
+
+  test(
     'mapGrandPrixBetToDto, '
     'should map GrandPrixBet model to GrandPrixBetDto model',
     () {

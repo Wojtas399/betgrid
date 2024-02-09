@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
+import 'entity.dart';
 
-class GrandPrixBet extends Equatable {
-  final String id;
+class GrandPrixBet extends Entity {
   final String grandPrixId;
   final List<String>? qualiStandingsByDriverIds;
   final String? p1DriverId;
@@ -14,7 +13,7 @@ class GrandPrixBet extends Equatable {
   final bool? willBeRedFlag;
 
   const GrandPrixBet({
-    required this.id,
+    required super.id,
     required this.grandPrixId,
     this.qualiStandingsByDriverIds,
     this.p1DriverId,

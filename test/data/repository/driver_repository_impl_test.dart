@@ -121,7 +121,7 @@ void main() {
 
   test(
     'getAllDrivers, '
-    'repository state contains any drivers, '
+    'repository state contains drivers, '
     'should only emit drivers from repository state',
     () async {
       final List<Driver> expectedDrivers = [
