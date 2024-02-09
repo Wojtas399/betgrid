@@ -31,29 +31,27 @@ void main() {
   test(
     'build, '
     'should load all grand prixes from GrandPrixRepository and '
-    'should emit them in HomeStateDataLoaded state',
+    'should emit them in HomeStateDataLoaded state sorted by date',
     () async {
-      final List<GrandPrix> grandPrixes = [
-        GrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-          startDate: DateTime(2023, 1, 1),
-          endDate: DateTime(2023, 1, 3),
-        ),
-        GrandPrix(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-          startDate: DateTime(2023, 1, 5),
-          endDate: DateTime(2023, 1, 7),
-        ),
-        GrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-          startDate: DateTime(2023, 1, 9),
-          endDate: DateTime(2023, 1, 11),
-        ),
-      ];
-      grandPrixRepository.mockLoadAllGrandPrixes(grandPrixes);
+      final GrandPrix gp1 = GrandPrix(
+        id: 'gp1',
+        name: 'Grand Prix 1',
+        startDate: DateTime(2023, 1, 1),
+        endDate: DateTime(2023, 1, 3),
+      );
+      final GrandPrix gp2 = GrandPrix(
+        id: 'gp2',
+        name: 'Grand Prix 2',
+        startDate: DateTime(2023, 1, 5),
+        endDate: DateTime(2023, 1, 7),
+      );
+      final GrandPrix gp3 = GrandPrix(
+        id: 'gp3',
+        name: 'Grand Prix 3',
+        startDate: DateTime(2023, 1, 9),
+        endDate: DateTime(2023, 1, 11),
+      );
+      grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
       final container = makeProviderContainer(grandPrixRepository);
       final listener = Listener<AsyncValue<HomeState>>();
       container.listen(
@@ -73,7 +71,7 @@ void main() {
         () => listener(
               const AsyncLoading<HomeState>(),
               AsyncData<HomeState>(
-                HomeStateDataLoaded(grandPrixes: grandPrixes),
+                HomeStateDataLoaded(grandPrixes: [gp1, gp2, gp3]),
               ),
             ),
       ]);

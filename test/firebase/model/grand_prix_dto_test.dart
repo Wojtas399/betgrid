@@ -5,7 +5,6 @@ void main() {
   const String name = 'Test Grand Prix';
   final DateTime startDate = DateTime(2024);
   final DateTime endDate = DateTime(2024, 1, 3);
-  print(startDate.toIso8601String());
 
   test(
     'fromJson, '

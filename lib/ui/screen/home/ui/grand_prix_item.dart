@@ -18,11 +18,11 @@ class GrandPrixItem extends StatelessWidget {
       subtitle: Text(
         '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.black.withOpacity(0.75),
+              color: Theme.of(context).colorScheme.outline,
             ),
       ),
-      children: [
-        Text('TODO'),
+      children: const [
+        //TODO
       ],
     );
   }

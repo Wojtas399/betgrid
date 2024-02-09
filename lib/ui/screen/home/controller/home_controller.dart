@@ -12,6 +12,9 @@ class HomeController extends _$HomeController {
   Future<HomeState> build() async {
     final List<GrandPrix> grandPrixes =
         await ref.read(grandPrixRepositoryProvider).loadAllGrandPrixes();
+    grandPrixes.sort(
+      (GrandPrix gp1, GrandPrix gp2) => gp1.startDate.compareTo(gp2.startDate),
+    );
     return HomeStateDataLoaded(grandPrixes: grandPrixes);
   }
 }
