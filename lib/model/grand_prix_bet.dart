@@ -1,19 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-import 'driver.dart';
-
 class GrandPrixBet extends Equatable {
   final String id;
   final String grandPrixId;
-  final List<String> qualiStandingsByDriverIds;
-  final Driver p1DriverId;
-  final Driver p2DriverId;
-  final Driver p3DriverId;
-  final Driver p10DriverId;
-  final Driver fastestLapDriverId;
-  final bool willBeDnf;
-  final bool willBeSafetyCar;
-  final bool willBeRedFlag;
+  final List<String>? qualiStandingsByDriverIds;
+  final String? p1DriverId;
+  final String? p2DriverId;
+  final String? p3DriverId;
+  final String? p10DriverId;
+  final String? fastestLapDriverId;
+  final bool? willBeDnf;
+  final bool? willBeSafetyCar;
+  final bool? willBeRedFlag;
 
   const GrandPrixBet({
     required this.id,
