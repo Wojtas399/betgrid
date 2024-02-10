@@ -12,6 +12,15 @@ class MockGrandPrixBetRepository extends Mock
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
+  void mockGetGrandPrixBetByGrandPrixId(GrandPrixBet? grandPrixBet) {
+    when(
+      () => getGrandPrixBetByGrandPrixId(
+        userId: any(named: 'userId'),
+        grandPrixId: any(named: 'grandPrixId'),
+      ),
+    ).thenAnswer((_) => Stream.value(grandPrixBet));
+  }
+
   void mockAddGrandPrixBets() {
     when(
       () => addGrandPrixBets(

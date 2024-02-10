@@ -11,9 +11,17 @@ abstract class QualificationsBetState extends Equatable {
 
 class QualificationsBetStateDataLoaded extends QualificationsBetState {
   final List<Driver> drivers;
+  final List<String>? qualiStandingsByDriverIds;
 
-  const QualificationsBetStateDataLoaded({required this.drivers});
+  const QualificationsBetStateDataLoaded({
+    required this.drivers,
+    required this.qualiStandingsByDriverIds,
+  });
 
   @override
-  List<Object?> get props => [drivers];
+  List<Object?> get props => [drivers, qualiStandingsByDriverIds];
+}
+
+class QualificationsBetStateLoggedUserNotFound extends QualificationsBetState {
+  const QualificationsBetStateLoggedUserNotFound();
 }

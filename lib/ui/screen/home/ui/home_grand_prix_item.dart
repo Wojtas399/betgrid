@@ -39,7 +39,9 @@ class HomeGrandPrixItem extends StatelessWidget {
             _BetSection(
               title: context.str.qualifications,
               onPressed: () {
-                context.navigateTo(const QualificationsBetRoute());
+                context.navigateTo(QualificationsBetRoute(
+                  grandPrixId: grandPrix.id,
+                ));
               },
             ),
             _BetSection(

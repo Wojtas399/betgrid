@@ -8,7 +8,12 @@ import '../state/qualifications_bet_state.dart';
 
 @RoutePage()
 class QualificationsBetScreen extends StatelessWidget {
-  const QualificationsBetScreen({super.key});
+  final String? grandPrixId;
+
+  const QualificationsBetScreen({
+    super.key,
+    @PathParam('grandPrixId') this.grandPrixId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +21,12 @@ class QualificationsBetScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.str.qualifications),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(24),
-          child: _DriversList(),
+          padding: const EdgeInsets.all(24),
+          child: grandPrixId != null
+              ? _DriversList(grandPrixId: grandPrixId!)
+              : const Text('Not found'),
         ),
       ),
     );
@@ -27,12 +34,15 @@ class QualificationsBetScreen extends StatelessWidget {
 }
 
 class _DriversList extends ConsumerWidget {
-  const _DriversList();
+  final String grandPrixId;
+
+  const _DriversList({required this.grandPrixId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<QualificationsBetState> asyncState =
-        ref.watch(qualificationsBetControllerProvider);
+    final AsyncValue<QualificationsBetState> asyncState = ref.watch(
+      qualificationsBetControllerProvider(grandPrixId),
+    );
 
     final QualificationsBetState? state = asyncState.value;
     if (state != null && state is QualificationsBetStateDataLoaded) {
