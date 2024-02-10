@@ -10,9 +10,8 @@ class AuthServiceImpl implements AuthService {
   AuthServiceImpl() : _firebaseAuthService = getIt<FirebaseAuthService>();
 
   @override
-  Stream<User?> get loggedUser$ => _firebaseAuthService.loggedUser$.map(
-        (UserDto? userDto) =>
-            userDto != null ? User(id: userDto.id, email: userDto.email) : null,
+  Stream<String?> get loggedUserId$ => _firebaseAuthService.loggedUser$.map(
+        (UserDto? userDto) => userDto?.id,
       );
 
   @override

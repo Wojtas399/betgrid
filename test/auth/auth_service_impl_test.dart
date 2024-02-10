@@ -27,18 +27,17 @@ void main() {
   });
 
   test(
-    'loggedUser, '
-    'should emit data about logged user from firebase',
+    'loggedUserId, '
+    'should emit id of logged user got from firebase',
     () {
       const String id = 'u1';
       const String email = 'user@example.com';
       const UserDto userDto = UserDto(id: id, email: email);
-      const User expectedUser = User(id: id, email: email);
       firebaseAuthService.mockGetLoggedUser(userDto);
 
-      final Stream<User?> user$ = serviceImpl.loggedUser$;
+      final Stream<String?> loggedUserId$ = serviceImpl.loggedUserId$;
 
-      expect(user$, emits(expectedUser));
+      expect(loggedUserId$, emits(id));
     },
   );
 

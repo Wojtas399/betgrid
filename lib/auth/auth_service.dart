@@ -9,7 +9,7 @@ part 'auth_service.g.dart';
 AuthService authService(AuthServiceRef ref) => AuthServiceImpl();
 
 abstract interface class AuthService {
-  Stream<User?> get loggedUser$;
+  Stream<String?> get loggedUserId$;
 
   Future<User?> signInWithGoogle();
 }

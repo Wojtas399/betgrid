@@ -36,7 +36,7 @@ void main() {
     'should get logged user data from AuthService and '
     'should emit SignInStateComplete',
     () async {
-      authService.mockGetLoggedUser(null);
+      authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(authService);
       final listener = Listener<AsyncValue<SignInState>>();
       container.listen(
@@ -59,7 +59,7 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUser$).called(1);
+      verify(() => authService.loggedUserId$).called(1);
     },
   );
 
@@ -69,7 +69,7 @@ void main() {
     'should get logged user data from AuthService and '
     'should emit SignInStateUserIsSignedIn',
     () async {
-      authService.mockGetLoggedUser(createUser());
+      authService.mockGetLoggedUserId('u1');
       final container = makeProviderContainer(authService);
       final listener = Listener<AsyncValue<SignInState>>();
       container.listen(
@@ -92,7 +92,7 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUser$).called(1);
+      verify(() => authService.loggedUserId$).called(1);
     },
   );
 
@@ -102,7 +102,7 @@ void main() {
     'should call signInWithGoogle method from AuthService and '
     'should emit SignInStateComplete state',
     () async {
-      authService.mockGetLoggedUser(null);
+      authService.mockGetLoggedUserId(null);
       authService.mockSignInWithGoogle(null);
       final container = makeProviderContainer(authService);
       final listener = Listener<AsyncValue<SignInState>>();
@@ -135,7 +135,7 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUser$).called(1);
+      verify(() => authService.loggedUserId$).called(1);
       verify(authService.signInWithGoogle).called(1);
     },
   );
@@ -146,7 +146,7 @@ void main() {
     'should call signInWithGoogle method from AuthService and '
     'should emit SignInStateUserIsSignedIn state',
     () async {
-      authService.mockGetLoggedUser(null);
+      authService.mockGetLoggedUserId(null);
       authService.mockSignInWithGoogle(createUser());
       final container = makeProviderContainer(authService);
       final listener = Listener<AsyncValue<SignInState>>();

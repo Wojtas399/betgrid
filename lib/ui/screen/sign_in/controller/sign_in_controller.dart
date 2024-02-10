@@ -10,9 +10,9 @@ part 'sign_in_controller.g.dart';
 class SignInController extends _$SignInController {
   @override
   Future<SignInState> build() async {
-    final User? loggedUser =
-        await ref.read(authServiceProvider).loggedUser$.first;
-    return loggedUser != null
+    final String? loggedUserId =
+        await ref.read(authServiceProvider).loggedUserId$.first;
+    return loggedUserId != null
         ? const SignInStateUserIsSignedIn()
         : const SignInStateComplete();
   }
