@@ -1,13 +1,12 @@
-import 'package:equatable/equatable.dart';
+import 'entity.dart';
 
-class GrandPrix extends Equatable {
-  final String id;
+class GrandPrix extends Entity {
   final String name;
   final DateTime startDate;
   final DateTime endDate;
 
   const GrandPrix({
-    required this.id,
+    required super.id,
     required this.name,
     required this.startDate,
     required this.endDate,

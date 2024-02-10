@@ -9,4 +9,11 @@ class FirebaseGrandPrixService {
     final snapshot = await getGrandPrixesRef().get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<GrandPrixDto?> loadGrandPrixById({
+    required String grandPrixId,
+  }) async {
+    final snapshot = await getGrandPrixesRef().doc(grandPrixId).get();
+    return snapshot.data();
+  }
 }

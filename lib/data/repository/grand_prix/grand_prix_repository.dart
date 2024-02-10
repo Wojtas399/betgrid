@@ -11,4 +11,6 @@ GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
 
 abstract interface class GrandPrixRepository {
   Future<List<GrandPrix>> loadAllGrandPrixes();
+
+  Future<GrandPrix?> loadGrandPrixById({required String grandPrixId});
 }

@@ -7,4 +7,12 @@ class MockFirebaseGrandPrixService extends Mock
   void mockLoadAllGrandPrixes({required List<GrandPrixDto> grandPrixDtos}) {
     when(loadAllGrandPrixes).thenAnswer((_) => Future.value(grandPrixDtos));
   }
+
+  void mockLoadGrandPrixById(GrandPrixDto? grandPrixDto) {
+    when(
+      () => loadGrandPrixById(
+        grandPrixId: any(named: 'grandPrixId'),
+      ),
+    ).thenAnswer((_) => Future.value(grandPrixDto));
+  }
 }
