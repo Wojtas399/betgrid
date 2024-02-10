@@ -17,3 +17,7 @@ class HomeStateDataLoaded extends HomeState {
   @override
   List<Object?> get props => [grandPrixes];
 }
+
+class HomeStateLoggedUserNotFound extends HomeState {
+  const HomeStateLoggedUserNotFound();
+}

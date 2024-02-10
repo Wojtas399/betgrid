@@ -6,6 +6,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
+import '../../../component/padding/padding_components.dart';
 import '../../../config/theme/theme_notifier.dart';
 import '../controller/home_controller.dart';
 import '../state/home_state.dart';
@@ -19,12 +20,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _AppBar(),
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: _GrandPrixes(),
-        ),
-      ),
+      body: const _GrandPrixes(),
     );
   }
 }
@@ -74,15 +70,21 @@ class _GrandPrixes extends ConsumerWidget {
 
     final HomeState? state = asyncVal.value;
     if (state != null && state is HomeStateDataLoaded) {
-      return Column(
-        children: [
-          ...state.grandPrixes.map(
-            (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
+      return SingleChildScrollView(
+        child: Padding24(
+          child: Column(
+            children: [
+              ...state.grandPrixes.map(
+                (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
+              ),
+              const GapVertical64(),
+            ],
           ),
-          const GapVertical64(),
-        ],
+        ),
       );
     }
-    return const CircularProgressIndicator();
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
