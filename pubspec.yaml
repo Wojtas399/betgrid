@@ -33,6 +33,7 @@ dependencies:
   fake_cloud_firestore: ^2.4.8
   material_design_icons_flutter: ^7.0.7296
   rxdart: ^0.27.7
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:

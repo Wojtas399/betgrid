@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import '../../../dependency_injection.dart';
 import '../../../firebase/model/grand_prix_bet/grand_prix_bet_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
@@ -26,6 +28,21 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }
 
   @override
+  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixId({
+    required String userId,
+    required String grandPrixId,
+  }) async* {
+    await for (final grandPrixBets in repositoryState$) {
+      GrandPrixBet? grandPrixBet = grandPrixBets?.firstWhereOrNull(
+        (GrandPrixBet grandPrixBet) => grandPrixBet.grandPrixId == grandPrixId,
+      );
+      grandPrixBet ??=
+          await _loadGrandPrixBetByGrandPrixIdFromDb(userId, grandPrixId);
+      yield grandPrixBet;
+    }
+  }
+
+  @override
   Future<void> addGrandPrixBets({
     required String userId,
     required List<GrandPrixBet> grandPrixBets,
@@ -44,5 +61,20 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final List<GrandPrixBet> grandPrixBets =
         grandPrixBetDtos.map(mapGrandPrixBetFromDto).toList();
     setEntities(grandPrixBets);
+  }
+
+  Future<GrandPrixBet?> _loadGrandPrixBetByGrandPrixIdFromDb(
+    String userId,
+    String grandPrixId,
+  ) async {
+    final GrandPrixBetDto? betDto =
+        await _dbGrandPrixBetService.loadGrandPrixBetByGrandPrixId(
+      userId: userId,
+      grandPrixId: grandPrixId,
+    );
+    if (betDto == null) return null;
+    final GrandPrixBet bet = mapGrandPrixBetFromDto(betDto);
+    addEntity(bet);
+    return bet;
   }
 }

@@ -66,7 +66,7 @@ void main() {
 
   test(
     'setEntities, '
-    'should set given entities in state',
+    'should set given entities as new state',
     () {
       final List<TestModel> existingEntities = [
         const TestModel(id: 'e1', name: 'first entity'),
@@ -82,6 +82,27 @@ void main() {
       repository.setEntities(newEntities);
 
       expect(repository.repositoryState$, emits(newEntities));
+    },
+  );
+
+  test(
+    'addEntity, '
+    'should add new entity to state',
+    () {
+      const TestModel newEntity = TestModel(id: 'e1', name: 'entity 1');
+      final List<TestModel> existingEntities = [
+        const TestModel(id: 'e1', name: 'first entity'),
+        const TestModel(id: 'e2', name: 'second entity'),
+      ];
+      final List<TestModel> expectedEntities = [
+        ...existingEntities,
+        newEntity,
+      ];
+      repository = TestRepository(initialData: existingEntities);
+
+      repository.addEntity(newEntity);
+
+      expect(repository.repositoryState$, emits(expectedEntities));
     },
   );
 }

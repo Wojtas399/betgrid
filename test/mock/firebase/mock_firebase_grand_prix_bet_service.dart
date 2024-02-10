@@ -18,6 +18,15 @@ class MockFirebaseGrandPrixBetService extends Mock
     ).thenAnswer((_) => Future.value(grandPrixBetDtos));
   }
 
+  void mockLoadGrandPrixBetByGrandPrixId(GrandPrixBetDto? grandPrixBetDto) {
+    when(
+      () => loadGrandPrixBetByGrandPrixId(
+        userId: any(named: 'userId'),
+        grandPrixId: any(named: 'grandPrixId'),
+      ),
+    ).thenAnswer((_) => Future.value(grandPrixBetDto));
+  }
+
   void mockAddGrandPrixBet() {
     when(
       () => addGrandPrixBet(

@@ -12,6 +12,17 @@ class FirebaseGrandPrixBetService {
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
+  Future<GrandPrixBetDto?> loadGrandPrixBetByGrandPrixId({
+    required String userId,
+    required String grandPrixId,
+  }) async {
+    final snapshot = await getGrandPrixBetsRef(userId)
+        .where('grandPrixId', isEqualTo: grandPrixId)
+        .get();
+    if (snapshot.docs.isEmpty) return null;
+    return snapshot.docs.first.data();
+  }
+
   Future<void> addGrandPrixBet({
     required String userId,
     required GrandPrixBetDto grandPrixBetDto,

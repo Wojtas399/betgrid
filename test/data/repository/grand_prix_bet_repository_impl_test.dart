@@ -121,6 +121,74 @@ void main() {
   );
 
   test(
+    'getGrandPrixBetByGrandPrixId, '
+    'bet with matching grand prix id exists in state, '
+    'should return first matching grand prix',
+    () async {
+      final List<GrandPrixBet> grandPrixBets = [
+        createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1'),
+        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
+        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
+        createGrandPrixBet(id: 'gpb4', grandPrixId: 'gp1'),
+      ];
+      repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
+
+      final Stream<GrandPrixBet?> grandPrixBet$ =
+          repositoryImpl.getGrandPrixBetByGrandPrixId(
+        userId: userId,
+        grandPrixId: 'gp1',
+      );
+
+      expect(grandPrixBet$, emits(grandPrixBets.first));
+    },
+  );
+
+  test(
+    'getGrandPrixBetByGrandPrixId, '
+    'there is no bet with matching grand prix id in state, '
+    'should load bet from db, add it to repository state and emit it',
+    () async {
+      const String grandPrixId = 'gp1';
+      final GrandPrixBetDto grandPrixBetDto = createGrandPrixBetDto(
+        id: 'gpb1',
+        grandPrixId: grandPrixId,
+      );
+      const GrandPrixBet grandPrixBet = GrandPrixBet(
+        id: 'gpb1',
+        grandPrixId: grandPrixId,
+      );
+      final List<GrandPrixBet> grandPrixBets = [
+        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
+        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
+      ];
+      dbGrandPrixBetService.mockLoadGrandPrixBetByGrandPrixId(grandPrixBetDto);
+      repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
+
+      final Stream<GrandPrixBet?> grandPrixBet$ =
+          repositoryImpl.getGrandPrixBetByGrandPrixId(
+        userId: userId,
+        grandPrixId: grandPrixId,
+      );
+
+      expect(grandPrixBet$, emits(grandPrixBet));
+      expect(
+        repositoryImpl.repositoryState$,
+        emitsInOrder([
+          grandPrixBets,
+          [...grandPrixBets, grandPrixBet],
+        ]),
+      );
+      await repositoryImpl.repositoryState$.first;
+      verify(
+        () => dbGrandPrixBetService.loadGrandPrixBetByGrandPrixId(
+          userId: userId,
+          grandPrixId: grandPrixId,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
     'addGrandPrixBets, '
     'for each grand prix bet should call db method to add this bet to db',
     () async {

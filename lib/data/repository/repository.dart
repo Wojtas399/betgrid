@@ -23,4 +23,10 @@ abstract class Repository<T extends Entity> {
   void setEntities(List<T> entities) {
     _repositoryState$.add(entities);
   }
+
+  void addEntity(T entity) {
+    final List<T> entities = [...?_repositoryState$.value];
+    entities.add(entity);
+    _repositoryState$.add(entities);
+  }
 }
