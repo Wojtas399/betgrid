@@ -67,7 +67,6 @@ void main() {
   );
 
   test(
-    'build, '
     'should return null if logged user does not exist',
     () async {
       authService.mockGetLoggedUserId(null);
@@ -101,7 +100,6 @@ void main() {
   );
 
   test(
-    'build, '
     'should load all grand prixes and return them sorted by date and '
     'should load grand prix bets and if they are not initialized '
     'should initialize them',
@@ -153,7 +151,6 @@ void main() {
   );
 
   test(
-    'build, '
     'should load all grand prixes and return them sorted by date and '
     'should load grand prix bets and if list of grand prix bets is empty '
     'should initialize them',
