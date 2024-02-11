@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../config/theme/theme_notifier.dart';
+import '../../component/gap/gap_horizontal.dart';
+import '../../config/theme/theme_notifier.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SignInAppBar({super.key});
