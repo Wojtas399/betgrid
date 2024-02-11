@@ -6,4 +6,12 @@ class MockGrandPrixRepository extends Mock implements GrandPrixRepository {
   void mockLoadAllGrandPrixes(List<GrandPrix> grandPrixes) {
     when(loadAllGrandPrixes).thenAnswer((_) => Future.value(grandPrixes));
   }
+
+  void mockLoadGrandPrixById(GrandPrix? grandPrix) {
+    when(
+      () => loadGrandPrixById(
+        grandPrixId: any(named: 'grandPrixId'),
+      ),
+    ).thenAnswer((_) => Future.value(grandPrix));
+  }
 }

@@ -5,8 +5,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../auth/auth_service.dart';
 import '../../../../data/repository/driver/driver_repository.dart';
+import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/driver.dart';
+import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../state/qualifications_bet_state.dart';
 
@@ -20,22 +22,32 @@ class QualificationsBetController extends _$QualificationsBetController {
         await ref.read(authServiceProvider).loggedUserId$.first;
     if (loggedUserId == null) {
       yield const QualificationsBetStateLoggedUserNotFound();
+    } else {
+      final String? gpName = await _loadGpName(grandPrixId);
+      final Stream<QualificationsBetState> listener = Rx.combineLatest2(
+        _getQualiStandings(loggedUserId!, grandPrixId),
+        ref.read(driverRepositoryProvider).getAllDrivers().whereNotNull(),
+        (
+          List<String>? qualiStandingsByDriverIds,
+          List<Driver> allDrivers,
+        ) =>
+            QualificationsBetStateDataLoaded(
+          gpName: gpName,
+          drivers: allDrivers,
+          qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        ),
+      );
+      await for (final state in listener) {
+        yield state;
+      }
     }
-    final Stream<QualificationsBetState> listener = Rx.combineLatest2(
-      _getQualiStandings(loggedUserId!, grandPrixId),
-      ref.read(driverRepositoryProvider).getAllDrivers().whereNotNull(),
-      (
-        List<String>? qualiStandingsByDriverIds,
-        List<Driver> allDrivers,
-      ) =>
-          QualificationsBetStateDataLoaded(
-        drivers: allDrivers,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-      ),
-    );
-    await for (final state in listener) {
-      yield state;
-    }
+  }
+
+  Future<String?> _loadGpName(String grandPrixId) async {
+    final GrandPrix? grandPrix = await ref
+        .read(grandPrixRepositoryProvider)
+        .loadGrandPrixById(grandPrixId: grandPrixId);
+    return grandPrix?.name;
   }
 
   Stream<List<String>?> _getQualiStandings(
