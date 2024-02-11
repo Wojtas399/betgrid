@@ -25,9 +25,9 @@ void main() {
   });
 
   test(
-    'getAllDrivers, '
+    'loadAllDrivers, '
     'repository state is not set, '
-    'should load drivers from db, add them to repo and emit them',
+    'should load drivers from db, add them to repo and return them',
     () async {
       final List<DriverDto> driverDtos = [
         const DriverDto(
@@ -59,22 +59,21 @@ void main() {
       ];
       dbDriverService.mockLoadAllDrivers(driverDtos);
 
-      final Stream<List<Driver>?> drivers = repositoryImpl.getAllDrivers();
+      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
 
-      expect(drivers, emits(expectedDrivers));
+      expect(drivers, expectedDrivers);
       expect(
         repositoryImpl.repositoryState$,
-        emitsInOrder([null, expectedDrivers]),
+        emitsInOrder([expectedDrivers]),
       );
-      await repositoryImpl.repositoryState$.first;
       verify(dbDriverService.loadAllDrivers).called(1);
     },
   );
 
   test(
-    'getAllDrivers, '
+    'loadAllDrivers, '
     'repository state is empty array, '
-    'should load drivers from db, add them to repo and emit them',
+    'should load drivers from db, add them to repo and return them',
     () async {
       final List<DriverDto> driverDtos = [
         const DriverDto(
@@ -107,20 +106,19 @@ void main() {
       dbDriverService.mockLoadAllDrivers(driverDtos);
       repositoryImpl = DriverRepositoryImpl(initialData: []);
 
-      final Stream<List<Driver>?> drivers = repositoryImpl.getAllDrivers();
+      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
 
-      expect(drivers, emits(expectedDrivers));
+      expect(drivers, expectedDrivers);
       expect(
         repositoryImpl.repositoryState$,
-        emitsInOrder([[], expectedDrivers]),
+        emitsInOrder([expectedDrivers]),
       );
-      await repositoryImpl.repositoryState$.first;
       verify(dbDriverService.loadAllDrivers).called(1);
     },
   );
 
   test(
-    'getAllDrivers, '
+    'loadAllDrivers, '
     'repository state contains drivers, '
     'should only emit drivers from repository state',
     () async {
@@ -140,11 +138,10 @@ void main() {
       ];
       repositoryImpl = DriverRepositoryImpl(initialData: expectedDrivers);
 
-      final Stream<List<Driver>?> drivers = repositoryImpl.getAllDrivers();
+      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
 
-      expect(drivers, emits(expectedDrivers));
+      expect(drivers, expectedDrivers);
       expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
-      await repositoryImpl.repositoryState$.first;
       verifyNever(dbDriverService.loadAllDrivers);
     },
   );

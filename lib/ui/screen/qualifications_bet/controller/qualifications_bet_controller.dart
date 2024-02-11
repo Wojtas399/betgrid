@@ -24,17 +24,16 @@ class QualificationsBetController extends _$QualificationsBetController {
       yield const QualificationsBetStateLoggedUserNotFound();
     } else {
       final String? gpName = await _loadGpName(grandPrixId);
-      final Stream<QualificationsBetState> listener = Rx.combineLatest2(
-        _getQualiStandings(loggedUserId!, grandPrixId),
-        ref.read(driverRepositoryProvider).getAllDrivers().whereNotNull(),
-        (
-          List<String>? qualiStandingsByDriverIds,
-          List<Driver> allDrivers,
-        ) =>
-            QualificationsBetStateDataLoaded(
+      final List<Driver>? allDrivers =
+          await ref.read(driverRepositoryProvider).loadAllDrivers();
+      final Stream<QualificationsBetState> listener = _getQualiStandings(
+        loggedUserId,
+        grandPrixId,
+      ).map(
+        (List<String>? qualiStandings) => QualificationsBetStateDataLoaded(
           gpName: gpName,
           drivers: allDrivers,
-          qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+          qualiStandingsByDriverIds: qualiStandings,
         ),
       );
       await for (final state in listener) {

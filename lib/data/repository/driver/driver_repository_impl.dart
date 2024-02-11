@@ -14,13 +14,11 @@ class DriverRepositoryImpl extends Repository<Driver>
       : _dbDriverService = getIt<FirebaseDriverService>();
 
   @override
-  Stream<List<Driver>?> getAllDrivers() async* {
+  Future<List<Driver>?> loadAllDrivers() async {
     if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
       await _loadAllDriversFromDb();
     }
-    await for (final drivers in repositoryState$) {
-      yield drivers;
-    }
+    return repositoryState$.first;
   }
 
   Future<void> _loadAllDriversFromDb() async {

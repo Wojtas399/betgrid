@@ -113,7 +113,7 @@ void main() {
       ];
       final List<String> qualiStandingsByDriverIds = ['d2', 'd1', 'd3'];
       authService.mockGetLoggedUserId(loggedUserId);
-      driverRepository.mockGetAllDrivers(drivers);
+      driverRepository.mockLoadAllDrivers(drivers);
       grandPrixRepository.mockLoadGrandPrixById(grandPrix);
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(
@@ -157,7 +157,7 @@ void main() {
       ]);
       verifyNoMoreInteractions(listener);
       verify(() => authService.loggedUserId$).called(1);
-      verify(driverRepository.getAllDrivers).called(1);
+      verify(driverRepository.loadAllDrivers).called(1);
       verify(
         () => grandPrixRepository.loadGrandPrixById(grandPrixId: grandPrixId),
       ).called(1);

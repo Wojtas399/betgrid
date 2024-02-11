@@ -11,7 +11,7 @@ abstract class QualificationsBetState extends Equatable {
 
 class QualificationsBetStateDataLoaded extends QualificationsBetState {
   final String? gpName;
-  final List<Driver> drivers;
+  final List<Driver>? drivers;
   final List<String>? qualiStandingsByDriverIds;
 
   const QualificationsBetStateDataLoaded({

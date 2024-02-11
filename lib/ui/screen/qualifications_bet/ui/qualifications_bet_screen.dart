@@ -48,7 +48,7 @@ class _DriversList extends ConsumerWidget {
     if (state != null && state is QualificationsBetStateDataLoaded) {
       return Column(
         children: [
-          ...state.drivers.map(
+          ...?state.drivers?.map(
             (driver) => Text('${driver.name} ${driver.surname}'),
           ),
         ],

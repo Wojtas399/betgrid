@@ -10,5 +10,5 @@ DriverRepository driverRepository(DriverRepositoryRef ref) =>
     DriverRepositoryImpl();
 
 abstract interface class DriverRepository {
-  Stream<List<Driver>?> getAllDrivers();
+  Future<List<Driver>?> loadAllDrivers();
 }
