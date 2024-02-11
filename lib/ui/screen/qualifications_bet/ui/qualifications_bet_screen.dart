@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../extensions/build_context_extensions.dart';
-import '../controller/qualifications_bet_controller.dart';
-import '../state/qualifications_bet_state.dart';
+import '../../../../model/grand_prix.dart';
+import '../../../riverpod_provider/grand_prix/grand_prix_provider.dart';
+import 'qualifications_bet_drivers_standings.dart';
 
 @RoutePage()
 class QualificationsBetScreen extends StatelessWidget {
@@ -17,43 +17,37 @@ class QualificationsBetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (grandPrixId == null) {
+      return const Text('Page not found');
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.str.qualifications),
-      ),
+      appBar: _AppBar(grandPrixId: grandPrixId!),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: grandPrixId != null
-              ? _DriversList(grandPrixId: grandPrixId!)
-              : const Text('Not found'),
-        ),
+        child: QualificationsBetDriversStandings(grandPrixId: grandPrixId!),
       ),
     );
   }
 }
 
-class _DriversList extends ConsumerWidget {
+class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String grandPrixId;
 
-  const _DriversList({required this.grandPrixId});
+  const _AppBar({required this.grandPrixId});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<QualificationsBetState> asyncState = ref.watch(
-      qualificationsBetControllerProvider(grandPrixId),
+    final String? grandPrixName = ref.watch(
+      grandPrixProvider(grandPrixId).select(
+        (AsyncValue<GrandPrix?> asyncVal) => asyncVal.value?.name,
+      ),
     );
 
-    final QualificationsBetState? state = asyncState.value;
-    if (state != null && state is QualificationsBetStateDataLoaded) {
-      return Column(
-        children: [
-          ...?state.drivers?.map(
-            (driver) => Text('${driver.name} ${driver.surname}'),
-          ),
-        ],
-      );
-    }
-    return const CircularProgressIndicator();
+    return AppBar(
+      title: Text('$grandPrixName - kwalifikacje'),
+    );
   }
 }
