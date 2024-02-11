@@ -4,12 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/gap/gap_vertical.dart';
-import '../../../component/padding/padding_components.dart';
-import '../../../config/theme/theme_notifier.dart';
-import '../controller/home_controller.dart';
-import '../state/home_state.dart';
+import '../../../model/grand_prix.dart';
+import '../../component/gap/gap_horizontal.dart';
+import '../../component/gap/gap_vertical.dart';
+import '../../component/padding/padding_components.dart';
+import '../../config/theme/theme_notifier.dart';
+import '../../riverpod_provider/all_grand_prixes/all_grand_prixes_provider.dart';
 import 'home_grand_prix_item.dart';
 
 @RoutePage()
@@ -66,15 +66,17 @@ class _GrandPrixes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<HomeState> asyncVal = ref.watch(homeControllerProvider);
+    final AsyncValue<List<GrandPrix>?> allGrandPrixesAsyncVal = ref.watch(
+      allGrandPrixesProvider,
+    );
 
-    final HomeState? state = asyncVal.value;
-    if (state != null && state is HomeStateDataLoaded) {
+    final List<GrandPrix>? allGrandPrixes = allGrandPrixesAsyncVal.value;
+    if (allGrandPrixes != null && allGrandPrixes.isNotEmpty) {
       return SingleChildScrollView(
         child: Padding24(
           child: Column(
             children: [
-              ...state.grandPrixes.map(
+              ...allGrandPrixes.map(
                 (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
               ),
               const GapVertical64(),

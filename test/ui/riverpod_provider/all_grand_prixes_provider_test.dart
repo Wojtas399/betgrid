@@ -2,17 +2,16 @@ import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/model/grand_prix.dart';
-import 'package:betgrid/ui/screen/home/controller/home_controller.dart';
-import 'package:betgrid/ui/screen/home/state/home_state.dart';
+import 'package:betgrid/ui/riverpod_provider/all_grand_prixes/all_grand_prixes_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_creator.dart';
-import '../../../mock/auth/mock_auth_service.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_repository.dart';
-import '../../../mock/listener.dart';
+import '../../creator/grand_prix_bet_creator.dart';
+import '../../mock/auth/mock_auth_service.dart';
+import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../mock/data/repository/mock_grand_prix_repository.dart';
+import '../../mock/listener.dart';
 
 void main() {
   final authService = MockAuthService();
@@ -36,6 +35,10 @@ void main() {
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    registerFallbackValue(const AsyncData<List<GrandPrix>?>([]));
+  });
 
   tearDown(() {
     reset(authService);
@@ -65,7 +68,7 @@ void main() {
 
   test(
     'build, '
-    'should return HomeStateLoggedUserNotFound state if logged user does not exist',
+    'should return null if logged user does not exist',
     () async {
       authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(
@@ -73,24 +76,23 @@ void main() {
         grandPrixRepository,
         grandPrixBetRepository,
       );
-      final listener = Listener<AsyncValue<HomeState>>();
+      final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
-        homeControllerProvider,
+        allGrandPrixesProvider,
         listener,
         fireImmediately: true,
       );
-      final controller = container.read(homeControllerProvider.notifier);
 
-      await controller.future;
+      await container.read(allGrandPrixesProvider.future);
 
       verifyInOrder([
         () => listener(
               null,
-              const AsyncLoading<HomeState>(),
+              const AsyncLoading<List<GrandPrix>?>(),
             ),
         () => listener(
-              const AsyncLoading<HomeState>(),
-              const AsyncData<HomeState>(HomeStateLoggedUserNotFound()),
+              const AsyncLoading<List<GrandPrix>?>(),
+              const AsyncData<List<GrandPrix>?>(null),
             ),
       ]);
       verifyNoMoreInteractions(listener);
@@ -100,9 +102,9 @@ void main() {
 
   test(
     'build, '
-    'should load all grand prixes from GrandPrixRepository, '
-    'should return loaded grand prixes in HomeStateDataLoaded state sorted by date, '
-    'if grand prix bets are not initialized should initialize them',
+    'should load all grand prixes and return them sorted by date and '
+    'should load grand prix bets and if they are not initialized '
+    'should initialize them',
     () async {
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
@@ -113,26 +115,25 @@ void main() {
         grandPrixRepository,
         grandPrixBetRepository,
       );
-      final listener = Listener<AsyncValue<HomeState>>();
+      final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
-        homeControllerProvider,
+        allGrandPrixesProvider,
         listener,
         fireImmediately: true,
       );
-      final controller = container.read(homeControllerProvider.notifier);
 
-      await controller.future;
-
+      await expectLater(
+        container.read(allGrandPrixesProvider.future),
+        completion([gp1, gp2, gp3]),
+      );
       verifyInOrder([
         () => listener(
               null,
-              const AsyncLoading<HomeState>(),
+              const AsyncLoading<List<GrandPrix>?>(),
             ),
         () => listener(
-              const AsyncLoading<HomeState>(),
-              AsyncData<HomeState>(
-                HomeStateDataLoaded(grandPrixes: [gp1, gp2, gp3]),
-              ),
+              const AsyncLoading<List<GrandPrix>?>(),
+              any(that: isA<AsyncData<List<GrandPrix>?>>()),
             ),
       ]);
       verifyNoMoreInteractions(listener);
@@ -153,9 +154,9 @@ void main() {
 
   test(
     'build, '
-    'should load all grand prixes from GrandPrixRepository, '
-    'should return loaded grand prixes in HomeStateDataLoaded state sorted by date, '
-    'if list of grand prix bets is empty should initialize them',
+    'should load all grand prixes and return them sorted by date and '
+    'should load grand prix bets and if list of grand prix bets is empty '
+    'should initialize them',
     () async {
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
@@ -166,26 +167,25 @@ void main() {
         grandPrixRepository,
         grandPrixBetRepository,
       );
-      final listener = Listener<AsyncValue<HomeState>>();
+      final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
-        homeControllerProvider,
+        allGrandPrixesProvider,
         listener,
         fireImmediately: true,
       );
-      final controller = container.read(homeControllerProvider.notifier);
 
-      await controller.future;
-
+      await expectLater(
+        container.read(allGrandPrixesProvider.future),
+        completion([gp1, gp2, gp3]),
+      );
       verifyInOrder([
         () => listener(
               null,
-              const AsyncLoading<HomeState>(),
+              const AsyncLoading<List<GrandPrix>?>(),
             ),
         () => listener(
-              const AsyncLoading<HomeState>(),
-              AsyncData<HomeState>(
-                HomeStateDataLoaded(grandPrixes: [gp1, gp2, gp3]),
-              ),
+              const AsyncLoading<List<GrandPrix>?>(),
+              any(that: isA<AsyncData<List<GrandPrix>?>>()),
             ),
       ]);
       verifyNoMoreInteractions(listener);
@@ -206,9 +206,8 @@ void main() {
 
   test(
     'build, '
-    'should load all grand prixes from GrandPrixRepository, '
-    'should return loaded grand prixes in HomeStateDataLoaded state sorted by date, '
-    'if grand prix bets exist should not initialize them',
+    'should load and return all grand prixes sorted by date and '
+    'should load grand prix bets and if they exist should not initialize them',
     () async {
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
@@ -223,26 +222,25 @@ void main() {
         grandPrixRepository,
         grandPrixBetRepository,
       );
-      final listener = Listener<AsyncValue<HomeState>>();
+      final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
-        homeControllerProvider,
+        allGrandPrixesProvider,
         listener,
         fireImmediately: true,
       );
-      final controller = container.read(homeControllerProvider.notifier);
 
-      await controller.future;
-
+      await expectLater(
+        container.read(allGrandPrixesProvider.future),
+        completion([gp1, gp2, gp3]),
+      );
       verifyInOrder([
         () => listener(
               null,
-              const AsyncLoading<HomeState>(),
+              const AsyncLoading<List<GrandPrix>?>(),
             ),
         () => listener(
-              const AsyncLoading<HomeState>(),
-              AsyncData<HomeState>(
-                HomeStateDataLoaded(grandPrixes: [gp1, gp2, gp3]),
-              ),
+              const AsyncLoading<List<GrandPrix>?>(),
+              any(that: isA<AsyncData<List<GrandPrix>?>>()),
             ),
       ]);
       verifyNoMoreInteractions(listener);
