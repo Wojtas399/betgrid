@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../auth/auth_service.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/grand_prix_bet.dart';
-import '../../../riverpod_provider/grand_prix_id/grand_prix_id_provider.dart';
+import '../../../riverpod_provider/grand_prix_id_provider.dart';
 
 part 'qualifications_bet_drivers_standings_provider.g.dart';
 

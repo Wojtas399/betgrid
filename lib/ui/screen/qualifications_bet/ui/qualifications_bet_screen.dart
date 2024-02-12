@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/grand_prix_id/grand_prix_id_provider.dart';
+import '../../../riverpod_provider/grand_prix_id_provider.dart';
 import '../provider/qualifications_bet_drivers_standings_provider.dart';
 import 'qualifications_bet_standings_list.dart';
 

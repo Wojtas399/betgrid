@@ -1,13 +1,13 @@
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
-import 'package:betgrid/ui/riverpod_provider/grand_prix_id/grand_prix_id_provider.dart';
-import 'package:betgrid/ui/screen/qualifications_bet/provider/qualifications_bet_grand_prix_name_provider.dart';
+import 'package:betgrid/ui/riverpod_provider/grand_prix_id_provider.dart';
+import 'package:betgrid/ui/riverpod_provider/grand_prix_name_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_creator.dart';
-import '../../../mock/data/repository/mock_grand_prix_repository.dart';
-import '../../../mock/listener.dart';
+import '../../creator/grand_prix_creator.dart';
+import '../../mock/data/repository/mock_grand_prix_repository.dart';
+import '../../mock/listener.dart';
 
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
@@ -47,13 +47,13 @@ void main() {
       );
       final listener = Listener<AsyncValue<String?>>();
       container.listen(
-        qualificationsBetGrandPrixNameProvider,
+        grandPrixNameProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(qualificationsBetGrandPrixNameProvider.future),
+        container.read(grandPrixNameProvider.future),
         completion(grandPrixName),
       );
       verify(

@@ -9,7 +9,7 @@ import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/padding/padding_components.dart';
 import '../../config/theme/theme_notifier.dart';
-import '../../riverpod_provider/all_grand_prixes/all_grand_prixes_provider.dart';
+import '../../riverpod_provider/all_grand_prixes_provider.dart';
 import 'home_grand_prix_item.dart';
 
 @RoutePage()
