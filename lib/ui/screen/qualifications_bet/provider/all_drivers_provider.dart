@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/repository/driver/driver_repository.dart';
-import '../../../model/driver.dart';
+import '../../../../data/repository/driver/driver_repository.dart';
+import '../../../../model/driver.dart';
 
 part 'all_drivers_provider.g.dart';
 

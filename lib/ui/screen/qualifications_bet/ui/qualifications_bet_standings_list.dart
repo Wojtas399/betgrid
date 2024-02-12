@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../model/driver.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/headline.dart';
-import '../../../riverpod_provider/all_drivers/all_drivers_provider.dart';
+import '../provider/all_drivers_provider.dart';
 import '../provider/qualifications_bet_drivers_standings_provider.dart';
 import '../provider/qualifications_bet_grand_prix_name_provider.dart';
 import 'qualifications_bet_position_item.dart';
