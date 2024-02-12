@@ -6,14 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../riverpod_provider/grand_prix_id_provider.dart';
-import '../provider/qualifications_bet_drivers_standings_provider.dart';
-import 'qualifications_bet_standings_list.dart';
+import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import 'grand_prix_bet_qualifications.dart';
 
 @RoutePage()
-class QualificationsBetScreen extends StatelessWidget {
+class GrandPrixBetScreen extends StatelessWidget {
   final String? grandPrixId;
 
-  const QualificationsBetScreen({
+  const GrandPrixBetScreen({
     super.key,
     @PathParam('grandPrixId') this.grandPrixId,
   });
@@ -31,7 +31,7 @@ class QualificationsBetScreen extends StatelessWidget {
       child: const Scaffold(
         appBar: _AppBar(),
         body: SafeArea(
-          child: QualificationsBetStandingsList(),
+          child: GrandPrixBetQualifications(),
         ),
       ),
     );
@@ -47,7 +47,7 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool doesStandingsListExist =
-        ref.watch(qualificationsBetDriversStandingsProvider).hasValue;
+        ref.watch(grandPrixBetQualificationsNotifierProvider).hasValue;
 
     return AppBar(
       title: Text(context.str.qualifications),
@@ -72,7 +72,7 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-      qualificationsBetDriversStandingsProvider,
+      grandPrixBetQualificationsNotifierProvider,
       (previous, next) {
         final eq = const ListEquality().equals;
         setState(() {
@@ -86,7 +86,7 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
     return ElevatedButton(
       onPressed: _haveChangesBeenMade
           ? ref
-              .read(qualificationsBetDriversStandingsProvider.notifier)
+              .read(grandPrixBetQualificationsNotifierProvider.notifier)
               .saveStandings
           : null,
       child: Text(context.str.save),

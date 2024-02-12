@@ -1,64 +1,26 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../model/driver.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/text/title.dart';
-import '../../../extensions/build_context_extensions.dart';
+import '../../model/driver.dart';
+import '../extensions/build_context_extensions.dart';
 
-class QualificationsBetPositionItem extends StatelessWidget {
-  final int position;
+class DriverDropdownButton extends StatefulWidget {
   final String? selectedDriverId;
   final List<Driver> allDrivers;
   final Function(String) onDriverSelected;
 
-  const QualificationsBetPositionItem({
+  const DriverDropdownButton({
     super.key,
-    required this.position,
     required this.selectedDriverId,
     required this.allDrivers,
     required this.onDriverSelected,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      child: Row(
-        children: [
-          TitleMedium('$position.'),
-          const GapHorizontal16(),
-          Expanded(
-            child: _DriverDropdownButton(
-              selectedDriverId: selectedDriverId,
-              allDrivers: allDrivers,
-              onDriverSelected: onDriverSelected,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<StatefulWidget> createState() => _State();
 }
 
-class _DriverDropdownButton extends ConsumerStatefulWidget {
-  final String? selectedDriverId;
-  final List<Driver> allDrivers;
-  final Function(String) onDriverSelected;
-
-  const _DriverDropdownButton({
-    required this.selectedDriverId,
-    required this.allDrivers,
-    required this.onDriverSelected,
-  });
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DriverDropdownButtonState();
-}
-
-class _DriverDropdownButtonState extends ConsumerState<_DriverDropdownButton> {
+class _State extends State<DriverDropdownButton> {
   Driver? _selectedDriver;
   late List<Driver> _sortedDrivers;
 

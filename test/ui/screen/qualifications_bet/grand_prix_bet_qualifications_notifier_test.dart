@@ -1,7 +1,7 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/ui/riverpod_provider/grand_prix_id_provider.dart';
-import 'package:betgrid/ui/screen/qualifications_bet/provider/qualifications_bet_drivers_standings_provider.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/provider/grand_prix_bet_qualifications_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -66,13 +66,13 @@ void main() {
         grandPrixBetRepository,
       );
       container.listen(
-        qualificationsBetDriversStandingsProvider,
+        grandPrixBetQualificationsNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(qualificationsBetDriversStandingsProvider.future),
+        container.read(grandPrixBetQualificationsNotifierProvider.future),
         completion(qualiStandings),
       );
       verifyInOrder([
@@ -107,17 +107,17 @@ void main() {
         grandPrixBetRepository,
       );
       container.listen(
-        qualificationsBetDriversStandingsProvider,
+        grandPrixBetQualificationsNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
       container
-          .read(qualificationsBetDriversStandingsProvider.notifier)
+          .read(grandPrixBetQualificationsNotifierProvider.notifier)
           .onBeginDriversOrdering();
 
       await expectLater(
-        container.read(qualificationsBetDriversStandingsProvider.future),
+        container.read(grandPrixBetQualificationsNotifierProvider.future),
         completion(expectedList),
       );
     },
@@ -139,19 +139,19 @@ void main() {
         grandPrixBetRepository,
       );
       container.listen(
-        qualificationsBetDriversStandingsProvider,
+        grandPrixBetQualificationsNotifierProvider,
         listener,
         fireImmediately: true,
       );
       final notifier = container.read(
-        qualificationsBetDriversStandingsProvider.notifier,
+        grandPrixBetQualificationsNotifierProvider.notifier,
       );
 
       notifier.onBeginDriversOrdering();
       notifier.onPositionDriverChanged(index, driverId);
 
       await expectLater(
-        container.read(qualificationsBetDriversStandingsProvider.future),
+        container.read(grandPrixBetQualificationsNotifierProvider.future),
         completion(expectedList),
       );
     },
@@ -186,12 +186,12 @@ void main() {
         grandPrixBetRepository,
       );
       container.listen(
-        qualificationsBetDriversStandingsProvider,
+        grandPrixBetQualificationsNotifierProvider,
         listener,
         fireImmediately: true,
       );
       final notifier = container.read(
-        qualificationsBetDriversStandingsProvider.notifier,
+        grandPrixBetQualificationsNotifierProvider.notifier,
       );
 
       await notifier.future;

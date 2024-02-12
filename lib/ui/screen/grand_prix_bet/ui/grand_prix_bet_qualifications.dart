@@ -3,25 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../model/driver.dart';
 import '../../../component/gap/gap_vertical.dart';
-import '../../../component/text/headline.dart';
+import '../../../component/grand_prix_name_component.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
 import '../../../riverpod_provider/grand_prix_name_provider.dart';
-import '../provider/qualifications_bet_drivers_standings_provider.dart';
-import 'qualifications_bet_position_item.dart';
+import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import 'grand_prix_bet_position_item.dart';
 
-class QualificationsBetStandingsList extends ConsumerWidget {
-  const QualificationsBetStandingsList({super.key});
+class GrandPrixBetQualifications extends ConsumerWidget {
+  const GrandPrixBetQualifications({super.key});
 
   void _onDriverSelect(String driverId, int driverIndex, WidgetRef ref) {
     ref
-        .read(qualificationsBetDriversStandingsProvider.notifier)
+        .read(grandPrixBetQualificationsNotifierProvider.notifier)
         .onPositionDriverChanged(driverIndex, driverId);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<String?>?> standings = ref.watch(
-      qualificationsBetDriversStandingsProvider,
+      grandPrixBetQualificationsNotifierProvider,
     );
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
@@ -36,7 +36,7 @@ class QualificationsBetStandingsList extends ConsumerWidget {
                       .asMap()
                       .entries
                       .map<Widget>(
-                        (entry) => QualificationsBetPositionItem(
+                        (entry) => GrandPrixBetPositionItem(
                           selectedDriverId: standings.value![entry.key],
                           position: entry.key + 1,
                           allDrivers: allDrivers.value!,
@@ -71,17 +71,6 @@ class _GrandPrixName extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<String?> asyncValue = ref.watch(grandPrixNameProvider);
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          HeadlineMedium(
-            '${asyncValue.value}',
-            fontWeight: FontWeight.bold,
-          ),
-        ],
-      ),
-    );
+    return GrandPrixNameComponent(name: asyncValue.value);
   }
 }

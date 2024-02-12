@@ -11,6 +11,10 @@ class GapVertical extends StatelessWidget {
   }
 }
 
+class GapVertical4 extends GapVertical {
+  const GapVertical4({super.key}) : super(4);
+}
+
 class GapVertical16 extends GapVertical {
   const GapVertical16({super.key}) : super(16);
 }

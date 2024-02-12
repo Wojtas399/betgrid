@@ -6,11 +6,11 @@ import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dar
 import '../../../../model/grand_prix_bet.dart';
 import '../../../riverpod_provider/grand_prix_id_provider.dart';
 
-part 'qualifications_bet_drivers_standings_provider.g.dart';
+part 'grand_prix_bet_qualifications_notifier.g.dart';
 
 @Riverpod(dependencies: [grandPrixId])
-class QualificationsBetDriversStandings
-    extends _$QualificationsBetDriversStandings {
+class GrandPrixBetQualificationsNotifier
+    extends _$GrandPrixBetQualificationsNotifier {
   String? _grandPrixBetId;
 
   @override

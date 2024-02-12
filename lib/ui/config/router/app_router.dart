@@ -14,8 +14,7 @@ class AppRouter extends _$AppRouter {
           page: HomeBaseRoute.page,
           children: [
             AutoRoute(page: HomeRoute.page),
-            AutoRoute(page: QualificationsBetRoute.page),
-            AutoRoute(page: RaceBetRoute.page),
+            AutoRoute(page: GrandPrixBetRoute.page),
           ],
         ),
       ];
