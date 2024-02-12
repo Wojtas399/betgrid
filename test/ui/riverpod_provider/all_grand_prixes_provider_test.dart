@@ -104,6 +104,8 @@ void main() {
     'should load grand prix bets and if they are not initialized '
     'should initialize them',
     () async {
+      final List<String?> defaultQualiStandings =
+          List.generate(20, (_) => null);
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
       grandPrixBetRepository.mockGetAllGrandPrixBets(null);
@@ -141,9 +143,18 @@ void main() {
         () => grandPrixBetRepository.addGrandPrixBets(
           userId: loggedUserId,
           grandPrixBets: [
-            createGrandPrixBet(grandPrixId: gp1.id),
-            createGrandPrixBet(grandPrixId: gp2.id),
-            createGrandPrixBet(grandPrixId: gp3.id),
+            createGrandPrixBet(
+              grandPrixId: gp1.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp2.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp3.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
           ],
         ),
       ).called(1);
@@ -155,6 +166,8 @@ void main() {
     'should load grand prix bets and if list of grand prix bets is empty '
     'should initialize them',
     () async {
+      final List<String?> defaultQualiStandings =
+          List.generate(20, (_) => null);
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
       grandPrixBetRepository.mockGetAllGrandPrixBets([]);
@@ -192,9 +205,18 @@ void main() {
         () => grandPrixBetRepository.addGrandPrixBets(
           userId: loggedUserId,
           grandPrixBets: [
-            createGrandPrixBet(grandPrixId: gp1.id),
-            createGrandPrixBet(grandPrixId: gp2.id),
-            createGrandPrixBet(grandPrixId: gp3.id),
+            createGrandPrixBet(
+              grandPrixId: gp1.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp2.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp3.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
           ],
         ),
       ).called(1);
@@ -206,6 +228,8 @@ void main() {
     'should load and return all grand prixes sorted by date and '
     'should load grand prix bets and if they exist should not initialize them',
     () async {
+      final List<String?> defaultQualiStandings =
+          List.generate(20, (_) => null);
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
       grandPrixBetRepository.mockGetAllGrandPrixBets([
@@ -247,9 +271,18 @@ void main() {
         () => grandPrixBetRepository.addGrandPrixBets(
           userId: loggedUserId,
           grandPrixBets: [
-            createGrandPrixBet(grandPrixId: gp1.id),
-            createGrandPrixBet(grandPrixId: gp2.id),
-            createGrandPrixBet(grandPrixId: gp3.id),
+            createGrandPrixBet(
+              grandPrixId: gp1.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp2.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
+            createGrandPrixBet(
+              grandPrixId: gp3.id,
+              qualiStandingsByDriverIds: defaultQualiStandings,
+            ),
           ],
         ),
       );

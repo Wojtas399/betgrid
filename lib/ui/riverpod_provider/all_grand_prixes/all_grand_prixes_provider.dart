@@ -36,7 +36,11 @@ Future<void> _initializeBetsIfNeeded(
             userId: loggedUserId,
             grandPrixBets: grandPrixes
                 .map(
-                  (GrandPrix gp) => GrandPrixBet(id: '', grandPrixId: gp.id),
+                  (GrandPrix gp) => GrandPrixBet(
+                    id: '',
+                    grandPrixId: gp.id,
+                    qualiStandingsByDriverIds: List.generate(20, (_) => null),
+                  ),
                 )
                 .toList(),
           );

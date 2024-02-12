@@ -25,6 +25,6 @@ abstract interface class GrandPrixBetRepository {
   Future<void> updateGrandPrixBet({
     required String userId,
     required String grandPrixBetId,
-    List<String>? qualiStandingsByDriverIds,
+    List<String?>? qualiStandingsByDriverIds,
   });
 }

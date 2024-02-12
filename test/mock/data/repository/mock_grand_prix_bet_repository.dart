@@ -29,4 +29,14 @@ class MockGrandPrixBetRepository extends Mock
       ),
     ).thenAnswer((_) => Future.value());
   }
+
+  void mockUpdateGrandPrixBet() {
+    when(
+      () => updateGrandPrixBet(
+        userId: any(named: 'userId'),
+        grandPrixBetId: any(named: 'grandPrixBetId'),
+        qualiStandingsByDriverIds: any(named: 'qualiStandingsByDriverIds'),
+      ),
+    ).thenAnswer((_) => Future.value());
+  }
 }

@@ -59,7 +59,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   Future<void> updateGrandPrixBet({
     required String userId,
     required String grandPrixBetId,
-    List<String>? qualiStandingsByDriverIds,
+    List<String?>? qualiStandingsByDriverIds,
   }) async {
     final GrandPrixBetDto? updatedBetDto =
         await _dbGrandPrixBetService.updateGrandPrixBet(

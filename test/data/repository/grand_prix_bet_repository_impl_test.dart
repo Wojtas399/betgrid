@@ -153,7 +153,7 @@ void main() {
         id: 'gpb1',
         grandPrixId: grandPrixId,
       );
-      const GrandPrixBet grandPrixBet = GrandPrixBet(
+      final GrandPrixBet grandPrixBet = createGrandPrixBet(
         id: 'gpb1',
         grandPrixId: grandPrixId,
       );

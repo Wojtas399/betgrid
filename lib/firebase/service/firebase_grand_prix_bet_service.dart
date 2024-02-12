@@ -34,7 +34,7 @@ class FirebaseGrandPrixBetService {
   Future<GrandPrixBetDto?> updateGrandPrixBet({
     required String userId,
     required String grandPrixBetId,
-    List<String>? qualiStandingsByDriverIds,
+    List<String?>? qualiStandingsByDriverIds,
   }) async {
     final docRef = getGrandPrixBetsRef(userId).doc(grandPrixBetId);
     DocumentSnapshot<GrandPrixBetDto> doc = await docRef.get();
@@ -42,9 +42,11 @@ class FirebaseGrandPrixBetService {
     if (data == null) {
       throw '[FirebaseGrandPrixBetService] Cannot find doc data';
     }
-    data = data.copyWith(
-      qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-    );
+    if (qualiStandingsByDriverIds != null) {
+      data = data.copyWith(
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      );
+    }
     await docRef.set(data);
     doc = await docRef.get();
     return doc.data();

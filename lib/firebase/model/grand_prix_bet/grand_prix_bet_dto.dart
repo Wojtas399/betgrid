@@ -10,7 +10,7 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
     @Default('')
     String id,
     required String grandPrixId,
-    List<String>? qualiStandingsByDriverIds,
+    required List<String?> qualiStandingsByDriverIds,
     String? p1DriverId,
     String? p2DriverId,
     String? p3DriverId,

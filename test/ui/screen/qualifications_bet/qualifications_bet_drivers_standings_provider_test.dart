@@ -156,4 +156,57 @@ void main() {
       );
     },
   );
+
+  test(
+    'saveStandings, '
+    'should should call method from GrandPrixBetRepository to update bet with '
+    'new qualifications standings',
+    () async {
+      const String grandPrixBetId = 'gpb1';
+      final List<String?> standings = List.generate(20, (_) => null);
+      final List<String?> updatedStandings = List.generate(
+        20,
+        (index) => switch (index) {
+          1 => 'd4',
+          5 => 'd9',
+          11 => 'd1',
+          _ => null,
+        },
+      );
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          id: grandPrixBetId,
+          qualiStandingsByDriverIds: standings,
+        ),
+      );
+      grandPrixBetRepository.mockUpdateGrandPrixBet();
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        qualificationsBetDriversStandingsProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        qualificationsBetDriversStandingsProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onPositionDriverChanged(2, 'd4');
+      notifier.onPositionDriverChanged(6, 'd9');
+      notifier.onPositionDriverChanged(12, 'd1');
+      await notifier.saveStandings();
+
+      verify(
+        () => grandPrixBetRepository.updateGrandPrixBet(
+          userId: loggedUserId,
+          grandPrixBetId: grandPrixBetId,
+          qualiStandingsByDriverIds: updatedStandings,
+        ),
+      ).called(1);
+    },
+  );
 }

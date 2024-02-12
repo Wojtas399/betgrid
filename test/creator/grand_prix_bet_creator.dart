@@ -3,7 +3,7 @@ import 'package:betgrid/model/grand_prix_bet.dart';
 GrandPrixBet createGrandPrixBet({
   String id = '',
   String grandPrixId = '',
-  List<String>? qualiStandingsByDriverIds,
+  List<String?> qualiStandingsByDriverIds = const [],
   String? p1DriverId,
   String? p2DriverId,
   String? p3DriverId,

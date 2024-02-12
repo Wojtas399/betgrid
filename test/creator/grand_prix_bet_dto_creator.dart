@@ -3,7 +3,7 @@ import 'package:betgrid/firebase/model/grand_prix_bet/grand_prix_bet_dto.dart';
 GrandPrixBetDto createGrandPrixBetDto({
   String id = '',
   String grandPrixId = '',
-  List<String>? qualiStandingsByDriverIds,
+  List<String?> qualiStandingsByDriverIds = const [],
   String? p1DriverId,
   String? p2DriverId,
   String? p3DriverId,

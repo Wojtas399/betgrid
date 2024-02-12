@@ -11,22 +11,29 @@ part 'qualifications_bet_drivers_standings_provider.g.dart';
 @Riverpod(dependencies: [grandPrixId])
 class QualificationsBetDriversStandings
     extends _$QualificationsBetDriversStandings {
+  String? _grandPrixBetId;
+
   @override
   Stream<List<String?>?> build() {
     final String? grandPrixId = ref.watch(grandPrixIdProvider);
     if (grandPrixId == null) throw 'Grand prix id not found';
     final authService = ref.watch(authServiceProvider);
     final grandPrixBetRepository = ref.watch(grandPrixBetRepositoryProvider);
-    return authService.loggedUserId$
-        .switchMap<GrandPrixBet?>(
-          (String? loggedUserId) => loggedUserId == null
-              ? throw 'Logged user id not found'
-              : grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-                  userId: loggedUserId,
-                  grandPrixId: grandPrixId,
-                ),
-        )
-        .map((grandPrixBet) => grandPrixBet?.qualiStandingsByDriverIds);
+    return authService.loggedUserId$.switchMap<GrandPrixBet?>(
+      (String? loggedUserId) {
+        return loggedUserId == null
+            ? throw 'Logged user id not found'
+            : grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
+                userId: loggedUserId,
+                grandPrixId: grandPrixId,
+              );
+      },
+    ).map(
+      (grandPrixBet) {
+        _grandPrixBetId = grandPrixBet?.id;
+        return grandPrixBet?.qualiStandingsByDriverIds;
+      },
+    );
   }
 
   void onBeginDriversOrdering() {
@@ -40,6 +47,19 @@ class QualificationsBetDriversStandings
   }
 
   Future<void> saveStandings() async {
-    //TODO
+    final authService = ref.read(authServiceProvider);
+    final grandPrixBetRepository = ref.read(grandPrixBetRepositoryProvider);
+    final String? loggedUserId = await authService.loggedUserId$.first;
+    if (loggedUserId == null) {
+      throw '[QualificationsBetDriversStandingsProvide] Logged user id not found';
+    }
+    if (_grandPrixBetId == null) {
+      throw '[QualificationsBetDriversStandingsProvide] Grand prix bet id not found';
+    }
+    await grandPrixBetRepository.updateGrandPrixBet(
+      userId: loggedUserId,
+      grandPrixBetId: _grandPrixBetId!,
+      qualiStandingsByDriverIds: state.value,
+    );
   }
 }
