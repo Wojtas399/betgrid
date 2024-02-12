@@ -11,6 +11,18 @@ class HomeGrandPrixItem extends StatelessWidget {
 
   const HomeGrandPrixItem({super.key, required this.grandPrix});
 
+  void _onQualificationsBetPressed(BuildContext context) {
+    context.navigateTo(QualificationsBetRoute(
+      grandPrixId: grandPrix.id,
+    ));
+  }
+
+  void _onRaceBetPressed(BuildContext context) {
+    context.navigateTo(RaceBetRoute(
+      grandPrixId: grandPrix.id,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -38,15 +50,11 @@ class HomeGrandPrixItem extends StatelessWidget {
           children: [
             _BetSection(
               title: context.str.qualifications,
-              onPressed: () {
-                context.navigateTo(QualificationsBetRoute(
-                  grandPrixId: grandPrix.id,
-                ));
-              },
+              onPressed: () => _onQualificationsBetPressed(context),
             ),
             _BetSection(
               title: context.str.race,
-              onPressed: () {},
+              onPressed: () => _onRaceBetPressed(context),
             ),
             _BetSection(
               title: context.str.other,
