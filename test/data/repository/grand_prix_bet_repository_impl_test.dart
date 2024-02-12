@@ -229,4 +229,58 @@ void main() {
       ).called(1);
     },
   );
+
+  test(
+    'updateGrandPrixBet, '
+    'should update bet in db and in repository state',
+    () async {
+      const String grandPrixBetId = 'gpb1';
+      const List<String> qualiStandingsByDriverIds = ['d2', 'd1'];
+      final GrandPrixBetDto updatedGrandPrixBetDto = createGrandPrixBetDto(
+        id: grandPrixBetId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      );
+      final GrandPrixBet updatedGrandPrixBet = createGrandPrixBet(
+        id: grandPrixBetId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      );
+      final List<GrandPrixBet> existingGrandPrixBets = [
+        createGrandPrixBet(
+          id: grandPrixBetId,
+          qualiStandingsByDriverIds: ['d1', 'd2'],
+        ),
+        createGrandPrixBet(id: 'gpb2', qualiStandingsByDriverIds: ['d2', 'd1']),
+        createGrandPrixBet(id: 'gpb3', qualiStandingsByDriverIds: ['d2', 'd1']),
+      ];
+      dbGrandPrixBetService.mockUpdateGrandPrixBet(updatedGrandPrixBetDto);
+      repositoryImpl = GrandPrixBetRepositoryImpl(
+        initialData: existingGrandPrixBets,
+      );
+
+      repositoryImpl.updateGrandPrixBet(
+        userId: userId,
+        grandPrixBetId: grandPrixBetId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      );
+
+      expect(
+        repositoryImpl.repositoryState$,
+        emitsInOrder([
+          existingGrandPrixBets,
+          [
+            updatedGrandPrixBet,
+            existingGrandPrixBets[1],
+            existingGrandPrixBets.last,
+          ]
+        ]),
+      );
+      verify(
+        () => dbGrandPrixBetService.updateGrandPrixBet(
+          userId: userId,
+          grandPrixBetId: grandPrixBetId,
+          qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        ),
+      ).called(1);
+    },
+  );
 }

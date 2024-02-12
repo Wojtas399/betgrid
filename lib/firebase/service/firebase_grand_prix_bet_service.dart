@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
@@ -28,5 +29,24 @@ class FirebaseGrandPrixBetService {
     required GrandPrixBetDto grandPrixBetDto,
   }) async {
     await getGrandPrixBetsRef(userId).add(grandPrixBetDto);
+  }
+
+  Future<GrandPrixBetDto?> updateGrandPrixBet({
+    required String userId,
+    required String grandPrixBetId,
+    List<String>? qualiStandingsByDriverIds,
+  }) async {
+    final docRef = getGrandPrixBetsRef(userId).doc(grandPrixBetId);
+    DocumentSnapshot<GrandPrixBetDto> doc = await docRef.get();
+    GrandPrixBetDto? data = doc.data();
+    if (data == null) {
+      throw '[FirebaseGrandPrixBetService] Cannot find doc data';
+    }
+    data = data.copyWith(
+      qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+    );
+    await docRef.set(data);
+    doc = await docRef.get();
+    return doc.data();
   }
 }
