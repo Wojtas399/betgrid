@@ -11,15 +11,6 @@ class AppTheme {
             foregroundColor: Colors.white,
           ),
         ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: _seedColor,
-          foregroundColor: Colors.white,
-        ),
-        switchTheme: SwitchThemeData(
-          trackColor: MaterialStateProperty.resolveWith(
-            (states) => Colors.white.withOpacity(0.5),
-          ),
-        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -30,15 +21,6 @@ class AppTheme {
           style: ElevatedButton.styleFrom(
             backgroundColor: _seedColor,
             foregroundColor: Colors.white,
-          ),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: _seedColor,
-          foregroundColor: Colors.white,
-        ),
-        switchTheme: SwitchThemeData(
-          trackColor: MaterialStateProperty.resolveWith(
-            (states) => Colors.white.withOpacity(0.5),
           ),
         ),
       );

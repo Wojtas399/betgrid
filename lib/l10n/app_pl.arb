@@ -8,9 +8,11 @@
     "@__________QUALIFICATIONS_BET__________": {},
     "qualificationsBetNoBetInfoTitle": "Nie typowałeś/aś jeszcze tych kwalifikacji.",
     "qualificationsBetStartBetting": "Rozpocznij typowanie",
+    "qualificationsBetSelectDriver": "Wybierz kierowcę",
     "@__________COMMON__________": {},
     "loading": "Ładowanie",
     "qualifications": "Kwalifikacje",
     "race": "Wyścig",
-    "other": "Inne"
+    "other": "Inne",
+    "save": "Zapisz"
 }

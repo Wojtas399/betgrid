@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../model/driver.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text/title.dart';
+import '../../../extensions/build_context_extensions.dart';
 
 class QualificationsBetPositionItem extends StatelessWidget {
   final int position;
@@ -58,7 +59,7 @@ class _DriverDropdownButton extends ConsumerStatefulWidget {
 }
 
 class _DriverDropdownButtonState extends ConsumerState<_DriverDropdownButton> {
-  late Driver _selectedDriver;
+  Driver? _selectedDriver;
   late List<Driver> _sortedDrivers;
 
   @override
@@ -68,9 +69,8 @@ class _DriverDropdownButtonState extends ConsumerState<_DriverDropdownButton> {
       (Driver d1, Driver d2) => d1.surname.compareTo(d2.surname),
     );
     _selectedDriver = sortedDrivers.firstWhereOrNull(
-          (Driver driver) => driver.id == widget.selectedDriverId,
-        ) ??
-        sortedDrivers.first;
+      (Driver driver) => driver.id == widget.selectedDriverId,
+    );
     _sortedDrivers = sortedDrivers;
     super.initState();
   }
@@ -82,6 +82,7 @@ class _DriverDropdownButtonState extends ConsumerState<_DriverDropdownButton> {
         border: InputBorder.none,
       ),
       value: _selectedDriver,
+      hint: Text(context.str.qualificationsBetSelectDriver),
       items: _sortedDrivers
           .map(
             (driver) => DropdownMenuItem<Driver>(
