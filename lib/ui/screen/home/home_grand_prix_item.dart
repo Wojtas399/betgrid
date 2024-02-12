@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/grand_prix.dart';
+import '../../component/text/body.dart';
+import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../service/formatter_service.dart';
@@ -25,7 +27,6 @@ class HomeGrandPrixItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return SizedBox(
@@ -34,18 +35,14 @@ class HomeGrandPrixItem extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: ExpansionTile(
           shape: const Border(),
-          title: Text(
+          title: TitleMedium(
             grandPrix.name,
-            style: textTheme.titleMedium?.copyWith(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+            color: colorScheme.primary,
+            fontWeight: FontWeight.bold,
           ),
-          subtitle: Text(
+          subtitle: BodyMedium(
             '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline.withOpacity(0.75),
-            ),
+            color: colorScheme.outline.withOpacity(0.75),
           ),
           children: [
             _BetSection(
@@ -76,10 +73,7 @@ class _BetSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
+      title: TitleMedium(title),
       trailing: const Icon(Icons.circle_outlined),
       onTap: onPressed,
     );

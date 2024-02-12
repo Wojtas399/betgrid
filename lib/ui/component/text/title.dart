@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class TitleMedium extends StatelessWidget {
   final String text;
   final FontWeight? fontWeight;
+  final Color? color;
 
   const TitleMedium(
     this.text, {
     super.key,
     this.fontWeight,
+    this.color,
   });
 
   @override
@@ -16,6 +18,7 @@ class TitleMedium extends StatelessWidget {
       text,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: fontWeight,
+            color: color,
           ),
     );
   }
