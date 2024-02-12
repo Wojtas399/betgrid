@@ -40,9 +40,9 @@ class QualificationsBetDriversStandings
     state = AsyncData(List.generate(20, (_) => null));
   }
 
-  void onPositionDriverChanged(int position, String driverId) {
+  void onPositionDriverChanged(int index, String driverId) {
     final List<String?> updatedStandings = [...?state.value];
-    updatedStandings[position - 1] = driverId;
+    updatedStandings[index] = driverId;
     state = AsyncData(updatedStandings);
   }
 

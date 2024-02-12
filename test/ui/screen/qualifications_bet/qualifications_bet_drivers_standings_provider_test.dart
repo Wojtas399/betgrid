@@ -125,13 +125,13 @@ void main() {
 
   test(
     'onPositionDriverChanged, '
-    'should update driver id on given position in state list',
+    'should update driver id on given index in state list',
     () async {
-      const int position = 5;
+      const int index = 5;
       const String driverId = 'd2';
       final List<String?> expectedList = List.generate(
         20,
-        (index) => index == position - 1 ? driverId : null,
+        (i) => index == i ? driverId : null,
       );
       final container = makeProviderContainer(
         grandPrixId,
@@ -148,7 +148,7 @@ void main() {
       );
 
       notifier.onBeginDriversOrdering();
-      notifier.onPositionDriverChanged(position, driverId);
+      notifier.onPositionDriverChanged(index, driverId);
 
       await expectLater(
         container.read(qualificationsBetDriversStandingsProvider.future),
@@ -195,9 +195,9 @@ void main() {
       );
 
       await notifier.future;
-      notifier.onPositionDriverChanged(2, 'd4');
-      notifier.onPositionDriverChanged(6, 'd9');
-      notifier.onPositionDriverChanged(12, 'd1');
+      notifier.onPositionDriverChanged(1, 'd4');
+      notifier.onPositionDriverChanged(5, 'd9');
+      notifier.onPositionDriverChanged(11, 'd1');
       await notifier.saveStandings();
 
       verify(
