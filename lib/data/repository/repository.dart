@@ -29,4 +29,15 @@ abstract class Repository<T extends Entity> {
     entities.add(entity);
     _repositoryState$.add(entities);
   }
+
+  void updateEntity(T entity) {
+    final List<T> entities = [...?_repositoryState$.value];
+    final int entityIndex = entities.indexWhere(
+      (element) => element.id == entity.id,
+    );
+    if (entityIndex >= 0) {
+      entities[entityIndex] = entity;
+      _repositoryState$.add(entities);
+    }
+  }
 }

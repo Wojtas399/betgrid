@@ -105,4 +105,59 @@ void main() {
       expect(repository.repositoryState$, emits(expectedEntities));
     },
   );
+
+  test(
+    'updateEntity, '
+    'repository state is not initialized, '
+    'should do nothing',
+    () {
+      const TestModel updateEntity = TestModel(id: 'e2', name: 'entity 2');
+
+      repository.updateEntity(updateEntity);
+
+      expect(repository.repositoryState$, emits(null));
+    },
+  );
+
+  test(
+    'updateEntity, '
+    'entity does not exist in state, '
+    'should do nothing',
+    () {
+      const TestModel updateEntity = TestModel(id: 'e2', name: 'entity 2');
+      const List<TestModel> existingEntities = [
+        TestModel(id: 'e1', name: 'entity 1'),
+        TestModel(id: 'e3', name: 'entity 3'),
+      ];
+      repository = TestRepository(initialData: existingEntities);
+
+      repository.updateEntity(updateEntity);
+
+      expect(repository.repositoryState$, emits(existingEntities));
+    },
+  );
+
+  test(
+    'updateEntity, '
+    'should update entity in state',
+    () {
+      const TestModel updateEntity = TestModel(
+        id: 'e2',
+        name: 'updated entity 2',
+      );
+      const List<TestModel> existingEntities = [
+        TestModel(id: 'e1', name: 'entity 1'),
+        TestModel(id: 'e2', name: 'entity 2'),
+        TestModel(id: 'e3', name: 'entity 3'),
+      ];
+      repository = TestRepository(initialData: existingEntities);
+
+      repository.updateEntity(updateEntity);
+
+      expect(
+        repository.repositoryState$,
+        emits([existingEntities.first, updateEntity, existingEntities.last]),
+      );
+    },
+  );
 }
