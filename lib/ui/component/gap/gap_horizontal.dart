@@ -18,3 +18,7 @@ class GapHorizontal8 extends GapHorizontal {
 class GapHorizontal16 extends GapHorizontal {
   const GapHorizontal16({super.key}) : super(16);
 }
+
+class GapHorizontal32 extends GapHorizontal {
+  const GapHorizontal32({super.key}) : super(32);
+}

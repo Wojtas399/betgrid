@@ -1,13 +1,18 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
-import '../../../component/gap/gap_horizontal.dart';
+import '../../../../model/driver.dart';
+import '../../../component/text/headline.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../riverpod_provider/all_drivers_provider.dart';
 import '../../../riverpod_provider/grand_prix_id_provider.dart';
 import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import 'grand_prix_app_bar.dart';
+import 'grand_prix_bet_additional.dart';
 import 'grand_prix_bet_qualifications.dart';
+import 'grand_prix_bet_race.dart';
 
 @RoutePage()
 class GrandPrixBetScreen extends StatelessWidget {
@@ -29,67 +34,85 @@ class GrandPrixBetScreen extends StatelessWidget {
         grandPrixIdProvider.overrideWithValue(grandPrixId),
       ],
       child: const Scaffold(
-        appBar: _AppBar(),
+        appBar: GrandPrixAppBar(),
         body: SafeArea(
-          child: GrandPrixBetQualifications(),
+          child: _Body(),
         ),
       ),
     );
   }
 }
 
-class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
-  const _AppBar();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+class _Body extends ConsumerWidget {
+  const _Body();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool doesStandingsListExist =
-        ref.watch(grandPrixBetQualificationsNotifierProvider).hasValue;
-
-    return AppBar(
-      title: Text(context.str.qualifications),
-      actions: [
-        if (doesStandingsListExist) const _SaveButton(),
-        const GapHorizontal8(),
-      ],
-    );
-  }
-}
-
-class _SaveButton extends ConsumerStatefulWidget {
-  const _SaveButton();
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SaveButtonState();
-}
-
-class _SaveButtonState extends ConsumerState<_SaveButton> {
-  bool _haveChangesBeenMade = false;
-
-  @override
-  Widget build(BuildContext context) {
-    ref.listen(
+    final AsyncValue<List<String?>?> standings = ref.watch(
       grandPrixBetQualificationsNotifierProvider,
-      (previous, next) {
-        final eq = const ListEquality().equals;
-        setState(() {
-          _haveChangesBeenMade = previous?.value != null &&
-              next.value != null &&
-              !eq(previous!.value, next.value);
-        });
-      },
     );
+    final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
-    return ElevatedButton(
-      onPressed: _haveChangesBeenMade
-          ? ref
-              .read(grandPrixBetQualificationsNotifierProvider.notifier)
-              .saveStandings
-          : null,
-      child: Text(context.str.save),
+    if (standings.hasValue && allDrivers.hasValue) {
+      return CustomScrollView(
+        slivers: [
+          _SectionParameters.build(
+            context: context,
+            label: context.str.qualifications,
+            table: const GrandPrixBetQualifications(),
+          ),
+          _SectionParameters.build(
+            context: context,
+            label: 'Wyścig',
+            table: const GrandPrixBetRace(),
+          ),
+          _SectionParameters.build(
+            context: context,
+            label: 'Dodatkowe',
+            table: const GrandPrixBetAdditional(),
+          ),
+        ],
+      );
+    }
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
+}
+
+class _SectionParameters extends SliverStickyHeader {
+  _SectionParameters({
+    super.header,
+    super.sliver,
+  });
+
+  factory _SectionParameters.build({
+    required BuildContext context,
+    required String label,
+    required Widget table,
+  }) =>
+      _SectionParameters(
+        header: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.only(bottom: 16, left: 24, top: 16),
+          child: HeadlineMedium(
+            label,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, i) => table,
+            childCount: 1,
+          ),
+        ),
+      );
 }

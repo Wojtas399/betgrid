@@ -34,6 +34,7 @@ dependencies:
   material_design_icons_flutter: ^7.0.7296
   rxdart: ^0.27.7
   collection: ^1.18.0
+  flutter_sticky_header: ^0.6.5
 
 dev_dependencies:
   flutter_test:

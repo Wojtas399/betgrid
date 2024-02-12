@@ -5,12 +5,14 @@
     "signInScreenSignInButtonLabel": "Zaloguj",
     "@__________HOME__________": {},
     "homeScreenTitle": "Sezon 2024",
-    "@__________QUALIFICATIONS_BET__________": {},
-    "qualificationsBetSelectDriver": "Wybierz kierowcę",
+    "@__________GRAND_PRIX_BET__________": {},
+    "grandPrixBetSelectDriver": "Wybierz kierowcę",
     "@__________COMMON__________": {},
     "loading": "Ładowanie",
     "qualifications": "Kwalifikacje",
     "race": "Wyścig",
     "other": "Inne",
-    "save": "Zapisz"
+    "save": "Zapisz",
+    "yes": "Tak",
+    "no": "Nie"
 }

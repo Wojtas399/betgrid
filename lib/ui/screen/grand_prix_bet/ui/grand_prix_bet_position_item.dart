@@ -2,40 +2,43 @@ import 'package:flutter/material.dart';
 
 import '../../../../model/driver.dart';
 import '../../../component/driver_dropdown_button_component.dart';
-import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text/title.dart';
 
-class GrandPrixBetPositionItem extends StatelessWidget {
-  final int position;
-  final String? selectedDriverId;
-  final List<Driver> allDrivers;
-  final Function(String) onDriverSelected;
-
+class GrandPrixBetPositionItem extends TableRow {
   const GrandPrixBetPositionItem({
     super.key,
-    required this.position,
-    required this.selectedDriverId,
-    required this.allDrivers,
-    required this.onDriverSelected,
+    super.children,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      child: Row(
-        children: [
-          TitleMedium('$position.'),
-          const GapHorizontal16(),
-          Expanded(
+  factory GrandPrixBetPositionItem.build({
+    required String label,
+    required String? selectedDriverId,
+    required List<Driver> allDrivers,
+    required Function(String) onDriverSelected,
+  }) {
+    return GrandPrixBetPositionItem(
+      children: [
+        TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: TitleMedium(label),
+            ),
+          ),
+        ),
+        TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: DriverDropdownButton(
               selectedDriverId: selectedDriverId,
               allDrivers: allDrivers,
               onDriverSelected: onDriverSelected,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

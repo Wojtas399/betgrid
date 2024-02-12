@@ -37,6 +37,15 @@ class _State extends State<DriverDropdownButton> {
     super.initState();
   }
 
+  void _onDriverSelected(Driver? selectedDriver) {
+    if (selectedDriver != null) {
+      setState(() {
+        _selectedDriver = selectedDriver;
+      });
+      widget.onDriverSelected(selectedDriver.id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Driver>(
@@ -44,7 +53,7 @@ class _State extends State<DriverDropdownButton> {
         border: InputBorder.none,
       ),
       value: _selectedDriver,
-      hint: Text(context.str.qualificationsBetSelectDriver),
+      hint: Text(context.str.grandPrixBetSelectDriver),
       items: _sortedDrivers
           .map(
             (driver) => DropdownMenuItem<Driver>(
@@ -53,14 +62,7 @@ class _State extends State<DriverDropdownButton> {
             ),
           )
           .toList(),
-      onChanged: (Driver? selectedDriver) {
-        if (selectedDriver != null) {
-          setState(() {
-            _selectedDriver = selectedDriver;
-          });
-          widget.onDriverSelected(selectedDriver.id);
-        }
-      },
+      onChanged: _onDriverSelected,
     );
   }
 }
