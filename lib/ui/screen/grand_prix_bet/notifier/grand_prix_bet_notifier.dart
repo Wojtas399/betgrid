@@ -111,6 +111,9 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
       throw '[QualificationsBetDriversStandingsProvide] Grand prix bet id not found';
     }
     final GrandPrixBetNotifierState? currentState = state.value;
+    state = AsyncData(state.value?.copyWith(
+      status: const GrandPrixBetNotifierStatusSavingData(),
+    ));
     await grandPrixBetRepository.updateGrandPrixBet(
       userId: loggedUserId,
       grandPrixBetId: _grandPrixBetId!,
@@ -124,6 +127,9 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
       willBeSafetyCar: currentState?.willBeSafetyCar,
       willBeRedFlag: currentState?.willBeRedFlag,
     );
+    state = AsyncData(state.value?.copyWith(
+      status: const GrandPrixBetNotifierStatusDataSaved(),
+    ));
   }
 
   Future<String?> _loadGrandPrixName(String grandPrixId) async {

@@ -5,6 +5,8 @@ part 'grand_prix_bet_notifier_state.freezed.dart';
 @freezed
 class GrandPrixBetNotifierState with _$GrandPrixBetNotifierState {
   const factory GrandPrixBetNotifierState({
+    @Default(GrandPrixBetNotifierStatusComplete())
+    GrandPrixBetNotifierStatus status,
     String? grandPrixName,
     List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,
@@ -16,4 +18,20 @@ class GrandPrixBetNotifierState with _$GrandPrixBetNotifierState {
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) = _GrandPrixBetNotifierState;
+}
+
+sealed class GrandPrixBetNotifierStatus {
+  const GrandPrixBetNotifierStatus();
+}
+
+class GrandPrixBetNotifierStatusComplete extends GrandPrixBetNotifierStatus {
+  const GrandPrixBetNotifierStatusComplete();
+}
+
+class GrandPrixBetNotifierStatusSavingData extends GrandPrixBetNotifierStatus {
+  const GrandPrixBetNotifierStatusSavingData();
+}
+
+class GrandPrixBetNotifierStatusDataSaved extends GrandPrixBetNotifierStatus {
+  const GrandPrixBetNotifierStatusDataSaved();
 }

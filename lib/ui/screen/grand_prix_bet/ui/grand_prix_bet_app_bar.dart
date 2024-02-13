@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,8 +6,8 @@ import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 
-class GrandPrixAppBar extends ConsumerWidget implements PreferredSizeWidget {
-  const GrandPrixAppBar({super.key});
+class GrandPrixBetAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  const GrandPrixBetAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -57,10 +58,23 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
     ref.listen(
       grandPrixBetNotifierProvider,
       (previous, next) {
+        final listEq = const ListEquality().equals;
+        final prevState = previous?.value;
+        final currState = next.value;
         setState(() {
-          _haveChangesBeenMade = previous?.value != null &&
-              next.value != null &&
-              previous!.value != next.value;
+          _haveChangesBeenMade = prevState != null &&
+              currState != null &&
+              (!listEq(prevState.qualiStandingsByDriverIds,
+                      currState.qualiStandingsByDriverIds) ||
+                  prevState.p1DriverId != currState.p1DriverId ||
+                  prevState.p2DriverId != currState.p2DriverId ||
+                  prevState.p3DriverId != currState.p3DriverId ||
+                  prevState.p10DriverId != currState.p10DriverId ||
+                  prevState.fastestLapDriverId !=
+                      currState.fastestLapDriverId ||
+                  !listEq(prevState.dnfDriverIds, currState.dnfDriverIds) ||
+                  prevState.willBeSafetyCar != currState.willBeSafetyCar ||
+                  prevState.willBeRedFlag != currState.willBeRedFlag);
         });
       },
     );

@@ -7,11 +7,12 @@
     "homeScreenTitle": "Sezon 2024",
     "@__________GRAND_PRIX_BET__________": {},
     "grandPrixBetSelectDriver": "Wybierz kierowcę",
+    "grandPrixBetSuccessfullySavedBets": "Pomyślnie zapisano typy",
     "@__________COMMON__________": {},
     "loading": "Ładowanie",
     "qualifications": "Kwalifikacje",
     "race": "Wyścig",
-    "other": "Inne",
+    "additional": "Dodatkowe",
     "save": "Zapisz",
     "yes": "Tak",
     "no": "Nie"

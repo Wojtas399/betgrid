@@ -17,19 +17,19 @@ class GrandPrixBetAdditional extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
     final gpBetNotifier = ref.read(grandPrixBetNotifierProvider.notifier);
-    final List<String?> dnfDriverIds = ref.watch(
+    final List<String?>? dnfDriverIds = ref.watch(
       grandPrixBetNotifierProvider.select(
-        (state) => state.value!.dnfDriverIds!,
+        (state) => state.value?.dnfDriverIds,
       ),
     );
-    final bool willBeSafetyCar = ref.watch(
+    final bool? willBeSafetyCar = ref.watch(
       grandPrixBetNotifierProvider.select(
-        (state) => state.value!.willBeSafetyCar!,
+        (state) => state.value?.willBeSafetyCar,
       ),
     );
-    final bool willBeRedFlag = ref.watch(
+    final bool? willBeRedFlag = ref.watch(
       grandPrixBetNotifierProvider.select(
-        (state) => state.value!.willBeRedFlag!,
+        (state) => state.value?.willBeRedFlag,
       ),
     );
 
@@ -44,7 +44,7 @@ class GrandPrixBetAdditional extends ConsumerWidget {
               2 => 'DNF',
               _ => '',
             },
-            selectedDriverId: dnfDriverIds[index],
+            selectedDriverId: dnfDriverIds![index],
             allDrivers: allDrivers.value!,
             onDriverSelected: (String driverId) {
               gpBetNotifier.onDnfDriverChanged(index, driverId);
@@ -71,7 +71,7 @@ class _YesAndNoButtons extends TableRow {
 
   factory _YesAndNoButtons.build({
     required String label,
-    required bool initialValue,
+    required bool? initialValue,
     required Function(bool) onChanged,
   }) {
     return _YesAndNoButtons(
@@ -101,7 +101,7 @@ class _YesAndNoButtons extends TableRow {
 }
 
 class _YesOrNoSelection extends StatefulWidget {
-  final bool initialValue;
+  final bool? initialValue;
   final Function(bool) onChanged;
 
   const _YesOrNoSelection({

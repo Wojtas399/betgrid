@@ -491,19 +491,14 @@ void main() {
       const String grandPrixBetId = 'gpb1';
       final List<String?> newStandings = List.generate(
         20,
-        (index) => switch (index) {
-          1 => 'd4',
-          5 => 'd9',
-          11 => 'd1',
-          _ => null,
-        },
+        (index) => index == 2 ? 'd2' : null,
       );
       const String newP1DriverId = 'd1';
-      const String newP2DriberId = 'd2';
+      const String newP2DriverId = 'd2';
       const String newP3DriverId = 'd3';
       const String newP10DriverId = 'd10';
       const String newFastestLapDriverId = 'd11';
-      const List<String?> newDnfDriverIds = ['d18', 'd19', 'd20'];
+      const List<String?> newDnfDriverIds = ['d18', null, null];
       const bool newWillBeSafetyCar = false;
       const bool newWillBeRedFlag = true;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -526,28 +521,131 @@ void main() {
       );
 
       await notifier.future;
-      notifier.onQualificationDriverChanged(1, 'd4');
-      notifier.onQualificationDriverChanged(5, 'd9');
-      notifier.onQualificationDriverChanged(11, 'd1');
+      notifier.onQualificationDriverChanged(2, 'd2');
       notifier.onP1DriverChanged(newP1DriverId);
-      notifier.onP2DriverChanged(newP2DriberId);
+      notifier.onP2DriverChanged(newP2DriverId);
       notifier.onP3DriverChanged(newP3DriverId);
       notifier.onP10DriverChanged(newP10DriverId);
       notifier.onFastestLapDriverChanged(newFastestLapDriverId);
       notifier.onDnfDriverChanged(0, 'd18');
-      notifier.onDnfDriverChanged(1, 'd19');
-      notifier.onDnfDriverChanged(2, 'd20');
       notifier.onSafetyCarPossibilityChanged(newWillBeSafetyCar);
       notifier.onRedFlagPossibilityChanged(newWillBeRedFlag);
       await notifier.saveStandings();
 
+      GrandPrixBetNotifierState state = GrandPrixBetNotifierState(
+        qualiStandingsByDriverIds: defaultQualificationsStandings,
+        dnfDriverIds: defaultDnfDriverIds,
+      );
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<GrandPrixBetNotifierState?>(),
+            ),
+        () => listener(
+              const AsyncLoading<GrandPrixBetNotifierState?>(),
+              AsyncData<GrandPrixBetNotifierState?>(state),
+            ),
+        () {
+          final previousState = state;
+          state = state.copyWith(qualiStandingsByDriverIds: newStandings);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(p1DriverId: newP1DriverId);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(p2DriverId: newP2DriverId);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(p3DriverId: newP3DriverId);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(p10DriverId: newP10DriverId);
+          listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(fastestLapDriverId: newFastestLapDriverId);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(dnfDriverIds: newDnfDriverIds);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(willBeSafetyCar: newWillBeSafetyCar);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(willBeRedFlag: newWillBeRedFlag);
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(
+            status: const GrandPrixBetNotifierStatusSavingData(),
+          );
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+        () {
+          final previousState = state;
+          state = state.copyWith(
+            status: const GrandPrixBetNotifierStatusDataSaved(),
+          );
+          return listener(
+            AsyncData<GrandPrixBetNotifierState?>(previousState),
+            AsyncData<GrandPrixBetNotifierState?>(state),
+          );
+        },
+      ]);
+      verifyNoMoreInteractions(listener);
       verify(
         () => grandPrixBetRepository.updateGrandPrixBet(
           userId: loggedUserId,
           grandPrixBetId: grandPrixBetId,
           qualiStandingsByDriverIds: newStandings,
           p1DriverId: newP1DriverId,
-          p2DriverId: newP2DriberId,
+          p2DriverId: newP2DriverId,
           p3DriverId: newP3DriverId,
           p10DriverId: newP10DriverId,
           fastestLapDriverId: newFastestLapDriverId,
