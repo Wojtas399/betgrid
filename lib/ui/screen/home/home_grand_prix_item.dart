@@ -39,17 +39,20 @@ class HomeGrandPrixItem extends StatelessWidget {
                   children: [
                     TitleMedium(
                       grandPrix.name,
-                      color: colorScheme.primary,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                     const GapVertical4(),
                     BodyMedium(
                       '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
-                      color: colorScheme.outline.withOpacity(0.75),
+                      color: Colors.white.withOpacity(0.75),
                     ),
                   ],
                 ),
-                const Icon(Icons.circle_outlined),
+                const Icon(
+                  Icons.circle_outlined,
+                  color: Colors.white,
+                ),
               ],
             ),
           ),

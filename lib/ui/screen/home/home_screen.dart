@@ -32,6 +32,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      shape: Border(
+        bottom: BorderSide(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
+        ),
+      ),
+      scrolledUnderElevation: 0.0,
       title: Text(Str.of(context).homeScreenTitle),
       actions: [
         Icon(

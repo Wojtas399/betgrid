@@ -17,7 +17,10 @@ class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(Str.of(context).signInScreenTitle),
       actions: [
-        Icon(MdiIcons.themeLightDark, color: Colors.white),
+        Icon(
+          MdiIcons.themeLightDark,
+          color: Theme.of(context).colorScheme.outline,
+        ),
         const GapHorizontal8(),
         const _ThemeSwitch(),
         const GapHorizontal8(),

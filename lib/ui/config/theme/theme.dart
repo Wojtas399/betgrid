@@ -11,6 +11,9 @@ class AppTheme {
             foregroundColor: Colors.white,
           ),
         ),
+        cardTheme: CardTheme(
+          color: _seedColor,
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -22,6 +25,9 @@ class AppTheme {
             backgroundColor: _seedColor,
             foregroundColor: Colors.white,
           ),
+        ),
+        cardTheme: CardTheme(
+          color: _seedColor,
         ),
       );
 }
