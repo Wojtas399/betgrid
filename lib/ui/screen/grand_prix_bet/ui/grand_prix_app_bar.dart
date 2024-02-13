@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../riverpod_provider/grand_prix_name_provider.dart';
-import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import '../notifier/grand_prix_bet_notifier.dart';
 
 class GrandPrixAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const GrandPrixAppBar({super.key});
@@ -16,7 +15,7 @@ class GrandPrixAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool doesStandingsListExist =
-        ref.watch(grandPrixBetQualificationsNotifierProvider).hasValue;
+        ref.watch(grandPrixBetNotifierProvider).hasValue;
 
     return AppBar(
       title: const _GrandPrixName(),
@@ -53,22 +52,19 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-      grandPrixBetQualificationsNotifierProvider,
+      grandPrixBetNotifierProvider,
       (previous, next) {
-        final eq = const ListEquality().equals;
         setState(() {
           _haveChangesBeenMade = previous?.value != null &&
               next.value != null &&
-              !eq(previous!.value, next.value);
+              previous!.value != next.value;
         });
       },
     );
 
     return ElevatedButton(
       onPressed: _haveChangesBeenMade
-          ? ref
-              .read(grandPrixBetQualificationsNotifierProvider.notifier)
-              .saveStandings
+          ? ref.read(grandPrixBetNotifierProvider.notifier).saveStandings
           : null,
       child: Text(context.str.save),
     );

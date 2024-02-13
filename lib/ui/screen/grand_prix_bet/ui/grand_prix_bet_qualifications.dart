@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../model/driver.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
-import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_bet_position_item.dart';
 import 'grand_prix_bet_table.dart';
 
@@ -12,14 +12,16 @@ class GrandPrixBetQualifications extends ConsumerWidget {
 
   void _onDriverSelect(String driverId, int driverIndex, WidgetRef ref) {
     ref
-        .read(grandPrixBetQualificationsNotifierProvider.notifier)
+        .read(grandPrixBetNotifierProvider.notifier)
         .onPositionDriverChanged(driverIndex, driverId);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<String?>?> standings = ref.watch(
-      grandPrixBetQualificationsNotifierProvider,
+    final List<String?>? standings = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value?.qualiStandingsByDriverIds,
+      ),
     );
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
@@ -27,7 +29,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
       rows: List.generate(
         20,
         (int itemIndex) => GrandPrixBetPositionItem.build(
-          selectedDriverId: standings.value![itemIndex],
+          selectedDriverId: standings![itemIndex],
           label: '${itemIndex + 1}.',
           allDrivers: allDrivers.value!,
           onDriverSelected: (String driverId) {

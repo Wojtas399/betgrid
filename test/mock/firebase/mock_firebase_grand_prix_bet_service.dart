@@ -42,6 +42,11 @@ class MockFirebaseGrandPrixBetService extends Mock
         userId: any(named: 'userId'),
         grandPrixBetId: any(named: 'grandPrixBetId'),
         qualiStandingsByDriverIds: any(named: 'qualiStandingsByDriverIds'),
+        p1DriverId: any(named: 'p1DriverId'),
+        p2DriverId: any(named: 'p2DriverId'),
+        p3DriverId: any(named: 'p3DriverId'),
+        p10DriverId: any(named: 'p10DriverId'),
+        fastestLapDriverId: any(named: 'fastestLapDriverId'),
       ),
     ).thenAnswer((_) => Future.value(updatedGrandPrixBetDto));
   }

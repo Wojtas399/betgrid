@@ -5,16 +5,16 @@ import '../../../../auth/auth_service.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../riverpod_provider/grand_prix_id_provider.dart';
+import 'grand_prix_bet_notifier_state.dart';
 
-part 'grand_prix_bet_qualifications_notifier.g.dart';
+part 'grand_prix_bet_notifier.g.dart';
 
 @Riverpod(dependencies: [grandPrixId])
-class GrandPrixBetQualificationsNotifier
-    extends _$GrandPrixBetQualificationsNotifier {
+class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
   String? _grandPrixBetId;
 
   @override
-  Stream<List<String?>?> build() {
+  Stream<GrandPrixBetNotifierState?> build() {
     final String? grandPrixId = ref.watch(grandPrixIdProvider);
     if (grandPrixId == null) throw 'Grand prix id not found';
     final authService = ref.watch(authServiceProvider);
@@ -31,19 +31,56 @@ class GrandPrixBetQualificationsNotifier
     ).map(
       (grandPrixBet) {
         _grandPrixBetId = grandPrixBet?.id;
-        return grandPrixBet?.qualiStandingsByDriverIds;
+        return GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: grandPrixBet?.qualiStandingsByDriverIds,
+          p1DriverId: grandPrixBet?.p1DriverId,
+          p2DriverId: grandPrixBet?.p2DriverId,
+          p3DriverId: grandPrixBet?.p3DriverId,
+          p10DriverId: grandPrixBet?.p10DriverId,
+          fastestLapDriverId: grandPrixBet?.fastestLapDriverId,
+        );
       },
     );
   }
 
-  void onBeginDriversOrdering() {
-    state = AsyncData(List.generate(20, (_) => null));
+  void onPositionDriverChanged(int index, String driverId) {
+    final List<String?> updatedStandings = [
+      ...?state.value?.qualiStandingsByDriverIds,
+    ];
+    updatedStandings[index] = driverId;
+    state = AsyncData(state.value?.copyWith(
+      qualiStandingsByDriverIds: updatedStandings,
+    ));
   }
 
-  void onPositionDriverChanged(int index, String driverId) {
-    final List<String?> updatedStandings = [...?state.value];
-    updatedStandings[index] = driverId;
-    state = AsyncData(updatedStandings);
+  void onP1DriverChanged(String driverId) {
+    state = AsyncData(state.value?.copyWith(
+      p1DriverId: driverId,
+    ));
+  }
+
+  void onP2DriverChanged(String driverId) {
+    state = AsyncData(state.value?.copyWith(
+      p2DriverId: driverId,
+    ));
+  }
+
+  void onP3DriverChanged(String driverId) {
+    state = AsyncData(state.value?.copyWith(
+      p3DriverId: driverId,
+    ));
+  }
+
+  void onP10DriverChanged(String driverId) {
+    state = AsyncData(state.value?.copyWith(
+      p10DriverId: driverId,
+    ));
+  }
+
+  void onFastestLapDriverChanged(String driverId) {
+    state = AsyncData(state.value?.copyWith(
+      fastestLapDriverId: driverId,
+    ));
   }
 
   Future<void> saveStandings() async {
@@ -56,10 +93,16 @@ class GrandPrixBetQualificationsNotifier
     if (_grandPrixBetId == null) {
       throw '[QualificationsBetDriversStandingsProvide] Grand prix bet id not found';
     }
+    final GrandPrixBetNotifierState? currentState = state.value;
     await grandPrixBetRepository.updateGrandPrixBet(
       userId: loggedUserId,
       grandPrixBetId: _grandPrixBetId!,
-      qualiStandingsByDriverIds: state.value,
+      qualiStandingsByDriverIds: currentState?.qualiStandingsByDriverIds,
+      p1DriverId: currentState?.p1DriverId,
+      p2DriverId: currentState?.p2DriverId,
+      p3DriverId: currentState?.p3DriverId,
+      p10DriverId: currentState?.p10DriverId,
+      fastestLapDriverId: currentState?.fastestLapDriverId,
     );
   }
 }

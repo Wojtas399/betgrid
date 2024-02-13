@@ -8,7 +8,7 @@ import '../../../component/text/headline.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
 import '../../../riverpod_provider/grand_prix_id_provider.dart';
-import '../provider/grand_prix_bet_qualifications_notifier.dart';
+import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_app_bar.dart';
 import 'grand_prix_bet_additional.dart';
 import 'grand_prix_bet_qualifications.dart';
@@ -48,12 +48,14 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<String?>?> standings = ref.watch(
-      grandPrixBetQualificationsNotifierProvider,
+    final List<String?>? standings = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value?.qualiStandingsByDriverIds,
+      ),
     );
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
-    if (standings.hasValue && allDrivers.hasValue) {
+    if (standings != null && allDrivers.hasValue) {
       return CustomScrollView(
         slivers: [
           _SectionParameters.build(
