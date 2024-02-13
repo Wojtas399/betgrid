@@ -1,4 +1,5 @@
 import 'package:betgrid/auth/auth_service.dart';
+import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/ui/riverpod_provider/grand_prix_id_provider.dart';
@@ -9,12 +10,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../creator/grand_prix_creator.dart';
 import '../../../mock/auth/mock_auth_service.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../../mock/listener.dart';
 
 void main() {
   final authService = MockAuthService();
+  final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   const String loggedUserId = 'u1';
   const String grandPrixId = 'gp1';
@@ -26,12 +30,14 @@ void main() {
   ProviderContainer makeProviderContainer(
     String grandPrixId,
     MockAuthService authService,
+    MockGrandPrixRepository grandPrixRepository,
     MockGrandPrixBetRepository grandPrixBetRepository,
   ) {
     final container = ProviderContainer(
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
         authServiceProvider.overrideWithValue(authService),
+        grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
         grandPrixBetRepositoryProvider.overrideWithValue(
           grandPrixBetRepository,
         ),
@@ -43,6 +49,7 @@ void main() {
 
   setUp(() {
     authService.mockGetLoggedUserId(loggedUserId);
+    grandPrixRepository.mockLoadGrandPrixById(null);
     grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
       createGrandPrixBet(grandPrixId: grandPrixId),
     );
@@ -51,13 +58,16 @@ void main() {
 
   tearDown(() {
     reset(authService);
+    reset(grandPrixRepository);
     reset(grandPrixBetRepository);
   });
 
   test(
     'build, '
+    'should load grand prix name and should'
     'should watch to grand prix bet and emit its bet values',
     () async {
+      const String grandPrixName = 'Bahrain';
       final GrandPrixBet grandPrixBet = createGrandPrixBet(
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: List.generate(
@@ -79,6 +89,7 @@ void main() {
         willBeRedFlag: false,
       );
       final GrandPrixBetNotifierState expectedState = GrandPrixBetNotifierState(
+        grandPrixName: grandPrixName,
         qualiStandingsByDriverIds: grandPrixBet.qualiStandingsByDriverIds,
         p1DriverId: grandPrixBet.p1DriverId,
         p2DriverId: grandPrixBet.p2DriverId,
@@ -89,10 +100,14 @@ void main() {
         willBeSafetyCar: grandPrixBet.willBeSafetyCar,
         willBeRedFlag: grandPrixBet.willBeRedFlag,
       );
+      grandPrixRepository.mockLoadGrandPrixById(
+        createGrandPrix(name: grandPrixName),
+      );
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(grandPrixBet);
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -144,6 +159,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -179,6 +195,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -215,6 +232,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -251,6 +269,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -287,6 +306,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -323,6 +343,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -361,6 +382,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -396,6 +418,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -432,6 +455,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(
@@ -489,6 +513,7 @@ void main() {
       final container = makeProviderContainer(
         grandPrixId,
         authService,
+        grandPrixRepository,
         grandPrixBetRepository,
       );
       container.listen(

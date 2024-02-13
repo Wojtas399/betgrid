@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/grand_prix_name_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 
 class GrandPrixAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -33,9 +32,13 @@ class _GrandPrixName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
+    final String? grandPrixName = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value?.grandPrixName,
+      ),
+    );
 
-    return Text(grandPrixName.value ?? '--');
+    return Text(grandPrixName ?? '--');
   }
 }
 
