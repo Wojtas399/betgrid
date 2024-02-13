@@ -31,5 +31,8 @@ abstract interface class GrandPrixBetRepository {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
+    List<String?>? dnfDriverIds,
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
   });
 }

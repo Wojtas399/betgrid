@@ -249,6 +249,9 @@ void main() {
       const String p3DriverId = 'd2';
       const String p10DriverId = 'd4';
       const String fastestLapDriverId = 'd10';
+      const List<String> dnfDriverIds = ['d18', 'd19', 'd20'];
+      const bool willBeSafetyCar = true;
+      const bool willBeRedFlag = false;
       final GrandPrixBetDto updatedGrandPrixBetDto = createGrandPrixBetDto(
         id: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -257,6 +260,9 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        willBeSafetyCar: willBeSafetyCar,
+        willBeRedFlag: willBeRedFlag,
       );
       final GrandPrixBet updatedGrandPrixBet = createGrandPrixBet(
         id: grandPrixBetId,
@@ -266,6 +272,9 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        willBeSafetyCar: willBeSafetyCar,
+        willBeRedFlag: willBeRedFlag,
       );
       final List<GrandPrixBet> existingGrandPrixBets = [
         createGrandPrixBet(
@@ -284,6 +293,9 @@ void main() {
           p3DriverId: 'd3',
           p10DriverId: 'd10',
           fastestLapDriverId: 'd4',
+          dnfDriverIds: ['d15', 'd16', 'd17'],
+          willBeSafetyCar: false,
+          willBeRedFlag: true,
         ),
         createGrandPrixBet(id: 'gpb2'),
         createGrandPrixBet(id: 'gpb3'),
@@ -302,6 +314,9 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        willBeSafetyCar: willBeSafetyCar,
+        willBeRedFlag: willBeRedFlag,
       );
 
       expect(
@@ -325,6 +340,9 @@ void main() {
           p3DriverId: p3DriverId,
           p10DriverId: p10DriverId,
           fastestLapDriverId: fastestLapDriverId,
+          dnfDriverIds: dnfDriverIds,
+          willBeSafetyCar: willBeSafetyCar,
+          willBeRedFlag: willBeRedFlag,
         ),
       ).called(1);
     },

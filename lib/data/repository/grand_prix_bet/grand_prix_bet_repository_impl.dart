@@ -65,6 +65,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
+    List<String?>? dnfDriverIds,
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
   }) async {
     final GrandPrixBetDto? updatedBetDto =
         await _dbGrandPrixBetService.updateGrandPrixBet(
@@ -76,6 +79,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       p3DriverId: p3DriverId,
       p10DriverId: p10DriverId,
       fastestLapDriverId: fastestLapDriverId,
+      dnfDriverIds: dnfDriverIds,
+      willBeSafetyCar: willBeSafetyCar,
+      willBeRedFlag: willBeRedFlag,
     );
     if (updatedBetDto != null) {
       final GrandPrixBet updatedBet = mapGrandPrixBetFromDto(updatedBetDto);

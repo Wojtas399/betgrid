@@ -40,6 +40,9 @@ class FirebaseGrandPrixBetService {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
+    List<String?>? dnfDriverIds,
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
   }) async {
     final docRef = getGrandPrixBetsRef(userId).doc(grandPrixBetId);
     DocumentSnapshot<GrandPrixBetDto> doc = await docRef.get();
@@ -52,12 +55,17 @@ class FirebaseGrandPrixBetService {
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
       );
     }
+    if (dnfDriverIds != null) {
+      data = data.copyWith(dnfDriverIds: dnfDriverIds);
+    }
     data = data.copyWith(
       p1DriverId: p1DriverId,
       p2DriverId: p2DriverId,
       p3DriverId: p3DriverId,
       p10DriverId: p10DriverId,
       fastestLapDriverId: fastestLapDriverId,
+      willBeSafetyCar: willBeSafetyCar,
+      willBeRedFlag: willBeRedFlag,
     );
     await docRef.set(data);
     doc = await docRef.get();
