@@ -26,5 +26,10 @@ abstract interface class GrandPrixBetRepository {
     required String userId,
     required String grandPrixBetId,
     List<String?>? qualiStandingsByDriverIds,
+    String? p1DriverId,
+    String? p2DriverId,
+    String? p3DriverId,
+    String? p10DriverId,
+    String? fastestLapDriverId,
   });
 }

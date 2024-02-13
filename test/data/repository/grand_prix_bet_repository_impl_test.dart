@@ -236,18 +236,38 @@ void main() {
     () async {
       const String grandPrixBetId = 'gpb1';
       const List<String> qualiStandingsByDriverIds = ['d2', 'd1'];
+      const String p1DriverId = 'd3';
+      const String p2DriverId = 'd1';
+      const String p3DriverId = 'd2';
+      const String p10DriverId = 'd4';
+      const String fastestLapDriverId = 'd10';
       final GrandPrixBetDto updatedGrandPrixBetDto = createGrandPrixBetDto(
         id: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
       );
       final GrandPrixBet updatedGrandPrixBet = createGrandPrixBet(
         id: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
       );
       final List<GrandPrixBet> existingGrandPrixBets = [
         createGrandPrixBet(
           id: grandPrixBetId,
           qualiStandingsByDriverIds: ['d1', 'd2'],
+          p1DriverId: 'd1',
+          p2DriverId: 'd2',
+          p3DriverId: 'd3',
+          p10DriverId: 'd10',
+          fastestLapDriverId: 'd4',
         ),
         createGrandPrixBet(id: 'gpb2', qualiStandingsByDriverIds: ['d2', 'd1']),
         createGrandPrixBet(id: 'gpb3', qualiStandingsByDriverIds: ['d2', 'd1']),
@@ -261,6 +281,11 @@ void main() {
         userId: userId,
         grandPrixBetId: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
       );
 
       expect(
@@ -279,6 +304,11 @@ void main() {
           userId: userId,
           grandPrixBetId: grandPrixBetId,
           qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+          p1DriverId: p1DriverId,
+          p2DriverId: p2DriverId,
+          p3DriverId: p3DriverId,
+          p10DriverId: p10DriverId,
+          fastestLapDriverId: fastestLapDriverId,
         ),
       ).called(1);
     },
