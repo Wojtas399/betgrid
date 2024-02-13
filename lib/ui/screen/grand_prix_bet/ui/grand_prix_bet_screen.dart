@@ -48,14 +48,19 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String?>? standings = ref.watch(
+    final List<String?>? qualiStandings = ref.watch(
       grandPrixBetNotifierProvider.select(
         (state) => state.value?.qualiStandingsByDriverIds,
       ),
     );
+    final List<String?>? dnfDriverIds = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value?.dnfDriverIds,
+      ),
+    );
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
-    if (standings != null && allDrivers.hasValue) {
+    if (qualiStandings != null && dnfDriverIds != null && allDrivers.hasValue) {
       return CustomScrollView(
         slivers: [
           _SectionParameters.build(

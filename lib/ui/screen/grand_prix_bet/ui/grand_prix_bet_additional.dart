@@ -6,6 +6,7 @@ import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text/title.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
+import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_bet_position_item.dart';
 import 'grand_prix_bet_table.dart';
 
@@ -15,6 +16,22 @@ class GrandPrixBetAdditional extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
+    final gpBetNotifier = ref.read(grandPrixBetNotifierProvider.notifier);
+    final List<String?> dnfDriverIds = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value!.dnfDriverIds!,
+      ),
+    );
+    final bool willBeSafetyCar = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value!.willBeSafetyCar!,
+      ),
+    );
+    final bool willBeRedFlag = ref.watch(
+      grandPrixBetNotifierProvider.select(
+        (state) => state.value!.willBeRedFlag!,
+      ),
+    );
 
     return GrandPrixBetTable(
       rows: [
@@ -27,29 +44,37 @@ class GrandPrixBetAdditional extends ConsumerWidget {
               2 => 'DNF',
               _ => '',
             },
-            selectedDriverId: null,
+            selectedDriverId: dnfDriverIds[index],
             allDrivers: allDrivers.value!,
-            onDriverSelected: (String driverIndex) {
-              //TODO
+            onDriverSelected: (String driverId) {
+              gpBetNotifier.onDnfDriverChanged(index, driverId);
             },
           ),
         ),
-        _YesOrNoOption.build(label: 'SC'),
-        _YesOrNoOption.build(label: 'RF'),
+        _YesAndNoButtons.build(
+          label: 'SC',
+          initialValue: willBeSafetyCar,
+          onChanged: gpBetNotifier.onSafetyCarPossibilityChanged,
+        ),
+        _YesAndNoButtons.build(
+          label: 'RF',
+          initialValue: willBeRedFlag,
+          onChanged: gpBetNotifier.onRedFlagPossibilityChanged,
+        ),
       ],
     );
   }
 }
 
-class _YesOrNoOption extends TableRow {
-  const _YesOrNoOption({
-    super.children,
-  });
+class _YesAndNoButtons extends TableRow {
+  const _YesAndNoButtons({super.children});
 
-  factory _YesOrNoOption.build({
+  factory _YesAndNoButtons.build({
     required String label,
+    required bool initialValue,
+    required Function(bool) onChanged,
   }) {
-    return _YesOrNoOption(
+    return _YesAndNoButtons(
       children: [
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
@@ -60,11 +85,14 @@ class _YesOrNoOption extends TableRow {
             ),
           ),
         ),
-        const TableCell(
+        TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: _YesNoSelection(),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: _YesOrNoSelection(
+              initialValue: initialValue,
+              onChanged: onChanged,
+            ),
           ),
         ),
       ],
@@ -72,26 +100,40 @@ class _YesOrNoOption extends TableRow {
   }
 }
 
-class _YesNoSelection extends StatefulWidget {
-  const _YesNoSelection();
+class _YesOrNoSelection extends StatefulWidget {
+  final bool initialValue;
+  final Function(bool) onChanged;
+
+  const _YesOrNoSelection({
+    required this.initialValue,
+    required this.onChanged,
+  });
 
   @override
-  State<StatefulWidget> createState() => _YesNoSelectionState();
+  State<StatefulWidget> createState() => _YesOrNoSelectionState();
 }
 
-class _YesNoSelectionState extends State<_YesNoSelection> {
+class _YesOrNoSelectionState extends State<_YesOrNoSelection> {
   bool? selectedOption;
+
+  @override
+  void initState() {
+    selectedOption = widget.initialValue;
+    super.initState();
+  }
 
   void _onYesPressed() {
     setState(() {
       selectedOption = true;
     });
+    widget.onChanged(true);
   }
 
   void _onNoPressed() {
     setState(() {
       selectedOption = false;
     });
+    widget.onChanged(false);
   }
 
   @override

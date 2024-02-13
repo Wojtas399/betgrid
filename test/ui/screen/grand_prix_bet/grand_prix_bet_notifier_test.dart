@@ -18,6 +18,9 @@ void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   const String loggedUserId = 'u1';
   const String grandPrixId = 'gp1';
+  final List<String?> defaultQualificationsStandings =
+      List.generate(20, (_) => null);
+  final List<String?> defaultDnfDriverIds = List.generate(3, (_) => null);
   late Listener<AsyncValue<GrandPrixBetNotifierState?>> listener;
 
   ProviderContainer makeProviderContainer(
@@ -71,6 +74,9 @@ void main() {
         p3DriverId: 'd3',
         p10DriverId: 'd4',
         fastestLapDriverId: 'd1',
+        dnfDriverIds: ['d17', 'd18', 'd19'],
+        willBeSafetyCar: true,
+        willBeRedFlag: false,
       );
       final GrandPrixBetNotifierState expectedState = GrandPrixBetNotifierState(
         qualiStandingsByDriverIds: grandPrixBet.qualiStandingsByDriverIds,
@@ -79,6 +85,9 @@ void main() {
         p3DriverId: grandPrixBet.p3DriverId,
         p10DriverId: grandPrixBet.p10DriverId,
         fastestLapDriverId: grandPrixBet.fastestLapDriverId,
+        dnfDriverIds: grandPrixBet.dnfDriverIds,
+        willBeSafetyCar: grandPrixBet.willBeSafetyCar,
+        willBeRedFlag: grandPrixBet.willBeRedFlag,
       );
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(grandPrixBet);
       final container = makeProviderContainer(
@@ -118,7 +127,7 @@ void main() {
   );
 
   test(
-    'onPositionDriverChanged, '
+    'onQualificationDriverChanged, '
     'should update driver id on given index in qualification standings',
     () async {
       const int index = 5;
@@ -129,7 +138,7 @@ void main() {
       );
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(
-          qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
         ),
       );
       final container = makeProviderContainer(
@@ -147,12 +156,13 @@ void main() {
       );
 
       await notifier.future;
-      notifier.onPositionDriverChanged(index, driverId);
+      notifier.onQualificationDriverChanged(index, driverId);
 
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
         completion(GrandPrixBetNotifierState(
           qualiStandingsByDriverIds: expectedList,
+          dnfDriverIds: defaultDnfDriverIds,
         )),
       );
     },
@@ -160,7 +170,7 @@ void main() {
 
   test(
     'onP1DriverChanged, '
-    'should update p1 driver id in state',
+    'should update p1DriverId param in state',
     () async {
       const String p1DriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -186,8 +196,9 @@ void main() {
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
         completion(GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
           p1DriverId: p1DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
         )),
       );
     },
@@ -195,7 +206,7 @@ void main() {
 
   test(
     'onP2DriverChanged, '
-    'should update p2 driver id in state',
+    'should update p2DriverId param in state',
     () async {
       const String p2DriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -221,8 +232,9 @@ void main() {
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
         completion(GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
           p2DriverId: p2DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
         )),
       );
     },
@@ -230,7 +242,7 @@ void main() {
 
   test(
     'onP3DriverChanged, '
-    'should update p3 driver id in state',
+    'should update p3DriverId param in state',
     () async {
       const String p3DriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -256,8 +268,45 @@ void main() {
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
         completion(GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
           p3DriverId: p3DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP10DriverChanged, '
+    'should update p10DriverId param in state',
+    () async {
+      const String p10DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP10DriverChanged(p10DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p10DriverId: p10DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
         )),
       );
     },
@@ -265,7 +314,7 @@ void main() {
 
   test(
     'onFastestLapDriverChanged, '
-    'should update fastest lap driver id in state',
+    'should update fastestLapDriverId param in state',
     () async {
       const String fastestLapDriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -291,8 +340,118 @@ void main() {
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
         completion(GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
           fastestLapDriverId: fastestLapDriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onDnfDriverChanged, '
+    'should update driver id on given index in dnf list',
+    () async {
+      const int index = 1;
+      const String driverId = 'd2';
+      final List<String?> expectedList = [null, driverId, null];
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(dnfDriverIds: defaultDnfDriverIds),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onDnfDriverChanged(index, driverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          dnfDriverIds: expectedList,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onSafetyCarPossibilityChanged, '
+    'should update willBeSafetyCar param in state',
+    () async {
+      const bool willBeSafetyCar = true;
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onSafetyCarPossibilityChanged(willBeSafetyCar);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          dnfDriverIds: defaultDnfDriverIds,
+          willBeSafetyCar: willBeSafetyCar,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onRedFlagPossibilityChanged, '
+    'should update willBeRedFlag param in state',
+    () async {
+      const bool willBeRedFlag = true;
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onRedFlagPossibilityChanged(willBeRedFlag);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          dnfDriverIds: defaultDnfDriverIds,
+          willBeRedFlag: willBeRedFlag,
         )),
       );
     },
@@ -301,11 +460,11 @@ void main() {
   test(
     'saveStandings, '
     'should should call method from GrandPrixBetRepository to update bet with '
-    'new qualifications standings, p1DriverId, p2DriverId, p3DriverId, '
-    'p10DriverId and fastestLapDriverId',
+    'qualiStandingsByDriverIds, p1DriverId, p2DriverId, p3DriverId, '
+    'p10DriverId, fastestLapDriverId, dnfDriverIds, willBeSafetyCar and '
+    'willBeRedFlag params',
     () async {
       const String grandPrixBetId = 'gpb1';
-      final List<String?> standings = List.generate(20, (_) => null);
       final List<String?> newStandings = List.generate(
         20,
         (index) => switch (index) {
@@ -315,16 +474,16 @@ void main() {
           _ => null,
         },
       );
-      String newP1DriverId = 'd1';
-      String newP2DriberId = 'd2';
-      String newP3DriverId = 'd3';
-      String newP10DriverId = 'd10';
-      String newFastestLapDriverId = 'd11';
+      const String newP1DriverId = 'd1';
+      const String newP2DriberId = 'd2';
+      const String newP3DriverId = 'd3';
+      const String newP10DriverId = 'd10';
+      const String newFastestLapDriverId = 'd11';
+      const List<String?> newDnfDriverIds = ['d18', 'd19', 'd20'];
+      const bool newWillBeSafetyCar = false;
+      const bool newWillBeRedFlag = true;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
-        createGrandPrixBet(
-          id: grandPrixBetId,
-          qualiStandingsByDriverIds: standings,
-        ),
+        createGrandPrixBet(id: grandPrixBetId),
       );
       grandPrixBetRepository.mockUpdateGrandPrixBet();
       final container = makeProviderContainer(
@@ -342,14 +501,19 @@ void main() {
       );
 
       await notifier.future;
-      notifier.onPositionDriverChanged(1, 'd4');
-      notifier.onPositionDriverChanged(5, 'd9');
-      notifier.onPositionDriverChanged(11, 'd1');
+      notifier.onQualificationDriverChanged(1, 'd4');
+      notifier.onQualificationDriverChanged(5, 'd9');
+      notifier.onQualificationDriverChanged(11, 'd1');
       notifier.onP1DriverChanged(newP1DriverId);
       notifier.onP2DriverChanged(newP2DriberId);
       notifier.onP3DriverChanged(newP3DriverId);
       notifier.onP10DriverChanged(newP10DriverId);
       notifier.onFastestLapDriverChanged(newFastestLapDriverId);
+      notifier.onDnfDriverChanged(0, 'd18');
+      notifier.onDnfDriverChanged(1, 'd19');
+      notifier.onDnfDriverChanged(2, 'd20');
+      notifier.onSafetyCarPossibilityChanged(newWillBeSafetyCar);
+      notifier.onRedFlagPossibilityChanged(newWillBeRedFlag);
       await notifier.saveStandings();
 
       verify(
@@ -362,6 +526,9 @@ void main() {
           p3DriverId: newP3DriverId,
           p10DriverId: newP10DriverId,
           fastestLapDriverId: newFastestLapDriverId,
+          dnfDriverIds: newDnfDriverIds,
+          willBeSafetyCar: newWillBeSafetyCar,
+          willBeRedFlag: newWillBeRedFlag,
         ),
       ).called(1);
     },

@@ -11,5 +11,8 @@ class GrandPrixBetNotifierState with _$GrandPrixBetNotifierState {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
+    List<String?>? dnfDriverIds,
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
   }) = _GrandPrixBetNotifierState;
 }

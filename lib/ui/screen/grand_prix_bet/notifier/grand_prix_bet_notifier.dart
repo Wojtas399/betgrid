@@ -38,16 +38,19 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
           p3DriverId: grandPrixBet?.p3DriverId,
           p10DriverId: grandPrixBet?.p10DriverId,
           fastestLapDriverId: grandPrixBet?.fastestLapDriverId,
+          dnfDriverIds: grandPrixBet?.dnfDriverIds,
+          willBeSafetyCar: grandPrixBet?.willBeSafetyCar,
+          willBeRedFlag: grandPrixBet?.willBeRedFlag,
         );
       },
     );
   }
 
-  void onPositionDriverChanged(int index, String driverId) {
+  void onQualificationDriverChanged(int positionIndex, String driverId) {
     final List<String?> updatedStandings = [
       ...?state.value?.qualiStandingsByDriverIds,
     ];
-    updatedStandings[index] = driverId;
+    updatedStandings[positionIndex] = driverId;
     state = AsyncData(state.value?.copyWith(
       qualiStandingsByDriverIds: updatedStandings,
     ));
@@ -83,6 +86,28 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     ));
   }
 
+  void onDnfDriverChanged(int dnfIndex, String driverId) {
+    final List<String?> updatedDnfDriverIds = [
+      ...?state.value?.dnfDriverIds,
+    ];
+    updatedDnfDriverIds[dnfIndex] = driverId;
+    state = AsyncData(state.value?.copyWith(
+      dnfDriverIds: updatedDnfDriverIds,
+    ));
+  }
+
+  void onSafetyCarPossibilityChanged(bool willBeSafetyCar) {
+    state = AsyncData(state.value?.copyWith(
+      willBeSafetyCar: willBeSafetyCar,
+    ));
+  }
+
+  void onRedFlagPossibilityChanged(bool willBeRedFlag) {
+    state = AsyncData(state.value?.copyWith(
+      willBeRedFlag: willBeRedFlag,
+    ));
+  }
+
   Future<void> saveStandings() async {
     final authService = ref.read(authServiceProvider);
     final grandPrixBetRepository = ref.read(grandPrixBetRepositoryProvider);
@@ -103,6 +128,9 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
       p3DriverId: currentState?.p3DriverId,
       p10DriverId: currentState?.p10DriverId,
       fastestLapDriverId: currentState?.fastestLapDriverId,
+      dnfDriverIds: currentState?.dnfDriverIds,
+      willBeSafetyCar: currentState?.willBeSafetyCar,
+      willBeRedFlag: currentState?.willBeRedFlag,
     );
   }
 }

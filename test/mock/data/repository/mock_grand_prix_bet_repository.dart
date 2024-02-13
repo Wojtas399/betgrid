@@ -41,6 +41,9 @@ class MockGrandPrixBetRepository extends Mock
         p3DriverId: any(named: 'p3DriverId'),
         p10DriverId: any(named: 'p10DriverId'),
         fastestLapDriverId: any(named: 'fastestLapDriverId'),
+        dnfDriverIds: any(named: 'dnfDriverIds'),
+        willBeSafetyCar: any(named: 'willBeSafetyCar'),
+        willBeRedFlag: any(named: 'willBeRedFlag'),
       ),
     ).thenAnswer((_) => Future.value());
   }

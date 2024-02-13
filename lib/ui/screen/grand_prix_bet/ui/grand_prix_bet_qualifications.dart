@@ -13,7 +13,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
   void _onDriverSelect(String driverId, int driverIndex, WidgetRef ref) {
     ref
         .read(grandPrixBetNotifierProvider.notifier)
-        .onPositionDriverChanged(driverIndex, driverId);
+        .onQualificationDriverChanged(driverIndex, driverId);
   }
 
   @override
