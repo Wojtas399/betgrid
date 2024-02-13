@@ -11,7 +11,7 @@ GrandPrixBet mapGrandPrixBetFromDto(GrandPrixBetDto grandPrixBetDto) =>
       p3DriverId: grandPrixBetDto.p3DriverId,
       p10DriverId: grandPrixBetDto.p10DriverId,
       fastestLapDriverId: grandPrixBetDto.fastestLapDriverId,
-      willBeDnf: grandPrixBetDto.willBeDnf,
+      dnfDriverIds: grandPrixBetDto.dnfDriverIds,
       willBeSafetyCar: grandPrixBetDto.willBeSafetyCar,
       willBeRedFlag: grandPrixBetDto.willBeRedFlag,
     );
@@ -26,7 +26,7 @@ GrandPrixBetDto mapGrandPrixBetToDto(GrandPrixBet grandPrixBet) =>
       p3DriverId: grandPrixBet.p3DriverId,
       p10DriverId: grandPrixBet.p10DriverId,
       fastestLapDriverId: grandPrixBet.fastestLapDriverId,
-      willBeDnf: grandPrixBet.willBeDnf,
+      dnfDriverIds: grandPrixBet.dnfDriverIds,
       willBeSafetyCar: grandPrixBet.willBeSafetyCar,
       willBeRedFlag: grandPrixBet.willBeRedFlag,
     );

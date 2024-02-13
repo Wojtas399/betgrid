@@ -6,13 +6,21 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const String id = 'gpb1';
   const String grandPrixId = 'gp1';
-  const List<String> qualiStandingsByDriverIds = ['d1', 'd3', 'd2'];
+  final List<String?> qualiStandingsByDriverIds = List.generate(
+    20,
+    (index) => switch (index) {
+      1 => 'd2',
+      4 => 'd10',
+      11 => 'd4',
+      _ => null,
+    },
+  );
   const String p1DriverId = 'd1';
   const String p2DriverId = 'd2';
   const String p3DriverId = 'd3';
   const String p10DriverId = 'd4';
   const String fastestLapDriverId = 'd1';
-  const bool willBeDnf = false;
+  const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
   const bool willBeSafetyCar = true;
   const bool willBeRedFlag = false;
 
@@ -20,7 +28,7 @@ void main() {
     'mapGrandPrixBetFromDto, '
     'should map GrandPrixBetDto model to GrandPrixBet model',
     () {
-      const GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
+      final GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -29,11 +37,11 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );
-      const GrandPrixBet expectedGrandPrixBet = GrandPrixBet(
+      final GrandPrixBet expectedGrandPrixBet = GrandPrixBet(
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -42,7 +50,7 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );
@@ -57,7 +65,7 @@ void main() {
     'mapGrandPrixBetToDto, '
     'should map GrandPrixBet model to GrandPrixBetDto model',
     () {
-      const GrandPrixBet grandPrixBet = GrandPrixBet(
+      final GrandPrixBet grandPrixBet = GrandPrixBet(
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -66,11 +74,11 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );
-      const GrandPrixBetDto expectedDto = GrandPrixBetDto(
+      final GrandPrixBetDto expectedDto = GrandPrixBetDto(
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -79,7 +87,7 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );

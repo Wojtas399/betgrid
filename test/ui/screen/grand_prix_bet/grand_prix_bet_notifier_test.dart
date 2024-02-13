@@ -57,7 +57,15 @@ void main() {
     () async {
       final GrandPrixBet grandPrixBet = createGrandPrixBet(
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: ['d1', 'd2', 'd5', 'd3'],
+        qualiStandingsByDriverIds: List.generate(
+          20,
+          (index) => switch (index) {
+            1 => 'd2',
+            5 => 'd10',
+            11 => 'd15',
+            _ => null,
+          },
+        ),
         p1DriverId: 'd1',
         p2DriverId: 'd2',
         p3DriverId: 'd3',
@@ -177,8 +185,8 @@ void main() {
 
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
-        completion(const GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: [],
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: List.generate(20, (_) => null),
           p1DriverId: p1DriverId,
         )),
       );
@@ -212,8 +220,8 @@ void main() {
 
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
-        completion(const GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: [],
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: List.generate(20, (_) => null),
           p2DriverId: p2DriverId,
         )),
       );
@@ -247,8 +255,8 @@ void main() {
 
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
-        completion(const GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: [],
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: List.generate(20, (_) => null),
           p3DriverId: p3DriverId,
         )),
       );
@@ -282,8 +290,8 @@ void main() {
 
       await expectLater(
         container.read(grandPrixBetNotifierProvider.future),
-        completion(const GrandPrixBetNotifierState(
-          qualiStandingsByDriverIds: [],
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: List.generate(20, (_) => null),
           fastestLapDriverId: fastestLapDriverId,
         )),
       );

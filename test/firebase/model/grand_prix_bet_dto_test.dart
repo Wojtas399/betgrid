@@ -9,7 +9,7 @@ void main() {
   const String p3DriverId = 'd3';
   const String p10DriverId = 'd4';
   const String fastestLapDriverId = 'd1';
-  const bool willBeDnf = false;
+  const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
   const bool willBeSafetyCar = true;
   const bool willBeRedFlag = false;
 
@@ -25,7 +25,7 @@ void main() {
         'p3DriverId': p3DriverId,
         'p10DriverId': p10DriverId,
         'fastestLapDriverId': fastestLapDriverId,
-        'willBeDnf': willBeDnf,
+        'dnfDriverIds': dnfDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };
@@ -37,7 +37,7 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
@@ -62,7 +62,7 @@ void main() {
         'p3DriverId': p3DriverId,
         'p10DriverId': p10DriverId,
         'fastestLapDriverId': fastestLapDriverId,
-        'willBeDnf': willBeDnf,
+        'dnfDriverIds': dnfDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };
@@ -75,7 +75,7 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
@@ -99,7 +99,7 @@ void main() {
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
         fastestLapDriverId: fastestLapDriverId,
-        willBeDnf: willBeDnf,
+        dnfDriverIds: dnfDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
@@ -111,7 +111,7 @@ void main() {
         'p3DriverId': p3DriverId,
         'p10DriverId': p10DriverId,
         'fastestLapDriverId': fastestLapDriverId,
-        'willBeDnf': willBeDnf,
+        'dnfDriverIds': dnfDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };

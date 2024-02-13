@@ -27,6 +27,8 @@ Future<void> _initializeBetsIfNeeded(
   List<GrandPrix> grandPrixes,
   AllGrandPrixesRef ref,
 ) async {
+  final List<String?> defaultQualiStandings = List.generate(20, (_) => null);
+  final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
   final Stream<List<GrandPrixBet>?> bets$ = ref
       .read(grandPrixBetRepositoryProvider)
       .getAllGrandPrixBets(userId: loggedUserId);
@@ -39,7 +41,8 @@ Future<void> _initializeBetsIfNeeded(
                   (GrandPrix gp) => GrandPrixBet(
                     id: '',
                     grandPrixId: gp.id,
-                    qualiStandingsByDriverIds: List.generate(20, (_) => null),
+                    qualiStandingsByDriverIds: defaultQualiStandings,
+                    dnfDriverIds: defaultDnfDrivers,
                   ),
                 )
                 .toList(),

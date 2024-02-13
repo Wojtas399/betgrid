@@ -235,7 +235,15 @@ void main() {
     'should update bet in db and in repository state',
     () async {
       const String grandPrixBetId = 'gpb1';
-      const List<String> qualiStandingsByDriverIds = ['d2', 'd1'];
+      final List<String?> qualiStandingsByDriverIds = List.generate(
+        20,
+        (index) => switch (index) {
+          2 => 'd3',
+          6 => 'd1',
+          8 => 'd4',
+          _ => null,
+        },
+      );
       const String p1DriverId = 'd3';
       const String p2DriverId = 'd1';
       const String p3DriverId = 'd2';
@@ -262,15 +270,23 @@ void main() {
       final List<GrandPrixBet> existingGrandPrixBets = [
         createGrandPrixBet(
           id: grandPrixBetId,
-          qualiStandingsByDriverIds: ['d1', 'd2'],
+          qualiStandingsByDriverIds: List.generate(
+            20,
+            (index) => switch (index) {
+              2 => 'd4',
+              6 => 'd3',
+              8 => 'd1',
+              _ => null,
+            },
+          ),
           p1DriverId: 'd1',
           p2DriverId: 'd2',
           p3DriverId: 'd3',
           p10DriverId: 'd10',
           fastestLapDriverId: 'd4',
         ),
-        createGrandPrixBet(id: 'gpb2', qualiStandingsByDriverIds: ['d2', 'd1']),
-        createGrandPrixBet(id: 'gpb3', qualiStandingsByDriverIds: ['d2', 'd1']),
+        createGrandPrixBet(id: 'gpb2'),
+        createGrandPrixBet(id: 'gpb3'),
       ];
       dbGrandPrixBetService.mockUpdateGrandPrixBet(updatedGrandPrixBetDto);
       repositoryImpl = GrandPrixBetRepositoryImpl(

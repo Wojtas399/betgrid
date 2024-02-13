@@ -8,7 +8,7 @@ class GrandPrixBet extends Entity {
   final String? p3DriverId;
   final String? p10DriverId;
   final String? fastestLapDriverId;
-  final bool? willBeDnf;
+  final List<String?> dnfDriverIds;
   final bool? willBeSafetyCar;
   final bool? willBeRedFlag;
 
@@ -21,10 +21,11 @@ class GrandPrixBet extends Entity {
     this.p3DriverId,
     this.p10DriverId,
     this.fastestLapDriverId,
-    this.willBeDnf,
+    required this.dnfDriverIds,
     this.willBeSafetyCar,
     this.willBeRedFlag,
-  });
+  })  : assert(qualiStandingsByDriverIds.length == 20),
+        assert(dnfDriverIds.length == 3);
 
   @override
   List<Object?> get props => [
@@ -36,7 +37,7 @@ class GrandPrixBet extends Entity {
         p3DriverId,
         p10DriverId,
         fastestLapDriverId,
-        willBeDnf,
+        dnfDriverIds,
         willBeSafetyCar,
         willBeRedFlag,
       ];
