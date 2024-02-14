@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../model/driver.dart';
-import '../../../component/driver_dropdown_button_component.dart';
 import '../../../component/text/title.dart';
+import 'grand_prix_driver_dropdown_button.dart';
 
 class GrandPrixBetPositionItem extends TableRow {
   const GrandPrixBetPositionItem({
@@ -31,7 +31,7 @@ class GrandPrixBetPositionItem extends TableRow {
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: DriverDropdownButton(
+            child: GrandPrixDriverDropdownButton(
               selectedDriverId: selectedDriverId,
               allDrivers: allDrivers,
               onDriverSelected: onDriverSelected,

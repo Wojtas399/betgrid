@@ -185,12 +185,174 @@ void main() {
   );
 
   test(
+    'onQualificationDriverChanged, '
+    'driver id already exists in standings'
+    'should update driver id on given index in qualification standings and '
+    'should remove its duplicate',
+    () async {
+      const int index = 5;
+      const String driverId = 'd2';
+      final List<String?> expectedList = List.generate(
+        20,
+        (i) => index == i ? driverId : null,
+      );
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: List.generate(
+            20,
+            (index) => index == 0 ? 'd2' : null,
+          ),
+        ),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onQualificationDriverChanged(index, driverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: expectedList,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
     'onP1DriverChanged, '
     'should update p1DriverId param in state',
     () async {
       const String p1DriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP1DriverChanged(p1DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p1DriverId: p1DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP1DriverChanged, '
+    'the same driver id is assigned to p2DriverId param, '
+    'should update p1DriverId param and should set p2DriverId param as null',
+    () async {
+      const String p1DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p2DriverId: p1DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP1DriverChanged(p1DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p1DriverId: p1DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP1DriverChanged, '
+    'the same driver id is assigned to p3DriverId param, '
+    'should update p1DriverId param and should set p3DriverId param as null',
+    () async {
+      const String p1DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p3DriverId: p1DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP1DriverChanged(p1DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p1DriverId: p1DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP1DriverChanged, '
+    'the same driver id is assigned to p10DriverId param, '
+    'should update p1DriverId param and should set p10DriverId param as null',
+    () async {
+      const String p1DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p10DriverId: p1DriverId),
       );
       final container = makeProviderContainer(
         grandPrixId,
@@ -259,12 +421,240 @@ void main() {
   );
 
   test(
+    'onP2DriverChanged, '
+    'the same driver id is assigned to p1DriverId param, '
+    'should update p2DriverId param and should set p1DriverId param as null',
+    () async {
+      const String p2DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p1DriverId: p2DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP2DriverChanged(p2DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p2DriverId: p2DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP2DriverChanged, '
+    'the same driver id is assigned to p3DriverId param, '
+    'should update p2DriverId param and should set p3DriverId param as null',
+    () async {
+      const String p2DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p3DriverId: p2DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP2DriverChanged(p2DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p2DriverId: p2DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP2DriverChanged, '
+    'the same driver id is assigned to p10DriverId param, '
+    'should update p2DriverId param and should set p10DriverId param as null',
+    () async {
+      const String p2DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p10DriverId: p2DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP2DriverChanged(p2DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p2DriverId: p2DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
     'onP3DriverChanged, '
     'should update p3DriverId param in state',
     () async {
       const String p3DriverId = 'd1';
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP3DriverChanged(p3DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p3DriverId: p3DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP3DriverChanged, '
+    'the same driver id is assigned to p1DriverId param, '
+    'should update p3DriverId param and should set p1DriverId param as null',
+    () async {
+      const String p3DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p1DriverId: p3DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP3DriverChanged(p3DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p3DriverId: p3DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP3DriverChanged, '
+    'the same driver id is assigned to p2DriverId param, '
+    'should update p3DriverId param and should set p2DriverId param as null',
+    () async {
+      const String p3DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p2DriverId: p3DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP3DriverChanged(p3DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p3DriverId: p3DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP3DriverChanged, '
+    'the same driver id is assigned to p10DriverId param, '
+    'should update p3DriverId param and should set p10DriverId param as null',
+    () async {
+      const String p3DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p10DriverId: p3DriverId),
       );
       final container = makeProviderContainer(
         grandPrixId,
@@ -333,6 +723,120 @@ void main() {
   );
 
   test(
+    'onP10DriverChanged, '
+    'the same driver id is assigned to p1DriverId param, '
+    'should update p10DriverId param and should set p1DriverId param as null',
+    () async {
+      const String p10DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p1DriverId: p10DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP10DriverChanged(p10DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p10DriverId: p10DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP10DriverChanged, '
+    'the same driver id is assigned to p2DriverId param, '
+    'should update p10DriverId param and should set p2DriverId param as null',
+    () async {
+      const String p10DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p2DriverId: p10DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP10DriverChanged(p10DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p10DriverId: p10DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onP10DriverChanged, '
+    'the same driver id is assigned to p3DriverId param, '
+    'should update p10DriverId param and should set p3DriverId param as null',
+    () async {
+      const String p10DriverId = 'd1';
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(p3DriverId: p10DriverId),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onP10DriverChanged(p10DriverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          p10DriverId: p10DriverId,
+          dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
     'onFastestLapDriverChanged, '
     'should update fastestLapDriverId param in state',
     () async {
@@ -364,6 +868,48 @@ void main() {
           qualiStandingsByDriverIds: defaultQualificationsStandings,
           fastestLapDriverId: fastestLapDriverId,
           dnfDriverIds: defaultDnfDriverIds,
+        )),
+      );
+    },
+  );
+
+  test(
+    'onDnfDriverChanged, '
+    'driver id already exists in list'
+    'should update driver id on given index in list and '
+    'should remove its duplicate',
+    () async {
+      const int index = 1;
+      const String driverId = 'd2';
+      final List<String?> expectedList = [null, driverId, null];
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          dnfDriverIds: [driverId, null, null],
+        ),
+      );
+      final container = makeProviderContainer(
+        grandPrixId,
+        authService,
+        grandPrixRepository,
+        grandPrixBetRepository,
+      );
+      container.listen(
+        grandPrixBetNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        grandPrixBetNotifierProvider.notifier,
+      );
+
+      await notifier.future;
+      notifier.onDnfDriverChanged(index, driverId);
+
+      await expectLater(
+        container.read(grandPrixBetNotifierProvider.future),
+        completion(GrandPrixBetNotifierState(
+          qualiStandingsByDriverIds: defaultQualificationsStandings,
+          dnfDriverIds: expectedList,
         )),
       );
     },

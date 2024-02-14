@@ -42,6 +42,12 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     final List<String?> updatedStandings = [
       ...?state.value?.qualiStandingsByDriverIds,
     ];
+    final int indexOfExistingPosition = updatedStandings.indexWhere(
+      (el) => el == driverId,
+    );
+    if (indexOfExistingPosition >= 0) {
+      updatedStandings[indexOfExistingPosition] = null;
+    }
     updatedStandings[positionIndex] = driverId;
     state = AsyncData(state.value?.copyWith(
       qualiStandingsByDriverIds: updatedStandings,
@@ -49,26 +55,54 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
   }
 
   void onP1DriverChanged(String driverId) {
-    state = AsyncData(state.value?.copyWith(
+    final currState = state.value;
+    state = AsyncData(currState?.copyWith(
       p1DriverId: driverId,
+      p2DriverId:
+          currState.p2DriverId == driverId ? null : currState.p2DriverId,
+      p3DriverId:
+          currState.p3DriverId == driverId ? null : currState.p3DriverId,
+      p10DriverId:
+          currState.p10DriverId == driverId ? null : currState.p10DriverId,
     ));
   }
 
   void onP2DriverChanged(String driverId) {
-    state = AsyncData(state.value?.copyWith(
+    final currState = state.value;
+    state = AsyncData(currState?.copyWith(
       p2DriverId: driverId,
+      p1DriverId:
+          currState.p1DriverId == driverId ? null : currState.p1DriverId,
+      p3DriverId:
+          currState.p3DriverId == driverId ? null : currState.p3DriverId,
+      p10DriverId:
+          currState.p10DriverId == driverId ? null : currState.p10DriverId,
     ));
   }
 
   void onP3DriverChanged(String driverId) {
-    state = AsyncData(state.value?.copyWith(
+    final currState = state.value;
+    state = AsyncData(currState?.copyWith(
       p3DriverId: driverId,
+      p1DriverId:
+          currState.p1DriverId == driverId ? null : currState.p1DriverId,
+      p2DriverId:
+          currState.p2DriverId == driverId ? null : currState.p2DriverId,
+      p10DriverId:
+          currState.p10DriverId == driverId ? null : currState.p10DriverId,
     ));
   }
 
   void onP10DriverChanged(String driverId) {
-    state = AsyncData(state.value?.copyWith(
+    final currState = state.value;
+    state = AsyncData(currState?.copyWith(
       p10DriverId: driverId,
+      p1DriverId:
+          currState.p1DriverId == driverId ? null : currState.p1DriverId,
+      p2DriverId:
+          currState.p2DriverId == driverId ? null : currState.p2DriverId,
+      p3DriverId:
+          currState.p3DriverId == driverId ? null : currState.p3DriverId,
     ));
   }
 
@@ -82,6 +116,12 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     final List<String?> updatedDnfDriverIds = [
       ...?state.value?.dnfDriverIds,
     ];
+    final int indexOfExistingPosition = updatedDnfDriverIds.indexWhere(
+      (el) => el == driverId,
+    );
+    if (indexOfExistingPosition >= 0) {
+      updatedDnfDriverIds[indexOfExistingPosition] = null;
+    }
     updatedDnfDriverIds[dnfIndex] = driverId;
     state = AsyncData(state.value?.copyWith(
       dnfDriverIds: updatedDnfDriverIds,
