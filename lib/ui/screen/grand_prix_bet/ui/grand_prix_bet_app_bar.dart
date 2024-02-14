@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
+import '../notifier/grand_prix_bet_notifier_state.dart';
 
 class GrandPrixBetAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const GrandPrixBetAppBar({super.key});
@@ -51,30 +52,41 @@ class _SaveButton extends ConsumerStatefulWidget {
 }
 
 class _SaveButtonState extends ConsumerState<_SaveButton> {
+  GrandPrixBetNotifierState? _initialNotifierState;
   bool _haveChangesBeenMade = false;
+
+  bool _areNotifierStatesDifferent(
+    GrandPrixBetNotifierState state1,
+    GrandPrixBetNotifierState state2,
+  ) {
+    final listEq = const ListEquality().equals;
+    return (!listEq(state1.qualiStandingsByDriverIds,
+            state2.qualiStandingsByDriverIds) ||
+        state1.p1DriverId != state2.p1DriverId ||
+        state1.p2DriverId != state2.p2DriverId ||
+        state1.p3DriverId != state2.p3DriverId ||
+        state1.p10DriverId != state2.p10DriverId ||
+        state1.fastestLapDriverId != state2.fastestLapDriverId ||
+        !listEq(state1.dnfDriverIds, state2.dnfDriverIds) ||
+        state1.willBeSafetyCar != state2.willBeSafetyCar ||
+        state1.willBeRedFlag != state2.willBeRedFlag);
+  }
 
   @override
   Widget build(BuildContext context) {
     ref.listen(
       grandPrixBetNotifierProvider,
       (previous, next) {
-        final listEq = const ListEquality().equals;
         final prevState = previous?.value;
         final currState = next.value;
         setState(() {
-          _haveChangesBeenMade = prevState != null &&
-              currState != null &&
-              (!listEq(prevState.qualiStandingsByDriverIds,
-                      currState.qualiStandingsByDriverIds) ||
-                  prevState.p1DriverId != currState.p1DriverId ||
-                  prevState.p2DriverId != currState.p2DriverId ||
-                  prevState.p3DriverId != currState.p3DriverId ||
-                  prevState.p10DriverId != currState.p10DriverId ||
-                  prevState.fastestLapDriverId !=
-                      currState.fastestLapDriverId ||
-                  !listEq(prevState.dnfDriverIds, currState.dnfDriverIds) ||
-                  prevState.willBeSafetyCar != currState.willBeSafetyCar ||
-                  prevState.willBeRedFlag != currState.willBeRedFlag);
+          _initialNotifierState ??= currState;
+          _haveChangesBeenMade = _initialNotifierState != null &&
+                  currState != null
+              ? _areNotifierStatesDifferent(_initialNotifierState!, currState)
+              : prevState != null &&
+                  currState != null &&
+                  _areNotifierStatesDifferent(prevState, currState);
         });
       },
     );
