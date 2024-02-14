@@ -87,7 +87,7 @@ class _State extends State<GrandPrixDriverDropdownButton> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  GapHorizontal16(),
+                  const GapHorizontal16(),
                   Text('${driver.name} ${driver.surname}'),
                 ],
               ),

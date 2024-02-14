@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../model/driver.dart';
-import '../../../component/text/title.dart';
+import 'grand_prix_bet_label_cell.dart';
 import 'grand_prix_driver_dropdown_button.dart';
 
 class GrandPrixBetPositionItem extends TableRow {
@@ -20,27 +20,10 @@ class GrandPrixBetPositionItem extends TableRow {
   }) {
     return GrandPrixBetPositionItem(
       children: [
-        TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: labelBackgroundColor,
-              ),
-              child: Center(
-                child: TitleMedium(
-                  label,
-                  color: labelBackgroundColor != null
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.inverseSurface,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+        GrandPrixBetLabelCell.build(
+          context: context,
+          label: label,
+          labelBackgroundColor: labelBackgroundColor,
         ),
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
