@@ -6,8 +6,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../../model/grand_prix.dart';
 import '../../component/gap/gap_horizontal.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/padding/padding_components.dart';
 import '../../config/theme/theme_notifier.dart';
 import '../../riverpod_provider/all_grand_prixes_provider.dart';
 import 'home_grand_prix_item.dart';
@@ -81,19 +79,12 @@ class _GrandPrixes extends ConsumerWidget {
 
     final List<GrandPrix>? allGrandPrixes = allGrandPrixesAsyncVal.value;
     if (allGrandPrixes != null && allGrandPrixes.isNotEmpty) {
-      return SingleChildScrollView(
-        child: Padding24(
-          child: Column(
-            children: [
-              ...allGrandPrixes.asMap().entries.map(
-                    (MapEntry<int, GrandPrix> entry) => HomeGrandPrixItem(
-                      roundNumber: entry.key + 1,
-                      grandPrix: entry.value,
-                    ),
-                  ),
-              const GapVertical64(),
-            ],
-          ),
+      return ListView.builder(
+        padding: const EdgeInsets.all(24),
+        itemCount: allGrandPrixes.length,
+        itemBuilder: (_, int itemIndex) => HomeGrandPrixItem(
+          roundNumber: itemIndex + 1,
+          grandPrix: allGrandPrixes[itemIndex],
         ),
       );
     }
