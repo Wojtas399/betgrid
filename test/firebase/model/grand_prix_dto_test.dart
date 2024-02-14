@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const String name = 'Test Grand Prix';
+  const String countryAlpha2Code = 'PL';
   final DateTime startDate = DateTime(2024);
   final DateTime endDate = DateTime(2024, 1, 3);
 
@@ -12,12 +13,14 @@ void main() {
     () {
       final Map<String, Object?> json = {
         'name': name,
+        'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
       };
       final GrandPrixDto expectedModel = GrandPrixDto(
         id: '',
         name: name,
+        countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );
@@ -35,11 +38,13 @@ void main() {
       final GrandPrixDto model = GrandPrixDto(
         id: 'gp1',
         name: name,
+        countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );
       final Map<String, Object?> expectedJson = {
         'name': name,
+        'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
       };
@@ -57,12 +62,14 @@ void main() {
       const String id = 'gp1';
       final Map<String, Object?> json = {
         'name': name,
+        'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
       };
       final GrandPrixDto expectedModel = GrandPrixDto(
         id: id,
         name: name,
+        countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );

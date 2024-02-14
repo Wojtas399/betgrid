@@ -10,17 +10,20 @@ void main() {
     () {
       const String id = 'gp1';
       const String name = 'Monaco GP';
+      const String countryAlpha2Code = 'PL';
       final DateTime startDate = DateTime(2024, 1, 1);
       final DateTime endDate = DateTime(2024, 1, 3);
       final gpDto = GrandPrixDto(
         id: id,
         name: name,
+        countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );
       final gp = GrandPrix(
         id: id,
         name: name,
+        countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );

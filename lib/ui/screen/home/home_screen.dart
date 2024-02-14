@@ -85,9 +85,12 @@ class _GrandPrixes extends ConsumerWidget {
         child: Padding24(
           child: Column(
             children: [
-              ...allGrandPrixes.map(
-                (grandPrix) => HomeGrandPrixItem(grandPrix: grandPrix),
-              ),
+              ...allGrandPrixes.asMap().entries.map(
+                    (MapEntry<int, GrandPrix> entry) => HomeGrandPrixItem(
+                      roundNumber: entry.key + 1,
+                      grandPrix: entry.value,
+                    ),
+                  ),
               const GapVertical64(),
             ],
           ),

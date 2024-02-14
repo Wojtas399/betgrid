@@ -35,6 +35,7 @@ dependencies:
   rxdart: ^0.27.7
   collection: ^1.18.0
   flutter_sticky_header: ^0.6.5
+  country_flags: ^2.2.0
 
 dev_dependencies:
   flutter_test:

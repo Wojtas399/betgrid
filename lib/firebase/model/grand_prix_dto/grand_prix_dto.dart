@@ -10,6 +10,7 @@ class GrandPrixDto with _$GrandPrixDto {
     @Default('')
     String id,
     required String name,
+    required String countryAlpha2Code,
     required DateTime startDate,
     required DateTime endDate,
   }) = _GrandPrixDto;

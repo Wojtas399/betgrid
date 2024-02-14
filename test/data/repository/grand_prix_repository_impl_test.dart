@@ -34,18 +34,21 @@ void main() {
         GrandPrixDto(
           id: 'gp1',
           name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
           startDate: DateTime(2023, 1, 2),
           endDate: DateTime(2023, 1, 4),
         ),
         GrandPrixDto(
           id: 'gp2',
           name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
           startDate: DateTime(2023, 1, 10),
           endDate: DateTime(2023, 1, 12),
         ),
         GrandPrixDto(
           id: 'gp3',
           name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
           startDate: DateTime(2023, 1, 20),
           endDate: DateTime(2023, 1, 22),
         ),
@@ -54,18 +57,21 @@ void main() {
         GrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
           startDate: DateTime(2023, 1, 2),
           endDate: DateTime(2023, 1, 4),
         ),
         GrandPrix(
           id: 'gp2',
           name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
           startDate: DateTime(2023, 1, 10),
           endDate: DateTime(2023, 1, 12),
         ),
         GrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
           startDate: DateTime(2023, 1, 20),
           endDate: DateTime(2023, 1, 22),
         ),
@@ -93,18 +99,21 @@ void main() {
         GrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
           startDate: DateTime(2023, 1, 2),
           endDate: DateTime(2023, 1, 4),
         ),
         GrandPrix(
           id: grandPrixId,
           name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
           startDate: DateTime(2023, 1, 10),
           endDate: DateTime(2023, 1, 12),
         ),
         GrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
           startDate: DateTime(2023, 1, 20),
           endDate: DateTime(2023, 1, 22),
         ),
@@ -130,12 +139,14 @@ void main() {
       final GrandPrixDto grandPrixDto = GrandPrixDto(
         id: grandPrixId,
         name: 'Grand Prix 2',
+        countryAlpha2Code: 'PL',
         startDate: DateTime(2023, 1, 10),
         endDate: DateTime(2023, 1, 12),
       );
       final GrandPrix expectedGrandPrix = GrandPrix(
         id: grandPrixId,
         name: 'Grand Prix 2',
+        countryAlpha2Code: 'PL',
         startDate: DateTime(2023, 1, 10),
         endDate: DateTime(2023, 1, 12),
       );
@@ -143,12 +154,14 @@ void main() {
         GrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
           startDate: DateTime(2023, 1, 2),
           endDate: DateTime(2023, 1, 4),
         ),
         GrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
           startDate: DateTime(2023, 1, 20),
           endDate: DateTime(2023, 1, 22),
         ),

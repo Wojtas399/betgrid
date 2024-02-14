@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
+import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
@@ -11,9 +13,14 @@ import '../../riverpod_provider/grand_prix_bet_status_provider.dart';
 import '../../service/formatter_service.dart';
 
 class HomeGrandPrixItem extends StatelessWidget {
+  final int roundNumber;
   final GrandPrix grandPrix;
 
-  const HomeGrandPrixItem({super.key, required this.grandPrix});
+  const HomeGrandPrixItem({
+    super.key,
+    required this.roundNumber,
+    required this.grandPrix,
+  });
 
   void _onPressed(BuildContext context) {
     context.navigateTo(GrandPrixBetRoute(
@@ -32,22 +39,51 @@ class HomeGrandPrixItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleMedium(
-                      grandPrix.name,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const GapVertical4(),
-                    BodyMedium(
-                      '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
-                      color: Colors.white.withOpacity(0.75),
-                    ),
-                  ],
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFe6bcbc),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: CountryFlag.fromCountryCode(
+                    grandPrix.countryAlpha2Code,
+                    height: 48,
+                    width: 62,
+                    borderRadius: 8,
+                  ),
+                ),
+                const GapHorizontal16(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleMedium(
+                        grandPrix.name,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const GapVertical4(),
+                      IntrinsicHeight(
+                        child: Row(
+                          children: [
+                            BodyMedium(
+                              'Runda $roundNumber',
+                              color: Colors.white.withOpacity(0.75),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            VerticalDivider(
+                              color: Colors.white.withOpacity(0.25),
+                            ),
+                            BodyMedium(
+                              '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
+                              color: Colors.white.withOpacity(0.75),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 _BetStatus(grandPrixId: grandPrix.id),
               ],
