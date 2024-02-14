@@ -9,12 +9,14 @@ import '../../../extensions/build_context_extensions.dart';
 class GrandPrixDriverDropdownButton extends StatefulWidget {
   final String? selectedDriverId;
   final List<Driver> allDrivers;
+  final List<String> selectedDriverIds;
   final Function(String) onDriverSelected;
 
   const GrandPrixDriverDropdownButton({
     super.key,
     required this.selectedDriverId,
     required this.allDrivers,
+    required this.selectedDriverIds,
     required this.onDriverSelected,
   });
 
@@ -67,34 +69,58 @@ class _State extends State<GrandPrixDriverDropdownButton> {
       ),
       value: _selectedDriver,
       hint: Text(context.str.grandPrixBetSelectDriver),
+      selectedItemBuilder: (_) => _sortedDrivers
+          .map<Widget>((Driver driver) => _DriverDescription(driver: driver))
+          .toList(),
       items: _sortedDrivers
           .map(
-            (driver) => DropdownMenuItem<Driver>(
+            (Driver driver) => DropdownMenuItem<Driver>(
               value: driver,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 8,
-                    height: 20,
-                    color: Color(driver.team.hexColor),
-                  ),
-                  const GapHorizontal8(),
-                  SizedBox(
-                    width: 25,
-                    child: BodyMedium(
-                      '${driver.number}',
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.bold,
+                  _DriverDescription(driver: driver),
+                  if (widget.selectedDriverIds.contains(driver.id))
+                    const Icon(
+                      Icons.do_not_disturb_on_outlined,
+                      size: 16,
                     ),
-                  ),
-                  const GapHorizontal16(),
-                  Text('${driver.name} ${driver.surname}'),
                 ],
               ),
             ),
           )
           .toList(),
       onChanged: _onDriverSelected,
+    );
+  }
+}
+
+class _DriverDescription extends StatelessWidget {
+  final Driver driver;
+
+  const _DriverDescription({required this.driver});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 8,
+          height: 20,
+          color: Color(driver.team.hexColor),
+        ),
+        const GapHorizontal8(),
+        SizedBox(
+          width: 25,
+          child: BodyMedium(
+            '${driver.number}',
+            textAlign: TextAlign.center,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const GapHorizontal16(),
+        Text('${driver.name} ${driver.surname}'),
+      ],
     );
   }
 }

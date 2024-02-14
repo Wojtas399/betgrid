@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -58,7 +59,7 @@ class GrandPrixBetRace extends ConsumerWidget {
             0 => 'P1',
             1 => 'P2',
             2 => 'P3',
-            3 => 'P10.',
+            3 => 'P10',
             4 => 'Fastest Lap',
             _ => '',
           },
@@ -78,6 +79,11 @@ class GrandPrixBetRace extends ConsumerWidget {
             _ => null,
           },
           allDrivers: allDrivers.value!,
+          selectedDriverIds: index == 4
+              ? []
+              : [p1DriverId, p2DriverId, p3DriverId, p10DriverId]
+                  .whereNotNull()
+                  .toList(),
           onDriverSelected: (String driverId) {
             _onDriverSelected(index, driverId, ref);
           },

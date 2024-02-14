@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,6 +49,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
               _ => null,
             },
             allDrivers: allDrivers.value!,
+            selectedDriverIds: standings.whereNotNull().toList(),
             onDriverSelected: (String driverId) {
               _onDriverSelect(driverId, itemIndex, ref);
             },

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,6 +48,7 @@ class GrandPrixBetAdditional extends ConsumerWidget {
             },
             selectedDriverId: dnfDriverIds![index],
             allDrivers: allDrivers.value!,
+            selectedDriverIds: dnfDriverIds.whereNotNull().toList(),
             onDriverSelected: (String driverId) {
               gpBetNotifier.onDnfDriverChanged(index, driverId);
             },

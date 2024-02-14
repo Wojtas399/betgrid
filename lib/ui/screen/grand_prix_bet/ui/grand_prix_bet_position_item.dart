@@ -16,6 +16,7 @@ class GrandPrixBetPositionItem extends TableRow {
     Color? labelBackgroundColor,
     required String? selectedDriverId,
     required List<Driver> allDrivers,
+    List<String> selectedDriverIds = const [],
     required Function(String) onDriverSelected,
   }) {
     return GrandPrixBetPositionItem(
@@ -32,6 +33,7 @@ class GrandPrixBetPositionItem extends TableRow {
             child: GrandPrixDriverDropdownButton(
               selectedDriverId: selectedDriverId,
               allDrivers: allDrivers,
+              selectedDriverIds: selectedDriverIds,
               onDriverSelected: onDriverSelected,
             ),
           ),
