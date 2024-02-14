@@ -34,12 +34,14 @@ void main() {
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
+          number: 1,
           team: TeamDto.ferrari,
         ),
         const DriverDto(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
+          number: 2,
           team: TeamDto.redBullRacing,
         ),
       ];
@@ -48,12 +50,14 @@ void main() {
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
+          number: 1,
           team: Team.ferrari,
         ),
         const Driver(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
+          number: 2,
           team: Team.redBullRacing,
         ),
       ];
@@ -80,12 +84,14 @@ void main() {
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
+          number: 1,
           team: TeamDto.ferrari,
         ),
         const DriverDto(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
+          number: 2,
           team: TeamDto.redBullRacing,
         ),
       ];
@@ -94,12 +100,14 @@ void main() {
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
+          number: 1,
           team: Team.ferrari,
         ),
         const Driver(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
+          number: 2,
           team: Team.redBullRacing,
         ),
       ];
@@ -127,12 +135,14 @@ void main() {
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
+          number: 1,
           team: Team.ferrari,
         ),
         const Driver(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
+          number: 2,
           team: Team.redBullRacing,
         ),
       ];

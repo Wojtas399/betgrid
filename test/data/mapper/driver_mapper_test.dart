@@ -11,18 +11,21 @@ void main() {
       const String id = 'd1';
       const String name = 'Robert';
       const String surname = 'Kubica';
+      const int number = 1;
       const Team team = Team.ferrari;
       const TeamDto teamDto = TeamDto.ferrari;
       const driverDto = DriverDto(
         id: id,
         name: name,
         surname: surname,
+        number: number,
         team: teamDto,
       );
       const expectedDriver = Driver(
         id: id,
         name: name,
         surname: surname,
+        number: number,
         team: team,
       );
 

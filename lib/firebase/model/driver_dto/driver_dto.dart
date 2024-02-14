@@ -11,6 +11,7 @@ class DriverDto with _$DriverDto {
     String id,
     required String name,
     required String surname,
+    required int number,
     required TeamDto team,
   }) = _DriverDto;
 

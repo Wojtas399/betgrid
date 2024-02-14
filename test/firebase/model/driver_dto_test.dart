@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const String name = 'Robert';
   const String surname = 'Kubica';
+  const int number = 1;
   const TeamDto team = TeamDto.ferrari;
 
   test(
@@ -13,11 +14,13 @@ void main() {
       final Map<String, Object?> json = {
         'name': name,
         'surname': surname,
+        'number': number,
         'team': 'ferrari',
       };
       const DriverDto expectedModel = DriverDto(
         name: name,
         surname: surname,
+        number: number,
         team: team,
       );
 
@@ -35,12 +38,14 @@ void main() {
       final Map<String, Object?> json = {
         'name': name,
         'surname': surname,
+        'number': number,
         'team': 'ferrari',
       };
       const DriverDto expectedModel = DriverDto(
         id: id,
         name: name,
         surname: surname,
+        number: number,
         team: team,
       );
 
@@ -58,11 +63,13 @@ void main() {
         id: 'd1',
         name: name,
         surname: surname,
+        number: number,
         team: team,
       );
       final Map<String, Object?> expectedJson = {
         'name': name,
         'surname': surname,
+        'number': number,
         'team': 'ferrari',
       };
 

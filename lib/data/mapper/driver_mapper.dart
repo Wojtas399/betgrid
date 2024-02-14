@@ -6,5 +6,6 @@ Driver mapDriverFromDto(DriverDto driverDto) => Driver(
       id: driverDto.id,
       name: driverDto.name,
       surname: driverDto.surname,
+      number: driverDto.number,
       team: mapTeamFromDto(driverDto.team),
     );
