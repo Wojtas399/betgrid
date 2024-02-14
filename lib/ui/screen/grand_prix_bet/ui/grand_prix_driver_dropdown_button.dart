@@ -2,6 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/driver.dart';
+import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/text/body.dart';
 import '../../../extensions/build_context_extensions.dart';
 
 class GrandPrixDriverDropdownButton extends StatefulWidget {
@@ -28,7 +30,8 @@ class _State extends State<GrandPrixDriverDropdownButton> {
   void initState() {
     final List<Driver> sortedDrivers = [...widget.allDrivers];
     sortedDrivers.sort(
-      (Driver d1, Driver d2) => d1.surname.compareTo(d2.surname),
+      (Driver d1, Driver d2) =>
+          d1.team.toString().compareTo(d2.team.toString()),
     );
     _selectedDriver = sortedDrivers.firstWhereOrNull(
       (Driver driver) => driver.id == widget.selectedDriverId,
@@ -68,7 +71,26 @@ class _State extends State<GrandPrixDriverDropdownButton> {
           .map(
             (driver) => DropdownMenuItem<Driver>(
               value: driver,
-              child: Text('${driver.surname} ${driver.name}'),
+              child: Row(
+                children: [
+                  Container(
+                    width: 8,
+                    height: 20,
+                    color: Color(driver.team.hexColor),
+                  ),
+                  const GapHorizontal8(),
+                  SizedBox(
+                    width: 25,
+                    child: BodyMedium(
+                      '${driver.number}',
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  GapHorizontal16(),
+                  Text('${driver.name} ${driver.surname}'),
+                ],
+              ),
             ),
           )
           .toList(),

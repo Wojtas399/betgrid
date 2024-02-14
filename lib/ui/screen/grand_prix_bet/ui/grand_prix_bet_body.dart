@@ -62,7 +62,7 @@ class _SectionParameters extends SliverStickyHeader {
       _SectionParameters(
         header: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).scaffoldBackgroundColor,
             border: Border(
               bottom: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withOpacity(0.5),

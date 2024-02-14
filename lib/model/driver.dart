@@ -19,18 +19,18 @@ class Driver extends Entity {
 }
 
 enum Team {
-  mercedes('86d1c0'),
-  alpine('4891cc'),
-  haasF1Team('b7babd'),
-  redBullRacing('4570c0'),
-  mcLaren('e6853b'),
-  astonMartin('4e8a76'),
-  rb('698ea7'),
-  ferrari('e53740'),
-  kickSauber('69e444'),
-  williams('62bbd9');
+  mercedes(0xFF86d1c0),
+  alpine(0xFF4891cc),
+  haasF1Team(0xFFb7babd),
+  redBullRacing(0xFF4570c0),
+  mcLaren(0xFFe6853b),
+  astonMartin(0xFF4e8a76),
+  rb(0xFF698ea7),
+  ferrari(0xFFe53740),
+  kickSauber(0xFF69e444),
+  williams(0xFF62bbd9);
 
-  final String hexColor;
+  final int hexColor;
 
   const Team(this.hexColor);
 }
