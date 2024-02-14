@@ -76,7 +76,7 @@ class HomeGrandPrixItem extends StatelessWidget {
                               color: Colors.white.withOpacity(0.25),
                             ),
                             BodyMedium(
-                              '${grandPrix.startDate.toDayAndMonth()} - ${grandPrix.endDate.toDayAndMonth()}',
+                              '${grandPrix.startDate.toDayAndMonthName()} - ${grandPrix.endDate.toDayAndMonthName()}',
                               color: Colors.white.withOpacity(0.75),
                             ),
                           ],
@@ -110,13 +110,13 @@ class _BetStatus extends ConsumerWidget {
       switch (betStatus.value) {
         GrandPrixBetStatus.pending => Icons.circle_outlined,
         GrandPrixBetStatus.inProgress => Icons.timelapse,
-        GrandPrixBetStatus.completed => Icons.check_circle_outline,
+        GrandPrixBetStatus.completed => Icons.check_circle,
         _ => Icons.circle_outlined,
       },
       color: switch (betStatus.value) {
         GrandPrixBetStatus.pending => Colors.white,
         GrandPrixBetStatus.inProgress => Colors.amberAccent,
-        GrandPrixBetStatus.completed => Colors.lightGreen,
+        GrandPrixBetStatus.completed => const Color(0xFF6BD65F),
         _ => Colors.white,
       },
     );
