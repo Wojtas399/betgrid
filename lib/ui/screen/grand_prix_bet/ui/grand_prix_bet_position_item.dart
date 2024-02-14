@@ -11,7 +11,9 @@ class GrandPrixBetPositionItem extends TableRow {
   });
 
   factory GrandPrixBetPositionItem.build({
+    required BuildContext context,
     required String label,
+    Color? labelBackgroundColor,
     required String? selectedDriverId,
     required List<Driver> allDrivers,
     required Function(String) onDriverSelected,
@@ -20,10 +22,23 @@ class GrandPrixBetPositionItem extends TableRow {
       children: [
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Center(
-              child: TitleMedium(label),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: labelBackgroundColor,
+              ),
+              child: Center(
+                child: TitleMedium(
+                  label,
+                  color: labelBackgroundColor != null
+                      ? Colors.white
+                      : Theme.of(context).colorScheme.inverseSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),

@@ -15,7 +15,7 @@ class GrandPrixBetTable extends StatelessWidget {
         ),
       ),
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(130),
+        0: FixedColumnWidth(145),
         1: FlexColumnWidth(),
       },
       children: rows,

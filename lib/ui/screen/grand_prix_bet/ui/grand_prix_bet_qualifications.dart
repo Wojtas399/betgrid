@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../../model/driver.dart';
+import '../../../config/theme/custom_colors.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_bet_position_item.dart';
@@ -28,14 +30,29 @@ class GrandPrixBetQualifications extends ConsumerWidget {
     return GrandPrixBetTable(
       rows: List.generate(
         20,
-        (int itemIndex) => GrandPrixBetPositionItem.build(
-          selectedDriverId: standings![itemIndex],
-          label: '${itemIndex + 1}.',
-          allDrivers: allDrivers.value!,
-          onDriverSelected: (String driverId) {
-            _onDriverSelect(driverId, itemIndex, ref);
-          },
-        ),
+        (int itemIndex) {
+          final int qualiNumber = itemIndex > 14
+              ? 3
+              : itemIndex > 9
+                  ? 2
+                  : 1;
+
+          return GrandPrixBetPositionItem.build(
+            context: context,
+            selectedDriverId: standings![itemIndex],
+            label: 'Q$qualiNumber - P${itemIndex + 1}',
+            labelBackgroundColor: switch (itemIndex) {
+              0 => getIt<CustomColors>().gold,
+              1 => getIt<CustomColors>().silver,
+              2 => getIt<CustomColors>().brown,
+              _ => null,
+            },
+            allDrivers: allDrivers.value!,
+            onDriverSelected: (String driverId) {
+              _onDriverSelect(driverId, itemIndex, ref);
+            },
+          );
+        },
       ),
     );
   }

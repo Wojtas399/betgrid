@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../../model/driver.dart';
+import '../../../config/theme/custom_colors.dart';
 import '../../../riverpod_provider/all_drivers_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_bet_position_item.dart';
@@ -51,13 +53,21 @@ class GrandPrixBetRace extends ConsumerWidget {
       rows: List.generate(
         5,
         (index) => GrandPrixBetPositionItem.build(
+          context: context,
           label: switch (index) {
-            0 => '1.',
-            1 => '2.',
-            2 => '3.',
-            3 => '10.',
+            0 => 'P1',
+            1 => 'P2',
+            2 => 'P3',
+            3 => 'P10.',
             4 => 'Fastest Lap',
             _ => '',
+          },
+          labelBackgroundColor: switch (index) {
+            0 => getIt<CustomColors>().gold,
+            1 => getIt<CustomColors>().silver,
+            2 => getIt<CustomColors>().brown,
+            4 => getIt<CustomColors>().violet,
+            _ => null,
           },
           selectedDriverId: switch (index) {
             0 => p1DriverId,

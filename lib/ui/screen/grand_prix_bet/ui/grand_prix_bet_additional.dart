@@ -38,6 +38,7 @@ class GrandPrixBetAdditional extends ConsumerWidget {
         ...List.generate(
           3,
           (index) => GrandPrixBetPositionItem.build(
+            context: context,
             label: switch (index) {
               0 => 'DNF',
               1 => 'DNF',
@@ -52,12 +53,12 @@ class GrandPrixBetAdditional extends ConsumerWidget {
           ),
         ),
         _YesAndNoButtons.build(
-          label: 'SC',
+          label: 'Safety Car',
           initialValue: willBeSafetyCar,
           onChanged: gpBetNotifier.onSafetyCarPossibilityChanged,
         ),
         _YesAndNoButtons.build(
-          label: 'RF',
+          label: 'Red Flag',
           initialValue: willBeRedFlag,
           onChanged: gpBetNotifier.onRedFlagPossibilityChanged,
         ),
@@ -78,10 +79,13 @@ class _YesAndNoButtons extends TableRow {
       children: [
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Container(
-            padding: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
             child: Center(
-              child: TitleMedium(label),
+              child: TitleMedium(
+                label,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
