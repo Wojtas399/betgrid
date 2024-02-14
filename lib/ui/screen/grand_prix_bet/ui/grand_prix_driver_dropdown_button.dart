@@ -2,9 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/driver.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/text/body.dart';
 import '../../../extensions/build_context_extensions.dart';
+import 'grand_prix_bet_driver_description.dart';
 
 class GrandPrixDriverDropdownButton extends StatefulWidget {
   final String? selectedDriverId;
@@ -70,7 +69,9 @@ class _State extends State<GrandPrixDriverDropdownButton> {
       value: _selectedDriver,
       hint: Text(context.str.grandPrixBetSelectDriver),
       selectedItemBuilder: (_) => _sortedDrivers
-          .map<Widget>((Driver driver) => _DriverDescription(driver: driver))
+          .map<Widget>(
+            (Driver driver) => GrandPrixBetDriverDescription(driver: driver),
+          )
           .toList(),
       items: _sortedDrivers
           .map(
@@ -79,7 +80,7 @@ class _State extends State<GrandPrixDriverDropdownButton> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _DriverDescription(driver: driver),
+                  GrandPrixBetDriverDescription(driver: driver),
                   if (widget.selectedDriverIds.contains(driver.id))
                     const Icon(
                       Icons.do_not_disturb_on_outlined,
@@ -91,36 +92,6 @@ class _State extends State<GrandPrixDriverDropdownButton> {
           )
           .toList(),
       onChanged: _onDriverSelected,
-    );
-  }
-}
-
-class _DriverDescription extends StatelessWidget {
-  final Driver driver;
-
-  const _DriverDescription({required this.driver});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 20,
-          color: Color(driver.team.hexColor),
-        ),
-        const GapHorizontal8(),
-        SizedBox(
-          width: 25,
-          child: BodyMedium(
-            '${driver.number}',
-            textAlign: TextAlign.center,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const GapHorizontal16(),
-        Text('${driver.name} ${driver.surname}'),
-      ],
     );
   }
 }

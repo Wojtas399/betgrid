@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../model/driver.dart';
+import '../../../riverpod_provider/bet_mode_provider.dart';
+import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_label_cell.dart';
 import 'grand_prix_driver_dropdown_button.dart';
 
@@ -30,7 +33,7 @@ class GrandPrixBetPositionItem extends TableRow {
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: GrandPrixDriverDropdownButton(
+            child: _ValueCell(
               selectedDriverId: selectedDriverId,
               allDrivers: allDrivers,
               selectedDriverIds: selectedDriverIds,
@@ -40,5 +43,38 @@ class GrandPrixBetPositionItem extends TableRow {
         ),
       ],
     );
+  }
+}
+
+class _ValueCell extends ConsumerWidget {
+  final String? selectedDriverId;
+  final List<Driver> allDrivers;
+  final List<String> selectedDriverIds;
+  final Function(String) onDriverSelected;
+
+  const _ValueCell({
+    required this.selectedDriverId,
+    required this.allDrivers,
+    this.selectedDriverIds = const [],
+    required this.onDriverSelected,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final betMode = ref.watch(betModeProvider);
+
+    return switch (betMode) {
+      BetMode.edit => GrandPrixDriverDropdownButton(
+          selectedDriverId: selectedDriverId,
+          allDrivers: allDrivers,
+          selectedDriverIds: selectedDriverIds,
+          onDriverSelected: onDriverSelected,
+        ),
+      BetMode.preview => GrandPrixBetDriverDescription(
+          driver: allDrivers.firstWhere(
+            (element) => element.id == selectedDriverId,
+          ),
+        ),
+    };
   }
 }
