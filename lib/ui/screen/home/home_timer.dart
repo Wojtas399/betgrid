@@ -40,7 +40,7 @@ class HomeTimer extends ConsumerWidget {
               TitleMedium('${context.str.homeTimerLabel}:'),
               const GapVertical8(),
               TitleLarge(
-                '$days d. $hours godz. $minutes min. $seconds s.',
+                '$days d. $hours g. $minutes m. $seconds s.',
                 color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
