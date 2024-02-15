@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -71,8 +72,8 @@ class _ValueCell extends ConsumerWidget {
           onDriverSelected: onDriverSelected,
         ),
       BetMode.preview => GrandPrixBetDriverDescription(
-          driver: allDrivers.firstWhere(
-            (element) => element.id == selectedDriverId,
+          driver: allDrivers.firstWhereOrNull(
+            (driver) => driver.id == selectedDriverId,
           ),
         ),
     };

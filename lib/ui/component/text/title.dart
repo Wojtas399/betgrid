@@ -28,12 +28,14 @@ class TitleLarge extends StatelessWidget {
   final String text;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
+  final Color? color;
 
   const TitleLarge(
     this.text, {
     super.key,
     this.textAlign,
     this.fontWeight,
+    this.color,
   });
 
   @override
@@ -42,6 +44,7 @@ class TitleLarge extends StatelessWidget {
       text,
       style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: fontWeight,
+            color: color,
           ),
       textAlign: textAlign,
     );

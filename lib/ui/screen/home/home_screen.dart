@@ -8,7 +8,9 @@ import '../../../model/grand_prix.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/theme/theme_notifier.dart';
 import '../../riverpod_provider/all_grand_prixes_provider.dart';
+import '../../riverpod_provider/bet_mode_provider.dart';
 import 'home_grand_prix_item.dart';
+import 'home_timer.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -18,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _AppBar(),
-      body: const _GrandPrixes(),
+      body: const _Body(),
     );
   }
 }
@@ -30,11 +32,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      shape: Border(
-        bottom: BorderSide(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
-        ),
-      ),
       scrolledUnderElevation: 0.0,
       title: Text(Str.of(context).homeScreenTitle),
       actions: [
@@ -64,6 +61,24 @@ class _ThemeModeSwitch extends ConsumerWidget {
               isSwitched ? ThemeMode.dark : ThemeMode.light,
             );
       },
+    );
+  }
+}
+
+class _Body extends ConsumerWidget {
+  const _Body();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final BetMode betMode = ref.watch(betModeProvider);
+
+    return Column(
+      children: [
+        if (betMode == BetMode.edit) const HomeTimer(),
+        const Expanded(
+          child: _GrandPrixes(),
+        ),
+      ],
     );
   }
 }

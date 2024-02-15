@@ -9,6 +9,7 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
+import '../../riverpod_provider/bet_mode_provider.dart';
 import '../../riverpod_provider/grand_prix_bet_status_provider.dart';
 import '../../service/formatter_service.dart';
 
@@ -172,23 +173,27 @@ class _BetStatus extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final BetMode betMode = ref.watch(betModeProvider);
     final AsyncValue<GrandPrixBetStatus?> betStatus = ref.watch(
       grandPrixBetStatusProvider(grandPrixId),
     );
 
-    return Icon(
-      switch (betStatus.value) {
-        GrandPrixBetStatus.pending => Icons.circle_outlined,
-        GrandPrixBetStatus.inProgress => Icons.timelapse,
-        GrandPrixBetStatus.completed => Icons.check_circle,
-        _ => Icons.circle_outlined,
-      },
-      color: switch (betStatus.value) {
-        GrandPrixBetStatus.pending => Colors.white,
-        GrandPrixBetStatus.inProgress => Colors.amberAccent,
-        GrandPrixBetStatus.completed => const Color(0xFF6BD65F),
-        _ => Colors.white,
-      },
-    );
+    return switch (betMode) {
+      BetMode.preview => const SizedBox(),
+      BetMode.edit => Icon(
+          switch (betStatus.value) {
+            GrandPrixBetStatus.pending => Icons.circle_outlined,
+            GrandPrixBetStatus.inProgress => Icons.timelapse,
+            GrandPrixBetStatus.completed => Icons.check_circle,
+            _ => Icons.circle_outlined,
+          },
+          color: switch (betStatus.value) {
+            GrandPrixBetStatus.pending => Colors.white,
+            GrandPrixBetStatus.inProgress => Colors.amberAccent,
+            GrandPrixBetStatus.completed => const Color(0xFF6BD65F),
+            _ => Colors.white,
+          },
+        ),
+    };
   }
 }
