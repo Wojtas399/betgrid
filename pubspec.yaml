@@ -1,6 +1,6 @@
 name: betgrid
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -36,6 +36,7 @@ dependencies:
   collection: ^1.18.0
   flutter_sticky_header: ^0.6.5
   country_flags: ^2.2.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,14 @@ dev_dependencies:
   json_serializable: ^6.7.1
   injectable_generator:
   auto_route_generator: ^7.2.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/ic_launcher.png"
+  image_path_ios: "assets/ic_launcher_ios.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "assets/ic_launcher_adaptive_back.png"
 
 flutter:
   generate: true
