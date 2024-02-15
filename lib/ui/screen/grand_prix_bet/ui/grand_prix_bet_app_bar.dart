@@ -80,7 +80,7 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
         final prevState = previous?.value;
         final currState = next.value;
         setState(() {
-          _initialNotifierState ??= currState;
+          _initialNotifierState ??= prevState;
           _haveChangesBeenMade = _initialNotifierState != null &&
                   currState != null
               ? _areNotifierStatesDifferent(_initialNotifierState!, currState)

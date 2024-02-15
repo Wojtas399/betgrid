@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
 import '../../component/gap/gap_horizontal.dart';
-import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
@@ -137,29 +136,19 @@ class _GrandPrixDescription extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        BodyMedium(
+          'Runda $roundNumber',
+          color: Colors.white.withOpacity(0.75),
+          fontWeight: FontWeight.bold,
+        ),
         TitleMedium(
           gpName,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
-        const GapVertical4(),
-        IntrinsicHeight(
-          child: Row(
-            children: [
-              BodyMedium(
-                'Runda $roundNumber',
-                color: Colors.white.withOpacity(0.75),
-                fontWeight: FontWeight.bold,
-              ),
-              VerticalDivider(
-                color: Colors.white.withOpacity(0.25),
-              ),
-              BodyMedium(
-                '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
-                color: Colors.white.withOpacity(0.75),
-              ),
-            ],
-          ),
+        BodyMedium(
+          '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
+          color: Colors.white.withOpacity(0.75),
         ),
       ],
     );

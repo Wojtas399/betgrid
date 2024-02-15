@@ -13,7 +13,7 @@ class GrandPrixBetLabelCell extends TableCell {
   }) {
     return GrandPrixBetLabelCell(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(

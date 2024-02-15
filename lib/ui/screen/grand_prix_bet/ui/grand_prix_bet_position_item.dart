@@ -33,7 +33,7 @@ class GrandPrixBetPositionItem extends TableRow {
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
             child: _ValueCell(
               selectedDriverId: selectedDriverId,
               allDrivers: allDrivers,

@@ -20,7 +20,7 @@ class GrandPrixBetDriverDescription extends StatelessWidget {
                 height: 20,
                 color: Color(driver!.team.hexColor),
               ),
-              const GapHorizontal8(),
+              const GapHorizontal4(),
               SizedBox(
                 width: 25,
                 child: BodyMedium(
@@ -29,7 +29,7 @@ class GrandPrixBetDriverDescription extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const GapHorizontal16(),
+              const GapHorizontal8(),
               TitleMedium('${driver!.name} ${driver!.surname}'),
             ],
           )
