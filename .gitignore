@@ -41,3 +41,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Additional
+*.g.dart
+*.freezed.dart
+*.config.dart
+*.gr.dart
+firebase_options.dart

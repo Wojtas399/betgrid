@@ -1,0 +1,20 @@
+{
+    "@__________SIGN_IN__________": {},
+    "signInScreenTitle": "Logowanie",
+    "signInScreenInfo": "Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google",
+    "signInScreenSignInButtonLabel": "Zaloguj",
+    "@__________HOME__________": {},
+    "homeScreenTitle": "Sezon 2024",
+    "homeTimerLabel": "Do pierwszego dnia testów pozostało",
+    "@__________GRAND_PRIX_BET__________": {},
+    "grandPrixBetSelectDriver": "Wybierz kierowcę",
+    "grandPrixBetSuccessfullySavedBets": "Pomyślnie zapisano typy",
+    "@__________COMMON__________": {},
+    "loading": "Ładowanie",
+    "qualifications": "Kwalifikacje",
+    "race": "Wyścig",
+    "additional": "Dodatkowe",
+    "save": "Zapisz",
+    "yes": "Tak",
+    "no": "Nie"
+}
