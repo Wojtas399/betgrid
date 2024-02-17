@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/user_creator.dart';
 import '../../mock/auth/mock_auth_service.dart';
 import '../../mock/listener.dart';
 
@@ -99,7 +98,7 @@ void main() {
   test(
     'signInWithGoogle, '
     'user is null, '
-    'should call AuthWithGoogle method from AuthService and '
+    'should call signInWithGoogle method from AuthService and '
     'should emit AuthStateComplete state',
     () async {
       authService.mockGetLoggedUserId(null);
@@ -143,11 +142,11 @@ void main() {
   test(
     'signInWithGoogle, '
     'user is not null, '
-    'should call AuthWithGoogle method from AuthService and '
+    'should call signInWithGoogle method from AuthService and '
     'should emit AuthStateUserIsSignedIn state',
     () async {
       authService.mockGetLoggedUserId(null);
-      authService.mockSignInWithGoogle(createUser());
+      authService.mockSignInWithGoogle('u1');
       final container = makeProviderContainer(authService);
       final listener = Listener<AsyncValue<AuthState>>();
       container.listen(

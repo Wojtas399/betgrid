@@ -1,7 +1,5 @@
 import 'package:betgrid/auth/auth_service_impl.dart';
-import 'package:betgrid/firebase/model/user_dto/user_dto.dart';
 import 'package:betgrid/firebase/service/firebase_auth_service.dart';
-import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -31,9 +29,7 @@ void main() {
     'should emit id of logged user got from firebase',
     () {
       const String id = 'u1';
-      const String email = 'user@example.com';
-      const UserDto userDto = UserDto(id: id, email: email);
-      firebaseAuthService.mockGetLoggedUser(userDto);
+      firebaseAuthService.mockGetLoggedUserId(id);
 
       final Stream<String?> loggedUserId$ = serviceImpl.loggedUserId$;
 
@@ -48,26 +44,23 @@ void main() {
     () async {
       firebaseAuthService.mockSignInWithGoogle(null);
 
-      final User? user = await serviceImpl.signInWithGoogle();
+      final String? userId = await serviceImpl.signInWithGoogle();
 
-      expect(user, null);
+      expect(userId, null);
     },
   );
 
   test(
     'signInWithGoogle, '
     'user exists, '
-    'should return user data',
+    'should return user id',
     () async {
-      const String id = 'u1';
-      const String email = 'user@example.com';
-      const UserDto userDto = UserDto(id: id, email: email);
-      const User expectedUser = User(id: id, email: email);
-      firebaseAuthService.mockSignInWithGoogle(userDto);
+      const String expectedUserId = 'u1';
+      firebaseAuthService.mockSignInWithGoogle(expectedUserId);
 
-      final User? user = await serviceImpl.signInWithGoogle();
+      final String? userId = await serviceImpl.signInWithGoogle();
 
-      expect(user, expectedUser);
+      expect(userId, expectedUserId);
     },
   );
 }
