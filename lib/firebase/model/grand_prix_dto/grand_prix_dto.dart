@@ -18,8 +18,6 @@ class GrandPrixDto with _$GrandPrixDto {
   factory GrandPrixDto.fromJson(Map<String, Object?> json) =>
       _$GrandPrixDtoFromJson(json);
 
-  factory GrandPrixDto.fromIdAndJson(String id, Map<String, Object?>? json) {
-    if (json == null) throw Exception('Grand Prix document data was null');
-    return GrandPrixDto.fromJson(json).copyWith(id: id);
-  }
+  factory GrandPrixDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+      GrandPrixDto.fromJson(json).copyWith(id: id);
 }

@@ -1,18 +1,12 @@
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UserDto extends Equatable {
-  final String id;
-  final String email;
+part 'user_dto.freezed.dart';
+part 'user_dto.g.dart';
 
-  const UserDto({required this.id, required this.email});
+@freezed
+class UserDto with _$UserDto {
+  const factory UserDto({required String nick}) = _UserDto;
 
-  @override
-  List<Object?> get props => [id, email];
-
-  UserDto.fromFirebaseUser(firebase_auth.User firebaseUser)
-      : this(
-          id: firebaseUser.uid,
-          email: firebaseUser.email!,
-        );
+  factory UserDto.fromJson(Map<String, Object?> json) =>
+      _$UserDtoFromJson(json);
 }
