@@ -17,12 +17,14 @@ class FirebaseAvatarService {
     }
   }
 
-  Future<void> addAvatarForUser({
+  Future<String?> addAvatarForUser({
     required String userId,
     required String avatarImgPath,
   }) async {
     final File imageFile = File(avatarImgPath);
-    await _getAvatarRef(userId).putFile(imageFile);
+    final avatarRef = _getAvatarRef(userId);
+    await avatarRef.putFile(imageFile);
+    return await avatarRef.getDownloadURL();
   }
 
   Future<void> removeAvatarForUser({required String userId}) async {

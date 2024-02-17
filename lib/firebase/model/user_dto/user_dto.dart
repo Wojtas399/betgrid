@@ -5,8 +5,16 @@ part 'user_dto.g.dart';
 
 @freezed
 class UserDto with _$UserDto {
-  const factory UserDto({required String nick}) = _UserDto;
+  const factory UserDto({
+    @JsonKey(includeToJson: false, includeFromJson: false)
+    @Default('')
+    String id,
+    required String nick,
+  }) = _UserDto;
 
   factory UserDto.fromJson(Map<String, Object?> json) =>
       _$UserDtoFromJson(json);
+
+  factory UserDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+      UserDto.fromJson(json).copyWith(id: id);
 }

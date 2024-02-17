@@ -32,7 +32,7 @@ CollectionReference<UserDto> getUsersRef() =>
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
             if (data == null) throw 'User document data was null';
-            return UserDto.fromJson(data);
+            return UserDto.fromIdAndJson(snapshot.id, data);
           },
           toFirestore: (UserDto dto, _) => dto.toJson(),
         );
