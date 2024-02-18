@@ -10,6 +10,7 @@ class UserDto with _$UserDto {
     @Default('')
     String id,
     required String nick,
+    required ThemeModeDto themeMode,
   }) = _UserDto;
 
   factory UserDto.fromJson(Map<String, Object?> json) =>
@@ -18,3 +19,5 @@ class UserDto with _$UserDto {
   factory UserDto.fromIdAndJson(String id, Map<String, Object?> json) =>
       UserDto.fromJson(json).copyWith(id: id);
 }
+
+enum ThemeModeDto { light, dark, system }

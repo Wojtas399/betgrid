@@ -3,6 +3,10 @@ import 'package:betgrid/firebase/service/firebase_user_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseUserService extends Mock implements FirebaseUserService {
+  MockFirebaseUserService() {
+    registerFallbackValue(ThemeModeDto.light);
+  }
+
   void mockLoadUserById({UserDto? userDto}) {
     when(
       () => loadUserById(
@@ -16,6 +20,7 @@ class MockFirebaseUserService extends Mock implements FirebaseUserService {
       () => addUser(
         userId: any(named: 'userId'),
         nick: any(named: 'nick'),
+        themeMode: any(named: 'themeMode'),
       ),
     ).thenAnswer((_) => Future.value(addedUserDto));
   }

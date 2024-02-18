@@ -15,5 +15,6 @@ abstract interface class UserRepository {
     required String userId,
     required String nick,
     String? avatarImgPath,
+    required ThemeMode themeMode,
   });
 }

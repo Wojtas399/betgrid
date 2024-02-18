@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../creator/user_creator.dart';
+import '../../creator/user_dto_creator.dart';
 import '../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../mock/firebase/mock_firebase_user_service.dart';
 
@@ -34,11 +36,11 @@ void main() {
     'user exists in repository state, '
     'should return user from state',
     () {
-      const User expectedUser = User(id: 'u2', nick: 'nick 2');
+      final User expectedUser = createUser(id: 'u2', nick: 'nick 2');
       final List<User> existingUsers = [
-        const User(id: 'u1', nick: 'nick 1'),
+        createUser(id: 'u1', nick: 'nick 1'),
         expectedUser,
-        const User(id: 'u3', nick: 'nick 3'),
+        createUser(id: 'u3', nick: 'nick 3'),
       ];
       repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
 
@@ -57,11 +59,15 @@ void main() {
       const String id = 'u2';
       const String nick = 'nick 2';
       const String avatarUrl = 'avatar/url';
-      const UserDto expectedUserDto = UserDto(id: id, nick: nick);
-      const User expectedUser = User(id: id, nick: nick, avatarUrl: avatarUrl);
-      const List<User> existingUsers = [
-        User(id: 'u1', nick: 'nick 1'),
-        User(id: 'u3', nick: 'nick 3'),
+      final UserDto expectedUserDto = createUserDto(id: id, nick: nick);
+      final User expectedUser = createUser(
+        id: id,
+        nick: nick,
+        avatarUrl: avatarUrl,
+      );
+      final List<User> existingUsers = [
+        createUser(id: 'u1', nick: 'nick 1'),
+        createUser(id: 'u3', nick: 'nick 3'),
       ];
       dbUserService.mockLoadUserById(userDto: expectedUserDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: avatarUrl);
@@ -91,15 +97,33 @@ void main() {
     () async {
       const String userId = 'u1';
       const String nick = 'user';
-      const UserDto addedUserDto = UserDto(id: userId, nick: nick);
-      const User addedUser = User(id: userId, nick: nick);
+      const ThemeMode themeMode = ThemeMode.dark;
+      const ThemeModeDto themeModeDto = ThemeModeDto.dark;
+      const UserDto addedUserDto = UserDto(
+        id: userId,
+        nick: nick,
+        themeMode: themeModeDto,
+      );
+      const User addedUser = User(
+        id: userId,
+        nick: nick,
+        themeMode: themeMode,
+      );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
 
-      await repositoryImpl.addUser(userId: userId, nick: nick);
+      await repositoryImpl.addUser(
+        userId: userId,
+        nick: nick,
+        themeMode: themeMode,
+      );
 
       expect(repositoryImpl.repositoryState$, emits([addedUser]));
       verify(
-        () => dbUserService.addUser(userId: userId, nick: nick),
+        () => dbUserService.addUser(
+          userId: userId,
+          nick: nick,
+          themeMode: themeModeDto,
+        ),
       ).called(1);
     },
   );
@@ -112,13 +136,20 @@ void main() {
     () async {
       const String userId = 'u1';
       const String nick = 'user';
+      const ThemeMode themeMode = ThemeMode.dark;
+      const ThemeModeDto themeModeDto = ThemeModeDto.dark;
       const String avatarImgPath = 'avatar/img';
       const String avatarUrl = 'avatar/url';
-      const UserDto addedUserDto = UserDto(id: userId, nick: nick);
+      const UserDto addedUserDto = UserDto(
+        id: userId,
+        nick: nick,
+        themeMode: themeModeDto,
+      );
       const User addedUser = User(
         id: userId,
         nick: nick,
         avatarUrl: avatarUrl,
+        themeMode: themeMode,
       );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
@@ -127,11 +158,16 @@ void main() {
         userId: userId,
         nick: nick,
         avatarImgPath: avatarImgPath,
+        themeMode: themeMode,
       );
 
       expect(repositoryImpl.repositoryState$, emits([addedUser]));
       verify(
-        () => dbUserService.addUser(userId: userId, nick: nick),
+        () => dbUserService.addUser(
+          userId: userId,
+          nick: nick,
+          themeMode: themeModeDto,
+        ),
       ).called(1);
       verify(
         () => dbAvatarService.addAvatarForUser(

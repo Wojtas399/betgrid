@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../creator/user_creator.dart';
 import '../../mock/auth/mock_auth_service.dart';
 import '../../mock/data/repository/mock_user_repository.dart';
 import '../../mock/listener.dart';
@@ -70,11 +71,7 @@ void main() {
     'build, '
     'should get end emit logged user data',
     () async {
-      const User loggedUserData = User(
-        id: loggedUserId,
-        nick: 'nick',
-        avatarUrl: 'avatar/url',
-      );
+      final User loggedUserData = createUser(id: loggedUserId, nick: 'nick');
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: loggedUserData);
       final container = makeProviderContainer(authService, userRepository);
@@ -96,7 +93,7 @@ void main() {
             ),
         () => listener(
               const AsyncLoading<User?>(),
-              const AsyncData<User?>(loggedUserData),
+              AsyncData<User?>(loggedUserData),
             ),
       ]);
       verifyNoMoreInteractions(listener);
@@ -110,6 +107,7 @@ void main() {
     () async {
       const String nick = 'nick';
       const String avatarImgPath = 'avatar/img';
+      const ThemeMode themeMode = ThemeMode.system;
       authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
@@ -122,6 +120,7 @@ void main() {
       await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
             nick: nick,
             avatarImgPath: avatarImgPath,
+            themeMode: themeMode,
           );
 
       verifyNever(
@@ -129,6 +128,7 @@ void main() {
           userId: loggedUserId,
           nick: nick,
           avatarImgPath: avatarImgPath,
+          themeMode: themeMode,
         ),
       );
     },
@@ -140,6 +140,7 @@ void main() {
     () async {
       const String nick = 'nick';
       const String avatarImgPath = 'avatar/img';
+      const ThemeMode themeMode = ThemeMode.system;
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById();
       userRepository.mockAddUser();
@@ -155,6 +156,7 @@ void main() {
       await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
             nick: nick,
             avatarImgPath: avatarImgPath,
+            themeMode: themeMode,
           );
 
       verify(
@@ -162,6 +164,7 @@ void main() {
           userId: loggedUserId,
           nick: nick,
           avatarImgPath: avatarImgPath,
+          themeMode: themeMode,
         ),
       ).called(1);
     },

@@ -5,6 +5,7 @@ import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
 import '../../../firebase/service/firebase_user_service.dart';
 import '../../../model/user.dart';
+import '../../mapper/theme_mode_mapper.dart';
 import '../../mapper/user_mapper.dart';
 import '../repository.dart';
 import 'user_repository.dart';
@@ -31,10 +32,12 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     required String userId,
     required String nick,
     String? avatarImgPath,
+    required ThemeMode themeMode,
   }) async {
     final UserDto? addedUserDto = await _dbUserService.addUser(
       userId: userId,
       nick: nick,
+      themeMode: mapThemeModeToDto(themeMode),
     );
     if (addedUserDto == null) throw "Added user's data not found";
     String? avatarUrl;
