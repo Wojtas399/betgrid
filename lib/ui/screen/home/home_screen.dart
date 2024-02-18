@@ -5,19 +5,40 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../model/grand_prix.dart';
+import '../../../model/user.dart' as user;
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/theme/theme_notifier.dart';
 import '../../riverpod_provider/all_grand_prixes_provider.dart';
 import '../../riverpod_provider/bet_mode_provider.dart';
+import '../../riverpod_provider/logged_user_data_provider.dart';
+import '../../service/dialog_service.dart';
+import '../required_data_completion/required_data_completion_screen.dart';
 import 'home_grand_prix_item.dart';
 import 'home_timer.dart';
 
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
+  void _onLoggedUserDataChanged(AsyncValue<user.User?> asyncValue) async {
+    if (asyncValue.hasValue) {
+      if (asyncValue.value == null) {
+        await showFullScreenDialog(const RequiredDataCompletionScreen());
+      } else {
+        //TODO: Close required user data dialog
+      }
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(
+      loggedUserDataProvider,
+      (previous, next) {
+        _onLoggedUserDataChanged(next);
+      },
+    );
+
     return Scaffold(
       appBar: _AppBar(),
       body: const _Body(),
