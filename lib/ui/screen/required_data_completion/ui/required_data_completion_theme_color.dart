@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/user.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text/title.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../extensions/theme_primary_color_extensions.dart';
-import '../../provider/theme_primary_color_notifier_provider.dart';
+import '../../../../model/user.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text/title.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/theme_primary_color_extensions.dart';
+import '../../../provider/theme_primary_color_notifier_provider.dart';
 
 class RequiredDataCompletionThemeColor extends StatelessWidget {
   const RequiredDataCompletionThemeColor({super.key});

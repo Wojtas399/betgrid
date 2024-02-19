@@ -12,7 +12,7 @@ import '../../provider/bet_mode_provider.dart';
 import '../../provider/logged_user_data_provider.dart';
 import '../../provider/theme_mode_notifier_provider.dart';
 import '../../service/dialog_service.dart';
-import '../required_data_completion/required_data_completion_screen.dart';
+import '../required_data_completion/ui/required_data_completion_screen.dart';
 import 'home_grand_prix_item.dart';
 import 'home_timer.dart';
 
@@ -21,12 +21,8 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   void _onLoggedUserDataChanged(AsyncValue<user.User?> asyncValue) async {
-    if (asyncValue.hasValue) {
-      if (asyncValue.value == null) {
-        await showFullScreenDialog(const RequiredDataCompletionScreen());
-      } else {
-        //TODO: Close required user data dialog
-      }
+    if (asyncValue.value == null) {
+      await showFullScreenDialog(const RequiredDataCompletionScreen());
     }
   }
 
@@ -73,13 +69,13 @@ class _ThemeModeSwitch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+    final user.ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
 
     return Switch(
-      value: themeMode == ThemeMode.dark,
+      value: themeMode == user.ThemeMode.dark,
       onChanged: (bool isSwitched) {
         ref.read(themeModeNotifierProvider.notifier).changeThemeMode(
-              isSwitched ? ThemeMode.dark : ThemeMode.light,
+              isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
             );
       },
     );

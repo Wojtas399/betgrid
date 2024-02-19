@@ -9,12 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_creator.dart';
-import '../../../creator/grand_prix_creator.dart';
-import '../../../mock/auth/mock_auth_service.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_repository.dart';
-import '../../../mock/listener.dart';
+import '../../creator/grand_prix_bet_creator.dart';
+import '../../creator/grand_prix_creator.dart';
+import '../../mock/auth/mock_auth_service.dart';
+import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../mock/data/repository/mock_grand_prix_repository.dart';
+import '../../mock/listener.dart';
 
 void main() {
   final authService = MockAuthService();

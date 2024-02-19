@@ -1,8 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../component/button/big_button.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../extensions/build_context_extensions.dart';
+import '../../../../model/user.dart' as user;
+import '../../../component/button/big_button.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../provider/theme_mode_notifier_provider.dart';
+import '../../../provider/theme_primary_color_notifier_provider.dart';
+import '../../../service/dialog_service.dart';
+import '../notifier/required_data_completion_notifier.dart';
 import 'required_data_completion_avatar.dart';
 import 'required_data_completion_theme_color.dart';
 import 'required_data_completion_theme_mode.dart';
@@ -40,16 +47,28 @@ class RequiredDataCompletionScreen extends StatelessWidget {
   }
 }
 
-class _SubmitButton extends StatelessWidget {
+class _SubmitButton extends ConsumerWidget {
   const _SubmitButton();
 
+  Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
+    final user.ThemeMode themeMode = ref.read(themeModeNotifierProvider);
+    final user.ThemePrimaryColor themePrimaryColor = ref.read(
+      themePrimaryColorNotifierProvider,
+    );
+    showLoadingDialog();
+    await ref.read(requiredDataCompletionNotifierProvider.notifier).submit(
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        );
+    closeLoadingDialog();
+    if (context.mounted) context.popRoute();
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: BigButton(
-        onPressed: () {
-          //TODO: Call submit method from notifier
-        },
+        onPressed: () => _onPressed(context, ref),
         label: context.str.save,
       ),
     );

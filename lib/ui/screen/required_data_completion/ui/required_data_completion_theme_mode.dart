@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text/title.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../provider/theme_mode_notifier_provider.dart';
+import '../../../../model/user.dart' as user;
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text/title.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../provider/theme_mode_notifier_provider.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
   const RequiredDataCompletionThemeMode({super.key});
@@ -31,7 +32,7 @@ class _ThemeModeTypes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+    final user.ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
     final notifier = ref.read(themeModeNotifierProvider.notifier);
     const gap = GapVertical16();
 
@@ -39,29 +40,29 @@ class _ThemeModeTypes extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _ThemeModeItem(
-          isSelected: themeMode == ThemeMode.light,
+          isSelected: themeMode == user.ThemeMode.light,
           label: 'Jasny',
           iconData: Icons.light_mode,
           onPressed: () {
-            notifier.changeThemeMode(ThemeMode.light);
+            notifier.changeThemeMode(user.ThemeMode.light);
           },
         ),
         gap,
         _ThemeModeItem(
-          isSelected: themeMode == ThemeMode.dark,
+          isSelected: themeMode == user.ThemeMode.dark,
           label: 'Ciemny',
           iconData: Icons.dark_mode,
           onPressed: () {
-            notifier.changeThemeMode(ThemeMode.dark);
+            notifier.changeThemeMode(user.ThemeMode.dark);
           },
         ),
         gap,
         _ThemeModeItem(
-          isSelected: themeMode == ThemeMode.system,
+          isSelected: themeMode == user.ThemeMode.system,
           label: 'Systemowy',
           iconData: MdiIcons.themeLightDark,
           onPressed: () {
-            notifier.changeThemeMode(ThemeMode.system);
+            notifier.changeThemeMode(user.ThemeMode.system);
           },
         ),
       ],

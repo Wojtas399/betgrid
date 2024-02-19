@@ -9,6 +9,7 @@
     "@__________REQUIRED_DATA_COMPLETION__________": {},
     "requiredDataCompletionScreenTitle": "Wymagane dane",
     "requiredDataCompletionSelectAvatar": "Wybierz avatar",
+    "requiredDataCompletionChangeAvatar": "Zmień",
     "requiredDataCompletionSelectAvatarSource": "Wybierz źródło avataru",
     "@__________GRAND_PRIX_BET__________": {},
     "grandPrixBetSelectDriver": "Wybierz kierowcę",
@@ -29,5 +30,7 @@
     "systemTheme": "Systemowy",
     "color": "Kolor",
     "gallery": "Galeria",
-    "camera": "Aparat"
+    "camera": "Aparat",
+    "delete": "Usuń",
+    "thisFieldIsRequired": "To pole jest wymagane"
 }
