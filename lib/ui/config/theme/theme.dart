@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static Color get _seedColor => const Color(0xFFD13317);
 
-  static ThemeData get lightTheme => ThemeData(
+  static ThemeData get lightThemeDefault => ThemeData(
         colorSchemeSeed: _seedColor,
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
@@ -21,7 +21,7 @@ class AppTheme {
         ),
       );
 
-  static ThemeData get darkTheme => ThemeData(
+  static ThemeData get darkThemeDefault => ThemeData(
         colorSchemeSeed: _seedColor,
         brightness: Brightness.dark,
         filledButtonTheme: FilledButtonThemeData(
@@ -38,5 +38,16 @@ class AppTheme {
                 states.contains(MaterialState.selected) ? _seedColor : null,
           ),
         ),
+      );
+
+  static ThemeData lightTheme(Color primaryColor) => ThemeData(
+        colorSchemeSeed: primaryColor,
+        inputDecorationTheme: const InputDecorationTheme(filled: true),
+      );
+
+  static ThemeData darkTheme(Color primaryColor) => ThemeData(
+        colorSchemeSeed: primaryColor,
+        brightness: Brightness.dark,
+        inputDecorationTheme: const InputDecorationTheme(filled: true),
       );
 }

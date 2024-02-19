@@ -3,10 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../component/gap/gap_vertical.dart';
-import '../../config/theme/theme_notifier.dart';
+import '../../component/text/title.dart';
+import '../../extensions/build_context_extensions.dart';
+import '../../riverpod_provider/theme_notifier_provider.dart';
 
-class RequiredDataCompletionThemeModeSelection extends ConsumerWidget {
-  const RequiredDataCompletionThemeModeSelection({super.key});
+class RequiredDataCompletionThemeMode extends StatelessWidget {
+  const RequiredDataCompletionThemeMode({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: TitleLarge(context.str.theme),
+        ),
+        const GapVertical16(),
+        const _ThemeModeTypes()
+      ],
+    );
+  }
+}
+
+class _ThemeModeTypes extends ConsumerWidget {
+  const _ThemeModeTypes();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

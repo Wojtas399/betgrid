@@ -6,6 +6,9 @@
     "@__________HOME__________": {},
     "homeScreenTitle": "Sezon 2024",
     "homeTimerLabel": "Do pierwszego dnia testów pozostało",
+    "@__________REQUIRED_DATA_COMPLETION__________": {},
+    "requiredDataCompletionScreenTitle": "Wymagane dane",
+    "requiredDataCompletionSelectAvatar": "Wybierz avatar",
     "@__________GRAND_PRIX_BET__________": {},
     "grandPrixBetSelectDriver": "Wybierz kierowcę",
     "grandPrixBetSuccessfullySavedBets": "Pomyślnie zapisano typy",
@@ -16,5 +19,11 @@
     "additional": "Dodatkowe",
     "save": "Zapisz",
     "yes": "Tak",
-    "no": "Nie"
+    "no": "Nie",
+    "username": "Nazwa użytkownika",
+    "theme": "Motyw",
+    "lightTheme": "Jasny",
+    "darkTheme": "Ciemny",
+    "systemTheme": "Systemowy",
+    "color": "Kolor"
 }
