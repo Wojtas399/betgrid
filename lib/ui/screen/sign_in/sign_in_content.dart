@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
-import '../../riverpod_provider/auth/auth_provider.dart';
+import '../../provider/auth/auth_provider.dart';
 
 class SignInContent extends StatelessWidget {
   const SignInContent({super.key});

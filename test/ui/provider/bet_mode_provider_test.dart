@@ -1,6 +1,6 @@
 import 'package:betgrid/ui/config/season_config.dart';
-import 'package:betgrid/ui/riverpod_provider/bet_mode_provider.dart';
-import 'package:betgrid/ui/riverpod_provider/today_date_provider.dart';
+import 'package:betgrid/ui/provider/bet_mode_provider.dart';
+import 'package:betgrid/ui/provider/today_date_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

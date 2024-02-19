@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/grand_prix_id_provider.dart';
+import '../../../provider/grand_prix_id_provider.dart';
 import '../../../service/dialog_service.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import '../notifier/grand_prix_bet_notifier_state.dart';

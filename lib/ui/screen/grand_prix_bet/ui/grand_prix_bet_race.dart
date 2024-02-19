@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/driver.dart';
 import '../../../config/theme/custom_colors.dart';
-import '../../../riverpod_provider/all_drivers_provider.dart';
+import '../../../provider/all_drivers_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import 'grand_prix_bet_position_item.dart';
 import 'grand_prix_bet_table.dart';

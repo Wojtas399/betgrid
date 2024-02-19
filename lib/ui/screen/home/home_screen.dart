@@ -7,10 +7,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../../model/grand_prix.dart';
 import '../../../model/user.dart' as user;
 import '../../component/gap/gap_horizontal.dart';
-import '../../riverpod_provider/all_grand_prixes_provider.dart';
-import '../../riverpod_provider/bet_mode_provider.dart';
-import '../../riverpod_provider/logged_user_data_provider.dart';
-import '../../riverpod_provider/theme_notifier_provider.dart';
+import '../../provider/all_grand_prixes_provider.dart';
+import '../../provider/bet_mode_provider.dart';
+import '../../provider/logged_user_data_provider.dart';
+import '../../provider/theme_notifier_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/required_data_completion_screen.dart';
 import 'home_grand_prix_item.dart';

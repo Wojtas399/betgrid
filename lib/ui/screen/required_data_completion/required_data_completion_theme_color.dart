@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../riverpod_provider/theme_color_notifier_provider.dart';
+import '../../provider/theme_color_notifier_provider.dart';
 
 class RequiredDataCompletionThemeColor extends StatelessWidget {
   const RequiredDataCompletionThemeColor({super.key});

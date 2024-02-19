@@ -5,7 +5,7 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import '../../../../model/driver.dart';
 import '../../../component/text/headline.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/all_drivers_provider.dart';
+import '../../../provider/all_drivers_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import '../notifier/grand_prix_bet_notifier_state.dart';
 import 'grand_prix_bet_additional.dart';

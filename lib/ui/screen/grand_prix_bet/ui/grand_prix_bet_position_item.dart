@@ -7,7 +7,7 @@ import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text/body.dart';
 import '../../../component/text/title.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/bet_mode_provider.dart';
+import '../../../provider/bet_mode_provider.dart';
 import 'grand_prix_bet_label_cell.dart';
 
 class GrandPrixBetPositionItem extends TableRow {

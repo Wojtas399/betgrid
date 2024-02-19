@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../component/gap/gap_horizontal.dart';
-import '../../riverpod_provider/theme_notifier_provider.dart';
+import '../../provider/theme_notifier_provider.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SignInAppBar({super.key});

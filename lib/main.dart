@@ -9,8 +9,8 @@ import 'dependency_injection.dart';
 import 'firebase_options.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
-import 'ui/riverpod_provider/theme_color_notifier_provider.dart';
-import 'ui/riverpod_provider/theme_notifier_provider.dart';
+import 'ui/provider/theme_color_notifier_provider.dart';
+import 'ui/provider/theme_notifier_provider.dart';
 
 void main() async {
   configureDependencies();

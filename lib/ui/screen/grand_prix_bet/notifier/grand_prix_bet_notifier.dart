@@ -6,7 +6,7 @@ import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
-import '../../../riverpod_provider/grand_prix_id_provider.dart';
+import '../../../provider/grand_prix_id_provider.dart';
 import 'grand_prix_bet_notifier_state.dart';
 
 part 'grand_prix_bet_notifier.g.dart';

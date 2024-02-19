@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../riverpod_provider/theme_notifier_provider.dart';
+import '../../provider/theme_notifier_provider.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
   const RequiredDataCompletionThemeMode({super.key});

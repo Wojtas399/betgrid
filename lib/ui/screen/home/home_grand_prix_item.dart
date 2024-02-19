@@ -8,8 +8,8 @@ import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
-import '../../riverpod_provider/bet_mode_provider.dart';
-import '../../riverpod_provider/grand_prix_bet_status_provider.dart';
+import '../../provider/bet_mode_provider.dart';
+import '../../provider/grand_prix_bet_status_provider.dart';
 import '../../service/formatter_service.dart';
 
 class HomeGrandPrixItem extends StatefulWidget {
