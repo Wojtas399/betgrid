@@ -10,7 +10,7 @@ import 'firebase_options.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
 import 'ui/provider/theme_color_notifier_provider.dart';
-import 'ui/provider/theme_notifier_provider.dart';
+import 'ui/provider/theme_mode_notifier_provider.dart';
 
 void main() async {
   configureDependencies();
@@ -43,7 +43,7 @@ class _MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('pl')],
-      themeMode: ref.watch(themeNotifierProvider),
+      themeMode: ref.watch(themeModeNotifierProvider),
       theme: themeColor == ThemeColor.defaultRed
           ? AppTheme.lightThemeDefault
           : AppTheme.lightTheme(themeColor.value),

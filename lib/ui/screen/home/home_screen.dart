@@ -10,7 +10,7 @@ import '../../component/gap/gap_horizontal.dart';
 import '../../provider/all_grand_prixes_provider.dart';
 import '../../provider/bet_mode_provider.dart';
 import '../../provider/logged_user_data_provider.dart';
-import '../../provider/theme_notifier_provider.dart';
+import '../../provider/theme_mode_notifier_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/required_data_completion_screen.dart';
 import 'home_grand_prix_item.dart';
@@ -73,12 +73,12 @@ class _ThemeModeSwitch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeMode themeMode = ref.watch(themeNotifierProvider);
+    final ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
 
     return Switch(
       value: themeMode == ThemeMode.dark,
       onChanged: (bool isSwitched) {
-        ref.read(themeNotifierProvider.notifier).changeThemeMode(
+        ref.read(themeModeNotifierProvider.notifier).changeThemeMode(
               isSwitched ? ThemeMode.dark : ThemeMode.light,
             );
       },

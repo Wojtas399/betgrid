@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/theme_notifier_provider.dart';
+import '../../provider/theme_mode_notifier_provider.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
   const RequiredDataCompletionThemeMode({super.key});
@@ -31,8 +31,8 @@ class _ThemeModeTypes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeMode themeMode = ref.watch(themeNotifierProvider);
-    final notifier = ref.read(themeNotifierProvider.notifier);
+    final ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+    final notifier = ref.read(themeModeNotifierProvider.notifier);
     const gap = GapVertical16();
 
     return Column(
