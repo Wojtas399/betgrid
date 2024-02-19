@@ -38,6 +38,7 @@ dependencies:
   country_flags: ^2.2.0
   flutter_launcher_icons: ^0.13.1
   firebase_storage: ^11.6.5
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:
