@@ -7,10 +7,12 @@ import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
 import 'firebase_options.dart';
+import 'model/user.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
-import 'ui/provider/theme_color_notifier_provider.dart';
+import 'ui/extensions/theme_primary_color_extensions.dart';
 import 'ui/provider/theme_mode_notifier_provider.dart';
+import 'ui/provider/theme_primary_color_notifier_provider.dart';
 
 void main() async {
   configureDependencies();
@@ -31,7 +33,9 @@ class _MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeColor themeColor = ref.watch(themeColorNotifierProvider);
+    final ThemePrimaryColor themePrimaryColor = ref.watch(
+      themePrimaryColorNotifierProvider,
+    );
 
     return MaterialApp.router(
       title: 'BetGrid',
@@ -44,12 +48,12 @@ class _MyApp extends ConsumerWidget {
       ],
       supportedLocales: const [Locale('pl')],
       themeMode: ref.watch(themeModeNotifierProvider),
-      theme: themeColor == ThemeColor.defaultRed
+      theme: themePrimaryColor == ThemePrimaryColor.defaultRed
           ? AppTheme.lightThemeDefault
-          : AppTheme.lightTheme(themeColor.value),
-      darkTheme: themeColor == ThemeColor.defaultRed
+          : AppTheme.lightTheme(themePrimaryColor.toMaterialColor),
+      darkTheme: themePrimaryColor == ThemePrimaryColor.defaultRed
           ? AppTheme.darkThemeDefault
-          : AppTheme.darkTheme(themeColor.value),
+          : AppTheme.darkTheme(themePrimaryColor.toMaterialColor),
     );
   }
 }

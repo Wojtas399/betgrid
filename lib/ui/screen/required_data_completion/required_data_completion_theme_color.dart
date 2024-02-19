@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../model/user.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/theme_color_notifier_provider.dart';
+import '../../extensions/theme_primary_color_extensions.dart';
+import '../../provider/theme_primary_color_notifier_provider.dart';
 
 class RequiredDataCompletionThemeColor extends StatelessWidget {
   const RequiredDataCompletionThemeColor({super.key});
@@ -30,19 +32,21 @@ class _ColorTypes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeColor themeColor = ref.watch(themeColorNotifierProvider);
+    final ThemePrimaryColor selectedThemePrimaryColor = ref.watch(
+      themePrimaryColorNotifierProvider,
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: ThemeColor.values
+      children: ThemePrimaryColor.values
           .map(
-            (ThemeColor color) => _ColorItem(
-              isSelected: themeColor == color,
-              color: color.value,
+            (ThemePrimaryColor color) => _ColorItem(
+              isSelected: selectedThemePrimaryColor == color,
+              color: color.toMaterialColor,
               onPressed: () {
                 ref
-                    .read(themeColorNotifierProvider.notifier)
-                    .changeThemeColor(color);
+                    .read(themePrimaryColorNotifierProvider.notifier)
+                    .changeThemePrimaryColor(color);
               },
             ),
           )
