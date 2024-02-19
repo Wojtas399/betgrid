@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 class MockUserRepository extends Mock implements UserRepository {
   MockUserRepository() {
     registerFallbackValue(ThemeMode.light);
+    registerFallbackValue(ThemePrimaryColor.defaultRed);
   }
 
   void mockGetUserById({User? user}) {
@@ -17,9 +18,10 @@ class MockUserRepository extends Mock implements UserRepository {
     when(
       () => addUser(
         userId: any(named: 'userId'),
-        nick: any(named: 'nick'),
+        username: any(named: 'username'),
         avatarImgPath: any(named: 'avatarImgPath'),
         themeMode: any(named: 'themeMode'),
+        themePrimaryColor: any(named: 'themePrimaryColor'),
       ),
     ).thenAnswer((_) => Future.value());
   }

@@ -12,14 +12,18 @@ class FirebaseUserService {
 
   Future<UserDto?> addUser({
     required String userId,
-    required String nick,
+    required String username,
     required ThemeModeDto themeMode,
+    required ThemePrimaryColorDto themePrimaryColor,
   }) async {
     final docRef = getUsersRef().doc(userId);
-    await docRef.set(UserDto(
-      nick: nick,
-      themeMode: themeMode,
-    ));
+    await docRef.set(
+      UserDto(
+        username: username,
+        themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
+      ),
+    );
     final snapshot = await docRef.get();
     return snapshot.data();
   }

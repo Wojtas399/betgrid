@@ -9,8 +9,9 @@ class UserDto with _$UserDto {
     @JsonKey(includeToJson: false, includeFromJson: false)
     @Default('')
     String id,
-    required String nick,
+    required String username,
     required ThemeModeDto themeMode,
+    required ThemePrimaryColorDto themePrimaryColor,
   }) = _UserDto;
 
   factory UserDto.fromJson(Map<String, Object?> json) =>
@@ -21,3 +22,14 @@ class UserDto with _$UserDto {
 }
 
 enum ThemeModeDto { light, dark, system }
+
+enum ThemePrimaryColorDto {
+  defaultRed,
+  pink,
+  purple,
+  orange,
+  yellow,
+  green,
+  teal,
+  blue
+}

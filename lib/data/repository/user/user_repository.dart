@@ -13,8 +13,9 @@ abstract interface class UserRepository {
 
   Future<void> addUser({
     required String userId,
-    required String nick,
+    required String username,
     String? avatarImgPath,
     required ThemeMode themeMode,
+    required ThemePrimaryColor themePrimaryColor,
   });
 }

@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 class MockFirebaseUserService extends Mock implements FirebaseUserService {
   MockFirebaseUserService() {
     registerFallbackValue(ThemeModeDto.light);
+    registerFallbackValue(ThemePrimaryColorDto.defaultRed);
   }
 
   void mockLoadUserById({UserDto? userDto}) {
@@ -19,8 +20,9 @@ class MockFirebaseUserService extends Mock implements FirebaseUserService {
     when(
       () => addUser(
         userId: any(named: 'userId'),
-        nick: any(named: 'nick'),
+        username: any(named: 'username'),
         themeMode: any(named: 'themeMode'),
+        themePrimaryColor: any(named: 'themePrimaryColor'),
       ),
     ).thenAnswer((_) => Future.value(addedUserDto));
   }

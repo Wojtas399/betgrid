@@ -25,16 +25,18 @@ class LoggedUserData extends _$LoggedUserData {
   }
 
   Future<void> addLoggedUserData({
-    required String nick,
+    required String username,
     String? avatarImgPath,
     required ThemeMode themeMode,
+    required ThemePrimaryColor themePrimaryColor,
   }) async {
     if (_loggedUserId != null) {
       await ref.read(userRepositoryProvider).addUser(
             userId: _loggedUserId!,
-            nick: nick,
+            username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
           );
     }
   }

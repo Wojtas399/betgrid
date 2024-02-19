@@ -71,7 +71,10 @@ void main() {
     'build, '
     'should get end emit logged user data',
     () async {
-      final User loggedUserData = createUser(id: loggedUserId, nick: 'nick');
+      final User loggedUserData = createUser(
+        id: loggedUserId,
+        username: 'username',
+      );
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: loggedUserData);
       final container = makeProviderContainer(authService, userRepository);
@@ -105,9 +108,10 @@ void main() {
     'logged user id is null'
     'should do nothing',
     () async {
-      const String nick = 'nick';
+      const String username = 'username';
       const String avatarImgPath = 'avatar/img';
       const ThemeMode themeMode = ThemeMode.system;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.teal;
       authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
@@ -118,17 +122,19 @@ void main() {
       );
 
       await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
-            nick: nick,
+            username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
           );
 
       verifyNever(
         () => userRepository.addUser(
           userId: loggedUserId,
-          nick: nick,
+          username: username,
           avatarImgPath: avatarImgPath,
           themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
         ),
       );
     },
@@ -138,9 +144,10 @@ void main() {
     'addLoggedUserData, '
     'should call method from UserRepository to add user data',
     () async {
-      const String nick = 'nick';
+      const String username = 'username';
       const String avatarImgPath = 'avatar/img';
       const ThemeMode themeMode = ThemeMode.system;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById();
       userRepository.mockAddUser();
@@ -154,17 +161,19 @@ void main() {
 
       await container.read(loggedUserDataProvider.future);
       await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
-            nick: nick,
+            username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
           );
 
       verify(
         () => userRepository.addUser(
           userId: loggedUserId,
-          nick: nick,
+          username: username,
           avatarImgPath: avatarImgPath,
           themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
         ),
       ).called(1);
     },

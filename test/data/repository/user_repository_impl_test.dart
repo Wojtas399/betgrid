@@ -36,11 +36,11 @@ void main() {
     'user exists in repository state, '
     'should return user from state',
     () {
-      final User expectedUser = createUser(id: 'u2', nick: 'nick 2');
+      final User expectedUser = createUser(id: 'u2', username: 'username 2');
       final List<User> existingUsers = [
-        createUser(id: 'u1', nick: 'nick 1'),
+        createUser(id: 'u1', username: 'username 1'),
         expectedUser,
-        createUser(id: 'u3', nick: 'nick 3'),
+        createUser(id: 'u3', username: 'username 3'),
       ];
       repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
 
@@ -57,17 +57,17 @@ void main() {
     'should emit him',
     () async {
       const String id = 'u2';
-      const String nick = 'nick 2';
+      const String username = 'username 2';
       const String avatarUrl = 'avatar/url';
-      final UserDto expectedUserDto = createUserDto(id: id, nick: nick);
+      final UserDto expectedUserDto = createUserDto(id: id, username: username);
       final User expectedUser = createUser(
         id: id,
-        nick: nick,
+        username: username,
         avatarUrl: avatarUrl,
       );
       final List<User> existingUsers = [
-        createUser(id: 'u1', nick: 'nick 1'),
-        createUser(id: 'u3', nick: 'nick 3'),
+        createUser(id: 'u1', username: 'username 1'),
+        createUser(id: 'u3', username: 'username 3'),
       ];
       dbUserService.mockLoadUserById(userDto: expectedUserDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: avatarUrl);
@@ -96,33 +96,40 @@ void main() {
     'should add user data to db and to repository state',
     () async {
       const String userId = 'u1';
-      const String nick = 'user';
+      const String username = 'user';
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemeModeDto themeModeDto = ThemeModeDto.dark;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed;
+      const ThemePrimaryColorDto themePrimaryColorDto =
+          ThemePrimaryColorDto.defaultRed;
       const UserDto addedUserDto = UserDto(
         id: userId,
-        nick: nick,
+        username: username,
         themeMode: themeModeDto,
+        themePrimaryColor: themePrimaryColorDto,
       );
       const User addedUser = User(
         id: userId,
-        nick: nick,
+        username: username,
         themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
       );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
 
       await repositoryImpl.addUser(
         userId: userId,
-        nick: nick,
+        username: username,
         themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
       );
 
       expect(repositoryImpl.repositoryState$, emits([addedUser]));
       verify(
         () => dbUserService.addUser(
           userId: userId,
-          nick: nick,
+          username: username,
           themeMode: themeModeDto,
+          themePrimaryColor: themePrimaryColorDto,
         ),
       ).called(1);
     },
@@ -135,38 +142,45 @@ void main() {
     'should add user to repository state',
     () async {
       const String userId = 'u1';
-      const String nick = 'user';
+      const String username = 'user';
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemeModeDto themeModeDto = ThemeModeDto.dark;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed;
+      const ThemePrimaryColorDto themePrimaryColorDto =
+          ThemePrimaryColorDto.defaultRed;
       const String avatarImgPath = 'avatar/img';
       const String avatarUrl = 'avatar/url';
       const UserDto addedUserDto = UserDto(
         id: userId,
-        nick: nick,
+        username: username,
         themeMode: themeModeDto,
+        themePrimaryColor: themePrimaryColorDto,
       );
       const User addedUser = User(
         id: userId,
-        nick: nick,
+        username: username,
         avatarUrl: avatarUrl,
         themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
       );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
 
       await repositoryImpl.addUser(
         userId: userId,
-        nick: nick,
+        username: username,
         avatarImgPath: avatarImgPath,
         themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
       );
 
       expect(repositoryImpl.repositoryState$, emits([addedUser]));
       verify(
         () => dbUserService.addUser(
           userId: userId,
-          nick: nick,
+          username: username,
           themeMode: themeModeDto,
+          themePrimaryColor: themePrimaryColorDto,
         ),
       ).called(1);
       verify(
