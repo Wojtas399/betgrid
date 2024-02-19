@@ -1,3 +1,4 @@
+import 'package:betgrid/data/exception/user_repository_exception.dart';
 import 'package:betgrid/data/repository/user/user_repository_impl.dart';
 import 'package:betgrid/firebase/model/user_dto/user_dto.dart';
 import 'package:betgrid/firebase/service/firebase_avatar_service.dart';
@@ -92,6 +93,31 @@ void main() {
 
   test(
     'addUser, '
+    'username is already taken, '
+    'should throw UserRepositoryExceptionUsernameAlreadyTaken exception',
+    () async {
+      const String userId = 'u1';
+      const String username = 'user';
+      const ThemeMode themeMode = ThemeMode.dark;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed;
+      const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
+
+      try {
+        await repositoryImpl.addUser(
+          userId: userId,
+          username: username,
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        );
+      } catch (exception) {
+        expect(exception, expectedException);
+      }
+    },
+  );
+
+  test(
+    'addUser, '
     'avatarImgPath is null, '
     'should add user data to db and to repository state',
     () async {
@@ -114,6 +140,7 @@ void main() {
         themeMode: themeMode,
         themePrimaryColor: themePrimaryColor,
       );
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
 
       await repositoryImpl.addUser(
@@ -163,6 +190,7 @@ void main() {
         themeMode: themeMode,
         themePrimaryColor: themePrimaryColor,
       );
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
 

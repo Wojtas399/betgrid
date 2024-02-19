@@ -27,4 +27,12 @@ class FirebaseUserService {
     final snapshot = await docRef.get();
     return snapshot.data();
   }
+
+  Future<bool> isUsernameAlreadyTaken({required String username}) async {
+    final snapshot = await getUsersRef()
+        .where('username', isEqualTo: username)
+        .limit(1)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
 }
