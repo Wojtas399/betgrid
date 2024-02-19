@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../dependency_injection.dart';
+import '../component/dialog/actions_dialog_component.dart';
 import '../component/dialog/loading_dialog.dart';
 import '../config/router/app_router.dart';
 
@@ -24,6 +25,21 @@ void closeLoadingDialog() {
     Navigator.of(context, rootNavigator: true).pop();
     _isLoadingDialogOpened = false;
   }
+}
+
+Future<T?> askForAction<T>({
+  required List<ActionsDialogItem> actions,
+  String? title,
+}) async {
+  final BuildContext? context = getIt<AppRouter>().navigatorKey.currentContext;
+  if (context == null) return null;
+  return await showModalBottomSheet<T?>(
+    context: context,
+    builder: (BuildContext context) => ActionsDialog(
+      actions: actions,
+      title: title,
+    ),
+  );
 }
 
 void showSnackbarMessage(

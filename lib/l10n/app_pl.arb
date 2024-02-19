@@ -9,6 +9,7 @@
     "@__________REQUIRED_DATA_COMPLETION__________": {},
     "requiredDataCompletionScreenTitle": "Wymagane dane",
     "requiredDataCompletionSelectAvatar": "Wybierz avatar",
+    "requiredDataCompletionSelectAvatarSource": "Wybierz źródło avataru",
     "@__________GRAND_PRIX_BET__________": {},
     "grandPrixBetSelectDriver": "Wybierz kierowcę",
     "grandPrixBetSuccessfullySavedBets": "Pomyślnie zapisano typy",
@@ -18,6 +19,7 @@
     "race": "Wyścig",
     "additional": "Dodatkowe",
     "save": "Zapisz",
+    "cancel": "Anuluj",
     "yes": "Tak",
     "no": "Nie",
     "username": "Nazwa użytkownika",
@@ -25,5 +27,7 @@
     "lightTheme": "Jasny",
     "darkTheme": "Ciemny",
     "systemTheme": "Systemowy",
-    "color": "Kolor"
+    "color": "Kolor",
+    "gallery": "Galeria",
+    "camera": "Aparat"
 }
