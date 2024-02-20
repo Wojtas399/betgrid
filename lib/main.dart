@@ -48,7 +48,8 @@ class _MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('pl')],
-      themeMode: ref.watch(themeModeNotifierProvider).toMaterialThemeMode,
+      themeMode:
+          ref.watch(themeModeNotifierProvider).value?.toMaterialThemeMode,
       theme: themePrimaryColor == ThemePrimaryColor.defaultRed
           ? AppTheme.lightThemeDefault
           : AppTheme.lightTheme(themePrimaryColor.toMaterialColor),

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../model/user.dart' as user;
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -72,10 +73,15 @@ class _SubmitButton extends ConsumerWidget {
   const _SubmitButton();
 
   Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
-    await ref.read(requiredDataCompletionNotifierProvider.notifier).submit(
-          themeMode: ref.read(themeModeNotifierProvider),
-          themePrimaryColor: ref.read(themePrimaryColorNotifierProvider),
-        );
+    final AsyncValue<user.ThemeMode> themeMode = ref.read(
+      themeModeNotifierProvider,
+    );
+    if (themeMode.hasValue) {
+      await ref.read(requiredDataCompletionNotifierProvider.notifier).submit(
+            themeMode: themeMode.value!,
+            themePrimaryColor: ref.read(themePrimaryColorNotifierProvider),
+          );
+    }
   }
 
   @override

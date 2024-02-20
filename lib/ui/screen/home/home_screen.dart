@@ -69,10 +69,11 @@ class _ThemeModeSwitch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user.ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+    final AsyncValue<user.ThemeMode> themeMode =
+        ref.watch(themeModeNotifierProvider);
 
     return Switch(
-      value: themeMode == user.ThemeMode.dark,
+      value: themeMode.value == user.ThemeMode.dark,
       onChanged: (bool isSwitched) {
         ref.read(themeModeNotifierProvider.notifier).changeThemeMode(
               isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,

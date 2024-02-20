@@ -32,7 +32,9 @@ class _ThemeModeTypes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user.ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+    final AsyncValue<user.ThemeMode> themeMode = ref.watch(
+      themeModeNotifierProvider,
+    );
     final notifier = ref.read(themeModeNotifierProvider.notifier);
     const gap = GapVertical16();
 
@@ -40,7 +42,7 @@ class _ThemeModeTypes extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _ThemeModeItem(
-          isSelected: themeMode == user.ThemeMode.light,
+          isSelected: themeMode.value == user.ThemeMode.light,
           label: 'Jasny',
           iconData: Icons.light_mode,
           onPressed: () {
@@ -49,7 +51,7 @@ class _ThemeModeTypes extends ConsumerWidget {
         ),
         gap,
         _ThemeModeItem(
-          isSelected: themeMode == user.ThemeMode.dark,
+          isSelected: themeMode.value == user.ThemeMode.dark,
           label: 'Ciemny',
           iconData: Icons.dark_mode,
           onPressed: () {
@@ -58,7 +60,7 @@ class _ThemeModeTypes extends ConsumerWidget {
         ),
         gap,
         _ThemeModeItem(
-          isSelected: themeMode == user.ThemeMode.system,
+          isSelected: themeMode.value == user.ThemeMode.system,
           label: 'Systemowy',
           iconData: MdiIcons.themeLightDark,
           onPressed: () {
