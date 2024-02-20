@@ -1,4 +1,5 @@
 import 'package:betgrid/auth/auth_service.dart';
+import 'package:betgrid/data/exception/user_repository_exception.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:betgrid/ui/screen/required_data_completion/notifier/required_data_completion_notifier.dart';
@@ -197,6 +198,92 @@ void main() {
 
   test(
     'submit, '
+    'username is already taken, '
+    'should emit RequiredDataCompletionNotifierStatusUsernameAlreadyTaken status',
+    () async {
+      const String loggedUserId = 'u1';
+      const String username = 'username';
+      const ThemeMode themeMode = ThemeMode.dark;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockAddUser(
+        throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
+      );
+      final container = makeProviderContainer(authService, userRepository);
+      final listener =
+          Listener<AsyncValue<RequiredDataCompletionNotifierState>>();
+      container.listen(
+        requiredDataCompletionNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+      final notifier = container.read(
+        requiredDataCompletionNotifierProvider.notifier,
+      );
+
+      await container.read(requiredDataCompletionNotifierProvider.future);
+      notifier.updateUsername(username);
+      await notifier.submit(
+        themeMode: themeMode,
+        themePrimaryColor: themePrimaryColor,
+      );
+
+      RequiredDataCompletionNotifierState state =
+          const RequiredDataCompletionNotifierState();
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<RequiredDataCompletionNotifierState>(),
+            ),
+        () => listener(
+              const AsyncLoading<RequiredDataCompletionNotifierState>(),
+              AsyncData<RequiredDataCompletionNotifierState>(state),
+            ),
+        () {
+          final prevState = state;
+          state = state.copyWith(username: username);
+          return listener(
+            AsyncData<RequiredDataCompletionNotifierState>(prevState),
+            AsyncData<RequiredDataCompletionNotifierState>(state),
+          );
+        },
+        () {
+          final prevState = state;
+          state = state.copyWith(
+            status: const RequiredDataCompletionNotifierStatusSavingData(),
+          );
+          return listener(
+            AsyncData<RequiredDataCompletionNotifierState>(prevState),
+            AsyncData<RequiredDataCompletionNotifierState>(state),
+          );
+        },
+        () {
+          final prevState = state;
+          state = state.copyWith(
+            status:
+                const RequiredDataCompletionNotifierStatusUsernameAlreadyTaken(),
+          );
+          return listener(
+            AsyncData<RequiredDataCompletionNotifierState>(prevState),
+            AsyncData<RequiredDataCompletionNotifierState>(state),
+          );
+        },
+      ]);
+      verifyNoMoreInteractions(listener);
+      verify(() => authService.loggedUserId$).called(1);
+      verify(
+        () => userRepository.addUser(
+          userId: loggedUserId,
+          username: username,
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'submit, '
     'should call method from UserRepository to save user data and should '
     'emit RequiredDataCompletionNotifierStatusDataSaved status',
     () async {
@@ -222,7 +309,6 @@ void main() {
       await container.read(requiredDataCompletionNotifierProvider.future);
       notifier.updateAvatarImgPath(avatarImgPath);
       notifier.updateUsername(username);
-      await container.read(requiredDataCompletionNotifierProvider.future);
       await notifier.submit(
         themeMode: themeMode,
         themePrimaryColor: themePrimaryColor,

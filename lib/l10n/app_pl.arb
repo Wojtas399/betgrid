@@ -32,5 +32,6 @@
     "gallery": "Galeria",
     "camera": "Aparat",
     "delete": "Usuń",
-    "thisFieldIsRequired": "To pole jest wymagane"
+    "requiredField": "To pole jest wymagane",
+    "usernameAlreadyTaken": "Ta nazwa użytkownika jest już zajęta"
 }

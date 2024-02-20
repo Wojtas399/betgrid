@@ -10,6 +10,19 @@ import '../notifier/required_data_completion_notifier_state.dart';
 class RequiredDataCompletionUsername extends ConsumerWidget {
   const RequiredDataCompletionUsername({super.key});
 
+  String? _validate(
+    RequiredDataCompletionNotifierStatus? notifierStatus,
+    BuildContext context,
+  ) {
+    if (notifierStatus is RequiredDataCompletionNotifierStatusEmptyUsername) {
+      return context.str.requiredField;
+    } else if (notifierStatus
+        is RequiredDataCompletionNotifierStatusUsernameAlreadyTaken) {
+      return context.str.usernameAlreadyTaken;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifierStatus = ref.watch(
@@ -32,10 +45,7 @@ class RequiredDataCompletionUsername extends ConsumerWidget {
                   .read(requiredDataCompletionNotifierProvider.notifier)
                   .updateUsername(value);
             },
-            validator: (_) => notifierStatus
-                    is RequiredDataCompletionNotifierStatusEmptyUsername
-                ? context.str.thisFieldIsRequired
-                : null,
+            validator: (_) => _validate(notifierStatus, context),
             autovalidateMode: AutovalidateMode.always,
             onTapOutside: (_) {
               FocusScope.of(context).unfocus();

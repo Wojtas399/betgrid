@@ -14,15 +14,19 @@ class MockUserRepository extends Mock implements UserRepository {
     ).thenAnswer((_) => Stream.value(user));
   }
 
-  void mockAddUser() {
-    when(
-      () => addUser(
+  void mockAddUser({Object? throwable}) {
+    if (throwable != null) {
+      when(_addUserCall).thenThrow(throwable);
+    } else {
+      when(_addUserCall).thenAnswer((_) => Future.value());
+    }
+  }
+
+  Future<void> _addUserCall() => addUser(
         userId: any(named: 'userId'),
         username: any(named: 'username'),
         avatarImgPath: any(named: 'avatarImgPath'),
         themeMode: any(named: 'themeMode'),
         themePrimaryColor: any(named: 'themePrimaryColor'),
-      ),
-    ).thenAnswer((_) => Future.value());
-  }
+      );
 }

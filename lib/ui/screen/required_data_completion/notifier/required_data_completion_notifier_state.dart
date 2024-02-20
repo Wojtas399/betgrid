@@ -31,12 +31,17 @@ class RequiredDataCompletionNotifierStatusCompleted
   const RequiredDataCompletionNotifierStatusCompleted();
 }
 
+class RequiredDataCompletionNotifierStatusDataSaved
+    extends RequiredDataCompletionNotifierStatus {
+  const RequiredDataCompletionNotifierStatusDataSaved();
+}
+
 class RequiredDataCompletionNotifierStatusEmptyUsername
     extends RequiredDataCompletionNotifierStatus {
   const RequiredDataCompletionNotifierStatusEmptyUsername();
 }
 
-class RequiredDataCompletionNotifierStatusDataSaved
+class RequiredDataCompletionNotifierStatusUsernameAlreadyTaken
     extends RequiredDataCompletionNotifierStatus {
-  const RequiredDataCompletionNotifierStatusDataSaved();
+  const RequiredDataCompletionNotifierStatusUsernameAlreadyTaken();
 }

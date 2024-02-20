@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../auth/auth_service.dart';
+import '../../../../data/exception/user_repository_exception.dart';
 import '../../../../data/repository/user/user_repository.dart';
 import '../../../../model/user.dart';
 import 'required_data_completion_notifier_state.dart';
@@ -44,15 +45,22 @@ class RequiredDataCompletionNotifier extends _$RequiredDataCompletionNotifier {
     state = AsyncData(state.value!.copyWith(
       status: const RequiredDataCompletionNotifierStatusSavingData(),
     ));
-    await ref.read(userRepositoryProvider).addUser(
-          userId: loggedUserId,
-          username: state.value!.username,
-          avatarImgPath: state.value!.avatarImgPath,
-          themeMode: themeMode,
-          themePrimaryColor: themePrimaryColor,
-        );
-    state = AsyncData(state.value!.copyWith(
-      status: const RequiredDataCompletionNotifierStatusDataSaved(),
-    ));
+    RequiredDataCompletionNotifierStatus status =
+        const RequiredDataCompletionNotifierStatusDataSaved();
+    try {
+      await ref.read(userRepositoryProvider).addUser(
+            userId: loggedUserId,
+            username: state.value!.username,
+            avatarImgPath: state.value!.avatarImgPath,
+            themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
+          );
+    } on UserRepositoryException catch (exception) {
+      if (exception is UserRepositoryExceptionUsernameAlreadyTaken) {
+        status =
+            const RequiredDataCompletionNotifierStatusUsernameAlreadyTaken();
+      }
+    }
+    state = AsyncData(state.value!.copyWith(status: status));
   }
 }
