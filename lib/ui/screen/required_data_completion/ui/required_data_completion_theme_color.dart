@@ -32,7 +32,7 @@ class _ColorTypes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemePrimaryColor selectedThemePrimaryColor = ref.watch(
+    final AsyncValue<ThemePrimaryColor> selectedThemePrimaryColor = ref.watch(
       themePrimaryColorNotifierProvider,
     );
 
@@ -41,7 +41,7 @@ class _ColorTypes extends ConsumerWidget {
       children: ThemePrimaryColor.values
           .map(
             (ThemePrimaryColor color) => _ColorItem(
-              isSelected: selectedThemePrimaryColor == color,
+              isSelected: selectedThemePrimaryColor.value == color,
               color: color.toMaterialColor,
               onPressed: () {
                 ref

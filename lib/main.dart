@@ -34,7 +34,7 @@ class _MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemePrimaryColor themePrimaryColor = ref.watch(
+    final AsyncValue<ThemePrimaryColor> themePrimaryColor = ref.watch(
       themePrimaryColorNotifierProvider,
     );
 
@@ -50,12 +50,12 @@ class _MyApp extends ConsumerWidget {
       supportedLocales: const [Locale('pl')],
       themeMode:
           ref.watch(themeModeNotifierProvider).value?.toMaterialThemeMode,
-      theme: themePrimaryColor == ThemePrimaryColor.defaultRed
+      theme: themePrimaryColor.value == ThemePrimaryColor.defaultRed
           ? AppTheme.lightThemeDefault
-          : AppTheme.lightTheme(themePrimaryColor.toMaterialColor),
-      darkTheme: themePrimaryColor == ThemePrimaryColor.defaultRed
+          : AppTheme.lightTheme(themePrimaryColor.value?.toMaterialColor),
+      darkTheme: themePrimaryColor.value == ThemePrimaryColor.defaultRed
           ? AppTheme.darkThemeDefault
-          : AppTheme.darkTheme(themePrimaryColor.toMaterialColor),
+          : AppTheme.darkTheme(themePrimaryColor.value?.toMaterialColor),
     );
   }
 }

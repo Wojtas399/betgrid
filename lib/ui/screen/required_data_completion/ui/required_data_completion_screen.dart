@@ -76,10 +76,13 @@ class _SubmitButton extends ConsumerWidget {
     final AsyncValue<user.ThemeMode> themeMode = ref.read(
       themeModeNotifierProvider,
     );
-    if (themeMode.hasValue) {
+    final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.read(
+      themePrimaryColorNotifierProvider,
+    );
+    if (themeMode.hasValue && themePrimaryColor.hasValue) {
       await ref.read(requiredDataCompletionNotifierProvider.notifier).submit(
             themeMode: themeMode.value!,
-            themePrimaryColor: ref.read(themePrimaryColorNotifierProvider),
+            themePrimaryColor: themePrimaryColor.value!,
           );
     }
   }

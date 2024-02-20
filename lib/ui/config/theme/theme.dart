@@ -40,12 +40,12 @@ class AppTheme {
         ),
       );
 
-  static ThemeData lightTheme(Color primaryColor) => ThemeData(
+  static ThemeData lightTheme(Color? primaryColor) => ThemeData(
         colorSchemeSeed: primaryColor,
         inputDecorationTheme: const InputDecorationTheme(filled: true),
       );
 
-  static ThemeData darkTheme(Color primaryColor) => ThemeData(
+  static ThemeData darkTheme(Color? primaryColor) => ThemeData(
         colorSchemeSeed: primaryColor,
         brightness: Brightness.dark,
         inputDecorationTheme: const InputDecorationTheme(filled: true),
