@@ -50,12 +50,8 @@ class _MyApp extends ConsumerWidget {
       supportedLocales: const [Locale('pl')],
       themeMode:
           ref.watch(themeModeNotifierProvider).value?.toMaterialThemeMode,
-      theme: themePrimaryColor.value == ThemePrimaryColor.defaultRed
-          ? AppTheme.lightThemeDefault
-          : AppTheme.lightTheme(themePrimaryColor.value?.toMaterialColor),
-      darkTheme: themePrimaryColor.value == ThemePrimaryColor.defaultRed
-          ? AppTheme.darkThemeDefault
-          : AppTheme.darkTheme(themePrimaryColor.value?.toMaterialColor),
+      theme: AppTheme.lightTheme(themePrimaryColor.value?.toMaterialColor),
+      darkTheme: AppTheme.darkTheme(themePrimaryColor.value?.toMaterialColor),
     );
   }
 }
