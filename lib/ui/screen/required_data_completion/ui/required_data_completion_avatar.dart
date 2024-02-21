@@ -41,26 +41,20 @@ class _Avatar extends ConsumerWidget {
     );
 
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 250,
         height: 250,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          shape: BoxShape.circle,
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: avatarImgPath != null
-            ? Image.file(
-                File(avatarImgPath),
-                fit: BoxFit.cover,
-              )
-            : Center(
-                child: Icon(
+        child: CircleAvatar(
+          backgroundImage:
+              avatarImgPath != null ? FileImage(File(avatarImgPath)) : null,
+          child: avatarImgPath == null
+              ? Icon(
                   Icons.person,
                   size: 128,
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-              ),
+                )
+              : null,
+        ),
       ),
     );
   }

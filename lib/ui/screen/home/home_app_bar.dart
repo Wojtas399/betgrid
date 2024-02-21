@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
+import '../../provider/logged_user_data_provider.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -30,12 +32,32 @@ class _Avatar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final String? username = ref.watch(
+      loggedUserDataProvider.select(
+        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.username,
+      ),
+    );
+    final String? avatarUrl = ref.watch(
+      loggedUserDataProvider.select(
+        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.avatarUrl,
+      ),
+    );
+
     return IconButton(
       onPressed: () {
         context.navigateTo(const ProfileRoute());
       },
-      icon: const CircleAvatar(
-        child: Text('WP'),
+      icon: CircleAvatar(
+        backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
+        child: username == null && avatarUrl == null
+            ? const SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(strokeWidth: 2.0),
+              )
+            : avatarUrl == null
+                ? Text('${username?[0].toUpperCase()}')
+                : null,
       ),
     );
   }
