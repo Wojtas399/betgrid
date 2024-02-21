@@ -136,9 +136,6 @@ class _DropdownButtonState extends State<_DropdownButton> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Driver>(
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-      ),
       value: _selectedDriver,
       hint: Text(context.str.grandPrixBetSelectDriver),
       selectedItemBuilder: (_) => _sortedDrivers

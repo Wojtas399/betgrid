@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../riverpod_provider/bet_mode_provider.dart';
+import '../../../provider/bet_mode_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import '../notifier/grand_prix_bet_notifier_state.dart';
 
