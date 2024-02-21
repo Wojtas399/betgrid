@@ -1,18 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../model/grand_prix.dart';
 import '../../../model/user.dart' as user;
-import '../../component/gap/gap_horizontal.dart';
 import '../../provider/all_grand_prixes_provider.dart';
 import '../../provider/bet_mode_provider.dart';
 import '../../provider/logged_user_data_provider.dart';
-import '../../provider/theme_mode_notifier_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/ui/required_data_completion_screen.dart';
+import 'home_app_bar.dart';
 import 'home_grand_prix_item.dart';
 import 'home_timer.dart';
 
@@ -35,50 +32,9 @@ class HomeScreen extends ConsumerWidget {
       },
     );
 
-    return Scaffold(
-      appBar: _AppBar(),
-      body: const _Body(),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      scrolledUnderElevation: 0.0,
-      title: Text(Str.of(context).homeScreenTitle),
-      actions: [
-        Icon(
-          MdiIcons.themeLightDark,
-          color: Theme.of(context).colorScheme.outline,
-        ),
-        const GapHorizontal8(),
-        const _ThemeModeSwitch(),
-        const GapHorizontal8(),
-      ],
-    );
-  }
-}
-
-class _ThemeModeSwitch extends ConsumerWidget {
-  const _ThemeModeSwitch();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<user.ThemeMode> themeMode =
-        ref.watch(themeModeNotifierProvider);
-
-    return Switch(
-      value: themeMode.value == user.ThemeMode.dark,
-      onChanged: (bool isSwitched) {
-        ref.read(themeModeNotifierProvider.notifier).changeThemeMode(
-              isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
-            );
-      },
+    return const Scaffold(
+      appBar: HomeAppBar(),
+      body: _Body(),
     );
   }
 }
