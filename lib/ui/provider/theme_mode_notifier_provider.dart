@@ -9,11 +9,16 @@ part 'theme_mode_notifier_provider.g.dart';
 
 @riverpod
 class ThemeModeNotifier extends _$ThemeModeNotifier {
+  String? _loggedUserId;
+
   @override
   Stream<ThemeMode> build() {
     return ref
         .watch(authServiceProvider)
         .loggedUserId$
+        .doOnData((String? loggedUserId) {
+          _loggedUserId = loggedUserId;
+        })
         .switchMap(
           (String? loggedUserId) => loggedUserId != null
               ? ref
@@ -24,7 +29,13 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
         .map((User? loggedUser) => loggedUser?.themeMode ?? ThemeMode.light);
   }
 
-  void changeThemeMode(ThemeMode mode) {
-    state = AsyncData(mode);
+  void changeThemeMode(ThemeMode themeMode) async {
+    state = AsyncData(themeMode);
+    if (_loggedUserId != null) {
+      await ref.read(userRepositoryProvider).updateUserData(
+            userId: _loggedUserId!,
+            themeMode: themeMode,
+          );
+    }
   }
 }

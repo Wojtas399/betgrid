@@ -6,7 +6,7 @@ import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_provider.dart';
+import '../../provider/logged_user_data_notifier_provider.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -33,12 +33,12 @@ class _Avatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<User?> loggedUserData) => loggedUserData.value?.username,
       ),
     );
     final String? avatarUrl = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<User?> loggedUserData) => loggedUserData.value?.avatarUrl,
       ),
     );

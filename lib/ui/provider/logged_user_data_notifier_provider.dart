@@ -5,10 +5,10 @@ import '../../auth/auth_service.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../model/user.dart';
 
-part 'logged_user_data_provider.g.dart';
+part 'logged_user_data_notifier_provider.g.dart';
 
 @riverpod
-class LoggedUserData extends _$LoggedUserData {
+class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
   String? _loggedUserId;
 
   @override

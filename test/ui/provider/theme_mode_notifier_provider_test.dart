@@ -144,7 +144,8 @@ void main() {
 
   test(
     'changeThemeMode, '
-    'should update theme mode in state',
+    'logged user id does not exist, '
+    'should only update theme mode in state',
     () async {
       const ThemeMode expectedThemeMode = ThemeMode.system;
       authService.mockGetLoggedUserId(null);
@@ -180,6 +181,66 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
+      verify(() => authService.loggedUserId$).called(1);
+      verifyNever(
+        () => userRepository.updateUserData(
+          userId: any(named: 'userId'),
+          themeMode: expectedThemeMode,
+        ),
+      );
+    },
+  );
+
+  test(
+    'changeThemeMode, '
+    'logged user id exists, '
+    'should update theme mode in state and should call method from UserRepository '
+    "to update user's data with new theme mode",
+    () async {
+      const String loggedUserId = 'u1';
+      const ThemeMode expectedThemeMode = ThemeMode.system;
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserData();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<ThemeMode>>();
+      container.listen(
+        themeModeNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(themeModeNotifierProvider.future);
+      container.read(themeModeNotifierProvider.notifier).changeThemeMode(
+            expectedThemeMode,
+          );
+
+      await expectLater(
+        container.read(themeModeNotifierProvider.future),
+        completion(expectedThemeMode),
+      );
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<ThemeMode>(),
+            ),
+        () => listener(
+              const AsyncLoading<ThemeMode>(),
+              const AsyncData<ThemeMode>(ThemeMode.light),
+            ),
+        () => listener(
+              const AsyncData<ThemeMode>(ThemeMode.light),
+              const AsyncData<ThemeMode>(expectedThemeMode),
+            ),
+      ]);
+      verifyNoMoreInteractions(listener);
+      verify(() => authService.loggedUserId$).called(1);
+      verify(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          themeMode: expectedThemeMode,
+        ),
+      ).called(1);
     },
   );
 }

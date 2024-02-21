@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user.dart' as user;
-import '../../provider/logged_user_data_provider.dart';
+import '../../provider/logged_user_data_notifier_provider.dart';
 
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({super.key});
@@ -10,13 +10,13 @@ class ProfileAvatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.username,
       ),
     );
     final String? avatarUrl = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<user.User?> loggedUser) => loggedUser.value?.avatarUrl,
       ),
     );

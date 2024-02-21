@@ -6,7 +6,7 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_provider.dart';
+import '../../provider/logged_user_data_notifier_provider.dart';
 
 class ProfileUsername extends ConsumerWidget {
   const ProfileUsername({super.key});
@@ -14,7 +14,7 @@ class ProfileUsername extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.username,
       ),

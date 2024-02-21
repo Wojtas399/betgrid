@@ -1,7 +1,7 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/provider/logged_user_data_provider.dart';
+import 'package:betgrid/ui/provider/logged_user_data_notifier_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -44,13 +44,13 @@ void main() {
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
-        loggedUserDataProvider,
+        loggedUserDataNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(loggedUserDataProvider.future),
+        container.read(loggedUserDataNotifierProvider.future),
         completion(null),
       );
       verifyInOrder([
@@ -80,13 +80,13 @@ void main() {
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
-        loggedUserDataProvider,
+        loggedUserDataNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(loggedUserDataProvider.future),
+        container.read(loggedUserDataNotifierProvider.future),
         completion(loggedUserData),
       );
       verifyInOrder([
@@ -116,12 +116,14 @@ void main() {
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
-        loggedUserDataProvider,
+        loggedUserDataNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .addLoggedUserData(
             username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode,
@@ -154,13 +156,15 @@ void main() {
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
-        loggedUserDataProvider,
+        loggedUserDataNotifierProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(loggedUserDataProvider.future);
-      await container.read(loggedUserDataProvider.notifier).addLoggedUserData(
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .addLoggedUserData(
             username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode,

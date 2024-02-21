@@ -6,7 +6,7 @@ import '../../../model/grand_prix.dart';
 import '../../../model/user.dart' as user;
 import '../../provider/all_grand_prixes_provider.dart';
 import '../../provider/bet_mode_provider.dart';
-import '../../provider/logged_user_data_provider.dart';
+import '../../provider/logged_user_data_notifier_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/ui/required_data_completion_screen.dart';
 import 'home_app_bar.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-      loggedUserDataProvider,
+      loggedUserDataNotifierProvider,
       (previous, next) {
         _onLoggedUserDataChanged(next);
       },

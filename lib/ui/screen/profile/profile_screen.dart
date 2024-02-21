@@ -8,7 +8,8 @@ import '../../component/text/title.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_provider.dart';
+import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/theme_mode_notifier_provider.dart';
 import 'profile_avatar.dart';
 import 'profile_username.dart';
 
@@ -49,11 +50,8 @@ class _ThemeMode extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user.ThemeMode? themeMode = ref.watch(
-      loggedUserDataProvider.select(
-        (AsyncValue<user.User?> loggedUserData) =>
-            loggedUserData.value?.themeMode,
-      ),
+    final AsyncValue<user.ThemeMode> themeMode = ref.watch(
+      themeModeNotifierProvider,
     );
 
     return Column(
@@ -68,9 +66,11 @@ class _ThemeMode extends ConsumerWidget {
         ),
         const GapVertical16(),
         ThemeModeSelection(
-          selectedThemeMode: themeMode,
+          selectedThemeMode: themeMode.value,
           onThemeModeChanged: (user.ThemeMode themeMode) {
-            //TODO
+            ref
+                .read(themeModeNotifierProvider.notifier)
+                .changeThemeMode(themeMode);
           },
         ),
       ],
@@ -84,7 +84,7 @@ class _ThemePrimaryColor extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user.ThemePrimaryColor? themePrimaryColor = ref.watch(
-      loggedUserDataProvider.select(
+      loggedUserDataNotifierProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.themePrimaryColor,
       ),
