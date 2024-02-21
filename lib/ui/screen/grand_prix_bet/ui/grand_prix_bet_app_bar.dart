@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../riverpod_provider/bet_mode_provider.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import '../notifier/grand_prix_bet_notifier_state.dart';
 
@@ -17,13 +18,16 @@ class GrandPrixBetAppBar extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool doesStandingsListExist =
         ref.watch(grandPrixBetNotifierProvider).hasValue;
+    final BetMode betMode = ref.watch(betModeProvider);
 
     return AppBar(
       title: const _GrandPrixName(),
       scrolledUnderElevation: 0.0,
       actions: [
-        if (doesStandingsListExist) const _SaveButton(),
-        const GapHorizontal8(),
+        if (doesStandingsListExist && betMode == BetMode.edit) ...[
+          const _SaveButton(),
+          const GapHorizontal8(),
+        ],
       ],
     );
   }
