@@ -60,6 +60,34 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     addEntity(addedUser);
   }
 
+  @override
+  Future<void> updateUserData({
+    required String userId,
+    String? username,
+    ThemeMode? themeMode,
+    ThemePrimaryColor? themePrimaryColor,
+  }) async {
+    if (username == null && themeMode == null && themePrimaryColor == null) {
+      return;
+    }
+    User? user = await _findExistingUserInRepoState(userId);
+    if (user == null) return;
+    if (username != null) await _checkIfUsernameIsAlreadyTaken(username);
+    final UserDto? updatedUserDto = await _dbUserService.updateUser(
+      userId: userId,
+      username: username,
+      themeMode: themeMode != null ? mapThemeModeToDto(themeMode) : null,
+      themePrimaryColor: themePrimaryColor != null
+          ? mapThemePrimaryColorToDto(themePrimaryColor)
+          : null,
+    );
+    if (updatedUserDto == null) {
+      throw const UserRepositoryExceptionUserNotFound();
+    }
+    user = mapUserFromDto(updatedUserDto, user.avatarUrl);
+    updateEntity(user);
+  }
+
   Future<User?> _loadUserFromDb(String userId) async {
     final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
     if (userDto == null) return null;
@@ -69,5 +97,18 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     final User user = mapUserFromDto(userDto, avatarUrl);
     addEntity(user);
     return user;
+  }
+
+  Future<void> _checkIfUsernameIsAlreadyTaken(String username) async {
+    final bool isUsernameAlreadyTaken =
+        await _dbUserService.isUsernameAlreadyTaken(username: username);
+    if (isUsernameAlreadyTaken) {
+      throw const UserRepositoryExceptionUsernameAlreadyTaken();
+    }
+  }
+
+  Future<User?> _findExistingUserInRepoState(String userId) async {
+    final List<User>? existingUsers = await repositoryState$.first;
+    return existingUsers?.firstWhereOrNull((User user) => user.id == userId);
   }
 }

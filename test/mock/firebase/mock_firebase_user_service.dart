@@ -27,6 +27,17 @@ class MockFirebaseUserService extends Mock implements FirebaseUserService {
     ).thenAnswer((_) => Future.value(addedUserDto));
   }
 
+  void mockUpdateUser({UserDto? updatedUserDto}) {
+    when(
+      () => updateUser(
+        userId: any(named: 'userId'),
+        username: any(named: 'username'),
+        themeMode: any(named: 'themeMode'),
+        themePrimaryColor: any(named: 'themePrimaryColor'),
+      ),
+    ).thenAnswer((_) => Future.value(updatedUserDto));
+  }
+
   void mockIsUsernameAlreadyTaken({required bool isAlreadyTaken}) {
     when(
       () => isUsernameAlreadyTaken(

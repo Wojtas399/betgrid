@@ -17,6 +17,7 @@ void main() {
   final dbUserService = MockFirebaseUserService();
   final dbAvatarService = MockFirebaseAvatarService();
   late UserRepositoryImpl repositoryImpl;
+  const String userId = 'u1';
 
   setUpAll(() {
     GetIt.I.registerFactory<FirebaseUserService>(() => dbUserService);
@@ -96,13 +97,13 @@ void main() {
     'username is already taken, '
     'should throw UserRepositoryExceptionUsernameAlreadyTaken exception',
     () async {
-      const String userId = 'u1';
       const String username = 'user';
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed;
       const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
 
+      Object? exception;
       try {
         await repositoryImpl.addUser(
           userId: userId,
@@ -110,9 +111,11 @@ void main() {
           themeMode: themeMode,
           themePrimaryColor: themePrimaryColor,
         );
-      } catch (exception) {
-        expect(exception, expectedException);
+      } catch (e) {
+        exception = e;
       }
+
+      expect(exception, expectedException);
     },
   );
 
@@ -121,7 +124,6 @@ void main() {
     'avatarImgPath is null, '
     'should add user data to db and to repository state',
     () async {
-      const String userId = 'u1';
       const String username = 'user';
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemeModeDto themeModeDto = ThemeModeDto.dark;
@@ -168,7 +170,6 @@ void main() {
     'should add user data and its avatar to db and '
     'should add user to repository state',
     () async {
-      const String userId = 'u1';
       const String username = 'user';
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemeModeDto themeModeDto = ThemeModeDto.dark;
@@ -215,6 +216,202 @@ void main() {
         () => dbAvatarService.addAvatarForUser(
           userId: userId,
           avatarImgPath: avatarImgPath,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'updateUserData, '
+    'username, themeMode and themePrimaryColor are null, '
+    'should do nothing',
+    () async {
+      await repositoryImpl.updateUserData(userId: userId);
+
+      verifyNever(
+        () => dbUserService.isUsernameAlreadyTaken(
+          username: any(named: 'username'),
+        ),
+      );
+      verifyNever(
+        () => dbUserService.updateUser(
+          userId: userId,
+          username: any(named: 'username'),
+          themeMode: any(named: 'themeMode'),
+          themePrimaryColor: any(named: 'themePrimaryColor'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUserData, '
+    'user does not exists in repo state, '
+    'should finish method call',
+    () async {
+      final List<User> existingUsers = [
+        createUser(id: 'u2'),
+        createUser(id: 'u3'),
+      ];
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      await repositoryImpl.updateUserData(userId: userId);
+
+      verifyNever(
+        () => dbUserService.isUsernameAlreadyTaken(
+          username: any(named: 'username'),
+        ),
+      );
+      verifyNever(
+        () => dbUserService.updateUser(
+          userId: userId,
+          username: any(named: 'username'),
+          themeMode: any(named: 'themeMode'),
+          themePrimaryColor: any(named: 'themePrimaryColor'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUserData, '
+    'new username is already taken, '
+    'should throw UserRepositoryExceptionUsernameAlreadyTaken exception',
+    () async {
+      const String newUsername = 'new username';
+      final List<User> existingUsers = [
+        createUser(id: userId),
+        createUser(id: 'u2'),
+        createUser(id: 'u3'),
+      ];
+      const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      Object? exception;
+      try {
+        await repositoryImpl.updateUserData(
+          userId: userId,
+          username: newUsername,
+        );
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+      verify(
+        () => dbUserService.isUsernameAlreadyTaken(username: newUsername),
+      ).called(1);
+      verifyNever(
+        () => dbUserService.updateUser(
+          userId: userId,
+          username: any(named: 'username'),
+          themeMode: any(named: 'themeMode'),
+          themePrimaryColor: any(named: 'themePrimaryColor'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUserData, '
+    'updated user is not returned from db, '
+    'should throw UserRepositoryExceptionUserNotFound exception',
+    () async {
+      const String newUsername = 'new username';
+      const ThemeMode newThemeMode = ThemeMode.system;
+      const ThemePrimaryColor newThemePrimaryColor = ThemePrimaryColor.pink;
+      const ThemeModeDto newThemeModeDto = ThemeModeDto.system;
+      const ThemePrimaryColorDto newThemePrimaryColorDto =
+          ThemePrimaryColorDto.pink;
+      final List<User> existingUsers = [
+        createUser(id: userId),
+        createUser(id: 'u2'),
+        createUser(id: 'u3'),
+      ];
+      const expectedException = UserRepositoryExceptionUserNotFound();
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      dbUserService.mockUpdateUser(updatedUserDto: null);
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      Object? exception;
+      try {
+        await repositoryImpl.updateUserData(
+          userId: userId,
+          username: newUsername,
+          themeMode: newThemeMode,
+          themePrimaryColor: newThemePrimaryColor,
+        );
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+      verify(
+        () => dbUserService.isUsernameAlreadyTaken(username: newUsername),
+      ).called(1);
+      verify(
+        () => dbUserService.updateUser(
+          userId: userId,
+          username: newUsername,
+          themeMode: newThemeModeDto,
+          themePrimaryColor: newThemePrimaryColorDto,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'updateUserData, '
+    'should update user in db and in repo state',
+    () async {
+      const String newUsername = 'new username';
+      const ThemeMode newThemeMode = ThemeMode.system;
+      const ThemePrimaryColor newThemePrimaryColor = ThemePrimaryColor.pink;
+      const ThemeModeDto newThemeModeDto = ThemeModeDto.system;
+      const ThemePrimaryColorDto newThemePrimaryColorDto =
+          ThemePrimaryColorDto.pink;
+      final User updatedUser = createUser(
+        id: userId,
+        username: newUsername,
+        themeMode: newThemeMode,
+        themePrimaryColor: newThemePrimaryColor,
+      );
+      final UserDto updatedUserDto = createUserDto(
+        id: userId,
+        username: newUsername,
+        themeMode: newThemeModeDto,
+        themePrimaryColor: newThemePrimaryColorDto,
+      );
+      final List<User> existingUsers = [
+        createUser(id: userId),
+        createUser(id: 'u2'),
+        createUser(id: 'u3'),
+      ];
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      await repositoryImpl.updateUserData(
+        userId: userId,
+        username: newUsername,
+        themeMode: newThemeMode,
+        themePrimaryColor: newThemePrimaryColor,
+      );
+
+      expect(
+        repositoryImpl.repositoryState$,
+        emits([updatedUser, existingUsers[1], existingUsers[2]]),
+      );
+      verify(
+        () => dbUserService.isUsernameAlreadyTaken(username: newUsername),
+      ).called(1);
+      verify(
+        () => dbUserService.updateUser(
+          userId: userId,
+          username: newUsername,
+          themeMode: newThemeModeDto,
+          themePrimaryColor: newThemePrimaryColorDto,
         ),
       ).called(1);
     },

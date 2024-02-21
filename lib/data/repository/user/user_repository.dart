@@ -18,4 +18,11 @@ abstract interface class UserRepository {
     required ThemeMode themeMode,
     required ThemePrimaryColor themePrimaryColor,
   });
+
+  Future<void> updateUserData({
+    required String userId,
+    String? username,
+    ThemeMode? themeMode,
+    ThemePrimaryColor? themePrimaryColor,
+  });
 }
