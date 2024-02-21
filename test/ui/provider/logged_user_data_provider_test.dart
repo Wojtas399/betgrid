@@ -111,7 +111,7 @@ void main() {
       const String username = 'username';
       const String avatarImgPath = 'avatar/img';
       const ThemeMode themeMode = ThemeMode.system;
-      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.teal;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
       authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();

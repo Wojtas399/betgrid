@@ -27,9 +27,9 @@ enum ThemePrimaryColorDto {
   defaultRed,
   pink,
   purple,
+  brown,
   orange,
   yellow,
   green,
-  teal,
-  blue
+  blue,
 }

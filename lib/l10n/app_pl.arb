@@ -14,6 +14,8 @@
     "@__________GRAND_PRIX_BET__________": {},
     "grandPrixBetSelectDriver": "Wybierz kierowcę",
     "grandPrixBetSuccessfullySavedBets": "Pomyślnie zapisano typy",
+    "@__________PROFILE__________": {},
+    "profileScreenTitle": "Profil",
     "@__________COMMON__________": {},
     "loading": "Ładowanie",
     "qualifications": "Kwalifikacje",
@@ -33,5 +35,14 @@
     "camera": "Aparat",
     "delete": "Usuń",
     "requiredField": "To pole jest wymagane",
-    "usernameAlreadyTaken": "Ta nazwa użytkownika jest już zajęta"
+    "usernameAlreadyTaken": "Ta nazwa użytkownika jest już zajęta",
+    "@__________COLORS__________": {},
+    "red": "Czerwony",
+    "pink": "Różowy",
+    "purple": "Fioletowy",
+    "brown": "Brązowy",
+    "orange": "Pomarańczowy",
+    "yellow": "Żółty",
+    "green": "Zielony",
+    "blue": "Niebieski"
 }

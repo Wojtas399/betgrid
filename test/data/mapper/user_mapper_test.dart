@@ -13,9 +13,9 @@ void main() {
       const String avatarUrl = 'avatar/url';
       const ThemeMode themeMode = ThemeMode.system;
       const ThemeModeDto themeModeDto = ThemeModeDto.system;
-      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.teal;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
       const ThemePrimaryColorDto themePrimaryColorDto =
-          ThemePrimaryColorDto.teal;
+          ThemePrimaryColorDto.blue;
       const UserDto userDto = UserDto(
         id: id,
         username: username,

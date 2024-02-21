@@ -23,8 +23,16 @@ class GapVertical16 extends GapVertical {
   const GapVertical16({super.key}) : super(16);
 }
 
+class GapVertical24 extends GapVertical {
+  const GapVertical24({super.key}) : super(24);
+}
+
 class GapVertical32 extends GapVertical {
   const GapVertical32({super.key}) : super(32);
+}
+
+class GapVertical40 extends GapVertical {
+  const GapVertical40({super.key}) : super(40);
 }
 
 class GapVertical64 extends GapVertical {

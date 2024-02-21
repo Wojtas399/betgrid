@@ -30,9 +30,9 @@ enum ThemePrimaryColor {
   defaultRed,
   pink,
   purple,
+  brown,
   orange,
   yellow,
   green,
-  teal,
-  blue
+  blue,
 }

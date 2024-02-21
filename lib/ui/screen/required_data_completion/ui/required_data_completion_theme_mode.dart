@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../model/user.dart' as user;
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
+import '../../../component/theme_mode_selection_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/theme_mode_notifier_provider.dart';
 
@@ -35,69 +35,12 @@ class _ThemeModeTypes extends ConsumerWidget {
     final AsyncValue<user.ThemeMode> themeMode = ref.watch(
       themeModeNotifierProvider,
     );
-    final notifier = ref.read(themeModeNotifierProvider.notifier);
-    const gap = GapVertical16();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _ThemeModeItem(
-          isSelected: themeMode.value == user.ThemeMode.light,
-          label: 'Jasny',
-          iconData: Icons.light_mode,
-          onPressed: () {
-            notifier.changeThemeMode(user.ThemeMode.light);
-          },
-        ),
-        gap,
-        _ThemeModeItem(
-          isSelected: themeMode.value == user.ThemeMode.dark,
-          label: 'Ciemny',
-          iconData: Icons.dark_mode,
-          onPressed: () {
-            notifier.changeThemeMode(user.ThemeMode.dark);
-          },
-        ),
-        gap,
-        _ThemeModeItem(
-          isSelected: themeMode.value == user.ThemeMode.system,
-          label: 'Systemowy',
-          iconData: MdiIcons.themeLightDark,
-          onPressed: () {
-            notifier.changeThemeMode(user.ThemeMode.system);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _ThemeModeItem extends StatelessWidget {
-  final String label;
-  final IconData iconData;
-  final bool isSelected;
-  final VoidCallback onPressed;
-
-  const _ThemeModeItem({
-    required this.label,
-    required this.iconData,
-    required this.isSelected,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPressed,
-      title: Text(label),
-      leading: Icon(iconData),
-      contentPadding: const EdgeInsets.only(left: 24, right: 16),
-      trailing: Checkbox(
-        value: isSelected,
-        onChanged: (_) {
-          onPressed();
-        },
-      ),
+    return ThemeModeSelection(
+      selectedThemeMode: themeMode.value,
+      onThemeModeChanged: (user.ThemeMode themeMode) {
+        ref.read(themeModeNotifierProvider.notifier).changeThemeMode(themeMode);
+      },
     );
   }
 }
