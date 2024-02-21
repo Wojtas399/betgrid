@@ -8,8 +8,8 @@ import '../../component/text/title.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
 import '../../provider/theme_mode_notifier_provider.dart';
+import '../../provider/theme_primary_color_notifier_provider.dart';
 import 'profile_avatar.dart';
 import 'profile_username.dart';
 
@@ -83,11 +83,8 @@ class _ThemePrimaryColor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user.ThemePrimaryColor? themePrimaryColor = ref.watch(
-      loggedUserDataNotifierProvider.select(
-        (AsyncValue<user.User?> loggedUserData) =>
-            loggedUserData.value?.themePrimaryColor,
-      ),
+    final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.watch(
+      themePrimaryColorNotifierProvider,
     );
 
     return Padding(
@@ -101,9 +98,11 @@ class _ThemePrimaryColor extends ConsumerWidget {
           ),
           const GapVertical24(),
           ThemePrimaryColorSelection(
-            selectedColor: themePrimaryColor,
+            selectedColor: themePrimaryColor.value,
             onColorSelected: (user.ThemePrimaryColor color) {
-              //TODO
+              ref
+                  .read(themePrimaryColorNotifierProvider.notifier)
+                  .changeThemePrimaryColor(color);
             },
           ),
         ],

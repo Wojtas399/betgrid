@@ -147,10 +147,11 @@ void main() {
 
   test(
     'changeThemePrimaryColor, '
-    'should update theme primary color in state',
+    'logged user id does not exist, '
+    'should only update theme mode in state',
     () async {
       const ThemePrimaryColor expectedThemePrimaryColor =
-          ThemePrimaryColor.green;
+          ThemePrimaryColor.pink;
       authService.mockGetLoggedUserId(null);
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
@@ -163,9 +164,7 @@ void main() {
       await container.read(themePrimaryColorNotifierProvider.future);
       container
           .read(themePrimaryColorNotifierProvider.notifier)
-          .changeThemePrimaryColor(
-            expectedThemePrimaryColor,
-          );
+          .changeThemePrimaryColor(expectedThemePrimaryColor);
 
       await expectLater(
         container.read(themePrimaryColorNotifierProvider.future),
@@ -186,6 +185,67 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
+      verify(() => authService.loggedUserId$).called(1);
+      verifyNever(
+        () => userRepository.updateUserData(
+          userId: any(named: 'userId'),
+          themePrimaryColor: expectedThemePrimaryColor,
+        ),
+      );
+    },
+  );
+
+  test(
+    'changeThemePrimaryColor, '
+    'logged user id exists, '
+    'should update theme primary color in state and should call method from '
+    "UserRepository to update user's data with new theme primary color",
+    () async {
+      const String loggedUserId = 'u1';
+      const ThemePrimaryColor expectedThemePrimaryColor =
+          ThemePrimaryColor.pink;
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserData();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<ThemePrimaryColor>>();
+      container.listen(
+        themePrimaryColorNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(themePrimaryColorNotifierProvider.future);
+      container
+          .read(themePrimaryColorNotifierProvider.notifier)
+          .changeThemePrimaryColor(expectedThemePrimaryColor);
+
+      await expectLater(
+        container.read(themePrimaryColorNotifierProvider.future),
+        completion(expectedThemePrimaryColor),
+      );
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<ThemePrimaryColor>(),
+            ),
+        () => listener(
+              const AsyncLoading<ThemePrimaryColor>(),
+              const AsyncData<ThemePrimaryColor>(ThemePrimaryColor.defaultRed),
+            ),
+        () => listener(
+              const AsyncData<ThemePrimaryColor>(ThemePrimaryColor.defaultRed),
+              const AsyncData<ThemePrimaryColor>(expectedThemePrimaryColor),
+            ),
+      ]);
+      verifyNoMoreInteractions(listener);
+      verify(() => authService.loggedUserId$).called(1);
+      verify(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          themePrimaryColor: expectedThemePrimaryColor,
+        ),
+      ).called(1);
     },
   );
 }

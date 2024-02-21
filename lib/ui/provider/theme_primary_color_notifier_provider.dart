@@ -9,11 +9,16 @@ part 'theme_primary_color_notifier_provider.g.dart';
 
 @riverpod
 class ThemePrimaryColorNotifier extends _$ThemePrimaryColorNotifier {
+  String? _loggedUserId;
+
   @override
   Stream<ThemePrimaryColor> build() {
     return ref
         .watch(authServiceProvider)
         .loggedUserId$
+        .doOnData((String? loggedUserId) {
+          _loggedUserId = loggedUserId;
+        })
         .switchMap(
           (String? loggedUserId) => loggedUserId != null
               ? ref
@@ -27,7 +32,13 @@ class ThemePrimaryColorNotifier extends _$ThemePrimaryColorNotifier {
         );
   }
 
-  void changeThemePrimaryColor(ThemePrimaryColor color) {
+  void changeThemePrimaryColor(ThemePrimaryColor color) async {
     state = AsyncData(color);
+    if (_loggedUserId != null) {
+      await ref.read(userRepositoryProvider).updateUserData(
+            userId: _loggedUserId!,
+            themePrimaryColor: color,
+          );
+    }
   }
 }
