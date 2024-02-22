@@ -83,12 +83,12 @@ class _AvatarButtons extends ConsumerWidget {
         actions: [
           ActionsDialogItem(
             icon: const Icon(Icons.image),
-            label: context.str.gallery,
+            label: context.str.requiredDataCompletionAvatarSelectionGallery,
             value: _AvatarImageSource.gallery,
           ),
           ActionsDialogItem(
             icon: const Icon(Icons.camera_alt),
-            label: context.str.camera,
+            label: context.str.requiredDataCompletionAvatarSelectionCamera,
             value: _AvatarImageSource.camera,
           ),
         ],
