@@ -88,6 +88,31 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     updateEntity(user);
   }
 
+  @override
+  Future<void> updateUserAvatar({
+    required String userId,
+    String? avatarImgPath,
+  }) async {
+    String? newAvatarUrl;
+    await _dbAvatarService.removeAvatarForUser(userId: userId);
+    if (avatarImgPath != null) {
+      newAvatarUrl = await _dbAvatarService.addAvatarForUser(
+        userId: userId,
+        avatarImgPath: avatarImgPath,
+      );
+    }
+    User? user = await _findExistingUserInRepoState(userId);
+    if (user == null) return;
+    user = User(
+      id: user.id,
+      username: user.username,
+      avatarUrl: newAvatarUrl,
+      themeMode: user.themeMode,
+      themePrimaryColor: user.themePrimaryColor,
+    );
+    updateEntity(user);
+  }
+
   Future<User?> _loadUserFromDb(String userId) async {
     final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
     if (userDto == null) return null;

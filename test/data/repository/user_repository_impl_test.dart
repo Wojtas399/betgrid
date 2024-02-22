@@ -416,4 +416,81 @@ void main() {
       ).called(1);
     },
   );
+
+  test(
+    'updateUserAvatar, '
+    'avatarImgPath is null, '
+    'should remove avatar from db and should update user data if it exists in '
+    'repo state',
+    () async {
+      final User existingUser = createUser(id: userId, avatarUrl: 'avr/u/r/l');
+      final User updatedUser = createUser(id: userId, avatarUrl: null);
+      final List<User> existingUsers = [
+        createUser(id: 'u2', avatarUrl: 'avatar/url'),
+        existingUser,
+        createUser(id: 'u3', avatarUrl: 'avr/url'),
+      ];
+      dbAvatarService.mockRemoveAvatarForUser();
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      await repositoryImpl.updateUserAvatar(
+        userId: userId,
+        avatarImgPath: null,
+      );
+
+      expect(
+        repositoryImpl.repositoryState$,
+        emits([existingUsers.first, updatedUser, existingUsers.last]),
+      );
+      verify(
+        () => dbAvatarService.removeAvatarForUser(userId: userId),
+      ).called(1);
+      verifyNever(
+        () => dbAvatarService.addAvatarForUser(
+          userId: userId,
+          avatarImgPath: any(named: 'avatarImgPath'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUserAvatar, '
+    'avatarImgPath is not null, '
+    'should remove avatar from db, should add new avatar to db and '
+    'should update user data if it exists in repo state',
+    () async {
+      const String newAvatarImgPath = 'avatar/img/path';
+      const String newAvatarUrl = 'newAvr/url';
+      final User existingUser = createUser(id: userId, avatarUrl: 'avr/u/r/l');
+      final User updatedUser = createUser(id: userId, avatarUrl: newAvatarUrl);
+      final List<User> existingUsers = [
+        createUser(id: 'u2', avatarUrl: 'avatar/url'),
+        existingUser,
+        createUser(id: 'u3', avatarUrl: 'avr/url'),
+      ];
+      dbAvatarService.mockRemoveAvatarForUser();
+      dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: newAvatarUrl);
+      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+
+      await repositoryImpl.updateUserAvatar(
+        userId: userId,
+        avatarImgPath: newAvatarImgPath,
+      );
+
+      expect(
+        repositoryImpl.repositoryState$,
+        emits([existingUsers.first, updatedUser, existingUsers.last]),
+      );
+      verify(
+        () => dbAvatarService.removeAvatarForUser(userId: userId),
+      ).called(1);
+      verify(
+        () => dbAvatarService.addAvatarForUser(
+          userId: userId,
+          avatarImgPath: newAvatarImgPath,
+        ),
+      ).called(1);
+    },
+  );
 }
