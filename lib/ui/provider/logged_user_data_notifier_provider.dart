@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../auth/auth_service.dart';
+import '../../data/exception/user_repository_exception.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../model/user.dart';
 
@@ -40,4 +41,26 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
           );
     }
   }
+
+  Future<void> updateUsername(String username) async {
+    if (_loggedUserId != null) {
+      try {
+        await ref.read(userRepositoryProvider).updateUserData(
+              userId: _loggedUserId!,
+              username: username,
+            );
+      } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
+        throw const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
+      }
+    }
+  }
+}
+
+abstract class LoggedUserDataNotifierException {
+  const LoggedUserDataNotifierException();
+}
+
+class LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken
+    extends LoggedUserDataNotifierException {
+  const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
 }

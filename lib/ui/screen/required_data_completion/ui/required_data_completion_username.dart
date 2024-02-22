@@ -39,7 +39,7 @@ class RequiredDataCompletionUsername extends ConsumerWidget {
           TitleLarge(context.str.username),
           const GapVertical16(),
           TextFormField(
-            decoration: const InputDecoration(hintText: 'np. Jan123'),
+            decoration: InputDecoration(hintText: context.str.usernameHintText),
             onChanged: (String value) {
               ref
                   .read(requiredDataCompletionNotifierProvider.notifier)

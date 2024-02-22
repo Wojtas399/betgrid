@@ -7,9 +7,18 @@ import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../service/dialog_service.dart';
+import 'profile_username_dialog.dart';
 
 class ProfileUsername extends ConsumerWidget {
   const ProfileUsername({super.key});
+
+  Future<void> _onEdit(String? currentUsername, BuildContext context) async {
+    final String? newUsername = await showFullScreenDialog(
+      const ProfileUsernameDialog(),
+    );
+    print(newUsername);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,7 +48,7 @@ class ProfileUsername extends ConsumerWidget {
             children: [
               BodyLarge('$username'),
               IconButton(
-                onPressed: () {},
+                onPressed: () => _onEdit(username, context),
                 icon: const Icon(Icons.edit),
               ),
             ],

@@ -182,4 +182,102 @@ void main() {
       ).called(1);
     },
   );
+
+  test(
+    'updateUsername, '
+    'logged user id is null, '
+    'should do nothing',
+    () async {
+      const String newUsername = 'new username';
+      authService.mockGetLoggedUserId(null);
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateUsername(newUsername);
+
+      verifyNever(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          username: newUsername,
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUsername, '
+    'new username is already taken, '
+    'should throw LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken exception',
+    () async {
+      const String newUsername = 'new username';
+      const expectedException =
+          LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserData(throwable: expectedException);
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      Object? exception;
+      try {
+        await container
+            .read(loggedUserDataNotifierProvider.notifier)
+            .updateUsername(newUsername);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+      verify(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          username: newUsername,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'updateUsername, '
+    'should call method from UserRepository to update user data with new username',
+    () async {
+      const String newUsername = 'new username';
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserData();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateUsername(newUsername);
+
+      verify(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          username: newUsername,
+        ),
+      ).called(1);
+    },
+  );
 }

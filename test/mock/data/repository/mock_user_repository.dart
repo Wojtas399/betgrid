@@ -22,21 +22,25 @@ class MockUserRepository extends Mock implements UserRepository {
     }
   }
 
-  void mockUpdateUserData() {
-    when(
-      () => updateUserData(
-        userId: any(named: 'userId'),
-        username: any(named: 'username'),
-        themeMode: any(named: 'themeMode'),
-        themePrimaryColor: any(named: 'themePrimaryColor'),
-      ),
-    ).thenAnswer((_) => Future.value());
+  void mockUpdateUserData({Object? throwable}) {
+    if (throwable != null) {
+      when(_updateUserDataCall).thenThrow(throwable);
+    } else {
+      when(_updateUserDataCall).thenAnswer((_) => Future.value());
+    }
   }
 
   Future<void> _addUserCall() => addUser(
         userId: any(named: 'userId'),
         username: any(named: 'username'),
         avatarImgPath: any(named: 'avatarImgPath'),
+        themeMode: any(named: 'themeMode'),
+        themePrimaryColor: any(named: 'themePrimaryColor'),
+      );
+
+  Future<void> _updateUserDataCall() => updateUserData(
+        userId: any(named: 'userId'),
+        username: any(named: 'username'),
         themeMode: any(named: 'themeMode'),
         themePrimaryColor: any(named: 'themePrimaryColor'),
       );
