@@ -280,4 +280,63 @@ void main() {
       ).called(1);
     },
   );
+
+  test(
+    'updateAvatar, '
+    'logged user id is null, '
+    'should do nothing',
+    () async {
+      const String newAvatarImgPath = 'avatar/path';
+      authService.mockGetLoggedUserId(null);
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateAvatar(newAvatarImgPath);
+
+      verifyNever(
+        () => userRepository.updateUserAvatar(
+          userId: any(named: 'userId'),
+          avatarImgPath: any(named: 'avatarImgPath'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateAvatar, '
+    'should call method from user repository to update user avatar',
+    () async {
+      const String newAvatarImgPath = 'avatar/path';
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserAvatar();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateAvatar(newAvatarImgPath);
+
+      verify(
+        () => userRepository.updateUserAvatar(
+          userId: loggedUserId,
+          avatarImgPath: newAvatarImgPath,
+        ),
+      ).called(1);
+    },
+  );
 }

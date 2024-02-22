@@ -54,6 +54,15 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
       }
     }
   }
+
+  Future<void> updateAvatar(String? newAvatarImgPath) async {
+    if (_loggedUserId != null) {
+      await ref.read(userRepositoryProvider).updateUserAvatar(
+            userId: _loggedUserId!,
+            avatarImgPath: newAvatarImgPath,
+          );
+    }
+  }
 }
 
 abstract class LoggedUserDataNotifierException {

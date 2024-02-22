@@ -30,6 +30,15 @@ class MockUserRepository extends Mock implements UserRepository {
     }
   }
 
+  void mockUpdateUserAvatar() {
+    when(
+      () => updateUserAvatar(
+        userId: any(named: 'userId'),
+        avatarImgPath: any(named: 'avatarImgPath'),
+      ),
+    ).thenAnswer((_) => Future.value());
+  }
+
   Future<void> _addUserCall() => addUser(
         userId: any(named: 'userId'),
         username: any(named: 'username'),
