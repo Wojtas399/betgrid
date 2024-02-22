@@ -14,10 +14,9 @@ class ProfileUsername extends ConsumerWidget {
   const ProfileUsername({super.key});
 
   Future<void> _onEdit(String? currentUsername, BuildContext context) async {
-    final String? newUsername = await showFullScreenDialog(
+    await showFullScreenDialog(
       const ProfileUsernameDialog(),
     );
-    print(newUsername);
   }
 
   @override
