@@ -8,8 +8,8 @@ import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
-import '../../riverpod_provider/bet_mode_provider.dart';
-import '../../riverpod_provider/grand_prix_bet_status_provider.dart';
+import '../../provider/bet_mode_provider.dart';
+import '../../provider/grand_prix_bet_status_provider.dart';
 import '../../service/formatter_service.dart';
 
 class HomeGrandPrixItem extends StatefulWidget {
@@ -46,6 +46,12 @@ class _State extends State<HomeGrandPrixItem>
     );
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void _onPressed(BuildContext context) {
     context.navigateTo(GrandPrixBetRoute(
       grandPrixId: widget.grandPrix.id,
@@ -59,6 +65,7 @@ class _State extends State<HomeGrandPrixItem>
       child: SizedBox(
         width: double.infinity,
         child: Card(
+          color: Theme.of(context).colorScheme.primary,
           clipBehavior: Clip.hardEdge,
           child: InkWell(
             onTap: () => _onPressed(context),
@@ -104,7 +111,7 @@ class _CountryFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFe6bcbc),
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(8),
@@ -138,17 +145,17 @@ class _GrandPrixDescription extends StatelessWidget {
       children: [
         BodyMedium(
           'Runda $roundNumber',
-          color: Colors.white.withOpacity(0.75),
+          color: Theme.of(context).colorScheme.outlineVariant,
           fontWeight: FontWeight.bold,
         ),
         TitleMedium(
           gpName,
-          color: Colors.white,
+          color: Theme.of(context).canvasColor,
           fontWeight: FontWeight.bold,
         ),
         BodyMedium(
           '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
-          color: Colors.white.withOpacity(0.75),
+          color: Theme.of(context).colorScheme.outlineVariant,
         ),
       ],
     );
@@ -177,10 +184,11 @@ class _BetStatus extends ConsumerWidget {
             _ => Icons.circle_outlined,
           },
           color: switch (betStatus.value) {
-            GrandPrixBetStatus.pending => Colors.white,
+            GrandPrixBetStatus.pending =>
+              Theme.of(context).colorScheme.outlineVariant,
             GrandPrixBetStatus.inProgress => Colors.amberAccent,
             GrandPrixBetStatus.completed => const Color(0xFF6BD65F),
-            _ => Colors.white,
+            _ => Theme.of(context).colorScheme.outlineVariant,
           },
         ),
     };

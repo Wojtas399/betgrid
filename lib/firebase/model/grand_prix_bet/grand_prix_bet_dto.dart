@@ -24,8 +24,6 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
   factory GrandPrixBetDto.fromJson(Map<String, Object?> json) =>
       _$GrandPrixBetDtoFromJson(json);
 
-  factory GrandPrixBetDto.fromIdAndJson(String id, Map<String, Object?>? json) {
-    if (json == null) throw Exception('Grand prix bet document data was null');
-    return GrandPrixBetDto.fromJson(json).copyWith(id: id);
-  }
+  factory GrandPrixBetDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+      GrandPrixBetDto.fromJson(json).copyWith(id: id);
 }

@@ -1,6 +1,6 @@
 import 'package:betgrid/data/repository/driver/driver_repository.dart';
 import 'package:betgrid/model/driver.dart';
-import 'package:betgrid/ui/riverpod_provider/all_drivers_provider.dart';
+import 'package:betgrid/ui/provider/all_drivers_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

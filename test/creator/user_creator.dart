@@ -1,10 +1,16 @@
 import 'package:betgrid/model/user.dart';
 
 User createUser({
-  String id = 'u1',
-  String email = 'user@example.com',
+  String id = '',
+  String username = '',
+  String? avatarUrl,
+  ThemeMode themeMode = ThemeMode.light,
+  ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed,
 }) =>
     User(
       id: id,
-      email: email,
+      username: username,
+      avatarUrl: avatarUrl,
+      themeMode: themeMode,
+      themePrimaryColor: themePrimaryColor,
     );

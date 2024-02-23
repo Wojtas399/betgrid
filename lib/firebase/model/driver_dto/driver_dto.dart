@@ -18,10 +18,8 @@ class DriverDto with _$DriverDto {
   factory DriverDto.fromJson(Map<String, Object?> json) =>
       _$DriverDtoFromJson(json);
 
-  factory DriverDto.fromIdAndJson(String id, Map<String, Object?>? json) {
-    if (json == null) throw Exception('Driver document data was null');
-    return DriverDto.fromJson(json).copyWith(id: id);
-  }
+  factory DriverDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+      DriverDto.fromJson(json).copyWith(id: id);
 }
 
 enum TeamDto {

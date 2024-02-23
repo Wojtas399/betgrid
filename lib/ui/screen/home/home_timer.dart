@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../riverpod_provider/duration_to_test_day_1_provider.dart';
+import '../../provider/duration_to_test_day_1_provider.dart';
 
 class HomeTimer extends ConsumerWidget {
   const HomeTimer({super.key});

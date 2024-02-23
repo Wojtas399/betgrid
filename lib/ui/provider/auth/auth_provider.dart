@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../auth/auth_service.dart';
-import '../../../../model/user.dart';
 import 'auth_state.dart';
 
 part 'auth_provider.g.dart';
@@ -21,9 +20,9 @@ class Auth extends _$Auth {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () async {
-        final User? user =
+        final String? userId =
             await ref.read(authServiceProvider).signInWithGoogle();
-        return user != null
+        return userId != null
             ? const AuthStateUserIsSignedIn()
             : const AuthStateComplete();
       },

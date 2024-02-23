@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../extensions/build_context_extensions.dart';
 import '../gap/gap_vertical.dart';
 
 class LoadingDialog extends StatelessWidget {
@@ -20,9 +20,7 @@ class LoadingDialog extends StatelessWidget {
         children: [
           const CircularProgressIndicator(),
           const GapVertical16(),
-          Text(
-            '${Str.of(context).loading}...',
-          ),
+          Text('${context.str.loading}...'),
         ],
       ),
     );

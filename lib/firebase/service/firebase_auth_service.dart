@@ -2,17 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
-import '../model/user_dto/user_dto.dart';
-
 @injectable
 class FirebaseAuthService {
-  Stream<UserDto?> get loggedUser$ =>
-      FirebaseAuth.instance.authStateChanges().map(
-            (User? user) =>
-                user != null ? UserDto.fromFirebaseUser(user) : null,
-          );
+  Stream<String?> get loggedUserId$ =>
+      FirebaseAuth.instance.authStateChanges().map((User? user) => user?.uid);
 
-  Future<UserDto?> signInWithGoogle() async {
+  Future<String?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
@@ -23,8 +18,6 @@ class FirebaseAuthService {
     );
     final UserCredential credential =
         await FirebaseAuth.instance.signInWithCredential(authCredential);
-    final User? user = credential.user;
-    if (user == null) return null;
-    return UserDto.fromFirebaseUser(user);
+    return credential.user?.uid;
   }
 }
