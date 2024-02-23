@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
+import '../../extensions/build_context_extensions.dart';
 import '../../provider/auth/auth_provider.dart';
 
 class SignInContent extends StatelessWidget {
@@ -46,14 +47,14 @@ class _SignInWithGoogleButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
+    return FilledButton(
       onPressed: ref.read(authProvider.notifier).signInWithGoogle,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(Str.of(context).signInScreenSignInButtonLabel),
+            Text(context.str.signInScreenSignInButtonLabel),
             const GapHorizontal16(),
             SizedBox(
               height: 24,
