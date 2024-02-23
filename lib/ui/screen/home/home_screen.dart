@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
 import '../../../model/user.dart' as user;
+import '../../provider/all_grand_prix_bets_initialization_provider.dart';
 import '../../provider/all_grand_prixes_provider.dart';
 import '../../provider/bet_mode_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
@@ -31,6 +32,7 @@ class HomeScreen extends ConsumerWidget {
         _onLoggedUserDataChanged(next);
       },
     );
+    ref.read(allGrandPrixBetsInitializationProvider);
 
     return const Scaffold(
       appBar: HomeAppBar(),
