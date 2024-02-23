@@ -9,7 +9,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../service/dialog_service.dart';
 import '../../../service/image_service.dart';
-import '../notifier/required_data_completion_notifier.dart';
+import '../notifier/required_data_completion_notifier_provider.dart';
 
 class RequiredDataCompletionAvatar extends StatelessWidget {
   const RequiredDataCompletionAvatar({super.key});
@@ -36,7 +36,7 @@ class _Avatar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String? avatarImgPath = ref.watch(
       requiredDataCompletionNotifierProvider.select(
-        (state) => state.value?.avatarImgPath,
+        (state) => state.avatarImgPath,
       ),
     );
 
@@ -98,7 +98,7 @@ class _AvatarButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool doesAvatarExist = ref.watch(
       requiredDataCompletionNotifierProvider.select(
-        (state) => state.value?.avatarImgPath != null,
+        (state) => state.avatarImgPath != null,
       ),
     );
 

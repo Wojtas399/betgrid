@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../model/user.dart';
 import '../../component/button/big_button.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../extensions/build_context_extensions.dart';
@@ -55,26 +56,37 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
   }
 
   Future<void> _onSaveButtonPressed() async {
-    showLoadingDialog();
-    try {
-      await ref
-          .read(loggedUserDataNotifierProvider.notifier)
-          .updateUsername(_textController.text);
-      if (mounted) {
-        closeLoadingDialog();
-        context.popRoute();
-        showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
-      }
-    } on LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken catch (_) {
+    await ref
+        .read(loggedUserDataNotifierProvider.notifier)
+        .updateUsername(_textController.text);
+  }
+
+  void _onLoggedUserDataNotifierChanged(AsyncValue<User?> notifierState) {
+    if (notifierState is AsyncLoading) {
+      showLoadingDialog();
+    } else if (notifierState is AsyncError &&
+        notifierState.error
+            is LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken) {
       closeLoadingDialog();
       setState(() {
         _isUsernameAlreadyTaken = true;
       });
+    } else if (notifierState is AsyncData) {
+      closeLoadingDialog();
+      context.popRoute();
+      showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      loggedUserDataNotifierProvider,
+      (previous, next) {
+        _onLoggedUserDataNotifierChanged(next);
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

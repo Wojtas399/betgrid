@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -31,7 +32,9 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
     required ThemeMode themeMode,
     required ThemePrimaryColor themePrimaryColor,
   }) async {
-    if (_loggedUserId != null) {
+    if (_loggedUserId == null) return;
+    try {
+      state = const AsyncLoading<User?>();
       await ref.read(userRepositoryProvider).addUser(
             userId: _loggedUserId!,
             username: username,
@@ -39,19 +42,27 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
             themeMode: themeMode,
             themePrimaryColor: themePrimaryColor,
           );
+    } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
+      state = AsyncError(
+        const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken(),
+        StackTrace.current,
+      );
     }
   }
 
   Future<void> updateUsername(String username) async {
-    if (_loggedUserId != null) {
-      try {
-        await ref.read(userRepositoryProvider).updateUserData(
-              userId: _loggedUserId!,
-              username: username,
-            );
-      } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
-        throw const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
-      }
+    if (_loggedUserId == null) return;
+    try {
+      state = const AsyncLoading<User?>();
+      await ref.read(userRepositoryProvider).updateUserData(
+            userId: _loggedUserId!,
+            username: username,
+          );
+    } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
+      state = AsyncError(
+        const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken(),
+        StackTrace.current,
+      );
     }
   }
 
@@ -65,8 +76,11 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
   }
 }
 
-abstract class LoggedUserDataNotifierException {
+abstract class LoggedUserDataNotifierException extends Equatable {
   const LoggedUserDataNotifierException();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken

@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   void _onLoggedUserDataChanged(AsyncValue<user.User?> asyncValue) async {
-    if (asyncValue.value == null) {
+    if (asyncValue is AsyncData && asyncValue.value == null) {
       await showFullScreenDialog(const RequiredDataCompletionScreen());
     }
   }
