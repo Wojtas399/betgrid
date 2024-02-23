@@ -16,10 +16,12 @@ class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<RequiredDataCompletionUsername> {
+  bool _hasUsernameBeenEntered = false;
   bool _isUsernameEmpty = false;
   bool _isUsernameAlreadyTaken = false;
 
   String? _validate(BuildContext context) {
+    if (!_hasUsernameBeenEntered) return null;
     if (_isUsernameEmpty) return context.str.requiredField;
     if (_isUsernameAlreadyTaken) return context.str.usernameAlreadyTaken;
     return null;
@@ -65,6 +67,10 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
           TextFormField(
             decoration: InputDecoration(hintText: context.str.usernameHintText),
             onChanged: (String value) {
+              setState(() {
+                _hasUsernameBeenEntered = true;
+                _isUsernameAlreadyTaken = false;
+              });
               ref
                   .read(requiredDataCompletionNotifierProvider.notifier)
                   .updateUsername(value);
