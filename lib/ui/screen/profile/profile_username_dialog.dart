@@ -111,6 +111,11 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
                 onTapOutside: (_) {
                   FocusScope.of(context).unfocus();
                 },
+                onChanged: (_) {
+                  setState(() {
+                    _isUsernameAlreadyTaken = false;
+                  });
+                },
               ),
               const GapVertical40(),
               BigButton(
