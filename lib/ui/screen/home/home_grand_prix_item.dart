@@ -46,6 +46,12 @@ class _State extends State<HomeGrandPrixItem>
     );
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void _onPressed(BuildContext context) {
     context.navigateTo(GrandPrixBetRoute(
       grandPrixId: widget.grandPrix.id,
