@@ -149,28 +149,24 @@ void main() {
 
   test(
     'addLoggedUserData, '
-    'username is already taken, '
-    'should emit AsyncError with LoggedUserDataExceotionUsernameAlreadyTaken exception',
+    'username is empty'
+    'should emit AsyncError with LoggedUserDataNotifierExceptionEmptyUsername error',
     () async {
-      const String username = 'username';
+      const String username = '';
       const String avatarImgPath = 'avatar/img';
       const ThemeMode themeMode = ThemeMode.system;
-      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
-      const expectedException =
-          LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
+      const expectedError = LoggedUserDataNotifierExceptionEmptyUsername();
       authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById();
-      userRepository.mockAddUser(
-        throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
-      );
+      userRepository.mockGetUserById(user: null);
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
-      Object? exception;
+      Object? error;
       container.listen(
         loggedUserDataNotifierProvider,
-        (prev, curr) {
-          listener(prev, curr);
-          if (curr is AsyncError) exception = curr.error;
+        (prev, next) {
+          listener(prev, next);
+          if (next is AsyncError) error = next.error;
         },
         fireImmediately: true,
       );
@@ -185,7 +181,73 @@ void main() {
             themePrimaryColor: themePrimaryColor,
           );
 
-      expect(exception, expectedException);
+      expect(error, expectedError);
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<User?>(),
+            ),
+        () => listener(
+              const AsyncLoading<User?>(),
+              const AsyncData<User?>(null),
+            ),
+        () => listener(
+              const AsyncData<User?>(null),
+              any(that: isA<AsyncError>()),
+            ),
+      ]);
+      verifyNoMoreInteractions(listener);
+      verifyNever(
+        () => userRepository.addUser(
+          userId: loggedUserId,
+          username: username,
+          avatarImgPath: avatarImgPath,
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        ),
+      );
+    },
+  );
+
+  test(
+    'addLoggedUserData, '
+    'username is already taken, '
+    'should emit AsyncError with LoggedUserDataExceotionUsernameAlreadyTaken exception',
+    () async {
+      const String username = 'username';
+      const String avatarImgPath = 'avatar/img';
+      const ThemeMode themeMode = ThemeMode.system;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
+      const expectedError =
+          LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById();
+      userRepository.mockAddUser(
+        throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
+      );
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      Object? error;
+      container.listen(
+        loggedUserDataNotifierProvider,
+        (prev, curr) {
+          listener(prev, curr);
+          if (curr is AsyncError) error = curr.error;
+        },
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .addLoggedUserData(
+            username: username,
+            avatarImgPath: avatarImgPath,
+            themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
+          );
+
+      expect(error, expectedError);
       verifyInOrder([
         () => listener(
               null,
@@ -204,6 +266,7 @@ void main() {
               any(that: isA<AsyncError>()),
             ),
       ]);
+      verifyNoMoreInteractions(listener);
       verify(
         () => userRepository.addUser(
           userId: loggedUserId,
@@ -259,6 +322,57 @@ void main() {
 
   test(
     'updateUsername, '
+    'username is empty, '
+    'should emit AsyncError with LoggedUserDataNotifierExceptionEmptyUsername error',
+    () async {
+      const String newUsername = '';
+      const expectedError = LoggedUserDataNotifierExceptionEmptyUsername();
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      Object? error;
+      container.listen(
+        loggedUserDataNotifierProvider,
+        (prev, next) {
+          listener(prev, next);
+          if (next is AsyncError) error = next.error;
+        },
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateUsername(newUsername);
+
+      expect(error, expectedError);
+      verifyInOrder([
+        () => listener(
+              null,
+              const AsyncLoading<User?>(),
+            ),
+        () => listener(
+              const AsyncLoading<User?>(),
+              const AsyncData<User?>(null),
+            ),
+        () => listener(
+              const AsyncData<User?>(null),
+              any(that: isA<AsyncError>()),
+            ),
+      ]);
+      verifyNoMoreInteractions(listener);
+      verifyNever(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          username: newUsername,
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateUsername, '
     'logged user id is null, '
     'should do nothing',
     () async {
@@ -292,7 +406,7 @@ void main() {
     'should emit AsyncError with LoggedUserDataExceotionUsernameAlreadyTaken exception',
     () async {
       const String newUsername = 'new username';
-      const expectedException =
+      const expectedError =
           LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
@@ -301,12 +415,12 @@ void main() {
       );
       final container = makeProviderContainer(authService, userRepository);
       final listener = Listener<AsyncValue<User?>>();
-      Object? exception;
+      Object? error;
       container.listen(
         loggedUserDataNotifierProvider,
         (prev, curr) {
           listener(prev, curr);
-          if (curr is AsyncError) exception = curr.error;
+          if (curr is AsyncError) error = curr.error;
         },
         fireImmediately: true,
       );
@@ -316,7 +430,7 @@ void main() {
           .read(loggedUserDataNotifierProvider.notifier)
           .updateUsername(newUsername);
 
-      expect(exception, expectedException);
+      expect(error, expectedError);
       verifyInOrder([
         () => listener(
               null,
@@ -335,6 +449,7 @@ void main() {
               any(that: isA<AsyncError>()),
             ),
       ]);
+      verifyNoMoreInteractions(listener);
       verify(
         () => userRepository.updateUserData(
           userId: loggedUserId,
@@ -343,93 +458,93 @@ void main() {
       ).called(1);
     },
   );
-  //
-  // test(
-  //   'updateUsername, '
-  //   'should call method from UserRepository to update user data with new username',
-  //   () async {
-  //     const String newUsername = 'new username';
-  //     authService.mockGetLoggedUserId(loggedUserId);
-  //     userRepository.mockGetUserById(user: null);
-  //     userRepository.mockUpdateUserData();
-  //     final container = makeProviderContainer(authService, userRepository);
-  //     final listener = Listener<AsyncValue<User?>>();
-  //     container.listen(
-  //       loggedUserDataNotifierProvider,
-  //       listener,
-  //       fireImmediately: true,
-  //     );
-  //
-  //     await container.read(loggedUserDataNotifierProvider.future);
-  //     await container
-  //         .read(loggedUserDataNotifierProvider.notifier)
-  //         .updateUsername(newUsername);
-  //
-  //     verify(
-  //       () => userRepository.updateUserData(
-  //         userId: loggedUserId,
-  //         username: newUsername,
-  //       ),
-  //     ).called(1);
-  //   },
-  // );
-  //
-  // test(
-  //   'updateAvatar, '
-  //   'logged user id is null, '
-  //   'should do nothing',
-  //   () async {
-  //     const String newAvatarImgPath = 'avatar/path';
-  //     authService.mockGetLoggedUserId(null);
-  //     final container = makeProviderContainer(authService, userRepository);
-  //     final listener = Listener<AsyncValue<User?>>();
-  //     container.listen(
-  //       loggedUserDataNotifierProvider,
-  //       listener,
-  //       fireImmediately: true,
-  //     );
-  //
-  //     await container.read(loggedUserDataNotifierProvider.future);
-  //     await container
-  //         .read(loggedUserDataNotifierProvider.notifier)
-  //         .updateAvatar(newAvatarImgPath);
-  //
-  //     verifyNever(
-  //       () => userRepository.updateUserAvatar(
-  //         userId: any(named: 'userId'),
-  //         avatarImgPath: any(named: 'avatarImgPath'),
-  //       ),
-  //     );
-  //   },
-  // );
-  //
-  // test(
-  //   'updateAvatar, '
-  //   'should call method from user repository to update user avatar',
-  //   () async {
-  //     const String newAvatarImgPath = 'avatar/path';
-  //     authService.mockGetLoggedUserId(loggedUserId);
-  //     userRepository.mockGetUserById(user: null);
-  //     userRepository.mockUpdateUserAvatar();
-  //     final container = makeProviderContainer(authService, userRepository);
-  //     final listener = Listener<AsyncValue<User?>>();
-  //     container.listen(
-  //       loggedUserDataNotifierProvider,
-  //       listener,
-  //       fireImmediately: true,
-  //     );
-  //
-  //     await container.read(loggedUserDataNotifierProvider.future);
-  //     await container
-  //         .read(loggedUserDataNotifierProvider.notifier)
-  //         .updateAvatar(newAvatarImgPath);
-  //
-  //     verify(
-  //       () => userRepository.updateUserAvatar(
-  //         userId: loggedUserId,
-  //         avatarImgPath: newAvatarImgPath,
-  //       ),
-  //     ).called(1);
-  //   },
-  // );
+
+  test(
+    'updateUsername, '
+    'should call method from UserRepository to update user data with new username',
+    () async {
+      const String newUsername = 'new username';
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserData();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateUsername(newUsername);
+
+      verify(
+        () => userRepository.updateUserData(
+          userId: loggedUserId,
+          username: newUsername,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'updateAvatar, '
+    'logged user id is null, '
+    'should do nothing',
+    () async {
+      const String newAvatarImgPath = 'avatar/path';
+      authService.mockGetLoggedUserId(null);
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateAvatar(newAvatarImgPath);
+
+      verifyNever(
+        () => userRepository.updateUserAvatar(
+          userId: any(named: 'userId'),
+          avatarImgPath: any(named: 'avatarImgPath'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'updateAvatar, '
+    'should call method from user repository to update user avatar',
+    () async {
+      const String newAvatarImgPath = 'avatar/path';
+      authService.mockGetLoggedUserId(loggedUserId);
+      userRepository.mockGetUserById(user: null);
+      userRepository.mockUpdateUserAvatar();
+      final container = makeProviderContainer(authService, userRepository);
+      final listener = Listener<AsyncValue<User?>>();
+      container.listen(
+        loggedUserDataNotifierProvider,
+        listener,
+        fireImmediately: true,
+      );
+
+      await container.read(loggedUserDataNotifierProvider.future);
+      await container
+          .read(loggedUserDataNotifierProvider.notifier)
+          .updateAvatar(newAvatarImgPath);
+
+      verify(
+        () => userRepository.updateUserAvatar(
+          userId: loggedUserId,
+          avatarImgPath: newAvatarImgPath,
+        ),
+      ).called(1);
+    },
+  );
 }
