@@ -1,22 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/bet_mode_provider.dart';
-import '../../provider/grand_prix_bet_status_provider.dart';
 import '../../service/formatter_service.dart';
 
-class HomeGrandPrixItem extends StatefulWidget {
+class BetsGrandPrixItem extends StatefulWidget {
   final int roundNumber;
   final GrandPrix grandPrix;
 
-  const HomeGrandPrixItem({
+  const BetsGrandPrixItem({
     super.key,
     required this.roundNumber,
     required this.grandPrix,
@@ -26,7 +23,7 @@ class HomeGrandPrixItem extends StatefulWidget {
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<HomeGrandPrixItem>
+class _State extends State<BetsGrandPrixItem>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late final Animation<double> scaleAnimation;
@@ -85,7 +82,6 @@ class _State extends State<HomeGrandPrixItem>
                       endDate: widget.grandPrix.endDate,
                     ),
                   ),
-                  _BetStatus(grandPrixId: widget.grandPrix.id),
                 ],
               ),
             ),
@@ -159,38 +155,5 @@ class _GrandPrixDescription extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _BetStatus extends ConsumerWidget {
-  final String grandPrixId;
-
-  const _BetStatus({required this.grandPrixId});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final BetMode betMode = ref.watch(betModeProvider);
-    final AsyncValue<GrandPrixBetStatus?> betStatus = ref.watch(
-      grandPrixBetStatusProvider(grandPrixId),
-    );
-
-    return switch (betMode) {
-      BetMode.preview => const SizedBox(),
-      BetMode.edit => Icon(
-          switch (betStatus.value) {
-            GrandPrixBetStatus.pending => Icons.circle_outlined,
-            GrandPrixBetStatus.inProgress => Icons.timelapse,
-            GrandPrixBetStatus.completed => Icons.check_circle,
-            _ => Icons.circle_outlined,
-          },
-          color: switch (betStatus.value) {
-            GrandPrixBetStatus.pending =>
-              Theme.of(context).colorScheme.outlineVariant,
-            GrandPrixBetStatus.inProgress => Colors.amberAccent,
-            GrandPrixBetStatus.completed => const Color(0xFF6BD65F),
-            _ => Theme.of(context).colorScheme.outlineVariant,
-          },
-        ),
-    };
   }
 }

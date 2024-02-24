@@ -5,11 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
-import '../../extensions/build_context_extensions.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+  final String title;
+
+  const HomeAppBar({super.key, required this.title});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -18,7 +19,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       scrolledUnderElevation: 0.0,
-      title: Text(context.str.homeScreenTitle),
+      title: Text(title),
       actions: const [
         _Avatar(),
         GapHorizontal16(),
