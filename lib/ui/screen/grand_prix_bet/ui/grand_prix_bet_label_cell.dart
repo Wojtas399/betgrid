@@ -12,22 +12,16 @@ class GrandPrixBetLabelCell extends TableCell {
     Color? labelBackgroundColor,
   }) {
     return GrandPrixBetLabelCell(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 8, 16),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: labelBackgroundColor,
-          ),
-          child: Center(
-            child: TitleMedium(
-              label,
-              color: labelBackgroundColor != null
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.inverseSurface,
-              fontWeight: FontWeight.bold,
-            ),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        color: labelBackgroundColor,
+        child: Center(
+          child: TitleMedium(
+            label,
+            color: labelBackgroundColor != null
+                ? Colors.white
+                : Theme.of(context).colorScheme.inverseSurface,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
