@@ -33,6 +33,13 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
     required ThemePrimaryColor themePrimaryColor,
   }) async {
     if (_loggedUserId == null) return;
+    if (username.isEmpty) {
+      state = AsyncError(
+        const LoggedUserDataNotifierExceptionEmptyUsername(),
+        StackTrace.current,
+      );
+      return;
+    }
     try {
       state = const AsyncLoading<User?>();
       await ref.read(userRepositoryProvider).addUser(
@@ -52,6 +59,13 @@ class LoggedUserDataNotifier extends _$LoggedUserDataNotifier {
 
   Future<void> updateUsername(String username) async {
     if (_loggedUserId == null) return;
+    if (username.isEmpty) {
+      state = AsyncError(
+        const LoggedUserDataNotifierExceptionEmptyUsername(),
+        StackTrace.current,
+      );
+      return;
+    }
     try {
       state = const AsyncLoading<User?>();
       await ref.read(userRepositoryProvider).updateUserData(
@@ -86,4 +100,9 @@ abstract class LoggedUserDataNotifierException extends Equatable {
 class LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken
     extends LoggedUserDataNotifierException {
   const LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken();
+}
+
+class LoggedUserDataNotifierExceptionEmptyUsername
+    extends LoggedUserDataNotifierException {
+  const LoggedUserDataNotifierExceptionEmptyUsername();
 }

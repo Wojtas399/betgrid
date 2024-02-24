@@ -16,12 +16,23 @@ class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<RequiredDataCompletionUsername> {
-  bool _hasUsernameBeenEntered = false;
+  bool _canValidateTextField = false;
   bool _isUsernameEmpty = false;
   bool _isUsernameAlreadyTaken = false;
 
+  void _onTextFieldChanged(String username, WidgetRef ref) {
+    setState(() {
+      _isUsernameAlreadyTaken = false;
+      _isUsernameEmpty = false;
+      _canValidateTextField = false;
+    });
+    ref
+        .read(requiredDataCompletionNotifierProvider.notifier)
+        .updateUsername(username);
+  }
+
   String? _validate(BuildContext context) {
-    if (!_hasUsernameBeenEntered) return null;
+    if (!_canValidateTextField) return null;
     if (_isUsernameEmpty) return context.str.requiredField;
     if (_isUsernameAlreadyTaken) return context.str.usernameAlreadyTaken;
     return null;
@@ -31,12 +42,19 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
     AsyncValue<User?> asyncValue,
     BuildContext context,
   ) {
-    if (asyncValue is AsyncError &&
-        asyncValue.error
-            is LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken) {
-      setState(() {
-        _isUsernameAlreadyTaken = true;
-      });
+    if (asyncValue is AsyncError) {
+      final error = asyncValue.error;
+      if (error is LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken) {
+        setState(() {
+          _isUsernameAlreadyTaken = true;
+          _canValidateTextField = true;
+        });
+      } else if (error is LoggedUserDataNotifierExceptionEmptyUsername) {
+        setState(() {
+          _isUsernameEmpty = true;
+          _canValidateTextField = true;
+        });
+      }
     }
   }
 
@@ -46,14 +64,6 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
       loggedUserDataNotifierProvider,
       (previous, next) {
         _onLoggedUserDataChanged(next, context);
-      },
-    );
-    ref.listen(
-      requiredDataCompletionNotifierProvider,
-      (previous, next) {
-        setState(() {
-          _isUsernameEmpty = next.username.isEmpty;
-        });
       },
     );
 
@@ -67,13 +77,7 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
           TextFormField(
             decoration: InputDecoration(hintText: context.str.usernameHintText),
             onChanged: (String value) {
-              setState(() {
-                _hasUsernameBeenEntered = true;
-                _isUsernameAlreadyTaken = false;
-              });
-              ref
-                  .read(requiredDataCompletionNotifierProvider.notifier)
-                  .updateUsername(value);
+              _onTextFieldChanged(value, ref);
             },
             validator: (_) => _validate(context),
             autovalidateMode: AutovalidateMode.always,
