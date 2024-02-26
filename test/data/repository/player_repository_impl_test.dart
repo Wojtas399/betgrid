@@ -60,9 +60,7 @@ void main() {
       repositoryImpl = PlayerRepositoryImpl(initialData: []);
 
       final Stream<List<Player>?> players$ =
-          repositoryImpl.getAllPlayersWithoutGiven(
-        userId: userId,
-      );
+          repositoryImpl.getAllPlayersWithoutGiven(playerId: userId);
 
       expect(await players$.first, expectedPlayers);
       expect(

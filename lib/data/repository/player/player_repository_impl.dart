@@ -18,11 +18,11 @@ class PlayerRepositoryImpl extends Repository<Player>
 
   @override
   Stream<List<Player>?> getAllPlayersWithoutGiven({
-    required String userId,
+    required String playerId,
   }) async* {
-    await _loadAllPlayersWithoutGivenFromDb(userId);
+    await _loadAllPlayersWithoutGivenFromDb(playerId);
     await for (final users in repositoryState$) {
-      yield users?.where((player) => player.id != userId).toList();
+      yield users?.where((player) => player.id != playerId).toList();
     }
   }
 
