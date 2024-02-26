@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
+import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../provider/all_grand_prixes_provider.dart';
-import 'bets_grand_prix_item.dart';
 
 @RoutePage()
 class BetsScreen extends StatelessWidget {
@@ -38,7 +38,7 @@ class _GrandPrixes extends ConsumerWidget {
         padding: const EdgeInsets.all(24),
         itemCount: allGrandPrixes.length,
         itemBuilder: (_, int itemIndex) => ScrollAnimatedItem(
-          child: BetsGrandPrixItem(
+          child: GrandPrixItem(
             roundNumber: itemIndex + 1,
             grandPrix: allGrandPrixes[itemIndex],
           ),

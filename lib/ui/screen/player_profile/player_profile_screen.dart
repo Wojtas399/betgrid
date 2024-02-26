@@ -1,9 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../model/grand_prix.dart';
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
+import '../../component/grand_prix_item_component.dart';
+import '../../component/scroll_animated_item_component.dart';
 import '../../component/text/title.dart';
+import '../../provider/all_grand_prixes_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -16,49 +21,114 @@ class PlayerProfileScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 300.0,
-            pinned: true,
+          _AppBar.build(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            surfaceTintColor: Colors.transparent,
             foregroundColor: Theme.of(context).canvasColor,
-            flexibleSpace: FlexibleSpaceBar(
-              title: TitleLarge(
-                player.username,
-                color: Theme.of(context).canvasColor,
-              ),
-              centerTitle: true,
-              titlePadding: const EdgeInsets.symmetric(
-                vertical: 16,
-                horizontal: 0,
-              ),
-              background: Center(
-                child: SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Hero(
-                    tag: player.id,
-                    child: Avatar(
-                      avatarUrl: player.avatarUrl,
-                      username: player.username,
+            player: player,
+            context: context,
+          ),
+          Consumer(
+            builder: (_, ref, __) => ref.watch(allGrandPrixesProvider).when(
+                  data: (List<GrandPrix>? grandPrixes) =>
+                      _GrandPrixesList.build(
+                    grandPrixes: grandPrixes!,
+                  ),
+                  error: (_, __) => SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const Text('Cannot load grand prixes'),
+                      ],
                     ),
                   ),
+                  loading: () => _LoadingIndicator.build(),
                 ),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              List.generate(
-                50,
-                (index) => ListTile(
-                  title: Text('$index'),
-                ),
-              ),
-            ),
           ),
         ],
       ),
     );
   }
+}
+
+class _AppBar extends SliverAppBar {
+  const _AppBar({
+    super.backgroundColor,
+    super.foregroundColor,
+    super.flexibleSpace,
+  }) : super(
+          expandedHeight: 300.0,
+          pinned: true,
+          surfaceTintColor: Colors.transparent,
+        );
+
+  factory _AppBar.build({
+    required Player player,
+    required BuildContext context,
+    Color? backgroundColor,
+    Color? foregroundColor,
+  }) =>
+      _AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        flexibleSpace: FlexibleSpaceBar(
+          title: TitleLarge(
+            player.username,
+            color: Theme.of(context).canvasColor,
+          ),
+          centerTitle: true,
+          titlePadding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 0,
+          ),
+          background: Center(
+            child: SizedBox(
+              width: 200,
+              height: 200,
+              child: Hero(
+                tag: player.id,
+                child: Avatar(
+                  avatarUrl: player.avatarUrl,
+                  username: player.username,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class _GrandPrixesList extends SliverPadding {
+  const _GrandPrixesList({required super.padding, super.sliver});
+
+  factory _GrandPrixesList.build({required List<GrandPrix> grandPrixes}) =>
+      _GrandPrixesList(
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: grandPrixes.length,
+            (context, index) => ScrollAnimatedItem(
+              child: GrandPrixItem(
+                roundNumber: index + 1,
+                grandPrix: grandPrixes[index],
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class _LoadingIndicator extends SliverPadding {
+  const _LoadingIndicator({required super.padding, super.sliver});
+
+  factory _LoadingIndicator.build() => _LoadingIndicator(
+        padding: const EdgeInsets.only(top: 32),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+            ],
+          ),
+        ),
+      );
 }

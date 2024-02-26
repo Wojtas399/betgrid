@@ -3,17 +3,17 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/grand_prix.dart';
-import '../../component/gap/gap_horizontal.dart';
-import '../../component/text/body.dart';
-import '../../component/text/title.dart';
-import '../../config/router/app_router.dart';
-import '../../service/formatter_service.dart';
+import '../config/router/app_router.dart';
+import '../service/formatter_service.dart';
+import 'gap/gap_horizontal.dart';
+import 'text/body.dart';
+import 'text/title.dart';
 
-class BetsGrandPrixItem extends StatelessWidget {
+class GrandPrixItem extends StatelessWidget {
   final int roundNumber;
   final GrandPrix grandPrix;
 
-  const BetsGrandPrixItem({
+  const GrandPrixItem({
     super.key,
     required this.roundNumber,
     required this.grandPrix,
