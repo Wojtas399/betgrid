@@ -16,6 +16,10 @@ class MockFirebaseUserService extends Mock implements FirebaseUserService {
     ).thenAnswer((_) => Future.value(userDto));
   }
 
+  void mockLoadAllUsers({required List<UserDto> userDtos}) {
+    when(loadAllUsers).thenAnswer((_) => Future.value(userDtos));
+  }
+
   void mockAddUser({UserDto? addedUserDto}) {
     when(
       () => addUser(
