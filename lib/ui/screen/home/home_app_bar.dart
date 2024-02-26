@@ -18,7 +18,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      scrolledUnderElevation: 0.0,
       title: Text(title),
       actions: const [
         _Avatar(),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../model/user.dart' as user;
+import '../../component/avatar_component.dart';
 import '../../component/dialog/actions_dialog_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
@@ -92,13 +93,9 @@ class ProfileAvatar extends ConsumerWidget {
         child: SizedBox(
           width: 250,
           height: 250,
-          child: CircleAvatar(
-            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-            child: username == null && avatarUrl == null
-                ? const CircularProgressIndicator()
-                : avatarUrl == null
-                    ? Text('${username?[0].toUpperCase()}')
-                    : null,
+          child: Avatar(
+            avatarUrl: avatarUrl,
+            username: username,
           ),
         ),
       ),

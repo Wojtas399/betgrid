@@ -40,7 +40,11 @@ class _MyApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'BetGrid',
-      routerConfig: getIt<AppRouter>().config(),
+      routerConfig: getIt<AppRouter>().config(
+        navigatorObservers: () => [
+          HeroController(),
+        ],
+      ),
       localizationsDelegates: const [
         Str.delegate,
         GlobalMaterialLocalizations.delegate,

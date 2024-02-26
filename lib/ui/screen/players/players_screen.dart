@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/player.dart';
-import '../../component/gap/gap_horizontal.dart';
+import '../../component/avatar_component.dart';
+import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
@@ -27,7 +28,10 @@ class _PlayersList extends ConsumerWidget {
     final AsyncValue<List<Player>?> players = ref.watch(allPlayersProvider);
 
     if (players.hasValue) {
-      return ListView.builder(
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
         padding: const EdgeInsets.all(24),
         itemCount: players.value!.length,
         itemBuilder: (_, int playerIndex) {
@@ -54,49 +58,32 @@ class _PlayerItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           context.navigateTo(
-            PlayerProfileRoute(playerId: player.id),
+            PlayerProfileRoute(player: player),
           );
         },
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 104,
-              height: 104,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(12),
+            Hero(
+              tag: player.id,
+              child: SizedBox(
+                width: 104,
+                height: 104,
+                child: Avatar(
+                  avatarUrl: player.avatarUrl,
+                  username: player.username,
                 ),
               ),
-              clipBehavior: Clip.hardEdge,
-              child: player.avatarUrl != null
-                  ? Image.network(
-                      player.avatarUrl!,
-                      fit: BoxFit.cover,
-                    )
-                  : Center(
-                      child: TitleLarge(
-                        player.username[0].toUpperCase(),
-                        fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                      ),
-                    ),
             ),
-            const GapHorizontal16(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleMedium(
-                  player.username,
-                  color: Theme.of(context).canvasColor,
-                  fontWeight: FontWeight.bold,
-                ),
-                BodyMedium(
-                  'Punkty: 0',
-                  color: Theme.of(context).colorScheme.outlineVariant,
-                ),
-              ],
+            const GapVertical8(),
+            TitleMedium(
+              player.username,
+              color: Theme.of(context).canvasColor,
+              fontWeight: FontWeight.bold,
+            ),
+            BodyMedium(
+              'Punkty: 0',
+              color: Theme.of(context).colorScheme.outlineVariant,
             ),
           ],
         ),
