@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
+import '../../component/scroll_animated_item_component.dart';
 import '../../provider/all_grand_prixes_provider.dart';
 import 'bets_grand_prix_item.dart';
 
@@ -36,9 +37,11 @@ class _GrandPrixes extends ConsumerWidget {
       return ListView.builder(
         padding: const EdgeInsets.all(24),
         itemCount: allGrandPrixes.length,
-        itemBuilder: (_, int itemIndex) => BetsGrandPrixItem(
-          roundNumber: itemIndex + 1,
-          grandPrix: allGrandPrixes[itemIndex],
+        itemBuilder: (_, int itemIndex) => ScrollAnimatedItem(
+          child: BetsGrandPrixItem(
+            roundNumber: itemIndex + 1,
+            grandPrix: allGrandPrixes[itemIndex],
+          ),
         ),
       );
     }

@@ -9,7 +9,7 @@ import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../service/formatter_service.dart';
 
-class BetsGrandPrixItem extends StatefulWidget {
+class BetsGrandPrixItem extends StatelessWidget {
   final int roundNumber;
   final GrandPrix grandPrix;
 
@@ -20,80 +20,39 @@ class BetsGrandPrixItem extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _State();
-}
-
-class _State extends State<BetsGrandPrixItem>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late final Animation<double> scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    )..forward();
-    scaleAnimation = Tween<double>(begin: 0.25, end: 1).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOut,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _onPressed(BuildContext context) {
-    context.navigateTo(GrandPrixBetRoute(
-      grandPrixId: widget.grandPrix.id,
-    ));
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      child: SizedBox(
-        width: double.infinity,
-        child: Card(
-          color: Theme.of(context).colorScheme.primary,
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: () => _onPressed(context),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  _CountryFlag(
-                    countryAlpha2Code: widget.grandPrix.countryAlpha2Code,
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        color: Theme.of(context).colorScheme.primary,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: () {
+            context.navigateTo(
+              GrandPrixBetRoute(grandPrixId: grandPrix.id),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                _CountryFlag(
+                  countryAlpha2Code: grandPrix.countryAlpha2Code,
+                ),
+                const GapHorizontal16(),
+                Expanded(
+                  child: _GrandPrixDescription(
+                    roundNumber: roundNumber,
+                    gpName: grandPrix.name,
+                    startDate: grandPrix.startDate,
+                    endDate: grandPrix.endDate,
                   ),
-                  const GapHorizontal16(),
-                  Expanded(
-                    child: _GrandPrixDescription(
-                      roundNumber: widget.roundNumber,
-                      gpName: widget.grandPrix.name,
-                      startDate: widget.grandPrix.startDate,
-                      endDate: widget.grandPrix.endDate,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
-      builder: (context, child) {
-        return Transform.scale(
-          scale: scaleAnimation.value,
-          child: child,
-        );
-      },
     );
   }
 }
