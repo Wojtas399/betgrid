@@ -6,6 +6,7 @@ import '../../../model/player.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
+import '../../config/router/app_router.dart';
 import '../../provider/all_players_provider.dart';
 
 @RoutePage()
@@ -52,7 +53,9 @@ class _PlayerItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
-          //TODO
+          context.navigateTo(
+            PlayerProfileRoute(playerId: player.id),
+          );
         },
         child: Row(
           children: [

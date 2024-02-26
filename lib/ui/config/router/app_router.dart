@@ -33,6 +33,7 @@ class AppRouter extends _$AppRouter {
             ),
             AutoRoute(page: GrandPrixBetRoute.page),
             AutoRoute(page: ProfileRoute.page),
+            AutoRoute(page: PlayerProfileRoute.page),
           ],
         ),
       ];
