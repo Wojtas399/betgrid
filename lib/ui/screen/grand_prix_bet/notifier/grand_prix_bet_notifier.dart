@@ -1,26 +1,31 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rxdart/rxdart.dart';
 
-import '../../../../auth/auth_service.dart';
 import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../provider/grand_prix_id_provider.dart';
+import '../../../provider/player_id_provider.dart';
 import 'grand_prix_bet_notifier_state.dart';
 
 part 'grand_prix_bet_notifier.g.dart';
 
-@Riverpod(dependencies: [grandPrixId])
+@Riverpod(dependencies: [grandPrixId, playerId])
 class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
   String? _grandPrixBetId;
 
   @override
   Stream<GrandPrixBetNotifierState?> build() async* {
     final String? grandPrixId = ref.watch(grandPrixIdProvider);
+    final String? playerId = ref.watch(playerIdProvider);
     if (grandPrixId == null) throw 'Grand prix id not found';
+    if (playerId == null) throw 'Player id not found';
     final String? grandPrixName = await _loadGrandPrixName(grandPrixId);
-    final Stream<GrandPrixBet?> bet$ = _getBetForGrandPrix(grandPrixId);
+    final Stream<GrandPrixBet?> bet$ =
+        ref.watch(grandPrixBetRepositoryProvider).getGrandPrixBetByGrandPrixId(
+              userId: playerId,
+              grandPrixId: grandPrixId,
+            );
     await for (final bet in bet$) {
       _grandPrixBetId = bet?.id;
       yield GrandPrixBetNotifierState(
@@ -141,12 +146,7 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
   }
 
   Future<void> saveStandings() async {
-    final authService = ref.read(authServiceProvider);
     final grandPrixBetRepository = ref.read(grandPrixBetRepositoryProvider);
-    final String? loggedUserId = await authService.loggedUserId$.first;
-    if (loggedUserId == null) {
-      throw '[QualificationsBetDriversStandingsProvide] Logged user id not found';
-    }
     if (_grandPrixBetId == null) {
       throw '[QualificationsBetDriversStandingsProvide] Grand prix bet id not found';
     }
@@ -155,7 +155,7 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
       status: const GrandPrixBetNotifierStatusSavingData(),
     ));
     await grandPrixBetRepository.updateGrandPrixBet(
-      userId: loggedUserId,
+      userId: ref.watch(playerIdProvider)!,
       grandPrixBetId: _grandPrixBetId!,
       qualiStandingsByDriverIds: currentState?.qualiStandingsByDriverIds,
       p1DriverId: currentState?.p1DriverId,
@@ -178,18 +178,4 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
         .loadGrandPrixById(grandPrixId: grandPrixId);
     return grandPrix?.name;
   }
-
-  Stream<GrandPrixBet?> _getBetForGrandPrix(String grandPrixId) =>
-      ref.watch(authServiceProvider).loggedUserId$.switchMap<GrandPrixBet?>(
-        (String? loggedUserId) {
-          return loggedUserId == null
-              ? throw 'Logged user id not found'
-              : ref
-                  .watch(grandPrixBetRepositoryProvider)
-                  .getGrandPrixBetByGrandPrixId(
-                    userId: loggedUserId,
-                    grandPrixId: grandPrixId,
-                  );
-        },
-      );
 }

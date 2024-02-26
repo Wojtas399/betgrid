@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/grand_prix.dart';
-import '../config/router/app_router.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
 import 'text/body.dart';
@@ -12,11 +10,13 @@ import 'text/title.dart';
 class GrandPrixItem extends StatelessWidget {
   final int roundNumber;
   final GrandPrix grandPrix;
+  final VoidCallback onPressed;
 
   const GrandPrixItem({
     super.key,
     required this.roundNumber,
     required this.grandPrix,
+    required this.onPressed,
   });
 
   @override
@@ -27,11 +27,7 @@ class GrandPrixItem extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
         clipBehavior: Clip.hardEdge,
         child: InkWell(
-          onTap: () {
-            context.navigateTo(
-              GrandPrixBetRoute(grandPrixId: grandPrix.id),
-            );
-          },
+          onTap: onPressed,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(

@@ -8,6 +8,7 @@ import '../../component/avatar_component.dart';
 import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../component/text/title.dart';
+import '../../config/router/app_router.dart';
 import '../../provider/all_grand_prixes_provider.dart';
 
 @RoutePage()
@@ -32,6 +33,7 @@ class PlayerProfileScreen extends StatelessWidget {
                   data: (List<GrandPrix>? grandPrixes) =>
                       _GrandPrixesList.build(
                     grandPrixes: grandPrixes!,
+                    playerId: player.id,
                   ),
                   error: (_, __) => SliverList(
                     delegate: SliverChildListDelegate(
@@ -99,7 +101,10 @@ class _AppBar extends SliverAppBar {
 class _GrandPrixesList extends SliverPadding {
   const _GrandPrixesList({required super.padding, super.sliver});
 
-  factory _GrandPrixesList.build({required List<GrandPrix> grandPrixes}) =>
+  factory _GrandPrixesList.build({
+    required List<GrandPrix> grandPrixes,
+    required String playerId,
+  }) =>
       _GrandPrixesList(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
         sliver: SliverList(
@@ -109,6 +114,14 @@ class _GrandPrixesList extends SliverPadding {
               child: GrandPrixItem(
                 roundNumber: index + 1,
                 grandPrix: grandPrixes[index],
+                onPressed: () {
+                  context.navigateTo(
+                    GrandPrixBetRoute(
+                      grandPrixId: grandPrixes[index].id,
+                      playerId: playerId,
+                    ),
+                  );
+                },
               ),
             ),
           ),

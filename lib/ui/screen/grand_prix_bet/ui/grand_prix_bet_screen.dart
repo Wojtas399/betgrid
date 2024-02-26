@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/grand_prix_id_provider.dart';
+import '../../../provider/player_id_provider.dart';
 import '../../../service/dialog_service.dart';
 import '../notifier/grand_prix_bet_notifier.dart';
 import '../notifier/grand_prix_bet_notifier_state.dart';
@@ -12,22 +13,21 @@ import 'grand_prix_bet_body.dart';
 
 @RoutePage()
 class GrandPrixBetScreen extends StatelessWidget {
-  final String? grandPrixId;
+  final String grandPrixId;
+  final String playerId;
 
   const GrandPrixBetScreen({
     super.key,
-    @PathParam('grandPrixId') this.grandPrixId,
+    required this.grandPrixId,
+    required this.playerId,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (grandPrixId == null) {
-      return const Text('Page not found');
-    }
-
     return ProviderScope(
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
+        playerIdProvider.overrideWithValue(playerId),
       ],
       child: const _Content(),
     );
