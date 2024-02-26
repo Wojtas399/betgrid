@@ -32,19 +32,24 @@ Future<void> _initializeBets(
 ) async {
   final List<String?> defaultQualiStandings = List.generate(20, (_) => null);
   final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
-  final List<GrandPrix> grandPrixes =
-      await ref.read(grandPrixRepositoryProvider).loadAllGrandPrixes();
-  await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
-        userId: loggedUserId,
-        grandPrixBets: grandPrixes
-            .map(
-              (GrandPrix gp) => GrandPrixBet(
-                id: '',
-                grandPrixId: gp.id,
-                qualiStandingsByDriverIds: defaultQualiStandings,
-                dnfDriverIds: defaultDnfDrivers,
-              ),
-            )
-            .toList(),
-      );
+  final Stream<List<GrandPrix>?> grandPrixes$ =
+      ref.read(grandPrixRepositoryProvider).getAllGrandPrixes();
+  await for (final grandPrixes in grandPrixes$) {
+    if (grandPrixes != null) {
+      await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
+            userId: loggedUserId,
+            grandPrixBets: grandPrixes
+                .map(
+                  (GrandPrix gp) => GrandPrixBet(
+                    id: '',
+                    grandPrixId: gp.id,
+                    qualiStandingsByDriverIds: defaultQualiStandings,
+                    dnfDriverIds: defaultDnfDrivers,
+                  ),
+                )
+                .toList(),
+          );
+      return;
+    }
+  }
 }

@@ -54,9 +54,10 @@ void main() {
   );
 
   test(
-    'should load all grand prixes and return them sorted by date',
+    'should get all grand prixes from grand prix repository and '
+    'emit them sorted by date',
     () async {
-      grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
+      grandPrixRepository.mockGetAllGrandPrixes([gp3, gp1, gp2]);
       final container = makeProviderContainer(grandPrixRepository);
       final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
@@ -80,7 +81,7 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(grandPrixRepository.loadAllGrandPrixes).called(1);
+      verify(grandPrixRepository.getAllGrandPrixes).called(1);
     },
   );
 }

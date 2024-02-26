@@ -16,13 +16,13 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
       : _dbGrandPrixService = getIt<FirebaseGrandPrixService>();
 
   @override
-  Future<List<GrandPrix>> loadAllGrandPrixes() async {
-    final List<GrandPrixDto> grandPrixDtos =
-        await _dbGrandPrixService.loadAllGrandPrixes();
-    final List<GrandPrix> grandPrixes =
-        grandPrixDtos.map(mapGrandPrixFromDto).toList();
-    setEntities(grandPrixes);
-    return grandPrixes;
+  Stream<List<GrandPrix>?> getAllGrandPrixes() async* {
+    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
+      await _loadGrandPrixesFromDb();
+    }
+    await for (final grandPrixes in repositoryState$) {
+      yield grandPrixes;
+    }
   }
 
   @override
@@ -33,6 +33,14 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
     );
     grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
     return grandPrix;
+  }
+
+  Future<void> _loadGrandPrixesFromDb() async {
+    final List<GrandPrixDto> grandPrixDtos =
+        await _dbGrandPrixService.loadAllGrandPrixes();
+    final List<GrandPrix> grandPrixes =
+        grandPrixDtos.map(mapGrandPrixFromDto).toList();
+    setEntities(grandPrixes);
   }
 
   Future<GrandPrix?> _loadGrandPrixFromDb(String grandPrixId) async {

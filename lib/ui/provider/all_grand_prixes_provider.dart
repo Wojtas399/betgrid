@@ -6,11 +6,15 @@ import '../../../model/grand_prix.dart';
 part 'all_grand_prixes_provider.g.dart';
 
 @riverpod
-Future<List<GrandPrix>?> allGrandPrixes(AllGrandPrixesRef ref) async {
-  final List<GrandPrix> grandPrixes =
-      await ref.read(grandPrixRepositoryProvider).loadAllGrandPrixes();
-  grandPrixes.sort(
-    (GrandPrix gp1, GrandPrix gp2) => gp1.startDate.compareTo(gp2.startDate),
-  );
-  return grandPrixes;
+Stream<List<GrandPrix>?> allGrandPrixes(AllGrandPrixesRef ref) async* {
+  final Stream<List<GrandPrix>?> grandPrixes$ =
+      ref.read(grandPrixRepositoryProvider).getAllGrandPrixes();
+  await for (final grandPrixes in grandPrixes$) {
+    if (grandPrixes == null) yield null;
+    final sortedGrandPrixes = [...?grandPrixes];
+    sortedGrandPrixes.sort(
+      (GrandPrix gp1, GrandPrix gp2) => gp1.startDate.compareTo(gp2.startDate),
+    );
+    yield sortedGrandPrixes;
+  }
 }

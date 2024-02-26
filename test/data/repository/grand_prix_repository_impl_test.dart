@@ -28,7 +28,8 @@ void main() {
 
   test(
     'loadAllGrandPrixes, '
-    'should load grand prixes from db, add them to repo and return them',
+    'repository state is not initialized, '
+    'should load grand prixes from db, add them to repo and emit them',
     () async {
       final List<GrandPrixDto> grandPrixDtos = [
         GrandPrixDto(
@@ -80,12 +81,117 @@ void main() {
         grandPrixDtos: grandPrixDtos,
       );
 
-      final List<GrandPrix> grandPrixes =
-          await repositoryImpl.loadAllGrandPrixes();
+      final Stream<List<GrandPrix>?> grandPrixes$ =
+          repositoryImpl.getAllGrandPrixes();
 
-      expect(grandPrixes, expectedGrandPrixes);
+      expect(await grandPrixes$.first, expectedGrandPrixes);
       expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixes));
       verify(dbGrandPrixService.loadAllGrandPrixes).called(1);
+    },
+  );
+
+  test(
+    'loadAllGrandPrixes, '
+    'repository state is empty, '
+    'should load grand prixes from db, add them to repo and emit them',
+    () async {
+      final List<GrandPrixDto> grandPrixDtos = [
+        GrandPrixDto(
+          id: 'gp1',
+          name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
+          startDate: DateTime(2023, 1, 2),
+          endDate: DateTime(2023, 1, 4),
+        ),
+        GrandPrixDto(
+          id: 'gp2',
+          name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
+          startDate: DateTime(2023, 1, 10),
+          endDate: DateTime(2023, 1, 12),
+        ),
+        GrandPrixDto(
+          id: 'gp3',
+          name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
+          startDate: DateTime(2023, 1, 20),
+          endDate: DateTime(2023, 1, 22),
+        ),
+      ];
+      final List<GrandPrix> expectedGrandPrixes = [
+        GrandPrix(
+          id: 'gp1',
+          name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
+          startDate: DateTime(2023, 1, 2),
+          endDate: DateTime(2023, 1, 4),
+        ),
+        GrandPrix(
+          id: 'gp2',
+          name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
+          startDate: DateTime(2023, 1, 10),
+          endDate: DateTime(2023, 1, 12),
+        ),
+        GrandPrix(
+          id: 'gp3',
+          name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
+          startDate: DateTime(2023, 1, 20),
+          endDate: DateTime(2023, 1, 22),
+        ),
+      ];
+      dbGrandPrixService.mockLoadAllGrandPrixes(
+        grandPrixDtos: grandPrixDtos,
+      );
+      repositoryImpl = GrandPrixRepositoryImpl(initialData: []);
+
+      final Stream<List<GrandPrix>?> grandPrixes$ =
+          repositoryImpl.getAllGrandPrixes();
+
+      expect(await grandPrixes$.first, expectedGrandPrixes);
+      expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixes));
+      verify(dbGrandPrixService.loadAllGrandPrixes).called(1);
+    },
+  );
+
+  test(
+    'loadAllGrandPrixes, '
+    'repository state contains grand prixes, '
+    'should only emit all grand prixes from repository state',
+    () async {
+      final List<GrandPrix> expectedGrandPrixes = [
+        GrandPrix(
+          id: 'gp1',
+          name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
+          startDate: DateTime(2023, 1, 2),
+          endDate: DateTime(2023, 1, 4),
+        ),
+        GrandPrix(
+          id: 'gp2',
+          name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
+          startDate: DateTime(2023, 1, 10),
+          endDate: DateTime(2023, 1, 12),
+        ),
+        GrandPrix(
+          id: 'gp3',
+          name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
+          startDate: DateTime(2023, 1, 20),
+          endDate: DateTime(2023, 1, 22),
+        ),
+      ];
+      repositoryImpl = GrandPrixRepositoryImpl(
+        initialData: expectedGrandPrixes,
+      );
+
+      final Stream<List<GrandPrix>?> grandPrixes$ =
+          repositoryImpl.getAllGrandPrixes();
+
+      expect(await grandPrixes$.first, expectedGrandPrixes);
+      verifyNever(dbGrandPrixService.loadAllGrandPrixes);
     },
   );
 
