@@ -26,8 +26,8 @@ class AppRouter extends _$AppRouter {
                   title: (context, _) => context.str.betsScreenTitle,
                 ),
                 AutoRoute(
-                  page: FriendsRoute.page,
-                  title: (context, _) => context.str.friendsScreenTitle,
+                  page: PlayersRoute.page,
+                  title: (context, _) => context.str.playersScreenTitle,
                 ),
               ],
             ),

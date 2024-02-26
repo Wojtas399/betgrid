@@ -35,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
       routes: const [
         StatsRoute(),
         BetsRoute(),
-        FriendsRoute(),
+        PlayersRoute(),
       ],
       builder: (context, child, _) {
         final tabsRouter = AutoTabsRouter.of(context);
@@ -59,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: const Icon(Icons.list),
               ),
               BottomNavigationBarItem(
-                label: context.str.friendsScreenTitle,
+                label: context.str.playersScreenTitle,
                 icon: const Icon(Icons.people),
               ),
             ],
