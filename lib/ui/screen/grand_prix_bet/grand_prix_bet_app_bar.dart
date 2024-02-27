@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../provider/grand_prix_bet_player_username_provider.dart';
 import '../../provider/grand_prix_name_provider.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
@@ -24,12 +25,16 @@ class _GrandPrixName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text(
-      ref.watch(grandPrixNameProvider).when(
-            data: (grandPrixName) => grandPrixName ?? '--',
-            error: (_, __) => 'Cannot load Grand Prix name',
-            loading: () => '--',
-          ),
+    final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
+    final AsyncValue<String?> playerUsername = ref.watch(
+      grandPrixBetPlayerUsernameProvider,
     );
+
+    if (grandPrixName is AsyncData && playerUsername is AsyncData) {
+      String title = grandPrixName.value!;
+      if (playerUsername.value != null) title += ' (${playerUsername.value})';
+      return Text(title);
+    }
+    return const Text('--');
   }
 }
