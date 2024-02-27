@@ -10,4 +10,12 @@ class MockPlayerRepository extends Mock implements PlayerRepository {
       ),
     ).thenAnswer((_) => Stream.value(players));
   }
+
+  void mockGetPlayerById({Player? player}) {
+    when(
+      () => getPlayerById(
+        playerId: any(named: 'playerId'),
+      ),
+    ).thenAnswer((invocation) => Stream.value(player));
+  }
 }
