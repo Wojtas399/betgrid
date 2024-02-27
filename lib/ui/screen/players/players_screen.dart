@@ -66,14 +66,17 @@ class _PlayerItem extends StatelessWidget {
           children: [
             Hero(
               tag: player.id,
-              child: SizedBox(
-                width: 104,
-                height: 104,
-                child: Avatar(
-                  avatarUrl: player.avatarUrl,
-                  username: player.username,
-                ),
-              ),
+              child: LayoutBuilder(builder: (_, BoxConstraints constraints) {
+                final double avatarSize = constraints.maxWidth * 0.5;
+                return SizedBox(
+                  width: avatarSize,
+                  height: avatarSize,
+                  child: Avatar(
+                    avatarUrl: player.avatarUrl,
+                    username: player.username,
+                  ),
+                );
+              }),
             ),
             const GapVertical8(),
             TitleMedium(
