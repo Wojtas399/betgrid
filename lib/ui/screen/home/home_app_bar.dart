@@ -21,7 +21,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       actions: const [
         _Avatar(),
-        GapHorizontal16(),
+        GapHorizontal8(),
       ],
     );
   }
