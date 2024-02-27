@@ -57,8 +57,8 @@ class _AppBar extends SliverAppBar {
     super.foregroundColor,
     super.flexibleSpace,
   }) : super(
-          expandedHeight: 300.0,
           pinned: true,
+          expandedHeight: 300,
           surfaceTintColor: Colors.transparent,
         );
 
@@ -81,19 +81,23 @@ class _AppBar extends SliverAppBar {
             vertical: 16,
             horizontal: 0,
           ),
-          background: Center(
-            child: SizedBox(
-              width: 200,
-              height: 200,
-              child: Hero(
-                tag: player.id,
-                child: Avatar(
-                  avatarUrl: player.avatarUrl,
-                  username: player.username,
+          background: LayoutBuilder(builder: (_, BoxConstraints constraints) {
+            final double avatarSize = constraints.maxHeight * 0.55;
+
+            return Center(
+              child: SizedBox(
+                width: avatarSize,
+                height: avatarSize,
+                child: Hero(
+                  tag: player.id,
+                  child: Avatar(
+                    avatarUrl: player.avatarUrl,
+                    username: player.username,
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
       );
 }
