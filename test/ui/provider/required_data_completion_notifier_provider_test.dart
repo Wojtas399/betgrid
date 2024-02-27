@@ -1,7 +1,7 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
-import 'package:betgrid/ui/screen/required_data_completion/notifier/required_data_completion_notifier_provider.dart';
-import 'package:betgrid/ui/screen/required_data_completion/notifier/required_data_completion_notifier_provider_state.dart';
+import 'package:betgrid/ui/provider/required_data_completion/required_data_completion_notifier_provider.dart';
+import 'package:betgrid/ui/provider/required_data_completion/required_data_completion_notifier_provider_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
