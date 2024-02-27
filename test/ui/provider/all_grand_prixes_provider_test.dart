@@ -11,9 +11,7 @@ import '../../mock/listener.dart';
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockGrandPrixRepository grandPrixRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
@@ -58,7 +56,7 @@ void main() {
     'emit them sorted by date',
     () async {
       grandPrixRepository.mockGetAllGrandPrixes([gp3, gp1, gp2]);
-      final container = makeProviderContainer(grandPrixRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
         allGrandPrixesProvider,

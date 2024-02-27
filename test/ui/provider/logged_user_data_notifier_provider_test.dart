@@ -17,10 +17,7 @@ void main() {
   final userRepository = MockUserRepository();
   const String loggedUserId = 'u1';
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockUserRepository userRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -46,7 +43,7 @@ void main() {
     'should emit null',
     () async {
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -82,7 +79,7 @@ void main() {
       );
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: loggedUserData);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -118,7 +115,7 @@ void main() {
       const ThemeMode themeMode = ThemeMode.system;
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -159,7 +156,7 @@ void main() {
       const expectedError = LoggedUserDataNotifierExceptionEmptyUsername();
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       Object? error;
       container.listen(
@@ -225,7 +222,7 @@ void main() {
       userRepository.mockAddUser(
         throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
       );
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       Object? error;
       container.listen(
@@ -290,7 +287,7 @@ void main() {
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById();
       userRepository.mockAddUser();
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -329,7 +326,7 @@ void main() {
       const expectedError = LoggedUserDataNotifierExceptionEmptyUsername();
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       Object? error;
       container.listen(
@@ -378,7 +375,7 @@ void main() {
     () async {
       const String newUsername = 'new username';
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -413,7 +410,7 @@ void main() {
       userRepository.mockUpdateUserData(
         throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
       );
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       Object? error;
       container.listen(
@@ -467,7 +464,7 @@ void main() {
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -496,7 +493,7 @@ void main() {
     () async {
       const String newAvatarImgPath = 'avatar/path';
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,
@@ -526,7 +523,7 @@ void main() {
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserAvatar();
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<User?>>();
       container.listen(
         loggedUserDataNotifierProvider,

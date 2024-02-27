@@ -14,10 +14,7 @@ void main() {
   final authService = MockAuthService();
   final playerRepository = MockPlayerRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockPlayerRepository playerRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -38,7 +35,7 @@ void main() {
     'should emit null',
     () async {
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, playerRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<Player>?>>();
       container.listen(
         allPlayersProvider,
@@ -71,7 +68,7 @@ void main() {
       ];
       authService.mockGetLoggedUserId(loggedUserId);
       playerRepository.mockGetAllPlayersWithoutGiven(players: players);
-      final container = makeProviderContainer(authService, playerRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<Player>?>>();
       container.listen(
         allPlayersProvider,

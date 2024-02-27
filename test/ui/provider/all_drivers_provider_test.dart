@@ -12,12 +12,12 @@ import '../../mock/listener.dart';
 void main() {
   final driverRepository = MockDriverRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockDriverRepository driverRepository,
-  ) {
-    final container = ProviderContainer(overrides: [
-      driverRepositoryProvider.overrideWithValue(driverRepository),
-    ]);
+  ProviderContainer makeProviderContainer() {
+    final container = ProviderContainer(
+      overrides: [
+        driverRepositoryProvider.overrideWithValue(driverRepository),
+      ],
+    );
     addTearDown(container.dispose);
     return container;
   }
@@ -35,7 +35,7 @@ void main() {
         createDriver(id: 'd3'),
       ];
       driverRepository.mockLoadAllDrivers(allDrivers);
-      final container = makeProviderContainer(driverRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<Driver>?>>();
       container.listen(
         allDriversProvider,

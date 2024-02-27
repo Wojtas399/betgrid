@@ -18,11 +18,7 @@ void main() {
   final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockGrandPrixRepository grandPrixRepository,
-    MockGrandPrixBetRepository grandPrixBetRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -46,11 +42,7 @@ void main() {
     'should do nothing',
     () async {
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,
@@ -74,11 +66,7 @@ void main() {
         createGrandPrixBet(id: 'gpb1'),
         createGrandPrixBet(id: 'gpb2'),
       ]);
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,
@@ -111,11 +99,7 @@ void main() {
         createGrandPrix(id: 'gp3'),
       ]);
       grandPrixBetRepository.mockAddGrandPrixBets();
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,

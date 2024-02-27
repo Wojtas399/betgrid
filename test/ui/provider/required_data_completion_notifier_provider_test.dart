@@ -14,10 +14,7 @@ void main() {
   final authService = MockAuthService();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockUserRepository userRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -38,7 +35,7 @@ void main() {
     'should update avatarImgPath in state',
     () async {
       const String avatarImgPath = 'avatar/path';
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<RequiredDataCompletionNotifierState>();
       container.listen(
         requiredDataCompletionNotifierProvider,
@@ -71,7 +68,7 @@ void main() {
     'should update username in state',
     () async {
       const String username = 'username';
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<RequiredDataCompletionNotifierState>();
       container.listen(
         requiredDataCompletionNotifierProvider,
