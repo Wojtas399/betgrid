@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../provider/grand_prix_name_provider.dart';
+import '../../provider/grand_prix_name_provider.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {

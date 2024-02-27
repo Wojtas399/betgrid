@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/text/title.dart';
+import '../../component/text/title.dart';
 
 class GrandPrixBetLabelCell extends TableCell {
   const GrandPrixBetLabelCell({super.key, required super.child})

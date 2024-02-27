@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/text/title.dart';
-import '../../../extensions/build_context_extensions.dart';
+import '../../component/text/title.dart';
+import '../../extensions/build_context_extensions.dart';
 import 'grand_prix_bet_label_cell.dart';
 
 class GrandPrixBetPositionYesNoItem extends TableRow {

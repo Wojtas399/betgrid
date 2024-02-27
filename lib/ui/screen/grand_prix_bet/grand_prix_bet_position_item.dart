@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../model/driver.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/text/body.dart';
-import '../../../component/text/title.dart';
+import '../../../model/driver.dart';
+import '../../component/gap/gap_horizontal.dart';
+import '../../component/text/body.dart';
+import '../../component/text/title.dart';
 import 'grand_prix_bet_label_cell.dart';
 
 class GrandPrixBetPositionItem extends TableRow {

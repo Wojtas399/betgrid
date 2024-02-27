@@ -1,12 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../model/grand_prix_bet.dart';
-import '../../../provider/grand_prix_id_provider.dart';
-import '../../../provider/player_id_provider.dart';
+import '../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../model/grand_prix_bet.dart';
+import '../grand_prix_id_provider.dart';
+import '../player_id_provider.dart';
 import 'grand_prix_bet_notifier_state.dart';
 
-part 'grand_prix_bet_notifier.g.dart';
+part 'grand_prix_bet_notifier_provider.g.dart';
 
 @Riverpod(dependencies: [grandPrixId, playerId])
 class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
