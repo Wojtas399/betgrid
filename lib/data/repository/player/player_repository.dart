@@ -11,4 +11,6 @@ PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
 
 abstract interface class PlayerRepository {
   Stream<List<Player>?> getAllPlayersWithoutGiven({required String playerId});
+
+  Stream<Player?> getPlayerById({required String playerId});
 }
