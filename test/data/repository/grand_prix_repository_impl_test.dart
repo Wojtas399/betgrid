@@ -196,9 +196,9 @@ void main() {
   );
 
   test(
-    'loadGrandPrixById, '
+    'getGrandPrixById, '
     'grand prix exists in repository state, '
-    'should return grand prix from repository state',
+    'should emit grand prix from repository state',
     () async {
       const String grandPrixId = 'gp2';
       final List<GrandPrix> existingGrandPrixes = [
@@ -228,18 +228,18 @@ void main() {
         initialData: existingGrandPrixes,
       );
 
-      final GrandPrix? grandPrix = await repositoryImpl.loadGrandPrixById(
+      final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
         grandPrixId: grandPrixId,
       );
 
-      expect(grandPrix, existingGrandPrixes[1]);
+      expect(grandPrix$, emits(existingGrandPrixes[1]));
     },
   );
 
   test(
-    'loadGrandPrixById, '
+    'getGrandPrixById, '
     'grand prix does not exist in repository state, '
-    'should load grand prix from db, add it to repository state and return it',
+    'should load grand prix from db, add it to repository state and emit it',
     () async {
       const String grandPrixId = 'gp2';
       final GrandPrixDto grandPrixDto = GrandPrixDto(
@@ -277,11 +277,11 @@ void main() {
         initialData: existingGrandPrixes,
       );
 
-      final GrandPrix? grandPrix = await repositoryImpl.loadGrandPrixById(
+      final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
         grandPrixId: grandPrixId,
       );
 
-      expect(grandPrix, expectedGrandPrix);
+      expect(await grandPrix$.first, expectedGrandPrix);
       expect(
         repositoryImpl.repositoryState$,
         emits([

@@ -12,5 +12,5 @@ GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
 abstract interface class GrandPrixRepository {
   Stream<List<GrandPrix>?> getAllGrandPrixes();
 
-  Future<GrandPrix?> loadGrandPrixById({required String grandPrixId});
+  Stream<GrandPrix?> getGrandPrixById({required String grandPrixId});
 }

@@ -26,13 +26,14 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
   }
 
   @override
-  Future<GrandPrix?> loadGrandPrixById({required String grandPrixId}) async {
-    final List<GrandPrix>? existingGrandPrixes = await repositoryState$.first;
-    GrandPrix? grandPrix = existingGrandPrixes?.firstWhereOrNull(
-      (GrandPrix gp) => gp.id == grandPrixId,
-    );
-    grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
-    return grandPrix;
+  Stream<GrandPrix?> getGrandPrixById({required String grandPrixId}) async* {
+    await for (final grandPrixes in repositoryState$) {
+      GrandPrix? grandPrix = grandPrixes?.firstWhereOrNull(
+        (GrandPrix gp) => gp.id == grandPrixId,
+      );
+      grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
+      yield grandPrix;
+    }
   }
 
   Future<void> _loadGrandPrixesFromDb() async {

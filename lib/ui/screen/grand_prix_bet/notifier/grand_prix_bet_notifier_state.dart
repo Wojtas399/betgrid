@@ -7,7 +7,6 @@ class GrandPrixBetNotifierState with _$GrandPrixBetNotifierState {
   const factory GrandPrixBetNotifierState({
     @Default(GrandPrixBetNotifierStatusComplete())
     GrandPrixBetNotifierStatus status,
-    String? grandPrixName,
     List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,
     String? p2DriverId,

@@ -1,8 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../provider/grand_prix_id_provider.dart';
 import '../../../provider/player_id_provider.dart';
@@ -20,7 +18,6 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     final String? playerId = ref.watch(playerIdProvider);
     if (grandPrixId == null) throw 'Grand prix id not found';
     if (playerId == null) throw 'Player id not found';
-    final String? grandPrixName = await _loadGrandPrixName(grandPrixId);
     final Stream<GrandPrixBet?> bet$ =
         ref.watch(grandPrixBetRepositoryProvider).getGrandPrixBetByGrandPrixId(
               userId: playerId,
@@ -29,7 +26,6 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     await for (final bet in bet$) {
       _grandPrixBetId = bet?.id;
       yield GrandPrixBetNotifierState(
-        grandPrixName: grandPrixName,
         qualiStandingsByDriverIds: bet?.qualiStandingsByDriverIds,
         p1DriverId: bet?.p1DriverId,
         p2DriverId: bet?.p2DriverId,
@@ -170,12 +166,5 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     state = AsyncData(state.value?.copyWith(
       status: const GrandPrixBetNotifierStatusDataSaved(),
     ));
-  }
-
-  Future<String?> _loadGrandPrixName(String grandPrixId) async {
-    final GrandPrix? grandPrix = await ref
-        .read(grandPrixRepositoryProvider)
-        .loadGrandPrixById(grandPrixId: grandPrixId);
-    return grandPrix?.name;
   }
 }

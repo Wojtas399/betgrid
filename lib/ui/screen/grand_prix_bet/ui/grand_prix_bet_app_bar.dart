@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../notifier/grand_prix_bet_notifier.dart';
+import '../../../provider/grand_prix_name_provider.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -24,12 +24,12 @@ class _GrandPrixName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? grandPrixName = ref.watch(
-      grandPrixBetNotifierProvider.select(
-        (state) => state.value?.grandPrixName,
-      ),
+    return Text(
+      ref.watch(grandPrixNameProvider).when(
+            data: (grandPrixName) => grandPrixName ?? '--',
+            error: (_, __) => 'Cannot load Grand Prix name',
+            loading: () => '--',
+          ),
     );
-
-    return Text(grandPrixName ?? '--');
   }
 }

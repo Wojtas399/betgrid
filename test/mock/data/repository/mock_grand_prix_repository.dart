@@ -7,11 +7,11 @@ class MockGrandPrixRepository extends Mock implements GrandPrixRepository {
     when(getAllGrandPrixes).thenAnswer((_) => Stream.value(grandPrixes));
   }
 
-  void mockLoadGrandPrixById(GrandPrix? grandPrix) {
+  void mockGetGrandPrixById(GrandPrix? grandPrix) {
     when(
-      () => loadGrandPrixById(
+      () => getGrandPrixById(
         grandPrixId: any(named: 'grandPrixId'),
       ),
-    ).thenAnswer((_) => Future.value(grandPrix));
+    ).thenAnswer((_) => Stream.value(grandPrix));
   }
 }
