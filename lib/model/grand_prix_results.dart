@@ -1,6 +1,6 @@
 import 'entity.dart';
 
-class GrandPrixResult extends Entity {
+class GrandPrixResults extends Entity {
   final String grandPrixId;
   final List<String>? qualiStandingsByDriverIds;
   final String? p1DriverId;
@@ -12,7 +12,7 @@ class GrandPrixResult extends Entity {
   final bool? wasThereSafetyCar;
   final bool? wasThereRedFlag;
 
-  const GrandPrixResult({
+  const GrandPrixResults({
     required super.id,
     required this.grandPrixId,
     this.qualiStandingsByDriverIds,

@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'grand_prix_result_dto.g.dart';
-part 'grand_prix_result_dto.freezed.dart';
+part 'grand_prix_results_dto.g.dart';
+part 'grand_prix_results_dto.freezed.dart';
 
 @freezed
-class GrandPrixResultDto with _$GrandPrixResultDto {
-  const factory GrandPrixResultDto({
+class GrandPrixResultsDto with _$GrandPrixResultsDto {
+  const factory GrandPrixResultsDto({
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
@@ -19,14 +19,14 @@ class GrandPrixResultDto with _$GrandPrixResultDto {
     List<String>? dnfDriverIds,
     bool? wasThereSafetyCar,
     bool? wasThereRedFlag,
-  }) = _GrandPrixResultDto;
+  }) = _GrandPrixResultsDto;
 
-  factory GrandPrixResultDto.fromJson(Map<String, Object?> json) =>
-      _$GrandPrixResultDtoFromJson(json);
+  factory GrandPrixResultsDto.fromJson(Map<String, Object?> json) =>
+      _$GrandPrixResultsDtoFromJson(json);
 
-  factory GrandPrixResultDto.fromIdAndJson(
+  factory GrandPrixResultsDto.fromIdAndJson(
     String id,
     Map<String, Object?> json,
   ) =>
-      GrandPrixResultDto.fromJson(json).copyWith(id: id);
+      GrandPrixResultsDto.fromJson(json).copyWith(id: id);
 }

@@ -1,4 +1,4 @@
-import 'package:betgrid/firebase/model/grand_prix_result_dto/grand_prix_result_dto.dart';
+import 'package:betgrid/firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -29,7 +29,7 @@ void main() {
         'wasThereSafetyCar': wasThereSafetyCar,
         'wasThereRedFlag': wasThereRedFlag
       };
-      const GrandPrixResultDto expectedModel = GrandPrixResultDto(
+      const GrandPrixResultsDto expectedModel = GrandPrixResultsDto(
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -42,7 +42,7 @@ void main() {
         wasThereSafetyCar: wasThereSafetyCar,
       );
 
-      final GrandPrixResultDto model = GrandPrixResultDto.fromJson(json);
+      final GrandPrixResultsDto model = GrandPrixResultsDto.fromJson(json);
 
       expect(model, expectedModel);
     },
@@ -66,7 +66,7 @@ void main() {
         'wasThereSafetyCar': wasThereSafetyCar,
         'wasThereRedFlag': wasThereRedFlag
       };
-      const GrandPrixResultDto expectedModel = GrandPrixResultDto(
+      const GrandPrixResultsDto expectedModel = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -80,8 +80,8 @@ void main() {
         wasThereSafetyCar: wasThereSafetyCar,
       );
 
-      final GrandPrixResultDto model =
-          GrandPrixResultDto.fromIdAndJson(id, json);
+      final GrandPrixResultsDto model =
+          GrandPrixResultsDto.fromIdAndJson(id, json);
 
       expect(model, expectedModel);
     },
@@ -91,7 +91,7 @@ void main() {
     'toJson, '
     'should map class model to json model ignoring id',
     () {
-      const GrandPrixResultDto model = GrandPrixResultDto(
+      const GrandPrixResultsDto model = GrandPrixResultsDto(
         id: 'gpb1',
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
