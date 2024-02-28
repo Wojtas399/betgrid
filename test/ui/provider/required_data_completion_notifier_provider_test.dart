@@ -1,7 +1,7 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
-import 'package:betgrid/ui/screen/required_data_completion/notifier/required_data_completion_notifier_provider.dart';
-import 'package:betgrid/ui/screen/required_data_completion/notifier/required_data_completion_notifier_provider_state.dart';
+import 'package:betgrid/ui/provider/required_data_completion/required_data_completion_notifier_provider.dart';
+import 'package:betgrid/ui/provider/required_data_completion/required_data_completion_notifier_provider_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,10 +14,7 @@ void main() {
   final authService = MockAuthService();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockUserRepository userRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -38,7 +35,7 @@ void main() {
     'should update avatarImgPath in state',
     () async {
       const String avatarImgPath = 'avatar/path';
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<RequiredDataCompletionNotifierState>();
       container.listen(
         requiredDataCompletionNotifierProvider,
@@ -71,7 +68,7 @@ void main() {
     'should update username in state',
     () async {
       const String username = 'username';
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<RequiredDataCompletionNotifierState>();
       container.listen(
         requiredDataCompletionNotifierProvider,

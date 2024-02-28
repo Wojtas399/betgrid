@@ -16,23 +16,32 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
       : _dbGrandPrixService = getIt<FirebaseGrandPrixService>();
 
   @override
-  Future<List<GrandPrix>> loadAllGrandPrixes() async {
+  Stream<List<GrandPrix>?> getAllGrandPrixes() async* {
+    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
+      await _loadGrandPrixesFromDb();
+    }
+    await for (final grandPrixes in repositoryState$) {
+      yield grandPrixes;
+    }
+  }
+
+  @override
+  Stream<GrandPrix?> getGrandPrixById({required String grandPrixId}) async* {
+    await for (final grandPrixes in repositoryState$) {
+      GrandPrix? grandPrix = grandPrixes?.firstWhereOrNull(
+        (GrandPrix gp) => gp.id == grandPrixId,
+      );
+      grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
+      yield grandPrix;
+    }
+  }
+
+  Future<void> _loadGrandPrixesFromDb() async {
     final List<GrandPrixDto> grandPrixDtos =
         await _dbGrandPrixService.loadAllGrandPrixes();
     final List<GrandPrix> grandPrixes =
         grandPrixDtos.map(mapGrandPrixFromDto).toList();
     setEntities(grandPrixes);
-    return grandPrixes;
-  }
-
-  @override
-  Future<GrandPrix?> loadGrandPrixById({required String grandPrixId}) async {
-    final List<GrandPrix>? existingGrandPrixes = await repositoryState$.first;
-    GrandPrix? grandPrix = existingGrandPrixes?.firstWhereOrNull(
-      (GrandPrix gp) => gp.id == grandPrixId,
-    );
-    grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
-    return grandPrix;
   }
 
   Future<GrandPrix?> _loadGrandPrixFromDb(String grandPrixId) async {

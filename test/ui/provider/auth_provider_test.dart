@@ -11,7 +11,7 @@ import '../../mock/listener.dart';
 void main() {
   final authService = MockAuthService();
 
-  ProviderContainer makeProviderContainer(MockAuthService authService) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -36,7 +36,7 @@ void main() {
     'should emit AuthStateComplete',
     () async {
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<AuthState>>();
       container.listen(
         authProvider,
@@ -69,7 +69,7 @@ void main() {
     'should emit AuthStateUserIsSignedIn',
     () async {
       authService.mockGetLoggedUserId('u1');
-      final container = makeProviderContainer(authService);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<AuthState>>();
       container.listen(
         authProvider,
@@ -103,7 +103,7 @@ void main() {
     () async {
       authService.mockGetLoggedUserId(null);
       authService.mockSignInWithGoogle(null);
-      final container = makeProviderContainer(authService);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<AuthState>>();
       container.listen(
         authProvider,
@@ -147,7 +147,7 @@ void main() {
     () async {
       authService.mockGetLoggedUserId(null);
       authService.mockSignInWithGoogle('u1');
-      final container = makeProviderContainer(authService);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<AuthState>>();
       container.listen(
         authProvider,

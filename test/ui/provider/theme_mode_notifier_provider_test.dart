@@ -15,10 +15,7 @@ void main() {
   final authService = MockAuthService();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockUserRepository userRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -41,7 +38,7 @@ void main() {
     () async {
       const ThemeMode expectedThemeMode = ThemeMode.light;
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeNotifierProvider,
@@ -76,7 +73,7 @@ void main() {
       const ThemeMode expectedThemeMode = ThemeMode.light;
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeNotifierProvider,
@@ -112,7 +109,7 @@ void main() {
       userRepository.mockGetUserById(
         user: createUser(themeMode: expectedThemeMode),
       );
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeNotifierProvider,
@@ -149,7 +146,7 @@ void main() {
     () async {
       const ThemeMode expectedThemeMode = ThemeMode.system;
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeNotifierProvider,
@@ -202,7 +199,7 @@ void main() {
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeNotifierProvider,

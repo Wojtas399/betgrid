@@ -13,6 +13,10 @@ class GrandPrixBetTable extends StatelessWidget {
           width: 0.25,
           color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
         ),
+        verticalInside: BorderSide(
+          width: 0.25,
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+        ),
       ),
       columnWidths: const <int, TableColumnWidth>{
         0: FixedColumnWidth(140),

@@ -1,4 +1,3 @@
-import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/ui/provider/all_grand_prixes_provider.dart';
@@ -6,21 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/auth/mock_auth_service.dart';
 import '../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthService();
   final grandPrixRepository = MockGrandPrixRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockGrandPrixRepository grandPrixRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
-        authServiceProvider.overrideWithValue(authService),
         grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
       ],
     );
@@ -33,11 +26,9 @@ void main() {
   });
 
   tearDown(() {
-    reset(authService);
     reset(grandPrixRepository);
   });
 
-  const String loggedUserId = 'u1';
   final GrandPrix gp1 = GrandPrix(
     id: 'gp1',
     name: 'Grand Prix 1',
@@ -61,40 +52,11 @@ void main() {
   );
 
   test(
-    'should return null if logged user does not exist',
+    'should get all grand prixes from grand prix repository and '
+    'emit them sorted by date',
     () async {
-      authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, grandPrixRepository);
-      final listener = Listener<AsyncValue<List<GrandPrix>?>>();
-      container.listen(
-        allGrandPrixesProvider,
-        listener,
-        fireImmediately: true,
-      );
-
-      await container.read(allGrandPrixesProvider.future);
-
-      verifyInOrder([
-        () => listener(
-              null,
-              const AsyncLoading<List<GrandPrix>?>(),
-            ),
-        () => listener(
-              const AsyncLoading<List<GrandPrix>?>(),
-              const AsyncData<List<GrandPrix>?>(null),
-            ),
-      ]);
-      verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
-    },
-  );
-
-  test(
-    'should load all grand prixes and return them sorted by date',
-    () async {
-      authService.mockGetLoggedUserId(loggedUserId);
-      grandPrixRepository.mockLoadAllGrandPrixes([gp3, gp1, gp2]);
-      final container = makeProviderContainer(authService, grandPrixRepository);
+      grandPrixRepository.mockGetAllGrandPrixes([gp3, gp1, gp2]);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
         allGrandPrixesProvider,
@@ -117,8 +79,7 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
-      verify(grandPrixRepository.loadAllGrandPrixes).called(1);
+      verify(grandPrixRepository.getAllGrandPrixes).called(1);
     },
   );
 }

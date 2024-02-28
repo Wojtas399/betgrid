@@ -15,10 +15,7 @@ void main() {
   final authService = MockAuthService();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockUserRepository userRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -42,7 +39,7 @@ void main() {
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.defaultRed;
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorNotifierProvider,
@@ -78,7 +75,7 @@ void main() {
           ThemePrimaryColor.defaultRed;
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorNotifierProvider,
@@ -115,7 +112,7 @@ void main() {
       userRepository.mockGetUserById(
         user: createUser(themePrimaryColor: expectedThemePrimaryColor),
       );
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorNotifierProvider,
@@ -153,7 +150,7 @@ void main() {
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.pink;
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorNotifierProvider,
@@ -207,7 +204,7 @@ void main() {
       authService.mockGetLoggedUserId(loggedUserId);
       userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer(authService, userRepository);
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorNotifierProvider,

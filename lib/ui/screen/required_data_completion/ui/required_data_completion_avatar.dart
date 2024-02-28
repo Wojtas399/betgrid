@@ -7,9 +7,9 @@ import '../../../component/dialog/actions_dialog_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../provider/required_data_completion/required_data_completion_notifier_provider.dart';
 import '../../../service/dialog_service.dart';
 import '../../../service/image_service.dart';
-import '../notifier/required_data_completion_notifier_provider.dart';
 
 class RequiredDataCompletionAvatar extends StatelessWidget {
   const RequiredDataCompletionAvatar({super.key});

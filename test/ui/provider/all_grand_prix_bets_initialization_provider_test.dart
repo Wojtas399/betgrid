@@ -18,11 +18,7 @@ void main() {
   final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockGrandPrixRepository grandPrixRepository,
-    MockGrandPrixBetRepository grandPrixBetRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -46,11 +42,7 @@ void main() {
     'should do nothing',
     () async {
       authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,
@@ -74,11 +66,7 @@ void main() {
         createGrandPrixBet(id: 'gpb1'),
         createGrandPrixBet(id: 'gpb2'),
       ]);
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,
@@ -105,17 +93,13 @@ void main() {
       final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
       authService.mockGetLoggedUserId(loggedUserId);
       grandPrixBetRepository.mockGetAllGrandPrixBets([]);
-      grandPrixRepository.mockLoadAllGrandPrixes([
+      grandPrixRepository.mockGetAllGrandPrixes([
         createGrandPrix(id: 'gp1'),
         createGrandPrix(id: 'gp2'),
         createGrandPrix(id: 'gp3'),
       ]);
       grandPrixBetRepository.mockAddGrandPrixBets();
-      final container = makeProviderContainer(
-        authService,
-        grandPrixRepository,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
         allGrandPrixBetsInitializationProvider,
@@ -129,9 +113,7 @@ void main() {
       verify(
         () => grandPrixBetRepository.getAllGrandPrixBets(userId: loggedUserId),
       ).called(1);
-      verify(
-        () => grandPrixRepository.loadAllGrandPrixes(),
-      ).called(1);
+      verify(grandPrixRepository.getAllGrandPrixes).called(1);
       verify(
         () => grandPrixBetRepository.addGrandPrixBets(
           userId: loggedUserId,

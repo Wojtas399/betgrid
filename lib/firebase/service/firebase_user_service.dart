@@ -11,6 +11,11 @@ class FirebaseUserService {
     return snapshot.data();
   }
 
+  Future<List<UserDto>> loadAllUsers() async {
+    final snapshot = await getUsersRef().get();
+    return snapshot.docs.map((doc) => doc.data()).toList();
+  }
+
   Future<UserDto?> addUser({
     required String userId,
     required String username,

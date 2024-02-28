@@ -16,10 +16,7 @@ void main() {
   const String grandPrixId = 'gp1';
   const String loggedUserId = 'u1';
 
-  ProviderContainer makeProviderContainer(
-    MockAuthService authService,
-    MockGrandPrixBetRepository grandPrixBetRepository,
-  ) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         authServiceProvider.overrideWithValue(authService),
@@ -48,10 +45,7 @@ void main() {
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -83,10 +77,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -121,10 +112,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -155,10 +143,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -189,10 +174,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -223,10 +205,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -257,10 +236,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -291,10 +267,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -326,10 +299,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -360,10 +330,7 @@ void main() {
           willBeRedFlag: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),
@@ -394,10 +361,7 @@ void main() {
           willBeSafetyCar: false,
         ),
       );
-      final container = makeProviderContainer(
-        authService,
-        grandPrixBetRepository,
-      );
+      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<GrandPrixBetStatus?>>();
       container.listen(
         grandPrixBetStatusProvider(grandPrixId),

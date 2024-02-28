@@ -3,15 +3,15 @@ import 'package:betgrid/model/grand_prix.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixRepository extends Mock implements GrandPrixRepository {
-  void mockLoadAllGrandPrixes(List<GrandPrix> grandPrixes) {
-    when(loadAllGrandPrixes).thenAnswer((_) => Future.value(grandPrixes));
+  void mockGetAllGrandPrixes(List<GrandPrix> grandPrixes) {
+    when(getAllGrandPrixes).thenAnswer((_) => Stream.value(grandPrixes));
   }
 
-  void mockLoadGrandPrixById(GrandPrix? grandPrix) {
+  void mockGetGrandPrixById(GrandPrix? grandPrix) {
     when(
-      () => loadGrandPrixById(
+      () => getGrandPrixById(
         grandPrixId: any(named: 'grandPrixId'),
       ),
-    ).thenAnswer((_) => Future.value(grandPrix));
+    ).thenAnswer((_) => Stream.value(grandPrix));
   }
 }
