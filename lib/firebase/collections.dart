@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'model/driver_dto/driver_dto.dart';
-import 'model/grand_prix_bet/grand_prix_bet_dto.dart';
+import 'model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import 'model/grand_prix_dto/grand_prix_dto.dart';
 import 'model/user_dto/user_dto.dart';
 

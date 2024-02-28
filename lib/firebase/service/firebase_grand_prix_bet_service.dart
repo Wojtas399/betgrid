@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
-import '../model/grand_prix_bet/grand_prix_bet_dto.dart';
+import '../model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
 @injectable
 class FirebaseGrandPrixBetService {
