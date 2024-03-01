@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 void main() {
-  final pointsConfig = BetPointsConfig();
-  final multipliersConfig = BetPointsMultipliersConfig();
+  final betPoints = BetPointsConfig();
+  final betMultipliers = BetPointsMultipliersConfig();
   final List<String> qualiStandingsByDriverIds = List.generate(
     20,
     (i) => 'd${i + 1}',
@@ -20,8 +20,8 @@ void main() {
   }
 
   setUpAll(() {
-    GetIt.I.registerFactory(() => pointsConfig);
-    GetIt.I.registerFactory(() => multipliersConfig);
+    GetIt.I.registerFactory(() => betPoints);
+    GetIt.I.registerFactory(() => betMultipliers);
   });
 
   test(
@@ -85,8 +85,7 @@ void main() {
         p18: 'd18',
         p20: 'd20',
       );
-      final double expectedPoints =
-          (3 * pointsConfig.correctBetInQ1).toDouble();
+      final double expectedPoints = (3 * betPoints.onePositionInQ1).toDouble();
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -110,9 +109,8 @@ void main() {
         p19: 'd19',
         p20: 'd20',
       );
-      final double expectedPoints = 5 *
-          pointsConfig.correctBetInQ1 *
-          multipliersConfig.perfectQ1Multiplier;
+      final double expectedPoints =
+          5 * betPoints.onePositionInQ1 * betMultipliers.perfectQ1Multiplier;
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -134,8 +132,7 @@ void main() {
         p12: 'd12',
         p15: 'd15',
       );
-      final double expectedPoints =
-          (3 * pointsConfig.correctBetInQ2).toDouble();
+      final double expectedPoints = (3 * betPoints.onePositionInQ2).toDouble();
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -159,9 +156,8 @@ void main() {
         p14: 'd14',
         p15: 'd15',
       );
-      final double expectedPoints = 5 *
-          pointsConfig.correctBetInQ2 *
-          multipliersConfig.perfectQ2Multiplier;
+      final double expectedPoints =
+          5 * betPoints.onePositionInQ2 * betMultipliers.perfectQ2Multiplier;
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -186,10 +182,9 @@ void main() {
         p6: 'd6',
         p10: 'd10',
       );
-      final double expectedPoints =
-          ((2 * pointsConfig.correctBetFromP3ToP1InQ3) +
-                  (3 * pointsConfig.correctBetFromP10ToP4InQ3))
-              .toDouble();
+      final double expectedPoints = ((2 * betPoints.onePositionFromP3ToP1InQ3) +
+              (3 * betPoints.onePositionFromP10ToP4InQ3))
+          .toDouble();
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -218,10 +213,9 @@ void main() {
         p9: 'd9',
         p10: 'd10',
       );
-      final double expectedPoints =
-          ((3 * pointsConfig.correctBetFromP3ToP1InQ3) +
-                  (7 * pointsConfig.correctBetFromP10ToP4InQ3)) *
-              multipliersConfig.perfectQ3Multiplier;
+      final double expectedPoints = ((3 * betPoints.onePositionFromP3ToP1InQ3) +
+              (7 * betPoints.onePositionFromP10ToP4InQ3)) *
+          betMultipliers.perfectQ3Multiplier;
       final container = makeProviderContainer();
 
       final double points = container.read(
@@ -248,10 +242,10 @@ void main() {
         p18: 'd18',
         p20: 'd222333',
       );
-      final q1Points = 1 * pointsConfig.correctBetInQ1;
-      final q2Points = 2 * pointsConfig.correctBetInQ2;
-      final q3Points = 2 * pointsConfig.correctBetFromP3ToP1InQ3 +
-          1 * pointsConfig.correctBetFromP10ToP4InQ3;
+      final q1Points = 1 * betPoints.onePositionInQ1;
+      final q2Points = 2 * betPoints.onePositionInQ2;
+      final q3Points = 2 * betPoints.onePositionFromP3ToP1InQ3 +
+          1 * betPoints.onePositionFromP10ToP4InQ3;
       final double expectedPoints = (q1Points + q2Points + q3Points).toDouble();
       final container = makeProviderContainer();
 
@@ -286,12 +280,12 @@ void main() {
         p19: 'd19',
         p20: 'd20',
       );
-      final q1Points = 5 * pointsConfig.correctBetInQ1;
-      final q2Points = 5 * pointsConfig.correctBetInQ2;
-      final q3Points = (2 * pointsConfig.correctBetFromP10ToP4InQ3) +
-          (1 * pointsConfig.correctBetFromP3ToP1InQ3);
-      final multiplier = multipliersConfig.perfectQ1Multiplier +
-          multipliersConfig.perfectQ2Multiplier;
+      final q1Points = 5 * betPoints.onePositionInQ1;
+      final q2Points = 5 * betPoints.onePositionInQ2;
+      final q3Points = (2 * betPoints.onePositionFromP10ToP4InQ3) +
+          (1 * betPoints.onePositionFromP3ToP1InQ3);
+      final multiplier = betMultipliers.perfectQ1Multiplier +
+          betMultipliers.perfectQ2Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       final container = makeProviderContainer();
@@ -330,12 +324,12 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 5 * pointsConfig.correctBetInQ1;
-      final q2Points = 2 * pointsConfig.correctBetInQ2;
-      final q3Points = (3 * pointsConfig.correctBetFromP3ToP1InQ3) +
-          (7 * pointsConfig.correctBetFromP10ToP4InQ3);
-      final multiplier = multipliersConfig.perfectQ1Multiplier +
-          multipliersConfig.perfectQ3Multiplier;
+      final q1Points = 5 * betPoints.onePositionInQ1;
+      final q2Points = 2 * betPoints.onePositionInQ2;
+      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
+          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      final multiplier = betMultipliers.perfectQ1Multiplier +
+          betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       final container = makeProviderContainer();
@@ -374,12 +368,12 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 2 * pointsConfig.correctBetInQ1;
-      final q2Points = 5 * pointsConfig.correctBetInQ2;
-      final q3Points = (3 * pointsConfig.correctBetFromP3ToP1InQ3) +
-          (7 * pointsConfig.correctBetFromP10ToP4InQ3);
-      final multiplier = multipliersConfig.perfectQ2Multiplier +
-          multipliersConfig.perfectQ3Multiplier;
+      final q1Points = 2 * betPoints.onePositionInQ1;
+      final q2Points = 5 * betPoints.onePositionInQ2;
+      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
+          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      final multiplier = betMultipliers.perfectQ2Multiplier +
+          betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       final container = makeProviderContainer();
@@ -421,13 +415,13 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 5 * pointsConfig.correctBetInQ1;
-      final q2Points = 5 * pointsConfig.correctBetInQ2;
-      final q3Points = (3 * pointsConfig.correctBetFromP3ToP1InQ3) +
-          (7 * pointsConfig.correctBetFromP10ToP4InQ3);
-      final multiplier = multipliersConfig.perfectQ1Multiplier +
-          multipliersConfig.perfectQ2Multiplier +
-          multipliersConfig.perfectQ3Multiplier;
+      final q1Points = 5 * betPoints.onePositionInQ1;
+      final q2Points = 5 * betPoints.onePositionInQ2;
+      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
+          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      final multiplier = betMultipliers.perfectQ1Multiplier +
+          betMultipliers.perfectQ2Multiplier +
+          betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       final container = makeProviderContainer();

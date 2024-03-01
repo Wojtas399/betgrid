@@ -25,32 +25,32 @@ double qualificationsPoints(
   int q1Points = 0,
       q2Points = 0,
       q3Points = 0,
-      numOfQ1WinningBets = 0,
-      numOfQ2WinningBets = 0,
-      numOfQ3WinningBets = 0;
-  final points = getIt<BetPointsConfig>();
-  final multipliers = getIt<BetPointsMultipliersConfig>();
+      numOfQ1Hits = 0,
+      numOfQ2Hits = 0,
+      numOfQ3Hits = 0;
+  final betPoints = getIt<BetPointsConfig>();
+  final betMultipliers = getIt<BetPointsMultipliersConfig>();
   for (int i = 0; i < 10; i++) {
     if (q3Standings[i] == betQ3Standings[i]) {
       q3Points += i <= 2
-          ? points.correctBetFromP3ToP1InQ3
-          : points.correctBetFromP10ToP4InQ3;
-      numOfQ3WinningBets++;
+          ? betPoints.onePositionFromP3ToP1InQ3
+          : betPoints.onePositionFromP10ToP4InQ3;
+      numOfQ3Hits++;
     }
     if (i < 5) {
       if (q1Standings[i] == betQ1Standings[i]) {
-        q1Points += points.correctBetInQ1;
-        numOfQ1WinningBets++;
+        q1Points += betPoints.onePositionInQ1;
+        numOfQ1Hits++;
       }
       if (q2Standings[i] == betQ2Standings[i]) {
-        q2Points += points.correctBetInQ2;
-        numOfQ2WinningBets++;
+        q2Points += betPoints.onePositionInQ2;
+        numOfQ2Hits++;
       }
     }
   }
   double multiplier = 0;
-  if (numOfQ1WinningBets == 5) multiplier += multipliers.perfectQ1Multiplier;
-  if (numOfQ2WinningBets == 5) multiplier += multipliers.perfectQ2Multiplier;
-  if (numOfQ3WinningBets == 10) multiplier += multipliers.perfectQ3Multiplier;
+  if (numOfQ1Hits == 5) multiplier += betMultipliers.perfectQ1Multiplier;
+  if (numOfQ2Hits == 5) multiplier += betMultipliers.perfectQ2Multiplier;
+  if (numOfQ3Hits == 10) multiplier += betMultipliers.perfectQ3Multiplier;
   return (q1Points + q2Points + q3Points) * (multiplier == 0 ? 1 : multiplier);
 }
