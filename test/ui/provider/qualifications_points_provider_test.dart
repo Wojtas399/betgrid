@@ -1,20 +1,48 @@
+import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
+import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
+import 'package:betgrid/ui/provider/player_id_provider.dart';
 import 'package:betgrid/ui/provider/qualifications_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../creator/grand_prix_bet_creator.dart';
+import '../../creator/grand_prix_results_creator.dart';
+import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../mock/data/repository/mock_grand_prix_results_repository.dart';
 
 void main() {
+  final grandPrixResultsRepository = MockGrandPrixResultsRepository();
+  final grandPrixBetRepository = MockGrandPrixBetRepository();
   final betPoints = BetPointsConfig();
   final betMultipliers = BetPointsMultipliersConfig();
+  const String grandPrixId = 'gp1';
+  const String playerId = 'p1';
   final List<String> qualiStandingsByDriverIds = List.generate(
     20,
     (i) => 'd${i + 1}',
   );
 
-  ProviderContainer makeProviderContainer() {
-    final container = ProviderContainer();
+  ProviderContainer makeProviderContainer({
+    String? grandPrixId,
+    String? playerId,
+  }) {
+    final container = ProviderContainer(
+      overrides: [
+        grandPrixIdProvider.overrideWithValue(grandPrixId),
+        playerIdProvider.overrideWithValue(playerId),
+        grandPrixResultsRepositoryProvider.overrideWithValue(
+          grandPrixResultsRepository,
+        ),
+        grandPrixBetRepositoryProvider.overrideWithValue(
+          grandPrixBetRepository,
+        ),
+      ],
+    );
     addTearDown(container.dispose);
     return container;
   }
@@ -24,84 +52,135 @@ void main() {
     GetIt.I.registerFactory(() => betMultipliers);
   });
 
+  setUp(() {
+    grandPrixResultsRepository.mockGetResultsForGrandPrix(
+      results: createGrandPrixResults(
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      ),
+    );
+  });
+
+  tearDown(() {
+    reset(grandPrixResultsRepository);
+    reset(grandPrixBetRepository);
+  });
+
   test(
-    'should throw exception if qualiStandingsByDriverIds length is different '
-    'than 20',
-    () {
-      final List<String> qualiStandingsByDriverIds = ['d1', 'd2'];
-      final List<String?> betQualiStandingsByDriverIds = List.generate(
-        20,
-        (index) => 'd$index',
+    'should emit null if grand prix id is null',
+    () async {
+      final container = makeProviderContainer(playerId: playerId);
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(null),
       );
-      final container = makeProviderContainer();
-
-      Object? exception;
-      try {
-        container.read(
-          qualificationsPointsProvider(
-            qualiStandingsByDriverIds,
-            betQualiStandingsByDriverIds,
-          ),
-        );
-      } catch (e) {
-        exception = e;
-      }
-
-      expect(exception, isNotNull);
     },
   );
 
   test(
-    'should throw exception if betQualiStandingsByDriverIds length is different '
-    'than 20',
-    () {
-      final List<String?> betQualiStandingsByDriverIds = List.generate(
-        21,
-        (index) => 'd$index',
+    'should emit null if player id id is null',
+    () async {
+      final container = makeProviderContainer(grandPrixId: grandPrixId);
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(null),
       );
-      final container = makeProviderContainer();
+    },
+  );
 
-      Object? exception;
-      try {
-        container.read(
-          qualificationsPointsProvider(
-            qualiStandingsByDriverIds,
-            betQualiStandingsByDriverIds,
-          ),
-        );
-      } catch (e) {
-        exception = e;
-      }
+  test(
+    'should emit 0 if player does not have bets for given grand prix',
+    () async {
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(null);
+      grandPrixResultsRepository.mockGetResultsForGrandPrix(
+        results: createGrandPrixResults(),
+      );
 
-      expect(exception, isNotNull);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(0.0),
+      );
+    },
+  );
+
+  test(
+    'should emit 0 if there are no results for given grand prix',
+    () async {
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(),
+      );
+      grandPrixResultsRepository.mockGetResultsForGrandPrix(results: null);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(0.0),
+      );
+    },
+  );
+
+  test(
+    'should emit 0.0 if quali results do not exist',
+    () async {
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(),
+      );
+      grandPrixResultsRepository.mockGetResultsForGrandPrix(
+        results: createGrandPrixResults(),
+      );
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(0.0),
+      );
     },
   );
 
   test(
     'should add 1 point for each correct bet in q1',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p16: 'd16',
         p18: 'd18',
         p20: 'd20',
       );
       final double expectedPoints = (3 * betPoints.onePositionInQ1).toDouble();
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should multiply points by 1.25 if all bets from q1 are correct',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p16: 'd16',
         p17: 'd17',
@@ -111,44 +190,54 @@ void main() {
       );
       final double expectedPoints =
           5 * betPoints.onePositionInQ1 * betMultipliers.perfectQ1Multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should add 2 points for each correct bet in q2',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p11: 'd11',
         p12: 'd12',
         p15: 'd15',
       );
       final double expectedPoints = (3 * betPoints.onePositionInQ2).toDouble();
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should multiply points by 1.5 if all bets from q2 are correct',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p11: 'd11',
         p12: 'd12',
@@ -158,23 +247,28 @@ void main() {
       );
       final double expectedPoints =
           5 * betPoints.onePositionInQ2 * betMultipliers.perfectQ2Multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should add 2 points for each correct bet from P10 to P4 in q3 and '
     '1 point for each correct bet from P3 to P1',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p1: 'd1',
         p2: 'd2',
@@ -185,22 +279,27 @@ void main() {
       final double expectedPoints = ((2 * betPoints.onePositionFromP3ToP1InQ3) +
               (3 * betPoints.onePositionFromP10ToP4InQ3))
           .toDouble();
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should multiply points by 1.75 if all bets from q3 are correct',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p1: 'd1',
         p2: 'd2',
@@ -216,22 +315,27 @@ void main() {
       final double expectedPoints = ((3 * betPoints.onePositionFromP3ToP1InQ3) +
               (7 * betPoints.onePositionFromP10ToP4InQ3)) *
           betMultipliers.perfectQ3Multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
 
-      expect(points, expectedPoints);
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
   test(
     'should sum points of each quali session',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p1: 'd1',
         p3: 'd3',
@@ -247,15 +351,21 @@ void main() {
       final q3Points = 2 * betPoints.onePositionFromP3ToP1InQ3 +
           1 * betPoints.onePositionFromP10ToP4InQ3;
       final double expectedPoints = (q1Points + q2Points + q3Points).toDouble();
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
-      expect(points, expectedPoints);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
@@ -263,7 +373,7 @@ void main() {
     'perfect q1 and q2, '
     'should sum points of each quali session and multiply them by '
     'summed multipliers',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p2: 'd2',
         p5: 'd123123',
@@ -288,15 +398,21 @@ void main() {
           betMultipliers.perfectQ2Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
-      expect(points, expectedPoints);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
@@ -304,7 +420,7 @@ void main() {
     'perfect q1 and q3, '
     'should sum points of each quali session and multiply them by '
     'summed multipliers',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p20: 'd20',
         p19: 'd19',
@@ -332,15 +448,21 @@ void main() {
           betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
-      expect(points, expectedPoints);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
@@ -348,7 +470,7 @@ void main() {
     'perfect q2 and q3, '
     'should sum points of each quali session and multiply them by '
     'summed multipliers',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p20: 'd20',
         p19: 'd19',
@@ -376,15 +498,21 @@ void main() {
           betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
-      expect(points, expectedPoints);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 
@@ -392,7 +520,7 @@ void main() {
     'perfect q1, q2 and q3, '
     'should sum points of each quali session and multiply them by '
     'summed multipliers',
-    () {
+    () async {
       final betQualiStandingsByDriverIds = _createBetQualiStandings(
         p20: 'd20',
         p19: 'd19',
@@ -424,15 +552,21 @@ void main() {
           betMultipliers.perfectQ3Multiplier;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
-      final container = makeProviderContainer();
-
-      final double points = container.read(
-        qualificationsPointsProvider(
-          qualiStandingsByDriverIds,
-          betQualiStandingsByDriverIds,
+      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+        createGrandPrixBet(
+          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
         ),
       );
-      expect(points, expectedPoints);
+
+      final container = makeProviderContainer(
+        grandPrixId: grandPrixId,
+        playerId: playerId,
+      );
+
+      await expectLater(
+        container.read(qualificationsPointsProvider.future),
+        completion(expectedPoints),
+      );
     },
   );
 }

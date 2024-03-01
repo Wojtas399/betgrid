@@ -75,7 +75,7 @@ void main() {
   );
 
   test(
-    'should emit 0 if user does not have bets for given grand prix',
+    'should emit 0 if player does not have bets for given grand prix',
     () async {
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(null);
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
