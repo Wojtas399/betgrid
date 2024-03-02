@@ -12,10 +12,10 @@ import '../config/bet_points_multipliers_config.dart';
 import 'grand_prix_id_provider.dart';
 import 'player_id_provider.dart';
 
-part 'race_points_provider.g.dart';
+part 'qualifications_bet_points_provider.g.dart';
 
 @Riverpod(dependencies: [grandPrixId, playerId])
-Stream<double?> racePoints(RacePointsRef ref) async* {
+Stream<double?> qualificationsBetPoints(QualificationsBetPointsRef ref) async* {
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   final String? playerId = ref.watch(playerIdProvider);
   if (grandPrixId == null || playerId == null) {
@@ -36,40 +36,44 @@ Stream<double?> racePoints(RacePointsRef ref) async* {
     await for (final params in params$) {
       final GrandPrixBet? bets = params.bets;
       final GrandPrixResults? results = params.results;
-      if (bets == null || results == null) {
+      if (bets == null ||
+          results == null ||
+          results.qualiStandingsByDriverIds == null) {
         yield 0.0;
         continue;
       }
-      bool isP1Correct = false,
-          isP2Correct = false,
-          isP3Correct = false,
-          isP10Correct = false;
-      double points = 0;
-      if (results.p1DriverId != null && bets.p1DriverId == results.p1DriverId) {
-        points += betPoints.raceP1;
-        isP1Correct = true;
+      final betStandingsByDriverIds = bets.qualiStandingsByDriverIds;
+      final standingsByDriverIds = results.qualiStandingsByDriverIds!;
+      final q1Standings = standingsByDriverIds.sublist(15, 20);
+      final q2Standings = standingsByDriverIds.sublist(10, 15);
+      final q3Standings = standingsByDriverIds.sublist(0, 10);
+      final betQ1Standings = betStandingsByDriverIds.sublist(15, 20);
+      final betQ2Standings = betStandingsByDriverIds.sublist(10, 15);
+      final betQ3Standings = betStandingsByDriverIds.sublist(0, 10);
+      int points = 0, numOfQ1Hits = 0, numOfQ2Hits = 0, numOfQ3Hits = 0;
+      for (int i = 0; i < 10; i++) {
+        if (q3Standings[i] == betQ3Standings[i]) {
+          points += i <= 2
+              ? betPoints.onePositionFromP3ToP1InQ3
+              : betPoints.onePositionFromP10ToP4InQ3;
+          numOfQ3Hits++;
+        }
+        if (i < 5) {
+          if (q1Standings[i] == betQ1Standings[i]) {
+            points += betPoints.onePositionInQ1;
+            numOfQ1Hits++;
+          }
+          if (q2Standings[i] == betQ2Standings[i]) {
+            points += betPoints.onePositionInQ2;
+            numOfQ2Hits++;
+          }
+        }
       }
-      if (results.p2DriverId != null && bets.p2DriverId == results.p2DriverId) {
-        points += betPoints.raceP2;
-        isP2Correct = true;
-      }
-      if (results.p3DriverId != null && bets.p3DriverId == results.p3DriverId) {
-        points += betPoints.raceP3;
-        isP3Correct = true;
-      }
-      if (results.p10DriverId != null &&
-          bets.p10DriverId == results.p10DriverId) {
-        points += betPoints.raceP10;
-        isP10Correct = true;
-      }
-      if (isP1Correct && isP2Correct && isP3Correct && isP10Correct) {
-        points *= betMultipliers.perfectRacePodiumAndP10;
-      }
-      if (results.fastestLapDriverId != null &&
-          bets.fastestLapDriverId == results.fastestLapDriverId) {
-        points += betPoints.raceFastestLap;
-      }
-      yield points;
+      double multiplier = 0;
+      if (numOfQ1Hits == 5) multiplier += betMultipliers.perfectQ1;
+      if (numOfQ2Hits == 5) multiplier += betMultipliers.perfectQ2;
+      if (numOfQ3Hits == 10) multiplier += betMultipliers.perfectQ3;
+      yield points * (multiplier == 0 ? 1 : multiplier);
     }
   }
 }

@@ -12,10 +12,10 @@ import '../config/bet_points_multipliers_config.dart';
 import 'grand_prix_id_provider.dart';
 import 'player_id_provider.dart';
 
-part 'bonus_points_provider.g.dart';
+part 'bonus_bet_points_provider.g.dart';
 
 @Riverpod(dependencies: [grandPrixId, playerId])
-Stream<double?> bonusPoints(BonusPointsRef ref) async* {
+Stream<double?> bonusBetPoints(BonusBetPointsRef ref) async* {
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   final String? playerId = ref.watch(playerIdProvider);
   if (grandPrixId == null || playerId == null) {

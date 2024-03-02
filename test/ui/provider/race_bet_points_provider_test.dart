@@ -4,7 +4,7 @@ import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
 import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/provider/player_id_provider.dart';
-import 'package:betgrid/ui/provider/race_points_provider.dart';
+import 'package:betgrid/ui/provider/race_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -56,7 +56,7 @@ void main() {
       final container = makeProviderContainer(playerId: playerId);
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(null),
       );
     },
@@ -68,7 +68,7 @@ void main() {
       final container = makeProviderContainer(grandPrixId: grandPrixId);
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(null),
       );
     },
@@ -87,7 +87,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(0),
       );
       verify(
@@ -117,7 +117,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(0),
       );
       verify(
@@ -147,7 +147,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(betPoints.raceP1),
       );
       verify(
@@ -177,7 +177,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(betPoints.raceP2),
       );
       verify(
@@ -207,7 +207,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(betPoints.raceP3),
       );
       verify(
@@ -237,7 +237,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(betPoints.raceP10),
       );
       verify(
@@ -267,7 +267,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(betPoints.raceFastestLap),
       );
       verify(
@@ -308,7 +308,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(expectedPoints),
       );
       verify(
@@ -353,7 +353,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(expectedPoints),
       );
       verify(
@@ -402,7 +402,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(racePointsProvider.future),
+        container.read(raceBetPointsProvider.future),
         completion(expectedPoints),
       );
       verify(

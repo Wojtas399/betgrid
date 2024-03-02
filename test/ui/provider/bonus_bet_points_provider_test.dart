@@ -2,7 +2,7 @@ import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
-import 'package:betgrid/ui/provider/bonus_points_provider.dart';
+import 'package:betgrid/ui/provider/bonus_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/provider/player_id_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,7 +59,7 @@ void main() {
       final container = makeProviderContainer(playerId: playerId);
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(null),
       );
     },
@@ -71,7 +71,7 @@ void main() {
       final container = makeProviderContainer(grandPrixId: grandPrixId);
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(null),
       );
     },
@@ -91,7 +91,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(0.0),
       );
     },
@@ -111,7 +111,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(0.0),
       );
     },
@@ -136,7 +136,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -163,7 +163,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -186,7 +186,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -209,7 +209,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -232,7 +232,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -255,7 +255,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
@@ -291,7 +291,7 @@ void main() {
       );
 
       await expectLater(
-        container.read(bonusPointsProvider.future),
+        container.read(bonusBetPointsProvider.future),
         completion(expectedPoints),
       );
     },
