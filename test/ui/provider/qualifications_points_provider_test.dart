@@ -189,7 +189,7 @@ void main() {
         p20: 'd20',
       );
       final double expectedPoints =
-          5 * betPoints.onePositionInQ1 * betMultipliers.perfectQ1Multiplier;
+          5 * betPoints.onePositionInQ1 * betMultipliers.perfectQ1;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -246,7 +246,7 @@ void main() {
         p15: 'd15',
       );
       final double expectedPoints =
-          5 * betPoints.onePositionInQ2 * betMultipliers.perfectQ2Multiplier;
+          5 * betPoints.onePositionInQ2 * betMultipliers.perfectQ2;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -314,7 +314,7 @@ void main() {
       );
       final double expectedPoints = ((3 * betPoints.onePositionFromP3ToP1InQ3) +
               (7 * betPoints.onePositionFromP10ToP4InQ3)) *
-          betMultipliers.perfectQ3Multiplier;
+          betMultipliers.perfectQ3;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -394,8 +394,7 @@ void main() {
       final q2Points = 5 * betPoints.onePositionInQ2;
       final q3Points = (2 * betPoints.onePositionFromP10ToP4InQ3) +
           (1 * betPoints.onePositionFromP3ToP1InQ3);
-      final multiplier = betMultipliers.perfectQ1Multiplier +
-          betMultipliers.perfectQ2Multiplier;
+      final multiplier = betMultipliers.perfectQ1 + betMultipliers.perfectQ2;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -444,8 +443,7 @@ void main() {
       final q2Points = 2 * betPoints.onePositionInQ2;
       final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
           (7 * betPoints.onePositionFromP10ToP4InQ3);
-      final multiplier = betMultipliers.perfectQ1Multiplier +
-          betMultipliers.perfectQ3Multiplier;
+      final multiplier = betMultipliers.perfectQ1 + betMultipliers.perfectQ3;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -494,8 +492,7 @@ void main() {
       final q2Points = 5 * betPoints.onePositionInQ2;
       final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
           (7 * betPoints.onePositionFromP10ToP4InQ3);
-      final multiplier = betMultipliers.perfectQ2Multiplier +
-          betMultipliers.perfectQ3Multiplier;
+      final multiplier = betMultipliers.perfectQ2 + betMultipliers.perfectQ3;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
@@ -547,9 +544,9 @@ void main() {
       final q2Points = 5 * betPoints.onePositionInQ2;
       final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
           (7 * betPoints.onePositionFromP10ToP4InQ3);
-      final multiplier = betMultipliers.perfectQ1Multiplier +
-          betMultipliers.perfectQ2Multiplier +
-          betMultipliers.perfectQ3Multiplier;
+      final multiplier = betMultipliers.perfectQ1 +
+          betMultipliers.perfectQ2 +
+          betMultipliers.perfectQ3;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
       grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
