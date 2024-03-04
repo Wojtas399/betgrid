@@ -6,10 +6,10 @@ import '../../data/repository/player/player_repository.dart';
 import '../../model/player.dart';
 import 'player_id_provider.dart';
 
-part 'grand_prix_bet_player_username_provider.g.dart';
+part 'player_username_provider.g.dart';
 
 @Riverpod(dependencies: [playerId])
-Stream<String?> grandPrixBetPlayerUsername(GrandPrixBetPlayerUsernameRef ref) {
+Stream<String?> playerUsername(PlayerUsernameRef ref) {
   final String? selectedPlayerId = ref.watch(playerIdProvider);
   return selectedPlayerId == null
       ? Stream.value(null)

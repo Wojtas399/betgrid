@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../provider/grand_prix_bet_player_username_provider.dart';
 import '../../provider/grand_prix_name_provider.dart';
+import '../../provider/player_username_provider.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -26,9 +26,8 @@ class _GrandPrixName extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
-    final AsyncValue<String?> playerUsername = ref.watch(
-      grandPrixBetPlayerUsernameProvider,
-    );
+    final AsyncValue<String?> playerUsername =
+        ref.watch(playerUsernameProvider);
 
     if (grandPrixName is AsyncData && playerUsername is AsyncData) {
       String title = grandPrixName.value!;

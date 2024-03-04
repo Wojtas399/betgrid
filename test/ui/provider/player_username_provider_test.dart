@@ -1,8 +1,8 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/provider/grand_prix_bet_player_username_provider.dart';
 import 'package:betgrid/ui/provider/player_id_provider.dart';
+import 'package:betgrid/ui/provider/player_username_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -39,13 +39,13 @@ void main() {
       final container = makeProviderContainer(null);
       final listener = Listener<AsyncValue<String?>>();
       container.listen(
-        grandPrixBetPlayerUsernameProvider,
+        playerUsernameProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(grandPrixBetPlayerUsernameProvider.future),
+        container.read(playerUsernameProvider.future),
         completion(null),
       );
       verifyInOrder([
@@ -76,13 +76,13 @@ void main() {
       final container = makeProviderContainer('u1');
       final listener = Listener<AsyncValue<String?>>();
       container.listen(
-        grandPrixBetPlayerUsernameProvider,
+        playerUsernameProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(grandPrixBetPlayerUsernameProvider.future),
+        container.read(playerUsernameProvider.future),
         completion(null),
       );
       verifyInOrder([
@@ -113,13 +113,13 @@ void main() {
       final container = makeProviderContainer('u1');
       final listener = Listener<AsyncValue<String?>>();
       container.listen(
-        grandPrixBetPlayerUsernameProvider,
+        playerUsernameProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(grandPrixBetPlayerUsernameProvider.future),
+        container.read(playerUsernameProvider.future),
         completion(null),
       );
       verifyInOrder([
@@ -153,13 +153,13 @@ void main() {
       final container = makeProviderContainer(playerId);
       final listener = Listener<AsyncValue<String?>>();
       container.listen(
-        grandPrixBetPlayerUsernameProvider,
+        playerUsernameProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(grandPrixBetPlayerUsernameProvider.future),
+        container.read(playerUsernameProvider.future),
         completion(expectedUsername),
       );
       verifyInOrder([
