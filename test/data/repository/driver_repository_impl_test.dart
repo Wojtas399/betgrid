@@ -25,27 +25,11 @@ void main() {
   });
 
   test(
-    'loadAllDrivers, '
-    'repository state is not set, '
-    'should load drivers from db, add them to repo and return them',
-    () async {
-      final List<DriverDto> driverDtos = [
-        const DriverDto(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 1,
-          team: TeamDto.ferrari,
-        ),
-        const DriverDto(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 2,
-          team: TeamDto.redBullRacing,
-        ),
-      ];
-      final List<Driver> expectedDrivers = [
+    'getDriverById, '
+    'driver exists in repository state, '
+    'should emit existing driver',
+    () {
+      final List<Driver> existingDrivers = [
         const Driver(
           id: 'd1',
           name: 'Robert',
@@ -61,41 +45,37 @@ void main() {
           team: Team.redBullRacing,
         ),
       ];
-      dbDriverService.mockLoadAllDrivers(driverDtos);
+      final expectedDriver = existingDrivers.first;
+      repositoryImpl = DriverRepositoryImpl(initialData: existingDrivers);
 
-      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
-
-      expect(drivers, expectedDrivers);
-      expect(
-        repositoryImpl.repositoryState$,
-        emitsInOrder([expectedDrivers]),
+      final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
+        driverId: expectedDriver.id,
       );
-      verify(dbDriverService.loadAllDrivers).called(1);
+
+      expect(driver$, emits(expectedDriver));
     },
   );
 
   test(
-    'loadAllDrivers, '
-    'repository state is empty array, '
-    'should load drivers from db, add them to repo and return them',
+    'getDriverById, '
+    'driver does not exist in repository state, '
+    'should load driver from db, add it to repo state and emit it',
     () async {
-      final List<DriverDto> driverDtos = [
-        const DriverDto(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 1,
-          team: TeamDto.ferrari,
-        ),
-        const DriverDto(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 2,
-          team: TeamDto.redBullRacing,
-        ),
-      ];
-      final List<Driver> expectedDrivers = [
+      const DriverDto expectedDriverDto = DriverDto(
+        id: 'd3',
+        name: 'Juan',
+        surname: 'Pablo',
+        number: 100,
+        team: TeamDto.mercedes,
+      );
+      const Driver expectedDriver = Driver(
+        id: 'd3',
+        name: 'Juan',
+        surname: 'Pablo',
+        number: 100,
+        team: Team.mercedes,
+      );
+      final List<Driver> existingDrivers = [
         const Driver(
           id: 'd1',
           name: 'Robert',
@@ -111,48 +91,21 @@ void main() {
           team: Team.redBullRacing,
         ),
       ];
-      dbDriverService.mockLoadAllDrivers(driverDtos);
-      repositoryImpl = DriverRepositoryImpl(initialData: []);
+      dbDriverService.mockLoadDriverById(expectedDriverDto);
+      repositoryImpl = DriverRepositoryImpl(initialData: existingDrivers);
 
-      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
+      final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
+        driverId: expectedDriver.id,
+      );
 
-      expect(drivers, expectedDrivers);
+      expect(await driver$.first, expectedDriver);
       expect(
         repositoryImpl.repositoryState$,
-        emitsInOrder([expectedDrivers]),
+        emits([...existingDrivers, expectedDriver]),
       );
-      verify(dbDriverService.loadAllDrivers).called(1);
-    },
-  );
-
-  test(
-    'loadAllDrivers, '
-    'repository state contains drivers, '
-    'should only emit drivers from repository state',
-    () async {
-      final List<Driver> expectedDrivers = [
-        const Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 1,
-          team: Team.ferrari,
-        ),
-        const Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 2,
-          team: Team.redBullRacing,
-        ),
-      ];
-      repositoryImpl = DriverRepositoryImpl(initialData: expectedDrivers);
-
-      final List<Driver>? drivers = await repositoryImpl.loadAllDrivers();
-
-      expect(drivers, expectedDrivers);
-      expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
-      verifyNever(dbDriverService.loadAllDrivers);
+      verify(
+        () => dbDriverService.loadDriverById(driverId: expectedDriver.id),
+      ).called(1);
     },
   );
 }

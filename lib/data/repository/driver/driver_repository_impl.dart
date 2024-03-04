@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import '../../../dependency_injection.dart';
 import '../../../firebase/model/driver_dto/driver_dto.dart';
 import '../../../firebase/service/firebase_driver_service.dart';
@@ -14,16 +16,23 @@ class DriverRepositoryImpl extends Repository<Driver>
       : _dbDriverService = getIt<FirebaseDriverService>();
 
   @override
-  Future<List<Driver>?> loadAllDrivers() async {
-    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
-      await _loadAllDriversFromDb();
+  Stream<Driver?> getDriverById({required String driverId}) async* {
+    await for (final drivers in repositoryState$) {
+      Driver? driver = drivers?.firstWhereOrNull(
+        (driver) => driver.id == driverId,
+      );
+      driver ??= await _loadDriverFromDb(driverId);
+      yield driver;
     }
-    return repositoryState$.first;
   }
 
-  Future<void> _loadAllDriversFromDb() async {
-    final List<DriverDto> driverDtos = await _dbDriverService.loadAllDrivers();
-    final List<Driver> drivers = driverDtos.map(mapDriverFromDto).toList();
-    setEntities(drivers);
+  Future<Driver?> _loadDriverFromDb(String driverId) async {
+    final DriverDto? driverDto = await _dbDriverService.loadDriverById(
+      driverId: driverId,
+    );
+    if (driverDto == null) return null;
+    final Driver driver = mapDriverFromDto(driverDto);
+    addEntity(driver);
+    return driver;
   }
 }
