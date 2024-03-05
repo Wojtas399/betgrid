@@ -8,12 +8,14 @@ import 'text/body.dart';
 import 'text/title.dart';
 
 class GrandPrixItem extends StatelessWidget {
+  final double betPoints;
   final int roundNumber;
   final GrandPrix grandPrix;
   final VoidCallback onPressed;
 
   const GrandPrixItem({
     super.key,
+    required this.betPoints,
     required this.roundNumber,
     required this.grandPrix,
     required this.onPressed,
@@ -44,6 +46,8 @@ class GrandPrixItem extends StatelessWidget {
                     endDate: grandPrix.endDate,
                   ),
                 ),
+                _BetPoints(points: betPoints),
+                const GapHorizontal4(),
               ],
             ),
           ),
@@ -107,6 +111,32 @@ class _GrandPrixDescription extends StatelessWidget {
         BodyMedium(
           '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
           color: Theme.of(context).colorScheme.outlineVariant,
+        ),
+      ],
+    );
+  }
+}
+
+class _BetPoints extends StatelessWidget {
+  final double points;
+
+  const _BetPoints({required this.points});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Punkty',
+          style: Theme.of(context)
+              .textTheme
+              .labelLarge
+              ?.copyWith(color: Theme.of(context).colorScheme.outlineVariant),
+        ),
+        TitleMedium(
+          '$points',
+          color: Theme.of(context).canvasColor,
+          fontWeight: FontWeight.bold,
         ),
       ],
     );

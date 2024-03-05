@@ -17,7 +17,7 @@ Future<void> allGrandPrixBetsInitialization(
   if (loggedUserId == null) return;
   final Stream<List<GrandPrixBet>?> bets$ = ref
       .read(grandPrixBetRepositoryProvider)
-      .getAllGrandPrixBets(userId: loggedUserId);
+      .getAllGrandPrixBets(playerId: loggedUserId);
   await for (final bets in bets$) {
     if (bets == null || bets.isEmpty) {
       await _initializeBets(ref, loggedUserId);
@@ -37,11 +37,12 @@ Future<void> _initializeBets(
   await for (final grandPrixes in grandPrixes$) {
     if (grandPrixes != null) {
       await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
-            userId: loggedUserId,
+            playerId: loggedUserId,
             grandPrixBets: grandPrixes
                 .map(
                   (GrandPrix gp) => GrandPrixBet(
                     id: '',
+                    playerId: loggedUserId,
                     grandPrixId: gp.id,
                     qualiStandingsByDriverIds: defaultQualiStandings,
                     dnfDriverIds: defaultDnfDrivers,

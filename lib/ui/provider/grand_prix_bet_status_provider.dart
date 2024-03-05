@@ -24,8 +24,8 @@ Stream<GrandPrixBetStatus?> grandPrixBetStatus(
             (String? loggedUserId) => loggedUserId != null
                 ? ref
                     .watch(grandPrixBetRepositoryProvider)
-                    .getGrandPrixBetByGrandPrixId(
-                      userId: loggedUserId,
+                    .getBetByGrandPrixIdAndPlayerId(
+                      playerId: loggedUserId,
                       grandPrixId: grandPrixId,
                     )
                 : throw '[GrandPrixBetStatusProvider] Logged user not found',

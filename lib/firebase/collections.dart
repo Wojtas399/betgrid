@@ -59,7 +59,11 @@ CollectionReference<GrandPrixBetDto> getGrandPrixBetsRef(String userId) =>
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
             if (data == null) throw 'Grand prix bet document was null';
-            return GrandPrixBetDto.fromIdAndJson(snapshot.id, data);
+            return GrandPrixBetDto.fromIdPlayerIdAndJson(
+              snapshot.id,
+              userId,
+              data,
+            );
           },
           toFirestore: (GrandPrixBetDto dto, _) => dto.toJson(),
         );

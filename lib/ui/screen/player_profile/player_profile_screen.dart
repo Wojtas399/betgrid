@@ -10,6 +10,7 @@ import '../../component/scroll_animated_item_component.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/all_grand_prixes_provider.dart';
+import '../../provider/grand_prix_bet_points_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -114,20 +115,32 @@ class _GrandPrixesList extends SliverPadding {
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             childCount: grandPrixes.length,
-            (context, index) => ScrollAnimatedItem(
-              child: GrandPrixItem(
-                roundNumber: index + 1,
-                grandPrix: grandPrixes[index],
-                onPressed: () {
-                  context.navigateTo(
-                    GrandPrixBetRoute(
-                      grandPrixId: grandPrixes[index].id,
-                      playerId: playerId,
+            (_, int index) {
+              final grandPrix = grandPrixes[index];
+
+              return ScrollAnimatedItem(
+                child: Consumer(
+                  builder: (context, ref, _) => GrandPrixItem(
+                    betPoints: ref.watch(
+                      grandPrixBetPointsProvider(
+                        grandPrixId: grandPrix.id,
+                        playerId: playerId,
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
+                    roundNumber: index + 1,
+                    grandPrix: grandPrix,
+                    onPressed: () {
+                      context.navigateTo(
+                        GrandPrixBetRoute(
+                          grandPrixId: grandPrix.id,
+                          playerId: playerId,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           ),
         ),
       );

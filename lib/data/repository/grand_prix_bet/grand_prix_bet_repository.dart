@@ -10,20 +10,20 @@ GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
     GrandPrixBetRepositoryImpl();
 
 abstract interface class GrandPrixBetRepository {
-  Stream<List<GrandPrixBet>?> getAllGrandPrixBets({required String userId});
+  Stream<List<GrandPrixBet>?> getAllGrandPrixBets({required String playerId});
 
-  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixId({
-    required String userId,
+  Stream<GrandPrixBet?> getBetByGrandPrixIdAndPlayerId({
+    required String playerId,
     required String grandPrixId,
   });
 
   Future<void> addGrandPrixBets({
-    required String userId,
+    required String playerId,
     required List<GrandPrixBet> grandPrixBets,
   });
 
   Future<void> updateGrandPrixBet({
-    required String userId,
+    required String playerId,
     required String grandPrixBetId,
     List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,

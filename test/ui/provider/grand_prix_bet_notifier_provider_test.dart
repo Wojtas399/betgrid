@@ -36,9 +36,6 @@ void main() {
   }
 
   setUp(() {
-    grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
-      createGrandPrixBet(grandPrixId: grandPrixId),
-    );
     listener = Listener<AsyncValue<GrandPrixBetNotifierState?>>();
   });
 
@@ -81,7 +78,7 @@ void main() {
         willBeSafetyCar: grandPrixBet.willBeSafetyCar,
         willBeRedFlag: grandPrixBet.willBeRedFlag,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(grandPrixBet);
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(grandPrixBet);
       final container = makeProviderContainer();
       container.listen(
         grandPrixBetNotifierProvider,
@@ -105,8 +102,8 @@ void main() {
       ]);
       verifyNoMoreInteractions(listener);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
+        () => grandPrixBetRepository.getBetByGrandPrixIdAndPlayerId(
+          playerId: playerId,
           grandPrixId: grandPrixId,
         ),
       ).called(1);
@@ -123,7 +120,7 @@ void main() {
         20,
         (i) => index == i ? driverId : null,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: defaultQualificationsStandings,
         ),
@@ -163,7 +160,7 @@ void main() {
         20,
         (i) => index == i ? driverId : null,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(
             20,
@@ -199,7 +196,7 @@ void main() {
     'should update p1DriverId param in state',
     () async {
       const String p1DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -232,7 +229,7 @@ void main() {
     'should update p1DriverId param and should set p2DriverId param as null',
     () async {
       const String p1DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p2DriverId: p1DriverId),
       );
       final container = makeProviderContainer();
@@ -265,7 +262,7 @@ void main() {
     'should update p1DriverId param and should set p3DriverId param as null',
     () async {
       const String p1DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p3DriverId: p1DriverId),
       );
       final container = makeProviderContainer();
@@ -298,7 +295,7 @@ void main() {
     'should update p1DriverId param and should set p10DriverId param as null',
     () async {
       const String p1DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p10DriverId: p1DriverId),
       );
       final container = makeProviderContainer();
@@ -330,7 +327,7 @@ void main() {
     'should update p2DriverId param in state',
     () async {
       const String p2DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -363,7 +360,7 @@ void main() {
     'should update p2DriverId param and should set p1DriverId param as null',
     () async {
       const String p2DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p1DriverId: p2DriverId),
       );
       final container = makeProviderContainer();
@@ -396,7 +393,7 @@ void main() {
     'should update p2DriverId param and should set p3DriverId param as null',
     () async {
       const String p2DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p3DriverId: p2DriverId),
       );
       final container = makeProviderContainer();
@@ -429,7 +426,7 @@ void main() {
     'should update p2DriverId param and should set p10DriverId param as null',
     () async {
       const String p2DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p10DriverId: p2DriverId),
       );
       final container = makeProviderContainer();
@@ -461,7 +458,7 @@ void main() {
     'should update p3DriverId param in state',
     () async {
       const String p3DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -494,7 +491,7 @@ void main() {
     'should update p3DriverId param and should set p1DriverId param as null',
     () async {
       const String p3DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p1DriverId: p3DriverId),
       );
       final container = makeProviderContainer();
@@ -527,7 +524,7 @@ void main() {
     'should update p3DriverId param and should set p2DriverId param as null',
     () async {
       const String p3DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p2DriverId: p3DriverId),
       );
       final container = makeProviderContainer();
@@ -560,7 +557,7 @@ void main() {
     'should update p3DriverId param and should set p10DriverId param as null',
     () async {
       const String p3DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p10DriverId: p3DriverId),
       );
       final container = makeProviderContainer();
@@ -592,7 +589,7 @@ void main() {
     'should update p10DriverId param in state',
     () async {
       const String p10DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -625,7 +622,7 @@ void main() {
     'should update p10DriverId param and should set p1DriverId param as null',
     () async {
       const String p10DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p1DriverId: p10DriverId),
       );
       final container = makeProviderContainer();
@@ -658,7 +655,7 @@ void main() {
     'should update p10DriverId param and should set p2DriverId param as null',
     () async {
       const String p10DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p2DriverId: p10DriverId),
       );
       final container = makeProviderContainer();
@@ -691,7 +688,7 @@ void main() {
     'should update p10DriverId param and should set p3DriverId param as null',
     () async {
       const String p10DriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(p3DriverId: p10DriverId),
       );
       final container = makeProviderContainer();
@@ -723,7 +720,7 @@ void main() {
     'should update fastestLapDriverId param in state',
     () async {
       const String fastestLapDriverId = 'd1';
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -759,7 +756,7 @@ void main() {
       const int index = 1;
       const String driverId = 'd2';
       final List<String?> expectedList = [null, driverId, null];
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           dnfDriverIds: [driverId, null, null],
         ),
@@ -794,7 +791,7 @@ void main() {
       const int index = 1;
       const String driverId = 'd2';
       final List<String?> expectedList = [null, driverId, null];
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(dnfDriverIds: defaultDnfDriverIds),
       );
       final container = makeProviderContainer();
@@ -825,7 +822,7 @@ void main() {
     'should update willBeSafetyCar param in state',
     () async {
       const bool willBeSafetyCar = true;
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -857,7 +854,7 @@ void main() {
     'should update willBeRedFlag param in state',
     () async {
       const bool willBeRedFlag = true;
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -904,7 +901,7 @@ void main() {
       const List<String?> newDnfDriverIds = ['d18', null, null];
       const bool newWillBeSafetyCar = false;
       const bool newWillBeRedFlag = true;
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(id: grandPrixBetId),
       );
       grandPrixBetRepository.mockUpdateGrandPrixBet();
@@ -1039,7 +1036,7 @@ void main() {
       verifyNoMoreInteractions(listener);
       verify(
         () => grandPrixBetRepository.updateGrandPrixBet(
-          userId: playerId,
+          playerId: playerId,
           grandPrixBetId: grandPrixBetId,
           qualiStandingsByDriverIds: newStandings,
           p1DriverId: newP1DriverId,

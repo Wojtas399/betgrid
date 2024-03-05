@@ -9,6 +9,9 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default('')
+    String playerId,
     required String grandPrixId,
     required List<String?> qualiStandingsByDriverIds,
     String? p1DriverId,
@@ -24,6 +27,10 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
   factory GrandPrixBetDto.fromJson(Map<String, Object?> json) =>
       _$GrandPrixBetDtoFromJson(json);
 
-  factory GrandPrixBetDto.fromIdAndJson(String id, Map<String, Object?> json) =>
-      GrandPrixBetDto.fromJson(json).copyWith(id: id);
+  factory GrandPrixBetDto.fromIdPlayerIdAndJson(
+    String id,
+    String playerId,
+    Map<String, Object?> json,
+  ) =>
+      GrandPrixBetDto.fromJson(json).copyWith(id: id, playerId: playerId);
 }

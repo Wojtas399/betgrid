@@ -42,7 +42,7 @@ void main() {
     'all required bet params are null, '
     'should return pending status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       final container = makeProviderContainer();
@@ -64,7 +64,7 @@ void main() {
     'all required bet params are not null, '
     'should return completed status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd1',
@@ -96,7 +96,7 @@ void main() {
     'at least one element in qualiStandings is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(
             20,
@@ -131,7 +131,7 @@ void main() {
     'p1DriverId is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p2DriverId: 'd2',
@@ -162,7 +162,7 @@ void main() {
     'p2DriverId is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -193,7 +193,7 @@ void main() {
     'p3DriverId is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -224,7 +224,7 @@ void main() {
     'p10DriverId is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -255,7 +255,7 @@ void main() {
     'fastestLapDriverId is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -286,7 +286,7 @@ void main() {
     'at least one element in dnDriverIds is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -318,7 +318,7 @@ void main() {
     'willBeSafetyCar is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',
@@ -349,7 +349,7 @@ void main() {
     'willBeRedFlag is null, '
     'should return inProgress status',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: List.generate(20, (_) => 'd1'),
           p1DriverId: 'd2',

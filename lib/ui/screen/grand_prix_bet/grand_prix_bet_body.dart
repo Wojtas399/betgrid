@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
-import '../../../../model/driver.dart';
 import '../../component/text/headline.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/all_drivers_provider.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_notifier_state.dart';
 import 'grand_prix_bet_additional.dart';
@@ -19,9 +17,8 @@ class GrandPrixBetBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<GrandPrixBetNotifierState?> notifierState =
         ref.watch(grandPrixBetNotifierProvider);
-    final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
 
-    if (notifierState.hasValue && allDrivers.hasValue) {
+    if (notifierState.hasValue) {
       return CustomScrollView(
         slivers: [
           _SectionParameters.build(

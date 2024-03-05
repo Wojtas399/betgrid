@@ -8,6 +8,7 @@ import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/all_grand_prixes_provider.dart';
+import '../../provider/grand_prix_bet_points_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
 
 @RoutePage()
@@ -45,20 +46,30 @@ class _GrandPrixes extends ConsumerWidget {
       return ListView.builder(
         padding: const EdgeInsets.all(24),
         itemCount: allGrandPrixes!.length,
-        itemBuilder: (_, int itemIndex) => ScrollAnimatedItem(
-          child: GrandPrixItem(
-            roundNumber: itemIndex + 1,
-            grandPrix: allGrandPrixes[itemIndex],
-            onPressed: () {
-              context.navigateTo(
-                GrandPrixBetRoute(
-                  grandPrixId: allGrandPrixes[itemIndex].id,
+        itemBuilder: (_, int itemIndex) {
+          final grandPrix = allGrandPrixes[itemIndex];
+
+          return ScrollAnimatedItem(
+            child: GrandPrixItem(
+              betPoints: ref.watch(
+                grandPrixBetPointsProvider(
+                  grandPrixId: grandPrix.id,
                   playerId: loggedUserId,
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+              roundNumber: itemIndex + 1,
+              grandPrix: grandPrix,
+              onPressed: () {
+                context.navigateTo(
+                  GrandPrixBetRoute(
+                    grandPrixId: grandPrix.id,
+                    playerId: loggedUserId,
+                  ),
+                );
+              },
+            ),
+          );
+        },
       );
     }
     return const Center(

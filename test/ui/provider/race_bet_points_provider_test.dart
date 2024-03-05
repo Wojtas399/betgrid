@@ -23,10 +23,7 @@ void main() {
   const String grandPrixId = 'gp1';
   const String playerId = 'p1';
 
-  ProviderContainer makeProviderContainer({
-    String? grandPrixId,
-    String? playerId,
-  }) {
+  ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
@@ -51,86 +48,46 @@ void main() {
   });
 
   test(
-    'should emit null if grand prix id is null',
-    () async {
-      final container = makeProviderContainer(playerId: playerId);
-
-      await expectLater(
-        container.read(raceBetPointsProvider.future),
-        completion(null),
-      );
-    },
-  );
-
-  test(
-    'should emit null if playerId id is null',
-    () async {
-      final container = makeProviderContainer(grandPrixId: grandPrixId);
-
-      await expectLater(
-        container.read(raceBetPointsProvider.future),
-        completion(null),
-      );
-    },
-  );
-
-  test(
     'should emit 0 if player does not have bets for given grand prix',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(null);
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(null);
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
         results: createGrandPrixResults(),
       );
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(0),
       );
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
   test(
     'should emit 0 if there are no results for given grand prix',
     () async {
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: null);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(0),
       );
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -140,27 +97,19 @@ void main() {
       final results = createGrandPrixResults(p1DriverId: 'd1');
       final bets = createGrandPrixBet(p1DriverId: 'd1');
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(betPoints.raceP1),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -170,27 +119,19 @@ void main() {
       final results = createGrandPrixResults(p2DriverId: 'd1');
       final bets = createGrandPrixBet(p2DriverId: 'd1');
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(betPoints.raceP2),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -200,27 +141,19 @@ void main() {
       final results = createGrandPrixResults(p3DriverId: 'd1');
       final bets = createGrandPrixBet(p3DriverId: 'd1');
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(betPoints.raceP3),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -230,27 +163,19 @@ void main() {
       final results = createGrandPrixResults(p10DriverId: 'd1');
       final bets = createGrandPrixBet(p10DriverId: 'd1');
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(betPoints.raceP10),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -260,27 +185,19 @@ void main() {
       final results = createGrandPrixResults(fastestLapDriverId: 'd1');
       final bets = createGrandPrixBet(fastestLapDriverId: 'd1');
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(betPoints.raceFastestLap),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -301,27 +218,19 @@ void main() {
           (betPoints.raceP1 + betPoints.raceP10 + betPoints.raceFastestLap)
               .toDouble();
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(expectedPoints),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -346,27 +255,19 @@ void main() {
               betPoints.raceP10) *
           betMultipliers.perfectRacePodiumAndP10;
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(expectedPoints),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 
@@ -395,27 +296,19 @@ void main() {
               betMultipliers.perfectRacePodiumAndP10) +
           betPoints.raceFastestLap;
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: results);
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixId(bets);
-      final container = makeProviderContainer(
-        grandPrixId: grandPrixId,
-        playerId: playerId,
-      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bets);
+
+      final container = makeProviderContainer();
 
       await expectLater(
-        container.read(raceBetPointsProvider.future),
+        container.read(
+          raceBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ).future,
+        ),
         completion(expectedPoints),
       );
-      verify(
-        () => grandPrixResultsRepository.getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixId(
-          userId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
     },
   );
 }

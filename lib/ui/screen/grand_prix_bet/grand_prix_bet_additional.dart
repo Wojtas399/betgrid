@@ -2,8 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/driver.dart';
-import '../../provider/all_drivers_provider.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
 import 'grand_prix_bet_position_item.dart';
 import 'grand_prix_bet_position_yes_no_item.dart';
@@ -14,7 +12,6 @@ class GrandPrixBetAdditional extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Driver>?> allDrivers = ref.watch(allDriversProvider);
     final gpBetNotifier = ref.read(grandPrixBetNotifierProvider.notifier);
     final List<String?>? dnfDriverIds = ref.watch(
       grandPrixBetNotifierProvider.select(
@@ -45,11 +42,7 @@ class GrandPrixBetAdditional extends ConsumerWidget {
               _ => '',
             },
             selectedDriverId: dnfDriverIds![index],
-            allDrivers: allDrivers.value!,
             selectedDriverIds: dnfDriverIds.whereNotNull().toList(),
-            onDriverSelected: (String driverId) {
-              gpBetNotifier.onDnfDriverChanged(index, driverId);
-            },
           ),
         ),
         GrandPrixBetPositionYesNoItem.build(

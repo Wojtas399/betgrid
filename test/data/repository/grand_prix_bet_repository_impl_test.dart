@@ -13,7 +13,7 @@ import '../../mock/firebase/mock_firebase_grand_prix_bet_service.dart';
 void main() {
   final dbGrandPrixBetService = MockFirebaseGrandPrixBetService();
   late GrandPrixBetRepositoryImpl repositoryImpl;
-  const String userId = 'u1';
+  const String playerId = 'u1';
 
   setUpAll(() {
     GetIt.I.registerFactory<FirebaseGrandPrixBetService>(
@@ -47,7 +47,7 @@ void main() {
       dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(userId: userId);
+          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(
@@ -56,7 +56,7 @@ void main() {
       );
       await repositoryImpl.repositoryState$.first;
       verify(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: userId),
+        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
       ).called(1);
     },
   );
@@ -80,7 +80,7 @@ void main() {
       repositoryImpl = GrandPrixBetRepositoryImpl(initialData: []);
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(userId: userId);
+          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(
@@ -89,7 +89,7 @@ void main() {
       );
       await repositoryImpl.repositoryState$.first;
       verify(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: userId),
+        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
       ).called(1);
     },
   );
@@ -109,64 +109,66 @@ void main() {
       );
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(userId: userId);
+          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixBets));
       await repositoryImpl.repositoryState$.first;
       verifyNever(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: userId),
+        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
       );
     },
   );
 
   test(
-    'getGrandPrixBetByGrandPrixId, '
-    'bet with matching grand prix id exists in state, '
+    'getBetByGrandPrixIdAndPlayerId, '
+    'bet with matching grand prix id and player id exists in state, '
     'should return first matching grand prix',
     () async {
       final List<GrandPrixBet> grandPrixBets = [
-        createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
+        createGrandPrixBet(id: 'gpb1', playerId: 'u2', grandPrixId: 'gp1'),
+        createGrandPrixBet(id: 'gpb2', playerId: playerId, grandPrixId: 'gp1'),
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
         createGrandPrixBet(id: 'gpb4', grandPrixId: 'gp1'),
       ];
       repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
 
       final Stream<GrandPrixBet?> grandPrixBet$ =
-          repositoryImpl.getGrandPrixBetByGrandPrixId(
-        userId: userId,
+          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
+        playerId: playerId,
         grandPrixId: 'gp1',
       );
 
-      expect(grandPrixBet$, emits(grandPrixBets.first));
+      expect(grandPrixBet$, emits(grandPrixBets[1]));
     },
   );
 
   test(
-    'getGrandPrixBetByGrandPrixId, '
-    'there is no bet with matching grand prix id in state, '
+    'getBetByGrandPrixIdAndPlayerId, '
+    'there is no bet with matching grand prix id and player id in state, '
     'should load bet from db, add it to repository state and emit it',
     () async {
       const String grandPrixId = 'gp1';
       final GrandPrixBetDto grandPrixBetDto = createGrandPrixBetDto(
         id: 'gpb1',
+        playerId: playerId,
         grandPrixId: grandPrixId,
       );
       final GrandPrixBet grandPrixBet = createGrandPrixBet(
         id: 'gpb1',
+        playerId: playerId,
         grandPrixId: grandPrixId,
       );
       final List<GrandPrixBet> grandPrixBets = [
-        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
+        createGrandPrixBet(id: 'gpb2', playerId: 'u2', grandPrixId: 'gp1'),
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
       dbGrandPrixBetService.mockLoadGrandPrixBetByGrandPrixId(grandPrixBetDto);
       repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
 
       final Stream<GrandPrixBet?> grandPrixBet$ =
-          repositoryImpl.getGrandPrixBetByGrandPrixId(
-        userId: userId,
+          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
+        playerId: playerId,
         grandPrixId: grandPrixId,
       );
 
@@ -181,7 +183,7 @@ void main() {
       await repositoryImpl.repositoryState$.first;
       verify(
         () => dbGrandPrixBetService.loadGrandPrixBetByGrandPrixId(
-          userId: userId,
+          userId: playerId,
           grandPrixId: grandPrixId,
         ),
       ).called(1);
@@ -205,25 +207,25 @@ void main() {
       dbGrandPrixBetService.mockAddGrandPrixBet();
 
       await repositoryImpl.addGrandPrixBets(
-        userId: userId,
+        playerId: playerId,
         grandPrixBets: grandPrixBets,
       );
 
       verify(
         () => dbGrandPrixBetService.addGrandPrixBet(
-          userId: userId,
+          userId: playerId,
           grandPrixBetDto: grandPrixBetDtos[0],
         ),
       ).called(1);
       verify(
         () => dbGrandPrixBetService.addGrandPrixBet(
-          userId: userId,
+          userId: playerId,
           grandPrixBetDto: grandPrixBetDtos[1],
         ),
       ).called(1);
       verify(
         () => dbGrandPrixBetService.addGrandPrixBet(
-          userId: userId,
+          userId: playerId,
           grandPrixBetDto: grandPrixBetDtos[2],
         ),
       ).called(1);
@@ -306,7 +308,7 @@ void main() {
       );
 
       repositoryImpl.updateGrandPrixBet(
-        userId: userId,
+        playerId: playerId,
         grandPrixBetId: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -332,7 +334,7 @@ void main() {
       );
       verify(
         () => dbGrandPrixBetService.updateGrandPrixBet(
-          userId: userId,
+          userId: playerId,
           grandPrixBetId: grandPrixBetId,
           qualiStandingsByDriverIds: qualiStandingsByDriverIds,
           p1DriverId: p1DriverId,

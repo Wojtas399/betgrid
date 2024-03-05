@@ -18,11 +18,12 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
     final String? playerId = ref.watch(playerIdProvider);
     if (grandPrixId == null) throw 'Grand prix id not found';
     if (playerId == null) throw 'Player id not found';
-    final Stream<GrandPrixBet?> bet$ =
-        ref.watch(grandPrixBetRepositoryProvider).getGrandPrixBetByGrandPrixId(
-              userId: playerId,
-              grandPrixId: grandPrixId,
-            );
+    final Stream<GrandPrixBet?> bet$ = ref
+        .watch(grandPrixBetRepositoryProvider)
+        .getBetByGrandPrixIdAndPlayerId(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        );
     await for (final bet in bet$) {
       _grandPrixBetId = bet?.id;
       yield GrandPrixBetNotifierState(
@@ -151,7 +152,7 @@ class GrandPrixBetNotifier extends _$GrandPrixBetNotifier {
       status: const GrandPrixBetNotifierStatusSavingData(),
     ));
     await grandPrixBetRepository.updateGrandPrixBet(
-      userId: ref.watch(playerIdProvider)!,
+      playerId: ref.watch(playerIdProvider)!,
       grandPrixBetId: _grandPrixBetId!,
       qualiStandingsByDriverIds: currentState?.qualiStandingsByDriverIds,
       p1DriverId: currentState?.p1DriverId,

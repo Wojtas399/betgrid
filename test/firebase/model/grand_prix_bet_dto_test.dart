@@ -49,12 +49,12 @@ void main() {
   );
 
   test(
-    'fromIdAndJson, '
+    'fromIdPlayerIdAndJson, '
     'should map json model to class model with given id',
     () {
       const String id = 'd1';
+      const String playerId = 'p1';
       final Map<String, Object?> json = {
-        'id': id,
         'grandPrixId': grandPrixId,
         'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
         'p1DriverId': p1DriverId,
@@ -68,6 +68,7 @@ void main() {
       };
       const GrandPrixBetDto expectedModel = GrandPrixBetDto(
         id: id,
+        playerId: playerId,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -80,7 +81,8 @@ void main() {
         willBeSafetyCar: willBeSafetyCar,
       );
 
-      final GrandPrixBetDto model = GrandPrixBetDto.fromIdAndJson(id, json);
+      final GrandPrixBetDto model =
+          GrandPrixBetDto.fromIdPlayerIdAndJson(id, playerId, json);
 
       expect(model, expectedModel);
     },
@@ -88,7 +90,7 @@ void main() {
 
   test(
     'toJson, '
-    'should map class model to json model ignoring id',
+    'should map class model to json model ignoring id and player id',
     () {
       const GrandPrixBetDto model = GrandPrixBetDto(
         id: 'gpb1',

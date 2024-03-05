@@ -78,7 +78,9 @@ void main() {
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
-        () => grandPrixBetRepository.getAllGrandPrixBets(userId: loggedUserId),
+        () => grandPrixBetRepository.getAllGrandPrixBets(
+          playerId: loggedUserId,
+        ),
       ).called(1);
     },
   );
@@ -111,24 +113,29 @@ void main() {
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
-        () => grandPrixBetRepository.getAllGrandPrixBets(userId: loggedUserId),
+        () => grandPrixBetRepository.getAllGrandPrixBets(
+          playerId: loggedUserId,
+        ),
       ).called(1);
       verify(grandPrixRepository.getAllGrandPrixes).called(1);
       verify(
         () => grandPrixBetRepository.addGrandPrixBets(
-          userId: loggedUserId,
+          playerId: loggedUserId,
           grandPrixBets: [
             createGrandPrixBet(
+              playerId: loggedUserId,
               grandPrixId: 'gp1',
               qualiStandingsByDriverIds: defaultQualiStandings,
               dnfDriverIds: defaultDnfDrivers,
             ),
             createGrandPrixBet(
+              playerId: loggedUserId,
               grandPrixId: 'gp2',
               qualiStandingsByDriverIds: defaultQualiStandings,
               dnfDriverIds: defaultDnfDrivers,
             ),
             createGrandPrixBet(
+              playerId: loggedUserId,
               grandPrixId: 'gp3',
               qualiStandingsByDriverIds: defaultQualiStandings,
               dnfDriverIds: defaultDnfDrivers,

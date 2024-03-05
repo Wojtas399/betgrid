@@ -6,15 +6,24 @@ import 'race_bet_points_provider.dart';
 
 part 'grand_prix_bet_points_provider.g.dart';
 
-@Riverpod(dependencies: [
-  qualificationsBetPoints,
-  raceBetPoints,
-  bonusBetPoints,
-])
-double grandPrixBetPoints(GrandPrixBetPointsRef ref) {
-  final qualiBetPoints = ref.watch(qualificationsBetPointsProvider);
-  final raceBetPoints = ref.watch(raceBetPointsProvider);
-  final bonusBetPoints = ref.watch(bonusBetPointsProvider);
+@riverpod
+double grandPrixBetPoints(
+  GrandPrixBetPointsRef ref, {
+  required String grandPrixId,
+  required String playerId,
+}) {
+  final qualiBetPoints = ref.watch(qualificationsBetPointsProvider(
+    grandPrixId: grandPrixId,
+    playerId: playerId,
+  ));
+  final raceBetPoints = ref.watch(raceBetPointsProvider(
+    grandPrixId: grandPrixId,
+    playerId: playerId,
+  ));
+  final bonusBetPoints = ref.watch(bonusBetPointsProvider(
+    grandPrixId: grandPrixId,
+    playerId: playerId,
+  ));
   double points = 0.0;
   points += qualiBetPoints.value ?? 0.0;
   points += raceBetPoints.value ?? 0.0;

@@ -17,10 +17,10 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
 
   @override
   Stream<List<GrandPrixBet>?> getAllGrandPrixBets({
-    required String userId,
+    required String playerId,
   }) async* {
     if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
-      await _loadAllGrandPrixBetsFromDb(userId);
+      await _loadAllGrandPrixBetsFromDb(playerId);
     }
     await for (final grandPrixBets in repositoryState$) {
       yield grandPrixBets;
@@ -28,28 +28,30 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }
 
   @override
-  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixId({
-    required String userId,
+  Stream<GrandPrixBet?> getBetByGrandPrixIdAndPlayerId({
+    required String playerId,
     required String grandPrixId,
   }) async* {
     await for (final grandPrixBets in repositoryState$) {
       GrandPrixBet? grandPrixBet = grandPrixBets?.firstWhereOrNull(
-        (GrandPrixBet grandPrixBet) => grandPrixBet.grandPrixId == grandPrixId,
+        (GrandPrixBet grandPrixBet) =>
+            grandPrixBet.playerId == playerId &&
+            grandPrixBet.grandPrixId == grandPrixId,
       );
       grandPrixBet ??=
-          await _loadGrandPrixBetByGrandPrixIdFromDb(userId, grandPrixId);
+          await _loadGrandPrixBetByGrandPrixIdFromDb(playerId, grandPrixId);
       yield grandPrixBet;
     }
   }
 
   @override
   Future<void> addGrandPrixBets({
-    required String userId,
+    required String playerId,
     required List<GrandPrixBet> grandPrixBets,
   }) async {
     for (final grandPrixBet in grandPrixBets) {
       await _dbGrandPrixBetService.addGrandPrixBet(
-        userId: userId,
+        userId: playerId,
         grandPrixBetDto: mapGrandPrixBetToDto(grandPrixBet),
       );
     }
@@ -57,7 +59,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
 
   @override
   Future<void> updateGrandPrixBet({
-    required String userId,
+    required String playerId,
     required String grandPrixBetId,
     List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,
@@ -71,7 +73,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }) async {
     final GrandPrixBetDto? updatedBetDto =
         await _dbGrandPrixBetService.updateGrandPrixBet(
-      userId: userId,
+      userId: playerId,
       grandPrixBetId: grandPrixBetId,
       qualiStandingsByDriverIds: qualiStandingsByDriverIds,
       p1DriverId: p1DriverId,
@@ -89,9 +91,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     }
   }
 
-  Future<void> _loadAllGrandPrixBetsFromDb(String userId) async {
+  Future<void> _loadAllGrandPrixBetsFromDb(String playerId) async {
     final List<GrandPrixBetDto> grandPrixBetDtos =
-        await _dbGrandPrixBetService.loadAllGrandPrixBets(userId: userId);
+        await _dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId);
     final List<GrandPrixBet> grandPrixBets =
         grandPrixBetDtos.map(mapGrandPrixBetFromDto).toList();
     setEntities(grandPrixBets);

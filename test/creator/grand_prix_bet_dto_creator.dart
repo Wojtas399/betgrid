@@ -2,6 +2,7 @@ import 'package:betgrid/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dar
 
 GrandPrixBetDto createGrandPrixBetDto({
   String id = '',
+  String playerId = '',
   String grandPrixId = '',
   List<String?>? qualiStandingsByDriverIds,
   String? p1DriverId,
@@ -15,6 +16,7 @@ GrandPrixBetDto createGrandPrixBetDto({
 }) =>
     GrandPrixBetDto(
       id: id,
+      playerId: playerId,
       grandPrixId: grandPrixId,
       qualiStandingsByDriverIds:
           qualiStandingsByDriverIds ?? List.generate(20, (index) => null),

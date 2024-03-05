@@ -6,6 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  const String grandPrixId = 'gp1';
+  const String playerId = 'p1';
+
   ProviderContainer makeProviderContainer({
     required double qualiBetPoints,
     required double raceBetPoints,
@@ -13,19 +16,28 @@ void main() {
   }) {
     final container = ProviderContainer(
       overrides: [
-        qualificationsBetPointsProvider.overrideWith(
+        qualificationsBetPointsProvider(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ).overrideWith(
           (ref) {
             ref.state = AsyncData(qualiBetPoints);
             return const Stream.empty();
           },
         ),
-        raceBetPointsProvider.overrideWith(
+        raceBetPointsProvider(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ).overrideWith(
           (ref) {
             ref.state = AsyncData(raceBetPoints);
             return const Stream.empty();
           },
         ),
-        bonusBetPointsProvider.overrideWith(
+        bonusBetPointsProvider(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ).overrideWith(
           (ref) {
             ref.state = AsyncData(bonusBetPoints);
             return const Stream.empty();
@@ -52,7 +64,12 @@ void main() {
       );
 
       expect(
-        container.read(grandPrixBetPointsProvider),
+        container.read(
+          grandPrixBetPointsProvider(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ),
+        ),
         expectedPoints,
       );
     },
