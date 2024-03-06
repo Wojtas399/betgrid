@@ -8,7 +8,7 @@ import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/logged_user_data_notifier_provider.dart';
-import '../../../provider/required_data_completion/required_data_completion_notifier_provider.dart';
+import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 import '../../../provider/theme/theme_mode_notifier_provider.dart';
 import '../../../provider/theme/theme_primary_color_notifier_provider.dart';
 import '../../../service/dialog_service.dart';

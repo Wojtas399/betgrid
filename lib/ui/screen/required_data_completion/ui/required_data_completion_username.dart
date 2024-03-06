@@ -6,7 +6,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/logged_user_data_notifier_provider.dart';
-import '../../../provider/required_data_completion/required_data_completion_notifier_provider.dart';
+import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 
 class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
   const RequiredDataCompletionUsername({super.key});
