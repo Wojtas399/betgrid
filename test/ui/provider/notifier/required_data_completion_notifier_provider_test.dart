@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/auth/mock_auth_service.dart';
-import '../../mock/data/repository/mock_user_repository.dart';
-import '../../mock/listener.dart';
+import '../../../mock/auth/mock_auth_service.dart';
+import '../../../mock/data/repository/mock_user_repository.dart';
+import '../../../mock/listener.dart';
 
 void main() {
   final authService = MockAuthService();

@@ -8,7 +8,7 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/all_players_provider.dart';
+import '../../provider/player/all_players_provider.dart';
 
 @RoutePage()
 class PlayersScreen extends StatelessWidget {

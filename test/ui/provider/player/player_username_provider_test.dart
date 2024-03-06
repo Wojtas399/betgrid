@@ -1,15 +1,15 @@
 import 'package:betgrid/auth/auth_service.dart';
 import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/provider/player_id_provider.dart';
-import 'package:betgrid/ui/provider/player_username_provider.dart';
+import 'package:betgrid/ui/provider/player/player_id_provider.dart';
+import 'package:betgrid/ui/provider/player/player_username_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/auth/mock_auth_service.dart';
-import '../../mock/data/repository/mock_player_repository.dart';
-import '../../mock/listener.dart';
+import '../../../mock/auth/mock_auth_service.dart';
+import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/listener.dart';
 
 void main() {
   final authService = MockAuthService();
