@@ -8,8 +8,8 @@ import '../../component/text/title.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/theme_mode_notifier_provider.dart';
-import '../../provider/theme_primary_color_notifier_provider.dart';
+import '../../provider/theme/theme_mode_notifier_provider.dart';
+import '../../provider/theme/theme_primary_color_notifier_provider.dart';
 import 'profile_avatar.dart';
 import 'profile_username.dart';
 

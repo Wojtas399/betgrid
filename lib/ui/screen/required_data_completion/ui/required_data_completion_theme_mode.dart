@@ -6,7 +6,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
 import '../../../component/theme_mode_selection_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/theme_mode_notifier_provider.dart';
+import '../../../provider/theme/theme_mode_notifier_provider.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
   const RequiredDataCompletionThemeMode({super.key});

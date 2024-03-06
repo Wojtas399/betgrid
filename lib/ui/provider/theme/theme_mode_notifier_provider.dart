@@ -1,18 +1,18 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../auth/auth_service.dart';
-import '../../data/repository/user/user_repository.dart';
-import '../../model/user.dart';
+import '../../../auth/auth_service.dart';
+import '../../../data/repository/user/user_repository.dart';
+import '../../../model/user.dart';
 
-part 'theme_primary_color_notifier_provider.g.dart';
+part 'theme_mode_notifier_provider.g.dart';
 
 @riverpod
-class ThemePrimaryColorNotifier extends _$ThemePrimaryColorNotifier {
+class ThemeModeNotifier extends _$ThemeModeNotifier {
   String? _loggedUserId;
 
   @override
-  Stream<ThemePrimaryColor> build() {
+  Stream<ThemeMode> build() {
     return ref
         .watch(authServiceProvider)
         .loggedUserId$
@@ -26,18 +26,15 @@ class ThemePrimaryColorNotifier extends _$ThemePrimaryColorNotifier {
                   .getUserById(userId: loggedUserId)
               : Stream.value(null),
         )
-        .map(
-          (User? loggedUser) =>
-              loggedUser?.themePrimaryColor ?? ThemePrimaryColor.defaultRed,
-        );
+        .map((User? loggedUser) => loggedUser?.themeMode ?? ThemeMode.light);
   }
 
-  void changeThemePrimaryColor(ThemePrimaryColor color) async {
-    state = AsyncData(color);
+  void changeThemeMode(ThemeMode themeMode) async {
+    state = AsyncData(themeMode);
     if (_loggedUserId != null) {
       await ref.read(userRepositoryProvider).updateUserData(
             userId: _loggedUserId!,
-            themePrimaryColor: color,
+            themeMode: themeMode,
           );
     }
   }

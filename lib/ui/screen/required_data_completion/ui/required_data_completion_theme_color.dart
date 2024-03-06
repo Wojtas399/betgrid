@@ -6,7 +6,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
 import '../../../component/theme_primary_color_selection_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/theme_primary_color_notifier_provider.dart';
+import '../../../provider/theme/theme_primary_color_notifier_provider.dart';
 
 class RequiredDataCompletionThemeColor extends StatelessWidget {
   const RequiredDataCompletionThemeColor({super.key});

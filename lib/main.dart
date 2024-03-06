@@ -12,8 +12,8 @@ import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
 import 'ui/extensions/theme_mode_extensions.dart';
 import 'ui/extensions/theme_primary_color_extensions.dart';
-import 'ui/provider/theme_mode_notifier_provider.dart';
-import 'ui/provider/theme_primary_color_notifier_provider.dart';
+import 'ui/provider/theme/theme_mode_notifier_provider.dart';
+import 'ui/provider/theme/theme_primary_color_notifier_provider.dart';
 
 void main() async {
   configureDependencies();
