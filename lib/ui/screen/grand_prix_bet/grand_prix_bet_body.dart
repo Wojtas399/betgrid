@@ -4,8 +4,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 import '../../component/text/headline.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
-import '../../provider/grand_prix_bet/grand_prix_bet_notifier_state.dart';
+import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
+import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_state.dart';
 import 'grand_prix_bet_additional.dart';
 import 'grand_prix_bet_qualifications.dart';
 import 'grand_prix_bet_race.dart';

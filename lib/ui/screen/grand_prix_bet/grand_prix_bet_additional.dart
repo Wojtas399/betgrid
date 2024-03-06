@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../provider/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
+import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
 import 'grand_prix_bet_position_item.dart';
 import 'grand_prix_bet_position_yes_no_item.dart';
 import 'grand_prix_bet_table.dart';
