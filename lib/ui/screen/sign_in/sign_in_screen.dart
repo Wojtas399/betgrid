@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/router/app_router.dart';
-import '../../provider/auth/auth_provider.dart';
-import '../../provider/auth/auth_state.dart';
+import '../../provider/notifier/auth/auth_provider.dart';
+import '../../provider/notifier/auth/auth_state.dart';
 import '../../service/dialog_service.dart';
 import 'sign_in_app_bar.dart';
 import 'sign_in_content.dart';
