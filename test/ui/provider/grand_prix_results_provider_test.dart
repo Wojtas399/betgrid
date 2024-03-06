@@ -1,5 +1,5 @@
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
-import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
+import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix_results_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

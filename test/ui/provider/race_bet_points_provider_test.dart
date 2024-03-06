@@ -2,7 +2,7 @@ import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
-import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
+import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/provider/player/player_id_provider.dart';
 import 'package:betgrid/ui/provider/race_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

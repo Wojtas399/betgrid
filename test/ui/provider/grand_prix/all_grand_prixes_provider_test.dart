@@ -1,12 +1,12 @@
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/model/grand_prix.dart';
-import 'package:betgrid/ui/provider/all_grand_prixes_provider.dart';
+import 'package:betgrid/ui/provider/grand_prix/all_grand_prixes_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/data/repository/mock_grand_prix_repository.dart';
-import '../../mock/listener.dart';
+import '../../../mock/data/repository/mock_grand_prix_repository.dart';
+import '../../../mock/listener.dart';
 
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();

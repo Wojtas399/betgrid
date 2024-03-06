@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/grand_prix_bet.dart';
-import '../../grand_prix_id_provider.dart';
+import '../../grand_prix/grand_prix_id_provider.dart';
 import '../../player/player_id_provider.dart';
 import 'grand_prix_bet_notifier_state.dart';
 
