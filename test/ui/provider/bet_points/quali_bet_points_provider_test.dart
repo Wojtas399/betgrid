@@ -24,6 +24,10 @@ void main() {
     20,
     (i) => 'd${i + 1}',
   );
+  const double pointsForPositionInQ1 = 1.0;
+  const double pointsForPositionInQ2 = 2.0;
+  const double pointsForPositionFromP10ToP4InQ3 = 2.0;
+  const double pointsForPositionFromP3ToP1InQ3 = 1.0;
 
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
@@ -134,7 +138,7 @@ void main() {
         p18: 'd18',
         p20: 'd20',
       );
-      final double expectedPoints = (3 * betPoints.onePositionInQ1).toDouble();
+      final double expectedPoints = (3 * pointsForPositionInQ1).toDouble();
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -166,7 +170,7 @@ void main() {
         p20: 'd20',
       );
       final double expectedPoints =
-          5 * betPoints.onePositionInQ1 * betMultipliers.perfectQ1;
+          5 * pointsForPositionInQ1 * betMultipliers.perfectQ1;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -195,7 +199,7 @@ void main() {
         p12: 'd12',
         p15: 'd15',
       );
-      final double expectedPoints = (3 * betPoints.onePositionInQ2).toDouble();
+      final double expectedPoints = (3 * pointsForPositionInQ2).toDouble();
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -227,7 +231,7 @@ void main() {
         p15: 'd15',
       );
       final double expectedPoints =
-          5 * betPoints.onePositionInQ2 * betMultipliers.perfectQ2;
+          5 * pointsForPositionInQ2 * betMultipliers.perfectQ2;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
           qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
@@ -259,8 +263,8 @@ void main() {
         p6: 'd6',
         p10: 'd10',
       );
-      final double expectedPoints = ((2 * betPoints.onePositionFromP3ToP1InQ3) +
-              (3 * betPoints.onePositionFromP10ToP4InQ3))
+      final double expectedPoints = ((2 * pointsForPositionFromP3ToP1InQ3) +
+              (3 * pointsForPositionFromP10ToP4InQ3))
           .toDouble();
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
@@ -297,8 +301,8 @@ void main() {
         p9: 'd9',
         p10: 'd10',
       );
-      final double expectedPoints = ((3 * betPoints.onePositionFromP3ToP1InQ3) +
-              (7 * betPoints.onePositionFromP10ToP4InQ3)) *
+      final double expectedPoints = ((3 * pointsForPositionFromP3ToP1InQ3) +
+              (7 * pointsForPositionFromP10ToP4InQ3)) *
           betMultipliers.perfectQ3;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
@@ -333,10 +337,10 @@ void main() {
         p18: 'd18',
         p20: 'd222333',
       );
-      final q1Points = 1 * betPoints.onePositionInQ1;
-      final q2Points = 2 * betPoints.onePositionInQ2;
-      final q3Points = 2 * betPoints.onePositionFromP3ToP1InQ3 +
-          1 * betPoints.onePositionFromP10ToP4InQ3;
+      const q1Points = 1 * pointsForPositionInQ1;
+      const q2Points = 2 * pointsForPositionInQ2;
+      const q3Points = 2 * pointsForPositionFromP3ToP1InQ3 +
+          1 * pointsForPositionFromP10ToP4InQ3;
       final double expectedPoints = (q1Points + q2Points + q3Points).toDouble();
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(
@@ -379,10 +383,10 @@ void main() {
         p19: 'd19',
         p20: 'd20',
       );
-      final q1Points = 5 * betPoints.onePositionInQ1;
-      final q2Points = 5 * betPoints.onePositionInQ2;
-      final q3Points = (2 * betPoints.onePositionFromP10ToP4InQ3) +
-          (1 * betPoints.onePositionFromP3ToP1InQ3);
+      const q1Points = 5 * pointsForPositionInQ1;
+      const q2Points = 5 * pointsForPositionInQ2;
+      const q3Points = (2 * pointsForPositionFromP10ToP4InQ3) +
+          (1 * pointsForPositionFromP3ToP1InQ3);
       final multiplier = betMultipliers.perfectQ1 + betMultipliers.perfectQ2;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
@@ -430,10 +434,10 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 5 * betPoints.onePositionInQ1;
-      final q2Points = 2 * betPoints.onePositionInQ2;
-      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
-          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      const q1Points = 5 * pointsForPositionInQ1;
+      const q2Points = 2 * pointsForPositionInQ2;
+      const q3Points = (3 * pointsForPositionFromP3ToP1InQ3) +
+          (7 * pointsForPositionFromP10ToP4InQ3);
       final multiplier = betMultipliers.perfectQ1 + betMultipliers.perfectQ3;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
@@ -481,10 +485,10 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 2 * betPoints.onePositionInQ1;
-      final q2Points = 5 * betPoints.onePositionInQ2;
-      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
-          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      const q1Points = 2 * pointsForPositionInQ1;
+      const q2Points = 5 * pointsForPositionInQ2;
+      const q3Points = (3 * pointsForPositionFromP3ToP1InQ3) +
+          (7 * pointsForPositionFromP10ToP4InQ3);
       final multiplier = betMultipliers.perfectQ2 + betMultipliers.perfectQ3;
       final double expectedPoints =
           (q1Points + q2Points + q3Points) * multiplier;
@@ -535,10 +539,10 @@ void main() {
         p2: 'd2',
         p1: 'd1',
       );
-      final q1Points = 5 * betPoints.onePositionInQ1;
-      final q2Points = 5 * betPoints.onePositionInQ2;
-      final q3Points = (3 * betPoints.onePositionFromP3ToP1InQ3) +
-          (7 * betPoints.onePositionFromP10ToP4InQ3);
+      const q1Points = 5 * pointsForPositionInQ1;
+      const q2Points = 5 * pointsForPositionInQ2;
+      const q3Points = (3 * pointsForPositionFromP3ToP1InQ3) +
+          (7 * pointsForPositionFromP10ToP4InQ3);
       final multiplier = betMultipliers.perfectQ1 +
           betMultipliers.perfectQ2 +
           betMultipliers.perfectQ3;

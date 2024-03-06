@@ -7,8 +7,8 @@ import '../../../data/repository/grand_prix_result/grand_prix_results_repository
 import '../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet.dart';
 import '../../../model/grand_prix_results.dart';
-import '../../config/bet_points_config.dart';
 import '../../config/bet_points_multipliers_config.dart';
+import 'quali_position_bet_points_provider.dart';
 
 part 'quali_bet_points_provider.g.dart';
 
@@ -28,7 +28,6 @@ Stream<double?> qualiBetPoints(
         ),
     (bets, results) => _ListenedParams(bets: bets, results: results),
   );
-  final betPoints = getIt<BetPointsConfig>();
   final betMultipliers = getIt<BetPointsMultipliersConfig>();
   await for (final params in params$) {
     final GrandPrixBet? bets = params.bets;
@@ -39,30 +38,21 @@ Stream<double?> qualiBetPoints(
       yield 0.0;
       continue;
     }
-    final betStandingsByDriverIds = bets.qualiStandingsByDriverIds;
-    final standingsByDriverIds = results.qualiStandingsByDriverIds!;
-    final q1Standings = standingsByDriverIds.sublist(15, 20);
-    final q2Standings = standingsByDriverIds.sublist(10, 15);
-    final q3Standings = standingsByDriverIds.sublist(0, 10);
-    final betQ1Standings = betStandingsByDriverIds.sublist(15, 20);
-    final betQ2Standings = betStandingsByDriverIds.sublist(10, 15);
-    final betQ3Standings = betStandingsByDriverIds.sublist(0, 10);
     int points = 0, numOfQ1Hits = 0, numOfQ2Hits = 0, numOfQ3Hits = 0;
-    for (int i = 0; i < 10; i++) {
-      if (q3Standings[i] == betQ3Standings[i]) {
-        points += i <= 2
-            ? betPoints.onePositionFromP3ToP1InQ3
-            : betPoints.onePositionFromP10ToP4InQ3;
-        numOfQ3Hits++;
-      }
-      if (i < 5) {
-        if (q1Standings[i] == betQ1Standings[i]) {
-          points += betPoints.onePositionInQ1;
+    for (int i = 0; i < 20; i++) {
+      final int? positionPoints = ref.read(qualiPositionBetPointsProvider(
+        betStandings: bets.qualiStandingsByDriverIds,
+        resultsStandings: results.qualiStandingsByDriverIds!,
+        positionIndex: i,
+      ));
+      if (positionPoints != null && positionPoints > 0) {
+        points += positionPoints;
+        if (i >= 15) {
           numOfQ1Hits++;
-        }
-        if (q2Standings[i] == betQ2Standings[i]) {
-          points += betPoints.onePositionInQ2;
+        } else if (i >= 10) {
           numOfQ2Hits++;
+        } else {
+          numOfQ3Hits++;
         }
       }
     }
