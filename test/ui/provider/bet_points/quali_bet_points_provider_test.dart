@@ -2,16 +2,16 @@ import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
-import 'package:betgrid/ui/provider/qualifications_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/grand_prix_bet_creator.dart';
-import '../../creator/grand_prix_results_creator.dart';
-import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../mock/data/repository/mock_grand_prix_results_repository.dart';
+import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../creator/grand_prix_results_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 
 void main() {
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
@@ -70,7 +70,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -92,7 +92,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -116,7 +116,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -145,7 +145,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -177,7 +177,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -206,7 +206,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -238,7 +238,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -272,7 +272,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -310,7 +310,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -348,7 +348,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -396,7 +396,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -447,7 +447,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -498,7 +498,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,
@@ -554,7 +554,7 @@ void main() {
 
       await expectLater(
         container.read(
-          qualificationsBetPointsProvider(
+          qualiBetPointsProvider(
             grandPrixId: grandPrixId,
             playerId: playerId,
           ).future,

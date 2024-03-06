@@ -1,5 +1,5 @@
 import 'package:betgrid/ui/config/bet_points_config.dart';
-import 'package:betgrid/ui/provider/quali_position_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/quali_position_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

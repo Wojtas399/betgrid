@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../dependency_injection.dart';
-import '../config/bet_points_config.dart';
+import '../../../dependency_injection.dart';
+import '../../config/bet_points_config.dart';
 
 part 'quali_position_bet_points_provider.g.dart';
 

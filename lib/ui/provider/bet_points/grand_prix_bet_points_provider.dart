@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'bonus_bet_points_provider.dart';
-import 'qualifications_bet_points_provider.dart';
+import 'quali_bet_points_provider.dart';
 import 'race_bet_points_provider.dart';
 
 part 'grand_prix_bet_points_provider.g.dart';
@@ -12,7 +12,7 @@ double grandPrixBetPoints(
   required String grandPrixId,
   required String playerId,
 }) {
-  final qualiBetPoints = ref.watch(qualificationsBetPointsProvider(
+  final qualiBetPoints = ref.watch(qualiBetPointsProvider(
     grandPrixId: grandPrixId,
     playerId: playerId,
   ));

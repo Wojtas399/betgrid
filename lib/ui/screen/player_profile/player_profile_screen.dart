@@ -9,8 +9,8 @@ import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
+import '../../provider/bet_points/grand_prix_bet_points_provider.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
-import '../../provider/grand_prix_bet_points_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {

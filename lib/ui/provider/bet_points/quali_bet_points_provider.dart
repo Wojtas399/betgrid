@@ -2,19 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
-import '../../dependency_injection.dart';
-import '../../model/grand_prix_bet.dart';
-import '../../model/grand_prix_results.dart';
-import '../config/bet_points_config.dart';
-import '../config/bet_points_multipliers_config.dart';
+import '../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../dependency_injection.dart';
+import '../../../model/grand_prix_bet.dart';
+import '../../../model/grand_prix_results.dart';
+import '../../config/bet_points_config.dart';
+import '../../config/bet_points_multipliers_config.dart';
 
-part 'qualifications_bet_points_provider.g.dart';
+part 'quali_bet_points_provider.g.dart';
 
 @riverpod
-Stream<double?> qualificationsBetPoints(
-  QualificationsBetPointsRef ref, {
+Stream<double?> qualiBetPoints(
+  QualiBetPointsRef ref, {
   required String grandPrixId,
   required String playerId,
 }) async* {

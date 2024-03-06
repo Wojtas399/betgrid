@@ -1,7 +1,7 @@
-import 'package:betgrid/ui/provider/bonus_bet_points_provider.dart';
-import 'package:betgrid/ui/provider/grand_prix_bet_points_provider.dart';
-import 'package:betgrid/ui/provider/qualifications_bet_points_provider.dart';
-import 'package:betgrid/ui/provider/race_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/bonus_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/grand_prix_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/race_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,7 +16,7 @@ void main() {
   }) {
     final container = ProviderContainer(
       overrides: [
-        qualificationsBetPointsProvider(
+        qualiBetPointsProvider(
           grandPrixId: grandPrixId,
           playerId: playerId,
         ).overrideWith(

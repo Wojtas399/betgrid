@@ -7,8 +7,8 @@ import '../../../model/user.dart';
 import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../config/router/app_router.dart';
+import '../../provider/bet_points/grand_prix_bet_points_provider.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
-import '../../provider/grand_prix_bet_points_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
 
 @RoutePage()
