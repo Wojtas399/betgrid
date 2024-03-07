@@ -1,5 +1,6 @@
 import 'package:betgrid/ui/provider/bet_points/bonus_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/grand_prix_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/bet_points/points_details.dart';
 import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/race_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
@@ -12,7 +13,7 @@ void main() {
   const String playerId = 'p1';
 
   ProviderContainer makeProviderContainer({
-    required QualiBetPointsState qualiBetPointsState,
+    required PointsDetails qualiBetPointsState,
     required double raceBetPoints,
     required double bonusBetPoints,
   }) {
@@ -59,7 +60,7 @@ void main() {
       const double expectedPoints =
           qualiBetPoints + raceBetPoints + bonusBetPoints;
       final container = makeProviderContainer(
-        qualiBetPointsState: const QualiBetPointsState(
+        qualiBetPointsState: const PointsDetails(
           totalPoints: qualiBetPoints,
           pointsBeforeMultiplication: 15,
         ),

@@ -10,31 +10,13 @@ import '../../../model/grand_prix_results.dart';
 import '../../config/bet_points_multipliers_config.dart';
 import '../grand_prix/grand_prix_id_provider.dart';
 import '../player/player_id_provider.dart';
+import 'points_details.dart';
 import 'quali_position_bet_points_provider.dart';
 
 part 'quali_bet_points_provider.g.dart';
 
-class QualiBetPointsState extends Equatable {
-  final double totalPoints;
-  final int pointsBeforeMultiplication;
-  final double? multiplier;
-
-  const QualiBetPointsState({
-    required this.totalPoints,
-    required this.pointsBeforeMultiplication,
-    this.multiplier,
-  });
-
-  @override
-  List<Object?> get props => [
-        totalPoints,
-        pointsBeforeMultiplication,
-        multiplier,
-      ];
-}
-
 @Riverpod(dependencies: [grandPrixId, playerId])
-Stream<QualiBetPointsState?> qualiBetPoints(QualiBetPointsRef ref) async* {
+Stream<PointsDetails?> qualiBetPoints(QualiBetPointsRef ref) async* {
   final String? playerId = ref.watch(playerIdProvider);
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   if (playerId == null || grandPrixId == null) {
@@ -57,7 +39,7 @@ Stream<QualiBetPointsState?> qualiBetPoints(QualiBetPointsRef ref) async* {
       if (bets == null ||
           results == null ||
           results.qualiStandingsByDriverIds == null) {
-        yield const QualiBetPointsState(
+        yield const PointsDetails(
           totalPoints: 0.0,
           pointsBeforeMultiplication: 0,
         );
@@ -86,7 +68,7 @@ Stream<QualiBetPointsState?> qualiBetPoints(QualiBetPointsRef ref) async* {
       if (numOfQ2Hits == 5) multiplier += betMultipliers.perfectQ2;
       if (numOfQ3Hits == 10) multiplier += betMultipliers.perfectQ3;
       final double totalPoints = points * (multiplier == 0 ? 1 : multiplier);
-      yield QualiBetPointsState(
+      yield PointsDetails(
         totalPoints: totalPoints,
         pointsBeforeMultiplication: points,
         multiplier: multiplier != 0 ? multiplier : null,
