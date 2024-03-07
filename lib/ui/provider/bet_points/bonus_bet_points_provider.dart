@@ -23,36 +23,39 @@ Stream<double?> bonusBetPoints(
           playerId: playerId,
           grandPrixId: grandPrixId,
         ),
-    ref.watch(grandPrixResultsRepositoryProvider).getResultForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-    (bets, results) => _ListenedParams(bets: bets, results: results),
+    ref
+        .watch(grandPrixResultsRepositoryProvider)
+        .getResultForGrandPrix(grandPrixId: grandPrixId)
+        .map((results) => results?.raceResults),
+    (bets, raceResults) => _ListenedParams(
+      bets: bets,
+      raceResults: raceResults,
+    ),
   );
   final betPoints = getIt<BetPointsConfig>();
   final betMultipliers = getIt<BetPointsMultipliersConfig>();
   await for (final params in params$) {
     final GrandPrixBet? bets = params.bets;
-    final GrandPrixResults? results = params.results;
-    if (bets == null || results == null) {
+    final RaceResults? raceResults = params.raceResults;
+    if (raceResults == null) {
+      yield null;
+      continue;
+    }
+    if (bets == null) {
       yield 0.0;
       continue;
     }
-    double points = 0;
-    if (results.dnfDriverIds != null) {
-      final int numberOfDnfHits = bets.dnfDriverIds
-          .where((driverId) => results.dnfDriverIds!.contains(driverId))
-          .length;
-      points += numberOfDnfHits * betPoints.raceOneDnfDriver;
-      if (numberOfDnfHits == 3) {
-        points *= betMultipliers.perfectDnf;
-      }
+    final int numberOfDnfHits = bets.dnfDriverIds
+        .where((driverId) => raceResults.dnfDriverIds.contains(driverId))
+        .length;
+    double points = (numberOfDnfHits * betPoints.raceOneDnfDriver).toDouble();
+    if (numberOfDnfHits == 3) {
+      points *= betMultipliers.perfectDnf;
     }
-    if (results.wasThereSafetyCar != null &&
-        results.wasThereSafetyCar == bets.willBeSafetyCar) {
+    if (raceResults.wasThereSafetyCar == bets.willBeSafetyCar) {
       points += betPoints.raceSafetyCar;
     }
-    if (results.wasThereRedFlag != null &&
-        results.wasThereRedFlag == bets.willBeRedFlag) {
+    if (raceResults.wasThereRedFlag == bets.willBeRedFlag) {
       points += betPoints.raceRedFlag;
     }
     yield points;
@@ -61,10 +64,10 @@ Stream<double?> bonusBetPoints(
 
 class _ListenedParams extends Equatable {
   final GrandPrixBet? bets;
-  final GrandPrixResults? results;
+  final RaceResults? raceResults;
 
-  const _ListenedParams({this.bets, this.results});
+  const _ListenedParams({this.bets, this.raceResults});
 
   @override
-  List<Object?> get props => [bets, results];
+  List<Object?> get props => [bets, raceResults];
 }

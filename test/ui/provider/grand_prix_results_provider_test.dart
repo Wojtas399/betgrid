@@ -47,8 +47,7 @@ void main() {
     () async {
       const String grandPrixId = 'gp1';
       final expectedResults = createGrandPrixResults(
-        p1DriverId: 'd1',
-        p2DriverId: 'd2',
+        raceResults: createRaceResults(p1DriverId: 'd1', p2DriverId: 'd2'),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
         results: expectedResults,

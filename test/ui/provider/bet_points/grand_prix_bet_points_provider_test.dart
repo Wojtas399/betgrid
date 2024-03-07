@@ -14,6 +14,7 @@ void main() {
 
   ProviderContainer makeProviderContainer({
     required PointsDetails qualiBetPointsState,
+    required RaceBetPointsDetails raceBetPointsDetails,
     required double raceBetPoints,
     required double bonusBetPoints,
   }) {
@@ -27,12 +28,9 @@ void main() {
             return const Stream.empty();
           },
         ),
-        raceBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).overrideWith(
+        raceBetPointsProvider.overrideWith(
           (ref) {
-            ref.state = AsyncData(raceBetPoints);
+            ref.state = AsyncData(raceBetPointsDetails);
             return const Stream.empty();
           },
         ),
@@ -55,7 +53,7 @@ void main() {
     'should sum total points of quali, race and bonus bets',
     () async {
       const double qualiBetPoints = 20.0;
-      const double raceBetPoints = 11.4;
+      const double raceBetPoints = 12;
       const double bonusBetPoints = 5.0;
       const double expectedPoints =
           qualiBetPoints + raceBetPoints + bonusBetPoints;
@@ -63,6 +61,11 @@ void main() {
         qualiBetPointsState: const PointsDetails(
           totalPoints: qualiBetPoints,
           pointsBeforeMultiplication: 15,
+        ),
+        raceBetPointsDetails: const RaceBetPointsDetails(
+          totalPoints: raceBetPoints,
+          pointsForPositions: 8,
+          pointsForFastestLap: 4,
         ),
         raceBetPoints: raceBetPoints,
         bonusBetPoints: bonusBetPoints,

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-@injectable
+@singleton
 class BetPointsConfig {
   int get onePositionInQ1 => 1;
   int get onePositionInQ2 => 2;

@@ -40,7 +40,36 @@ void main() {
         id: id,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
+        raceResults: const RaceResults(
+          p1DriverId: p1DriverId,
+          p2DriverId: p2DriverId,
+          p3DriverId: p3DriverId,
+          p10DriverId: p10DriverId,
+          fastestLapDriverId: fastestLapDriverId,
+          dnfDriverIds: dnfDriverIds,
+          wasThereSafetyCar: wasThereSafetyCar,
+          wasThereRedFlag: wasThereRedFlag,
+        ),
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'p1DriverId is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: null,
         p2DriverId: p2DriverId,
         p3DriverId: p3DriverId,
         p10DriverId: p10DriverId,
@@ -48,6 +77,243 @@ void main() {
         dnfDriverIds: dnfDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'p2DriverId is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: null,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'p3DriverId is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: null,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'p10DriverId is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: null,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'fastestLapDriverId is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: null,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'dnfDriverIds param is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: null,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'wasThereSafetyCar is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: null,
+        wasThereRedFlag: wasThereRedFlag,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
+      );
+
+      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+        grandPrixResultsDto,
+      );
+
+      expect(grandPrixResults, expectedGrandPrixResults);
+    },
+  );
+
+  test(
+    'mapGrandPrixResultsFromDto, '
+    'wasThereRedFlag is null, '
+    'should set race results as null',
+    () {
+      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        p1DriverId: p1DriverId,
+        p2DriverId: p2DriverId,
+        p3DriverId: p3DriverId,
+        p10DriverId: p10DriverId,
+        fastestLapDriverId: fastestLapDriverId,
+        dnfDriverIds: dnfDriverIds,
+        wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: null,
+      );
+      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
+        id: id,
+        grandPrixId: grandPrixId,
+        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        raceResults: null,
       );
 
       final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(

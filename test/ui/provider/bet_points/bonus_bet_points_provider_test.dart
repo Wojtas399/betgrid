@@ -47,34 +47,56 @@ void main() {
   });
 
   test(
-    'should emit 0 if player does not have bets for given grand prix',
-    () async {
-      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(null);
-      grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(),
-      );
-
-      final container = makeProviderContainer();
-
-      await expectLater(
-        container.read(
-          bonusBetPointsProvider(
-            grandPrixId: grandPrixId,
-            playerId: playerId,
-          ).future,
-        ),
-        completion(0.0),
-      );
-    },
-  );
-
-  test(
-    'should emit 0 if there are no results for given grand prix',
+    'should emit null if there are no results for given grand prix, ',
     () async {
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(results: null);
+
+      final container = makeProviderContainer();
+
+      await expectLater(
+        container.read(bonusBetPointsProvider(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ).future),
+        completion(null),
+      );
+    },
+  );
+
+  test(
+    'should emit null if there are no race results for given grand prix, ',
+    () async {
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
+        createGrandPrixBet(),
+      );
+      grandPrixResultsRepository.mockGetResultsForGrandPrix(
+        results: createGrandPrixResults(raceResults: null),
+      );
+
+      final container = makeProviderContainer();
+
+      await expectLater(
+        container.read(bonusBetPointsProvider(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ).future),
+        completion(null),
+      );
+    },
+  );
+
+  test(
+    'should emit 0 if player does not have bets for given grand prix',
+    () async {
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(null);
+      grandPrixResultsRepository.mockGetResultsForGrandPrix(
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(),
+        ),
+      );
 
       final container = makeProviderContainer();
 
@@ -100,7 +122,11 @@ void main() {
         createGrandPrixBet(dnfDriverIds: betDnfDriverIds),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(dnfDriverIds: dnfDriverIds),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            dnfDriverIds: dnfDriverIds,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -129,7 +155,11 @@ void main() {
         createGrandPrixBet(dnfDriverIds: betDnfDriverIds),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(dnfDriverIds: dnfDriverIds),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            dnfDriverIds: dnfDriverIds,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -154,7 +184,11 @@ void main() {
         createGrandPrixBet(willBeSafetyCar: true),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(wasThereSafetyCar: true),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            wasThereSafetyCar: true,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -172,14 +206,18 @@ void main() {
   );
 
   test(
-    'should not add 1 point for safety car if bet is null',
+    'should not add 1 point for safety car if bet for it is null',
     () async {
       const double expectedPoints = 0.0;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(willBeSafetyCar: null),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(wasThereSafetyCar: true),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            wasThereSafetyCar: true,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -204,7 +242,11 @@ void main() {
         createGrandPrixBet(willBeRedFlag: false),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(wasThereRedFlag: false),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            wasThereRedFlag: false,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -222,14 +264,18 @@ void main() {
   );
 
   test(
-    'should not add 1 point for red flag if bet is null',
+    'should not add 1 point for red flag if bet for it is null',
     () async {
       const double expectedPoints = 0.0;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(willBeRedFlag: null),
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
-        results: createGrandPrixResults(wasThereRedFlag: false),
+        results: createGrandPrixResults(
+          raceResults: createRaceResults(
+            wasThereRedFlag: false,
+          ),
+        ),
       );
 
       final container = makeProviderContainer();
@@ -264,9 +310,11 @@ void main() {
       );
       grandPrixResultsRepository.mockGetResultsForGrandPrix(
         results: createGrandPrixResults(
-          dnfDriverIds: dnfDriverIds,
-          wasThereSafetyCar: false,
-          wasThereRedFlag: true,
+          raceResults: createRaceResults(
+            dnfDriverIds: dnfDriverIds,
+            wasThereSafetyCar: false,
+            wasThereRedFlag: true,
+          ),
         ),
       );
 
