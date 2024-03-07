@@ -2,6 +2,8 @@ import 'package:betgrid/ui/provider/bet_points/bonus_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/grand_prix_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/race_bet_points_provider.dart';
+import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
+import 'package:betgrid/ui/provider/player/player_id_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,18 +12,17 @@ void main() {
   const String playerId = 'p1';
 
   ProviderContainer makeProviderContainer({
-    required double qualiBetPoints,
+    required QualiBetPointsState qualiBetPointsState,
     required double raceBetPoints,
     required double bonusBetPoints,
   }) {
     final container = ProviderContainer(
       overrides: [
-        qualiBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).overrideWith(
+        grandPrixIdProvider.overrideWithValue(grandPrixId),
+        playerIdProvider.overrideWithValue(playerId),
+        qualiBetPointsProvider.overrideWith(
           (ref) {
-            ref.state = AsyncData(qualiBetPoints);
+            ref.state = AsyncData(qualiBetPointsState);
             return const Stream.empty();
           },
         ),
@@ -50,7 +51,7 @@ void main() {
   }
 
   test(
-    'should sum points of quali, race and bonus bets',
+    'should sum total points of quali, race and bonus bets',
     () async {
       const double qualiBetPoints = 20.0;
       const double raceBetPoints = 11.4;
@@ -58,7 +59,10 @@ void main() {
       const double expectedPoints =
           qualiBetPoints + raceBetPoints + bonusBetPoints;
       final container = makeProviderContainer(
-        qualiBetPoints: qualiBetPoints,
+        qualiBetPointsState: const QualiBetPointsState(
+          totalPoints: qualiBetPoints,
+          pointsBeforeMultiplication: 15,
+        ),
         raceBetPoints: raceBetPoints,
         bonusBetPoints: bonusBetPoints,
       );

@@ -12,10 +12,11 @@ double grandPrixBetPoints(
   required String grandPrixId,
   required String playerId,
 }) {
-  final qualiBetPoints = ref.watch(qualiBetPointsProvider(
-    grandPrixId: grandPrixId,
-    playerId: playerId,
-  ));
+  final qualiBetPoints = ref.watch(
+    qualiBetPointsProvider.select(
+      (state) => state.value?.totalPoints,
+    ),
+  );
   final raceBetPoints = ref.watch(raceBetPointsProvider(
     grandPrixId: grandPrixId,
     playerId: playerId,
@@ -25,7 +26,7 @@ double grandPrixBetPoints(
     playerId: playerId,
   ));
   double points = 0.0;
-  points += qualiBetPoints.value ?? 0.0;
+  points += qualiBetPoints ?? 0.0;
   points += raceBetPoints.value ?? 0.0;
   points += bonusBetPoints.value ?? 0.0;
   return points;
