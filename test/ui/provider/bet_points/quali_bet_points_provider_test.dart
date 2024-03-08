@@ -2,7 +2,6 @@ import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import 'package:betgrid/ui/config/bet_points_config.dart';
 import 'package:betgrid/ui/config/bet_points_multipliers_config.dart';
-import 'package:betgrid/ui/provider/bet_points/points_details.dart';
 import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/provider/player/player_id_provider.dart';
@@ -80,7 +79,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          const PointsDetails(
+          const QualiBetPointsDetails(
             totalPoints: 0.0,
             pointsBeforeMultiplication: 0,
           ),
@@ -102,7 +101,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          const PointsDetails(
+          const QualiBetPointsDetails(
             totalPoints: 0.0,
             pointsBeforeMultiplication: 0,
           ),
@@ -126,7 +125,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          const PointsDetails(
+          const QualiBetPointsDetails(
             totalPoints: 0.0,
             pointsBeforeMultiplication: 0,
           ),
@@ -155,7 +154,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints.toDouble(),
             pointsBeforeMultiplication: totalPoints,
           ),
@@ -188,7 +187,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -218,7 +217,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints.toDouble(),
             pointsBeforeMultiplication: totalPoints,
           ),
@@ -251,7 +250,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -285,7 +284,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints.toDouble(),
             pointsBeforeMultiplication: totalPoints,
           ),
@@ -325,7 +324,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -364,7 +363,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints.toDouble(),
             pointsBeforeMultiplication: totalPoints,
           ),
@@ -412,7 +411,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -465,7 +464,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -518,7 +517,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,
@@ -575,7 +574,7 @@ void main() {
       await expectLater(
         container.read(qualiBetPointsProvider.future),
         completion(
-          PointsDetails(
+          QualiBetPointsDetails(
             totalPoints: totalPoints,
             pointsBeforeMultiplication: pointsBeforeMultiplication,
             multiplier: multiplier,

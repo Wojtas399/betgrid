@@ -10,13 +10,12 @@ import '../../../model/grand_prix_results.dart';
 import '../../config/bet_points_multipliers_config.dart';
 import '../grand_prix/grand_prix_id_provider.dart';
 import '../player/player_id_provider.dart';
-import 'points_details.dart';
 import 'quali_position_bet_points_provider.dart';
 
 part 'quali_bet_points_provider.g.dart';
 
 @Riverpod(dependencies: [grandPrixId, playerId])
-Stream<PointsDetails?> qualiBetPoints(QualiBetPointsRef ref) async* {
+Stream<QualiBetPointsDetails?> qualiBetPoints(QualiBetPointsRef ref) async* {
   final String? playerId = ref.watch(playerIdProvider);
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   if (playerId == null || grandPrixId == null) {
@@ -39,7 +38,7 @@ Stream<PointsDetails?> qualiBetPoints(QualiBetPointsRef ref) async* {
       if (bets == null ||
           results == null ||
           results.qualiStandingsByDriverIds == null) {
-        yield const PointsDetails(
+        yield const QualiBetPointsDetails(
           totalPoints: 0.0,
           pointsBeforeMultiplication: 0,
         );
@@ -68,13 +67,32 @@ Stream<PointsDetails?> qualiBetPoints(QualiBetPointsRef ref) async* {
       if (numOfQ2Hits == 5) multiplier += betMultipliers.perfectQ2;
       if (numOfQ3Hits == 10) multiplier += betMultipliers.perfectQ3;
       final double totalPoints = points * (multiplier == 0 ? 1 : multiplier);
-      yield PointsDetails(
+      yield QualiBetPointsDetails(
         totalPoints: totalPoints,
         pointsBeforeMultiplication: points,
         multiplier: multiplier != 0 ? multiplier : null,
       );
     }
   }
+}
+
+class QualiBetPointsDetails extends Equatable {
+  final double totalPoints;
+  final int pointsBeforeMultiplication;
+  final double? multiplier;
+
+  const QualiBetPointsDetails({
+    required this.totalPoints,
+    required this.pointsBeforeMultiplication,
+    this.multiplier,
+  });
+
+  @override
+  List<Object?> get props => [
+        totalPoints,
+        pointsBeforeMultiplication,
+        multiplier,
+      ];
 }
 
 class _ListenedParams extends Equatable {

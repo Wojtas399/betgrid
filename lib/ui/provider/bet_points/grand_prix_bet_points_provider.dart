@@ -22,13 +22,14 @@ double grandPrixBetPoints(
       (state) => state.value?.totalPoints,
     ),
   );
-  final bonusBetPoints = ref.watch(bonusBetPointsProvider(
-    grandPrixId: grandPrixId,
-    playerId: playerId,
-  ));
+  final bonusBetPoints = ref.watch(
+    bonusBetPointsProvider.select(
+      (state) => state.value?.totalPoints,
+    ),
+  );
   double points = 0.0;
   points += qualiBetPoints ?? 0.0;
   points += raceBetPoints ?? 0.0;
-  points += bonusBetPoints.value ?? 0.0;
+  points += bonusBetPoints ?? 0.0;
   return points;
 }

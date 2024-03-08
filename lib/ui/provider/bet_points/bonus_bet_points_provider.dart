@@ -9,57 +9,89 @@ import '../../../model/grand_prix_bet.dart';
 import '../../../model/grand_prix_results.dart';
 import '../../config/bet_points_config.dart';
 import '../../config/bet_points_multipliers_config.dart';
+import '../grand_prix/grand_prix_id_provider.dart';
+import '../player/player_id_provider.dart';
 
 part 'bonus_bet_points_provider.g.dart';
 
-@riverpod
-Stream<double?> bonusBetPoints(
-  BonusBetPointsRef ref, {
-  required String grandPrixId,
-  required String playerId,
-}) async* {
-  final Stream<_ListenedParams> params$ = Rx.combineLatest2(
-    ref.watch(grandPrixBetRepositoryProvider).getBetByGrandPrixIdAndPlayerId(
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-    ref
-        .watch(grandPrixResultsRepositoryProvider)
-        .getResultForGrandPrix(grandPrixId: grandPrixId)
-        .map((results) => results?.raceResults),
-    (bets, raceResults) => _ListenedParams(
-      bets: bets,
-      raceResults: raceResults,
-    ),
-  );
-  final betPoints = getIt<BetPointsConfig>();
-  final betMultipliers = getIt<BetPointsMultipliersConfig>();
-  await for (final params in params$) {
-    final GrandPrixBet? bets = params.bets;
-    final RaceResults? raceResults = params.raceResults;
-    if (raceResults == null) {
-      yield null;
-      continue;
+@Riverpod(dependencies: [grandPrixId, playerId])
+Stream<BonusBetPointsDetails?> bonusBetPoints(BonusBetPointsRef ref) async* {
+  final String? grandPrixId = ref.watch(grandPrixIdProvider);
+  final String? playerId = ref.watch(playerIdProvider);
+  if (grandPrixId == null || playerId == null) {
+    yield null;
+  } else {
+    final Stream<_ListenedParams> params$ = Rx.combineLatest2(
+      _getGrandPrixBet(ref, playerId, grandPrixId),
+      _getRaceResults(ref, grandPrixId),
+      (bets, raceResults) => _ListenedParams(
+        bets: bets,
+        raceResults: raceResults,
+      ),
+    );
+    final betPoints = getIt<BetPointsConfig>();
+    final betMultipliers = getIt<BetPointsMultipliersConfig>();
+    await for (final params in params$) {
+      final GrandPrixBet? bets = params.bets;
+      final RaceResults? raceResults = params.raceResults;
+      if (raceResults == null) {
+        yield null;
+        continue;
+      }
+      if (bets == null) {
+        yield const BonusBetPointsDetails(
+          totalPoints: 0.0,
+          dnfDriversPoints: 0,
+          safetyCarAndRedFlagPoints: 0,
+        );
+        continue;
+      }
+      final int numberOfDnfHits = bets.dnfDriverIds
+          .where((driverId) => raceResults.dnfDriverIds.contains(driverId))
+          .length;
+      int dnfDriversPoints = numberOfDnfHits * betPoints.raceOneDnfDriver;
+      double? dnfDriversPointsMultiplier;
+      if (numberOfDnfHits == 3) {
+        dnfDriversPointsMultiplier = betMultipliers.perfectDnf;
+      }
+      int safetyCarAndRedFlagPoints = 0;
+      if (raceResults.wasThereSafetyCar == bets.willBeSafetyCar) {
+        safetyCarAndRedFlagPoints += betPoints.raceSafetyCar;
+      }
+      if (raceResults.wasThereRedFlag == bets.willBeRedFlag) {
+        safetyCarAndRedFlagPoints += betPoints.raceRedFlag;
+      }
+      yield BonusBetPointsDetails(
+        totalPoints: (dnfDriversPoints * (dnfDriversPointsMultiplier ?? 1.0)) +
+            safetyCarAndRedFlagPoints,
+        dnfDriversPoints: dnfDriversPoints,
+        dnfDriversPointsMultiplier: dnfDriversPointsMultiplier,
+        safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
+      );
     }
-    if (bets == null) {
-      yield 0.0;
-      continue;
-    }
-    final int numberOfDnfHits = bets.dnfDriverIds
-        .where((driverId) => raceResults.dnfDriverIds.contains(driverId))
-        .length;
-    double points = (numberOfDnfHits * betPoints.raceOneDnfDriver).toDouble();
-    if (numberOfDnfHits == 3) {
-      points *= betMultipliers.perfectDnf;
-    }
-    if (raceResults.wasThereSafetyCar == bets.willBeSafetyCar) {
-      points += betPoints.raceSafetyCar;
-    }
-    if (raceResults.wasThereRedFlag == bets.willBeRedFlag) {
-      points += betPoints.raceRedFlag;
-    }
-    yield points;
   }
+}
+
+class BonusBetPointsDetails extends Equatable {
+  final double totalPoints;
+  final int dnfDriversPoints;
+  final double? dnfDriversPointsMultiplier;
+  final int safetyCarAndRedFlagPoints;
+
+  const BonusBetPointsDetails({
+    required this.totalPoints,
+    required this.dnfDriversPoints,
+    this.dnfDriversPointsMultiplier,
+    required this.safetyCarAndRedFlagPoints,
+  });
+
+  @override
+  List<Object?> get props => [
+        totalPoints,
+        dnfDriversPoints,
+        dnfDriversPointsMultiplier,
+        safetyCarAndRedFlagPoints,
+      ];
 }
 
 class _ListenedParams extends Equatable {
@@ -71,3 +103,22 @@ class _ListenedParams extends Equatable {
   @override
   List<Object?> get props => [bets, raceResults];
 }
+
+Stream<GrandPrixBet?> _getGrandPrixBet(
+  BonusBetPointsRef ref,
+  String playerId,
+  String grandPrixId,
+) =>
+    ref.watch(grandPrixBetRepositoryProvider).getBetByGrandPrixIdAndPlayerId(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        );
+
+Stream<RaceResults?> _getRaceResults(
+  BonusBetPointsRef ref,
+  String grandPrixId,
+) =>
+    ref
+        .watch(grandPrixResultsRepositoryProvider)
+        .getResultForGrandPrix(grandPrixId: grandPrixId)
+        .map((results) => results?.raceResults);

@@ -1,6 +1,5 @@
 import 'package:betgrid/ui/provider/bet_points/bonus_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/grand_prix_bet_points_provider.dart';
-import 'package:betgrid/ui/provider/bet_points/points_details.dart';
 import 'package:betgrid/ui/provider/bet_points/quali_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/bet_points/race_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
@@ -13,10 +12,9 @@ void main() {
   const String playerId = 'p1';
 
   ProviderContainer makeProviderContainer({
-    required PointsDetails qualiBetPointsState,
+    required QualiBetPointsDetails qualiBetPointsDetails,
     required RaceBetPointsDetails raceBetPointsDetails,
-    required double raceBetPoints,
-    required double bonusBetPoints,
+    required BonusBetPointsDetails bonusBetPointsDetails,
   }) {
     final container = ProviderContainer(
       overrides: [
@@ -24,7 +22,7 @@ void main() {
         playerIdProvider.overrideWithValue(playerId),
         qualiBetPointsProvider.overrideWith(
           (ref) {
-            ref.state = AsyncData(qualiBetPointsState);
+            ref.state = AsyncData(qualiBetPointsDetails);
             return const Stream.empty();
           },
         ),
@@ -34,12 +32,9 @@ void main() {
             return const Stream.empty();
           },
         ),
-        bonusBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).overrideWith(
+        bonusBetPointsProvider.overrideWith(
           (ref) {
-            ref.state = AsyncData(bonusBetPoints);
+            ref.state = AsyncData(bonusBetPointsDetails);
             return const Stream.empty();
           },
         ),
@@ -58,7 +53,7 @@ void main() {
       const double expectedPoints =
           qualiBetPoints + raceBetPoints + bonusBetPoints;
       final container = makeProviderContainer(
-        qualiBetPointsState: const PointsDetails(
+        qualiBetPointsDetails: const QualiBetPointsDetails(
           totalPoints: qualiBetPoints,
           pointsBeforeMultiplication: 15,
         ),
@@ -67,8 +62,11 @@ void main() {
           pointsForPositions: 8,
           pointsForFastestLap: 4,
         ),
-        raceBetPoints: raceBetPoints,
-        bonusBetPoints: bonusBetPoints,
+        bonusBetPointsDetails: const BonusBetPointsDetails(
+          totalPoints: bonusBetPoints,
+          dnfDriversPoints: 3,
+          safetyCarAndRedFlagPoints: 2,
+        ),
       );
 
       expect(
