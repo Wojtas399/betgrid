@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 import '../../component/text/headline.dart';
 import '../../extensions/build_context_extensions.dart';
@@ -19,24 +18,18 @@ class GrandPrixBetBody extends ConsumerWidget {
         ref.watch(grandPrixBetNotifierProvider);
 
     if (notifierState.hasValue) {
-      return CustomScrollView(
-        slivers: [
-          _SectionParameters.build(
-            context: context,
-            label: context.str.qualifications,
-            table: const GrandPrixBetQualifications(),
-          ),
-          _SectionParameters.build(
-            context: context,
-            label: context.str.race,
-            table: const GrandPrixBetRace(),
-          ),
-          _SectionParameters.build(
-            context: context,
-            label: context.str.additional,
-            table: const GrandPrixBetAdditional(),
-          ),
-        ],
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _Label(label: context.str.qualifications),
+            const GrandPrixBetQualifications(),
+            _Label(label: context.str.race),
+            const GrandPrixBetRace(),
+            _Label(label: context.str.additional),
+            const GrandPrixBetAdditional(),
+          ],
+        ),
       );
     }
     return const Center(
@@ -45,39 +38,28 @@ class GrandPrixBetBody extends ConsumerWidget {
   }
 }
 
-class _SectionParameters extends SliverStickyHeader {
-  _SectionParameters({
-    super.header,
-    super.sliver,
-  });
+class _Label extends StatelessWidget {
+  final String label;
 
-  factory _SectionParameters.build({
-    required BuildContext context,
-    required String label,
-    required Widget table,
-  }) =>
-      _SectionParameters(
-        header: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-              ),
-            ),
-          ),
-          padding: const EdgeInsets.only(bottom: 16, left: 24, top: 16),
-          child: HeadlineMedium(
-            label,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
+  const _Label({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
           ),
         ),
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, i) => table,
-            childCount: 1,
-          ),
-        ),
-      );
+      ),
+      padding: const EdgeInsets.only(bottom: 16, left: 24, top: 16),
+      child: HeadlineMedium(
+        label,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
 }

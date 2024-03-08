@@ -12,6 +12,5 @@ class BetPointsConfig {
   int get raceP10 => 4;
   int get raceFastestLap => 2;
   int get raceOneDnfDriver => 1;
-  int get raceSafetyCar => 1;
-  int get raceRedFlag => 1;
+  int get raceSafetyCarAndRedFlag => 1;
 }

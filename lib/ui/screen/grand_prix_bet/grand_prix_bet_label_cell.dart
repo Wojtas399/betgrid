@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../component/text/title.dart';
 
 class GrandPrixBetLabelCell extends TableCell {
-  const GrandPrixBetLabelCell({super.key, required super.child})
-      : super(verticalAlignment: TableCellVerticalAlignment.middle);
+  const GrandPrixBetLabelCell({
+    super.key,
+    required super.child,
+  }) : super(verticalAlignment: TableCellVerticalAlignment.middle);
 
   factory GrandPrixBetLabelCell.build({
     required BuildContext context,
@@ -14,7 +16,10 @@ class GrandPrixBetLabelCell extends TableCell {
     return GrandPrixBetLabelCell(
       child: Container(
         padding: const EdgeInsets.all(8),
-        color: labelBackgroundColor,
+        decoration: BoxDecoration(
+          color: labelBackgroundColor,
+        ),
+        height: 80,
         child: Center(
           child: TitleMedium(
             label,
@@ -22,6 +27,7 @@ class GrandPrixBetLabelCell extends TableCell {
                 ? Colors.white
                 : Theme.of(context).colorScheme.inverseSurface,
             fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
           ),
         ),
       ),

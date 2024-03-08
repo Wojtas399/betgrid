@@ -4,12 +4,14 @@ class TitleMedium extends StatelessWidget {
   final String text;
   final FontWeight? fontWeight;
   final Color? color;
+  final TextAlign? textAlign;
 
   const TitleMedium(
     this.text, {
     super.key,
     this.fontWeight,
     this.color,
+    this.textAlign,
   });
 
   @override
@@ -20,6 +22,7 @@ class TitleMedium extends StatelessWidget {
             fontWeight: fontWeight,
             color: color,
           ),
+      textAlign: textAlign,
     );
   }
 }

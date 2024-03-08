@@ -7,10 +7,11 @@ import '../../../data/repository/grand_prix_result/grand_prix_results_repository
 import '../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet.dart';
 import '../../../model/grand_prix_results.dart';
-import '../../config/bet_points_config.dart';
 import '../../config/bet_points_multipliers_config.dart';
 import '../grand_prix/grand_prix_id_provider.dart';
 import '../player/player_id_provider.dart';
+import 'dnf_driver_points_provider.dart';
+import 'safety_car_and_red_flag_points_provider.dart';
 
 part 'bonus_bet_points_provider.g.dart';
 
@@ -29,7 +30,6 @@ Stream<BonusBetPointsDetails?> bonusBetPoints(BonusBetPointsRef ref) async* {
         raceResults: raceResults,
       ),
     );
-    final betPoints = getIt<BetPointsConfig>();
     final betMultipliers = getIt<BetPointsMultipliersConfig>();
     await for (final params in params$) {
       final GrandPrixBet? bets = params.bets;
@@ -46,21 +46,34 @@ Stream<BonusBetPointsDetails?> bonusBetPoints(BonusBetPointsRef ref) async* {
         );
         continue;
       }
-      final int numberOfDnfHits = bets.dnfDriverIds
-          .where((driverId) => raceResults.dnfDriverIds.contains(driverId))
-          .length;
-      int dnfDriversPoints = numberOfDnfHits * betPoints.raceOneDnfDriver;
+      int dnfDriversPoints = 0;
+      int numberOfDnfHits = 0;
+      for (final driverId in bets.dnfDriverIds) {
+        final int points = ref.watch(dnfDriverPointsProvider(
+              resultsDnfDriverIds: raceResults.dnfDriverIds,
+              betDnfDriverId: driverId,
+            )) ??
+            0;
+        if (points > 0) {
+          numberOfDnfHits++;
+          dnfDriversPoints += points;
+        }
+      }
       double? dnfDriversPointsMultiplier;
       if (numberOfDnfHits == 3) {
         dnfDriversPointsMultiplier = betMultipliers.perfectDnf;
       }
       int safetyCarAndRedFlagPoints = 0;
-      if (raceResults.wasThereSafetyCar == bets.willBeSafetyCar) {
-        safetyCarAndRedFlagPoints += betPoints.raceSafetyCar;
-      }
-      if (raceResults.wasThereRedFlag == bets.willBeRedFlag) {
-        safetyCarAndRedFlagPoints += betPoints.raceRedFlag;
-      }
+      safetyCarAndRedFlagPoints += ref.watch(safetyCarAndRedFlagPointsProvider(
+            resultsVal: raceResults.wasThereSafetyCar,
+            betVal: bets.willBeSafetyCar,
+          )) ??
+          0;
+      safetyCarAndRedFlagPoints += ref.watch(safetyCarAndRedFlagPointsProvider(
+            resultsVal: raceResults.wasThereRedFlag,
+            betVal: bets.willBeRedFlag,
+          )) ??
+          0;
       yield BonusBetPointsDetails(
         totalPoints: (dnfDriversPoints * (dnfDriversPointsMultiplier ?? 1.0)) +
             safetyCarAndRedFlagPoints,
