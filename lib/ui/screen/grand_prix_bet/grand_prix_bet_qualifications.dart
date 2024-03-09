@@ -6,7 +6,7 @@ import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/bet_points/quali_bet_points_provider.dart';
 import '../../provider/bet_points/quali_position_bet_points_provider.dart';
-import '../../provider/grand_prix_bet_provider.dart';
+import '../../provider/grand_prix_bet/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';

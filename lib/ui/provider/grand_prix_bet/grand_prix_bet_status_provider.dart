@@ -2,17 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../auth/auth_service.dart';
-import '../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../model/grand_prix_bet.dart';
+import '../../../auth/auth_service.dart';
+import '../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../model/grand_prix_bet.dart';
 
 part 'grand_prix_bet_status_provider.g.dart';
 
-enum GrandPrixBetStatus {
-  pending,
-  inProgress,
-  completed,
-}
+enum GrandPrixBetStatus { pending, inProgress, completed }
 
 @riverpod
 Stream<GrandPrixBetStatus?> grandPrixBetStatus(

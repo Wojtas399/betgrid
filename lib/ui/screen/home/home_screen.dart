@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/user.dart' as user;
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/all_grand_prix_bets_initialization_provider.dart';
+import '../../provider/grand_prix_bet/all_grand_prix_bets_initialization_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/ui/required_data_completion_screen.dart';
