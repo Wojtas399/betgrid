@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../dependency_injection.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text/body.dart';
-import '../../component/text/title.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/bet_points/race_bet_points_provider.dart';
 import '../../provider/bet_points/race_single_bet_points_provider.dart';
+import '../../provider/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
-import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
-import 'grand_prix_bet_position_item.dart';
+import 'grand_prix_bet_driver_description.dart';
+import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
+import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetRace extends ConsumerWidget {
   const GrandPrixBetRace({super.key});
@@ -20,19 +19,19 @@ class GrandPrixBetRace extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? betP1DriverId = ref.watch(
-      grandPrixBetNotifierProvider.select((state) => state.value?.p1DriverId),
+      grandPrixBetProvider.select((state) => state.value?.p1DriverId),
     );
     final String? betP2DriverId = ref.watch(
-      grandPrixBetNotifierProvider.select((state) => state.value?.p2DriverId),
+      grandPrixBetProvider.select((state) => state.value?.p2DriverId),
     );
     final String? betP3DriverId = ref.watch(
-      grandPrixBetNotifierProvider.select((state) => state.value?.p3DriverId),
+      grandPrixBetProvider.select((state) => state.value?.p3DriverId),
     );
     final String? betP10DriverId = ref.watch(
-      grandPrixBetNotifierProvider.select((state) => state.value?.p10DriverId),
+      grandPrixBetProvider.select((state) => state.value?.p10DriverId),
     );
     final String? betFastestLapDriverId = ref.watch(
-      grandPrixBetNotifierProvider.select(
+      grandPrixBetProvider.select(
         (state) => state.value?.fastestLapDriverId,
       ),
     );
@@ -61,11 +60,12 @@ class GrandPrixBetRace extends ConsumerWidget {
         (state) => state.value?.raceResults?.fastestLapDriverId,
       ),
     );
-    final AsyncValue<RaceBetPointsDetails?> pointsSummary = ref.watch(
+    final AsyncValue<RaceBetPointsDetails?> pointsDetails = ref.watch(
       raceBetPointsProvider,
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GrandPrixBetTable(
           rows: List.generate(
@@ -88,7 +88,7 @@ class GrandPrixBetRace extends ConsumerWidget {
                 _ => null,
               };
 
-              return GrandPrixBetPositionItem.build(
+              return GrandPrixBetRow.build(
                 context: context,
                 label: switch (index) {
                   0 => 'P1',
@@ -105,8 +105,8 @@ class GrandPrixBetRace extends ConsumerWidget {
                   4 => getIt<CustomColors>().violet,
                   _ => null,
                 },
-                betDriverId: betDriverId,
-                resultsDriverId: resultsDriverId,
+                betChild: DriverDescription(driverId: betDriverId),
+                resultsChild: DriverDescription(driverId: resultsDriverId),
                 points: ref.watch(
                   raceSingleBetPointsProvider(
                     positionType: switch (index) {
@@ -125,59 +125,24 @@ class GrandPrixBetRace extends ConsumerWidget {
             },
           ),
         ),
-        const GapVertical8(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLarge('Punkty za pozycje: '),
-              BodyLarge(
-                '${pointsSummary.value?.pointsForPositions ?? '--'}',
-              ),
-            ],
-          ),
-        ),
-        const GapVertical8(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLarge('Mnożnik punktów za pozycje: '),
-              BodyLarge(
-                '${pointsSummary.value?.positionsPointsMultiplier ?? 'Brak'}',
-              ),
-            ],
-          ),
-        ),
-        const GapVertical8(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLarge('Punkty za najszybsze okrążenie: '),
-              BodyLarge(
-                '${pointsSummary.value?.pointsForFastestLap ?? 'Brak'}',
-              ),
-            ],
-          ),
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TitleLarge('${context.str.grandPrixBetResult}: '),
-              TitleLarge(
-                '${pointsSummary.value?.totalPoints ?? '--'}',
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ],
-          ),
+        GrandPrixBetPointsSummary(
+          details: [
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetPositions,
+              value: pointsDetails.value?.pointsForPositions.toString(),
+            ),
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetPositionsMultiplier,
+              value:
+                  pointsDetails.value?.positionsPointsMultiplier?.toString() ??
+                      context.str.lack,
+            ),
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetFastestLap,
+              value: pointsDetails.value?.pointsForFastestLap.toString(),
+            ),
+          ],
+          totalPoints: pointsDetails.value?.totalPoints ?? 0,
         ),
       ],
     );

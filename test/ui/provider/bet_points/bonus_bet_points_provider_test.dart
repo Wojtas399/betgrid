@@ -226,7 +226,7 @@ void main() {
   test(
     'should add 1 point for correct safety car bet',
     () async {
-      final int safetyCarPoints = betPoints.raceSafetyCar;
+      final int safetyCarPoints = betPoints.raceSafetyCarAndRedFlag;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(willBeSafetyCar: true),
       );
@@ -288,7 +288,7 @@ void main() {
   test(
     'should add 1 point for correct red flag bet',
     () async {
-      final int redFlagPoints = betPoints.raceSafetyCar;
+      final int redFlagPoints = betPoints.raceSafetyCarAndRedFlag;
       grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
         createGrandPrixBet(willBeRedFlag: false),
       );
@@ -355,7 +355,7 @@ void main() {
       final int dnfDriversPoints = 3 * betPoints.raceOneDnfDriver;
       final double dnfDriversPointsMultiplier = betMultipliers.perfectDnf;
       final int safetyCarAndRedFlagPoints =
-          betPoints.raceSafetyCar + betPoints.raceRedFlag;
+          2 * betPoints.raceSafetyCarAndRedFlag;
       final double totalPoints =
           (dnfDriversPoints * dnfDriversPointsMultiplier) +
               safetyCarAndRedFlagPoints;

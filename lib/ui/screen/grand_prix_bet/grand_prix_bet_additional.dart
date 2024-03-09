@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
-import '../../component/text/label.dart';
+import '../../extensions/build_context_extensions.dart';
 import '../../provider/bet_points/bonus_bet_points_provider.dart';
 import '../../provider/bet_points/safety_car_and_red_flag_points_provider.dart';
+import '../../provider/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
-import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
-import 'grand_prix_bet_label_cell.dart';
-import 'grand_prix_bet_position_item.dart';
-import 'grand_prix_bet_position_yes_no_item.dart';
+import 'grand_prix_bet_driver_description.dart';
+import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
+import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetAdditional extends ConsumerWidget {
   const GrandPrixBetAdditional({super.key});
@@ -19,17 +18,17 @@ class GrandPrixBetAdditional extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<String?>? dnfDriverIds = ref.watch(
-      grandPrixBetNotifierProvider.select(
+      grandPrixBetProvider.select(
         (state) => state.value?.dnfDriverIds,
       ),
     );
     final bool? willBeSafetyCar = ref.watch(
-      grandPrixBetNotifierProvider.select(
+      grandPrixBetProvider.select(
         (state) => state.value?.willBeSafetyCar,
       ),
     );
     final bool? willBeRedFlag = ref.watch(
-      grandPrixBetNotifierProvider.select(
+      grandPrixBetProvider.select(
         (state) => state.value?.willBeRedFlag,
       ),
     );
@@ -50,98 +49,94 @@ class GrandPrixBetAdditional extends ConsumerWidget {
     );
     final pointsDetails = ref.watch(bonusBetPointsProvider);
 
-    return GrandPrixBetTable(
-      rows: [
-        TableRow(
-          children: [
-            GrandPrixBetLabelCell.build(
+    return Column(
+      children: [
+        GrandPrixBetTable(
+          rows: [
+            GrandPrixBetRow.build(
               context: context,
               label: 'DNF',
-            ),
-            TableCell(
-              child: Column(
+              betChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 48,
-                          child: LabelLarge('Typy: '),
-                        ),
-                        const GapHorizontal8(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...?dnfDriverIds?.map(
-                              (e) => DriverDescription(driverId: e),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(thickness: 0.25),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 48,
-                          child: LabelLarge('Wynik: '),
-                        ),
-                        const GapHorizontal8(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (resultsDnfDriverIds?.isNotEmpty == true)
-                              ...?resultsDnfDriverIds?.map(
-                                (e) => DriverDescription(driverId: e),
-                              ),
-                            if (resultsDnfDriverIds?.isEmpty == true)
-                              const BodyMedium(
-                                'Brak',
-                                fontWeight: FontWeight.bold,
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  ...?dnfDriverIds?.map(
+                    (e) => DriverDescription(driverId: e),
                   ),
                 ],
               ),
-            ),
-            BetPoints.build(
-              context: context,
+              resultsChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (resultsDnfDriverIds?.isNotEmpty == true)
+                    ...?resultsDnfDriverIds?.map(
+                      (e) => DriverDescription(driverId: e),
+                    ),
+                  if (resultsDnfDriverIds?.isEmpty == true)
+                    BodyMedium(
+                      context.str.lack,
+                      fontWeight: FontWeight.bold,
+                    ),
+                ],
+              ),
               points: pointsDetails.value?.dnfDriversPoints,
+            ),
+            GrandPrixBetRow.build(
+              context: context,
+              label: 'SC',
+              betChild: Text(willBeSafetyCar?.toI8nString(context) ?? '--'),
+              resultsChild: Text(
+                resultsWasThereSafetyCar?.toI8nString(context) ?? '--',
+              ),
+              points: ref.watch(
+                safetyCarAndRedFlagPointsProvider(
+                  resultsVal: resultsWasThereSafetyCar,
+                  betVal: willBeSafetyCar,
+                ),
+              ),
+            ),
+            GrandPrixBetRow.build(
+              context: context,
+              label: 'RF',
+              betChild: Text(willBeRedFlag?.toI8nString(context) ?? '--'),
+              resultsChild: Text(
+                resultsWasThereRedFlag?.toI8nString(context) ?? '--',
+              ),
+              points: ref.watch(
+                safetyCarAndRedFlagPointsProvider(
+                  resultsVal: resultsWasThereRedFlag,
+                  betVal: willBeRedFlag,
+                ),
+              ),
             ),
           ],
         ),
-        GrandPrixBetPositionYesNoItem.build(
-          context: context,
-          label: 'SC',
-          initialValue: willBeSafetyCar,
-          points: ref.watch(
-            safetyCarAndRedFlagPointsProvider(
-              resultsVal: resultsWasThereSafetyCar,
-              betVal: willBeSafetyCar,
+        GrandPrixBetPointsSummary(
+          details: [
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetDNF,
+              value: pointsDetails.value?.dnfDriversPoints.toString(),
             ),
-          ),
-        ),
-        GrandPrixBetPositionYesNoItem.build(
-          context: context,
-          label: 'RF',
-          initialValue: willBeRedFlag,
-          points: ref.watch(
-            safetyCarAndRedFlagPointsProvider(
-              resultsVal: resultsWasThereRedFlag,
-              betVal: willBeRedFlag,
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetDNFMultiplier,
+              value:
+                  pointsDetails.value?.dnfDriversPointsMultiplier?.toString() ??
+                      context.str.lack,
             ),
-          ),
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetOther,
+              value: pointsDetails.value?.safetyCarAndRedFlagPoints.toString(),
+            ),
+          ],
+          totalPoints: pointsDetails.value?.totalPoints ?? 0,
         ),
       ],
     );
   }
+}
+
+extension _BoolExtensions on bool {
+  String toI8nString(BuildContext context) => switch (this) {
+        true => context.str.yes,
+        false => context.str.no,
+      };
 }

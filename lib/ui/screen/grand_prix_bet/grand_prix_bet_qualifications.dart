@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../dependency_injection.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text/body.dart';
-import '../../component/text/title.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/bet_points/quali_bet_points_provider.dart';
 import '../../provider/bet_points/quali_position_bet_points_provider.dart';
+import '../../provider/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
-import '../../provider/notifier/grand_prix_bet/grand_prix_bet_notifier_provider.dart';
-import 'grand_prix_bet_position_item.dart';
+import 'grand_prix_bet_driver_description.dart';
+import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
+import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetQualifications extends ConsumerWidget {
   const GrandPrixBetQualifications({super.key});
@@ -20,7 +19,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<String?>? standings = ref.watch(
-      grandPrixBetNotifierProvider.select(
+      grandPrixBetProvider.select(
         (state) => state.value?.qualiStandingsByDriverIds,
       ),
     );
@@ -29,7 +28,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
         (state) => state.value?.qualiStandingsByDriverIds,
       ),
     );
-    final pointsSummary = ref.watch(qualiBetPointsProvider);
+    final pointsDetails = ref.watch(qualiBetPointsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +43,8 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                       ? 2
                       : 1;
 
-              return GrandPrixBetPositionItem.build(
+              return GrandPrixBetRow.build(
                 context: context,
-                betDriverId: standings![itemIndex],
-                resultsDriverId: resultsStandings?[itemIndex],
                 label: 'Q$qualiNumber P${itemIndex + 1}',
                 labelBackgroundColor: switch (itemIndex) {
                   0 => getIt<CustomColors>().gold,
@@ -55,6 +52,12 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                   2 => getIt<CustomColors>().brown,
                   _ => null,
                 },
+                betChild: DriverDescription(
+                  driverId: standings![itemIndex],
+                ),
+                resultsChild: DriverDescription(
+                  driverId: resultsStandings?[itemIndex],
+                ),
                 points: ref.watch(
                   qualiPositionBetPointsProvider(
                     resultsStandings: resultsStandings ?? [],
@@ -66,45 +69,18 @@ class GrandPrixBetQualifications extends ConsumerWidget {
             },
           ),
         ),
-        // Divider(),
-        const GapVertical8(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLarge('${context.str.grandPrixBetPoints}: '),
-              BodyLarge(
-                '${pointsSummary.value?.pointsBeforeMultiplication ?? '--'}',
-              ),
-            ],
-          ),
-        ),
-        const GapVertical8(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BodyLarge('${context.str.grandPrixBetMultiplier}: '),
-              BodyLarge('${pointsSummary.value?.multiplier ?? 'Brak'}'),
-            ],
-          ),
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TitleLarge('${context.str.grandPrixBetResult}: '),
-              TitleLarge(
-                '${pointsSummary.value?.totalPoints ?? '--'}',
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ],
-          ),
+        GrandPrixBetPointsSummary(
+          details: [
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetPositions,
+              value: pointsDetails.value?.pointsBeforeMultiplication.toString(),
+            ),
+            GrandPrixPointsSummaryDetail(
+              label: context.str.grandPrixBetMultiplier,
+              value: pointsDetails.value?.multiplier?.toString() ?? 'Brak',
+            ),
+          ],
+          totalPoints: pointsDetails.value?.totalPoints ?? 0,
         ),
       ],
     );
