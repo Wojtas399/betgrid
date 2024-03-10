@@ -3,19 +3,27 @@ import 'package:equatable/equatable.dart';
 import 'entity.dart';
 
 class GrandPrixBetPoints extends Entity {
+  final String playerId;
   final String grandPrixId;
   final QualiBetPoints? qualiBetPoints;
   final RaceBetPoints? raceBetPoints;
 
   const GrandPrixBetPoints({
     required super.id,
+    required this.playerId,
     required this.grandPrixId,
     this.qualiBetPoints,
     this.raceBetPoints,
   });
 
   @override
-  List<Object?> get props => [id, grandPrixId, qualiBetPoints, raceBetPoints];
+  List<Object?> get props => [
+        id,
+        playerId,
+        grandPrixId,
+        qualiBetPoints,
+        raceBetPoints,
+      ];
 }
 
 abstract class Points extends Equatable {

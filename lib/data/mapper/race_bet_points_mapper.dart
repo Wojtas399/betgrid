@@ -11,7 +11,7 @@ RaceBetPoints mapRaceBetPointsFromDto(RaceBetPointsDto raceBetPointsDto) =>
       fastestLapPoints: raceBetPointsDto.fastestLapPoints,
       podiumAndP10Multiplier: null,
       dnfPoints: raceBetPointsDto.dnfPoints,
-      dnfMultiplier: 1.5,
+      dnfMultiplier: raceBetPointsDto.dnfMultiplier,
       safetyCarPoints: raceBetPointsDto.safetyCarPoints,
       redFlagPoints: raceBetPointsDto.redFlagPoints,
     );
