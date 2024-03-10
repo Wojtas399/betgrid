@@ -11,6 +11,8 @@ import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/bet_points/grand_prix_bet_points_provider.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
+import '../../provider/grand_prix/grand_prix_id_provider.dart';
+import '../../provider/player/player_id_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -119,24 +121,25 @@ class _GrandPrixesList extends SliverPadding {
               final grandPrix = grandPrixes[index];
 
               return ScrollAnimatedItem(
-                child: Consumer(
-                  builder: (context, ref, _) => GrandPrixItem(
-                    betPoints: ref.watch(
-                      grandPrixBetPointsProvider(
-                        grandPrixId: grandPrix.id,
-                        playerId: playerId,
-                      ),
+                child: ProviderScope(
+                  overrides: [
+                    grandPrixIdProvider.overrideWithValue(grandPrix.id),
+                    playerIdProvider.overrideWithValue(playerId),
+                  ],
+                  child: Consumer(
+                    builder: (context, ref, _) => GrandPrixItem(
+                      betPoints: ref.watch(grandPrixBetPointsProvider),
+                      roundNumber: index + 1,
+                      grandPrix: grandPrix,
+                      onPressed: () {
+                        context.navigateTo(
+                          GrandPrixBetRoute(
+                            grandPrixId: grandPrix.id,
+                            playerId: playerId,
+                          ),
+                        );
+                      },
                     ),
-                    roundNumber: index + 1,
-                    grandPrix: grandPrix,
-                    onPressed: () {
-                      context.navigateTo(
-                        GrandPrixBetRoute(
-                          grandPrixId: grandPrix.id,
-                          playerId: playerId,
-                        ),
-                      );
-                    },
                   ),
                 ),
               );

@@ -9,7 +9,9 @@ import '../../component/scroll_animated_item_component.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/bet_points/grand_prix_bet_points_provider.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
+import '../../provider/grand_prix/grand_prix_id_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/player/player_id_provider.dart';
 
 @RoutePage()
 class BetsScreen extends StatelessWidget {
@@ -50,23 +52,26 @@ class _GrandPrixes extends ConsumerWidget {
           final grandPrix = allGrandPrixes[itemIndex];
 
           return ScrollAnimatedItem(
-            child: GrandPrixItem(
-              betPoints: ref.watch(
-                grandPrixBetPointsProvider(
-                  grandPrixId: grandPrix.id,
-                  playerId: loggedUserId,
+            child: ProviderScope(
+              overrides: [
+                grandPrixIdProvider.overrideWithValue(grandPrix.id),
+                playerIdProvider.overrideWithValue(loggedUserId),
+              ],
+              child: Consumer(
+                builder: (context, ref, _) => GrandPrixItem(
+                  betPoints: ref.watch(grandPrixBetPointsProvider),
+                  roundNumber: itemIndex + 1,
+                  grandPrix: grandPrix,
+                  onPressed: () {
+                    context.navigateTo(
+                      GrandPrixBetRoute(
+                        grandPrixId: grandPrix.id,
+                        playerId: loggedUserId,
+                      ),
+                    );
+                  },
                 ),
               ),
-              roundNumber: itemIndex + 1,
-              grandPrix: grandPrix,
-              onPressed: () {
-                context.navigateTo(
-                  GrandPrixBetRoute(
-                    grandPrixId: grandPrix.id,
-                    playerId: loggedUserId,
-                  ),
-                );
-              },
             ),
           );
         },

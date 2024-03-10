@@ -70,12 +70,7 @@ void main() {
       );
 
       expect(
-        container.read(
-          grandPrixBetPointsProvider(
-            grandPrixId: grandPrixId,
-            playerId: playerId,
-          ),
-        ),
+        container.read(grandPrixBetPointsProvider),
         expectedPoints,
       );
     },
