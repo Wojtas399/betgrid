@@ -9,10 +9,7 @@ import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/bet_points/grand_prix_bet_points_provider.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
-import '../../provider/grand_prix/grand_prix_id_provider.dart';
-import '../../provider/player/player_id_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -35,6 +32,7 @@ class PlayerProfileScreen extends StatelessWidget {
             builder: (_, ref, __) => ref.watch(allGrandPrixesProvider).when(
                   data: (List<GrandPrix>? grandPrixes) =>
                       _GrandPrixesList.build(
+                    context: context,
                     grandPrixes: grandPrixes!,
                     playerId: player.id,
                   ),
@@ -109,6 +107,7 @@ class _GrandPrixesList extends SliverPadding {
   const _GrandPrixesList({required super.padding, super.sliver});
 
   factory _GrandPrixesList.build({
+    required BuildContext context,
     required List<GrandPrix> grandPrixes,
     required String playerId,
   }) =>
@@ -121,26 +120,18 @@ class _GrandPrixesList extends SliverPadding {
               final grandPrix = grandPrixes[index];
 
               return ScrollAnimatedItem(
-                child: ProviderScope(
-                  overrides: [
-                    grandPrixIdProvider.overrideWithValue(grandPrix.id),
-                    playerIdProvider.overrideWithValue(playerId),
-                  ],
-                  child: Consumer(
-                    builder: (context, ref, _) => GrandPrixItem(
-                      betPoints: ref.watch(grandPrixBetPointsProvider),
-                      roundNumber: index + 1,
-                      grandPrix: grandPrix,
-                      onPressed: () {
-                        context.navigateTo(
-                          GrandPrixBetRoute(
-                            grandPrixId: grandPrix.id,
-                            playerId: playerId,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                child: GrandPrixItem(
+                  betPoints: 0,
+                  roundNumber: index + 1,
+                  grandPrix: grandPrix,
+                  onPressed: () {
+                    context.navigateTo(
+                      GrandPrixBetRoute(
+                        grandPrixId: grandPrix.id,
+                        playerId: playerId,
+                      ),
+                    );
+                  },
                 ),
               );
             },

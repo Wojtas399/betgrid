@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../dependency_injection.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/bet_points/race_bet_points_provider.dart';
-import '../../provider/bet_points/race_single_bet_points_provider.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
 import 'grand_prix_bet_driver_description.dart';
@@ -60,9 +58,6 @@ class GrandPrixBetRace extends ConsumerWidget {
         (state) => state.value?.raceResults?.fastestLapDriverId,
       ),
     );
-    final AsyncValue<RaceBetPointsDetails?> pointsDetails = ref.watch(
-      raceBetPointsProvider,
-    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,20 +102,7 @@ class GrandPrixBetRace extends ConsumerWidget {
                 },
                 betChild: DriverDescription(driverId: betDriverId),
                 resultsChild: DriverDescription(driverId: resultsDriverId),
-                points: ref.watch(
-                  raceSingleBetPointsProvider(
-                    positionType: switch (index) {
-                      0 => RacePositionType.p1,
-                      1 => RacePositionType.p2,
-                      2 => RacePositionType.p3,
-                      3 => RacePositionType.p10,
-                      4 => RacePositionType.fastestLap,
-                      int() => throw UnimplementedError(),
-                    },
-                    betDriverId: betDriverId,
-                    resultsDriverId: resultsDriverId,
-                  ),
-                ),
+                points: 0,
               );
             },
           ),
@@ -129,20 +111,18 @@ class GrandPrixBetRace extends ConsumerWidget {
           details: [
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositions,
-              value: pointsDetails.value?.pointsForPositions.toString(),
+              value: '0',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositionsMultiplier,
-              value:
-                  pointsDetails.value?.positionsPointsMultiplier?.toString() ??
-                      context.str.lack,
+              value: context.str.lack,
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetFastestLap,
-              value: pointsDetails.value?.pointsForFastestLap.toString(),
+              value: '0',
             ),
           ],
-          totalPoints: pointsDetails.value?.totalPoints ?? 0,
+          totalPoints: 0,
         ),
       ],
     );

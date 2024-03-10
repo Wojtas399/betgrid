@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../dependency_injection.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/bet_points/quali_bet_points_provider.dart';
-import '../../provider/bet_points/quali_position_bet_points_provider.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_provider.dart';
 import '../../provider/grand_prix_results_provider.dart';
 import 'grand_prix_bet_driver_description.dart';
@@ -28,7 +26,6 @@ class GrandPrixBetQualifications extends ConsumerWidget {
         (state) => state.value?.qualiStandingsByDriverIds,
       ),
     );
-    final pointsDetails = ref.watch(qualiBetPointsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,13 +55,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                 resultsChild: DriverDescription(
                   driverId: resultsStandings?[itemIndex],
                 ),
-                points: ref.watch(
-                  qualiPositionBetPointsProvider(
-                    resultsStandings: resultsStandings ?? [],
-                    betStandings: standings,
-                    positionIndex: itemIndex,
-                  ),
-                ),
+                points: 0,
               );
             },
           ),
@@ -73,14 +64,14 @@ class GrandPrixBetQualifications extends ConsumerWidget {
           details: [
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositions,
-              value: pointsDetails.value?.pointsBeforeMultiplication.toString(),
+              value: '0',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetMultiplier,
-              value: pointsDetails.value?.multiplier?.toString() ?? 'Brak',
+              value: 'Brak',
             ),
           ],
-          totalPoints: pointsDetails.value?.totalPoints ?? 0,
+          totalPoints: 0,
         ),
       ],
     );
