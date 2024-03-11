@@ -29,9 +29,13 @@ void main() {
       const double q3P18Points = 0.0;
       const double q3P19Points = 0.0;
       const double q3P20Points = 2.0;
-      const double? q1Multiplier = null;
+      const double q1Points = 6.0;
+      const double q2Points = 10;
+      const double q3Points = 0.0;
+      const double q1Multiplier = 1.5;
       const double q2Multiplier = 1.5;
       const double? q3Multiplier = null;
+      const double multiplier = 3.0;
       const QualiBetPointsDto qualiBetPointsDto = QualiBetPointsDto(
         totalPoints: totalPoints,
         q1P1Points: q1P1Points,
@@ -54,9 +58,13 @@ void main() {
         q3P18Points: q3P18Points,
         q3P19Points: q3P19Points,
         q3P20Points: q3P20Points,
+        q1Points: q1Points,
+        q2Points: q2Points,
+        q3Points: q3Points,
         q1Multiplier: q1Multiplier,
         q2Multiplier: q2Multiplier,
         q3Multiplier: q3Multiplier,
+        multiplier: multiplier,
       );
       const QualiBetPoints expectedQualiBetPoints = QualiBetPoints(
         totalPoints: totalPoints,
@@ -80,9 +88,13 @@ void main() {
         q3P18Points: q3P18Points,
         q3P19Points: q3P19Points,
         q3P20Points: q3P20Points,
+        q1Points: q1Points,
+        q2Points: q2Points,
+        q3Points: q3Points,
         q1Multiplier: q1Multiplier,
         q2Multiplier: q2Multiplier,
         q3Multiplier: q3Multiplier,
+        multiplier: multiplier,
       );
 
       final QualiBetPoints qualiBetPoints = mapQualiBetPointsFromDto(

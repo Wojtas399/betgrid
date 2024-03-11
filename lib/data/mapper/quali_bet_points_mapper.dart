@@ -24,7 +24,11 @@ QualiBetPoints mapQualiBetPointsFromDto(QualiBetPointsDto qualiBetPointsDto) =>
       q3P18Points: qualiBetPointsDto.q3P18Points,
       q3P19Points: qualiBetPointsDto.q3P19Points,
       q3P20Points: qualiBetPointsDto.q3P20Points,
+      q1Points: qualiBetPointsDto.q1Points,
+      q2Points: qualiBetPointsDto.q2Points,
+      q3Points: qualiBetPointsDto.q3Points,
       q1Multiplier: qualiBetPointsDto.q1Multiplier,
       q2Multiplier: qualiBetPointsDto.q2Multiplier,
       q3Multiplier: qualiBetPointsDto.q3Multiplier,
+      multiplier: qualiBetPointsDto.multiplier,
     );

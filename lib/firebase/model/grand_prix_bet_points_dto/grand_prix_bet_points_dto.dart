@@ -55,9 +55,13 @@ class QualiBetPointsDto with _$QualiBetPointsDto {
     required double q3P18Points,
     required double q3P19Points,
     required double q3P20Points,
+    required double q1Points,
+    required double q2Points,
+    required double q3Points,
     double? q1Multiplier,
     double? q2Multiplier,
     double? q3Multiplier,
+    double? multiplier,
   }) = _QualiBetPointsDto;
 
   factory QualiBetPointsDto.fromJson(Map<String, Object?> json) =>

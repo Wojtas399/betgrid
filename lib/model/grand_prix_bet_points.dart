@@ -56,9 +56,13 @@ class QualiBetPoints extends Points {
   final double q3P18Points;
   final double q3P19Points;
   final double q3P20Points;
+  final double q1Points;
+  final double q2Points;
+  final double q3Points;
   final double? q1Multiplier;
   final double? q2Multiplier;
   final double? q3Multiplier;
+  final double? multiplier;
 
   const QualiBetPoints({
     required super.totalPoints,
@@ -82,9 +86,13 @@ class QualiBetPoints extends Points {
     required this.q3P18Points,
     required this.q3P19Points,
     required this.q3P20Points,
+    required this.q1Points,
+    required this.q2Points,
+    required this.q3Points,
     this.q1Multiplier,
     this.q2Multiplier,
     this.q3Multiplier,
+    this.multiplier,
   });
 
   @override
@@ -110,9 +118,13 @@ class QualiBetPoints extends Points {
         q3P18Points,
         q3P19Points,
         q3P20Points,
+        q1Points,
+        q2Points,
+        q3Points,
         q1Multiplier,
         q2Multiplier,
         q3Multiplier,
+        multiplier,
       ];
 }
 

@@ -22,9 +22,13 @@ QualiBetPoints createQualiBetPoints({
   double q3P18Points = 0.0,
   double q3P19Points = 0.0,
   double q3P20Points = 0.0,
+  double q1Points = 0.0,
+  double q2Points = 0.0,
+  double q3Points = 0.0,
   double? q1Multiplier,
   double? q2Multiplier,
   double? q3Multiplier,
+  double? multiplier,
 }) =>
     QualiBetPoints(
       totalPoints: totalPoints,
@@ -48,7 +52,11 @@ QualiBetPoints createQualiBetPoints({
       q3P18Points: q3P18Points,
       q3P19Points: q3P19Points,
       q3P20Points: q3P20Points,
+      q1Points: q1Points,
+      q2Points: q2Points,
+      q3Points: q3Points,
       q1Multiplier: q1Multiplier,
       q2Multiplier: q2Multiplier,
       q3Multiplier: q3Multiplier,
+      multiplier: multiplier,
     );
