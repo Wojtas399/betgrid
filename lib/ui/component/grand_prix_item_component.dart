@@ -5,17 +5,18 @@ import '../../../model/grand_prix.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
 import 'text/body.dart';
+import 'text/label.dart';
 import 'text/title.dart';
 
 class GrandPrixItem extends StatelessWidget {
-  final double betPoints;
+  final double? betPoints;
   final int roundNumber;
   final GrandPrix grandPrix;
   final VoidCallback onPressed;
 
   const GrandPrixItem({
     super.key,
-    required this.betPoints,
+    this.betPoints,
     required this.roundNumber,
     required this.grandPrix,
     required this.onPressed,
@@ -118,23 +119,20 @@ class _GrandPrixDescription extends StatelessWidget {
 }
 
 class _BetPoints extends StatelessWidget {
-  final double points;
+  final double? points;
 
-  const _BetPoints({required this.points});
+  const _BetPoints({this.points});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
+        LabelLarge(
           'Punkty',
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge
-              ?.copyWith(color: Theme.of(context).colorScheme.outlineVariant),
+          color: Theme.of(context).colorScheme.outlineVariant,
         ),
         TitleMedium(
-          '$points',
+          '${points ?? '--'}',
           color: Theme.of(context).canvasColor,
           fontWeight: FontWeight.bold,
         ),
