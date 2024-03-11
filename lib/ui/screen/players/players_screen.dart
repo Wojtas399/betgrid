@@ -9,6 +9,7 @@ import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/player/all_players_provider.dart';
+import '../../provider/player_points_provider.dart';
 
 @RoutePage()
 class PlayersScreen extends StatelessWidget {
@@ -84,10 +85,16 @@ class _PlayerItem extends StatelessWidget {
               color: Theme.of(context).canvasColor,
               fontWeight: FontWeight.bold,
             ),
-            BodyMedium(
-              'Punkty: 0',
-              color: Theme.of(context).colorScheme.outlineVariant,
-            ),
+            Consumer(builder: (context, ref, _) {
+              final playerPoints = ref.watch(
+                playerPointsProvider(playerId: player.id),
+              );
+
+              return BodyMedium(
+                'Punkty: ${playerPoints ?? 0}',
+                color: Theme.of(context).colorScheme.outlineVariant,
+              );
+            }),
           ],
         ),
       ),
