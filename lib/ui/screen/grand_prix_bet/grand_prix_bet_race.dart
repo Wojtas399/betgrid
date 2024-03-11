@@ -156,8 +156,8 @@ class GrandPrixBetRace extends ConsumerWidget {
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositionsMultiplier,
-              value: racePointsDetails?.podiumAndP10Multiplier?.toString() ??
-                  context.str.lack,
+              value:
+                  racePointsDetails?.podiumAndP10Multiplier?.toString() ?? '--',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetFastestLap,
@@ -169,8 +169,7 @@ class GrandPrixBetRace extends ConsumerWidget {
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetDNFMultiplier,
-              value: racePointsDetails?.dnfMultiplier?.toString() ??
-                  context.str.lack,
+              value: racePointsDetails?.dnfMultiplier?.toString() ?? '--',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetOther,
