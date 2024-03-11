@@ -6,7 +6,6 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/headline.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prix_bet/grand_prix_bet_provider.dart';
-import 'grand_prix_bet_additional.dart';
 import 'grand_prix_bet_qualifications.dart';
 import 'grand_prix_bet_race.dart';
 
@@ -27,8 +26,6 @@ class GrandPrixBetBody extends ConsumerWidget {
             const GrandPrixBetQualifications(),
             _Label(label: context.str.race),
             const GrandPrixBetRace(),
-            _Label(label: context.str.additional),
-            const GrandPrixBetAdditional(),
             const GapVertical32(),
           ],
         ),

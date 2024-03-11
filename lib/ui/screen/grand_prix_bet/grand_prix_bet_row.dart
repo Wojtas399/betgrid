@@ -16,7 +16,7 @@ class GrandPrixBetRow extends TableRow {
     Color? labelBackgroundColor,
     required Widget betChild,
     required Widget resultsChild,
-    int? points,
+    double? points,
   }) {
     return GrandPrixBetRow(
       children: [
@@ -91,7 +91,7 @@ class _BetPoints extends TableCell {
 
   factory _BetPoints.build({
     required BuildContext context,
-    int? points,
+    double? points,
   }) =>
       _BetPoints(
         child: Column(
