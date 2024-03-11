@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../creator/grand_prix_bet_points_creator.dart';
 import '../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
 
 void main() {
@@ -33,23 +34,23 @@ void main() {
     () async {
       const String playerId = 'p1';
       const String grandPrixId = 'gp2';
-      const List<GrandPrixBetPoints> existingEntities = [
-        GrandPrixBetPoints(
+      final List<GrandPrixBetPoints> existingEntities = [
+        createGrandPrixBetPoints(
           id: grandPrixId,
           playerId: playerId,
           grandPrixId: 'gp1',
         ),
-        GrandPrixBetPoints(
+        createGrandPrixBetPoints(
           id: 'gp3',
           playerId: 'p2',
           grandPrixId: grandPrixId,
         ),
-        GrandPrixBetPoints(
+        createGrandPrixBetPoints(
           id: 'gp1',
           playerId: playerId,
           grandPrixId: grandPrixId,
         ),
-        GrandPrixBetPoints(
+        createGrandPrixBetPoints(
           id: 'gp4',
           playerId: 'p2',
           grandPrixId: 'gp1',
@@ -80,19 +81,21 @@ void main() {
         id: grandPrixId,
         playerId: playerId,
         grandPrixId: grandPrixId,
+        totalPoints: 0.0,
       );
-      const GrandPrixBetPoints expectedGrandPrixBetPoints = GrandPrixBetPoints(
+      final GrandPrixBetPoints expectedGrandPrixBetPoints =
+          createGrandPrixBetPoints(
         id: grandPrixId,
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      const List<GrandPrixBetPoints> existingEntities = [
-        GrandPrixBetPoints(
+      final List<GrandPrixBetPoints> existingEntities = [
+        createGrandPrixBetPoints(
           id: 'gp1',
           playerId: 'p1',
           grandPrixId: 'gp1',
         ),
-        GrandPrixBetPoints(
+        createGrandPrixBetPoints(
           id: 'gp3',
           playerId: 'p2',
           grandPrixId: grandPrixId,

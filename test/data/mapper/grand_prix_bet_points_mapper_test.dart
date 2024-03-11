@@ -16,6 +16,7 @@ void main() {
       const String id = 'gpbp1';
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
+      const double totalPoints = 10.0;
       final QualiBetPointsDto qualiBetPointsDto = createQualiBetPointsDto(
         totalPoints: 4.0,
         q1P1Points: 2.0,
@@ -46,6 +47,7 @@ void main() {
         id: id,
         playerId: playerId,
         grandPrixId: grandPrixId,
+        totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsDto,
         raceBetPointsDto: raceBetPointsDto,
       );
@@ -53,6 +55,7 @@ void main() {
         id: id,
         playerId: playerId,
         grandPrixId: grandPrixId,
+        totalPoints: totalPoints,
         qualiBetPoints: qualiBetPoints,
         raceBetPoints: raceBetPoints,
       );

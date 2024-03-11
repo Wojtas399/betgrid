@@ -10,6 +10,7 @@ GrandPrixBetPoints mapGrandPrixBetPointsFromDto(
       id: grandPrixBetPointsDto.id,
       playerId: grandPrixBetPointsDto.playerId,
       grandPrixId: grandPrixBetPointsDto.grandPrixId,
+      totalPoints: grandPrixBetPointsDto.totalPoints,
       qualiBetPoints: grandPrixBetPointsDto.qualiBetPointsDto != null
           ? mapQualiBetPointsFromDto(grandPrixBetPointsDto.qualiBetPointsDto!)
           : null,

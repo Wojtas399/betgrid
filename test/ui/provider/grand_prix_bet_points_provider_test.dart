@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../creator/grand_prix_bet_points_creator.dart';
 import '../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 
 void main() {
@@ -31,7 +32,7 @@ void main() {
     () async {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
-      const GrandPrixBetPoints grandPrixBetPoints = GrandPrixBetPoints(
+      final GrandPrixBetPoints grandPrixBetPoints = createGrandPrixBetPoints(
         id: 'gpbp1',
         playerId: playerId,
         grandPrixId: grandPrixId,

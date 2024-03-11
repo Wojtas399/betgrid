@@ -5,6 +5,7 @@ import 'entity.dart';
 class GrandPrixBetPoints extends Entity {
   final String playerId;
   final String grandPrixId;
+  final double totalPoints;
   final QualiBetPoints? qualiBetPoints;
   final RaceBetPoints? raceBetPoints;
 
@@ -12,6 +13,7 @@ class GrandPrixBetPoints extends Entity {
     required super.id,
     required this.playerId,
     required this.grandPrixId,
+    required this.totalPoints,
     this.qualiBetPoints,
     this.raceBetPoints,
   });
@@ -21,6 +23,7 @@ class GrandPrixBetPoints extends Entity {
         id,
         playerId,
         grandPrixId,
+        totalPoints,
         qualiBetPoints,
         raceBetPoints,
       ];
