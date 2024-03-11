@@ -152,7 +152,7 @@ class GrandPrixBetRace extends ConsumerWidget {
           details: [
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositions,
-              value: '${racePointsDetails?.podiumAndP10Points ?? 0.0}',
+              value: '${racePointsDetails?.podiumAndP10Points ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetPositionsMultiplier,
@@ -161,11 +161,11 @@ class GrandPrixBetRace extends ConsumerWidget {
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetFastestLap,
-              value: '${racePointsDetails?.fastestLapPoints ?? 0}',
+              value: '${racePointsDetails?.fastestLapPoints ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetDNF,
-              value: '${racePointsDetails?.dnfPoints ?? 0}',
+              value: '${racePointsDetails?.dnfPoints ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetDNFMultiplier,
@@ -173,11 +173,12 @@ class GrandPrixBetRace extends ConsumerWidget {
             ),
             GrandPrixPointsSummaryDetail(
               label: context.str.grandPrixBetOther,
-              value:
-                  '${(racePointsDetails?.safetyCarPoints ?? 0) + (racePointsDetails?.redFlagPoints ?? 0)}',
+              value: racePointsDetails != null
+                  ? '${racePointsDetails.safetyCarPoints + racePointsDetails.redFlagPoints}'
+                  : '--',
             ),
           ],
-          totalPoints: racePointsDetails?.totalPoints ?? 0.0,
+          totalPoints: racePointsDetails?.totalPoints,
         ),
       ],
     );

@@ -7,12 +7,12 @@ import '../../extensions/build_context_extensions.dart';
 
 class GrandPrixBetPointsSummary extends StatelessWidget {
   final List<GrandPrixPointsSummaryDetail> details;
-  final double totalPoints;
+  final double? totalPoints;
 
   const GrandPrixBetPointsSummary({
     super.key,
     required this.details,
-    required this.totalPoints,
+    this.totalPoints,
   });
 
   @override
@@ -39,7 +39,7 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
             children: [
               TitleMedium('${context.str.grandPrixBetTotal}: '),
               TitleMedium(
-                '$totalPoints',
+                '${totalPoints ?? '--'}',
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
               ),

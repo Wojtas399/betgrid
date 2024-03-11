@@ -103,15 +103,15 @@ class GrandPrixBetQualifications extends ConsumerWidget {
           details: [
             GrandPrixPointsSummaryDetail(
               label: 'Q1',
-              value: '${qualiPointsDetails?.q1Points ?? 0}',
+              value: '${qualiPointsDetails?.q1Points ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: 'Q2',
-              value: '${qualiPointsDetails?.q2Points ?? 0}',
+              value: '${qualiPointsDetails?.q2Points ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: 'Q3',
-              value: '${qualiPointsDetails?.q3Points ?? 0}',
+              value: '${qualiPointsDetails?.q3Points ?? '--'}',
             ),
             GrandPrixPointsSummaryDetail(
               label: '${context.str.grandPrixBetMultiplier} Q1',
@@ -130,7 +130,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
               value: qualiPointsDetails?.multiplier?.toString() ?? '--',
             ),
           ],
-          totalPoints: qualiPointsDetails?.totalPoints ?? 0.0,
+          totalPoints: qualiPointsDetails?.totalPoints,
         ),
       ],
     );
