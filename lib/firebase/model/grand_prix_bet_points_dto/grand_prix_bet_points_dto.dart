@@ -13,8 +13,8 @@ class GrandPrixBetPointsDto with _$GrandPrixBetPointsDto {
     @Default('')
     String playerId,
     required String grandPrixId,
-    QualiBetPointsDto? qualiBetPointsDto,
-    RaceBetPointsDto? raceBetPointsDto,
+    @JsonKey(name: 'qualiBetPoints') QualiBetPointsDto? qualiBetPointsDto,
+    @JsonKey(name: 'raceBetPoints') RaceBetPointsDto? raceBetPointsDto,
   }) = _GrandPrixBetPointsDto;
 
   factory GrandPrixBetPointsDto.fromJson(Map<String, Object?> json) =>

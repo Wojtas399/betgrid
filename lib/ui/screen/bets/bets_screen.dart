@@ -8,6 +8,7 @@ import '../../component/grand_prix_item_component.dart';
 import '../../component/scroll_animated_item_component.dart';
 import '../../config/router/app_router.dart';
 import '../../provider/grand_prix/all_grand_prixes_provider.dart';
+import '../../provider/grand_prix_bet_points_provider.dart';
 import '../../provider/logged_user_data_notifier_provider.dart';
 
 @RoutePage()
@@ -47,10 +48,19 @@ class _GrandPrixes extends ConsumerWidget {
         itemCount: allGrandPrixes!.length,
         itemBuilder: (_, int itemIndex) {
           final grandPrix = allGrandPrixes[itemIndex];
+          final betPoints = ref.watch(
+            grandPrixBetPointsProvider(
+              playerId: loggedUserId,
+              grandPrixId: grandPrix.id,
+            ),
+          );
+          final double qualiPoints =
+              betPoints.value?.qualiBetPoints?.totalPoints ?? 0;
+          final racePoints = betPoints.value?.raceBetPoints?.totalPoints ?? 0;
 
           return ScrollAnimatedItem(
             child: GrandPrixItem(
-              betPoints: 0,
+              betPoints: qualiPoints + racePoints,
               roundNumber: itemIndex + 1,
               grandPrix: grandPrix,
               onPressed: () {
