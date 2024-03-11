@@ -29,33 +29,33 @@ void main() {
     reset(grandPrixRepository);
   });
 
-  final GrandPrix gp1 = GrandPrix(
-    id: 'gp1',
-    name: 'Grand Prix 1',
-    countryAlpha2Code: 'BH',
-    startDate: DateTime(2023, 1, 1),
-    endDate: DateTime(2023, 1, 3),
-  );
-  final GrandPrix gp2 = GrandPrix(
-    id: 'gp2',
-    name: 'Grand Prix 2',
-    countryAlpha2Code: 'PL',
-    startDate: DateTime(2023, 1, 5),
-    endDate: DateTime(2023, 1, 7),
-  );
-  final GrandPrix gp3 = GrandPrix(
-    id: 'gp3',
-    name: 'Grand Prix 3',
-    countryAlpha2Code: 'XD',
-    startDate: DateTime(2023, 1, 9),
-    endDate: DateTime(2023, 1, 11),
-  );
-
   test(
-    'should get all grand prixes from grand prix repository and '
-    'emit them sorted by date',
+    'should get all grand prixes from grand prix repository and emit them',
     () async {
-      grandPrixRepository.mockGetAllGrandPrixes([gp3, gp1, gp2]);
+      final grandPrixes = [
+        GrandPrix(
+          id: 'gp1',
+          name: 'Grand Prix 1',
+          countryAlpha2Code: 'BH',
+          startDate: DateTime(2023, 1, 1),
+          endDate: DateTime(2023, 1, 3),
+        ),
+        GrandPrix(
+          id: 'gp2',
+          name: 'Grand Prix 2',
+          countryAlpha2Code: 'PL',
+          startDate: DateTime(2023, 1, 5),
+          endDate: DateTime(2023, 1, 7),
+        ),
+        GrandPrix(
+          id: 'gp3',
+          name: 'Grand Prix 3',
+          countryAlpha2Code: 'XD',
+          startDate: DateTime(2023, 1, 9),
+          endDate: DateTime(2023, 1, 11),
+        ),
+      ];
+      grandPrixRepository.mockGetAllGrandPrixes(grandPrixes);
       final container = makeProviderContainer();
       final listener = Listener<AsyncValue<List<GrandPrix>?>>();
       container.listen(
@@ -66,7 +66,7 @@ void main() {
 
       await expectLater(
         container.read(allGrandPrixesProvider.future),
-        completion([gp1, gp2, gp3]),
+        completion(grandPrixes),
       );
       verifyInOrder([
         () => listener(
