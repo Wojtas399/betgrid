@@ -30,22 +30,30 @@ class PlayerProfileScreen extends StatelessWidget {
             context: context,
           ),
           Consumer(
-            builder: (_, ref, __) => ref.watch(allGrandPrixesProvider).when(
-                  data: (List<GrandPrix>? grandPrixes) =>
-                      _GrandPrixesList.build(
-                    context: context,
-                    grandPrixes: grandPrixes!,
-                    playerId: player.id,
-                  ),
-                  error: (_, __) => SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        const Text('Cannot load grand prixes'),
-                      ],
+            builder: (_, ref, __) {
+              return ref.watch(allGrandPrixesProvider).when(
+                    data: (List<GrandPrix>? grandPrixes) {
+                      final sortedGrandPrixes = [...?grandPrixes];
+                      sortedGrandPrixes.sort(
+                        (gp1, gp2) => gp1.startDate.compareTo(gp2.startDate),
+                      );
+
+                      return _GrandPrixesList.build(
+                        context: context,
+                        grandPrixes: sortedGrandPrixes,
+                        playerId: player.id,
+                      );
+                    },
+                    error: (_, __) => SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          const Text('Cannot load grand prixes'),
+                        ],
+                      ),
                     ),
-                  ),
-                  loading: () => _LoadingIndicator.build(),
-                ),
+                    loading: () => _LoadingIndicator.build(),
+                  );
+            },
           ),
         ],
       ),

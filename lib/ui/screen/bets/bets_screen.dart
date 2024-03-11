@@ -32,7 +32,7 @@ class _GrandPrixes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<GrandPrix>?> allGrandPrixesAsyncVal = ref.watch(
+    final AsyncValue<List<GrandPrix>?> allGrandPrixes = ref.watch(
       allGrandPrixesProvider,
     );
     final String? loggedUserId = ref.watch(
@@ -40,14 +40,17 @@ class _GrandPrixes extends ConsumerWidget {
         (AsyncValue<User?> user) => user.value?.id,
       ),
     );
+    if (allGrandPrixes.value?.isNotEmpty == true && loggedUserId != null) {
+      final sortedGrandPrixes = [...?allGrandPrixes.value];
+      sortedGrandPrixes.sort(
+        (gp1, gp2) => gp1.startDate.compareTo(gp2.startDate),
+      );
 
-    final List<GrandPrix>? allGrandPrixes = allGrandPrixesAsyncVal.value;
-    if (allGrandPrixes?.isNotEmpty == true && loggedUserId != null) {
       return ListView.builder(
         padding: const EdgeInsets.all(24),
-        itemCount: allGrandPrixes!.length,
+        itemCount: sortedGrandPrixes.length,
         itemBuilder: (_, int itemIndex) {
-          final grandPrix = allGrandPrixes[itemIndex];
+          final grandPrix = sortedGrandPrixes[itemIndex];
           final betPoints = ref.watch(
             grandPrixBetPointsProvider(
               playerId: loggedUserId,
