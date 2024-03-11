@@ -134,11 +134,13 @@ class RaceBetPoints extends Points {
   final double p3Points;
   final double p10Points;
   final double fastestLapPoints;
+  final double podiumAndP10Points;
   final double? podiumAndP10Multiplier;
   final double dnfPoints;
   final double? dnfMultiplier;
   final double safetyCarPoints;
   final double redFlagPoints;
+  final double safetyCarAndRedFlagPoints;
 
   const RaceBetPoints({
     required super.totalPoints,
@@ -147,11 +149,13 @@ class RaceBetPoints extends Points {
     required this.p3Points,
     required this.p10Points,
     required this.fastestLapPoints,
+    required this.podiumAndP10Points,
     this.podiumAndP10Multiplier,
     required this.dnfPoints,
     this.dnfMultiplier,
     required this.safetyCarPoints,
     required this.redFlagPoints,
+    required this.safetyCarAndRedFlagPoints,
   });
 
   @override
@@ -162,10 +166,12 @@ class RaceBetPoints extends Points {
         p3Points,
         p10Points,
         fastestLapPoints,
+        podiumAndP10Points,
         podiumAndP10Multiplier,
         dnfPoints,
         dnfMultiplier,
         safetyCarPoints,
         redFlagPoints,
+        safetyCarAndRedFlagPoints
       ];
 }

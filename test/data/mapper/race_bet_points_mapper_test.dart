@@ -14,10 +14,13 @@ void main() {
       const double p3Points = 2.0;
       const double p10Points = 4.0;
       const double fastestLapPoints = 2.0;
+      const double podiumAndP10Points = 8.0;
+      const double? podiumAndP10Multiplier = null;
       const double dnfPoints = 6;
       const double dnfMultiplier = 1.5;
       const double safetyCarPoints = 1.0;
       const double redFlagPoints = 0.0;
+      const double safetyCarAndRedFlagPoints = 1.0;
       const RaceBetPointsDto raceBetPointsDto = RaceBetPointsDto(
         totalPoints: totalPoints,
         p1Points: p1Points,
@@ -25,11 +28,13 @@ void main() {
         p3Points: p3Points,
         p10Points: p10Points,
         fastestLapPoints: fastestLapPoints,
-        podiumAndP10Multiplier: null,
+        podiumAndP10Points: podiumAndP10Points,
+        podiumAndP10Multiplier: podiumAndP10Multiplier,
         dnfPoints: dnfPoints,
         dnfMultiplier: dnfMultiplier,
         safetyCarPoints: safetyCarPoints,
         redFlagPoints: redFlagPoints,
+        safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
       );
       const RaceBetPoints expectedRaceBetPoints = RaceBetPoints(
         totalPoints: totalPoints,
@@ -38,11 +43,13 @@ void main() {
         p3Points: p3Points,
         p10Points: p10Points,
         fastestLapPoints: fastestLapPoints,
-        podiumAndP10Multiplier: null,
+        podiumAndP10Points: podiumAndP10Points,
+        podiumAndP10Multiplier: podiumAndP10Multiplier,
         dnfPoints: dnfPoints,
         dnfMultiplier: dnfMultiplier,
         safetyCarPoints: safetyCarPoints,
         redFlagPoints: redFlagPoints,
+        safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
       );
 
       final RaceBetPoints raceBetPoints = mapRaceBetPointsFromDto(

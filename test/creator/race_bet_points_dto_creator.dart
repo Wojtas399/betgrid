@@ -7,11 +7,13 @@ RaceBetPointsDto createRaceBetPointsDto({
   double p3Points = 0.0,
   double p10Points = 0.0,
   double fastestLapPoints = 0.0,
+  double podiumAndP10Points = 0.0,
   double? podiumAndP10Multiplier,
   double dnfPoints = 0.0,
   double? dnfMultiplier,
   double safetyCarPoints = 0.0,
   double redFlagPoints = 0.0,
+  double safetyCarAndRedFlagPoints = 0.0,
 }) =>
     RaceBetPointsDto(
       totalPoints: totalPoints,
@@ -20,9 +22,11 @@ RaceBetPointsDto createRaceBetPointsDto({
       p3Points: p3Points,
       p10Points: p10Points,
       fastestLapPoints: fastestLapPoints,
+      podiumAndP10Points: podiumAndP10Points,
       podiumAndP10Multiplier: podiumAndP10Multiplier,
       dnfPoints: dnfPoints,
       dnfMultiplier: dnfMultiplier,
       safetyCarPoints: safetyCarPoints,
       redFlagPoints: redFlagPoints,
+      safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
     );

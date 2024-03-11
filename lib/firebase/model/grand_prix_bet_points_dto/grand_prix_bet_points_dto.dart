@@ -77,11 +77,13 @@ class RaceBetPointsDto with _$RaceBetPointsDto {
     required double p3Points,
     required double p10Points,
     required double fastestLapPoints,
+    required double podiumAndP10Points,
     double? podiumAndP10Multiplier,
     required double dnfPoints,
     double? dnfMultiplier,
     required double safetyCarPoints,
     required double redFlagPoints,
+    required double safetyCarAndRedFlagPoints,
   }) = _RaceBetPointsDto;
 
   factory RaceBetPointsDto.fromJson(Map<String, Object?> json) =>
