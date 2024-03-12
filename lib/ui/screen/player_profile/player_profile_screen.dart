@@ -1,16 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text/display.dart';
-import '../../component/text/headline.dart';
+import '../../component/sliver_grand_prixes_list_component.dart';
+import '../../component/sliver_player_total_points_component.dart';
 import '../../component/text/title.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../provider/player_points_provider.dart';
-import 'player_profile_grand_prixes.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -29,8 +24,8 @@ class PlayerProfileScreen extends StatelessWidget {
             player: player,
             context: context,
           ),
-          _TotalPoints(playerId: player.id),
-          PlayerProfileGrandPrixes(playerId: player.id),
+          SliverPlayerTotalPoints(playerId: player.id),
+          SliverGrandPrixesList(playerId: player.id),
         ],
       ),
     );
@@ -75,41 +70,6 @@ class _AppBar extends SliverAppBar {
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        );
-}
-
-class _TotalPoints extends SliverPadding {
-  _TotalPoints({required String playerId})
-      : super(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-          sliver: SliverToBoxAdapter(
-            child: Builder(
-              builder: (BuildContext context) {
-                return Column(
-                  children: [
-                    HeadlineMedium(
-                      context.str.grandPrixBetPoints,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const GapVertical8(),
-                    Consumer(
-                      builder: (_, ref, __) {
-                        final totalPoints = ref.watch(
-                          playerPointsProvider(playerId: playerId),
-                        );
-
-                        return DisplayLarge(
-                          '${totalPoints ?? '--'}',
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        );
-                      },
-                    ),
-                  ],
                 );
               },
             ),

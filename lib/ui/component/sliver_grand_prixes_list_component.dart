@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
-import '../../component/grand_prix_item_component.dart';
-import '../../component/scroll_animated_item_component.dart';
-import '../../component/text/title.dart';
-import '../../config/router/app_router.dart';
-import '../../provider/grand_prix/all_grand_prixes_provider.dart';
-import '../../provider/grand_prix_bet_points_provider.dart';
+import '../config/router/app_router.dart';
+import '../provider/grand_prix/all_grand_prixes_provider.dart';
+import '../provider/grand_prix_bet_points_provider.dart';
+import 'grand_prix_item_component.dart';
+import 'scroll_animated_item_component.dart';
+import 'text/title.dart';
 
-class PlayerProfileGrandPrixes extends SliverPadding {
-  PlayerProfileGrandPrixes({super.key, required String playerId})
+class SliverGrandPrixesList extends SliverPadding {
+  SliverGrandPrixesList({super.key, required String playerId})
       : super(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
           sliver: Consumer(
