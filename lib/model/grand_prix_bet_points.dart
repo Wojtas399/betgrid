@@ -140,6 +140,9 @@ class RaceBetPoints extends Points {
   final double podiumAndP10Points;
   final double? podiumAndP10Multiplier;
   final double dnfPoints;
+  final double dnfDriver1Points;
+  final double dnfDriver2Points;
+  final double dnfDriver3Points;
   final double? dnfMultiplier;
   final double safetyCarPoints;
   final double redFlagPoints;
@@ -155,6 +158,9 @@ class RaceBetPoints extends Points {
     required this.podiumAndP10Points,
     this.podiumAndP10Multiplier,
     required this.dnfPoints,
+    required this.dnfDriver1Points,
+    required this.dnfDriver2Points,
+    required this.dnfDriver3Points,
     this.dnfMultiplier,
     required this.safetyCarPoints,
     required this.redFlagPoints,
@@ -172,6 +178,9 @@ class RaceBetPoints extends Points {
         podiumAndP10Points,
         podiumAndP10Multiplier,
         dnfPoints,
+        dnfDriver1Points,
+        dnfDriver2Points,
+        dnfDriver3Points,
         dnfMultiplier,
         safetyCarPoints,
         redFlagPoints,

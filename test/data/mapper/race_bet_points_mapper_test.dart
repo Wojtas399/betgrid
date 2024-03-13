@@ -17,6 +17,9 @@ void main() {
       const double podiumAndP10Points = 8.0;
       const double? podiumAndP10Multiplier = null;
       const double dnfPoints = 6;
+      const double dnfDriver1Points = 2;
+      const double dnfDriver2Points = 2;
+      const double dnfDriver3Points = 2;
       const double dnfMultiplier = 1.5;
       const double safetyCarPoints = 1.0;
       const double redFlagPoints = 0.0;
@@ -31,6 +34,9 @@ void main() {
         podiumAndP10Points: podiumAndP10Points,
         podiumAndP10Multiplier: podiumAndP10Multiplier,
         dnfPoints: dnfPoints,
+        dnfDriver1Points: dnfDriver1Points,
+        dnfDriver2Points: dnfDriver2Points,
+        dnfDriver3Points: dnfDriver3Points,
         dnfMultiplier: dnfMultiplier,
         safetyCarPoints: safetyCarPoints,
         redFlagPoints: redFlagPoints,
@@ -46,6 +52,9 @@ void main() {
         podiumAndP10Points: podiumAndP10Points,
         podiumAndP10Multiplier: podiumAndP10Multiplier,
         dnfPoints: dnfPoints,
+        dnfDriver1Points: dnfDriver1Points,
+        dnfDriver2Points: dnfDriver2Points,
+        dnfDriver3Points: dnfDriver3Points,
         dnfMultiplier: dnfMultiplier,
         safetyCarPoints: safetyCarPoints,
         redFlagPoints: redFlagPoints,
