@@ -65,7 +65,7 @@ class _TotalPoints extends ConsumerWidget {
       child: Column(
         children: [
           HeadlineMedium(
-            context.str.grandPrixBetPoints,
+            context.str.points,
             fontWeight: FontWeight.bold,
           ),
           const GapVertical8(),

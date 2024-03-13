@@ -82,7 +82,7 @@ class _BetPoints extends TableCell {
             children: [
               Builder(
                 builder: (BuildContext context) => LabelLarge(
-                  context.str.grandPrixBetPoints,
+                  context.str.points,
                   color: Theme.of(context).colorScheme.outline,
                 ),
               ),

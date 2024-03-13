@@ -8,6 +8,7 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
+import '../../extensions/build_context_extensions.dart';
 import '../../provider/player/all_players_provider.dart';
 import '../../provider/player_points_provider.dart';
 
@@ -91,7 +92,7 @@ class _PlayerItem extends StatelessWidget {
               );
 
               return BodyMedium(
-                'Punkty: ${playerPoints ?? 0}',
+                '${context.str.points}: ${playerPoints ?? 0}',
                 color: Theme.of(context).colorScheme.outlineVariant,
               );
             }),

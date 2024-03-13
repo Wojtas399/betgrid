@@ -17,7 +17,7 @@ class SliverPlayerTotalPoints extends SliverPadding {
                 return Column(
                   children: [
                     HeadlineMedium(
-                      context.str.grandPrixBetPoints,
+                      context.str.points,
                       fontWeight: FontWeight.bold,
                     ),
                     const GapVertical8(),
