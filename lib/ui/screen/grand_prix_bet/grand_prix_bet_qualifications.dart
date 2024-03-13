@@ -79,8 +79,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                       ? 2
                       : 1;
 
-              return GrandPrixBetRow.build(
-                context: context,
+              return GrandPrixBetRow(
                 label: 'Q$qualiNumber P${itemIndex + 1}',
                 labelBackgroundColor: switch (itemIndex) {
                   0 => getIt<CustomColors>().gold,

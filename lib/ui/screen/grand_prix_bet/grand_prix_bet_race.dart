@@ -66,8 +66,7 @@ class GrandPrixBetRace extends ConsumerWidget {
                   _ => null,
                 };
 
-                return GrandPrixBetRow.build(
-                  context: context,
+                return GrandPrixBetRow(
                   label: switch (index) {
                     0 => 'P1',
                     1 => 'P2',
@@ -96,8 +95,7 @@ class GrandPrixBetRace extends ConsumerWidget {
                 );
               },
             ),
-            GrandPrixBetRow.build(
-              context: context,
+            GrandPrixBetRow(
               label: 'DNF',
               betChild: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,8 +121,7 @@ class GrandPrixBetRace extends ConsumerWidget {
               ),
               points: racePointsDetails?.dnfPoints,
             ),
-            GrandPrixBetRow.build(
-              context: context,
+            GrandPrixBetRow(
               label: 'SC',
               betChild: Text(
                 grandPrixBet.value?.willBeSafetyCar?.toI8nString(context) ??
@@ -135,8 +132,7 @@ class GrandPrixBetRace extends ConsumerWidget {
               ),
               points: racePointsDetails?.safetyCarPoints,
             ),
-            GrandPrixBetRow.build(
-              context: context,
+            GrandPrixBetRow(
               label: 'RF',
               betChild: Text(
                 grandPrixBet.value?.willBeRedFlag?.toI8nString(context) ?? '--',

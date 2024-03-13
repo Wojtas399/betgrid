@@ -8,104 +8,90 @@ import '../../extensions/build_context_extensions.dart';
 import 'grand_prix_bet_label_cell.dart';
 
 class GrandPrixBetRow extends TableRow {
-  const GrandPrixBetRow({super.key, super.children});
-
-  factory GrandPrixBetRow.build({
-    required BuildContext context,
+  GrandPrixBetRow({
+    super.key,
     required String label,
     Color? labelBackgroundColor,
     required Widget betChild,
     required Widget resultsChild,
     double? points,
-  }) {
-    return GrandPrixBetRow(
-      children: [
-        GrandPrixBetLabelCell.build(
-          context: context,
-          label: label,
-          labelBackgroundColor: labelBackgroundColor,
-        ),
-        _BetInfo.build(
-          context: context,
-          betChild: betChild,
-          resultsChild: resultsChild,
-        ),
-        _BetPoints.build(
-          context: context,
-          points: points,
-        ),
-      ],
-    );
-  }
+  }) : super(
+          children: [
+            GrandPrixBetLabelCell(
+              label: label,
+              labelBackgroundColor: labelBackgroundColor,
+            ),
+            _BetInfo(
+              betChild: betChild,
+              resultsChild: resultsChild,
+            ),
+            _BetPoints(points: points),
+          ],
+        );
 }
 
 class _BetInfo extends TableCell {
-  const _BetInfo({required super.child})
-      : super(verticalAlignment: TableCellVerticalAlignment.middle);
-
-  factory _BetInfo.build({
-    required BuildContext context,
+  _BetInfo({
     required Widget betChild,
     required Widget resultsChild,
-  }) =>
-      _BetInfo(
-        child: Column(
-          children: [
-            const GapVertical8(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: LabelLarge('${context.str.grandPrixBetChoice}:'),
+  }) : super(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Builder(
+            builder: (BuildContext context) => Column(
+              children: [
+                const GapVertical8(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        child: LabelLarge('${context.str.grandPrixBetChoice}:'),
+                      ),
+                      const GapHorizontal8(),
+                      betChild,
+                    ],
                   ),
-                  const GapHorizontal8(),
-                  betChild,
-                ],
-              ),
-            ),
-            const Divider(thickness: 0.25),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: LabelLarge('${context.str.grandPrixBetResult}:'),
+                ),
+                const Divider(thickness: 0.25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        child: LabelLarge('${context.str.grandPrixBetResult}:'),
+                      ),
+                      const GapHorizontal8(),
+                      resultsChild
+                    ],
                   ),
-                  const GapHorizontal8(),
-                  resultsChild
-                ],
-              ),
+                ),
+                const GapVertical8(),
+              ],
             ),
-            const GapVertical8(),
-          ],
-        ),
-      );
+          ),
+        );
 }
 
 class _BetPoints extends TableCell {
-  const _BetPoints({required super.child})
-      : super(verticalAlignment: TableCellVerticalAlignment.middle);
-
-  factory _BetPoints.build({
-    required BuildContext context,
-    double? points,
-  }) =>
-      _BetPoints(
-        child: Column(
-          children: [
-            LabelLarge(
-              context.str.grandPrixBetPoints,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            const GapVertical4(),
-            TitleMedium(
-              points?.toString() ?? '--',
-              fontWeight: FontWeight.bold,
-            ),
-          ],
-        ),
-      );
+  _BetPoints({double? points})
+      : super(
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Column(
+            children: [
+              Builder(
+                builder: (BuildContext context) => LabelLarge(
+                  context.str.grandPrixBetPoints,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+              ),
+              const GapVertical4(),
+              TitleMedium(
+                points?.toString() ?? '--',
+                fontWeight: FontWeight.bold,
+              ),
+            ],
+          ),
+        );
 }
