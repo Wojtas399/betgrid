@@ -1,5 +1,6 @@
 import 'package:betgrid/data/repository/auth/auth_repository_impl.dart';
 import 'package:betgrid/firebase/service/firebase_auth_service.dart';
+import 'package:betgrid/model/auth_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -7,13 +8,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../mock/firebase/mock_firebase_auth_service.dart';
 
 void main() {
-  final firebaseAuthService = MockFirebaseAuthService();
+  final dbAuthService = MockFirebaseAuthService();
   late AuthRepositoryImpl repositoryImpl;
 
   setUpAll(() {
-    GetIt.instance.registerFactory<FirebaseAuthService>(
-      () => firebaseAuthService,
-    );
+    GetIt.instance.registerFactory<FirebaseAuthService>(() => dbAuthService);
   });
 
   setUp(() {
@@ -21,15 +20,39 @@ void main() {
   });
 
   tearDown(() {
-    reset(firebaseAuthService);
+    reset(dbAuthService);
   });
+
+  test(
+    'authState, '
+    'should emit AuthStateUserIsSignedOut if logged user id got from db is null',
+    () {
+      dbAuthService.mockGetLoggedUserId(null);
+
+      final Stream<AuthState?> authState$ = repositoryImpl.authState$;
+
+      expect(authState$, emits(const AuthStateUserIsSignedOut()));
+    },
+  );
+
+  test(
+    'authState, '
+    'should emit AuthStateUserIsSignedIn if logged user id got from db is not null',
+    () {
+      dbAuthService.mockGetLoggedUserId('u1');
+
+      final Stream<AuthState?> authState$ = repositoryImpl.authState$;
+
+      expect(authState$, emits(const AuthStateUserIsSignedIn()));
+    },
+  );
 
   test(
     'loggedUserId, '
     'should emit id of logged user got from firebase',
     () {
       const String id = 'u1';
-      firebaseAuthService.mockGetLoggedUserId(id);
+      dbAuthService.mockGetLoggedUserId(id);
 
       final Stream<String?> loggedUserId$ = repositoryImpl.loggedUserId$;
 
@@ -42,7 +65,7 @@ void main() {
     'user does not exist, '
     'should return null',
     () async {
-      firebaseAuthService.mockSignInWithGoogle(null);
+      dbAuthService.mockSignInWithGoogle(null);
 
       final String? userId = await repositoryImpl.signInWithGoogle();
 
@@ -56,7 +79,7 @@ void main() {
     'should return user id',
     () async {
       const String expectedUserId = 'u1';
-      firebaseAuthService.mockSignInWithGoogle(expectedUserId);
+      dbAuthService.mockSignInWithGoogle(expectedUserId);
 
       final String? userId = await repositoryImpl.signInWithGoogle();
 
