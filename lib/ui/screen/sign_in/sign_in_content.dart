@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
+import '../../controller/sign_in_controller.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/notifier/auth/auth_provider.dart';
 
 class SignInContent extends StatelessWidget {
   const SignInContent({super.key});
@@ -48,7 +48,7 @@ class _SignInWithGoogleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilledButton(
-      onPressed: ref.read(authProvider.notifier).signInWithGoogle,
+      onPressed: ref.read(signInControllerProvider.notifier).signInWithGoogle,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(

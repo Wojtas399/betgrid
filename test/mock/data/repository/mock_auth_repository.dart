@@ -6,7 +6,7 @@ class MockAuthRepository extends Mock implements AuthRepository {
     when(() => loggedUserId$).thenAnswer((_) => Stream.value(loggedUserId));
   }
 
-  void mockSignInWithGoogle(String? userId) {
-    when(signInWithGoogle).thenAnswer((_) => Future.value(userId));
+  void mockSignInWithGoogle() {
+    when(signInWithGoogle).thenAnswer((_) => Future.value());
   }
 }

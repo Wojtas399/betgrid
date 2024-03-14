@@ -62,28 +62,13 @@ void main() {
 
   test(
     'signInWithGoogle, '
-    'user does not exist, '
-    'should return null',
+    'should call method from db to sign in with google',
     () async {
       dbAuthService.mockSignInWithGoogle(null);
 
-      final String? userId = await repositoryImpl.signInWithGoogle();
+      await repositoryImpl.signInWithGoogle();
 
-      expect(userId, null);
-    },
-  );
-
-  test(
-    'signInWithGoogle, '
-    'user exists, '
-    'should return user id',
-    () async {
-      const String expectedUserId = 'u1';
-      dbAuthService.mockSignInWithGoogle(expectedUserId);
-
-      final String? userId = await repositoryImpl.signInWithGoogle();
-
-      expect(userId, expectedUserId);
+      verify(dbAuthService.signInWithGoogle).called(1);
     },
   );
 }

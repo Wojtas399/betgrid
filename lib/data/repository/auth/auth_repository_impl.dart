@@ -19,8 +19,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Stream<String?> get loggedUserId$ => _firebaseAuthService.loggedUserId$;
 
   @override
-  Future<String?> signInWithGoogle() async {
-    final String? userId = await _firebaseAuthService.signInWithGoogle();
-    return userId;
+  Future<void> signInWithGoogle() async {
+    await _firebaseAuthService.signInWithGoogle();
   }
 }

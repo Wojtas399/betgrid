@@ -7,7 +7,7 @@ class FirebaseAuthService {
   Stream<String?> get loggedUserId$ =>
       FirebaseAuth.instance.authStateChanges().map((User? user) => user?.uid);
 
-  Future<String?> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
@@ -16,8 +16,6 @@ class FirebaseAuthService {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    final UserCredential credential =
-        await FirebaseAuth.instance.signInWithCredential(authCredential);
-    return credential.user?.uid;
+    await FirebaseAuth.instance.signInWithCredential(authCredential);
   }
 }
