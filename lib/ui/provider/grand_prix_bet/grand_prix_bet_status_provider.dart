@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../auth/auth_service.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 import '../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../model/grand_prix_bet.dart';
 
@@ -16,7 +16,7 @@ Stream<GrandPrixBetStatus?> grandPrixBetStatus(
   String grandPrixId,
 ) async* {
   final Stream<GrandPrixBet?> bet$ =
-      ref.watch(authServiceProvider).loggedUserId$.switchMap(
+      ref.watch(authRepositoryProvider).loggedUserId$.switchMap(
             (String? loggedUserId) => loggedUserId != null
                 ? ref
                     .watch(grandPrixBetRepositoryProvider)

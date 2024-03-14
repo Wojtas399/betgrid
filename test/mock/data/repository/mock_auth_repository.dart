@@ -1,7 +1,7 @@
-import 'package:betgrid/auth/auth_service.dart';
+import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockAuthService extends Mock implements AuthService {
+class MockAuthRepository extends Mock implements AuthRepository {
   void mockGetLoggedUserId(String? loggedUserId) {
     when(() => loggedUserId$).thenAnswer((_) => Stream.value(loggedUserId));
   }

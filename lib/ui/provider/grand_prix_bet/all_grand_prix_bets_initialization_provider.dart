@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../auth/auth_service.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 import '../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../model/grand_prix.dart';
@@ -13,7 +13,7 @@ Future<void> allGrandPrixBetsInitialization(
   AllGrandPrixBetsInitializationRef ref,
 ) async {
   final String? loggedUserId =
-      await ref.read(authServiceProvider).loggedUserId$.first;
+      await ref.read(authRepositoryProvider).loggedUserId$.first;
   if (loggedUserId == null) return;
   final Stream<List<GrandPrixBet>?> bets$ = ref
       .read(grandPrixBetRepositoryProvider)

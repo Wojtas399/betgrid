@@ -1,4 +1,4 @@
-import 'package:betgrid/auth/auth_service.dart';
+import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/ui/provider/grand_prix_bet/all_grand_prix_bets_initialization_provider.dart';
@@ -8,20 +8,20 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../creator/grand_prix_bet_creator.dart';
 import '../../creator/grand_prix_creator.dart';
-import '../../mock/auth/mock_auth_service.dart';
+import '../../mock/data/repository/mock_auth_repository.dart';
 import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthService();
+  final authService = MockAuthRepository();
   final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
 
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
-        authServiceProvider.overrideWithValue(authService),
+        authRepositoryProvider.overrideWithValue(authService),
         grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
         grandPrixBetRepositoryProvider
             .overrideWithValue(grandPrixBetRepository),

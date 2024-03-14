@@ -1,4 +1,4 @@
-import 'package:betgrid/auth/auth_service.dart';
+import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:betgrid/ui/provider/theme/theme_mode_notifier_provider.dart';
@@ -7,18 +7,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
-import '../../../mock/auth/mock_auth_service.dart';
+import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/data/repository/mock_user_repository.dart';
 import '../../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthService();
+  final authService = MockAuthRepository();
   final userRepository = MockUserRepository();
 
   ProviderContainer makeProviderContainer() {
     final container = ProviderContainer(
       overrides: [
-        authServiceProvider.overrideWithValue(authService),
+        authRepositoryProvider.overrideWithValue(authService),
         userRepositoryProvider.overrideWithValue(userRepository),
       ],
     );

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../auth/auth_service.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 import '../../../data/repository/user/user_repository.dart';
 import '../../../model/user.dart';
 
@@ -14,7 +14,7 @@ class ThemePrimaryColorNotifier extends _$ThemePrimaryColorNotifier {
   @override
   Stream<ThemePrimaryColor> build() {
     return ref
-        .watch(authServiceProvider)
+        .watch(authRepositoryProvider)
         .loggedUserId$
         .doOnData((String? loggedUserId) {
           _loggedUserId = loggedUserId;

@@ -1,11 +1,11 @@
-import '../dependency_injection.dart';
-import '../firebase/service/firebase_auth_service.dart';
-import 'auth_service.dart';
+import '../../../dependency_injection.dart';
+import '../../../firebase/service/firebase_auth_service.dart';
+import 'auth_repository.dart';
 
-class AuthServiceImpl implements AuthService {
+class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthService _firebaseAuthService;
 
-  AuthServiceImpl() : _firebaseAuthService = getIt<FirebaseAuthService>();
+  AuthRepositoryImpl() : _firebaseAuthService = getIt<FirebaseAuthService>();
 
   @override
   Stream<String?> get loggedUserId$ => _firebaseAuthService.loggedUserId$;

@@ -1,14 +1,14 @@
-import 'package:betgrid/auth/auth_service_impl.dart';
+import 'package:betgrid/data/repository/auth/auth_repository_impl.dart';
 import 'package:betgrid/firebase/service/firebase_auth_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock/firebase/mock_firebase_auth_service.dart';
+import '../../mock/firebase/mock_firebase_auth_service.dart';
 
 void main() {
   final firebaseAuthService = MockFirebaseAuthService();
-  late AuthServiceImpl serviceImpl;
+  late AuthRepositoryImpl repositoryImpl;
 
   setUpAll(() {
     GetIt.instance.registerFactory<FirebaseAuthService>(
@@ -17,7 +17,7 @@ void main() {
   });
 
   setUp(() {
-    serviceImpl = AuthServiceImpl();
+    repositoryImpl = AuthRepositoryImpl();
   });
 
   tearDown(() {
@@ -31,7 +31,7 @@ void main() {
       const String id = 'u1';
       firebaseAuthService.mockGetLoggedUserId(id);
 
-      final Stream<String?> loggedUserId$ = serviceImpl.loggedUserId$;
+      final Stream<String?> loggedUserId$ = repositoryImpl.loggedUserId$;
 
       expect(loggedUserId$, emits(id));
     },
@@ -44,7 +44,7 @@ void main() {
     () async {
       firebaseAuthService.mockSignInWithGoogle(null);
 
-      final String? userId = await serviceImpl.signInWithGoogle();
+      final String? userId = await repositoryImpl.signInWithGoogle();
 
       expect(userId, null);
     },
@@ -58,7 +58,7 @@ void main() {
       const String expectedUserId = 'u1';
       firebaseAuthService.mockSignInWithGoogle(expectedUserId);
 
-      final String? userId = await serviceImpl.signInWithGoogle();
+      final String? userId = await repositoryImpl.signInWithGoogle();
 
       expect(userId, expectedUserId);
     },
