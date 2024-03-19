@@ -7,9 +7,9 @@ import '../../../component/dialog/actions_dialog_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 import '../../../service/dialog_service.dart';
 import '../../../service/image_service.dart';
+import '../controller/required_data_completion_controller.dart';
 
 class RequiredDataCompletionAvatar extends StatelessWidget {
   const RequiredDataCompletionAvatar({super.key});
@@ -35,7 +35,7 @@ class _Avatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? avatarImgPath = ref.watch(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (state) => state.avatarImgPath,
       ),
     );
@@ -71,7 +71,7 @@ class _AvatarButtons extends ConsumerWidget {
       _AvatarImageSource.camera => capturePhoto(),
     };
     ref
-        .read(requiredDataCompletionNotifierProvider.notifier)
+        .read(requiredDataCompletionControllerProvider.notifier)
         .updateAvatarImgPath(avatarImgPath);
   }
 
@@ -97,7 +97,7 @@ class _AvatarButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool doesAvatarExist = ref.watch(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (state) => state.avatarImgPath != null,
       ),
     );
@@ -124,7 +124,7 @@ class _AvatarButtons extends ConsumerWidget {
               child: OutlinedButton(
                 onPressed: () {
                   ref
-                      .read(requiredDataCompletionNotifierProvider.notifier)
+                      .read(requiredDataCompletionControllerProvider.notifier)
                       .updateAvatarImgPath(null);
                 },
                 child: Text(context.str.delete),

@@ -1,7 +1,7 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
-import 'package:betgrid/ui/provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
-import 'package:betgrid/ui/provider/notifier/required_data_completion/required_data_completion_notifier_provider_state.dart';
+import 'package:betgrid/ui/screen/required_data_completion/controller/required_data_completion_controller.dart';
+import 'package:betgrid/ui/screen/required_data_completion/controller/required_data_completion_controller_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -36,25 +36,25 @@ void main() {
     () async {
       const String avatarImgPath = 'avatar/path';
       final container = makeProviderContainer();
-      final listener = Listener<RequiredDataCompletionNotifierState>();
+      final listener = Listener<RequiredDataCompletionControllerState>();
       container.listen(
-        requiredDataCompletionNotifierProvider,
+        requiredDataCompletionControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       container
-          .read(requiredDataCompletionNotifierProvider.notifier)
+          .read(requiredDataCompletionControllerProvider.notifier)
           .updateAvatarImgPath(avatarImgPath);
 
       verifyInOrder([
         () => listener(
               null,
-              const RequiredDataCompletionNotifierState(),
+              const RequiredDataCompletionControllerState(),
             ),
         () => listener(
-              const RequiredDataCompletionNotifierState(),
-              const RequiredDataCompletionNotifierState(
+              const RequiredDataCompletionControllerState(),
+              const RequiredDataCompletionControllerState(
                 avatarImgPath: avatarImgPath,
               ),
             ),
@@ -69,25 +69,25 @@ void main() {
     () async {
       const String username = 'username';
       final container = makeProviderContainer();
-      final listener = Listener<RequiredDataCompletionNotifierState>();
+      final listener = Listener<RequiredDataCompletionControllerState>();
       container.listen(
-        requiredDataCompletionNotifierProvider,
+        requiredDataCompletionControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       container
-          .read(requiredDataCompletionNotifierProvider.notifier)
+          .read(requiredDataCompletionControllerProvider.notifier)
           .updateUsername(username);
 
       verifyInOrder([
         () => listener(
               null,
-              const RequiredDataCompletionNotifierState(),
+              const RequiredDataCompletionControllerState(),
             ),
         () => listener(
-              const RequiredDataCompletionNotifierState(),
-              const RequiredDataCompletionNotifierState(username: username),
+              const RequiredDataCompletionControllerState(),
+              const RequiredDataCompletionControllerState(username: username),
             ),
       ]);
       verifyNoMoreInteractions(listener);

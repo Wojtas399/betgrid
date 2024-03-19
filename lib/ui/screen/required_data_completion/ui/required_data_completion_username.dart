@@ -6,7 +6,7 @@ import '../../../component/text/title.dart';
 import '../../../controller/logged_user/logged_user_controller.dart';
 import '../../../controller/logged_user/logged_user_controller_state.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
+import '../controller/required_data_completion_controller.dart';
 
 class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
   const RequiredDataCompletionUsername({super.key});
@@ -27,7 +27,7 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
       _canValidateTextField = false;
     });
     ref
-        .read(requiredDataCompletionNotifierProvider.notifier)
+        .read(requiredDataCompletionControllerProvider.notifier)
         .updateUsername(username);
   }
 

@@ -9,10 +9,10 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../controller/logged_user/logged_user_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/logged_user_provider.dart';
-import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 import '../../../provider/theme/theme_mode_notifier_provider.dart';
 import '../../../provider/theme/theme_primary_color_notifier_provider.dart';
 import '../../../service/dialog_service.dart';
+import '../controller/required_data_completion_controller.dart';
 import 'required_data_completion_avatar.dart';
 import 'required_data_completion_theme_color.dart';
 import 'required_data_completion_theme_mode.dart';
@@ -71,12 +71,12 @@ class _SubmitButton extends ConsumerWidget {
 
   Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
     final String username = ref.read(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (notifierState) => notifierState.username,
       ),
     );
     final String? avatarImgPath = ref.read(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (notifierState) => notifierState.avatarImgPath,
       ),
     );
