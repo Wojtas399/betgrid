@@ -6,7 +6,7 @@ import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import 'profile_username_dialog.dart';
 
@@ -22,7 +22,7 @@ class ProfileUsername extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.username,
       ),

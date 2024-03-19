@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 
 @RoutePage()
 class BetsScreen extends ConsumerWidget {
@@ -13,7 +13,7 @@ class BetsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? loggedUserId = ref.watch(
-      loggedUserDataNotifierProvider.select((state) => state.value?.id),
+      loggedUserProvider.select((state) => state.value?.id),
     );
 
     return loggedUserId != null

@@ -5,8 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../../model/user.dart' as user;
 import '../../component/avatar_component.dart';
 import '../../component/dialog/actions_dialog_component.dart';
+import '../../controller/logged_user/logged_user_controller.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import '../../service/image_service.dart';
 
@@ -59,7 +60,7 @@ class ProfileAvatar extends ConsumerWidget {
     if (newAvatarImgPath != null) {
       showLoadingDialog();
       await ref
-          .read(loggedUserDataNotifierProvider.notifier)
+          .read(loggedUserControllerProvider.notifier)
           .updateAvatar(newAvatarImgPath);
       closeLoadingDialog();
     }
@@ -67,20 +68,20 @@ class ProfileAvatar extends ConsumerWidget {
 
   Future<void> _deleteAvatar(WidgetRef ref) async {
     showLoadingDialog();
-    await ref.read(loggedUserDataNotifierProvider.notifier).updateAvatar(null);
+    await ref.read(loggedUserControllerProvider.notifier).updateAvatar(null);
     closeLoadingDialog();
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.username,
       ),
     );
     final String? avatarUrl = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<user.User?> loggedUser) => loggedUser.value?.avatarUrl,
       ),
     );

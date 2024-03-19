@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../model/user.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
+import '../../../controller/logged_user/logged_user_controller.dart';
+import '../../../controller/logged_user/logged_user_controller_state.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/logged_user_data_notifier_provider.dart';
 import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 
 class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
@@ -38,18 +38,18 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
     return null;
   }
 
-  void _onLoggedUserDataChanged(
-    AsyncValue<User?> asyncValue,
+  void _onLoggedUserControllerStateChanged(
+    AsyncValue<void> asyncValue,
     BuildContext context,
   ) {
     if (asyncValue is AsyncError) {
-      final error = asyncValue.error;
-      if (error is LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken) {
+      final state = asyncValue.error;
+      if (state is LoggedUserControllerStateNewUsernameIsAlreadyTaken) {
         setState(() {
           _isUsernameAlreadyTaken = true;
           _canValidateTextField = true;
         });
-      } else if (error is LoggedUserDataNotifierExceptionEmptyUsername) {
+      } else if (state is LoggedUserControllerStateEmptyUsername) {
         setState(() {
           _isUsernameEmpty = true;
           _canValidateTextField = true;
@@ -61,10 +61,8 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-      loggedUserDataNotifierProvider,
-      (previous, next) {
-        _onLoggedUserDataChanged(next, context);
-      },
+      loggedUserControllerProvider,
+      (_, next) => _onLoggedUserControllerStateChanged(next, context),
     );
 
     return Padding(

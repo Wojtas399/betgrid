@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -33,12 +33,12 @@ class _Avatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<User?> loggedUserData) => loggedUserData.value?.username,
       ),
     );
     final String? avatarUrl = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<User?> loggedUserData) => loggedUserData.value?.avatarUrl,
       ),
     );

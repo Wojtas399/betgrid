@@ -6,8 +6,9 @@ import '../../../../model/user.dart' as user;
 import '../../../../model/user.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
+import '../../../controller/logged_user/logged_user_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/logged_user_data_notifier_provider.dart';
+import '../../../provider/logged_user_provider.dart';
 import '../../../provider/notifier/required_data_completion/required_data_completion_notifier_provider.dart';
 import '../../../provider/theme/theme_mode_notifier_provider.dart';
 import '../../../provider/theme/theme_primary_color_notifier_provider.dart';
@@ -20,27 +21,22 @@ import 'required_data_completion_username.dart';
 class RequiredDataCompletionScreen extends ConsumerWidget {
   const RequiredDataCompletionScreen({super.key});
 
-  void _onLoggedUserDataNotifierStateChanged(
-    BuildContext context,
-    AsyncValue<User?> state,
-  ) {
-    if (state is AsyncLoading) {
-      showLoadingDialog();
-    } else if (state is AsyncData) {
-      closeLoadingDialog();
-      if (state.value != null) context.popRoute();
-    } else if (state is AsyncError) {
-      closeLoadingDialog();
-    }
+  void _onLoggedUserChanged(BuildContext context, AsyncValue<User?> state) {
+    state.when(
+      data: (user.User? loggedUser) {
+        closeLoadingDialog();
+        if (loggedUser != null) context.popRoute();
+      },
+      error: (_, __) => closeLoadingDialog(),
+      loading: () => showLoadingDialog(),
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-      loggedUserDataNotifierProvider,
-      (previous, next) {
-        _onLoggedUserDataNotifierStateChanged(context, next);
-      },
+      loggedUserProvider,
+      (_, next) => _onLoggedUserChanged(context, next),
     );
 
     return Scaffold(
@@ -91,7 +87,7 @@ class _SubmitButton extends ConsumerWidget {
       themePrimaryColorNotifierProvider,
     );
     if (themeMode.hasValue && themePrimaryColor.hasValue) {
-      await ref.read(loggedUserDataNotifierProvider.notifier).addLoggedUserData(
+      await ref.read(loggedUserControllerProvider.notifier).addData(
             username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode.value!,
