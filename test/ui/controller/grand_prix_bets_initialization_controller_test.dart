@@ -52,7 +52,8 @@ void main() {
       );
 
       await container
-          .read(grandPrixBetsInitializationControllerProvider.future);
+          .read(grandPrixBetsInitializationControllerProvider.notifier)
+          .initialize();
 
       verify(() => authService.loggedUserId$).called(1);
     },
@@ -78,7 +79,8 @@ void main() {
       );
 
       await container
-          .read(grandPrixBetsInitializationControllerProvider.future);
+          .read(grandPrixBetsInitializationControllerProvider.notifier)
+          .initialize();
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
@@ -115,7 +117,8 @@ void main() {
       );
 
       await container
-          .read(grandPrixBetsInitializationControllerProvider.future);
+          .read(grandPrixBetsInitializationControllerProvider.notifier)
+          .initialize();
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
