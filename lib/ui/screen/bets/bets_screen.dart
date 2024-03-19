@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
-import '../../provider/logged_user_provider.dart';
+import '../../provider/logged_user_id_provider.dart';
 
 @RoutePage()
 class BetsScreen extends ConsumerWidget {
@@ -12,17 +12,15 @@ class BetsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? loggedUserId = ref.watch(
-      loggedUserProvider.select((state) => state.value?.id),
-    );
+    final loggedUserId = ref.watch(loggedUserIdProvider);
 
-    return loggedUserId != null
-        ? CustomScrollView(
+    return loggedUserId.isLoading
+        ? const CircularProgressIndicator()
+        : CustomScrollView(
             slivers: [
-              SliverPlayerTotalPoints(playerId: loggedUserId),
-              SliverGrandPrixesList(playerId: loggedUserId),
+              SliverPlayerTotalPoints(playerId: loggedUserId.value!),
+              SliverGrandPrixesList(playerId: loggedUserId.value!),
             ],
-          )
-        : const CircularProgressIndicator();
+          );
   }
 }
