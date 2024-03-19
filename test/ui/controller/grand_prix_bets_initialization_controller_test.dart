@@ -1,7 +1,7 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import 'package:betgrid/ui/provider/grand_prix_bet/all_grand_prix_bets_initialization_provider.dart';
+import 'package:betgrid/ui/controller/grand_prix_bets_initialization_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -38,6 +38,7 @@ void main() {
   });
 
   test(
+    'initialize, '
     'logged user id is null, '
     'should do nothing',
     () async {
@@ -45,18 +46,20 @@ void main() {
       final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
-        allGrandPrixBetsInitializationProvider,
+        grandPrixBetsInitializationControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(allGrandPrixBetsInitializationProvider.future);
+      await container
+          .read(grandPrixBetsInitializationControllerProvider.future);
 
       verify(() => authService.loggedUserId$).called(1);
     },
   );
 
   test(
+    'initialize, '
     'logged user id is null, '
     'should not initialize grand prix bets if they exist',
     () async {
@@ -69,12 +72,13 @@ void main() {
       final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
-        allGrandPrixBetsInitializationProvider,
+        grandPrixBetsInitializationControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(allGrandPrixBetsInitializationProvider.future);
+      await container
+          .read(grandPrixBetsInitializationControllerProvider.future);
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
@@ -86,6 +90,7 @@ void main() {
   );
 
   test(
+    'initialize, '
     'logged user id is null, '
     'should initialize grand prix bets with default params if they do not exist',
     () async {
@@ -104,12 +109,13 @@ void main() {
       final container = makeProviderContainer();
       final listener = Listener<void>();
       container.listen(
-        allGrandPrixBetsInitializationProvider,
+        grandPrixBetsInitializationControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(allGrandPrixBetsInitializationProvider.future);
+      await container
+          .read(grandPrixBetsInitializationControllerProvider.future);
 
       verify(() => authService.loggedUserId$).called(1);
       verify(
