@@ -1,12 +1,12 @@
 import 'package:betgrid/data/repository/driver/driver_repository.dart';
 import 'package:betgrid/model/driver.dart';
-import 'package:betgrid/ui/provider/driver_provider.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/provider/driver_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/data/repository/mock_driver_repository.dart';
-import '../../mock/listener.dart';
+import '../../../mock/data/repository/mock_driver_repository.dart';
+import '../../../mock/listener.dart';
 
 void main() {
   final driverRepository = MockDriverRepository();

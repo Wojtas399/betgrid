@@ -5,7 +5,7 @@ import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text/body.dart';
 import '../../component/text/title.dart';
-import '../../provider/driver_provider.dart';
+import 'provider/driver_provider.dart';
 
 class DriverDescription extends ConsumerWidget {
   final String? driverId;

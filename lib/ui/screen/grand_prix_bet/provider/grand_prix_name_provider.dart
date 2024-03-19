@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/repository/grand_prix/grand_prix_repository.dart';
-import '../../../model/grand_prix.dart';
-import 'grand_prix_id_provider.dart';
+import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
+import '../../../../model/grand_prix.dart';
+import '../../../provider/grand_prix/grand_prix_id_provider.dart';
 
 part 'grand_prix_name_provider.g.dart';
 
