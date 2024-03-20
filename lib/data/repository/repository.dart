@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../model/entity.dart';
@@ -25,6 +26,13 @@ abstract class Repository<T extends Entity> {
   }
 
   void addEntity(T entity) {
+    final bool doesEntityExist = _repositoryState$.value?.firstWhereOrNull(
+          (element) => element.id == entity.id,
+        ) !=
+        null;
+    if (doesEntityExist) {
+      throw '[Repository] Entity $entity already exists in repository state';
+    }
     final List<T> entities = [...?_repositoryState$.value];
     entities.add(entity);
     _repositoryState$.add(entities);

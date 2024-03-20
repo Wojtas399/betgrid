@@ -23,9 +23,11 @@ class SliverPlayerTotalPoints extends SliverPadding {
                     const GapVertical8(),
                     Consumer(
                       builder: (_, ref, __) {
-                        final double? totalPoints = ref.watch(
-                          playerPointsProvider(playerId: playerId),
-                        );
+                        final double? totalPoints = ref
+                            .watch(
+                              playerPointsProvider(playerId: playerId),
+                            )
+                            .value;
 
                         return DisplayLarge(
                           '${totalPoints ?? '--'}',

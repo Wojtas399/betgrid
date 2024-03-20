@@ -87,9 +87,34 @@ void main() {
 
   test(
     'addEntity, '
-    'should add new entity to state',
+    'entity with the same id already exists in state, '
+    'should throw exception',
     () {
       const TestModel newEntity = TestModel(id: 'e1', name: 'entity 1');
+      final List<TestModel> existingEntities = [
+        const TestModel(id: 'e1', name: 'first entity'),
+        const TestModel(id: 'e2', name: 'second entity'),
+      ];
+      final String expectedException =
+          '[Repository] Entity $newEntity already exists in repository state';
+      repository = TestRepository(initialData: existingEntities);
+
+      Object? exception;
+      try {
+        repository.addEntity(newEntity);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+    },
+  );
+
+  test(
+    'addEntity, '
+    'should add new entity to state',
+    () {
+      const TestModel newEntity = TestModel(id: 'e3', name: 'entity 3');
       final List<TestModel> existingEntities = [
         const TestModel(id: 'e1', name: 'first entity'),
         const TestModel(id: 'e2', name: 'second entity'),

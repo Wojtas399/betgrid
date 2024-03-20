@@ -15,7 +15,7 @@ void main() {
   test(
     'list of all grand prixes does not exist, '
     'should return null',
-    () {
+    () async {
       final container = ProviderContainer(
         overrides: [
           allGrandPrixesProvider.overrideWith(
@@ -28,8 +28,8 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final double? playerPoints = container.read(
-        playerPointsProvider(playerId: playerId),
+      final double? playerPoints = await container.read(
+        playerPointsProvider(playerId: playerId).future,
       );
 
       expect(playerPoints, null);
@@ -38,7 +38,7 @@ void main() {
 
   test(
     'should sum points of each grand prix',
-    () {
+    () async {
       const double gp1Points = 10.0;
       const double gp2Points = 7.5;
       const double gp3Points = 12.25;
@@ -92,8 +92,8 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final double? playerPoints = container.read(
-        playerPointsProvider(playerId: playerId),
+      final double? playerPoints = await container.read(
+        playerPointsProvider(playerId: playerId).future,
       );
 
       expect(playerPoints, gp1Points + gp2Points + gp3Points);

@@ -6,19 +6,19 @@ import 'grand_prix_bet_points_provider.dart';
 part 'player_points_provider.g.dart';
 
 @riverpod
-double? playerPoints(
+Future<double?> playerPoints(
   PlayerPointsRef ref, {
   required String playerId,
-}) {
-  final allGrandPrixes = ref.watch(allGrandPrixesProvider);
-  if (allGrandPrixes.value == null) return null;
+}) async {
+  final allGrandPrixes = await ref.watch(allGrandPrixesProvider.future);
+  if (allGrandPrixes == null) return null;
   double points = 0.0;
-  for (final grandPrix in allGrandPrixes.value!) {
-    final grandPrixPoints = ref.watch(
+  for (final grandPrix in allGrandPrixes) {
+    final grandPrixPoints = await ref.watch(
       grandPrixBetPointsProvider(
         grandPrixId: grandPrix.id,
         playerId: playerId,
-      ).select((state) => state.value?.totalPoints),
+      ).selectAsync((state) => state?.totalPoints),
     );
     points += grandPrixPoints ?? 0;
   }
