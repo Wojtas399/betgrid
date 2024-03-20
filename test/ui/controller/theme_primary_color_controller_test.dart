@@ -1,24 +1,22 @@
-import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/provider/theme/theme_primary_color_notifier_provider.dart';
+import 'package:betgrid/ui/controller/theme_primary_color_controller.dart';
+import 'package:betgrid/ui/provider/logged_user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/user_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_user_repository.dart';
-import '../../../mock/listener.dart';
+import '../../creator/user_creator.dart';
+import '../../mock/data/repository/mock_user_repository.dart';
+import '../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthRepository();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({User? loggedUser}) {
     final container = ProviderContainer(
       overrides: [
-        authRepositoryProvider.overrideWithValue(authService),
+        loggedUserProvider.overrideWith((_) => Stream.value(loggedUser)),
         userRepositoryProvider.overrideWithValue(userRepository),
       ],
     );
@@ -27,28 +25,26 @@ void main() {
   }
 
   tearDown(() {
-    reset(authService);
     reset(userRepository);
   });
 
   test(
     'build, '
-    'logged user id does not exist, '
+    'logged user does not exist, '
     'should emit ThemePrimaryColor.defaultRed',
     () async {
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.defaultRed;
-      authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = makeProviderContainer(loggedUser: null);
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
-        themePrimaryColorNotifierProvider,
+        themePrimaryColorControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(themePrimaryColorNotifierProvider.future),
+        container.read(themePrimaryColorControllerProvider.future),
         completion(expectedThemePrimaryColor),
       );
       verifyInOrder([
@@ -67,61 +63,26 @@ void main() {
 
   test(
     'build, '
-    'logged user data does not exist, '
-    'should emit ThemePrimaryColor.defaultRed',
-    () async {
-      const String loggedUserId = 'u1';
-      const ThemePrimaryColor expectedThemePrimaryColor =
-          ThemePrimaryColor.defaultRed;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer();
-      final listener = Listener<AsyncValue<ThemePrimaryColor>>();
-      container.listen(
-        themePrimaryColorNotifierProvider,
-        listener,
-        fireImmediately: true,
-      );
-
-      await expectLater(
-        container.read(themePrimaryColorNotifierProvider.future),
-        completion(expectedThemePrimaryColor),
-      );
-      verifyInOrder([
-        () => listener(
-              null,
-              const AsyncLoading<ThemePrimaryColor>(),
-            ),
-        () => listener(
-              const AsyncLoading<ThemePrimaryColor>(),
-              const AsyncData<ThemePrimaryColor>(expectedThemePrimaryColor),
-            ),
-      ]);
-      verifyNoMoreInteractions(listener);
-    },
-  );
-
-  test(
-    'build, '
-    'should get logged user data from UserRepository and emit its theme primary color',
+    'should get logged user data from its provider and emit its theme primary color',
     () async {
       const String loggedUserId = 'u1';
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.purple;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(
-        user: createUser(themePrimaryColor: expectedThemePrimaryColor),
+      final container = makeProviderContainer(
+        loggedUser: createUser(
+          id: loggedUserId,
+          themePrimaryColor: expectedThemePrimaryColor,
+        ),
       );
-      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
-        themePrimaryColorNotifierProvider,
+        themePrimaryColorControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(themePrimaryColorNotifierProvider.future),
+        container.read(themePrimaryColorControllerProvider.future),
         completion(expectedThemePrimaryColor),
       );
       verifyInOrder([
@@ -135,36 +96,31 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
-      verify(
-        () => userRepository.getUserById(userId: loggedUserId),
-      ).called(1);
     },
   );
 
   test(
     'changeThemePrimaryColor, '
-    'logged user id does not exist, '
+    'logged user does not exist, '
     'should only update theme mode in state',
     () async {
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.pink;
-      authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = makeProviderContainer(loggedUser: null);
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
-        themePrimaryColorNotifierProvider,
+        themePrimaryColorControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(themePrimaryColorNotifierProvider.future);
+      await container.read(themePrimaryColorControllerProvider.future);
       container
-          .read(themePrimaryColorNotifierProvider.notifier)
+          .read(themePrimaryColorControllerProvider.notifier)
           .changeThemePrimaryColor(expectedThemePrimaryColor);
 
       await expectLater(
-        container.read(themePrimaryColorNotifierProvider.future),
+        container.read(themePrimaryColorControllerProvider.future),
         completion(expectedThemePrimaryColor),
       );
       verifyInOrder([
@@ -182,7 +138,6 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
       verifyNever(
         () => userRepository.updateUserData(
           userId: any(named: 'userId'),
@@ -194,31 +149,34 @@ void main() {
 
   test(
     'changeThemePrimaryColor, '
-    'logged user id exists, '
+    'logged user exists, '
     'should update theme primary color in state and should call method from '
     "UserRepository to update user's data with new theme primary color",
     () async {
       const String loggedUserId = 'u1';
       const ThemePrimaryColor expectedThemePrimaryColor =
           ThemePrimaryColor.pink;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer();
+      final container = makeProviderContainer(
+        loggedUser: createUser(
+          id: loggedUserId,
+          themePrimaryColor: ThemePrimaryColor.defaultRed,
+        ),
+      );
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
-        themePrimaryColorNotifierProvider,
+        themePrimaryColorControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(themePrimaryColorNotifierProvider.future);
+      await container.read(themePrimaryColorControllerProvider.future);
       container
-          .read(themePrimaryColorNotifierProvider.notifier)
+          .read(themePrimaryColorControllerProvider.notifier)
           .changeThemePrimaryColor(expectedThemePrimaryColor);
 
       await expectLater(
-        container.read(themePrimaryColorNotifierProvider.future),
+        container.read(themePrimaryColorControllerProvider.future),
         completion(expectedThemePrimaryColor),
       );
       verifyInOrder([
@@ -236,7 +194,6 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
       verify(
         () => userRepository.updateUserData(
           userId: loggedUserId,

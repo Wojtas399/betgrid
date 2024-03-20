@@ -8,8 +8,8 @@ import '../../component/text/title.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
 import '../../controller/theme_mode_controller.dart';
+import '../../controller/theme_primary_color_controller.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/theme/theme_primary_color_notifier_provider.dart';
 import 'profile_avatar.dart';
 import 'profile_username.dart';
 
@@ -84,7 +84,7 @@ class _ThemePrimaryColor extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.watch(
-      themePrimaryColorNotifierProvider,
+      themePrimaryColorControllerProvider,
     );
 
     return Padding(
@@ -101,7 +101,7 @@ class _ThemePrimaryColor extends ConsumerWidget {
             selectedColor: themePrimaryColor.value,
             onColorSelected: (user.ThemePrimaryColor color) {
               ref
-                  .read(themePrimaryColorNotifierProvider.notifier)
+                  .read(themePrimaryColorControllerProvider.notifier)
                   .changeThemePrimaryColor(color);
             },
           ),

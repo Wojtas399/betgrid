@@ -11,9 +11,9 @@ import 'model/user.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
 import 'ui/controller/theme_mode_controller.dart';
+import 'ui/controller/theme_primary_color_controller.dart';
 import 'ui/extensions/theme_mode_extensions.dart';
 import 'ui/extensions/theme_primary_color_extensions.dart';
-import 'ui/provider/theme/theme_primary_color_notifier_provider.dart';
 
 void main() async {
   configureDependencies();
@@ -35,7 +35,7 @@ class _MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<ThemePrimaryColor> themePrimaryColor = ref.watch(
-      themePrimaryColorNotifierProvider,
+      themePrimaryColorControllerProvider,
     );
 
     return MaterialApp.router(
