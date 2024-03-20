@@ -1,24 +1,22 @@
-import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/provider/theme/theme_mode_notifier_provider.dart';
+import 'package:betgrid/ui/controller/theme_mode_controller.dart';
+import 'package:betgrid/ui/provider/logged_user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/user_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_user_repository.dart';
-import '../../../mock/listener.dart';
+import '../../creator/user_creator.dart';
+import '../../mock/data/repository/mock_user_repository.dart';
+import '../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthRepository();
   final userRepository = MockUserRepository();
 
-  ProviderContainer makeProviderContainer() {
+  ProviderContainer makeProviderContainer({User? loggedUser}) {
     final container = ProviderContainer(
       overrides: [
-        authRepositoryProvider.overrideWithValue(authService),
+        loggedUserProvider.overrideWith((_) => Stream.value(loggedUser)),
         userRepositoryProvider.overrideWithValue(userRepository),
       ],
     );
@@ -27,27 +25,25 @@ void main() {
   }
 
   tearDown(() {
-    reset(authService);
     reset(userRepository);
   });
 
   test(
     'build, '
-    'logged user id does not exist, '
-    'should emit ThemeMode.light',
+    'logged user does not exist, '
+    'should emit ThemeMode.system',
     () async {
-      const ThemeMode expectedThemeMode = ThemeMode.light;
-      authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      const ThemeMode expectedThemeMode = ThemeMode.system;
+      final container = makeProviderContainer(loggedUser: null);
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
-        themeModeNotifierProvider,
+        themeModeControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(themeModeNotifierProvider.future),
+        container.read(themeModeControllerProvider.future),
         completion(expectedThemeMode),
       );
       verifyInOrder([
@@ -66,59 +62,22 @@ void main() {
 
   test(
     'build, '
-    'logged user data does not exist, '
-    'should emit ThemeMode.light',
-    () async {
-      const String loggedUserId = 'u1';
-      const ThemeMode expectedThemeMode = ThemeMode.light;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(user: null);
-      final container = makeProviderContainer();
-      final listener = Listener<AsyncValue<ThemeMode>>();
-      container.listen(
-        themeModeNotifierProvider,
-        listener,
-        fireImmediately: true,
-      );
-
-      await expectLater(
-        container.read(themeModeNotifierProvider.future),
-        completion(expectedThemeMode),
-      );
-      verifyInOrder([
-        () => listener(
-              null,
-              const AsyncLoading<ThemeMode>(),
-            ),
-        () => listener(
-              const AsyncLoading<ThemeMode>(),
-              const AsyncData<ThemeMode>(expectedThemeMode),
-            ),
-      ]);
-      verifyNoMoreInteractions(listener);
-    },
-  );
-
-  test(
-    'build, '
-    'should get logged user data from UserRepository and emit its theme mode',
+    'should get logged user data from its provider and should emit its theme mode',
     () async {
       const String loggedUserId = 'u1';
       const ThemeMode expectedThemeMode = ThemeMode.dark;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(
-        user: createUser(themeMode: expectedThemeMode),
+      final container = makeProviderContainer(
+        loggedUser: createUser(id: loggedUserId, themeMode: expectedThemeMode),
       );
-      final container = makeProviderContainer();
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
-        themeModeNotifierProvider,
+        themeModeControllerProvider,
         listener,
         fireImmediately: true,
       );
 
       await expectLater(
-        container.read(themeModeNotifierProvider.future),
+        container.read(themeModeControllerProvider.future),
         completion(expectedThemeMode),
       );
       verifyInOrder([
@@ -132,35 +91,30 @@ void main() {
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
-      verify(
-        () => userRepository.getUserById(userId: loggedUserId),
-      ).called(1);
     },
   );
 
   test(
     'changeThemeMode, '
-    'logged user id does not exist, '
+    'logged user does not exist, '
     'should only update theme mode in state',
     () async {
       const ThemeMode expectedThemeMode = ThemeMode.system;
-      authService.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = makeProviderContainer(loggedUser: null);
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
-        themeModeNotifierProvider,
+        themeModeControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(themeModeNotifierProvider.future);
-      container.read(themeModeNotifierProvider.notifier).changeThemeMode(
-            expectedThemeMode,
-          );
+      await container.read(themeModeControllerProvider.future);
+      container
+          .read(themeModeControllerProvider.notifier)
+          .changeThemeMode(expectedThemeMode);
 
       await expectLater(
-        container.read(themeModeNotifierProvider.future),
+        container.read(themeModeControllerProvider.future),
         completion(expectedThemeMode),
       );
       verifyInOrder([
@@ -170,15 +124,14 @@ void main() {
             ),
         () => listener(
               const AsyncLoading<ThemeMode>(),
-              const AsyncData<ThemeMode>(ThemeMode.light),
+              const AsyncData<ThemeMode>(ThemeMode.system),
             ),
         () => listener(
-              const AsyncData<ThemeMode>(ThemeMode.light),
+              const AsyncData<ThemeMode>(ThemeMode.system),
               const AsyncData<ThemeMode>(expectedThemeMode),
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
       verifyNever(
         () => userRepository.updateUserData(
           userId: any(named: 'userId'),
@@ -190,30 +143,30 @@ void main() {
 
   test(
     'changeThemeMode, '
-    'logged user id exists, '
+    'logged user exists, '
     'should update theme mode in state and should call method from UserRepository '
     "to update user's data with new theme mode",
     () async {
       const String loggedUserId = 'u1';
       const ThemeMode expectedThemeMode = ThemeMode.system;
-      authService.mockGetLoggedUserId(loggedUserId);
-      userRepository.mockGetUserById(user: null);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer();
+      final container = makeProviderContainer(
+        loggedUser: createUser(id: loggedUserId, themeMode: ThemeMode.dark),
+      );
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
-        themeModeNotifierProvider,
+        themeModeControllerProvider,
         listener,
         fireImmediately: true,
       );
 
-      await container.read(themeModeNotifierProvider.future);
-      container.read(themeModeNotifierProvider.notifier).changeThemeMode(
+      await container.read(themeModeControllerProvider.future);
+      container.read(themeModeControllerProvider.notifier).changeThemeMode(
             expectedThemeMode,
           );
 
       await expectLater(
-        container.read(themeModeNotifierProvider.future),
+        container.read(themeModeControllerProvider.future),
         completion(expectedThemeMode),
       );
       verifyInOrder([
@@ -223,15 +176,14 @@ void main() {
             ),
         () => listener(
               const AsyncLoading<ThemeMode>(),
-              const AsyncData<ThemeMode>(ThemeMode.light),
+              const AsyncData<ThemeMode>(ThemeMode.dark),
             ),
         () => listener(
-              const AsyncData<ThemeMode>(ThemeMode.light),
+              const AsyncData<ThemeMode>(ThemeMode.dark),
               const AsyncData<ThemeMode>(expectedThemeMode),
             ),
       ]);
       verifyNoMoreInteractions(listener);
-      verify(() => authService.loggedUserId$).called(1);
       verify(
         () => userRepository.updateUserData(
           userId: loggedUserId,

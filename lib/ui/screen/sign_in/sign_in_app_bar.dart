@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../../../model/user.dart' as user;
 import '../../component/gap/gap_horizontal.dart';
-import '../../provider/theme/theme_mode_notifier_provider.dart';
+import '../../controller/theme_mode_controller.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SignInAppBar({super.key});
@@ -36,13 +36,13 @@ class _ThemeSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<user.ThemeMode> themeMode = ref.watch(
-      themeModeNotifierProvider,
+      themeModeControllerProvider,
     );
 
     return Switch(
       value: themeMode.value == user.ThemeMode.dark,
       onChanged: (bool isSwitched) {
-        ref.read(themeModeNotifierProvider.notifier).changeThemeMode(
+        ref.read(themeModeControllerProvider.notifier).changeThemeMode(
               isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
             );
       },

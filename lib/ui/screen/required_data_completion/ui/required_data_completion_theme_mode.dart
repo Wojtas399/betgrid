@@ -5,8 +5,8 @@ import '../../../../model/user.dart' as user;
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text/title.dart';
 import '../../../component/theme_mode_selection_component.dart';
+import '../../../controller/theme_mode_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/theme/theme_mode_notifier_provider.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
   const RequiredDataCompletionThemeMode({super.key});
@@ -33,13 +33,15 @@ class _ThemeModeTypes extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<user.ThemeMode> themeMode = ref.watch(
-      themeModeNotifierProvider,
+      themeModeControllerProvider,
     );
 
     return ThemeModeSelection(
       selectedThemeMode: themeMode.value,
       onThemeModeChanged: (user.ThemeMode themeMode) {
-        ref.read(themeModeNotifierProvider.notifier).changeThemeMode(themeMode);
+        ref
+            .read(themeModeControllerProvider.notifier)
+            .changeThemeMode(themeMode);
       },
     );
   }

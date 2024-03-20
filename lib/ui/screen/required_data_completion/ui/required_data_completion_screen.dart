@@ -7,9 +7,9 @@ import '../../../../model/user.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../controller/logged_user/logged_user_controller.dart';
+import '../../../controller/theme_mode_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/logged_user_provider.dart';
-import '../../../provider/theme/theme_mode_notifier_provider.dart';
 import '../../../provider/theme/theme_primary_color_notifier_provider.dart';
 import '../../../service/dialog_service.dart';
 import '../controller/required_data_completion_controller.dart';
@@ -81,7 +81,7 @@ class _SubmitButton extends ConsumerWidget {
       ),
     );
     final AsyncValue<user.ThemeMode> themeMode = ref.read(
-      themeModeNotifierProvider,
+      themeModeControllerProvider,
     );
     final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.read(
       themePrimaryColorNotifierProvider,
