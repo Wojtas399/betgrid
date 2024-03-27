@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/label.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'grand_prix_bet_label_cell.dart';
