@@ -1,10 +1,10 @@
+import 'package:betgrid/ui/component/text_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../extensions/build_context_extensions.dart';
 import '../provider/player_points_provider.dart';
 import 'gap/gap_vertical.dart';
-import 'text/display.dart';
 import 'text/headline.dart';
 
 class SliverPlayerTotalPoints extends SliverPadding {

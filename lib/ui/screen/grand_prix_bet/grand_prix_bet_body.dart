@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix_bet.dart';
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/display.dart';
 import '../../component/text/headline.dart';
+import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prix/grand_prix_id_provider.dart';
 import '../../provider/grand_prix_bet_points_provider.dart';
