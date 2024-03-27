@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
-import '../../component/text/body.dart';
 import '../../component/text_component.dart';
 import 'provider/driver_provider.dart';
 

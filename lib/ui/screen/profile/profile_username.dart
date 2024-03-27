@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user.dart' as user;
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/body.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/logged_user_provider.dart';

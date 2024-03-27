@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet_points.dart';
-import '../../component/text/body.dart';
+import '../../component/text_component.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prix/grand_prix_id_provider.dart';

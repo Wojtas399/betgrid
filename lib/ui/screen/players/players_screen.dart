@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/body.dart';
 import '../../component/text_component.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../model/grand_prix.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
-import 'text/body.dart';
 import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
