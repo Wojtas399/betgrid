@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../extensions/build_context_extensions.dart';
 import '../provider/player_points_provider.dart';
 import 'gap/gap_vertical.dart';
-import 'text/headline.dart';
 
 class SliverPlayerTotalPoints extends SliverPadding {
   SliverPlayerTotalPoints({super.key, required String playerId})
