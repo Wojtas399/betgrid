@@ -25,7 +25,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
         (state) => state.value?.qualiStandingsByDriverIds,
       ),
     );
-    final List<String>? resultsStandings = ref.watch(
+    final List<String?>? resultsStandings = ref.watch(
       grandPrixResultsProvider.select(
         (state) => state.value?.qualiStandingsByDriverIds,
       ),

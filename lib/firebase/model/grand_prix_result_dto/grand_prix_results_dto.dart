@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'grand_prix_results_dto.g.dart';
 part 'grand_prix_results_dto.freezed.dart';
+part 'grand_prix_results_dto.g.dart';
 
 @freezed
 class GrandPrixResultsDto with _$GrandPrixResultsDto {
@@ -10,7 +10,7 @@ class GrandPrixResultsDto with _$GrandPrixResultsDto {
     @Default('')
     String id,
     required String grandPrixId,
-    List<String>? qualiStandingsByDriverIds,
+    List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,
     String? p2DriverId,
     String? p3DriverId,

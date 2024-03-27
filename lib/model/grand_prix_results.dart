@@ -4,7 +4,7 @@ import 'entity.dart';
 
 class GrandPrixResults extends Entity {
   final String grandPrixId;
-  final List<String>? qualiStandingsByDriverIds;
+  final List<String?>? qualiStandingsByDriverIds;
   final RaceResults? raceResults;
 
   const GrandPrixResults({
