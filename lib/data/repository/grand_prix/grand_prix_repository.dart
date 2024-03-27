@@ -5,12 +5,12 @@ import 'grand_prix_repository_impl.dart';
 
 part 'grand_prix_repository.g.dart';
 
-@riverpod
-GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
-    GrandPrixRepositoryImpl();
-
 abstract interface class GrandPrixRepository {
   Stream<List<GrandPrix>?> getAllGrandPrixes();
 
   Stream<GrandPrix?> getGrandPrixById({required String grandPrixId});
 }
+
+@riverpod
+GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
+    GrandPrixRepositoryImpl();

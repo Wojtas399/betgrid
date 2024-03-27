@@ -17,10 +17,11 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
 
   @override
   Stream<List<GrandPrix>?> getAllGrandPrixes() async* {
-    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
-      await _loadGrandPrixesFromDb();
-    }
-    await for (final grandPrixes in repositoryState$) {
+    await for (final repoState in repositoryState$) {
+      List<GrandPrix>? grandPrixes = repoState;
+      if (grandPrixes == null || grandPrixes.isEmpty) {
+        grandPrixes = await _loadGrandPrixesFromDb();
+      }
       yield grandPrixes;
     }
   }
@@ -31,20 +32,21 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
       GrandPrix? grandPrix = grandPrixes?.firstWhereOrNull(
         (GrandPrix gp) => gp.id == grandPrixId,
       );
-      grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
+      grandPrix ??= await _fetchGrandPrixFromDb(grandPrixId);
       yield grandPrix;
     }
   }
 
-  Future<void> _loadGrandPrixesFromDb() async {
+  Future<List<GrandPrix>> _loadGrandPrixesFromDb() async {
     final List<GrandPrixDto> grandPrixDtos =
         await _dbGrandPrixService.loadAllGrandPrixes();
     final List<GrandPrix> grandPrixes =
         grandPrixDtos.map(mapGrandPrixFromDto).toList();
     setEntities(grandPrixes);
+    return grandPrixes;
   }
 
-  Future<GrandPrix?> _loadGrandPrixFromDb(String grandPrixId) async {
+  Future<GrandPrix?> _fetchGrandPrixFromDb(String grandPrixId) async {
     final GrandPrixDto? grandPrixDto =
         await _dbGrandPrixService.loadGrandPrixById(
       grandPrixId: grandPrixId,

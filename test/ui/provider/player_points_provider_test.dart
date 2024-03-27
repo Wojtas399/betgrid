@@ -1,6 +1,6 @@
+import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
-import 'package:betgrid/ui/provider/grand_prix/all_grand_prixes_provider.dart';
 import 'package:betgrid/ui/provider/grand_prix_bet_points_provider.dart';
 import 'package:betgrid/ui/provider/player_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
