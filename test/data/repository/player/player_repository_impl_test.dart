@@ -7,9 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/user_dto_creator.dart';
-import '../../mock/firebase/mock_firebase_avatar_service.dart';
-import '../../mock/firebase/mock_firebase_user_service.dart';
+import '../../../creator/user_dto_creator.dart';
+import '../../../mock/firebase/mock_firebase_avatar_service.dart';
+import '../../../mock/firebase/mock_firebase_user_service.dart';
 
 void main() {
   final dbUserService = MockFirebaseUserService();
@@ -32,13 +32,12 @@ void main() {
   });
 
   test(
-    'getAllPlayersWithoutGiven, '
-    'should load all players from db, add them to repo state and '
-    'emit players with id different than given id',
+    'getAllPlayers, '
+    'should load all players from db, add them to repo state and emit them',
     () async {
       final List<UserDto> userDtos = [
         createUserDto(id: 'u2', username: 'username 2'),
-        createUserDto(id: playerId, username: 'username 1'),
+        createUserDto(id: 'u1', username: 'username 1'),
         createUserDto(id: 'u3', username: 'username 3'),
       ];
       const String user2AvatarUrl = 'avatar/url';
@@ -48,6 +47,7 @@ void main() {
           username: 'username 2',
           avatarUrl: user2AvatarUrl,
         ),
+        const Player(id: 'u1', username: 'username 1'),
         const Player(id: 'u3', username: 'username 3'),
       ];
       dbUserService.mockLoadAllUsers(userDtos: userDtos);
@@ -55,12 +55,14 @@ void main() {
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
       ).thenAnswer((_) => Future.value(user2AvatarUrl));
       when(
+        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u1'),
+      ).thenAnswer((_) => Future.value(null));
+      when(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u3'),
       ).thenAnswer((_) => Future.value(null));
       repositoryImpl = PlayerRepositoryImpl(initialData: []);
 
-      final Stream<List<Player>?> players$ =
-          repositoryImpl.getAllPlayersWithoutGiven(playerId: playerId);
+      final Stream<List<Player>?> players$ = repositoryImpl.getAllPlayers();
 
       expect(await players$.first, expectedPlayers);
       expect(
@@ -70,6 +72,9 @@ void main() {
       verify(dbUserService.loadAllUsers).called(1);
       verify(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
+      ).called(1);
+      verify(
+        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u1'),
       ).called(1);
       verify(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u3'),

@@ -5,12 +5,12 @@ import 'player_repository_impl.dart';
 
 part 'player_repository.g.dart';
 
-@riverpod
-PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
-    PlayerRepositoryImpl();
-
 abstract interface class PlayerRepository {
-  Stream<List<Player>?> getAllPlayersWithoutGiven({required String playerId});
+  Stream<List<Player>?> getAllPlayers();
 
   Stream<Player?> getPlayerById({required String playerId});
 }
+
+@riverpod
+PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
+    PlayerRepositoryImpl();

@@ -19,12 +19,10 @@ class PlayerRepositoryImpl extends Repository<Player>
         _dbAvatarService = getIt<FirebaseAvatarService>();
 
   @override
-  Stream<List<Player>?> getAllPlayersWithoutGiven({
-    required String playerId,
-  }) async* {
-    await _loadAllPlayersWithoutGivenFromDb(playerId);
+  Stream<List<Player>?> getAllPlayers() async* {
+    await _fetchAllPlayersFromDb();
     await for (final users in repositoryState$) {
-      yield users?.where((player) => player.id != playerId).toList();
+      yield users;
     }
   }
 
@@ -39,11 +37,10 @@ class PlayerRepositoryImpl extends Repository<Player>
     }
   }
 
-  Future<void> _loadAllPlayersWithoutGivenFromDb(String playerId) async {
+  Future<void> _fetchAllPlayersFromDb() async {
     final List<UserDto> userDtos = await _dbUserService.loadAllUsers();
     final List<Player> players = [];
     for (final userDto in userDtos) {
-      if (userDto.id == playerId) continue;
       final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
         userId: userDto.id,
       );

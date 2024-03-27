@@ -9,8 +9,8 @@ import '../../component/text/body.dart';
 import '../../component/text/title.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/player/all_players_provider.dart';
 import '../../provider/player_points_provider.dart';
+import 'provider/other_players_provider.dart';
 
 @RoutePage()
 class PlayersScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class _PlayersList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Player>?> players = ref.watch(allPlayersProvider);
+    final AsyncValue<List<Player>?> players = ref.watch(otherPlayersProvider);
 
     if (players.hasValue) {
       return GridView.builder(
@@ -92,7 +92,7 @@ class _PlayerItem extends StatelessWidget {
               );
 
               return BodyMedium(
-                '${context.str.points}: ${playerPoints ?? 0}',
+                '${context.str.points}: $playerPoints',
                 color: Theme.of(context).colorScheme.outlineVariant,
               );
             }),
