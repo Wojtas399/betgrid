@@ -8,7 +8,7 @@ import '../config/router/app_router.dart';
 import '../provider/grand_prix_bet_points_provider.dart';
 import 'grand_prix_item_component.dart';
 import 'scroll_animated_item_component.dart';
-import 'text/title.dart';
+import 'text_component.dart';
 
 class SliverGrandPrixesList extends SliverPadding {
   SliverGrandPrixesList({super.key, required String playerId})

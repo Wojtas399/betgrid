@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extensions.dart';
-import '../text/title.dart';
+import '../text_component.dart';
 
 class ActionsDialog<T> extends StatelessWidget {
   final List<ActionsDialogItem<T>> actions;

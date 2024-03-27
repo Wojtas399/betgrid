@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user.dart' as user;
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/title.dart';
+import '../../component/text_component.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
 import '../../controller/theme_mode_controller.dart';

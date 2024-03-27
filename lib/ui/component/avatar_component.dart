@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'text/title.dart';
+import 'text_component.dart';
 
 class Avatar extends StatelessWidget {
   final String? avatarUrl;

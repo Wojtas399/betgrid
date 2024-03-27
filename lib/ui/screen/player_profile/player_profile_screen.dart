@@ -5,7 +5,7 @@ import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
-import '../../component/text/title.dart';
+import '../../component/text_component.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {

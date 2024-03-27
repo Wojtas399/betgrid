@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text/body.dart';
-import '../../component/text/title.dart';
+import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 
 class GrandPrixBetPointsSummary extends StatelessWidget {
