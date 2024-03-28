@@ -4,6 +4,7 @@ import 'package:betgrid/model/driver.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../creator/driver_creator.dart';
 import '../../../mock/data/repository/mock_driver_repository.dart';
 
 void main() {
@@ -20,8 +21,28 @@ void main() {
   }
 
   test(
+    'allDriversProvider, '
+    'should get all drivers from DriverRepository and should emit them',
+    () async {
+      final List<Driver> expectedAllDrivers = [
+        createDriver(id: 'd1'),
+        createDriver(id: 'd2'),
+        createDriver(id: 'd3'),
+      ];
+      driverRepository.mockGetAllDrivers(allDrivers: expectedAllDrivers);
+      final container = makeProviderContainer();
+
+      final List<Driver> allDrivers = await container.read(
+        allDriversProvider.future,
+      );
+
+      expect(allDrivers, expectedAllDrivers);
+    },
+  );
+
+  test(
     'driverProvider, '
-    'should get driver from DriverRepository and should return it',
+    'should get driver from DriverRepository and should emit it',
     () async {
       const String driverId = 'd1';
       const Driver expectedDriver = Driver(
