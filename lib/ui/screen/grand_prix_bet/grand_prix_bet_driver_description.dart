@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/repository/driver/driver_repository_method_providers.dart';
 import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text_component.dart';
-import 'provider/driver_provider.dart';
 
 class DriverDescription extends ConsumerWidget {
   final String? driverId;
