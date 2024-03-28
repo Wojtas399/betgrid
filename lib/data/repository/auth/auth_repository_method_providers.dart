@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repository/auth/auth_repository.dart';
+import 'auth_repository.dart';
 
-part 'logged_user_id_provider.g.dart';
+part 'auth_repository_method_providers.g.dart';
 
 @riverpod
 Stream<String?> loggedUserId(LoggedUserIdRef ref) =>

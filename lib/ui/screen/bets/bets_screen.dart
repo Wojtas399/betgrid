@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/repository/auth/auth_repository_method_providers.dart';
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
-import '../../provider/logged_user_id_provider.dart';
 
 @RoutePage()
 class BetsScreen extends ConsumerWidget {
