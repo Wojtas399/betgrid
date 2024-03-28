@@ -5,8 +5,8 @@ enum _TextStyleType {
   labelLarge,
   bodyMedium,
   bodyLarge,
-  titleSmall,
   titleMedium,
+  titleLarge,
   displayLarge,
   headlineMedium,
 }
@@ -35,7 +35,7 @@ class _TextComponent extends StatelessWidget {
       _TextStyleType.labelLarge => textTheme.labelLarge,
       _TextStyleType.bodyMedium => textTheme.bodyMedium,
       _TextStyleType.bodyLarge => textTheme.bodyLarge,
-      _TextStyleType.titleSmall => textTheme.titleSmall,
+      _TextStyleType.titleLarge => textTheme.titleLarge,
       _TextStyleType.titleMedium => textTheme.titleMedium,
       _TextStyleType.displayLarge => textTheme.displayLarge,
       _TextStyleType.headlineMedium => textTheme.headlineMedium,
@@ -106,7 +106,7 @@ class TitleLarge extends _TextComponent {
     super.textAlign,
     super.fontWeight,
     super.color,
-  }) : super(textStyleType: _TextStyleType.titleSmall);
+  }) : super(textStyleType: _TextStyleType.titleLarge);
 }
 
 class DisplayLarge extends _TextComponent {
