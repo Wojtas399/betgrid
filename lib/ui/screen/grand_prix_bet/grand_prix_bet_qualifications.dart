@@ -7,13 +7,13 @@ import '../../../model/grand_prix_bet_points.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prix/grand_prix_id_provider.dart';
-import '../../provider/player/player_id_provider.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
 import 'grand_prix_points_summary.dart';
 import 'provider/grand_prix_bet_provider.dart';
 import 'provider/grand_prix_results_provider.dart';
+import 'provider/player_id_provider.dart';
 
 class GrandPrixBetQualifications extends ConsumerWidget {
   const GrandPrixBetQualifications({super.key});

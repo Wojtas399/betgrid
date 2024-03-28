@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../../model/grand_prix_bet.dart';
 import '../../../provider/grand_prix/grand_prix_id_provider.dart';
-import '../../../provider/player/player_id_provider.dart';
+import 'player_id_provider.dart';
 
 part 'grand_prix_bet_provider.g.dart';
 

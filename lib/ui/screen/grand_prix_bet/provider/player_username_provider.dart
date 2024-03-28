@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/player.dart';
-import '../../../provider/player/player_id_provider.dart';
+import 'player_id_provider.dart';
 
 part 'player_username_provider.g.dart';
 

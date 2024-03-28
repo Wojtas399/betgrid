@@ -1,7 +1,7 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/provider/player/player_id_provider.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/provider/player_id_provider.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/player_username_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
