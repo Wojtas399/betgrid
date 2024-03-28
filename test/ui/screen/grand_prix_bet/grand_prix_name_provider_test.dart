@@ -1,104 +1,63 @@
-import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
+import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/ui/provider/grand_prix/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/grand_prix_name_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_creator.dart';
-import '../../../mock/data/repository/mock_grand_prix_repository.dart';
-import '../../../mock/listener.dart';
 
 void main() {
-  final grandPrixRepository = MockGrandPrixRepository();
-
-  ProviderContainer makeProvideContainer(String? grandPrixId) {
+  ProviderContainer makeProvideContainer({
+    String? grandPrixId,
+    GrandPrix? grandPrix,
+  }) {
     final container = ProviderContainer(
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
-        grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
+        if (grandPrixId != null)
+          grandPrixProvider(grandPrixId: grandPrixId).overrideWith(
+            (_) => Stream.value(grandPrix),
+          ),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
 
-  tearDown(() {
-    reset(grandPrixRepository);
-  });
-
   test(
     'grand prix id is null, '
-    'should emit null',
+    'should return null',
     () async {
-      final container = makeProvideContainer(null);
-      final listener = Listener<AsyncValue<String?>>();
-      container.listen(
-        grandPrixNameProvider,
-        listener,
-        fireImmediately: true,
+      final container = makeProvideContainer();
+
+      final String? grandPrixName = await container.read(
+        grandPrixNameProvider.future,
       );
 
-      await expectLater(
-        container.read(grandPrixNameProvider.future),
-        completion(null),
-      );
-      verifyInOrder([
-        () => listener(
-              null,
-              const AsyncLoading<String?>(),
-            ),
-        () => listener(
-              const AsyncLoading<String?>(),
-              const AsyncData<String?>(null),
-            ),
-      ]);
-      verifyNoMoreInteractions(listener);
-      verifyNever(
-        () => grandPrixRepository.getGrandPrixById(
-          grandPrixId: any(named: 'grandPrixId'),
-        ),
-      );
+      expect(grandPrixName, null);
     },
   );
 
   test(
-    'should get grand prix from grand prix repository and should emit its name',
+    'should get grand prix and should emit its name',
     () async {
-      const String gpId = 'gp1';
-      const String expectedGpName = 'grand prix name';
+      const String grandPrixId = 'gp1';
+      const String expectedGrandPrixName = 'grand prix name';
       final GrandPrix grandPrix = createGrandPrix(
-        id: gpId,
-        name: expectedGpName,
+        id: grandPrixId,
+        name: expectedGrandPrixName,
       );
-      grandPrixRepository.mockGetGrandPrixById(grandPrix);
-      final container = makeProvideContainer(gpId);
-      final listener = Listener<AsyncValue<String?>>();
-      container.listen(
-        grandPrixNameProvider,
-        listener,
-        fireImmediately: true,
+      final container = makeProvideContainer(
+        grandPrixId: grandPrixId,
+        grandPrix: grandPrix,
       );
 
-      await expectLater(
-        container.read(grandPrixNameProvider.future),
-        completion(expectedGpName),
+      final String? grandPrixName = await container.read(
+        grandPrixNameProvider.future,
       );
-      verifyInOrder([
-        () => listener(
-              null,
-              const AsyncLoading<String?>(),
-            ),
-        () => listener(
-              const AsyncLoading<String?>(),
-              const AsyncData<String?>(expectedGpName),
-            ),
-      ]);
-      verifyNoMoreInteractions(listener);
-      verify(
-        () => grandPrixRepository.getGrandPrixById(grandPrixId: gpId),
-      ).called(1);
+
+      expect(grandPrixName, expectedGrandPrixName);
     },
   );
 }
