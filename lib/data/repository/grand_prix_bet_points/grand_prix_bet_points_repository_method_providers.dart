@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import '../../model/grand_prix_bet_points.dart';
+import '../../../model/grand_prix_bet_points.dart';
+import 'grand_prix_bet_points_repository.dart';
 
-part 'grand_prix_bet_points_provider.g.dart';
+part 'grand_prix_bet_points_repository_method_providers.g.dart';
 
 @riverpod
 Stream<GrandPrixBetPoints?> grandPrixBetPoints(

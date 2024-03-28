@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/grand_prix_bet_points_creator.dart';
-import '../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
+import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
 
 void main() {
   final dbBetPointsService = MockFirebaseGrandPrixBetPointsService();

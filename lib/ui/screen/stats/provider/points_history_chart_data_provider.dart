@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../../data/repository/player/player_repository_method_providers.dart';
 import '../../../../model/player.dart';
-import '../../../provider/grand_prix_bet_points_provider.dart';
 import 'finished_grand_prixes_provider.dart';
 
 part 'points_history_chart_data_provider.g.dart';

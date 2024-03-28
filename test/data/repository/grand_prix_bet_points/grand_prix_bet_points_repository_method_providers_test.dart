@@ -1,12 +1,12 @@
 import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
-import 'package:betgrid/ui/provider/grand_prix_bet_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/grand_prix_bet_points_creator.dart';
-import '../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 
 void main() {
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
@@ -23,11 +23,8 @@ void main() {
     return container;
   }
 
-  tearDown(() {
-    reset(grandPrixBetPointsRepository);
-  });
-
   test(
+    'grandPrixBetPointsProvider, '
     'should emit grand prix bet points got directly from GrandPrixBetPointsRepository',
     () async {
       const String playerId = 'p1';

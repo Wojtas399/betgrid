@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/grand_prix.dart';
 import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
+import '../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../config/router/app_router.dart';
-import '../provider/grand_prix_bet_points_provider.dart';
 import 'grand_prix_item_component.dart';
 import 'scroll_animated_item_component.dart';
 import 'text_component.dart';

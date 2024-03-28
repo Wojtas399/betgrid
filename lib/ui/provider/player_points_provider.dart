@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
-import 'grand_prix_bet_points_provider.dart';
+import '../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 
 part 'player_points_provider.g.dart';
 

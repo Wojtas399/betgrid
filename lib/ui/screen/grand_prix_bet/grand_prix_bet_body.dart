@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../model/grand_prix_bet.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prix/grand_prix_id_provider.dart';
-import '../../provider/grand_prix_bet_points_provider.dart';
 import '../../provider/player/player_id_provider.dart';
 import 'grand_prix_bet_qualifications.dart';
 import 'grand_prix_bet_race.dart';
