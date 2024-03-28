@@ -11,7 +11,8 @@ part 'players_podium_chart_data_provider.g.dart';
 Future<PlayersPodiumChartData?> playersPodiumChartData(
   PlayersPodiumChartDataRef ref,
 ) async {
-  final allPlayers = await ref.read(allPlayersProvider.future);
+  print('players podium');
+  final allPlayers = await ref.watch(allPlayersProvider.future);
   if (allPlayers == null) return null;
   final List<PlayersPodiumChartPlayer> players = [];
   for (final player in allPlayers) {

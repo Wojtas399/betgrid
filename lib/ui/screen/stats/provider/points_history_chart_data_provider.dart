@@ -12,7 +12,7 @@ part 'points_history_chart_data_provider.g.dart';
 Future<PointsHistoryChartData?> pointsHistoryChartData(
   PointsHistoryChartDataRef ref,
 ) async {
-  final allPlayers = await ref.read(allPlayersProvider.future);
+  final allPlayers = await ref.watch(allPlayersProvider.future);
   if (allPlayers == null) return null;
   final terminatedGrandPrixes =
       await ref.watch(finishedGrandPrixesProvider.future);

@@ -12,6 +12,8 @@
     "requiredDataCompletionSelectAvatarSource": "Wybierz źródło avataru",
     "@__________STATS__________": {},
     "statsScreenTitle": "Statystyki",
+    "statsTop3Players": "Top 3 graczy",
+    "statsPointsHistory": "Historia zdobytych punktów",
     "@__________BETS__________": {},
     "betsScreenTitle": "Typy",
     "@__________PLAYERS__________": {},

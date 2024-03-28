@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../provider/grand_prix/grand_prix_id_provider.dart';
+import '../../provider/grand_prix_id_provider.dart';
 import 'grand_prix_bet_app_bar.dart';
 import 'grand_prix_bet_body.dart';
 import 'provider/player_id_provider.dart';
