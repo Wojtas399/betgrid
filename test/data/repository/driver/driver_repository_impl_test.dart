@@ -25,6 +25,166 @@ void main() {
   });
 
   test(
+    'getAllDrivers, '
+    'repository state is not initialized, '
+    'should fetch drivers from db, add them to repo and emit them',
+    () async {
+      const List<DriverDto> driverDtos = [
+        DriverDto(
+          id: 'd1',
+          name: 'Robert',
+          surname: 'Kubica',
+          number: 100,
+          team: TeamDto.redBullRacing,
+        ),
+        DriverDto(
+          id: 'd2',
+          name: 'Max',
+          surname: 'Verstappen',
+          number: 1,
+          team: TeamDto.redBullRacing,
+        ),
+        DriverDto(
+          id: 'd3',
+          name: 'Luis',
+          surname: 'Hamilton',
+          number: 44,
+          team: TeamDto.mercedes,
+        ),
+      ];
+      const List<Driver> expectedDrivers = [
+        Driver(
+          id: 'd1',
+          name: 'Robert',
+          surname: 'Kubica',
+          number: 100,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd2',
+          name: 'Max',
+          surname: 'Verstappen',
+          number: 1,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd3',
+          name: 'Luis',
+          surname: 'Hamilton',
+          number: 44,
+          team: Team.mercedes,
+        ),
+      ];
+      dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
+
+      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
+
+      expect(await allDrivers$.first, expectedDrivers);
+      expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
+      verify(dbDriverService.fetchAllDrivers).called(1);
+    },
+  );
+
+  test(
+    'getAllDrivers, '
+    'repository state is empty, '
+    'should fetch drivers from db, add them to repo and emit them',
+    () async {
+      const List<DriverDto> driverDtos = [
+        DriverDto(
+          id: 'd1',
+          name: 'Robert',
+          surname: 'Kubica',
+          number: 100,
+          team: TeamDto.redBullRacing,
+        ),
+        DriverDto(
+          id: 'd2',
+          name: 'Max',
+          surname: 'Verstappen',
+          number: 1,
+          team: TeamDto.redBullRacing,
+        ),
+        DriverDto(
+          id: 'd3',
+          name: 'Luis',
+          surname: 'Hamilton',
+          number: 44,
+          team: TeamDto.mercedes,
+        ),
+      ];
+      const List<Driver> expectedDrivers = [
+        Driver(
+          id: 'd1',
+          name: 'Robert',
+          surname: 'Kubica',
+          number: 100,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd2',
+          name: 'Max',
+          surname: 'Verstappen',
+          number: 1,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd3',
+          name: 'Luis',
+          surname: 'Hamilton',
+          number: 44,
+          team: Team.mercedes,
+        ),
+      ];
+      dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
+      repositoryImpl = DriverRepositoryImpl(initialData: []);
+
+      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
+
+      expect(await allDrivers$.first, expectedDrivers);
+      expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
+      verify(dbDriverService.fetchAllDrivers).called(1);
+    },
+  );
+
+  test(
+    'getAllDrivers, '
+    'repository state contains drivers, '
+    'should only emit all drivers from repository state',
+    () async {
+      const List<Driver> expectedDrivers = [
+        Driver(
+          id: 'd1',
+          name: 'Robert',
+          surname: 'Kubica',
+          number: 100,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd2',
+          name: 'Max',
+          surname: 'Verstappen',
+          number: 1,
+          team: Team.redBullRacing,
+        ),
+        Driver(
+          id: 'd3',
+          name: 'Luis',
+          surname: 'Hamilton',
+          number: 44,
+          team: Team.mercedes,
+        ),
+      ];
+      repositoryImpl = DriverRepositoryImpl(initialData: expectedDrivers);
+
+      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
+
+      expect(await allDrivers$.first, expectedDrivers);
+      verifyNever(dbDriverService.fetchAllDrivers);
+    },
+  );
+
+  test(
     'getDriverById, '
     'driver exists in repository state, '
     'should emit existing driver',
@@ -59,7 +219,7 @@ void main() {
   test(
     'getDriverById, '
     'driver does not exist in repository state, '
-    'should load driver from db, add it to repo state and emit it',
+    'should fetch driver from db, add it to repo state and emit it',
     () async {
       const DriverDto expectedDriverDto = DriverDto(
         id: 'd3',
@@ -91,7 +251,7 @@ void main() {
           team: Team.redBullRacing,
         ),
       ];
-      dbDriverService.mockLoadDriverById(expectedDriverDto);
+      dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
       repositoryImpl = DriverRepositoryImpl(initialData: existingDrivers);
 
       final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
@@ -104,7 +264,7 @@ void main() {
         emits([...existingDrivers, expectedDriver]),
       );
       verify(
-        () => dbDriverService.loadDriverById(driverId: expectedDriver.id),
+        () => dbDriverService.fetchDriverById(driverId: expectedDriver.id),
       ).called(1);
     },
   );

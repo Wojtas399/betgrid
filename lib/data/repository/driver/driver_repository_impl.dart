@@ -16,6 +16,17 @@ class DriverRepositoryImpl extends Repository<Driver>
       : _dbDriverService = getIt<FirebaseDriverService>();
 
   @override
+  Stream<List<Driver>> getAllDrivers() async* {
+    await for (final repoState in repositoryState$) {
+      List<Driver>? allDrivers = repoState;
+      if (allDrivers == null || allDrivers.isEmpty) {
+        allDrivers = await _fetchAllDriversFromDb();
+      }
+      yield allDrivers;
+    }
+  }
+
+  @override
   Stream<Driver?> getDriverById({required String driverId}) async* {
     await for (final drivers in repositoryState$) {
       Driver? driver = drivers?.firstWhereOrNull(
@@ -26,8 +37,15 @@ class DriverRepositoryImpl extends Repository<Driver>
     }
   }
 
+  Future<List<Driver>> _fetchAllDriversFromDb() async {
+    final List<DriverDto> driverDtos = await _dbDriverService.fetchAllDrivers();
+    final List<Driver> drivers = driverDtos.map(mapDriverFromDto).toList();
+    setEntities(drivers);
+    return drivers;
+  }
+
   Future<Driver?> _loadDriverFromDb(String driverId) async {
-    final DriverDto? driverDto = await _dbDriverService.loadDriverById(
+    final DriverDto? driverDto = await _dbDriverService.fetchDriverById(
       driverId: driverId,
     );
     if (driverDto == null) return null;
