@@ -25,7 +25,8 @@ void main() {
 
   test(
     'grandPrixBetPointsProvider, '
-    'should emit grand prix bet points got directly from GrandPrixBetPointsRepository',
+    'should get grand prix bet points from GrandPrixBetPointsRepository and '
+    'should emit them',
     () async {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';

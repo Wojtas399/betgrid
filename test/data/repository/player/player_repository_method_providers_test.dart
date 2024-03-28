@@ -21,7 +21,7 @@ void main() {
 
   test(
     'allPlayersProvider, '
-    'should get all players from player repository and should emit them',
+    'should get all players from PlayerRepository and should emit them',
     () async {
       const List<Player> expectedPlayers = [
         Player(id: 'p1', username: 'username 1'),

@@ -8,10 +8,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/user_creator.dart';
-import '../../creator/user_dto_creator.dart';
-import '../../mock/firebase/mock_firebase_avatar_service.dart';
-import '../../mock/firebase/mock_firebase_user_service.dart';
+import '../../../creator/user_creator.dart';
+import '../../../creator/user_dto_creator.dart';
+import '../../../mock/firebase/mock_firebase_avatar_service.dart';
+import '../../../mock/firebase/mock_firebase_user_service.dart';
 
 void main() {
   final dbUserService = MockFirebaseUserService();

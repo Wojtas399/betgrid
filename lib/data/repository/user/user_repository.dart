@@ -5,9 +5,6 @@ import 'user_repository_impl.dart';
 
 part 'user_repository.g.dart';
 
-@riverpod
-UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl();
-
 abstract interface class UserRepository {
   Stream<User?> getUserById({required String userId});
 
@@ -31,3 +28,6 @@ abstract interface class UserRepository {
     String? avatarImgPath,
   });
 }
+
+@riverpod
+UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl();

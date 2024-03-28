@@ -21,7 +21,7 @@ void main() {
 
   test(
     'allGrandPrixesProvider, '
-    'should get all grand prixes from grand prix repository and should emit them',
+    'should get all grand prixes from GrandPrixRepository and should emit them',
     () async {
       final expectedGrandPrixes = [
         GrandPrix(
