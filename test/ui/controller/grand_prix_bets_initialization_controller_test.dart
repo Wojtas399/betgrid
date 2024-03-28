@@ -1,7 +1,9 @@
 import 'package:betgrid/data/repository/auth/auth_repository_method_providers.dart';
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/ui/controller/grand_prix_bets_initialization_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,32 +12,35 @@ import 'package:mocktail/mocktail.dart';
 import '../../creator/grand_prix_bet_creator.dart';
 import '../../creator/grand_prix_creator.dart';
 import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../mock/listener.dart';
 
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
 
   ProviderContainer makeProviderContainer({
     String? loggedUserId,
+    List<GrandPrixBet>? allPlayerGrandPrixBets,
     List<GrandPrix>? allGrandPrixes,
   }) {
     final container = ProviderContainer(
       overrides: [
         loggedUserIdProvider.overrideWith((_) => Stream.value(loggedUserId)),
+        if (loggedUserId != null)
+          allGrandPrixBetsForPlayerProvider(
+            playerId: loggedUserId,
+          ).overrideWith(
+            (_) => Stream.value(allPlayerGrandPrixBets),
+          ),
         allGrandPrixesProvider.overrideWith(
           (_) => Stream.value(allGrandPrixes),
         ),
-        grandPrixBetRepositoryProvider
-            .overrideWithValue(grandPrixBetRepository),
+        grandPrixBetRepositoryProvider.overrideWithValue(
+          grandPrixBetRepository,
+        ),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
-
-  tearDown(() {
-    reset(grandPrixBetRepository);
-  });
 
   test(
     'initialize, '
@@ -43,22 +48,10 @@ void main() {
     'should do nothing',
     () async {
       final container = makeProviderContainer();
-      final listener = Listener<void>();
-      container.listen(
-        grandPrixBetsInitializationControllerProvider,
-        listener,
-        fireImmediately: true,
-      );
 
       await container
           .read(grandPrixBetsInitializationControllerProvider.notifier)
           .initialize();
-
-      verifyNever(
-        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
-          playerId: any(named: 'playerId'),
-        ),
-      );
     },
   );
 
@@ -67,29 +60,18 @@ void main() {
     'should not initialize grand prix bets if they exist',
     () async {
       const String loggedUserId = 'u1';
-      grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
-        grandPrixBets: [
-          createGrandPrixBet(id: 'gpb1'),
-          createGrandPrixBet(id: 'gpb2'),
-        ],
-      );
-      final container = makeProviderContainer(loggedUserId: loggedUserId);
-      final listener = Listener<void>();
-      container.listen(
-        grandPrixBetsInitializationControllerProvider,
-        listener,
-        fireImmediately: true,
+      final List<GrandPrixBet> grandPrixBets = [
+        createGrandPrixBet(id: 'gpb1'),
+        createGrandPrixBet(id: 'gpb2'),
+      ];
+      final container = makeProviderContainer(
+        loggedUserId: loggedUserId,
+        allPlayerGrandPrixBets: grandPrixBets,
       );
 
       await container
           .read(grandPrixBetsInitializationControllerProvider.notifier)
           .initialize();
-
-      verify(
-        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
-          playerId: loggedUserId,
-        ),
-      ).called(1);
     },
   );
 
@@ -106,19 +88,10 @@ void main() {
         createGrandPrix(id: 'gp3'),
       ];
       final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
-      grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
-        grandPrixBets: [],
-      );
       grandPrixBetRepository.mockAddGrandPrixBets();
       final container = makeProviderContainer(
         loggedUserId: loggedUserId,
         allGrandPrixes: allGrandPrixes,
-      );
-      final listener = Listener<void>();
-      container.listen(
-        grandPrixBetsInitializationControllerProvider,
-        listener,
-        fireImmediately: true,
       );
 
       await container
@@ -126,10 +99,58 @@ void main() {
           .initialize();
 
       verify(
-        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
+        () => grandPrixBetRepository.addGrandPrixBets(
           playerId: loggedUserId,
+          grandPrixBets: [
+            createGrandPrixBet(
+              playerId: loggedUserId,
+              grandPrixId: 'gp1',
+              qualiStandingsByDriverIds: defaultQualiStandings,
+              dnfDriverIds: defaultDnfDrivers,
+            ),
+            createGrandPrixBet(
+              playerId: loggedUserId,
+              grandPrixId: 'gp2',
+              qualiStandingsByDriverIds: defaultQualiStandings,
+              dnfDriverIds: defaultDnfDrivers,
+            ),
+            createGrandPrixBet(
+              playerId: loggedUserId,
+              grandPrixId: 'gp3',
+              qualiStandingsByDriverIds: defaultQualiStandings,
+              dnfDriverIds: defaultDnfDrivers,
+            ),
+          ],
         ),
       ).called(1);
+    },
+  );
+
+  test(
+    'initialize, '
+    'should initialize grand prix bets with default params if list of bets is '
+    'empty',
+    () async {
+      const String loggedUserId = 'u1';
+      final List<String?> defaultQualiStandings =
+          List.generate(20, (_) => null);
+      final List<GrandPrix> allGrandPrixes = [
+        createGrandPrix(id: 'gp1'),
+        createGrandPrix(id: 'gp2'),
+        createGrandPrix(id: 'gp3'),
+      ];
+      final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
+      grandPrixBetRepository.mockAddGrandPrixBets();
+      final container = makeProviderContainer(
+        loggedUserId: loggedUserId,
+        allPlayerGrandPrixBets: [],
+        allGrandPrixes: allGrandPrixes,
+      );
+
+      await container
+          .read(grandPrixBetsInitializationControllerProvider.notifier)
+          .initialize();
+
       verify(
         () => grandPrixBetRepository.addGrandPrixBets(
           playerId: loggedUserId,
