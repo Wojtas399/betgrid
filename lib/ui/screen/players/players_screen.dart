@@ -86,9 +86,11 @@ class _PlayerItem extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             Consumer(builder: (context, ref, _) {
-              final playerPoints = ref.watch(
-                playerPointsProvider(playerId: player.id),
-              );
+              final playerPoints = ref
+                  .watch(
+                    playerPointsProvider(playerId: player.id),
+                  )
+                  .value;
 
               return BodyMedium(
                 '${context.str.points}: $playerPoints',
