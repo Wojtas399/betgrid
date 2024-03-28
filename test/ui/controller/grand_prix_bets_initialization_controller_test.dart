@@ -1,6 +1,7 @@
 import 'package:betgrid/data/repository/auth/auth_repository_method_providers.dart';
-import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
+import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/ui/controller/grand_prix_bets_initialization_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,20 +10,21 @@ import 'package:mocktail/mocktail.dart';
 import '../../creator/grand_prix_bet_creator.dart';
 import '../../creator/grand_prix_creator.dart';
 import '../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../mock/listener.dart';
 
 void main() {
-  final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
 
   ProviderContainer makeProviderContainer({
     String? loggedUserId,
+    List<GrandPrix>? allGrandPrixes,
   }) {
     final container = ProviderContainer(
       overrides: [
         loggedUserIdProvider.overrideWith((_) => Stream.value(loggedUserId)),
-        grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
+        allGrandPrixesProvider.overrideWith(
+          (_) => Stream.value(allGrandPrixes),
+        ),
         grandPrixBetRepositoryProvider
             .overrideWithValue(grandPrixBetRepository),
       ],
@@ -32,7 +34,6 @@ void main() {
   }
 
   tearDown(() {
-    reset(grandPrixRepository);
     reset(grandPrixBetRepository);
   });
 
@@ -97,15 +98,18 @@ void main() {
       const String loggedUserId = 'u1';
       final List<String?> defaultQualiStandings =
           List.generate(20, (_) => null);
-      final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
-      grandPrixBetRepository.mockGetAllGrandPrixBets([]);
-      grandPrixRepository.mockGetAllGrandPrixes([
+      final List<GrandPrix> allGrandPrixes = [
         createGrandPrix(id: 'gp1'),
         createGrandPrix(id: 'gp2'),
         createGrandPrix(id: 'gp3'),
-      ]);
+      ];
+      final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
+      grandPrixBetRepository.mockGetAllGrandPrixBets([]);
       grandPrixBetRepository.mockAddGrandPrixBets();
-      final container = makeProviderContainer(loggedUserId: loggedUserId);
+      final container = makeProviderContainer(
+        loggedUserId: loggedUserId,
+        allGrandPrixes: allGrandPrixes,
+      );
       final listener = Listener<void>();
       container.listen(
         grandPrixBetsInitializationControllerProvider,
@@ -122,7 +126,6 @@ void main() {
           playerId: loggedUserId,
         ),
       ).called(1);
-      verify(grandPrixRepository.getAllGrandPrixes).called(1);
       verify(
         () => grandPrixBetRepository.addGrandPrixBets(
           playerId: loggedUserId,

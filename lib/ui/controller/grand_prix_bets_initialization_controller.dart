@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/auth/auth_repository_method_providers.dart';
-import '../../data/repository/grand_prix/grand_prix_repository.dart';
+import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import '../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../model/grand_prix.dart';
 import '../../model/grand_prix_bet.dart';
@@ -29,19 +29,17 @@ class GrandPrixBetsInitializationController
   }
 
   Future<void> _initializeBets(String loggedUserId) async {
-    final Stream<List<GrandPrix>?> grandPrixes$ =
-        ref.read(grandPrixRepositoryProvider).getAllGrandPrixes();
-    await for (final grandPrixes in grandPrixes$) {
-      if (grandPrixes != null) {
-        await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
-              playerId: loggedUserId,
-              grandPrixBets: _createBetsForGrandPrixes(
-                grandPrixes,
-                loggedUserId,
-              ),
-            );
-        return;
-      }
+    final List<GrandPrix>? grandPrixes =
+        await ref.watch(allGrandPrixesProvider.future);
+    if (grandPrixes != null) {
+      await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
+            playerId: loggedUserId,
+            grandPrixBets: _createBetsForGrandPrixes(
+              grandPrixes,
+              loggedUserId,
+            ),
+          );
+      return;
     }
   }
 
