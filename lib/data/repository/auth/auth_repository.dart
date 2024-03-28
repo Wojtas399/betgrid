@@ -15,7 +15,3 @@ abstract interface class AuthRepository {
 
 @riverpod
 AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepositoryImpl();
-
-@riverpod
-Stream<AuthState> authState(AuthStateRef ref) =>
-    ref.watch(authRepositoryProvider).authState$;

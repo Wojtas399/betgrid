@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/auth/auth_repository.dart';
+import '../../../data/repository/auth/auth_repository_method_providers.dart';
 import '../../../model/auth_state.dart';
 import '../../config/router/app_router.dart';
 import '../../service/dialog_service.dart';
