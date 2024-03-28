@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repository/auth/auth_repository_method_providers.dart';
-import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
-import '../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
-import '../../model/grand_prix.dart';
-import '../../model/grand_prix_bet.dart';
+import '../../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import '../../../../model/grand_prix.dart';
+import '../../../../model/grand_prix_bet.dart';
 
 part 'grand_prix_bets_initialization_controller.g.dart';
 

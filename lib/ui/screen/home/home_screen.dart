@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user.dart' as user;
 import '../../config/router/app_router.dart';
-import '../../controller/grand_prix_bets_initialization_controller.dart';
 import '../../extensions/build_context_extensions.dart';
 import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/ui/required_data_completion_screen.dart';
+import 'controller/grand_prix_bets_initialization_controller.dart';
 import 'home_app_bar.dart';
 
 @RoutePage()
