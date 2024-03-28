@@ -28,7 +28,7 @@ class StatsPlayersPodium extends ConsumerWidget {
           primaryXAxis: const CategoryAxis(),
           primaryYAxis: NumericAxis(
             minimum: 0,
-            maximum: (playersPodium?.p1Player.points ?? 0.0) + 20,
+            maximum: (playersPodium?.p1Player.points ?? 0.0) + 30,
             // interval: 5,
           ),
           series: <CartesianSeries<PlayersPodiumChartPlayer, String>>[

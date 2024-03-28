@@ -44,6 +44,7 @@ class StatsBetPointsHistory extends ConsumerWidget {
                               child: Avatar(
                                 avatarUrl: player.avatarUrl,
                                 username: player.username,
+                                usernameFontSize: 14,
                               ),
                             ),
                             const GapHorizontal8(),
