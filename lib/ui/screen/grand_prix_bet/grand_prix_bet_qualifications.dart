@@ -74,10 +74,10 @@ class GrandPrixBetQualifications extends ConsumerWidget {
             20,
             (int itemIndex) {
               final int qualiNumber = itemIndex > 14
-                  ? 3
+                  ? 1
                   : itemIndex > 9
                       ? 2
-                      : 1;
+                      : 3;
 
               return GrandPrixBetRow(
                 label: 'Q$qualiNumber P${itemIndex + 1}',
