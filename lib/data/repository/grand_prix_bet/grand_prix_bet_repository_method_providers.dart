@@ -13,3 +13,14 @@ Stream<List<GrandPrixBet>?> allGrandPrixBetsForPlayer(
     ref
         .watch(grandPrixBetRepositoryProvider)
         .getAllGrandPrixBetsForPlayer(playerId: playerId);
+
+@riverpod
+Stream<GrandPrixBet?> grandPrixBetByPlayerIdAndGrandPrixId(
+  GrandPrixBetByPlayerIdAndGrandPrixIdRef ref, {
+  required String playerId,
+  required String grandPrixId,
+}) =>
+    ref.watch(grandPrixBetRepositoryProvider).getBetByGrandPrixIdAndPlayerId(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        );

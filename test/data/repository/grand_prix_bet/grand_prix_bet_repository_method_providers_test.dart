@@ -44,4 +44,32 @@ void main() {
       expect(grandPrixBets, expectedGrandPrixBets);
     },
   );
+
+  test(
+    'grandPrixBetByPlayerIdAndGrandPrixIdProvider, '
+    'should get matching grand prix bet from GrandPrixBetRepository and should '
+    'emit it',
+    () async {
+      const String playerId = 'p1';
+      const String grandPrixId = 'gp1';
+      final GrandPrixBet expectedGrandPrixBet = createGrandPrixBet(
+        id: 'gpb1',
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(
+        expectedGrandPrixBet,
+      );
+      final container = makeProviderContainer();
+
+      final GrandPrixBet? grandPrixBet = await container.read(
+        grandPrixBetByPlayerIdAndGrandPrixIdProvider(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        ).future,
+      );
+
+      expect(grandPrixBet, expectedGrandPrixBet);
+    },
+  );
 }
