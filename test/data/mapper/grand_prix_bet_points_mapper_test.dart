@@ -19,12 +19,12 @@ void main() {
       const double totalPoints = 10.0;
       final QualiBetPointsDto qualiBetPointsDto = createQualiBetPointsDto(
         totalPoints: 4.0,
-        q1P1Points: 2.0,
+        q3P1Points: 2.0,
         q2P12Points: 2.0,
       );
       final QualiBetPoints qualiBetPoints = createQualiBetPoints(
         totalPoints: 4.0,
-        q1P1Points: 2.0,
+        q3P1Points: 2.0,
         q2P12Points: 2.0,
       );
       final RaceBetPointsDto raceBetPointsDto = createRaceBetPointsDto(

@@ -39,26 +39,26 @@ abstract class Points extends Equatable {
 }
 
 class QualiBetPoints extends Points {
-  final double q1P1Points;
-  final double q1P2Points;
-  final double q1P3Points;
-  final double q1P4Points;
-  final double q1P5Points;
-  final double q1P6Points;
-  final double q1P7Points;
-  final double q1P8Points;
-  final double q1P9Points;
-  final double q1P10Points;
+  final double q3P1Points;
+  final double q3P2Points;
+  final double q3P3Points;
+  final double q3P4Points;
+  final double q3P5Points;
+  final double q3P6Points;
+  final double q3P7Points;
+  final double q3P8Points;
+  final double q3P9Points;
+  final double q3P10Points;
   final double q2P11Points;
   final double q2P12Points;
   final double q2P13Points;
   final double q2P14Points;
   final double q2P15Points;
-  final double q3P16Points;
-  final double q3P17Points;
-  final double q3P18Points;
-  final double q3P19Points;
-  final double q3P20Points;
+  final double q1P16Points;
+  final double q1P17Points;
+  final double q1P18Points;
+  final double q1P19Points;
+  final double q1P20Points;
   final double q1Points;
   final double q2Points;
   final double q3Points;
@@ -69,26 +69,26 @@ class QualiBetPoints extends Points {
 
   const QualiBetPoints({
     required super.totalPoints,
-    required this.q1P1Points,
-    required this.q1P2Points,
-    required this.q1P3Points,
-    required this.q1P4Points,
-    required this.q1P5Points,
-    required this.q1P6Points,
-    required this.q1P7Points,
-    required this.q1P8Points,
-    required this.q1P9Points,
-    required this.q1P10Points,
+    required this.q3P1Points,
+    required this.q3P2Points,
+    required this.q3P3Points,
+    required this.q3P4Points,
+    required this.q3P5Points,
+    required this.q3P6Points,
+    required this.q3P7Points,
+    required this.q3P8Points,
+    required this.q3P9Points,
+    required this.q3P10Points,
     required this.q2P11Points,
     required this.q2P12Points,
     required this.q2P13Points,
     required this.q2P14Points,
     required this.q2P15Points,
-    required this.q3P16Points,
-    required this.q3P17Points,
-    required this.q3P18Points,
-    required this.q3P19Points,
-    required this.q3P20Points,
+    required this.q1P16Points,
+    required this.q1P17Points,
+    required this.q1P18Points,
+    required this.q1P19Points,
+    required this.q1P20Points,
     required this.q1Points,
     required this.q2Points,
     required this.q3Points,
@@ -101,26 +101,26 @@ class QualiBetPoints extends Points {
   @override
   List<Object?> get props => [
         totalPoints,
-        q1P1Points,
-        q1P2Points,
-        q1P3Points,
-        q1P4Points,
-        q1P5Points,
-        q1P6Points,
-        q1P7Points,
-        q1P8Points,
-        q1P9Points,
-        q1P10Points,
+        q3P1Points,
+        q3P2Points,
+        q3P3Points,
+        q3P4Points,
+        q3P5Points,
+        q3P6Points,
+        q3P7Points,
+        q3P8Points,
+        q3P9Points,
+        q3P10Points,
         q2P11Points,
         q2P12Points,
         q2P13Points,
         q2P14Points,
         q2P15Points,
-        q3P16Points,
-        q3P17Points,
-        q3P18Points,
-        q3P19Points,
-        q3P20Points,
+        q1P16Points,
+        q1P17Points,
+        q1P18Points,
+        q1P19Points,
+        q1P20Points,
         q1Points,
         q2Points,
         q3Points,
