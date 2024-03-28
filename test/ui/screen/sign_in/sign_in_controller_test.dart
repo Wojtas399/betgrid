@@ -1,12 +1,12 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
 import 'package:betgrid/model/auth_state.dart';
-import 'package:betgrid/ui/controller/sign_in_controller.dart';
+import 'package:betgrid/ui/screen/sign_in/controller/sign_in_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock/data/repository/mock_auth_repository.dart';
-import '../../mock/listener.dart';
+import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/listener.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
