@@ -19,7 +19,7 @@ class GrandPrixBetsInitializationController
     if (loggedUserId == null) return;
     final Stream<List<GrandPrixBet>?> bets$ = ref
         .read(grandPrixBetRepositoryProvider)
-        .getAllGrandPrixBets(playerId: loggedUserId);
+        .getAllGrandPrixBetsForPlayer(playerId: loggedUserId);
     await for (final bets in bets$) {
       if (bets == null || bets.isEmpty) {
         await _initializeBets(loggedUserId);

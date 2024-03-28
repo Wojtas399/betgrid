@@ -55,7 +55,7 @@ void main() {
           .initialize();
 
       verifyNever(
-        () => grandPrixBetRepository.getAllGrandPrixBets(
+        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
           playerId: any(named: 'playerId'),
         ),
       );
@@ -67,10 +67,12 @@ void main() {
     'should not initialize grand prix bets if they exist',
     () async {
       const String loggedUserId = 'u1';
-      grandPrixBetRepository.mockGetAllGrandPrixBets([
-        createGrandPrixBet(id: 'gpb1'),
-        createGrandPrixBet(id: 'gpb2'),
-      ]);
+      grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
+        grandPrixBets: [
+          createGrandPrixBet(id: 'gpb1'),
+          createGrandPrixBet(id: 'gpb2'),
+        ],
+      );
       final container = makeProviderContainer(loggedUserId: loggedUserId);
       final listener = Listener<void>();
       container.listen(
@@ -84,7 +86,7 @@ void main() {
           .initialize();
 
       verify(
-        () => grandPrixBetRepository.getAllGrandPrixBets(
+        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
           playerId: loggedUserId,
         ),
       ).called(1);
@@ -104,7 +106,9 @@ void main() {
         createGrandPrix(id: 'gp3'),
       ];
       final List<String?> defaultDnfDrivers = List.generate(3, (_) => null);
-      grandPrixBetRepository.mockGetAllGrandPrixBets([]);
+      grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
+        grandPrixBets: [],
+      );
       grandPrixBetRepository.mockAddGrandPrixBets();
       final container = makeProviderContainer(
         loggedUserId: loggedUserId,
@@ -122,7 +126,7 @@ void main() {
           .initialize();
 
       verify(
-        () => grandPrixBetRepository.getAllGrandPrixBets(
+        () => grandPrixBetRepository.getAllGrandPrixBetsForPlayer(
           playerId: loggedUserId,
         ),
       ).called(1);

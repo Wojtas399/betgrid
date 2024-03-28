@@ -5,12 +5,10 @@ import 'grand_prix_bet_repository_impl.dart';
 
 part 'grand_prix_bet_repository.g.dart';
 
-@riverpod
-GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
-    GrandPrixBetRepositoryImpl();
-
 abstract interface class GrandPrixBetRepository {
-  Stream<List<GrandPrixBet>?> getAllGrandPrixBets({required String playerId});
+  Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
+    required String playerId,
+  });
 
   Stream<GrandPrixBet?> getBetByGrandPrixIdAndPlayerId({
     required String playerId,
@@ -36,3 +34,7 @@ abstract interface class GrandPrixBetRepository {
     bool? willBeRedFlag,
   });
 }
+
+@riverpod
+GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
+    GrandPrixBetRepositoryImpl();

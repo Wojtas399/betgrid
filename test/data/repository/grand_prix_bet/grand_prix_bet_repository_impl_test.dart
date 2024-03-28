@@ -6,9 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/grand_prix_bet_creator.dart';
-import '../../creator/grand_prix_bet_dto_creator.dart';
-import '../../mock/firebase/mock_firebase_grand_prix_bet_service.dart';
+import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../creator/grand_prix_bet_dto_creator.dart';
+import '../../../mock/firebase/mock_firebase_grand_prix_bet_service.dart';
 
 void main() {
   final dbGrandPrixBetService = MockFirebaseGrandPrixBetService();
@@ -30,7 +30,7 @@ void main() {
   });
 
   test(
-    'getAllGrandPrixBets, '
+    'getAllGrandPrixBetsForPlayer, '
     'repository state is not set, '
     'should load grand prix bets from db, add them to repo and emit them',
     () async {
@@ -47,7 +47,7 @@ void main() {
       dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
+          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(
@@ -62,7 +62,7 @@ void main() {
   );
 
   test(
-    'getAllGrandPrixBets, '
+    'getAllGrandPrixBetsForPlayer, '
     'repository state is empty array, '
     'should load grand prix bets from db, add them to repo and emit them',
     () async {
@@ -80,7 +80,7 @@ void main() {
       repositoryImpl = GrandPrixBetRepositoryImpl(initialData: []);
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
+          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(
@@ -95,9 +95,9 @@ void main() {
   );
 
   test(
-    'getAllGrandPrixBets, '
+    'getAllGrandPrixBetsForPlayer, '
     'repository state contains grand prix bets, '
-    'should only emit grand prix bets from repository state',
+    "should only emit player's grand prix bets from repository state",
     () async {
       final List<GrandPrixBet> expectedGrandPrixBets = [
         createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1'),
@@ -109,7 +109,7 @@ void main() {
       );
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBets(playerId: playerId);
+          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
 
       expect(grandPrixBets$, emits(expectedGrandPrixBets));
       expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixBets));

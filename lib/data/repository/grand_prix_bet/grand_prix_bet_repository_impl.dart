@@ -16,7 +16,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       : _dbGrandPrixBetService = getIt<FirebaseGrandPrixBetService>();
 
   @override
-  Stream<List<GrandPrixBet>?> getAllGrandPrixBets({
+  Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
     required String playerId,
   }) async* {
     if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {

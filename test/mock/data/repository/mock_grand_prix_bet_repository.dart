@@ -4,9 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRepository extends Mock
     implements GrandPrixBetRepository {
-  void mockGetAllGrandPrixBets(List<GrandPrixBet>? grandPrixBets) {
+  void mockGetAllGrandPrixBetsForPlayer({List<GrandPrixBet>? grandPrixBets}) {
     when(
-      () => getAllGrandPrixBets(
+      () => getAllGrandPrixBetsForPlayer(
         playerId: any(named: 'playerId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBets));
