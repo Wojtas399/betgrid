@@ -16,7 +16,7 @@ void main() {
   ProviderContainer makeProviderContainer({User? loggedUser}) {
     final container = ProviderContainer(
       overrides: [
-        loggedUserProvider.overrideWith((_) => Stream.value(loggedUser)),
+        loggedUserProvider.overrideWith((_) => Future.value(loggedUser)),
         userRepositoryProvider.overrideWithValue(userRepository),
       ],
     );
