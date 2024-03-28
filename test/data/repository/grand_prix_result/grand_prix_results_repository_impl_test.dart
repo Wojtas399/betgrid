@@ -6,9 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../creator/grand_prix_results_creator.dart';
-import '../../creator/grand_prix_results_dto_creator.dart';
-import '../../mock/firebase/mock_firebase_grand_prix_results_service.dart';
+import '../../../creator/grand_prix_results_creator.dart';
+import '../../../creator/grand_prix_results_dto_creator.dart';
+import '../../../mock/firebase/mock_firebase_grand_prix_results_service.dart';
 
 void main() {
   final dbGrandPrixResultService = MockFirebaseGrandPrixResultsService();
