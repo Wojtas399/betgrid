@@ -36,4 +36,24 @@ void main() {
       expect(players, expectedPlayers);
     },
   );
+
+  test(
+    'playerProvider, '
+    'should get player from PlayerRepository and should emit it',
+    () async {
+      const String playerId = 'p1';
+      const Player expectedPlayer = Player(
+        id: playerId,
+        username: 'username 1',
+      );
+      playerRepository.mockGetPlayerById(player: expectedPlayer);
+      final container = makeProviderContainer();
+
+      final Player? player = await container.read(
+        playerProvider(playerId: playerId).future,
+      );
+
+      expect(player, expectedPlayer);
+    },
+  );
 }
