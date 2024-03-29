@@ -9,7 +9,7 @@ import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 
 void main() {
   test(
-    'resultsForGrandPrixProvider, '
+    'grandPrixResultsProvider, '
     'should get results for grand prix from GrandPrixResultsRepository and '
     'should emit them',
     () async {
@@ -31,7 +31,7 @@ void main() {
       );
 
       final GrandPrixResults? results = await container.read(
-        resultsForGrandPrixProvider(grandPrixId: grandPrixId).future,
+        grandPrixResultsProvider(grandPrixId: grandPrixId).future,
       );
 
       expect(results, expectedResults);

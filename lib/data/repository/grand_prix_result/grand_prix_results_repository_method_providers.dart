@@ -6,8 +6,8 @@ import 'grand_prix_results_repository.dart';
 part 'grand_prix_results_repository_method_providers.g.dart';
 
 @riverpod
-Stream<GrandPrixResults?> resultsForGrandPrix(
-  ResultsForGrandPrixRef ref, {
+Stream<GrandPrixResults?> grandPrixResults(
+  GrandPrixResultsRef ref, {
   required String grandPrixId,
 }) =>
     ref

@@ -13,8 +13,8 @@ import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
 import 'grand_prix_points_summary.dart';
 import 'provider/grand_prix_bet_provider.dart';
-import 'provider/grand_prix_results_provider.dart';
 import 'provider/player_id_provider.dart';
+import 'provider/results_for_grand_prix_provider.dart';
 
 class GrandPrixBetRace extends ConsumerWidget {
   const GrandPrixBetRace({super.key});
@@ -23,7 +23,7 @@ class GrandPrixBetRace extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final grandPrixBet = ref.watch(grandPrixBetProvider);
     final raceResults = ref.watch(
-      grandPrixResultsProvider.select(
+      resultsForGrandPrixProvider.select(
         (state) => state.value?.raceResults,
       ),
     );

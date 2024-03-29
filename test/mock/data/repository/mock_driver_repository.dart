@@ -3,6 +3,10 @@ import 'package:betgrid/model/driver.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockDriverRepository extends Mock implements DriverRepository {
+  void mockGetAllDrivers({required List<Driver> allDrivers}) {
+    when(getAllDrivers).thenAnswer((_) => Stream.value(allDrivers));
+  }
+
   void mockGetDriverById({Driver? driver}) {
     when(
       () => getDriverById(

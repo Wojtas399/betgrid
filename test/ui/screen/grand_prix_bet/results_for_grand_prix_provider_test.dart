@@ -1,7 +1,7 @@
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/provider/grand_prix_results_provider.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/provider/results_for_grand_prix_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,9 +16,7 @@ void main() {
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
         if (grandPrixId != null)
-          resultsForGrandPrixProvider(
-            grandPrixId: grandPrixId,
-          ).overrideWith(
+          grandPrixResultsProvider(grandPrixId: grandPrixId).overrideWith(
             (_) => Stream.value(grandPrixResults),
           ),
       ],
@@ -34,7 +32,7 @@ void main() {
       final container = makeProviderContainer(grandPrixId: null);
 
       final GrandPrixResults? results = await container.read(
-        grandPrixResultsProvider.future,
+        resultsForGrandPrixProvider.future,
       );
 
       expect(results, null);
@@ -54,7 +52,7 @@ void main() {
       );
 
       final GrandPrixResults? results = await container.read(
-        grandPrixResultsProvider.future,
+        resultsForGrandPrixProvider.future,
       );
 
       expect(results, expectedResults);
