@@ -19,9 +19,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
     required String playerId,
   }) async* {
-    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
-      await _loadAllGrandPrixBetsFromDb(playerId);
-    }
+    if (isRepositoryStateEmpty) await _loadAllGrandPrixBetsFromDb(playerId);
     await for (final grandPrixBets in repositoryState$) {
       yield grandPrixBets;
     }

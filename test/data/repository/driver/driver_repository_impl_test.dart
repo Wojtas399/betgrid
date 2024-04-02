@@ -26,67 +26,6 @@ void main() {
 
   test(
     'getAllDrivers, '
-    'repository state is not initialized, '
-    'should fetch drivers from db, add them to repo and emit them',
-    () async {
-      const List<DriverDto> driverDtos = [
-        DriverDto(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 100,
-          team: TeamDto.redBullRacing,
-        ),
-        DriverDto(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 1,
-          team: TeamDto.redBullRacing,
-        ),
-        DriverDto(
-          id: 'd3',
-          name: 'Luis',
-          surname: 'Hamilton',
-          number: 44,
-          team: TeamDto.mercedes,
-        ),
-      ];
-      const List<Driver> expectedDrivers = [
-        Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 100,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 1,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd3',
-          name: 'Luis',
-          surname: 'Hamilton',
-          number: 44,
-          team: Team.mercedes,
-        ),
-      ];
-      dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
-
-      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
-
-      expect(await allDrivers$.first, expectedDrivers);
-      expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
-      verify(dbDriverService.fetchAllDrivers).called(1);
-    },
-  );
-
-  test(
-    'getAllDrivers, '
     'repository state is empty, '
     'should fetch drivers from db, add them to repo and emit them',
     () async {
@@ -137,7 +76,7 @@ void main() {
         ),
       ];
       dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
-      repositoryImpl = DriverRepositoryImpl(initialData: []);
+      repositoryImpl = DriverRepositoryImpl();
 
       final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
 

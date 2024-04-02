@@ -31,7 +31,7 @@ void main() {
 
   test(
     'getAllGrandPrixBetsForPlayer, '
-    'repository state is not set, '
+    'repository state is empty, '
     'should load grand prix bets from db, add them to repo and emit them',
     () async {
       final List<GrandPrixBetDto> grandPrixBetDtos = [
@@ -45,39 +45,7 @@ void main() {
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
       dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
-
-      final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
-
-      expect(grandPrixBets$, emits(expectedGrandPrixBets));
-      expect(
-        repositoryImpl.repositoryState$,
-        emitsInOrder([null, expectedGrandPrixBets]),
-      );
-      await repositoryImpl.repositoryState$.first;
-      verify(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
-      ).called(1);
-    },
-  );
-
-  test(
-    'getAllGrandPrixBetsForPlayer, '
-    'repository state is empty array, '
-    'should load grand prix bets from db, add them to repo and emit them',
-    () async {
-      final List<GrandPrixBetDto> grandPrixBetDtos = [
-        createGrandPrixBetDto(id: 'gpb1', grandPrixId: 'gp1'),
-        createGrandPrixBetDto(id: 'gpb2', grandPrixId: 'gp2'),
-        createGrandPrixBetDto(id: 'gpb3', grandPrixId: 'gp3'),
-      ];
-      final List<GrandPrixBet> expectedGrandPrixBets = [
-        createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
-        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
-      ];
-      dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
-      repositoryImpl = GrandPrixBetRepositoryImpl(initialData: []);
+      repositoryImpl = GrandPrixBetRepositoryImpl();
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
           repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);

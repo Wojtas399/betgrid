@@ -23,20 +23,13 @@ void main() {
   });
 
   test(
-    'isRepositoryStateNotInitialized, '
-    'should return true if repository state is null',
-    () {
-      expect(repository.isRepositoryStateNotInitialized, true);
-    },
-  );
+    'initial state should be empty list',
+    () async {
+      repository = TestRepository();
 
-  test(
-    'isRepositoryStateNotInitialized, '
-    'should return false if repository state is not null',
-    () {
-      repository = TestRepository(initialData: []);
+      final state = await repository.repositoryState$.first;
 
-      expect(repository.isRepositoryStateNotInitialized, false);
+      expect(state, []);
     },
   );
 
@@ -44,7 +37,7 @@ void main() {
     'isRepositoryStateEmpty, '
     'should return true if repository state is empty array',
     () {
-      repository = TestRepository(initialData: []);
+      repository = TestRepository();
 
       expect(repository.isRepositoryStateEmpty, true);
     },
@@ -128,19 +121,6 @@ void main() {
       repository.addEntity(newEntity);
 
       expect(repository.repositoryState$, emits(expectedEntities));
-    },
-  );
-
-  test(
-    'updateEntity, '
-    'repository state is not initialized, '
-    'should do nothing',
-    () {
-      const TestModel updateEntity = TestModel(id: 'e2', name: 'entity 2');
-
-      repository.updateEntity(updateEntity);
-
-      expect(repository.repositoryState$, emits(null));
     },
   );
 

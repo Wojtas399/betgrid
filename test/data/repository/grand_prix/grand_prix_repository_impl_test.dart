@@ -28,70 +28,6 @@ void main() {
 
   test(
     'loadAllGrandPrixes, '
-    'repository state is not initialized, '
-    'should load grand prixes from db, add them to repo and emit them',
-    () async {
-      final List<GrandPrixDto> grandPrixDtos = [
-        GrandPrixDto(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
-        ),
-        GrandPrixDto(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
-        ),
-        GrandPrixDto(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
-        ),
-      ];
-      final List<GrandPrix> expectedGrandPrixes = [
-        GrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
-        ),
-        GrandPrix(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
-        ),
-        GrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
-        ),
-      ];
-      dbGrandPrixService.mockLoadAllGrandPrixes(
-        grandPrixDtos: grandPrixDtos,
-      );
-
-      final Stream<List<GrandPrix>?> grandPrixes$ =
-          repositoryImpl.getAllGrandPrixes();
-
-      expect(await grandPrixes$.first, expectedGrandPrixes);
-      expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixes));
-      verify(dbGrandPrixService.loadAllGrandPrixes).called(1);
-    },
-  );
-
-  test(
-    'loadAllGrandPrixes, '
     'repository state is empty, '
     'should load grand prixes from db, add them to repo and emit them',
     () async {
@@ -144,7 +80,7 @@ void main() {
       dbGrandPrixService.mockLoadAllGrandPrixes(
         grandPrixDtos: grandPrixDtos,
       );
-      repositoryImpl = GrandPrixRepositoryImpl(initialData: []);
+      repositoryImpl = GrandPrixRepositoryImpl();
 
       final Stream<List<GrandPrix>?> grandPrixes$ =
           repositoryImpl.getAllGrandPrixes();
