@@ -1,9 +1,7 @@
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository_impl.dart';
 import 'package:betgrid/firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
-import 'package:betgrid/firebase/service/firebase_grand_prix_results_service.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_results_creator.dart';
@@ -12,21 +10,6 @@ import '../../../mock/firebase/mock_firebase_grand_prix_results_service.dart';
 
 void main() {
   final dbGrandPrixResultService = MockFirebaseGrandPrixResultsService();
-  late GrandPrixResultsRepositoryImpl repositoryImpl;
-
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseGrandPrixResultsService>(
-      () => dbGrandPrixResultService,
-    );
-  });
-
-  setUp(() {
-    repositoryImpl = GrandPrixResultsRepositoryImpl();
-  });
-
-  tearDown(() {
-    reset(dbGrandPrixResultService);
-  });
 
   test(
     'getResultsForGrandPrix, '
@@ -41,7 +24,8 @@ void main() {
         createGrandPrixResults(id: 'r3', grandPrixId: 'gp3'),
         expectedGrandPrixResults,
       ];
-      repositoryImpl = GrandPrixResultsRepositoryImpl(
+      final repositoryImpl = GrandPrixResultsRepositoryImpl(
+        firebaseGrandPrixResultsService: dbGrandPrixResultService,
         initialData: existingResults,
       );
 
@@ -73,7 +57,8 @@ void main() {
       dbGrandPrixResultService.mockLoadResultsForGrandPrix(
         grandPrixResultDto: gpResultsDto,
       );
-      repositoryImpl = GrandPrixResultsRepositoryImpl(
+      final repositoryImpl = GrandPrixResultsRepositoryImpl(
+        firebaseGrandPrixResultsService: dbGrandPrixResultService,
         initialData: existingResults,
       );
 

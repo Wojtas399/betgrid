@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_results_service.dart';
 import '../../../model/grand_prix_results.dart';
@@ -12,8 +11,10 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     implements GrandPrixResultsRepository {
   final FirebaseGrandPrixResultsService _dbGrandPrixResultsService;
 
-  GrandPrixResultsRepositoryImpl({super.initialData})
-      : _dbGrandPrixResultsService = getIt<FirebaseGrandPrixResultsService>();
+  GrandPrixResultsRepositoryImpl({
+    required FirebaseGrandPrixResultsService firebaseGrandPrixResultsService,
+    super.initialData,
+  }) : _dbGrandPrixResultsService = firebaseGrandPrixResultsService;
 
   @override
   Stream<GrandPrixResults?> getResultForGrandPrix({
