@@ -5,17 +5,30 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../component/avatar_component.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
-import 'provider/players_podium_chart_data_provider.dart';
+import 'provider/players_podium_chart_data.dart';
+import 'provider/stats_data_provider.dart';
 
 class StatsPlayersPodium extends ConsumerWidget {
   const StatsPlayersPodium({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playersPodium = ref.watch(playersPodiumChartDataProvider);
+    final playersPodium = ref.watch(
+      statsProvider.selectAsync(
+        (data) => data?.playersPodiumChartData,
+      ),
+    );
 
-    return playersPodium.when(
-      data: (playersPodium) {
+    return FutureBuilder(
+      future: playersPodium,
+      builder: (_, AsyncSnapshot<PlayersPodiumChartData?> asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final PlayersPodiumChartData? playersPodium = asyncSnapshot.data;
         final List<PlayersPodiumChartPlayer> podiumArray = playersPodium != null
             ? [
                 if (playersPodium.p2Player != null) playersPodium.p2Player!,
@@ -23,7 +36,6 @@ class StatsPlayersPodium extends ConsumerWidget {
                 if (playersPodium.p3Player != null) playersPodium.p3Player!,
               ]
             : [];
-
         return SfCartesianChart(
           primaryXAxis: const CategoryAxis(),
           primaryYAxis: NumericAxis(
@@ -64,10 +76,6 @@ class StatsPlayersPodium extends ConsumerWidget {
           ],
         );
       },
-      error: (Object? error, __) => Text(error.toString()),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }

@@ -21,16 +21,16 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     required String grandPrixId,
   }) async* {
     await for (final entities in repositoryState$) {
-      GrandPrixBetPoints? points = entities?.firstWhereOrNull(
+      GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId && entity.grandPrixId == grandPrixId,
       );
-      points ??= await _loadGrandPrixBetPointsFromDb(grandPrixId, playerId);
+      points ??= await _fetchGrandPrixBetPointsFromDb(grandPrixId, playerId);
       yield points;
     }
   }
 
-  Future<GrandPrixBetPoints?> _loadGrandPrixBetPointsFromDb(
+  Future<GrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
     String grandPrixId,
     String playerId,
   ) async {

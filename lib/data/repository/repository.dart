@@ -13,7 +13,7 @@ abstract class Repository<T extends Entity> {
     _repositoryState$.add(initialData);
   }
 
-  Stream<List<T>?> get repositoryState$ => _repositoryState$.stream;
+  Stream<List<T>> get repositoryState$ => _repositoryState$.stream;
 
   bool get isRepositoryStateEmpty => _repositoryState$.value.isEmpty == true;
 

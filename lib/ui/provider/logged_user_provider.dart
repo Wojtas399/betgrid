@@ -10,8 +10,7 @@ part 'logged_user_provider.g.dart';
 Future<User?> loggedUser(LoggedUserRef ref) async {
   final String? loggedUserId = await ref.watch(loggedUserIdProvider.future);
   if (loggedUserId == null) return null;
-  final User? loggedUser = await ref.watch(
+  return await ref.watch(
     userProvider(userId: loggedUserId).future,
   );
-  return loggedUser;
 }

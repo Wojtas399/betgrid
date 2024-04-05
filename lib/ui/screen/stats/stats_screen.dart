@@ -7,6 +7,8 @@ import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'stats_bet_points_history.dart';
 import 'stats_players_podium.dart';
+import 'stats_points_by_driver_dropdown_button.dart';
+import 'stats_points_by_driver_players_list.dart';
 
 @RoutePage()
 class StatsScreen extends StatelessWidget {
@@ -38,6 +40,14 @@ class StatsScreen extends StatelessWidget {
               height: 300,
               child: StatsBetPointsHistory(),
             ),
+            const GapVertical32(),
+            TitleLarge(
+              context.str.statsPointsByDriver,
+              fontWeight: FontWeight.bold,
+            ),
+            const GapVertical16(),
+            const StatsPointsByDriverDropdownButton(),
+            const StatsPointsByDriverPlayersList(),
           ],
         ),
       ),

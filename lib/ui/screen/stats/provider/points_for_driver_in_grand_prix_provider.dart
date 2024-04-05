@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
@@ -15,11 +14,22 @@ Future<double> pointsForDriverInGrandPrix(
   required String playerId,
   required String grandPrixId,
   required String driverId,
+  required GrandPrixBetPoints grandPrixBetPoints,
 }) async {
-  final double pointsForQuali =
-      await _getPointsForDriverInQuali(playerId, grandPrixId, driverId, ref);
-  final double pointsForRace =
-      await _getPointsForDriverInRace(playerId, grandPrixId, driverId, ref);
+  final double pointsForQuali = await _getPointsForDriverInQuali(
+    playerId,
+    grandPrixId,
+    driverId,
+    grandPrixBetPoints.qualiBetPoints,
+    ref,
+  );
+  final double pointsForRace = await _getPointsForDriverInRace(
+    playerId,
+    grandPrixId,
+    driverId,
+    grandPrixBetPoints.raceBetPoints,
+    ref,
+  );
   return pointsForQuali + pointsForRace;
 }
 
@@ -27,19 +37,12 @@ Future<double> _getPointsForDriverInQuali(
   String playerId,
   String grandPrixId,
   String driverId,
+  QualiBetPoints? qualiBetPoints,
   PointsForDriverInGrandPrixRef ref,
 ) async {
   final List<String?>? qualiResults = await ref.watch(
     grandPrixResultsProvider(grandPrixId: grandPrixId).selectAsync(
       (GrandPrixResults? results) => results?.qualiStandingsByDriverIds,
-    ),
-  );
-  final QualiBetPoints? qualiBetPoints = await ref.watch(
-    grandPrixBetPointsProvider(
-      playerId: playerId,
-      grandPrixId: grandPrixId,
-    ).selectAsync(
-      (GrandPrixBetPoints? betPoints) => betPoints?.qualiBetPoints,
     ),
   );
   if (qualiResults != null && qualiBetPoints != null) {
@@ -79,19 +82,12 @@ Future<double> _getPointsForDriverInRace(
   String playerId,
   String grandPrixId,
   String driverId,
+  RaceBetPoints? raceBetPoints,
   PointsForDriverInGrandPrixRef ref,
 ) async {
   final RaceResults? raceResults = await ref.watch(
     grandPrixResultsProvider(grandPrixId: grandPrixId).selectAsync(
       (GrandPrixResults? results) => results?.raceResults,
-    ),
-  );
-  final RaceBetPoints? raceBetPoints = await ref.watch(
-    grandPrixBetPointsProvider(
-      playerId: playerId,
-      grandPrixId: grandPrixId,
-    ).selectAsync(
-      (GrandPrixBetPoints? betPoints) => betPoints?.raceBetPoints,
     ),
   );
   double points = 0.0;

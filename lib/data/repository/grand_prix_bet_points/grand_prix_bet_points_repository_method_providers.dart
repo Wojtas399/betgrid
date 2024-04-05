@@ -16,4 +16,5 @@ Stream<GrandPrixBetPoints?> grandPrixBetPoints(
         .getPointsForPlayerByGrandPrixId(
           playerId: playerId,
           grandPrixId: grandPrixId,
-        );
+        )
+        .distinct();

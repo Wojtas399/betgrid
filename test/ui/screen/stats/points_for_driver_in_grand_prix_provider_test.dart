@@ -1,5 +1,4 @@
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
-import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
@@ -21,7 +20,6 @@ void main() {
 
   ProviderContainer makeProviderContainer({
     GrandPrixResults? grandPrixResults,
-    GrandPrixBetPoints? grandPrixBetPoints,
     GrandPrixBet? grandPrixBet,
   }) {
     final container = ProviderContainer(
@@ -29,10 +27,6 @@ void main() {
         grandPrixResultsProvider(grandPrixId: grandPrixId).overrideWith(
           (_) => Stream.value(grandPrixResults),
         ),
-        grandPrixBetPointsProvider(
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ).overrideWith((_) => Stream.value(grandPrixBetPoints)),
         grandPrixBetByPlayerIdAndGrandPrixIdProvider(
           playerId: playerId,
           grandPrixId: grandPrixId,
@@ -80,7 +74,6 @@ void main() {
       const double expectedPoints = 7;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
         grandPrixBet: bet,
       );
 
@@ -89,6 +82,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
@@ -133,7 +127,6 @@ void main() {
       const double expectedPoints = 7;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
         grandPrixBet: bet,
       );
 
@@ -142,6 +135,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
@@ -186,7 +180,6 @@ void main() {
       const double expectedPoints = 2;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
         grandPrixBet: bet,
       );
 
@@ -195,6 +188,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
@@ -237,7 +231,6 @@ void main() {
       const double expectedPoints = 2;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
         grandPrixBet: bet,
       );
 
@@ -246,6 +239,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
@@ -294,7 +288,6 @@ void main() {
       const double expectedPoints = 6;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
       );
 
       final double points = await container.read(
@@ -302,6 +295,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
@@ -352,7 +346,6 @@ void main() {
       const double expectedPoints = 9;
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBetPoints: betPoints,
         grandPrixBet: bet,
       );
 
@@ -361,6 +354,7 @@ void main() {
           playerId: playerId,
           grandPrixId: grandPrixId,
           driverId: driverId,
+          grandPrixBetPoints: betPoints,
         ).future,
       );
 
