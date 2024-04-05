@@ -11,7 +11,7 @@ abstract interface class GrandPrixResultsRepository {
   });
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 GrandPrixResultsRepository grandPrixResultsRepository(
   GrandPrixResultsRepositoryRef ref,
 ) =>

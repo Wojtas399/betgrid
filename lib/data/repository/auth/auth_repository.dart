@@ -13,5 +13,5 @@ abstract interface class AuthRepository {
   Future<void> signInWithGoogle();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepositoryImpl();

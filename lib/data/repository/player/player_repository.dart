@@ -11,6 +11,6 @@ abstract interface class PlayerRepository {
   Stream<Player?> getPlayerById({required String playerId});
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
     PlayerRepositoryImpl();

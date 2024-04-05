@@ -12,7 +12,7 @@ abstract interface class GrandPrixBetPointsRepository {
   });
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 GrandPrixBetPointsRepository grandPrixBetPointsRepository(
   GrandPrixBetPointsRepositoryRef ref,
 ) =>

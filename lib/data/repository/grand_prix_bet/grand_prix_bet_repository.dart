@@ -35,6 +35,6 @@ abstract interface class GrandPrixBetRepository {
   });
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
     GrandPrixBetRepositoryImpl();

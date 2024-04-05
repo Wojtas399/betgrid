@@ -11,6 +11,6 @@ abstract interface class DriverRepository {
   Stream<Driver?> getDriverById({required String driverId});
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 DriverRepository driverRepository(DriverRepositoryRef ref) =>
     DriverRepositoryImpl();

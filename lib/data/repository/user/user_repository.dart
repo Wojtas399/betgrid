@@ -29,5 +29,5 @@ abstract interface class UserRepository {
   });
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl();

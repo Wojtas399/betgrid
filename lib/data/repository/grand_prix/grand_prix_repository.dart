@@ -11,6 +11,6 @@ abstract interface class GrandPrixRepository {
   Stream<GrandPrix?> getGrandPrixById({required String grandPrixId});
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
     GrandPrixRepositoryImpl();
