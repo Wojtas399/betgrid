@@ -1,11 +1,8 @@
 import 'package:betgrid/data/exception/user_repository_exception.dart';
 import 'package:betgrid/data/repository/user/user_repository_impl.dart';
 import 'package:betgrid/firebase/model/user_dto/user_dto.dart';
-import 'package:betgrid/firebase/service/firebase_avatar_service.dart';
-import 'package:betgrid/firebase/service/firebase_user_service.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
@@ -19,18 +16,15 @@ void main() {
   late UserRepositoryImpl repositoryImpl;
   const String userId = 'u1';
 
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseUserService>(() => dbUserService);
-    GetIt.I.registerFactory<FirebaseAvatarService>(() => dbAvatarService);
-  });
-
   setUp(() {
-    repositoryImpl = UserRepositoryImpl();
+    repositoryImpl = UserRepositoryImpl(
+      firebaseUserService: dbUserService,
+      firebaseAvatarService: dbAvatarService,
+    );
   });
 
   tearDown(() {
     reset(dbUserService);
-    reset(dbAvatarService);
   });
 
   test(
@@ -44,7 +38,11 @@ void main() {
         expectedUser,
         createUser(id: 'u3', username: 'username 3'),
       ];
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       final Stream<User?> user$ = repositoryImpl.getUserById(userId: 'u2');
 
@@ -73,7 +71,11 @@ void main() {
       ];
       dbUserService.mockLoadUserById(userDto: expectedUserDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: avatarUrl);
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       final Stream<User?> user$ = repositoryImpl.getUserById(userId: id);
 
@@ -253,7 +255,11 @@ void main() {
         createUser(id: 'u2'),
         createUser(id: 'u3'),
       ];
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       await repositoryImpl.updateUserData(userId: userId);
 
@@ -286,7 +292,11 @@ void main() {
       ];
       const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       Object? exception;
       try {
@@ -332,7 +342,11 @@ void main() {
       const expectedException = UserRepositoryExceptionUserNotFound();
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: null);
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       Object? exception;
       try {
@@ -390,7 +404,11 @@ void main() {
       ];
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       await repositoryImpl.updateUserData(
         userId: userId,
@@ -431,7 +449,11 @@ void main() {
         createUser(id: 'u3', avatarUrl: 'avr/url'),
       ];
       dbAvatarService.mockRemoveAvatarForUser();
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       await repositoryImpl.updateUserAvatar(
         userId: userId,
@@ -471,7 +493,11 @@ void main() {
       ];
       dbAvatarService.mockRemoveAvatarForUser();
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: newAvatarUrl);
-      repositoryImpl = UserRepositoryImpl(initialData: existingUsers);
+      repositoryImpl = UserRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingUsers,
+      );
 
       await repositoryImpl.updateUserAvatar(
         userId: userId,

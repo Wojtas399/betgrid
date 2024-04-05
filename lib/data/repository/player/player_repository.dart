@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../firebase/service/firebase_avatar_service.dart';
+import '../../../firebase/service/firebase_user_service.dart';
 import '../../../model/player.dart';
 import 'player_repository_impl.dart';
 
@@ -13,4 +15,7 @@ abstract interface class PlayerRepository {
 
 @Riverpod(keepAlive: true)
 PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
-    PlayerRepositoryImpl();
+    PlayerRepositoryImpl(
+      firebaseUserService: ref.read(firebaseUserServiceProvider),
+      firebaseAvatarService: ref.read(firebaseAvatarServiceProvider),
+    );

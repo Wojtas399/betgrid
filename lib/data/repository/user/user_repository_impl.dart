@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
 import '../../../firebase/service/firebase_user_service.dart';
@@ -16,9 +15,12 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
 
-  UserRepositoryImpl({super.initialData})
-      : _dbUserService = getIt<FirebaseUserService>(),
-        _dbAvatarService = getIt<FirebaseAvatarService>();
+  UserRepositoryImpl({
+    required FirebaseUserService firebaseUserService,
+    required FirebaseAvatarService firebaseAvatarService,
+    super.initialData,
+  })  : _dbUserService = firebaseUserService,
+        _dbAvatarService = firebaseAvatarService;
 
   @override
   Stream<User?> getUserById({required String userId}) async* {

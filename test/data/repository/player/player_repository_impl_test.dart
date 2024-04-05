@@ -1,10 +1,7 @@
 import 'package:betgrid/data/repository/player/player_repository_impl.dart';
 import 'package:betgrid/firebase/model/user_dto/user_dto.dart';
-import 'package:betgrid/firebase/service/firebase_avatar_service.dart';
-import 'package:betgrid/firebase/service/firebase_user_service.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_dto_creator.dart';
@@ -16,18 +13,11 @@ void main() {
   final dbAvatarService = MockFirebaseAvatarService();
   late PlayerRepositoryImpl repositoryImpl;
 
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseUserService>(() => dbUserService);
-    GetIt.I.registerFactory<FirebaseAvatarService>(() => dbAvatarService);
-  });
-
   setUp(() {
-    repositoryImpl = PlayerRepositoryImpl();
-  });
-
-  tearDown(() {
-    reset(dbUserService);
-    reset(dbAvatarService);
+    repositoryImpl = PlayerRepositoryImpl(
+      firebaseUserService: dbUserService,
+      firebaseAvatarService: dbAvatarService,
+    );
   });
 
   test(
@@ -59,7 +49,6 @@ void main() {
       when(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u3'),
       ).thenAnswer((_) => Future.value(null));
-      repositoryImpl = PlayerRepositoryImpl(initialData: []);
 
       final Stream<List<Player>?> players$ = repositoryImpl.getAllPlayers();
 
@@ -93,7 +82,11 @@ void main() {
         Player(id: 'p3', username: 'player 3'),
         expectedPlayer,
       ];
-      repositoryImpl = PlayerRepositoryImpl(initialData: existingPlayers);
+      repositoryImpl = PlayerRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingPlayers,
+      );
 
       final Stream<Player?> player$ = repositoryImpl.getPlayerById(
         playerId: playerId,
@@ -123,7 +116,11 @@ void main() {
       ];
       dbUserService.mockLoadUserById(userDto: userDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: null);
-      repositoryImpl = PlayerRepositoryImpl(initialData: existingPlayers);
+      repositoryImpl = PlayerRepositoryImpl(
+        firebaseUserService: dbUserService,
+        firebaseAvatarService: dbAvatarService,
+        initialData: existingPlayers,
+      );
 
       final Stream<Player?> player$ = repositoryImpl.getPlayerById(
         playerId: playerId,
