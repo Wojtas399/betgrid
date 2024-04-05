@@ -72,9 +72,6 @@ void main() {
         ),
       ];
       dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
-      repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
-      );
 
       final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
 

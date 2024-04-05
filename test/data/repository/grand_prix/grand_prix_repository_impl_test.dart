@@ -1,9 +1,7 @@
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_impl.dart';
 import 'package:betgrid/firebase/model/grand_prix_dto/grand_prix_dto.dart';
-import 'package:betgrid/firebase/service/firebase_grand_prix_service.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/firebase/mock_firebase_grand_prix_service.dart';
@@ -12,14 +10,10 @@ void main() {
   final dbGrandPrixService = MockFirebaseGrandPrixService();
   late GrandPrixRepositoryImpl repositoryImpl;
 
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseGrandPrixService>(
-      () => dbGrandPrixService,
-    );
-  });
-
   setUp(() {
-    repositoryImpl = GrandPrixRepositoryImpl();
+    repositoryImpl = GrandPrixRepositoryImpl(
+      firebaseGrandPrixService: dbGrandPrixService,
+    );
   });
 
   tearDown(() {
@@ -80,7 +74,6 @@ void main() {
       dbGrandPrixService.mockLoadAllGrandPrixes(
         grandPrixDtos: grandPrixDtos,
       );
-      repositoryImpl = GrandPrixRepositoryImpl();
 
       final Stream<List<GrandPrix>?> grandPrixes$ =
           repositoryImpl.getAllGrandPrixes();
@@ -120,6 +113,7 @@ void main() {
         ),
       ];
       repositoryImpl = GrandPrixRepositoryImpl(
+        firebaseGrandPrixService: dbGrandPrixService,
         initialData: expectedGrandPrixes,
       );
 
@@ -161,6 +155,7 @@ void main() {
         ),
       ];
       repositoryImpl = GrandPrixRepositoryImpl(
+        firebaseGrandPrixService: dbGrandPrixService,
         initialData: existingGrandPrixes,
       );
 
@@ -210,6 +205,7 @@ void main() {
       ];
       dbGrandPrixService.mockLoadGrandPrixById(grandPrixDto);
       repositoryImpl = GrandPrixRepositoryImpl(
+        firebaseGrandPrixService: dbGrandPrixService,
         initialData: existingGrandPrixes,
       );
 

@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../firebase/service/firebase_grand_prix_service.dart';
 import '../../../model/grand_prix.dart';
 import 'grand_prix_repository_impl.dart';
 
@@ -13,4 +14,6 @@ abstract interface class GrandPrixRepository {
 
 @Riverpod(keepAlive: true)
 GrandPrixRepository grandPrixRepository(GrandPrixRepositoryRef ref) =>
-    GrandPrixRepositoryImpl();
+    GrandPrixRepositoryImpl(
+      firebaseGrandPrixService: ref.read(firebaseGrandPrixServiceProvider),
+    );
