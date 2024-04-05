@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/driver_dto/driver_dto.dart';
 import '../../../firebase/service/firebase_driver_service.dart';
 import '../../../model/driver.dart';
@@ -12,8 +11,10 @@ class DriverRepositoryImpl extends Repository<Driver>
     implements DriverRepository {
   final FirebaseDriverService _dbDriverService;
 
-  DriverRepositoryImpl({super.initialData})
-      : _dbDriverService = getIt<FirebaseDriverService>();
+  DriverRepositoryImpl({
+    required FirebaseDriverService firebaseDriverService,
+    super.initialData,
+  }) : _dbDriverService = firebaseDriverService;
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {

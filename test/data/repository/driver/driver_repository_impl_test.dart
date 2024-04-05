@@ -1,9 +1,7 @@
 import 'package:betgrid/data/repository/driver/driver_repository_impl.dart';
 import 'package:betgrid/firebase/model/driver_dto/driver_dto.dart';
-import 'package:betgrid/firebase/service/firebase_driver_service.dart';
 import 'package:betgrid/model/driver.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/firebase/mock_firebase_driver_service.dart';
@@ -12,12 +10,10 @@ void main() {
   final dbDriverService = MockFirebaseDriverService();
   late DriverRepositoryImpl repositoryImpl;
 
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseDriverService>(() => dbDriverService);
-  });
-
   setUp(() {
-    repositoryImpl = DriverRepositoryImpl();
+    repositoryImpl = DriverRepositoryImpl(
+      firebaseDriverService: dbDriverService,
+    );
   });
 
   tearDown(() {
@@ -76,7 +72,9 @@ void main() {
         ),
       ];
       dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
-      repositoryImpl = DriverRepositoryImpl();
+      repositoryImpl = DriverRepositoryImpl(
+        firebaseDriverService: dbDriverService,
+      );
 
       final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
 
@@ -114,7 +112,10 @@ void main() {
           team: Team.mercedes,
         ),
       ];
-      repositoryImpl = DriverRepositoryImpl(initialData: expectedDrivers);
+      repositoryImpl = DriverRepositoryImpl(
+        firebaseDriverService: dbDriverService,
+        initialData: expectedDrivers,
+      );
 
       final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
 
@@ -145,7 +146,10 @@ void main() {
         ),
       ];
       final expectedDriver = existingDrivers.first;
-      repositoryImpl = DriverRepositoryImpl(initialData: existingDrivers);
+      repositoryImpl = DriverRepositoryImpl(
+        firebaseDriverService: dbDriverService,
+        initialData: existingDrivers,
+      );
 
       final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
         driverId: expectedDriver.id,
@@ -191,7 +195,10 @@ void main() {
         ),
       ];
       dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
-      repositoryImpl = DriverRepositoryImpl(initialData: existingDrivers);
+      repositoryImpl = DriverRepositoryImpl(
+        firebaseDriverService: dbDriverService,
+        initialData: existingDrivers,
+      );
 
       final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
         driverId: expectedDriver.id,
