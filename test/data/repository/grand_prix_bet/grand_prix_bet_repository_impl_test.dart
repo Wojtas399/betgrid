@@ -1,9 +1,7 @@
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_impl.dart';
 import 'package:betgrid/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
-import 'package:betgrid/firebase/service/firebase_grand_prix_bet_service.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_creator.dart';
@@ -15,14 +13,10 @@ void main() {
   late GrandPrixBetRepositoryImpl repositoryImpl;
   const String playerId = 'u1';
 
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseGrandPrixBetService>(
-      () => dbGrandPrixBetService,
-    );
-  });
-
   setUp(() {
-    repositoryImpl = GrandPrixBetRepositoryImpl();
+    repositoryImpl = GrandPrixBetRepositoryImpl(
+      firebaseGrandPrixBetService: dbGrandPrixBetService,
+    );
   });
 
   tearDown(() {
@@ -45,7 +39,6 @@ void main() {
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
       dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
-      repositoryImpl = GrandPrixBetRepositoryImpl();
 
       final Stream<List<GrandPrixBet>?> grandPrixBets$ =
           repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
@@ -73,6 +66,7 @@ void main() {
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
       repositoryImpl = GrandPrixBetRepositoryImpl(
+        firebaseGrandPrixBetService: dbGrandPrixBetService,
         initialData: expectedGrandPrixBets,
       );
 
@@ -99,7 +93,10 @@ void main() {
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
         createGrandPrixBet(id: 'gpb4', grandPrixId: 'gp1'),
       ];
-      repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
+      repositoryImpl = GrandPrixBetRepositoryImpl(
+        firebaseGrandPrixBetService: dbGrandPrixBetService,
+        initialData: grandPrixBets,
+      );
 
       final Stream<GrandPrixBet?> grandPrixBet$ =
           repositoryImpl.getBetByGrandPrixIdAndPlayerId(
@@ -132,7 +129,10 @@ void main() {
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
       dbGrandPrixBetService.mockLoadGrandPrixBetByGrandPrixId(grandPrixBetDto);
-      repositoryImpl = GrandPrixBetRepositoryImpl(initialData: grandPrixBets);
+      repositoryImpl = GrandPrixBetRepositoryImpl(
+        firebaseGrandPrixBetService: dbGrandPrixBetService,
+        initialData: grandPrixBets,
+      );
 
       final Stream<GrandPrixBet?> grandPrixBet$ =
           repositoryImpl.getBetByGrandPrixIdAndPlayerId(
@@ -272,6 +272,7 @@ void main() {
       ];
       dbGrandPrixBetService.mockUpdateGrandPrixBet(updatedGrandPrixBetDto);
       repositoryImpl = GrandPrixBetRepositoryImpl(
+        firebaseGrandPrixBetService: dbGrandPrixBetService,
         initialData: existingGrandPrixBets,
       );
 

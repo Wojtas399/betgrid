@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../../model/grand_prix_bet.dart';
@@ -12,8 +11,10 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     implements GrandPrixBetRepository {
   final FirebaseGrandPrixBetService _dbGrandPrixBetService;
 
-  GrandPrixBetRepositoryImpl({super.initialData})
-      : _dbGrandPrixBetService = getIt<FirebaseGrandPrixBetService>();
+  GrandPrixBetRepositoryImpl({
+    required FirebaseGrandPrixBetService firebaseGrandPrixBetService,
+    super.initialData,
+  }) : _dbGrandPrixBetService = firebaseGrandPrixBetService;
 
   @override
   Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
