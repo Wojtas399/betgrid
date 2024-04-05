@@ -1,9 +1,7 @@
 import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_impl.dart';
 import 'package:betgrid/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
-import 'package:betgrid/firebase/service/firebase_grand_prix_bet_points_service.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
@@ -11,21 +9,6 @@ import '../../../mock/data/repository/mock_firebase_grand_prix_bet_points_servic
 
 void main() {
   final dbBetPointsService = MockFirebaseGrandPrixBetPointsService();
-  late GrandPrixBetPointsRepositoryImpl repositoryImpl;
-
-  setUpAll(() {
-    GetIt.I.registerFactory<FirebaseGrandPrixBetPointsService>(
-      () => dbBetPointsService,
-    );
-  });
-
-  setUp(() {
-    repositoryImpl = GrandPrixBetPointsRepositoryImpl();
-  });
-
-  tearDown(() {
-    reset(dbBetPointsService);
-  });
 
   test(
     'getPointsForPlayerByGrandPrixId, '
@@ -56,7 +39,8 @@ void main() {
           grandPrixId: 'gp1',
         ),
       ];
-      repositoryImpl = GrandPrixBetPointsRepositoryImpl(
+      final repositoryImpl = GrandPrixBetPointsRepositoryImpl(
+        firebaseGrandPrixBetPointsService: dbBetPointsService,
         initialData: existingEntities,
       );
 
@@ -104,7 +88,8 @@ void main() {
       dbBetPointsService.mockLoadGrandPrixBetPointsByPlayerIdAndGrandPrixId(
         grandPrixBetPointsDto: grandPrixBetPointsDto,
       );
-      repositoryImpl = GrandPrixBetPointsRepositoryImpl(
+      final repositoryImpl = GrandPrixBetPointsRepositoryImpl(
+        firebaseGrandPrixBetPointsService: dbBetPointsService,
         initialData: existingEntities,
       );
 
