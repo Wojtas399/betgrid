@@ -39,7 +39,7 @@ void main() {
       final listener = Listener<RequiredDataCompletionControllerState>();
       container.listen(
         requiredDataCompletionControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -72,7 +72,7 @@ void main() {
       final listener = Listener<RequiredDataCompletionControllerState>();
       container.listen(
         requiredDataCompletionControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 

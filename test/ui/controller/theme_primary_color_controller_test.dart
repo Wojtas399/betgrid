@@ -39,7 +39,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -77,7 +77,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -110,7 +110,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -166,7 +166,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemePrimaryColor>>();
       container.listen(
         themePrimaryColorControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 

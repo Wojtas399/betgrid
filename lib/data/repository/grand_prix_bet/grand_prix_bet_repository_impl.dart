@@ -19,7 +19,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
     required String playerId,
   }) async* {
-    if (isRepositoryStateEmpty) await _loadAllGrandPrixBetsFromDb(playerId);
+    if (isRepositoryStateEmpty) await _fetchAllGrandPrixBetsFromDb(playerId);
     await for (final grandPrixBets in repositoryState$) {
       yield grandPrixBets;
     }
@@ -31,13 +31,13 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     required String grandPrixId,
   }) async* {
     await for (final grandPrixBets in repositoryState$) {
-      GrandPrixBet? grandPrixBet = grandPrixBets?.firstWhereOrNull(
+      GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
         (GrandPrixBet grandPrixBet) =>
             grandPrixBet.playerId == playerId &&
             grandPrixBet.grandPrixId == grandPrixId,
       );
       grandPrixBet ??=
-          await _loadGrandPrixBetByGrandPrixIdFromDb(playerId, grandPrixId);
+          await _fetchGrandPrixBetByGrandPrixIdFromDb(playerId, grandPrixId);
       yield grandPrixBet;
     }
   }
@@ -89,7 +89,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     }
   }
 
-  Future<void> _loadAllGrandPrixBetsFromDb(String playerId) async {
+  Future<void> _fetchAllGrandPrixBetsFromDb(String playerId) async {
     final List<GrandPrixBetDto> grandPrixBetDtos =
         await _dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId);
     final List<GrandPrixBet> grandPrixBets =
@@ -97,7 +97,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     setEntities(grandPrixBets);
   }
 
-  Future<GrandPrixBet?> _loadGrandPrixBetByGrandPrixIdFromDb(
+  Future<GrandPrixBet?> _fetchGrandPrixBetByGrandPrixIdFromDb(
     String userId,
     String grandPrixId,
   ) async {

@@ -241,7 +241,7 @@ void main() {
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -455,7 +455,7 @@ void main() {
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -555,7 +555,7 @@ void main() {
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 

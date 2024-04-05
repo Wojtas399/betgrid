@@ -38,7 +38,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -72,7 +72,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -104,7 +104,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 
@@ -156,7 +156,7 @@ void main() {
       final listener = Listener<AsyncValue<ThemeMode>>();
       container.listen(
         themeModeControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
 

@@ -23,8 +23,8 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   @override
   Stream<User?> getUserById({required String userId}) async* {
     await for (final users in repositoryState$) {
-      User? user = users?.firstWhereOrNull((user) => user.id == userId);
-      user ??= await _loadUserFromDb(userId);
+      User? user = users.firstWhereOrNull((user) => user.id == userId);
+      user ??= await _fetchUserFromDb(userId);
       yield user;
     }
   }
@@ -113,7 +113,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     updateEntity(user);
   }
 
-  Future<User?> _loadUserFromDb(String userId) async {
+  Future<User?> _fetchUserFromDb(String userId) async {
     final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
     if (userDto == null) return null;
     final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
@@ -133,7 +133,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<User?> _findExistingUserInRepoState(String userId) async {
-    final List<User>? existingUsers = await repositoryState$.first;
-    return existingUsers?.firstWhereOrNull((User user) => user.id == userId);
+    final List<User> existingUsers = await repositoryState$.first;
+    return existingUsers.firstWhereOrNull((User user) => user.id == userId);
   }
 }

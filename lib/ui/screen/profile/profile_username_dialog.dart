@@ -69,7 +69,7 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
       data: (state) {
         if (state is LoggedUserControllerStateUsernameUpdated) {
           closeLoadingDialog();
-          context.popRoute();
+          context.maybePop();
           showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
         }
       },
@@ -95,7 +95,7 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: context.popRoute,
+          onPressed: context.maybePop,
           icon: const Icon(Icons.close),
         ),
         title: Text(context.str.profileNewUsernameDialogTitle),

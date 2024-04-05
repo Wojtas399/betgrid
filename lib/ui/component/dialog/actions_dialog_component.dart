@@ -28,13 +28,13 @@ class ActionsDialog<T> extends StatelessWidget {
             (action) => ListTile(
               title: Text(action.label),
               leading: action.icon,
-              onTap: () => context.popRoute(action.value),
+              onTap: () => context.maybePop(action.value),
             ),
           ),
           ListTile(
             title: Text(context.str.cancel),
             leading: const Icon(Icons.close),
-            onTap: () => context.popRoute(null),
+            onTap: () => context.maybePop(null),
           ),
         ],
       ),

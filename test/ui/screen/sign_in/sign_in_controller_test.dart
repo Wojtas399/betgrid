@@ -38,7 +38,7 @@ void main() {
       final listener = Listener<AsyncValue<void>>();
       container.listen(
         signInControllerProvider,
-        listener,
+        listener.call,
         fireImmediately: true,
       );
       final controller = container.read(signInControllerProvider.notifier);

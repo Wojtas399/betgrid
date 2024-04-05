@@ -20,16 +20,15 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     required String grandPrixId,
   }) async* {
     await for (final grandPrixesResults in repositoryState$) {
-      GrandPrixResults? matchingGpResults =
-          grandPrixesResults?.firstWhereOrNull(
+      GrandPrixResults? matchingGpResults = grandPrixesResults.firstWhereOrNull(
         (gpResults) => gpResults.grandPrixId == grandPrixId,
       );
-      matchingGpResults ??= await _loadResultsForGrandPrixFromDb(grandPrixId);
+      matchingGpResults ??= await _fetchResultsForGrandPrixFromDb(grandPrixId);
       yield matchingGpResults;
     }
   }
 
-  Future<GrandPrixResults?> _loadResultsForGrandPrixFromDb(
+  Future<GrandPrixResults?> _fetchResultsForGrandPrixFromDb(
     String grandPrixId,
   ) async {
     final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService

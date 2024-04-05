@@ -20,19 +20,19 @@ class PlayerRepositoryImpl extends Repository<Player>
 
   @override
   Stream<List<Player>?> getAllPlayers() async* {
-    await _fetchAllPlayersFromDb();
-    await for (final users in repositoryState$) {
-      yield users;
+    if (isRepositoryStateEmpty) await _fetchAllPlayersFromDb();
+    await for (final allPlayers in repositoryState$) {
+      yield allPlayers;
     }
   }
 
   @override
   Stream<Player?> getPlayerById({required String playerId}) async* {
     await for (final players in repositoryState$) {
-      Player? player = players?.firstWhereOrNull(
+      Player? player = players.firstWhereOrNull(
         (player) => player.id == playerId,
       );
-      player ??= await _loadPlayerFromDb(playerId);
+      player ??= await _fetchPlayerFromDb(playerId);
       yield player;
     }
   }
@@ -50,7 +50,7 @@ class PlayerRepositoryImpl extends Repository<Player>
     setEntities(players);
   }
 
-  Future<Player?> _loadPlayerFromDb(String playerId) async {
+  Future<Player?> _fetchPlayerFromDb(String playerId) async {
     final UserDto? userDto =
         await _dbUserService.loadUserById(userId: playerId);
     if (userDto == null) return null;

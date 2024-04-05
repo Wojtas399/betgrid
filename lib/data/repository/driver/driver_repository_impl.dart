@@ -17,11 +17,8 @@ class DriverRepositoryImpl extends Repository<Driver>
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {
-    await for (final repoState in repositoryState$) {
-      List<Driver>? allDrivers = repoState;
-      if (allDrivers == null || allDrivers.isEmpty) {
-        allDrivers = await _fetchAllDriversFromDb();
-      }
+    if (isRepositoryStateEmpty) await _fetchAllDriversFromDb();
+    await for (final allDrivers in repositoryState$) {
       yield allDrivers;
     }
   }
@@ -29,22 +26,21 @@ class DriverRepositoryImpl extends Repository<Driver>
   @override
   Stream<Driver?> getDriverById({required String driverId}) async* {
     await for (final drivers in repositoryState$) {
-      Driver? driver = drivers?.firstWhereOrNull(
+      Driver? driver = drivers.firstWhereOrNull(
         (driver) => driver.id == driverId,
       );
-      driver ??= await _loadDriverFromDb(driverId);
+      driver ??= await _fetchDriverFromDb(driverId);
       yield driver;
     }
   }
 
-  Future<List<Driver>> _fetchAllDriversFromDb() async {
+  Future<void> _fetchAllDriversFromDb() async {
     final List<DriverDto> driverDtos = await _dbDriverService.fetchAllDrivers();
     final List<Driver> drivers = driverDtos.map(mapDriverFromDto).toList();
     setEntities(drivers);
-    return drivers;
   }
 
-  Future<Driver?> _loadDriverFromDb(String driverId) async {
+  Future<Driver?> _fetchDriverFromDb(String driverId) async {
     final DriverDto? driverDto = await _dbDriverService.fetchDriverById(
       driverId: driverId,
     );

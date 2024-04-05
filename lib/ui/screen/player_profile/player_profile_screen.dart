@@ -36,14 +36,12 @@ class _AppBar extends SliverAppBar {
   _AppBar({
     required Player player,
     required BuildContext context,
-    Color? backgroundColor,
-    Color? foregroundColor,
+    super.backgroundColor,
+    super.foregroundColor,
   }) : super(
           pinned: true,
           expandedHeight: 300,
           surfaceTintColor: Colors.transparent,
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
           flexibleSpace: FlexibleSpaceBar(
             title: TitleLarge(
               player.username,

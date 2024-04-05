@@ -14,7 +14,6 @@ import '../../../mock/firebase/mock_firebase_user_service.dart';
 void main() {
   final dbUserService = MockFirebaseUserService();
   final dbAvatarService = MockFirebaseAvatarService();
-  const String playerId = 'u1';
   late PlayerRepositoryImpl repositoryImpl;
 
   setUpAll(() {

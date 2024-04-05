@@ -25,7 +25,7 @@ class RequiredDataCompletionScreen extends ConsumerWidget {
     state.when(
       data: (user.User? loggedUser) {
         closeLoadingDialog();
-        if (loggedUser != null) context.popRoute();
+        if (loggedUser != null) context.maybePop();
       },
       error: (_, __) => closeLoadingDialog(),
       loading: () => showLoadingDialog(),
