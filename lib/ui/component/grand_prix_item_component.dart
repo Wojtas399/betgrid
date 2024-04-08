@@ -8,14 +8,12 @@ import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
   final double? betPoints;
-  final int roundNumber;
   final GrandPrix grandPrix;
   final VoidCallback onPressed;
 
   const GrandPrixItem({
     super.key,
     this.betPoints,
-    required this.roundNumber,
     required this.grandPrix,
     required this.onPressed,
   });
@@ -39,7 +37,7 @@ class GrandPrixItem extends StatelessWidget {
                 const GapHorizontal16(),
                 Expanded(
                   child: _GrandPrixDescription(
-                    roundNumber: roundNumber,
+                    roundNumber: grandPrix.roundNumber,
                     gpName: grandPrix.name,
                     startDate: grandPrix.startDate,
                     endDate: grandPrix.endDate,

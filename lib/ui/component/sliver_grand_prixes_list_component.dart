@@ -32,7 +32,6 @@ class SliverGrandPrixesList extends SliverPadding {
                       return ScrollAnimatedItem(
                         child: GrandPrixItem(
                           betPoints: item.points,
-                          roundNumber: index + 1,
                           grandPrix: item.grandPrix,
                           onPressed: () {
                             onGrandPrixPressed(item.grandPrix.id);
