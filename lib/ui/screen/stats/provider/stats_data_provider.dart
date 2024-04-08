@@ -108,7 +108,7 @@ class Stats extends _$Stats {
         ));
       }
       chartGrandPrixes.add(PointsHistoryChartGrandPrix(
-        grandPrixName: gp.name,
+        roundNumber: gp.roundNumber,
         playersPoints: playersPoints,
       ));
     }

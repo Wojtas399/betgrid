@@ -35,7 +35,7 @@ class StatsBetPointsHistory extends ConsumerWidget {
             for (final player in [...?pointsHistory?.players])
               LineSeries<PointsHistoryChartGrandPrix, String>(
                 dataSource: pointsHistory!.chartGrandPrixes,
-                xValueMapper: (data, _) => data.grandPrixName,
+                xValueMapper: (data, _) => '${data.roundNumber}',
                 yValueMapper: (data, _) => data.playersPoints
                     .firstWhere((el) => el.playerId == player.id)
                     .points,

@@ -16,16 +16,16 @@ class PointsHistoryChartData extends Equatable {
 }
 
 class PointsHistoryChartGrandPrix extends Equatable {
-  final String grandPrixName;
+  final int roundNumber;
   final List<PointsHistoryChartPlayerPoints> playersPoints;
 
   const PointsHistoryChartGrandPrix({
-    required this.grandPrixName,
+    required this.roundNumber,
     required this.playersPoints,
   });
 
   @override
-  List<Object?> get props => [grandPrixName, playersPoints];
+  List<Object?> get props => [roundNumber, playersPoints];
 }
 
 class PointsHistoryChartPlayerPoints extends Equatable {

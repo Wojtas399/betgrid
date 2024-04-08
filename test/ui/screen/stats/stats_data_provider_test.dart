@@ -62,17 +62,17 @@ void main() {
       final List<GrandPrix> finishedGrandPrixes = [
         createGrandPrix(
           id: 'gp1',
-          startDate: DateTime(2024, 4, 5),
+          roundNumber: 3,
           name: 'grand prix 1',
         ),
         createGrandPrix(
           id: 'gp2',
-          startDate: DateTime(2024, 3, 1),
+          roundNumber: 2,
           name: 'grand prix 2',
         ),
         createGrandPrix(
           id: 'gp3',
-          startDate: DateTime(2024, 2, 25),
+          roundNumber: 1,
           name: 'grand prix 3',
         ),
       ];
@@ -140,7 +140,7 @@ void main() {
           players: allPlayers,
           chartGrandPrixes: [
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 3',
+              roundNumber: 1,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
@@ -157,7 +157,7 @@ void main() {
               ],
             ),
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 2',
+              roundNumber: 2,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
@@ -176,7 +176,7 @@ void main() {
               ],
             ),
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 1',
+              roundNumber: 3,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
@@ -265,17 +265,17 @@ void main() {
       final List<GrandPrix> finishedGrandPrixes = [
         createGrandPrix(
           id: 'gp1',
-          startDate: DateTime(2024, 4, 5),
+          roundNumber: 3,
           name: 'grand prix 1',
         ),
         createGrandPrix(
           id: 'gp2',
-          startDate: DateTime(2024, 3, 1),
+          roundNumber: 2,
           name: 'grand prix 2',
         ),
         createGrandPrix(
           id: 'gp3',
-          startDate: DateTime(2024, 2, 25),
+          roundNumber: 1,
           name: 'grand prix 3',
         ),
       ];
@@ -351,7 +351,7 @@ void main() {
           players: allPlayers,
           chartGrandPrixes: [
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 3',
+              roundNumber: 1,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
@@ -368,7 +368,7 @@ void main() {
               ],
             ),
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 2',
+              roundNumber: 2,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
@@ -387,7 +387,7 @@ void main() {
               ],
             ),
             PointsHistoryChartGrandPrix(
-              grandPrixName: 'grand prix 1',
+              roundNumber: 3,
               playersPoints: [
                 PointsHistoryChartPlayerPoints(
                   playerId: 'p1',
