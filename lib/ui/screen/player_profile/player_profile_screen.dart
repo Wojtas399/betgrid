@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
 import '../../component/text_component.dart';
+import '../../config/router/app_router.dart';
+import '../../provider/grand_prixes_with_points_provider.dart';
+import '../../provider/player_points_provider.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -24,8 +28,8 @@ class PlayerProfileScreen extends StatelessWidget {
             player: player,
             context: context,
           ),
-          SliverPlayerTotalPoints(playerId: player.id),
-          SliverGrandPrixesList(playerId: player.id),
+          _TotalPoints(playerId: player.id),
+          _GrandPrixes(playerId: player.id),
         ],
       ),
     );
@@ -65,6 +69,7 @@ class _AppBar extends SliverAppBar {
                       child: Avatar(
                         avatarUrl: player.avatarUrl,
                         username: player.username,
+                        usernameFontSize: 56,
                       ),
                     ),
                   ),
@@ -73,4 +78,49 @@ class _AppBar extends SliverAppBar {
             ),
           ),
         );
+}
+
+class _TotalPoints extends ConsumerWidget {
+  final String playerId;
+
+  const _TotalPoints({required this.playerId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totalPointsAsyncVal = ref.watch(
+      playerPointsProvider(playerId: playerId),
+    );
+
+    return SliverPlayerTotalPoints(
+      points: totalPointsAsyncVal.value,
+      isLoading: totalPointsAsyncVal.isLoading,
+    );
+  }
+}
+
+class _GrandPrixes extends ConsumerWidget {
+  final String playerId;
+
+  const _GrandPrixes({required this.playerId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final grandPrixesWithPointsAsyncVal = ref.watch(
+      grandPrixesWithPointsProvider(playerId: playerId),
+    );
+
+    return SliverGrandPrixesList(
+      playerId: playerId,
+      grandPrixesWithPoints: [...?grandPrixesWithPointsAsyncVal.value],
+      onGrandPrixPressed: (String grandPrixId) {
+        context.navigateTo(
+          GrandPrixBetRoute(
+            grandPrixId: grandPrixId,
+            playerId: playerId,
+          ),
+        );
+      },
+      isLoading: grandPrixesWithPointsAsyncVal.isLoading,
+    );
+  }
 }
