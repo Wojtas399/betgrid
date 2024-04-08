@@ -13,7 +13,9 @@ Future<List<GrandPrixWithPoints>> grandPrixesWithPoints(
   required String playerId,
 }) async {
   final allGrandPrixes = await ref.watch(allGrandPrixesProvider.future);
-  allGrandPrixes?.sort((gp1, gp2) => gp1.startDate.compareTo(gp2.startDate));
+  allGrandPrixes?.sort(
+    (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
+  );
   final List<GrandPrixWithPoints> grandPrixesWithPoints = [];
   for (final gp in [...?allGrandPrixes]) {
     final pointsForGp = await ref.watch(grandPrixBetPointsProvider(

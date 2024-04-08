@@ -60,13 +60,13 @@ void main() {
   );
 
   test(
-    'should sort grand prixes by start date in ascending order and '
+    'should sort grand prixes by round number in ascending order and '
     'should load total points for each grand prix',
     () async {
       final List<GrandPrix> allGrandPrixes = [
-        createGrandPrix(id: 'gp1', startDate: DateTime(2024, 4, 8)),
-        createGrandPrix(id: 'gp2', startDate: DateTime(2024, 3, 25)),
-        createGrandPrix(id: 'gp3', startDate: DateTime(2024, 4, 1)),
+        createGrandPrix(id: 'gp1', roundNumber: 3),
+        createGrandPrix(id: 'gp2', roundNumber: 1),
+        createGrandPrix(id: 'gp3', roundNumber: 2),
       ];
       const double gp1TotalPoints = 10.2;
       const double gp2TotalPoints = 6.5;
