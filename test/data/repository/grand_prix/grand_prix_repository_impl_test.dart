@@ -4,6 +4,8 @@ import 'package:betgrid/model/grand_prix.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/grand_prix_dto_creator.dart';
 import '../../../mock/firebase/mock_firebase_grand_prix_service.dart';
 
 void main() {
@@ -26,49 +28,31 @@ void main() {
     'should load grand prixes from db, add them to repo and emit them',
     () async {
       final List<GrandPrixDto> grandPrixDtos = [
-        GrandPrixDto(
+        createGrandPrixDto(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
         ),
-        GrandPrixDto(
+        createGrandPrixDto(
           id: 'gp2',
           name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
         ),
-        GrandPrixDto(
+        createGrandPrixDto(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
         ),
       ];
       final List<GrandPrix> expectedGrandPrixes = [
-        GrandPrix(
+        createGrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp2',
           name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
         ),
       ];
       dbGrandPrixService.mockLoadAllGrandPrixes(
@@ -90,26 +74,17 @@ void main() {
     'should only emit all grand prixes from repository state',
     () async {
       final List<GrandPrix> expectedGrandPrixes = [
-        GrandPrix(
+        createGrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp2',
           name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
         ),
       ];
       repositoryImpl = GrandPrixRepositoryImpl(
@@ -132,26 +107,17 @@ void main() {
     () async {
       const String grandPrixId = 'gp2';
       final List<GrandPrix> existingGrandPrixes = [
-        GrandPrix(
+        createGrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: grandPrixId,
           name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 10),
-          endDate: DateTime(2023, 1, 12),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
         ),
       ];
       repositoryImpl = GrandPrixRepositoryImpl(
@@ -173,34 +139,22 @@ void main() {
     'should load grand prix from db, add it to repository state and emit it',
     () async {
       const String grandPrixId = 'gp2';
-      final GrandPrixDto grandPrixDto = GrandPrixDto(
+      final GrandPrixDto grandPrixDto = createGrandPrixDto(
         id: grandPrixId,
         name: 'Grand Prix 2',
-        countryAlpha2Code: 'PL',
-        startDate: DateTime(2023, 1, 10),
-        endDate: DateTime(2023, 1, 12),
       );
-      final GrandPrix expectedGrandPrix = GrandPrix(
+      final GrandPrix expectedGrandPrix = createGrandPrix(
         id: grandPrixId,
         name: 'Grand Prix 2',
-        countryAlpha2Code: 'PL',
-        startDate: DateTime(2023, 1, 10),
-        endDate: DateTime(2023, 1, 12),
       );
       final List<GrandPrix> existingGrandPrixes = [
-        GrandPrix(
+        createGrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 2),
-          endDate: DateTime(2023, 1, 4),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 20),
-          endDate: DateTime(2023, 1, 22),
         ),
       ];
       dbGrandPrixService.mockLoadGrandPrixById(grandPrixDto);

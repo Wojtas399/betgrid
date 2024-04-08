@@ -9,12 +9,14 @@ void main() {
     'should map GrandPrixDto model to GrandPrix model',
     () {
       const String id = 'gp1';
+      const int roundNumber = 3;
       const String name = 'Monaco GP';
       const String countryAlpha2Code = 'PL';
       final DateTime startDate = DateTime(2024, 1, 1);
       final DateTime endDate = DateTime(2024, 1, 3);
       final gpDto = GrandPrixDto(
         id: id,
+        roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
@@ -22,6 +24,7 @@ void main() {
       );
       final gp = GrandPrix(
         id: id,
+        roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,

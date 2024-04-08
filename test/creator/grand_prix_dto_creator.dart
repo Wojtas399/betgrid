@@ -1,6 +1,6 @@
-import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/firebase/model/grand_prix_dto/grand_prix_dto.dart';
 
-GrandPrix createGrandPrix({
+GrandPrixDto createGrandPrixDto({
   String id = '',
   int roundNumber = 1,
   String name = '',
@@ -8,7 +8,7 @@ GrandPrix createGrandPrix({
   DateTime? startDate,
   DateTime? endDate,
 }) =>
-    GrandPrix(
+    GrandPrixDto(
       id: id,
       roundNumber: roundNumber,
       name: name,

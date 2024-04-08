@@ -2,6 +2,7 @@ import 'package:betgrid/firebase/model/grand_prix_dto/grand_prix_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  const int roundNumber = 4;
   const String name = 'Test Grand Prix';
   const String countryAlpha2Code = 'PL';
   final DateTime startDate = DateTime(2024);
@@ -12,6 +13,7 @@ void main() {
     'should map json model to class model ignoring id',
     () {
       final Map<String, Object?> json = {
+        'roundNumber': roundNumber,
         'name': name,
         'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
@@ -19,6 +21,7 @@ void main() {
       };
       final GrandPrixDto expectedModel = GrandPrixDto(
         id: '',
+        roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
@@ -36,6 +39,7 @@ void main() {
     'should map class model to json model ignoring id',
     () {
       final GrandPrixDto model = GrandPrixDto(
+        roundNumber: roundNumber,
         id: 'gp1',
         name: name,
         countryAlpha2Code: countryAlpha2Code,
@@ -43,6 +47,7 @@ void main() {
         endDate: endDate,
       );
       final Map<String, Object?> expectedJson = {
+        'roundNumber': roundNumber,
         'name': name,
         'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
@@ -61,12 +66,14 @@ void main() {
     () {
       const String id = 'gp1';
       final Map<String, Object?> json = {
+        'roundNumber': roundNumber,
         'name': name,
         'countryAlpha2Code': countryAlpha2Code,
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
       };
       final GrandPrixDto expectedModel = GrandPrixDto(
+        roundNumber: roundNumber,
         id: id,
         name: name,
         countryAlpha2Code: countryAlpha2Code,

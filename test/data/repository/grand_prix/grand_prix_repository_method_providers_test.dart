@@ -25,26 +25,17 @@ void main() {
     'should get all grand prixes from GrandPrixRepository and should emit them',
     () async {
       final expectedGrandPrixes = [
-        GrandPrix(
+        createGrandPrix(
           id: 'gp1',
           name: 'Grand Prix 1',
-          countryAlpha2Code: 'BH',
-          startDate: DateTime(2023, 1, 1),
-          endDate: DateTime(2023, 1, 3),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp2',
           name: 'Grand Prix 2',
-          countryAlpha2Code: 'PL',
-          startDate: DateTime(2023, 1, 5),
-          endDate: DateTime(2023, 1, 7),
         ),
-        GrandPrix(
+        createGrandPrix(
           id: 'gp3',
           name: 'Grand Prix 3',
-          countryAlpha2Code: 'XD',
-          startDate: DateTime(2023, 1, 9),
-          endDate: DateTime(2023, 1, 11),
         ),
       ];
       grandPrixRepository.mockGetAllGrandPrixes(expectedGrandPrixes);

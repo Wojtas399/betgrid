@@ -1,6 +1,7 @@
 import 'entity.dart';
 
 class GrandPrix extends Entity {
+  final int roundNumber;
   final String name;
   final String countryAlpha2Code;
   final DateTime startDate;
@@ -8,6 +9,7 @@ class GrandPrix extends Entity {
 
   const GrandPrix({
     required super.id,
+    required this.roundNumber,
     required this.name,
     required this.countryAlpha2Code,
     required this.startDate,
@@ -15,5 +17,12 @@ class GrandPrix extends Entity {
   });
 
   @override
-  List<Object?> get props => [id, name, countryAlpha2Code, startDate, endDate];
+  List<Object?> get props => [
+        id,
+        roundNumber,
+        name,
+        countryAlpha2Code,
+        startDate,
+        endDate,
+      ];
 }
