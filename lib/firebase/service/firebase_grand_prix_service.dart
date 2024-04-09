@@ -1,4 +1,3 @@
-import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
