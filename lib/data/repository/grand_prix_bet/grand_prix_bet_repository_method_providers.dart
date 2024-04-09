@@ -20,7 +20,10 @@ Stream<GrandPrixBet?> grandPrixBetByPlayerIdAndGrandPrixId(
   required String playerId,
   required String grandPrixId,
 }) =>
-    ref.watch(grandPrixBetRepositoryProvider).getBetByGrandPrixIdAndPlayerId(
+    ref
+        .watch(grandPrixBetRepositoryProvider)
+        .getBetByGrandPrixIdAndPlayerId(
           playerId: playerId,
           grandPrixId: grandPrixId,
-        );
+        )
+        .distinct();

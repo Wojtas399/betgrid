@@ -14,4 +14,7 @@ Stream<Player?> player(
   PlayerRef ref, {
   required String playerId,
 }) =>
-    ref.watch(playerRepositoryProvider).getPlayerById(playerId: playerId);
+    ref
+        .watch(playerRepositoryProvider)
+        .getPlayerById(playerId: playerId)
+        .distinct();

@@ -10,4 +10,4 @@ Stream<User?> user(
   UserRef ref, {
   required String userId,
 }) =>
-    ref.watch(userRepositoryProvider).getUserById(userId: userId);
+    ref.watch(userRepositoryProvider).getUserById(userId: userId).distinct();

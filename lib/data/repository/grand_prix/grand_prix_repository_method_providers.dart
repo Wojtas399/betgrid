@@ -16,4 +16,5 @@ Stream<GrandPrix?> grandPrix(
 }) =>
     ref
         .watch(grandPrixRepositoryProvider)
-        .getGrandPrixById(grandPrixId: grandPrixId);
+        .getGrandPrixById(grandPrixId: grandPrixId)
+        .distinct();

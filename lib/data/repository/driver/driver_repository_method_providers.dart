@@ -14,4 +14,7 @@ Stream<Driver?> driver(
   DriverRef ref, {
   required String driverId,
 }) =>
-    ref.watch(driverRepositoryProvider).getDriverById(driverId: driverId);
+    ref
+        .watch(driverRepositoryProvider)
+        .getDriverById(driverId: driverId)
+        .distinct();
