@@ -25,7 +25,7 @@ class PlayerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.primary,
+      color: context.colorScheme.primary,
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () => _onTap(context),
@@ -87,7 +87,7 @@ class _Points extends ConsumerWidget {
       children: [
         BodyMedium(
           '${context.str.points}:',
-          color: Theme.of(context).colorScheme.outlineVariant,
+          color: context.colorScheme.outlineVariant,
         ),
         if (playerPointsAsyncVal.isLoading) ...[
           const GapHorizontal8(),
@@ -95,7 +95,7 @@ class _Points extends ConsumerWidget {
             width: 14,
             height: 14,
             child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: context.colorScheme.primaryContainer,
               strokeWidth: 1.6,
             ),
           ),
@@ -104,7 +104,7 @@ class _Points extends ConsumerWidget {
           const GapHorizontal4(),
           BodyMedium(
             '${playerPointsAsyncVal.value}',
-            color: Theme.of(context).colorScheme.outlineVariant,
+            color: context.colorScheme.outlineVariant,
           ),
         ],
       ],

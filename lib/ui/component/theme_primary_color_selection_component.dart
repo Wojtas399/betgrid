@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/user.dart';
+import '../extensions/build_context_extensions.dart';
 import '../extensions/theme_primary_color_extensions.dart';
 
 class ThemePrimaryColorSelection extends StatelessWidget {
@@ -56,7 +57,7 @@ class _ColorItem extends StatelessWidget {
           shape: BoxShape.circle,
           border: isSelected
               ? Border.all(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: context.colorScheme.onBackground,
                   width: 2.0,
                 )
               : null,

@@ -2,6 +2,7 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/grand_prix.dart';
+import '../extensions/build_context_extensions.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
 import 'text_component.dart';
@@ -23,7 +24,7 @@ class GrandPrixItem extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        color: Theme.of(context).colorScheme.primary,
+        color: context.colorScheme.primary,
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: onPressed,
@@ -63,7 +64,7 @@ class _CountryFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: context.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(8),
@@ -97,7 +98,7 @@ class _GrandPrixDescription extends StatelessWidget {
       children: [
         BodyMedium(
           'Runda $roundNumber',
-          color: Theme.of(context).colorScheme.outlineVariant,
+          color: context.colorScheme.outlineVariant,
           fontWeight: FontWeight.bold,
         ),
         TitleMedium(
@@ -107,7 +108,7 @@ class _GrandPrixDescription extends StatelessWidget {
         ),
         BodyMedium(
           '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
-          color: Theme.of(context).colorScheme.outlineVariant,
+          color: context.colorScheme.outlineVariant,
         ),
       ],
     );
@@ -125,7 +126,7 @@ class _BetPoints extends StatelessWidget {
       children: [
         LabelLarge(
           'Punkty',
-          color: Theme.of(context).colorScheme.outlineVariant,
+          color: context.colorScheme.outlineVariant,
         ),
         TitleMedium(
           '${points ?? '--'}',

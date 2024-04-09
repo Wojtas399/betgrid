@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../component/avatar_component.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
+import '../../extensions/build_context_extensions.dart';
 import 'provider/players_podium_chart_data.dart';
 import 'provider/stats_data_provider.dart';
 
@@ -48,7 +49,7 @@ class StatsPlayersPodium extends ConsumerWidget {
               dataSource: podiumArray,
               xValueMapper: (data, _) => data.player.username,
               yValueMapper: (data, _) => data.points,
-              color: Theme.of(context).colorScheme.primary,
+              color: context.colorScheme.primary,
               dataLabelSettings: DataLabelSettings(
                 isVisible: true,
                 builder: (_, ChartPoint point, ___, int columnIndex, _____) {

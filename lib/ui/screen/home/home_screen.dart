@@ -49,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabsRouter.activeIndex,
             onTap: tabsRouter.setActiveIndex,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
+            selectedItemColor: context.colorScheme.primary,
             items: [
               BottomNavigationBarItem(
                 label: context.str.statsScreenTitle,

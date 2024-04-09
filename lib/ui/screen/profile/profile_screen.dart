@@ -61,7 +61,7 @@ class _ThemeMode extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TitleLarge(
             context.str.theme,
-            color: Theme.of(context).colorScheme.outline,
+            color: context.colorScheme.outline,
           ),
         ),
         const GapVertical16(),
@@ -94,7 +94,7 @@ class _ThemePrimaryColor extends ConsumerWidget {
         children: [
           TitleLarge(
             context.str.color,
-            color: Theme.of(context).colorScheme.outline,
+            color: context.colorScheme.outline,
           ),
           const GapVertical24(),
           ThemePrimaryColorSelection(

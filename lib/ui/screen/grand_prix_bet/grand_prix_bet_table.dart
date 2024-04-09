@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../extensions/build_context_extensions.dart';
+
 class GrandPrixBetTable extends StatelessWidget {
   final List<TableRow> rows;
 
@@ -11,11 +13,11 @@ class GrandPrixBetTable extends StatelessWidget {
       border: TableBorder(
         horizontalInside: BorderSide(
           width: 0.25,
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+          color: context.colorScheme.outline.withOpacity(0.5),
         ),
         verticalInside: BorderSide(
           width: 0.25,
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+          color: context.colorScheme.outline.withOpacity(0.5),
         ),
       ),
       columnWidths: const <int, TableColumnWidth>{

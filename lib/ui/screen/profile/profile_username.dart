@@ -34,7 +34,7 @@ class ProfileUsername extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TitleLarge(
             context.str.username,
-            color: Theme.of(context).colorScheme.outline,
+            color: context.colorScheme.outline,
           ),
         ),
         const GapVertical8(),

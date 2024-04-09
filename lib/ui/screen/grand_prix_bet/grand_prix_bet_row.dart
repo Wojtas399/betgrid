@@ -82,7 +82,7 @@ class _BetPoints extends TableCell {
               Builder(
                 builder: (BuildContext context) => LabelLarge(
                   context.str.points,
-                  color: Theme.of(context).colorScheme.outline,
+                  color: context.colorScheme.outline,
                 ),
               ),
               const GapVertical4(),

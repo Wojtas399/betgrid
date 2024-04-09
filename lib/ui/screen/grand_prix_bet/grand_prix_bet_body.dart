@@ -71,7 +71,7 @@ class _TotalPoints extends ConsumerWidget {
           DisplayLarge(
             '${totalPoints ?? '--'}',
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
+            color: context.colorScheme.primary,
           ),
         ],
       ),
@@ -91,7 +91,7 @@ class _Label extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+            color: context.colorScheme.outline.withOpacity(0.5),
           ),
         ),
       ),

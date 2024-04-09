@@ -23,7 +23,7 @@ class SignInContent extends StatelessWidget {
               'BetGrid',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: context.colorScheme.primary,
                   ),
             ),
             const GapVertical64(),

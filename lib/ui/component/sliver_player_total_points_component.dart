@@ -32,7 +32,7 @@ class SliverPlayerTotalPoints extends SliverPadding {
                       DisplayLarge(
                         '$points',
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: context.colorScheme.primary,
                       ),
                   ],
                 );

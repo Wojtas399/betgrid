@@ -8,6 +8,7 @@ import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
 import '../../component/text_component.dart';
 import '../../config/router/app_router.dart';
+import '../../extensions/build_context_extensions.dart';
 import '../../provider/grand_prixes_with_points_provider.dart';
 import '../../provider/player_points_provider.dart';
 
@@ -23,7 +24,7 @@ class PlayerProfileScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           _AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: context.colorScheme.primary,
             foregroundColor: Theme.of(context).canvasColor,
             player: player,
             context: context,

@@ -40,7 +40,7 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
               TitleMedium(
                 '${totalPoints ?? '--'}',
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+                color: context.colorScheme.primary,
               ),
             ],
           ),

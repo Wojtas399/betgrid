@@ -51,7 +51,7 @@ class _Avatar extends ConsumerWidget {
               ? Icon(
                   Icons.person,
                   size: 128,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  color: context.colorScheme.onSecondaryContainer,
                 )
               : null,
         ),
