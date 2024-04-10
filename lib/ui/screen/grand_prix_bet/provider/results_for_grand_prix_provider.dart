@@ -10,7 +10,6 @@ part 'results_for_grand_prix_provider.g.dart';
 Future<GrandPrixResults?> resultsForGrandPrix(
   ResultsForGrandPrixRef ref,
 ) async {
-  print('Results');
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   return grandPrixId != null
       ? await ref.watch(
