@@ -1,29 +1,28 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../../model/grand_prix_bet.dart';
 import 'grand_prix_bet_repository_impl.dart';
 
 part 'grand_prix_bet_repository.g.dart';
 
-@riverpod
-GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
-    GrandPrixBetRepositoryImpl();
-
 abstract interface class GrandPrixBetRepository {
-  Stream<List<GrandPrixBet>?> getAllGrandPrixBets({required String userId});
+  Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
+    required String playerId,
+  });
 
-  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixId({
-    required String userId,
+  Stream<GrandPrixBet?> getBetByGrandPrixIdAndPlayerId({
+    required String playerId,
     required String grandPrixId,
   });
 
   Future<void> addGrandPrixBets({
-    required String userId,
+    required String playerId,
     required List<GrandPrixBet> grandPrixBets,
   });
 
   Future<void> updateGrandPrixBet({
-    required String userId,
+    required String playerId,
     required String grandPrixBetId,
     List<String?>? qualiStandingsByDriverIds,
     String? p1DriverId,
@@ -36,3 +35,11 @@ abstract interface class GrandPrixBetRepository {
     bool? willBeRedFlag,
   });
 }
+
+@Riverpod(keepAlive: true)
+GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
+    GrandPrixBetRepositoryImpl(
+      firebaseGrandPrixBetService: ref.read(
+        firebaseGrandPrixBetServiceProvider,
+      ),
+    );

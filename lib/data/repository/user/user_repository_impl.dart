@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
 import '../../../firebase/service/firebase_user_service.dart';
@@ -16,15 +15,18 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
 
-  UserRepositoryImpl({super.initialData})
-      : _dbUserService = getIt<FirebaseUserService>(),
-        _dbAvatarService = getIt<FirebaseAvatarService>();
+  UserRepositoryImpl({
+    required FirebaseUserService firebaseUserService,
+    required FirebaseAvatarService firebaseAvatarService,
+    super.initialData,
+  })  : _dbUserService = firebaseUserService,
+        _dbAvatarService = firebaseAvatarService;
 
   @override
   Stream<User?> getUserById({required String userId}) async* {
     await for (final users in repositoryState$) {
-      User? user = users?.firstWhereOrNull((user) => user.id == userId);
-      user ??= await _loadUserFromDb(userId);
+      User? user = users.firstWhereOrNull((user) => user.id == userId);
+      user ??= await _fetchUserFromDb(userId);
       yield user;
     }
   }
@@ -113,7 +115,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     updateEntity(user);
   }
 
-  Future<User?> _loadUserFromDb(String userId) async {
+  Future<User?> _fetchUserFromDb(String userId) async {
     final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
     if (userDto == null) return null;
     final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
@@ -133,7 +135,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<User?> _findExistingUserInRepoState(String userId) async {
-    final List<User>? existingUsers = await repositoryState$.first;
-    return existingUsers?.firstWhereOrNull((User user) => user.id == userId);
+    final List<User> existingUsers = await repositoryState$.first;
+    return existingUsers.firstWhereOrNull((User user) => user.id == userId);
   }
 }

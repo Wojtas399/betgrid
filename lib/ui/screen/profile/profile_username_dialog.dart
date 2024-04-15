@@ -2,11 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/user.dart';
 import '../../component/button/big_button.dart';
 import '../../component/gap/gap_vertical.dart';
+import '../../controller/logged_user/logged_user_controller.dart';
+import '../../controller/logged_user/logged_user_controller_state.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 
 class ProfileUsernameDialog extends ConsumerStatefulWidget {
@@ -28,7 +29,7 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
   void initState() {
     super.initState();
     _originalUsername = ref.read(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (loggedUserData) => loggedUserData.value?.username,
       ),
     );
@@ -57,40 +58,44 @@ class _State extends ConsumerState<ProfileUsernameDialog> {
 
   Future<void> _onSaveButtonPressed() async {
     await ref
-        .read(loggedUserDataNotifierProvider.notifier)
+        .read(loggedUserControllerProvider.notifier)
         .updateUsername(_textController.text);
   }
 
-  void _onLoggedUserDataNotifierChanged(AsyncValue<User?> notifierState) {
-    if (notifierState is AsyncLoading) {
-      showLoadingDialog();
-    } else if (notifierState is AsyncError &&
-        notifierState.error
-            is LoggedUserDataNotifierExceptionNewUsernameIsAlreadyTaken) {
-      closeLoadingDialog();
-      setState(() {
-        _isUsernameAlreadyTaken = true;
-      });
-    } else if (notifierState is AsyncData) {
-      closeLoadingDialog();
-      context.popRoute();
-      showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
-    }
+  void _onLoggedUserControllerStateChanged(
+    AsyncValue<LoggedUserControllerState> controllerState,
+  ) {
+    controllerState.when(
+      data: (state) {
+        if (state is LoggedUserControllerStateUsernameUpdated) {
+          closeLoadingDialog();
+          context.maybePop();
+          showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
+        }
+      },
+      error: (error, _) {
+        if (error is LoggedUserControllerStateNewUsernameIsAlreadyTaken) {
+          closeLoadingDialog();
+          setState(() {
+            _isUsernameAlreadyTaken = true;
+          });
+        }
+      },
+      loading: () => showLoadingDialog(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen(
-      loggedUserDataNotifierProvider,
-      (previous, next) {
-        _onLoggedUserDataNotifierChanged(next);
-      },
+      loggedUserControllerProvider,
+      (_, next) => _onLoggedUserControllerStateChanged(next),
     );
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: context.popRoute,
+          onPressed: context.maybePop,
           icon: const Icon(Icons.close),
         ),
         title: Text(context.str.profileNewUsernameDialogTitle),

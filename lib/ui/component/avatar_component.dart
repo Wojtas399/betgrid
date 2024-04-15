@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'text/title.dart';
-
 class Avatar extends StatelessWidget {
   final String? avatarUrl;
   final String? username;
+  final double? usernameFontSize;
 
-  const Avatar({super.key, this.avatarUrl, this.username});
+  const Avatar({
+    super.key,
+    this.avatarUrl,
+    this.username,
+    this.usernameFontSize = 22,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +19,12 @@ class Avatar extends StatelessWidget {
       child: username == null && avatarUrl == null
           ? const CircularProgressIndicator()
           : avatarUrl == null
-              ? TitleLarge(
+              ? Text(
                   '${username?[0].toUpperCase()}',
-                  fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    fontSize: usernameFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
                 )
               : null,
     );

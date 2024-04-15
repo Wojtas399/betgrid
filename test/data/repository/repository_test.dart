@@ -23,20 +23,13 @@ void main() {
   });
 
   test(
-    'isRepositoryStateNotInitialized, '
-    'should return true if repository state is null',
-    () {
-      expect(repository.isRepositoryStateNotInitialized, true);
-    },
-  );
+    'initial state should be empty list',
+    () async {
+      repository = TestRepository();
 
-  test(
-    'isRepositoryStateNotInitialized, '
-    'should return false if repository state is not null',
-    () {
-      repository = TestRepository(initialData: []);
+      final state = await repository.repositoryState$.first;
 
-      expect(repository.isRepositoryStateNotInitialized, false);
+      expect(state, []);
     },
   );
 
@@ -44,7 +37,7 @@ void main() {
     'isRepositoryStateEmpty, '
     'should return true if repository state is empty array',
     () {
-      repository = TestRepository(initialData: []);
+      repository = TestRepository();
 
       expect(repository.isRepositoryStateEmpty, true);
     },
@@ -87,9 +80,34 @@ void main() {
 
   test(
     'addEntity, '
-    'should add new entity to state',
+    'entity with the same id already exists in state, '
+    'should throw exception',
     () {
       const TestModel newEntity = TestModel(id: 'e1', name: 'entity 1');
+      final List<TestModel> existingEntities = [
+        const TestModel(id: 'e1', name: 'first entity'),
+        const TestModel(id: 'e2', name: 'second entity'),
+      ];
+      final String expectedException =
+          '[Repository] Entity $newEntity already exists in repository state';
+      repository = TestRepository(initialData: existingEntities);
+
+      Object? exception;
+      try {
+        repository.addEntity(newEntity);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+    },
+  );
+
+  test(
+    'addEntity, '
+    'should add new entity to state',
+    () {
+      const TestModel newEntity = TestModel(id: 'e3', name: 'entity 3');
       final List<TestModel> existingEntities = [
         const TestModel(id: 'e1', name: 'first entity'),
         const TestModel(id: 'e2', name: 'second entity'),
@@ -103,19 +121,6 @@ void main() {
       repository.addEntity(newEntity);
 
       expect(repository.repositoryState$, emits(expectedEntities));
-    },
-  );
-
-  test(
-    'updateEntity, '
-    'repository state is not initialized, '
-    'should do nothing',
-    () {
-      const TestModel updateEntity = TestModel(id: 'e2', name: 'entity 2');
-
-      repository.updateEntity(updateEntity);
-
-      expect(repository.repositoryState$, emits(null));
     },
   );
 

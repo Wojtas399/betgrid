@@ -9,6 +9,7 @@ class GrandPrixDto with _$GrandPrixDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
+    required int roundNumber,
     required String name,
     required String countryAlpha2Code,
     required DateTime startDate,

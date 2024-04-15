@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'model/driver_dto/driver_dto.dart';
-import 'model/grand_prix_bet/grand_prix_bet_dto.dart';
+import 'model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
+import 'model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_dto/grand_prix_dto.dart';
+import 'model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import 'model/user_dto/user_dto.dart';
 
 CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
@@ -27,6 +29,18 @@ CollectionReference<DriverDto> getDriversRef() =>
           toFirestore: (DriverDto dto, _) => dto.toJson(),
         );
 
+CollectionReference<GrandPrixResultsDto> getGrandPrixResultsRef() =>
+    FirebaseFirestore.instance
+        .collection('GrandPrixResults')
+        .withConverter<GrandPrixResultsDto>(
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data();
+            if (data == null) throw 'Grand prix result document data was null';
+            return GrandPrixResultsDto.fromIdAndJson(snapshot.id, data);
+          },
+          toFirestore: (GrandPrixResultsDto dto, _) => dto.toJson(),
+        );
+
 CollectionReference<UserDto> getUsersRef() =>
     FirebaseFirestore.instance.collection('Users').withConverter<UserDto>(
           fromFirestore: (snapshot, _) {
@@ -46,7 +60,31 @@ CollectionReference<GrandPrixBetDto> getGrandPrixBetsRef(String userId) =>
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
             if (data == null) throw 'Grand prix bet document was null';
-            return GrandPrixBetDto.fromIdAndJson(snapshot.id, data);
+            return GrandPrixBetDto.fromIdPlayerIdAndJson(
+              snapshot.id,
+              userId,
+              data,
+            );
           },
           toFirestore: (GrandPrixBetDto dto, _) => dto.toJson(),
+        );
+
+CollectionReference<GrandPrixBetPointsDto> getGrandPrixBetPointsRef(
+  String userId,
+) =>
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('GrandPrixBetPoints')
+        .withConverter<GrandPrixBetPointsDto>(
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data();
+            if (data == null) throw 'Grand prix bet points document was null';
+            return GrandPrixBetPointsDto.fromIdPlayerIdAndJson(
+              id: snapshot.id,
+              playerId: userId,
+              json: data,
+            );
+          },
+          toFirestore: (GrandPrixBetPointsDto dto, _) => dto.toJson(),
         );

@@ -1,12 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../firebase/service/firebase_avatar_service.dart';
+import '../../../firebase/service/firebase_user_service.dart';
 import '../../../model/user.dart';
 import 'user_repository_impl.dart';
 
 part 'user_repository.g.dart';
-
-@riverpod
-UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl();
 
 abstract interface class UserRepository {
   Stream<User?> getUserById({required String userId});
@@ -31,3 +30,9 @@ abstract interface class UserRepository {
     String? avatarImgPath,
   });
 }
+
+@Riverpod(keepAlive: true)
+UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl(
+      firebaseUserService: ref.read(firebaseUserServiceProvider),
+      firebaseAvatarService: ref.read(firebaseAvatarServiceProvider),
+    );

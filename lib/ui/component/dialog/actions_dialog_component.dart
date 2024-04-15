@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extensions.dart';
-import '../text/title.dart';
+import '../text_component.dart';
 
 class ActionsDialog<T> extends StatelessWidget {
   final List<ActionsDialogItem<T>> actions;
@@ -28,13 +28,13 @@ class ActionsDialog<T> extends StatelessWidget {
             (action) => ListTile(
               title: Text(action.label),
               leading: action.icon,
-              onTap: () => context.popRoute(action.value),
+              onTap: () => context.maybePop(action.value),
             ),
           ),
           ListTile(
             title: Text(context.str.cancel),
             leading: const Icon(Icons.close),
-            onTap: () => context.popRoute(null),
+            onTap: () => context.maybePop(null),
           ),
         ],
       ),

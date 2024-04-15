@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/auth/auth_provider.dart';
+import 'controller/sign_in_controller.dart';
 
 class SignInContent extends StatelessWidget {
   const SignInContent({super.key});
@@ -23,7 +23,7 @@ class SignInContent extends StatelessWidget {
               'BetGrid',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: context.colorScheme.primary,
                   ),
             ),
             const GapVertical64(),
@@ -48,7 +48,7 @@ class _SignInWithGoogleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilledButton(
-      onPressed: ref.read(authProvider.notifier).signInWithGoogle,
+      onPressed: ref.read(signInControllerProvider.notifier).signInWithGoogle,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(

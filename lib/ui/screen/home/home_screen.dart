@@ -5,17 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/user.dart' as user;
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/all_grand_prix_bets_initialization_provider.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import '../required_data_completion/ui/required_data_completion_screen.dart';
+import 'controller/grand_prix_bets_initialization_controller.dart';
 import 'home_app_bar.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  void _onLoggedUserDataChanged(AsyncValue<user.User?> asyncValue) async {
+  void _onLoggedUserChanged(AsyncValue<user.User?> asyncValue) async {
     if (asyncValue is AsyncData && asyncValue.value == null) {
       await showFullScreenDialog(const RequiredDataCompletionScreen());
     }
@@ -24,12 +24,12 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-      loggedUserDataNotifierProvider,
-      (previous, next) {
-        _onLoggedUserDataChanged(next);
-      },
+      loggedUserProvider,
+      (_, next) => _onLoggedUserChanged(next),
     );
-    ref.read(allGrandPrixBetsInitializationProvider);
+    ref
+        .read(grandPrixBetsInitializationControllerProvider.notifier)
+        .initialize();
 
     return AutoTabsRouter.pageView(
       routes: const [
@@ -49,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabsRouter.activeIndex,
             onTap: tabsRouter.setActiveIndex,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
+            selectedItemColor: context.colorScheme.primary,
             items: [
               BottomNavigationBarItem(
                 label: context.str.statsScreenTitle,

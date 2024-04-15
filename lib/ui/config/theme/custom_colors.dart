@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@singleton
 class CustomColors {
   Color get gold => const Color(0xFFFBC00E);
 

@@ -2,67 +2,72 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/grand_prix.dart';
-import '../../../model/user.dart';
-import '../../component/grand_prix_item_component.dart';
-import '../../component/scroll_animated_item_component.dart';
+import '../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../component/sliver_grand_prixes_list_component.dart';
+import '../../component/sliver_player_total_points_component.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/all_grand_prixes_provider.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/grand_prixes_with_points_provider.dart';
+import '../../provider/player_points_provider.dart';
 
 @RoutePage()
-class BetsScreen extends StatelessWidget {
+class BetsScreen extends ConsumerWidget {
   const BetsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Expanded(
-          child: _GrandPrixes(),
-        ),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loggedUserId = ref.watch(loggedUserIdProvider);
+
+    return loggedUserId.isLoading
+        ? const CircularProgressIndicator()
+        : CustomScrollView(
+            slivers: [
+              _TotalPoints(loggedUserId: loggedUserId.value!),
+              _GrandPrixes(loggedUserId: loggedUserId.value!),
+            ],
+          );
+  }
+}
+
+class _TotalPoints extends ConsumerWidget {
+  final String loggedUserId;
+
+  const _TotalPoints({required this.loggedUserId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totalPointsAsyncVal =
+        ref.watch(playerPointsProvider(playerId: loggedUserId));
+
+    return SliverPlayerTotalPoints(
+      points: totalPointsAsyncVal.value,
+      isLoading: totalPointsAsyncVal.isLoading,
     );
   }
 }
 
 class _GrandPrixes extends ConsumerWidget {
-  const _GrandPrixes();
+  final String loggedUserId;
+
+  const _GrandPrixes({required this.loggedUserId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<GrandPrix>?> allGrandPrixesAsyncVal = ref.watch(
-      allGrandPrixesProvider,
-    );
-    final String? loggedUserId = ref.watch(
-      loggedUserDataNotifierProvider.select(
-        (AsyncValue<User?> user) => user.value?.id,
-      ),
+    final grandPrixesWithPointsAsyncVal = ref.watch(
+      grandPrixesWithPointsProvider(playerId: loggedUserId),
     );
 
-    final List<GrandPrix>? allGrandPrixes = allGrandPrixesAsyncVal.value;
-    if (allGrandPrixes?.isNotEmpty == true && loggedUserId != null) {
-      return ListView.builder(
-        padding: const EdgeInsets.all(24),
-        itemCount: allGrandPrixes!.length,
-        itemBuilder: (_, int itemIndex) => ScrollAnimatedItem(
-          child: GrandPrixItem(
-            roundNumber: itemIndex + 1,
-            grandPrix: allGrandPrixes[itemIndex],
-            onPressed: () {
-              context.navigateTo(
-                GrandPrixBetRoute(
-                  grandPrixId: allGrandPrixes[itemIndex].id,
-                  playerId: loggedUserId,
-                ),
-              );
-            },
+    return SliverGrandPrixesList(
+      playerId: loggedUserId,
+      grandPrixesWithPoints: [...?grandPrixesWithPointsAsyncVal.value],
+      onGrandPrixPressed: (String grandPrixId) {
+        context.navigateTo(
+          GrandPrixBetRoute(
+            grandPrixId: grandPrixId,
+            playerId: loggedUserId,
           ),
-        ),
-      );
-    }
-    return const Center(
-      child: CircularProgressIndicator(),
+        );
+      },
+      isLoading: grandPrixesWithPointsAsyncVal.isLoading,
     );
   }
 }

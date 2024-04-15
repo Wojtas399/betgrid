@@ -3,10 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user.dart' as user;
 import '../../component/gap/gap_vertical.dart';
-import '../../component/text/body.dart';
-import '../../component/text/title.dart';
+import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_data_notifier_provider.dart';
+import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import 'profile_username_dialog.dart';
 
@@ -22,7 +21,7 @@ class ProfileUsername extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? username = ref.watch(
-      loggedUserDataNotifierProvider.select(
+      loggedUserProvider.select(
         (AsyncValue<user.User?> loggedUserData) =>
             loggedUserData.value?.username,
       ),
@@ -35,7 +34,7 @@ class ProfileUsername extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TitleLarge(
             context.str.username,
-            color: Theme.of(context).colorScheme.outline,
+            color: context.colorScheme.outline,
           ),
         ),
         const GapVertical8(),

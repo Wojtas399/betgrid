@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../../model/auth_state.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/auth/auth_provider.dart';
-import '../../provider/auth/auth_state.dart';
 import '../../service/dialog_service.dart';
 import 'sign_in_app_bar.dart';
 import 'sign_in_content.dart';
@@ -17,25 +17,24 @@ class SignInScreen extends ConsumerWidget {
     AsyncValue<AuthState> asyncAuthState,
     BuildContext context,
   ) {
-    if (asyncAuthState.isLoading) {
-      showLoadingDialog();
-    } else if (asyncAuthState.hasValue) {
-      switch (asyncAuthState.value!) {
-        case AuthStateUserIsSignedIn():
-          closeLoadingDialog();
-          context.replaceRoute(const HomeRoute());
-        case AuthStateComplete():
-          closeLoadingDialog();
-        case _:
-          break;
-      }
-    }
+    asyncAuthState.when(
+      data: (_) {
+        closeLoadingDialog();
+        context.replaceRoute(const HomeRoute());
+      },
+      error: (_, __) {
+        closeLoadingDialog();
+      },
+      loading: () {
+        showLoadingDialog();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-      authProvider,
+      authStateProvider,
       (previousState, nextState) {
         _manageAuthProviderState(nextState, context);
       },

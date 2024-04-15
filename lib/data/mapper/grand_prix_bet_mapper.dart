@@ -1,9 +1,10 @@
-import '../../firebase/model/grand_prix_bet/grand_prix_bet_dto.dart';
+import '../../firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import '../../model/grand_prix_bet.dart';
 
 GrandPrixBet mapGrandPrixBetFromDto(GrandPrixBetDto grandPrixBetDto) =>
     GrandPrixBet(
       id: grandPrixBetDto.id,
+      playerId: grandPrixBetDto.playerId,
       grandPrixId: grandPrixBetDto.grandPrixId,
       qualiStandingsByDriverIds: grandPrixBetDto.qualiStandingsByDriverIds,
       p1DriverId: grandPrixBetDto.p1DriverId,
@@ -19,6 +20,7 @@ GrandPrixBet mapGrandPrixBetFromDto(GrandPrixBetDto grandPrixBetDto) =>
 GrandPrixBetDto mapGrandPrixBetToDto(GrandPrixBet grandPrixBet) =>
     GrandPrixBetDto(
       id: grandPrixBet.id,
+      playerId: grandPrixBet.playerId,
       grandPrixId: grandPrixBet.grandPrixId,
       qualiStandingsByDriverIds: grandPrixBet.qualiStandingsByDriverIds,
       p1DriverId: grandPrixBet.p1DriverId,

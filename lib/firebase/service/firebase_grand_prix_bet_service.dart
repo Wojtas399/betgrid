@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:injectable/injectable.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
-import '../model/grand_prix_bet/grand_prix_bet_dto.dart';
+import '../model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
-@injectable
+part 'firebase_grand_prix_bet_service.g.dart';
+
 class FirebaseGrandPrixBetService {
   Future<List<GrandPrixBetDto>> loadAllGrandPrixBets({
     required String userId,
@@ -72,3 +73,9 @@ class FirebaseGrandPrixBetService {
     return doc.data();
   }
 }
+
+@riverpod
+FirebaseGrandPrixBetService firebaseGrandPrixBetService(
+  FirebaseGrandPrixBetServiceRef ref,
+) =>
+    FirebaseGrandPrixBetService();

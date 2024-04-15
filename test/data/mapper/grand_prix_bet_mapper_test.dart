@@ -1,10 +1,11 @@
 import 'package:betgrid/data/mapper/grand_prix_bet_mapper.dart';
-import 'package:betgrid/firebase/model/grand_prix_bet/grand_prix_bet_dto.dart';
+import 'package:betgrid/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const String id = 'gpb1';
+  const String playerId = 'p1';
   const String grandPrixId = 'gp1';
   final List<String?> qualiStandingsByDriverIds = List.generate(
     20,
@@ -30,6 +31,7 @@ void main() {
     () {
       final GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
         id: id,
+        playerId: playerId,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -43,6 +45,7 @@ void main() {
       );
       final GrandPrixBet expectedGrandPrixBet = GrandPrixBet(
         id: id,
+        playerId: playerId,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -67,6 +70,7 @@ void main() {
     () {
       final GrandPrixBet grandPrixBet = GrandPrixBet(
         id: id,
+        playerId: playerId,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,
@@ -80,6 +84,7 @@ void main() {
       );
       final GrandPrixBetDto expectedDto = GrandPrixBetDto(
         id: id,
+        playerId: playerId,
         grandPrixId: grandPrixId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
         p1DriverId: p1DriverId,

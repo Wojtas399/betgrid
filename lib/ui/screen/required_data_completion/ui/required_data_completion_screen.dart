@@ -6,12 +6,13 @@ import '../../../../model/user.dart' as user;
 import '../../../../model/user.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
+import '../../../controller/logged_user/logged_user_controller.dart';
+import '../../../controller/theme_mode_controller.dart';
+import '../../../controller/theme_primary_color_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../provider/logged_user_data_notifier_provider.dart';
-import '../../../provider/required_data_completion/required_data_completion_notifier_provider.dart';
-import '../../../provider/theme_mode_notifier_provider.dart';
-import '../../../provider/theme_primary_color_notifier_provider.dart';
+import '../../../provider/logged_user_provider.dart';
 import '../../../service/dialog_service.dart';
+import '../controller/required_data_completion_controller.dart';
 import 'required_data_completion_avatar.dart';
 import 'required_data_completion_theme_color.dart';
 import 'required_data_completion_theme_mode.dart';
@@ -20,27 +21,22 @@ import 'required_data_completion_username.dart';
 class RequiredDataCompletionScreen extends ConsumerWidget {
   const RequiredDataCompletionScreen({super.key});
 
-  void _onLoggedUserDataNotifierStateChanged(
-    BuildContext context,
-    AsyncValue<User?> state,
-  ) {
-    if (state is AsyncLoading) {
-      showLoadingDialog();
-    } else if (state is AsyncData) {
-      closeLoadingDialog();
-      if (state.value != null) context.popRoute();
-    } else if (state is AsyncError) {
-      closeLoadingDialog();
-    }
+  void _onLoggedUserChanged(BuildContext context, AsyncValue<User?> state) {
+    state.when(
+      data: (user.User? loggedUser) {
+        closeLoadingDialog();
+        if (loggedUser != null) context.maybePop();
+      },
+      error: (_, __) => closeLoadingDialog(),
+      loading: () => showLoadingDialog(),
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-      loggedUserDataNotifierProvider,
-      (previous, next) {
-        _onLoggedUserDataNotifierStateChanged(context, next);
-      },
+      loggedUserProvider,
+      (_, next) => _onLoggedUserChanged(context, next),
     );
 
     return Scaffold(
@@ -75,23 +71,23 @@ class _SubmitButton extends ConsumerWidget {
 
   Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
     final String username = ref.read(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (notifierState) => notifierState.username,
       ),
     );
     final String? avatarImgPath = ref.read(
-      requiredDataCompletionNotifierProvider.select(
+      requiredDataCompletionControllerProvider.select(
         (notifierState) => notifierState.avatarImgPath,
       ),
     );
     final AsyncValue<user.ThemeMode> themeMode = ref.read(
-      themeModeNotifierProvider,
+      themeModeControllerProvider,
     );
     final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.read(
-      themePrimaryColorNotifierProvider,
+      themePrimaryColorControllerProvider,
     );
     if (themeMode.hasValue && themePrimaryColor.hasValue) {
-      await ref.read(loggedUserDataNotifierProvider.notifier).addLoggedUserData(
+      await ref.read(loggedUserControllerProvider.notifier).addData(
             username: username,
             avatarImgPath: avatarImgPath,
             themeMode: themeMode.value!,

@@ -4,18 +4,18 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRepository extends Mock
     implements GrandPrixBetRepository {
-  void mockGetAllGrandPrixBets(List<GrandPrixBet>? grandPrixBets) {
+  void mockGetAllGrandPrixBetsForPlayer({List<GrandPrixBet>? grandPrixBets}) {
     when(
-      () => getAllGrandPrixBets(
-        userId: any(named: 'userId'),
+      () => getAllGrandPrixBetsForPlayer(
+        playerId: any(named: 'playerId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
-  void mockGetGrandPrixBetByGrandPrixId(GrandPrixBet? grandPrixBet) {
+  void mockGetBetByGrandPrixIdAndPlayerId(GrandPrixBet? grandPrixBet) {
     when(
-      () => getGrandPrixBetByGrandPrixId(
-        userId: any(named: 'userId'),
+      () => getBetByGrandPrixIdAndPlayerId(
+        playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBet));
@@ -24,7 +24,7 @@ class MockGrandPrixBetRepository extends Mock
   void mockAddGrandPrixBets() {
     when(
       () => addGrandPrixBets(
-        userId: any(named: 'userId'),
+        playerId: any(named: 'playerId'),
         grandPrixBets: any(named: 'grandPrixBets'),
       ),
     ).thenAnswer((_) => Future.value());
@@ -33,7 +33,7 @@ class MockGrandPrixBetRepository extends Mock
   void mockUpdateGrandPrixBet() {
     when(
       () => updateGrandPrixBet(
-        userId: any(named: 'userId'),
+        playerId: any(named: 'playerId'),
         grandPrixBetId: any(named: 'grandPrixBetId'),
         qualiStandingsByDriverIds: any(named: 'qualiStandingsByDriverIds'),
         p1DriverId: any(named: 'p1DriverId'),

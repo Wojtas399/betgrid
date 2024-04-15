@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../firebase/model/grand_prix_dto/grand_prix_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_service.dart';
 import '../../../model/grand_prix.dart';
@@ -12,31 +11,31 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
     implements GrandPrixRepository {
   final FirebaseGrandPrixService _dbGrandPrixService;
 
-  GrandPrixRepositoryImpl({super.initialData})
-      : _dbGrandPrixService = getIt<FirebaseGrandPrixService>();
+  GrandPrixRepositoryImpl({
+    required FirebaseGrandPrixService firebaseGrandPrixService,
+    super.initialData,
+  }) : _dbGrandPrixService = firebaseGrandPrixService;
 
   @override
   Stream<List<GrandPrix>?> getAllGrandPrixes() async* {
-    if (isRepositoryStateNotInitialized || isRepositoryStateEmpty) {
-      await _loadGrandPrixesFromDb();
-    }
-    await for (final grandPrixes in repositoryState$) {
-      yield grandPrixes;
+    if (isRepositoryStateEmpty) await _fetchAllGrandPrixesFromDb();
+    await for (final allGrandPrixes in repositoryState$) {
+      yield allGrandPrixes;
     }
   }
 
   @override
   Stream<GrandPrix?> getGrandPrixById({required String grandPrixId}) async* {
     await for (final grandPrixes in repositoryState$) {
-      GrandPrix? grandPrix = grandPrixes?.firstWhereOrNull(
+      GrandPrix? grandPrix = grandPrixes.firstWhereOrNull(
         (GrandPrix gp) => gp.id == grandPrixId,
       );
-      grandPrix ??= await _loadGrandPrixFromDb(grandPrixId);
+      grandPrix ??= await _fetchGrandPrixFromDb(grandPrixId);
       yield grandPrix;
     }
   }
 
-  Future<void> _loadGrandPrixesFromDb() async {
+  Future<void> _fetchAllGrandPrixesFromDb() async {
     final List<GrandPrixDto> grandPrixDtos =
         await _dbGrandPrixService.loadAllGrandPrixes();
     final List<GrandPrix> grandPrixes =
@@ -44,7 +43,7 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
     setEntities(grandPrixes);
   }
 
-  Future<GrandPrix?> _loadGrandPrixFromDb(String grandPrixId) async {
+  Future<GrandPrix?> _fetchGrandPrixFromDb(String grandPrixId) async {
     final GrandPrixDto? grandPrixDto =
         await _dbGrandPrixService.loadGrandPrixById(
       grandPrixId: grandPrixId,

@@ -1,14 +1,19 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../firebase/service/firebase_driver_service.dart';
 import '../../../model/driver.dart';
 import 'driver_repository_impl.dart';
 
 part 'driver_repository.g.dart';
 
-@riverpod
-DriverRepository driverRepository(DriverRepositoryRef ref) =>
-    DriverRepositoryImpl();
-
 abstract interface class DriverRepository {
-  Future<List<Driver>?> loadAllDrivers();
+  Stream<List<Driver>> getAllDrivers();
+
+  Stream<Driver?> getDriverById({required String driverId});
 }
+
+@Riverpod(keepAlive: true)
+DriverRepository driverRepository(DriverRepositoryRef ref) =>
+    DriverRepositoryImpl(
+      firebaseDriverService: ref.read(firebaseDriverServiceProvider),
+    );
