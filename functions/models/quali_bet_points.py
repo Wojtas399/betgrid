@@ -1,0 +1,64 @@
+from pydantic import BaseModel
+from typing import Optional
+
+class QualiBetPoints(BaseModel):
+    q3P1Points: float
+    q3P2Points: float
+    q3P3Points: float
+    q3P4Points: float
+    q3P5Points: float
+    q3P6Points: float
+    q3P7Points: float
+    q3P8Points: float
+    q3P9Points: float
+    q3P10Points: float
+    q2P11Points: float
+    q2P12Points: float
+    q2P13Points: float
+    q2P14Points: float
+    q2P15Points: float
+    q1P16Points: float
+    q1P17Points: float
+    q1P18Points: float
+    q1P19Points: float
+    q1P20Points: float
+    q3Points: float
+    q2Points: float
+    q1Points: float
+    q3Multiplier: Optional[float]
+    q2Multiplier: Optional[float]
+    q1Multiplier: Optional[float]
+    totalPoints: float
+    multiplier: Optional[float]
+
+    def to_dict(self):
+        return {
+            'q3P1Points': self.q3P1Points,
+            'q3P2Points': self.q3P2Points,
+            'q3P3Points': self.q3P3Points,
+            'q3P4Points': self.q3P4Points,
+            'q3P5Points': self.q3P5Points,
+            'q3P6Points': self.q3P6Points,
+            'q3P7Points': self.q3P7Points,
+            'q3P8Points': self.q3P8Points,
+            'q3P9Points': self.q3P9Points,
+            'q3P10Points': self.q3P10Points,
+            'q2P11Points': self.q2P11Points,
+            'q2P12Points': self.q2P12Points,
+            'q2P13Points': self.q2P13Points,
+            'q2P14Points': self.q2P14Points,
+            'q2P15Points': self.q2P15Points,
+            'q1P16Points': self.q1P16Points,
+            'q1P17Points': self.q1P17Points,
+            'q1P18Points': self.q1P18Points,
+            'q1P19Points': self.q1P19Points,
+            'q1P20Points': self.q1P20Points,
+            'q3Points': self.q3Points,
+            'q2Points': self.q2Points,
+            'q1Points': self.q1Points,
+            'q3Multiplier': self.q3Multiplier,
+            'q2Multiplier': self.q2Multiplier,
+            'q1Multiplier': self.q1Multiplier,
+            'totalPoints': self.totalPoints,
+            'multiplier': self.multiplier,
+        }

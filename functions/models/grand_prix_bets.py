@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-class GrandPrixResults(BaseModel):
+class GrandPrixBets(BaseModel):
     grandPrixId: str
     qualiStandingsByDriverIds: Optional[List[str]]
     p1DriverId: Optional[str]
@@ -15,7 +15,7 @@ class GrandPrixResults(BaseModel):
 
     @staticmethod
     def from_dict(source):
-        return GrandPrixResults(
+        return GrandPrixBets(
             grandPrixId=source['grandPrixId'],
             qualiStandingsByDriverIds=source['qualiStandingsByDriverIds'],
             p1DriverId=source['p1DriverId'],
