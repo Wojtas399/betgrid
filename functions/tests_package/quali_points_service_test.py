@@ -2,7 +2,7 @@ import unittest
 from models.quali_bet_points import QualiBetPoints
 from functions.service.quali_points_service import calculate_points_for_quali
 
-class PointsServiceTest(unittest.TestCase):
+class QualiPointsServiceTest(unittest.TestCase):
     def test_quali_bets_length_lower_than_20(self):
         quali_bets = [
             'd1',
