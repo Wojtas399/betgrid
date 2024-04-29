@@ -1,8 +1,93 @@
 import unittest
 from models.quali_bet_points import QualiBetPoints
-from functions.service.quali_points_service import calculate_points_for_quali
+from service.quali_points_service import calculate_points_for_quali
 
 class QualiPointsServiceTest(unittest.TestCase):
+    def test_none_quali_bets(self):
+        quali_results = [
+            'd1',
+            'd11',
+            'd2',
+            'd13',
+            'd14',
+            'd3',
+            'd4',
+            'd16',
+            'd17',
+            'd15',
+            'd6',
+            'd7',
+            'd8',
+            'd5',
+            'd12',
+            'd18',
+            'd9',
+            'd19',
+            'd10',
+            'd20'
+        ]
+        expected_points = QualiBetPoints(
+            q3_p1_points = 0,
+            q3_p2_points = 0,
+            q3_p3_points = 0,
+            q3_p4_points = 0,
+            q3_p5_points = 0,
+            q3_p6_points = 0,
+            q3_p7_points = 0,
+            q3_p8_points = 0,
+            q3_p9_points = 0,
+            q3_p10_points = 0,
+            q2_p11_points = 0,
+            q2_p12_points = 0,
+            q2_p13_points = 0,
+            q2_p14_points = 0,
+            q2_p15_points = 0,
+            q1_p16_points = 0,
+            q1_p17_points = 0,
+            q1_p18_points = 0,
+            q1_p19_points = 0,
+            q1_p20_points = 0,
+            q3_points = 0,
+            q2_points = 0,
+            q1_points = 0,
+            q3_multiplier = None,
+            q2_multiplier = None,
+            q1_multiplier = None,
+            total_points = 0,
+            multiplier = None,
+        )
+
+        points = calculate_points_for_quali(None, quali_results)
+
+        self.assertEqual(points, expected_points)
+    
+    def test_none_quali_results(self):
+        quali_bets = [
+            'd1',
+            'd11',
+            'd2',
+            'd12',
+            'd3',
+            'd13',
+            'd4',
+            'd14',
+            'd5',
+            'd15',
+            'd6',
+            'd16',
+            'd7',
+            'd17',
+            'd8',
+            'd18',
+            'd9',
+            'd19',
+            'd10',
+        ]
+
+        points = calculate_points_for_quali(quali_bets, None)
+
+        self.assertEqual(points, None)
+    
     def test_quali_bets_length_lower_than_20(self):
         quali_bets = [
             'd1',

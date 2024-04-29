@@ -10,38 +10,39 @@ Q2_MULTIPLIER = 1.5
 Q3_MULTIPLIER = 1.75
 
 def calculate_points_for_quali(
-    bets_quali_standings: List[str], 
-    results_quali_standings: List[str]
+    quali_standings_bets: Optional[List[str]], 
+    quali_standings_results: Optional[List[str]]
 ) -> Optional[QualiBetPoints]:
     if (
-        len(bets_quali_standings) is not 20 or
-        len(results_quali_standings) is not 20
+        quali_standings_results is None or
+        (
+            quali_standings_bets is not None and
+            (
+                len(quali_standings_bets) is not 20 or
+                len(quali_standings_results) is not 20
+            )
+        )
     ):
         return None
-    points_for_each_place_in_q1: List[int] = []
-    points_for_each_place_in_q2: List[int] = []
-    points_for_each_place_in_q3: List[int] = []
-    for i in range(5):
-        points_for_each_place_in_q1.append(
-            (
-                Q1_POINTS 
-                if bets_quali_standings[15+i] == results_quali_standings[15+i] 
-                else 0
-            )
-        )
-        points_for_each_place_in_q2.append(
-            (
-                Q2_POINTS 
-                if bets_quali_standings[10+i] == results_quali_standings[10+i] 
-                else 0
-            )
-        )
-    for i in range(10):
-        points_for_each_place_in_q3.append(
-            0 if bets_quali_standings[i] != results_quali_standings[i] else 
-            Q3_P1_TO_P3_POINTS if i < 3 else 
-            Q3_P4_TO_P10_POINTS
-        )
+        
+    points_for_each_place_in_q1: List[int] = [0] * 5
+    points_for_each_place_in_q2: List[int] = [0] * 5
+    points_for_each_place_in_q3: List[int] = [0] * 10
+    if quali_standings_bets is not None:
+        for i in range(5):
+            if quali_standings_bets[15+i] == quali_standings_results[15+i]:
+                points_for_each_place_in_q1[i] = Q1_POINTS
+            if quali_standings_bets[10+i] == quali_standings_results[10+i]:
+                points_for_each_place_in_q2[i] = Q2_POINTS
+        for i in range(10):
+            if quali_standings_bets[i] == quali_standings_results[i]:
+                points_for_each_place_in_q3[i] = (
+                    Q3_P1_TO_P3_POINTS if i < 3 else Q3_P4_TO_P10_POINTS
+                )
+    q1_points = sum(points_for_each_place_in_q1)
+    q2_points = sum(points_for_each_place_in_q2)
+    q3_points = sum(points_for_each_place_in_q3)
+
     q1_multiplier = (
         Q1_MULTIPLIER 
         if all(points > 0 for points in points_for_each_place_in_q1) 
@@ -58,12 +59,11 @@ def calculate_points_for_quali(
         else 0
     )
     multiplier = q1_multiplier + q2_multiplier + q3_multiplier
-    q1_points = sum(points_for_each_place_in_q1)
-    q2_points = sum(points_for_each_place_in_q2)
-    q3_points = sum(points_for_each_place_in_q3)
+
     total_points = q1_points + q2_points + q3_points
     if (multiplier > 0):
         total_points *= multiplier
+        
     return QualiBetPoints(
         q3_p1_points = points_for_each_place_in_q3[0],
         q3_p2_points = points_for_each_place_in_q3[1],
