@@ -12,7 +12,15 @@ class GrandPrixPoints(BaseModel):
     def to_dict(self):
         return {
             'grandPrixId': self.grand_prix_id,
-            'qualiBetPoints': self.quali_bet_points.to_dict(),
-            'raceBetPoints': self.race_bet_points.to_dict(),
+            'qualiBetPoints': (
+                self.quali_bet_points.to_dict()
+                if self.quali_bet_points is not None
+                else None
+            ),
+            'raceBetPoints': (
+                self.race_bet_points.to_dict()
+                if self.race_bet_points is not None
+                else None
+            ),
             'totalPoints': self.total_points,
         }
