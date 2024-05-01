@@ -49,3 +49,4 @@ app.*.map.json
 *.gr.dart
 firebase_options.dart
 .firebaserc
+firebase.json
