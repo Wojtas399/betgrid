@@ -50,3 +50,4 @@ app.*.map.json
 firebase_options.dart
 .firebaserc
 firebase.json
+serviceAccountKey.json

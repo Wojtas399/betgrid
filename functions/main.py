@@ -1,5 +1,5 @@
-from firebase_functions import firestore_fn, https_fn
-from firebase_admin import initialize_app, firestore
+from firebase_functions import firestore_fn
+from firebase_admin import initialize_app, firestore, credentials
 import google.cloud.firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import List
@@ -7,11 +7,11 @@ from models.grand_prix_results import GrandPrixResults
 from models.grand_prix_bets import GrandPrixBets
 from service.gp_points_service import calculate_points_for_gp
 
-initialize_app()
-
-firestore_client: google.cloud.firestore.Client = firestore.client()
+cred = credentials.Certificate("./serviceAccountKey.json")
+app = initialize_app()
 
 def get_users_collection():
+    firestore_client: google.cloud.firestore.Client = firestore.client()
     return firestore_client.collection('Users')
 
 def get_all_users_ids() -> List[str]:
@@ -32,7 +32,7 @@ def get_bets_for_user(user_id: str, grand_prix_id: str) -> GrandPrixBets:
     return GrandPrixBets.from_dict(doc.to_dict())
 
 @firestore_fn.on_document_created(document="GrandPrixResults/{pushId}")
-def calculate_points(
+def calculatepoints(
     event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]
 ) -> None:
     if event.data is None:
@@ -57,4 +57,3 @@ def calculate_points(
             .collection('GrandPrixPoints')
             .add(gp_points.to_dict())
         )
-        
