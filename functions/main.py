@@ -14,6 +14,13 @@ def get_users_collection():
     firestore_client: google.cloud.firestore.Client = firestore.client()
     return firestore_client.collection('Users')
 
+def get_gp_points_collection(user_id: str):
+    return (
+        get_users_collection()
+        .document(user_id)
+        .collection('GrandPrixBetPoints')
+    )
+
 def get_all_users_ids() -> List[str]:
     return [user.id for user in get_users_collection().stream()]
 
@@ -52,8 +59,44 @@ def calculatepoints(
             gp_results = gp_results,
         )
         (
-            get_users_collection()
-            .document(user_id)
-            .collection('GrandPrixPoints')
+            get_gp_points_collection(user_id)
             .add(gp_points.to_dict())
+        )
+
+@firestore_fn.on_document_updated(document="GrandPrixResults/{docId}")
+def recalculatepoints(
+    event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]
+) -> None:
+    if event.data is None:
+        return
+    try:
+        gp_results: GrandPrixResults = GrandPrixResults.from_dict(
+            event.data.after.to_dict()
+        )
+    except KeyError:
+        return
+
+    all_users_ids: List[str] = get_all_users_ids()
+    for user_id in all_users_ids:
+        gp_bets = get_bets_for_user(user_id, gp_results.grand_prix_id)
+        gp_points = calculate_points_for_gp(
+            gp_bets = gp_bets,
+            gp_results = gp_results,
+        )
+        results_doc_query = (
+            get_gp_points_collection(user_id)
+            .where(
+                filter=FieldFilter(
+                    "grandPrixId", 
+                    "==", 
+                    gp_results.grand_prix_id
+                )
+            )
+            .limit(1)
+        )
+        results_doc = next(results_doc_query.stream())
+        (
+            get_gp_points_collection(user_id)
+            .document(results_doc.id)
+            .set(gp_points.to_dict())
         )

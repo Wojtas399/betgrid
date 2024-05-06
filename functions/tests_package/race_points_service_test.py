@@ -274,7 +274,7 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_driver_id = 'd3',
             p10_driver_id = 'd10',
             fastest_lap_driver_id = 'd1',
-            dnf_driver_ids = ['d18', 'd19'],
+            dnf_driver_ids = ['d18', 'd19', None],
             is_safety_car = True,
             is_red_flag = False,
         )
@@ -318,7 +318,7 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_driver_id = 'd3',
             p10_driver_id = 'd10',
             fastest_lap_driver_id = 'd1',
-            dnf_driver_ids = ['d18'],
+            dnf_driver_ids = ['d18', None, None],
             is_safety_car = True,
             is_red_flag = False,
         )
@@ -362,7 +362,7 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_driver_id = 'd3',
             p10_driver_id = 'd10',
             fastest_lap_driver_id = 'd1',
-            dnf_driver_ids = [],
+            dnf_driver_ids = [None, None, None],
             is_safety_car = True,
             is_red_flag = False,
         )

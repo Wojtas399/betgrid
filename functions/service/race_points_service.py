@@ -19,7 +19,7 @@ class RaceParams(BaseModel):
     p3_driver_id: Optional[str]
     p10_driver_id: Optional[str]
     fastest_lap_driver_id: Optional[str]
-    dnf_driver_ids: Optional[List[str]]
+    dnf_driver_ids: Optional[List[Optional[str]]]
     is_safety_car: Optional[bool]
     is_red_flag: Optional[bool]
 
