@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
         .read(grandPrixBetsInitializationControllerProvider.notifier)
         .initialize();
 
-    return AutoTabsRouter.pageView(
+    return AutoTabsRouter.tabBar(
       routes: const [
         StatsRoute(),
         BetsRoute(),
