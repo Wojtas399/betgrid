@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
@@ -5,6 +6,7 @@ import '../model/grand_prix_dto/grand_prix_dto.dart';
 
 part 'firebase_grand_prix_service.g.dart';
 
+@injectable
 class FirebaseGrandPrixService {
   Future<List<GrandPrixDto>> loadAllGrandPrixes() async {
     final snapshot = await getGrandPrixesRef().get();

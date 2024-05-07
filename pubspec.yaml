@@ -20,7 +20,7 @@ dependencies:
   json_annotation: ^4.8.1
   google_sign_in: ^6.2.1
   firebase_auth: ^4.18.0
-  injectable: ^2.3.2
+  injectable: ^2.4.1
   get_it:
   mocktail: ^1.0.3
   auto_route: ^8.0.2

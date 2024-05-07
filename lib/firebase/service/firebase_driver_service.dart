@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
@@ -5,6 +6,7 @@ import '../model/driver_dto/driver_dto.dart';
 
 part 'firebase_driver_service.g.dart';
 
+@injectable
 class FirebaseDriverService {
   Future<List<DriverDto>> fetchAllDrivers() async {
     final snapshot = await getDriversRef().get();

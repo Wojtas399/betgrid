@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
@@ -6,6 +7,7 @@ import '../model/user_dto/user_dto.dart';
 
 part 'firebase_user_service.g.dart';
 
+@injectable
 class FirebaseUserService {
   Future<UserDto?> loadUserById({required String userId}) async {
     final snapshot = await getUsersRef().doc(userId).get();

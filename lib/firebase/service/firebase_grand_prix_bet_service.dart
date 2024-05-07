@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
@@ -6,6 +7,7 @@ import '../model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
 part 'firebase_grand_prix_bet_service.g.dart';
 
+@injectable
 class FirebaseGrandPrixBetService {
   Future<List<GrandPrixBetDto>> loadAllGrandPrixBets({
     required String userId,

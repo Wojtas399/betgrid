@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_avatar_service.g.dart';
 
+@injectable
 class FirebaseAvatarService {
   Reference _getAvatarRef(String userId) => FirebaseStorage.instance.ref(
         'Avatars/$userId.jpg',
