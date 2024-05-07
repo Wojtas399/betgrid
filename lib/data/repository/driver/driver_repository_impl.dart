@@ -13,10 +13,7 @@ class DriverRepositoryImpl extends Repository<Driver>
     implements DriverRepository {
   final FirebaseDriverService _dbDriverService;
 
-  DriverRepositoryImpl(
-    this._dbDriverService, {
-    super.initialData,
-  });
+  DriverRepositoryImpl(this._dbDriverService);
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {

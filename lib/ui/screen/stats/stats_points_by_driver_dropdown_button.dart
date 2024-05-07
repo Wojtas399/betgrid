@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/driver/driver_repository_method_providers.dart';
+import '../../../data/repository/driver/driver_repository.dart';
+import '../../../dependency_injection.dart';
 import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text_component.dart';
@@ -28,30 +29,38 @@ class _State extends ConsumerState<StatsPointsByDriverDropdownButton> {
   }
 
   @override
-  Widget build(BuildContext context) => ref.watch(allDriversProvider).when(
-        data: (List<Driver> allDrivers) {
-          allDrivers.sort(
-            (d1, d2) => d1.team.toString().compareTo(d2.team.toString()),
-          );
+  Widget build(BuildContext context) {
+    final Stream<List<Driver>> allDrivers$ =
+        getIt.get<DriverRepository>().getAllDrivers();
 
-          return SizedBox(
-            width: double.infinity,
-            child: DropdownButton<String>(
-              isExpanded: true,
-              value: _selectedDriverId,
-              hint: Text(context.str.statsSelectDriver),
-              items: allDrivers
-                  .map((Driver driver) => _DriverDescription(driver))
-                  .toList(),
-              onChanged: (String? driverId) => _onDriverChanged(driverId, ref),
-            ),
+    return StreamBuilder(
+      stream: allDrivers$,
+      builder: (_, AsyncSnapshot<List<Driver>> asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
-        },
-        error: (Object? error, __) => Text(error.toString()),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+        }
+
+        final List<Driver> allDrivers = [...?asyncSnapshot.data];
+        allDrivers.sort(
+          (d1, d2) => d1.team.toString().compareTo(d2.team.toString()),
+        );
+        return SizedBox(
+          width: double.infinity,
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: _selectedDriverId,
+            hint: Text(context.str.statsSelectDriver),
+            items: allDrivers
+                .map((Driver driver) => _DriverDescription(driver))
+                .toList(),
+            onChanged: (String? driverId) => _onDriverChanged(driverId, ref),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _DriverDescription extends DropdownMenuItem<String> {
