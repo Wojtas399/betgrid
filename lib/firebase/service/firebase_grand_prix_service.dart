@@ -8,12 +8,12 @@ part 'firebase_grand_prix_service.g.dart';
 
 @injectable
 class FirebaseGrandPrixService {
-  Future<List<GrandPrixDto>> loadAllGrandPrixes() async {
+  Future<List<GrandPrixDto>> fetchAllGrandPrixes() async {
     final snapshot = await getGrandPrixesRef().get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future<GrandPrixDto?> loadGrandPrixById({
+  Future<GrandPrixDto?> fetchGrandPrixById({
     required String grandPrixId,
   }) async {
     final snapshot = await getGrandPrixesRef().doc(grandPrixId).get();

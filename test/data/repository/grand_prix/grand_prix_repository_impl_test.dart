@@ -13,9 +13,7 @@ void main() {
   late GrandPrixRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = GrandPrixRepositoryImpl(
-      firebaseGrandPrixService: dbGrandPrixService,
-    );
+    repositoryImpl = GrandPrixRepositoryImpl(dbGrandPrixService);
   });
 
   tearDown(() {
@@ -25,7 +23,9 @@ void main() {
   test(
     'loadAllGrandPrixes, '
     'repository state is empty, '
-    'should load grand prixes from db, add them to repo and emit them',
+    'should load grand prixes from db, add them to repo state and emit them if '
+    'repo state is empty, '
+    'should only emit all grand prixes if repo state is not empty',
     () async {
       final List<GrandPrixDto> grandPrixDtos = [
         createGrandPrixDto(
@@ -55,88 +55,28 @@ void main() {
           name: 'Grand Prix 3',
         ),
       ];
-      dbGrandPrixService.mockLoadAllGrandPrixes(
+      dbGrandPrixService.mockFetchAllGrandPrixes(
         grandPrixDtos: grandPrixDtos,
       );
 
-      final Stream<List<GrandPrix>?> grandPrixes$ =
+      final Stream<List<GrandPrix>?> grandPrixes1$ =
+          repositoryImpl.getAllGrandPrixes();
+      final Stream<List<GrandPrix>?> grandPrixes2$ =
           repositoryImpl.getAllGrandPrixes();
 
-      expect(await grandPrixes$.first, expectedGrandPrixes);
-      expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixes));
-      verify(dbGrandPrixService.loadAllGrandPrixes).called(1);
-    },
-  );
-
-  test(
-    'loadAllGrandPrixes, '
-    'repository state contains grand prixes, '
-    'should only emit all grand prixes from repository state',
-    () async {
-      final List<GrandPrix> expectedGrandPrixes = [
-        createGrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-        ),
-        createGrandPrix(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-        ),
-      ];
-      repositoryImpl = GrandPrixRepositoryImpl(
-        firebaseGrandPrixService: dbGrandPrixService,
-        initialData: expectedGrandPrixes,
-      );
-
-      final Stream<List<GrandPrix>?> grandPrixes$ =
-          repositoryImpl.getAllGrandPrixes();
-
-      expect(await grandPrixes$.first, expectedGrandPrixes);
-      verifyNever(dbGrandPrixService.loadAllGrandPrixes);
+      expect(await grandPrixes1$.first, expectedGrandPrixes);
+      expect(await grandPrixes2$.first, expectedGrandPrixes);
+      expect(await repositoryImpl.repositoryState$.first, expectedGrandPrixes);
+      verify(dbGrandPrixService.fetchAllGrandPrixes).called(1);
     },
   );
 
   test(
     'getGrandPrixById, '
     'grand prix exists in repository state, '
-    'should emit grand prix from repository state',
-    () async {
-      const String grandPrixId = 'gp2';
-      final List<GrandPrix> existingGrandPrixes = [
-        createGrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-        ),
-        createGrandPrix(
-          id: grandPrixId,
-          name: 'Grand Prix 2',
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-        ),
-      ];
-      repositoryImpl = GrandPrixRepositoryImpl(
-        firebaseGrandPrixService: dbGrandPrixService,
-        initialData: existingGrandPrixes,
-      );
-
-      final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
-        grandPrixId: grandPrixId,
-      );
-
-      expect(grandPrix$, emits(existingGrandPrixes[1]));
-    },
-  );
-
-  test(
-    'getGrandPrixById, '
-    'grand prix does not exist in repository state, '
-    'should load grand prix from db, add it to repository state and emit it',
+    'should only emit grand prix if it exists in repo state, '
+    'should load grand prix from db, add it to repo state and emit it if it '
+    'does not exist in repo state',
     () async {
       const String grandPrixId = 'gp2';
       final GrandPrixDto grandPrixDto = createGrandPrixDto(
@@ -147,36 +87,20 @@ void main() {
         id: grandPrixId,
         name: 'Grand Prix 2',
       );
-      final List<GrandPrix> existingGrandPrixes = [
-        createGrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-        ),
-      ];
-      dbGrandPrixService.mockLoadGrandPrixById(grandPrixDto);
-      repositoryImpl = GrandPrixRepositoryImpl(
-        firebaseGrandPrixService: dbGrandPrixService,
-        initialData: existingGrandPrixes,
-      );
+      dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
 
-      final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
+      final Stream<GrandPrix?> grandPrix1$ = repositoryImpl.getGrandPrixById(
+        grandPrixId: grandPrixId,
+      );
+      final Stream<GrandPrix?> grandPrix2$ = repositoryImpl.getGrandPrixById(
         grandPrixId: grandPrixId,
       );
 
-      expect(await grandPrix$.first, expectedGrandPrix);
-      expect(
-        repositoryImpl.repositoryState$,
-        emits([
-          ...existingGrandPrixes,
-          expectedGrandPrix,
-        ]),
-      );
+      expect(await grandPrix1$.first, expectedGrandPrix);
+      expect(await grandPrix2$.first, expectedGrandPrix);
+      expect(await repositoryImpl.repositoryState$.first, [expectedGrandPrix]);
       verify(
-        () => dbGrandPrixService.loadGrandPrixById(grandPrixId: grandPrixId),
+        () => dbGrandPrixService.fetchGrandPrixById(grandPrixId: grandPrixId),
       ).called(1);
     },
   );
