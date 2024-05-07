@@ -1,8 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/exception/user_repository_exception.dart';
-import '../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 import '../../../data/repository/user/user_repository.dart';
+import '../../../dependency_injection.dart';
 import '../../../model/user.dart';
 import 'logged_user_controller_state.dart';
 
@@ -24,7 +25,8 @@ class LoggedUserController extends _$LoggedUserController {
       _emitError(const LoggedUserControllerStateEmptyUsername());
       return;
     }
-    final String? loggedUserId = await ref.watch(loggedUserIdProvider.future);
+    final String? loggedUserId =
+        await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId == null) {
       _emitError(const LoggedUserControllerStateLoggedUserIdNotFound());
       return;
@@ -49,7 +51,8 @@ class LoggedUserController extends _$LoggedUserController {
       _emitError(const LoggedUserControllerStateEmptyUsername());
       return;
     }
-    final String? loggedUserId = await ref.watch(loggedUserIdProvider.future);
+    final String? loggedUserId =
+        await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId == null) {
       _emitError(const LoggedUserControllerStateLoggedUserIdNotFound());
       return;
@@ -67,7 +70,8 @@ class LoggedUserController extends _$LoggedUserController {
   }
 
   Future<void> updateAvatar(String? newAvatarImgPath) async {
-    final String? loggedUserId = await ref.watch(loggedUserIdProvider.future);
+    final String? loggedUserId =
+        await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId != null) {
       _emitLoading();
       await ref.read(userRepositoryProvider).updateUserAvatar(
