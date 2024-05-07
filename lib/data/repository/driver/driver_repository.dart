@@ -15,5 +15,5 @@ abstract interface class DriverRepository {
 @Riverpod(keepAlive: true)
 DriverRepository driverRepository(DriverRepositoryRef ref) =>
     DriverRepositoryImpl(
-      firebaseDriverService: ref.read(firebaseDriverServiceProvider),
+      ref.read(firebaseDriverServiceProvider),
     );

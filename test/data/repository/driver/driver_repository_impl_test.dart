@@ -11,9 +11,7 @@ void main() {
   late DriverRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = DriverRepositoryImpl(
-      firebaseDriverService: dbDriverService,
-    );
+    repositoryImpl = DriverRepositoryImpl(dbDriverService);
   });
 
   tearDown(() {
@@ -110,7 +108,7 @@ void main() {
         ),
       ];
       repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
+        dbDriverService,
         initialData: expectedDrivers,
       );
 
@@ -144,7 +142,7 @@ void main() {
       ];
       final expectedDriver = existingDrivers.first;
       repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
+        dbDriverService,
         initialData: existingDrivers,
       );
 
@@ -193,7 +191,7 @@ void main() {
       ];
       dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
       repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
+        dbDriverService,
         initialData: existingDrivers,
       );
 
