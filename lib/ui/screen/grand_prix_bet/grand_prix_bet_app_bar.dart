@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../../data/repository/auth/auth_repository.dart';
+import '../../../dependency_injection.dart';
 import 'provider/grand_prix_name_provider.dart';
 import 'provider/player_id_provider.dart';
 import 'provider/player_username_provider.dart';
@@ -29,17 +30,26 @@ class _GrandPrixName extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
     final String? playerId = ref.watch(playerIdProvider);
-    final String? loggedUserId = ref.watch(loggedUserIdProvider).value;
+    final Stream<String?> loggedUserId$ =
+        getIt.get<AuthRepository>().loggedUserId$;
     final AsyncValue<String?> playerUsername =
         ref.watch(playerUsernameProvider);
 
-    if (grandPrixName is AsyncData && playerUsername is AsyncData) {
-      String title = grandPrixName.value!;
-      if (playerId != loggedUserId && playerUsername.value != null) {
-        title += ' (${playerUsername.value})';
-      }
-      return Text(title);
-    }
-    return const Text('--');
+    return StreamBuilder(
+      stream: loggedUserId$,
+      builder: (_, AsyncSnapshot<String?> asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        if (grandPrixName is AsyncData && playerUsername is AsyncData) {
+          String title = grandPrixName.value!;
+          if (playerId != asyncSnapshot.data && playerUsername.value != null) {
+            title += ' (${playerUsername.value})';
+          }
+          return Text(title);
+        }
+        return const Text('--');
+      },
+    );
   }
 }
