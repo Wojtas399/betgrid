@@ -1,9 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/auth/auth_repository_method_providers.dart';
+import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 
@@ -16,7 +17,8 @@ class GrandPrixBetsInitializationController
   Future<void> build() async {}
 
   Future<void> initialize() async {
-    final String? loggedUserId = await ref.watch(loggedUserIdProvider.future);
+    final String? loggedUserId =
+        await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId == null) return;
     final List<GrandPrixBet>? bets = await ref.watch(
       allGrandPrixBetsForPlayerProvider(playerId: loggedUserId).future,
