@@ -1,7 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
+import '../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
+import '../../dependency_injection.dart';
 
 part 'player_points_provider.g.dart';
 
@@ -10,7 +11,8 @@ Future<double?> playerPoints(
   PlayerPointsRef ref, {
   required String playerId,
 }) async {
-  final allGrandPrixes = await ref.watch(allGrandPrixesProvider.future);
+  final allGrandPrixes =
+      await getIt.get<GrandPrixRepository>().getAllGrandPrixes().first;
   if (allGrandPrixes == null) return null;
   double points = 0.0;
   for (final grandPrix in allGrandPrixes) {
