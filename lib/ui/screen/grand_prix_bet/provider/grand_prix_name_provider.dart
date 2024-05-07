@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
-import '../../../../model/grand_prix.dart';
+import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
+import '../../../../dependency_injection.dart';
 import '../../../provider/grand_prix_id_provider.dart';
 
 part 'grand_prix_name_provider.g.dart';
@@ -10,10 +10,10 @@ part 'grand_prix_name_provider.g.dart';
 Future<String?> grandPrixName(GrandPrixNameRef ref) async {
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   return grandPrixId != null
-      ? await ref.watch(
-          grandPrixProvider(grandPrixId: grandPrixId).selectAsync(
-            (GrandPrix? grandPrix) => grandPrix?.name,
-          ),
-        )
+      ? (await getIt
+              .get<GrandPrixRepository>()
+              .getGrandPrixById(grandPrixId: grandPrixId)
+              .first)
+          ?.name
       : null;
 }
