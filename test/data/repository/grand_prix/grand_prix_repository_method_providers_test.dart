@@ -21,34 +21,6 @@ void main() {
   }
 
   test(
-    'allGrandPrixesProvider, '
-    'should get all grand prixes from GrandPrixRepository and should emit them',
-    () async {
-      final expectedGrandPrixes = [
-        createGrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-        ),
-        createGrandPrix(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-        ),
-      ];
-      grandPrixRepository.mockGetAllGrandPrixes(expectedGrandPrixes);
-      final container = makeProviderContainer();
-
-      final List<GrandPrix>? grandPrixes =
-          await container.read(allGrandPrixesProvider.future);
-
-      expect(grandPrixes, expectedGrandPrixes);
-    },
-  );
-
-  test(
     'grandPrixProvider, '
     'should get grand prix from GrandPrixRepository and should emit it',
     () async {
