@@ -4,6 +4,7 @@ import 'package:betgrid/ui/screen/stats/provider/finished_grand_prixes_provider.
 import 'package:betgrid/ui/service/date_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../creator/grand_prix_creator.dart';
 import '../../../mock/data/repository/mock_grand_prix_repository.dart';
@@ -17,12 +18,17 @@ void main() {
     final container = ProviderContainer(
       overrides: [
         dateServiceProvider.overrideWithValue(dateService),
-        grandPrixRepositoryProvider.overrideWithValue(grandPrixRepository),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<GrandPrixRepository>(
+      () => grandPrixRepository,
+    );
+  });
 
   test(
     'grand prixes do not exist, '
