@@ -3,6 +3,7 @@ import 'package:betgrid/model/auth_state.dart';
 import 'package:betgrid/ui/screen/sign_in/controller/sign_in_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/data/repository/mock_auth_repository.dart';
@@ -12,16 +13,13 @@ void main() {
   final authRepository = MockAuthRepository();
 
   ProviderContainer makeProviderContainer() {
-    final container = ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(authRepository),
-      ],
-    );
+    final container = ProviderContainer();
     addTearDown(container.dispose);
     return container;
   }
 
   setUpAll(() {
+    GetIt.I.registerSingleton<AuthRepository>(authRepository);
     registerFallbackValue(const AsyncLoading<AuthState>());
   });
 
