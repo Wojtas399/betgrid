@@ -1,34 +1,17 @@
-import 'package:betgrid/data/repository/auth/auth_repository.dart';
-import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/ui/screen/required_data_completion/controller/required_data_completion_controller.dart';
 import 'package:betgrid/ui/screen/required_data_completion/controller/required_data_completion_controller_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_user_repository.dart';
 import '../../../mock/listener.dart';
 
 void main() {
-  final authService = MockAuthRepository();
-  final userRepository = MockUserRepository();
-
   ProviderContainer makeProviderContainer() {
-    final container = ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(authService),
-        userRepositoryProvider.overrideWithValue(userRepository),
-      ],
-    );
+    final container = ProviderContainer();
     addTearDown(container.dispose);
     return container;
   }
-
-  tearDown(() {
-    reset(authService);
-    reset(userRepository);
-  });
 
   test(
     'updateAvatarImgPath, '
