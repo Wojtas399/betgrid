@@ -1,34 +1,36 @@
-import 'package:betgrid/data/repository/grand_prix/grand_prix_repository_method_providers.dart';
+import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/ui/provider/grand_prixes_with_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../creator/grand_prix_bet_points_creator.dart';
 import '../../creator/grand_prix_creator.dart';
+import '../../mock/data/repository/mock_grand_prix_repository.dart';
 
 void main() {
+  final grandPrixRepository = MockGrandPrixRepository();
   const String playerId = 'p1';
 
-  ProviderContainer createContainer({
-    List<GrandPrix>? allGrandPrixes,
-  }) {
-    final container = ProviderContainer(
-      overrides: [
-        allGrandPrixesProvider.overrideWith(
-          (_) => Stream.value(allGrandPrixes),
-        ),
-      ],
-    );
+  ProviderContainer createContainer() {
+    final container = ProviderContainer();
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<GrandPrixRepository>(
+      () => grandPrixRepository,
+    );
+  });
 
   test(
     'list of all grand prixes is null, '
     'should return empty array',
     () async {
+      grandPrixRepository.mockGetAllGrandPrixes(null);
       final container = createContainer();
 
       final grandPrixesWithPoints = await container.read(
@@ -45,9 +47,8 @@ void main() {
     'list of all grand prixes is empty, '
     'should return empty array',
     () async {
-      final container = createContainer(
-        allGrandPrixes: [],
-      );
+      grandPrixRepository.mockGetAllGrandPrixes([]);
+      final container = createContainer();
 
       final grandPrixesWithPoints = await container.read(
         grandPrixesWithPointsProvider(
@@ -85,11 +86,9 @@ void main() {
           points: gp1TotalPoints,
         ),
       ];
+      grandPrixRepository.mockGetAllGrandPrixes(allGrandPrixes);
       final container = ProviderContainer(
         overrides: [
-          allGrandPrixesProvider.overrideWith(
-            (_) => Stream.value(allGrandPrixes),
-          ),
           grandPrixBetPointsProvider(
             grandPrixId: 'gp1',
             playerId: playerId,

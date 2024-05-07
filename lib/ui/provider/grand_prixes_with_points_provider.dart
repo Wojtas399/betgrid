@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/repository/grand_prix/grand_prix_repository_method_providers.dart';
+import '../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
+import '../../dependency_injection.dart';
 import '../../model/grand_prix.dart';
 
 part 'grand_prixes_with_points_provider.g.dart';
@@ -12,7 +13,8 @@ Future<List<GrandPrixWithPoints>> grandPrixesWithPoints(
   GrandPrixesWithPointsRef ref, {
   required String playerId,
 }) async {
-  final allGrandPrixes = await ref.watch(allGrandPrixesProvider.future);
+  final allGrandPrixes =
+      await getIt.get<GrandPrixRepository>().getAllGrandPrixes().first;
   allGrandPrixes?.sort(
     (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
   );
