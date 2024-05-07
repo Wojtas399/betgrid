@@ -10,7 +10,7 @@ void main() {
   late AuthRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = AuthRepositoryImpl(firebaseAuthService: dbAuthService);
+    repositoryImpl = AuthRepositoryImpl(dbAuthService);
   });
 
   tearDown(() {
