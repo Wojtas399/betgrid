@@ -1,5 +1,4 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
-import 'package:betgrid/data/repository/auth/auth_repository_method_providers.dart';
 import 'package:betgrid/data/repository/user/user_repository_method_providers.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:betgrid/ui/provider/logged_user_provider.dart';
@@ -20,7 +19,6 @@ void main() {
   }) {
     final container = ProviderContainer(
       overrides: [
-        loggedUserIdProvider.overrideWith((_) => Stream.value(loggedUserId)),
         if (loggedUserId != null)
           userProvider(userId: loggedUserId).overrideWith(
             (_) => Stream.value(loggedUser),
