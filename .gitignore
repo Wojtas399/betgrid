@@ -48,3 +48,6 @@ app.*.map.json
 *.config.dart
 *.gr.dart
 firebase_options.dart
+.firebaserc
+firebase.json
+serviceAccountKey.json
