@@ -1,10 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../collections.dart';
 import '../model/grand_prix_dto/grand_prix_dto.dart';
-
-part 'firebase_grand_prix_service.g.dart';
 
 @injectable
 class FirebaseGrandPrixService {
@@ -20,9 +17,3 @@ class FirebaseGrandPrixService {
     return snapshot.data();
   }
 }
-
-@riverpod
-FirebaseGrandPrixService firebaseGrandPrixService(
-  FirebaseGrandPrixServiceRef ref,
-) =>
-    FirebaseGrandPrixService();
