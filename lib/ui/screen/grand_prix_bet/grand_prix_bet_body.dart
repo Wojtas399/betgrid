@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../model/grand_prix_bet.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
@@ -52,12 +51,13 @@ class _TotalPoints extends ConsumerWidget {
     final String? grandPrixId = ref.watch(grandPrixIdProvider);
     double? totalPoints;
     if (playerId != null && grandPrixId != null) {
-      totalPoints = ref.watch(
-        grandPrixBetPointsProvider(
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ).select((state) => state.value?.totalPoints),
-      );
+      //TODO
+      // totalPoints = ref.watch(
+      //   grandPrixBetPointsProvider(
+      //     playerId: playerId,
+      //     grandPrixId: grandPrixId,
+      //   ).select((state) => state.value?.totalPoints),
+      // );
     }
 
     return Center(
