@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../dependency_injection.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../../model/grand_prix_bet.dart';
 import 'grand_prix_bet_repository_impl.dart';
@@ -38,4 +39,4 @@ abstract interface class GrandPrixBetRepository {
 
 @Riverpod(keepAlive: true)
 GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
-    GrandPrixBetRepositoryImpl(ref.read(firebaseGrandPrixBetServiceProvider));
+    GrandPrixBetRepositoryImpl(getIt.get<FirebaseGrandPrixBetService>());
