@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
@@ -20,9 +19,10 @@ class GrandPrixBetsInitializationController
     final String? loggedUserId =
         await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId == null) return;
-    final List<GrandPrixBet>? bets = await ref.watch(
-      allGrandPrixBetsForPlayerProvider(playerId: loggedUserId).future,
-    );
+    final List<GrandPrixBet>? bets = await getIt
+        .get<GrandPrixBetRepository>()
+        .getAllGrandPrixBetsForPlayer(playerId: loggedUserId)
+        .first;
     if (bets == null || bets.isEmpty) await _initializeBets(loggedUserId);
   }
 
@@ -30,7 +30,7 @@ class GrandPrixBetsInitializationController
     final List<GrandPrix>? grandPrixes =
         await getIt.get<GrandPrixRepository>().getAllGrandPrixes().first;
     if (grandPrixes != null) {
-      await ref.read(grandPrixBetRepositoryProvider).addGrandPrixBets(
+      await getIt.get<GrandPrixBetRepository>().addGrandPrixBets(
             playerId: loggedUserId,
             grandPrixBets: _createBetsForGrandPrixes(
               grandPrixes,
