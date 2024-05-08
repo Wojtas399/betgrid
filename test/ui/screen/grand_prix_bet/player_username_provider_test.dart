@@ -1,27 +1,31 @@
-import 'package:betgrid/data/repository/player/player_repository_method_providers.dart';
+import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/player_id_provider.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/player_username_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../mock/data/repository/mock_player_repository.dart';
 
 void main() {
+  final playerRepository = MockPlayerRepository();
+
   ProviderContainer makeProviderContainer({
     String? playerId,
-    Player? player,
   }) {
     final container = ProviderContainer(
       overrides: [
         playerIdProvider.overrideWithValue(playerId),
-        if (playerId != null)
-          playerProvider(playerId: playerId).overrideWith(
-            (_) => Stream.value(player),
-          ),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<PlayerRepository>(() => playerRepository);
+  });
 
   test(
     'player id is null, '
@@ -43,9 +47,9 @@ void main() {
       const String playerId = 'p1';
       const String expectedUsername = 'username';
       const Player player = Player(id: playerId, username: expectedUsername);
+      playerRepository.mockGetPlayerById(player: player);
       final container = makeProviderContainer(
         playerId: playerId,
-        player: player,
       );
 
       final String? playerUsername = await container.read(
