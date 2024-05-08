@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../provider/grand_prix_id_provider.dart';
 
@@ -12,8 +13,9 @@ Future<GrandPrixResults?> resultsForGrandPrix(
 ) async {
   final String? grandPrixId = ref.watch(grandPrixIdProvider);
   return grandPrixId != null
-      ? await ref.watch(
-          grandPrixResultsProvider(grandPrixId: grandPrixId).future,
-        )
+      ? await getIt
+          .get<GrandPrixResultsRepository>()
+          .getResultForGrandPrix(grandPrixId: grandPrixId)
+          .first
       : null;
 }
