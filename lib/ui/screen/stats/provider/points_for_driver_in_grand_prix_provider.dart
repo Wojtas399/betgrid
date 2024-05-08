@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
@@ -40,11 +40,11 @@ Future<double> _getPointsForDriverInQuali(
   QualiBetPoints? qualiBetPoints,
   PointsForDriverInGrandPrixRef ref,
 ) async {
-  final List<String?>? qualiResults = await ref.watch(
-    grandPrixResultsProvider(grandPrixId: grandPrixId).selectAsync(
-      (GrandPrixResults? results) => results?.qualiStandingsByDriverIds,
-    ),
-  );
+  final List<String?>? qualiResults = (await getIt
+          .get<GrandPrixResultsRepository>()
+          .getResultForGrandPrix(grandPrixId: grandPrixId)
+          .first)
+      ?.qualiStandingsByDriverIds;
   if (qualiResults != null && qualiBetPoints != null) {
     final int driverStandingsIndex = qualiResults.indexWhere(
       (qualiResultsDriverId) => qualiResultsDriverId == driverId,
@@ -85,11 +85,11 @@ Future<double> _getPointsForDriverInRace(
   RaceBetPoints? raceBetPoints,
   PointsForDriverInGrandPrixRef ref,
 ) async {
-  final RaceResults? raceResults = await ref.watch(
-    grandPrixResultsProvider(grandPrixId: grandPrixId).selectAsync(
-      (GrandPrixResults? results) => results?.raceResults,
-    ),
-  );
+  final RaceResults? raceResults = (await getIt
+          .get<GrandPrixResultsRepository>()
+          .getResultForGrandPrix(grandPrixId: grandPrixId)
+          .first)
+      ?.raceResults;
   double points = 0.0;
   if (raceResults != null && raceBetPoints != null) {
     if (raceResults.p1DriverId == driverId) {
