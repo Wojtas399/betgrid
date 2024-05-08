@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import '../../config/theme/custom_colors.dart';
@@ -34,37 +33,39 @@ class GrandPrixBetQualifications extends ConsumerWidget {
     final String? playerId = ref.watch(playerIdProvider);
     QualiBetPoints? qualiPointsDetails;
     if (grandPrixId != null && playerId != null) {
-      qualiPointsDetails = ref.watch(
-        grandPrixBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).select((state) => state.value?.qualiBetPoints),
-      );
+      //TODO
+      // qualiPointsDetails = ref.watch(
+      //   grandPrixBetPointsProvider(
+      //     grandPrixId: grandPrixId,
+      //     playerId: playerId,
+      //   ).select((state) => state.value?.qualiBetPoints),
+      // );
     }
-    final List<double>? positionsPoints = qualiPointsDetails != null
-        ? [
-            qualiPointsDetails.q3P1Points,
-            qualiPointsDetails.q3P2Points,
-            qualiPointsDetails.q3P3Points,
-            qualiPointsDetails.q3P4Points,
-            qualiPointsDetails.q3P5Points,
-            qualiPointsDetails.q3P6Points,
-            qualiPointsDetails.q3P7Points,
-            qualiPointsDetails.q3P8Points,
-            qualiPointsDetails.q3P9Points,
-            qualiPointsDetails.q3P10Points,
-            qualiPointsDetails.q2P11Points,
-            qualiPointsDetails.q2P12Points,
-            qualiPointsDetails.q2P13Points,
-            qualiPointsDetails.q2P14Points,
-            qualiPointsDetails.q2P15Points,
-            qualiPointsDetails.q1P16Points,
-            qualiPointsDetails.q1P17Points,
-            qualiPointsDetails.q1P18Points,
-            qualiPointsDetails.q1P19Points,
-            qualiPointsDetails.q1P20Points,
-          ]
-        : null;
+    const List<double>? positionsPoints = null;
+    // qualiPointsDetails != null
+    //     ? [
+    //         qualiPointsDetails.q3P1Points,
+    //         qualiPointsDetails.q3P2Points,
+    //         qualiPointsDetails.q3P3Points,
+    //         qualiPointsDetails.q3P4Points,
+    //         qualiPointsDetails.q3P5Points,
+    //         qualiPointsDetails.q3P6Points,
+    //         qualiPointsDetails.q3P7Points,
+    //         qualiPointsDetails.q3P8Points,
+    //         qualiPointsDetails.q3P9Points,
+    //         qualiPointsDetails.q3P10Points,
+    //         qualiPointsDetails.q2P11Points,
+    //         qualiPointsDetails.q2P12Points,
+    //         qualiPointsDetails.q2P13Points,
+    //         qualiPointsDetails.q2P14Points,
+    //         qualiPointsDetails.q2P15Points,
+    //         qualiPointsDetails.q1P16Points,
+    //         qualiPointsDetails.q1P17Points,
+    //         qualiPointsDetails.q1P18Points,
+    //         qualiPointsDetails.q1P19Points,
+    //         qualiPointsDetails.q1P20Points,
+    //       ]
+    //     : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
