@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
-import '../../../../model/grand_prix_bet.dart';
+import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 
@@ -104,14 +104,14 @@ Future<double> _getPointsForDriverInRace(
     if (raceResults.fastestLapDriverId == driverId) {
       points += raceBetPoints.fastestLapPoints;
     }
-    final List<String?>? betDnfDriverIds = await ref.watch(
-      grandPrixBetByPlayerIdAndGrandPrixIdProvider(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      ).selectAsync(
-        (GrandPrixBet? bets) => bets?.dnfDriverIds,
-      ),
-    );
+    final List<String?>? betDnfDriverIds = (await getIt
+            .get<GrandPrixBetRepository>()
+            .getBetByGrandPrixIdAndPlayerId(
+              playerId: playerId,
+              grandPrixId: grandPrixId,
+            )
+            .first)
+        ?.dnfDriverIds;
     if (raceResults.dnfDriverIds.contains(driverId) &&
         betDnfDriverIds?.contains(driverId) == true) {
       final int dnfIndex = betDnfDriverIds!.indexWhere(

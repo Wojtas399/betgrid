@@ -1,4 +1,4 @@
-import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
@@ -6,36 +6,45 @@ import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:betgrid/ui/screen/stats/provider/points_for_driver_in_grand_prix_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
 import '../../../creator/race_bet_points_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 
 void main() {
+  final grandPrixBetRepository = MockGrandPrixBetRepository();
   const String playerId = 'p1';
   const String grandPrixId = 'gp1';
   const String driverId = 'd1';
 
   ProviderContainer makeProviderContainer({
     GrandPrixResults? grandPrixResults,
-    GrandPrixBet? grandPrixBet,
   }) {
     final container = ProviderContainer(
       overrides: [
         grandPrixResultsProvider(grandPrixId: grandPrixId).overrideWith(
           (_) => Stream.value(grandPrixResults),
         ),
-        grandPrixBetByPlayerIdAndGrandPrixIdProvider(
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ).overrideWith((_) => Stream.value(grandPrixBet)),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<GrandPrixBetRepository>(
+      () => grandPrixBetRepository,
+    );
+  });
+
+  tearDown(() {
+    reset(grandPrixBetRepository);
+  });
 
   test(
     'quali results do not exist, '
@@ -72,9 +81,9 @@ void main() {
         dnfDriverIds: ['d6', 'd8', driverId],
       );
       const double expectedPoints = 7;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bet);
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBet: bet,
       );
 
       final double points = await container.read(
@@ -125,9 +134,9 @@ void main() {
         dnfDriverIds: ['d6', 'd8', driverId],
       );
       const double expectedPoints = 7;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bet);
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBet: bet,
       );
 
       final double points = await container.read(
@@ -178,9 +187,9 @@ void main() {
         dnfDriverIds: ['d6', 'd8', driverId],
       );
       const double expectedPoints = 2;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bet);
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBet: bet,
       );
 
       final double points = await container.read(
@@ -229,9 +238,9 @@ void main() {
         dnfDriverIds: ['d6', 'd8', driverId],
       );
       const double expectedPoints = 2;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bet);
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBet: bet,
       );
 
       final double points = await container.read(
@@ -286,6 +295,7 @@ void main() {
         ),
       );
       const double expectedPoints = 6;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(null);
       final container = makeProviderContainer(
         grandPrixResults: results,
       );
@@ -344,9 +354,9 @@ void main() {
         dnfDriverIds: ['d6', 'd8', driverId],
       );
       const double expectedPoints = 9;
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(bet);
       final container = makeProviderContainer(
         grandPrixResults: results,
-        grandPrixBet: bet,
       );
 
       final double points = await container.read(
