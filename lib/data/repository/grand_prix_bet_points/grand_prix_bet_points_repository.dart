@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../dependency_injection.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_points_service.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import 'grand_prix_bet_points_repository_impl.dart';
@@ -18,5 +19,5 @@ GrandPrixBetPointsRepository grandPrixBetPointsRepository(
   GrandPrixBetPointsRepositoryRef ref,
 ) =>
     GrandPrixBetPointsRepositoryImpl(
-      ref.read(firebaseGrandPrixBetPointsServiceProvider),
+      getIt.get<FirebaseGrandPrixBetPointsService>(),
     );
