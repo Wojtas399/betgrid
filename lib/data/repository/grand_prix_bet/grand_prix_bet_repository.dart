@@ -1,11 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../dependency_injection.dart';
-import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../../model/grand_prix_bet.dart';
-import 'grand_prix_bet_repository_impl.dart';
-
-part 'grand_prix_bet_repository.g.dart';
 
 abstract interface class GrandPrixBetRepository {
   Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
@@ -36,7 +29,3 @@ abstract interface class GrandPrixBetRepository {
     bool? willBeRedFlag,
   });
 }
-
-@Riverpod(keepAlive: true)
-GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
-    GrandPrixBetRepositoryImpl(getIt.get<FirebaseGrandPrixBetService>());
