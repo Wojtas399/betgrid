@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../dependency_injection.dart';
-import '../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import '../../component/text_component.dart';
 import '../../config/theme/custom_colors.dart';
@@ -31,14 +30,15 @@ class GrandPrixBetRace extends ConsumerWidget {
     final String? playerId = ref.watch(playerIdProvider);
     RaceBetPoints? racePointsDetails;
     if (grandPrixId != null && playerId != null) {
-      racePointsDetails = ref.watch(
-        grandPrixBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).select(
-          (state) => state.value?.raceBetPoints,
-        ),
-      );
+      //TODO
+      // racePointsDetails = ref.watch(
+      //   grandPrixBetPointsProvider(
+      //     grandPrixId: grandPrixId,
+      //     playerId: playerId,
+      //   ).select(
+      //     (state) => state.value?.raceBetPoints,
+      //   ),
+      // );
     }
 
     return Column(
