@@ -22,30 +22,6 @@ void main() {
   }
 
   test(
-    'allGrandPrixBetsForPlayerProvider, '
-    "should get all player's grand prix bets from GrandPrixBetRepository and "
-    'should emit them',
-    () async {
-      const String playerId = 'p1';
-      final List<GrandPrixBet> expectedGrandPrixBets = [
-        createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1', playerId: playerId),
-        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2', playerId: playerId),
-        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3', playerId: playerId),
-      ];
-      grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
-        grandPrixBets: expectedGrandPrixBets,
-      );
-      final container = makeProviderContainer();
-
-      final List<GrandPrixBet>? grandPrixBets = await container.read(
-        allGrandPrixBetsForPlayerProvider(playerId: playerId).future,
-      );
-
-      expect(grandPrixBets, expectedGrandPrixBets);
-    },
-  );
-
-  test(
     'grandPrixBetByPlayerIdAndGrandPrixIdProvider, '
     'should get matching grand prix bet from GrandPrixBetRepository and should '
     'emit it',
