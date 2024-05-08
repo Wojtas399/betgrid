@@ -1,17 +1,20 @@
 import 'package:betgrid/data/repository/grand_prix/grand_prix_repository.dart';
-import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
+import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/ui/provider/grand_prixes_with_points_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../creator/grand_prix_bet_points_creator.dart';
 import '../../creator/grand_prix_creator.dart';
+import '../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../mock/data/repository/mock_grand_prix_repository.dart';
 
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
+  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   const String playerId = 'p1';
 
   ProviderContainer createContainer() {
@@ -23,6 +26,9 @@ void main() {
   setUpAll(() {
     GetIt.I.registerLazySingleton<GrandPrixRepository>(
       () => grandPrixRepository,
+    );
+    GetIt.I.registerLazySingleton<GrandPrixBetPointsRepository>(
+      () => grandPrixBetPointsRepository,
     );
   });
 
@@ -87,34 +93,37 @@ void main() {
         ),
       ];
       grandPrixRepository.mockGetAllGrandPrixes(allGrandPrixes);
-      final container = ProviderContainer(
-        overrides: [
-          grandPrixBetPointsProvider(
-            grandPrixId: 'gp1',
-            playerId: playerId,
-          ).overrideWith(
-            (_) => Stream.value(
-              createGrandPrixBetPoints(totalPoints: gp1TotalPoints),
-            ),
-          ),
-          grandPrixBetPointsProvider(
-            grandPrixId: 'gp2',
-            playerId: playerId,
-          ).overrideWith(
-            (_) => Stream.value(
-              createGrandPrixBetPoints(totalPoints: gp2TotalPoints),
-            ),
-          ),
-          grandPrixBetPointsProvider(
-            grandPrixId: 'gp3',
-            playerId: playerId,
-          ).overrideWith(
-            (_) => Stream.value(
-              createGrandPrixBetPoints(totalPoints: gp3TotalPoints),
-            ),
-          ),
-        ],
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: playerId,
+          grandPrixId: 'gp1',
+        ),
+      ).thenAnswer(
+        (_) => Stream.value(
+          createGrandPrixBetPoints(totalPoints: gp1TotalPoints),
+        ),
       );
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: playerId,
+          grandPrixId: 'gp2',
+        ),
+      ).thenAnswer(
+        (_) => Stream.value(
+          createGrandPrixBetPoints(totalPoints: gp2TotalPoints),
+        ),
+      );
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: playerId,
+          grandPrixId: 'gp3',
+        ),
+      ).thenAnswer(
+        (_) => Stream.value(
+          createGrandPrixBetPoints(totalPoints: gp3TotalPoints),
+        ),
+      );
+      final container = createContainer();
 
       final grandPrixesWithPoints = await container.read(
         grandPrixesWithPointsProvider(playerId: playerId).future,
