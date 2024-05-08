@@ -29,22 +29,4 @@ class MockGrandPrixBetRepository extends Mock
       ),
     ).thenAnswer((_) => Future.value());
   }
-
-  void mockUpdateGrandPrixBet() {
-    when(
-      () => updateGrandPrixBet(
-        playerId: any(named: 'playerId'),
-        grandPrixBetId: any(named: 'grandPrixBetId'),
-        qualiStandingsByDriverIds: any(named: 'qualiStandingsByDriverIds'),
-        p1DriverId: any(named: 'p1DriverId'),
-        p2DriverId: any(named: 'p2DriverId'),
-        p3DriverId: any(named: 'p3DriverId'),
-        p10DriverId: any(named: 'p10DriverId'),
-        fastestLapDriverId: any(named: 'fastestLapDriverId'),
-        dnfDriverIds: any(named: 'dnfDriverIds'),
-        willBeSafetyCar: any(named: 'willBeSafetyCar'),
-        willBeRedFlag: any(named: 'willBeRedFlag'),
-      ),
-    ).thenAnswer((_) => Future.value());
-  }
 }
