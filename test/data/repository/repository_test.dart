@@ -125,6 +125,61 @@ void main() {
   );
 
   test(
+    'addEntities, '
+    'one of the entities already exists in state, '
+    'should throw exception',
+    () {
+      const List<TestModel> entitiesToAdd = [
+        TestModel(id: 'e1', name: 'first entity'),
+        TestModel(id: 'e2', name: 'second entity'),
+        TestModel(id: 'e3', name: 'third entity'),
+      ];
+      const List<TestModel> existingEntities = [
+        TestModel(id: 'e3', name: 'third entity'),
+        TestModel(id: 'e4', name: 'fourth entity'),
+        TestModel(id: 'e5', name: 'fifth entity'),
+      ];
+      final String expectedException =
+          '[Repository] Entity ${entitiesToAdd[2]} already exists in repository state';
+      repository = TestRepository(initialData: existingEntities);
+
+      Object? exception;
+      try {
+        repository.addEntities(entitiesToAdd);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+    },
+  );
+
+  test(
+    'addEntities, '
+    'should add all passed entities to state',
+    () {
+      const List<TestModel> entitiesToAdd = [
+        TestModel(id: 'e1', name: 'first entity'),
+        TestModel(id: 'e2', name: 'second entity'),
+        TestModel(id: 'e3', name: 'third entity'),
+      ];
+      const List<TestModel> existingEntities = [
+        TestModel(id: 'e4', name: 'fourth entity'),
+        TestModel(id: 'e5', name: 'fifth entity'),
+      ];
+      final List<TestModel> expectedEntities = [
+        ...existingEntities,
+        ...entitiesToAdd,
+      ];
+      repository = TestRepository(initialData: existingEntities);
+
+      repository.addEntities(entitiesToAdd);
+
+      expect(repository.repositoryState$, emits(expectedEntities));
+    },
+  );
+
+  test(
     'updateEntity, '
     'entity does not exist in state, '
     'should do nothing',
