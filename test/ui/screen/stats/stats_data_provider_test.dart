@@ -1,5 +1,5 @@
 import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import 'package:betgrid/data/repository/player/player_repository_method_providers.dart';
+import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/stats/provider/finished_grand_prixes_provider.dart';
@@ -17,18 +17,22 @@ import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/data/repository/mock_player_repository.dart';
 
 void main() {
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final playerRepository = MockPlayerRepository();
 
   setUpAll(() {
     GetIt.I.registerLazySingleton<GrandPrixBetPointsRepository>(
       () => grandPrixBetPointsRepository,
     );
+    GetIt.I.registerLazySingleton<PlayerRepository>(() => playerRepository);
   });
 
   tearDown(() {
     reset(grandPrixBetPointsRepository);
+    reset(playerRepository);
   });
 
   test(
@@ -36,11 +40,8 @@ void main() {
     'list of all players is null, '
     'should return null',
     () async {
-      final container = ProviderContainer(
-        overrides: [
-          allPlayersProvider.overrideWith((_) => Stream.value(null)),
-        ],
-      );
+      playerRepository.mockGetAllPlayers(players: null);
+      final container = ProviderContainer();
 
       final StatsData? stats = await container.read(statsProvider.future);
 
@@ -53,11 +54,8 @@ void main() {
     'list of all players is empty, '
     'should return null',
     () async {
-      final container = ProviderContainer(
-        overrides: [
-          allPlayersProvider.overrideWith((_) => Stream.value([])),
-        ],
-      );
+      playerRepository.mockGetAllPlayers(players: []);
+      final container = ProviderContainer();
 
       final StatsData? stats = await container.read(statsProvider.future);
 
@@ -216,6 +214,7 @@ void main() {
         ),
         pointsByDriverChartData: const [],
       );
+      playerRepository.mockGetAllPlayers(players: allPlayers);
       when(
         () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
           playerId: allPlayers.first.id,
@@ -272,7 +271,6 @@ void main() {
       ).thenAnswer((_) => Stream.value(null));
       final container = ProviderContainer(
         overrides: [
-          allPlayersProvider.overrideWith((_) => Stream.value(allPlayers)),
           finishedGrandPrixesProvider.overrideWith(
             (_) => Future.value(finishedGrandPrixes),
           ),
@@ -461,6 +459,7 @@ void main() {
               points: player3Gp1PointsForDriver + player3Gp2PointsForDriver),
         ],
       );
+      playerRepository.mockGetAllPlayers(players: allPlayers);
       when(
         () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
           playerId: allPlayers.first.id,
@@ -517,7 +516,6 @@ void main() {
       ).thenAnswer((_) => Stream.value(null));
       final container = ProviderContainer(
         overrides: [
-          allPlayersProvider.overrideWith((_) => Stream.value(allPlayers)),
           finishedGrandPrixesProvider.overrideWith(
             (_) => Future.value(finishedGrandPrixes),
           ),

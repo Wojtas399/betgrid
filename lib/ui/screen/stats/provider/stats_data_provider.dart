@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import '../../../../data/repository/player/player_repository_method_providers.dart';
+import '../../../../data/repository/player/player_repository.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
@@ -25,7 +25,7 @@ class Stats extends _$Stats {
 
   @override
   Future<StatsData?> build() async {
-    _allPlayers = await ref.watch(allPlayersProvider.future);
+    _allPlayers = await getIt.get<PlayerRepository>().getAllPlayers().first;
     if (_allPlayers == null || _allPlayers!.isEmpty) return null;
     _finishedGrandPrixes = await ref.watch(finishedGrandPrixesProvider.future);
     _pointsForBets = [];
