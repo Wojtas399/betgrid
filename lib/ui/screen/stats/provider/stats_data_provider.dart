@@ -2,8 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository_method_providers.dart';
+import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
@@ -30,12 +31,13 @@ class Stats extends _$Stats {
     _pointsForBets = [];
     for (final player in _allPlayers!) {
       for (final gp in _finishedGrandPrixes!) {
-        final pointsForGrandPrixBets = await ref.watch(
-          grandPrixBetPointsProvider(
-            playerId: player.id,
-            grandPrixId: gp.id,
-          ).future,
-        );
+        final pointsForGrandPrixBets = await getIt
+            .get<GrandPrixBetPointsRepository>()
+            .getPointsForPlayerByGrandPrixId(
+              playerId: player.id,
+              grandPrixId: gp.id,
+            )
+            .first;
         if (pointsForGrandPrixBets != null) {
           _pointsForBets!.add(pointsForGrandPrixBets);
         }

@@ -1,4 +1,4 @@
-import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
+import 'package:betgrid/data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import 'package:betgrid/data/repository/player/player_repository_method_providers.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/player.dart';
@@ -10,12 +10,27 @@ import 'package:betgrid/ui/screen/stats/provider/points_history_chart_data.dart'
 import 'package:betgrid/ui/screen/stats/provider/stats_data_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 
 void main() {
+  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<GrandPrixBetPointsRepository>(
+      () => grandPrixBetPointsRepository,
+    );
+  });
+
+  tearDown(() {
+    reset(grandPrixBetPointsRepository);
+  });
+
   test(
     'build, '
     'list of all players is null, '
@@ -201,48 +216,66 @@ void main() {
         ),
         pointsByDriverChartData: const [],
       );
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp3BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp3BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player3Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player3Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(null));
       final container = ProviderContainer(
         overrides: [
           allPlayersProvider.overrideWith((_) => Stream.value(allPlayers)),
           finishedGrandPrixesProvider.overrideWith(
             (_) => Future.value(finishedGrandPrixes),
           ),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player1Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player1Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(player1Gp3BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player2Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player2Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(player2Gp3BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player3Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player3Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(null)),
         ],
       );
 
@@ -428,48 +461,66 @@ void main() {
               points: player3Gp1PointsForDriver + player3Gp2PointsForDriver),
         ],
       );
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers.first.id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Gp3BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[1].id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Gp3BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ),
+      ).thenAnswer((_) => Stream.value(player3Gp1BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ),
+      ).thenAnswer((_) => Stream.value(player3Gp2BetPoints));
+      when(
+        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: allPlayers[2].id,
+          grandPrixId: finishedGrandPrixes[2].id,
+        ),
+      ).thenAnswer((_) => Stream.value(null));
       final container = ProviderContainer(
         overrides: [
           allPlayersProvider.overrideWith((_) => Stream.value(allPlayers)),
           finishedGrandPrixesProvider.overrideWith(
             (_) => Future.value(finishedGrandPrixes),
           ),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player1Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player1Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers.first.id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(player1Gp3BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player2Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player2Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[1].id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(player2Gp3BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes.first.id,
-          ).overrideWith((_) => Stream.value(player3Gp1BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes[1].id,
-          ).overrideWith((_) => Stream.value(player3Gp2BetPoints)),
-          grandPrixBetPointsProvider(
-            playerId: allPlayers[2].id,
-            grandPrixId: finishedGrandPrixes[2].id,
-          ).overrideWith((_) => Stream.value(null)),
           pointsForDriverInGrandPrixProvider(
             playerId: allPlayers.first.id,
             grandPrixId: finishedGrandPrixes.first.id,
