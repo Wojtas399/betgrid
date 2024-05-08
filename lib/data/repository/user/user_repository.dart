@@ -33,6 +33,6 @@ abstract interface class UserRepository {
 
 @Riverpod(keepAlive: true)
 UserRepository userRepository(UserRepositoryRef ref) => UserRepositoryImpl(
-      firebaseUserService: ref.read(firebaseUserServiceProvider),
-      firebaseAvatarService: ref.read(firebaseAvatarServiceProvider),
+      ref.read(firebaseUserServiceProvider),
+      ref.read(firebaseAvatarServiceProvider),
     );

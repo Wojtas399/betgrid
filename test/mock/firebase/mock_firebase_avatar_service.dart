@@ -2,9 +2,9 @@ import 'package:betgrid/firebase/service/firebase_avatar_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAvatarService extends Mock implements FirebaseAvatarService {
-  void mockLoadAvatarUrlForUser({String? avatarUrl}) {
+  void mockFetchAvatarUrlForUser({String? avatarUrl}) {
     when(
-      () => loadAvatarUrlForUser(
+      () => fetchAvatarUrlForUser(
         userId: any(named: 'userId'),
       ),
     ).thenAnswer((_) => Future.value(avatarUrl));

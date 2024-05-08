@@ -38,13 +38,13 @@ void main() {
       ];
       dbUserService.mockFetchAllUsers(userDtos: userDtos);
       when(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u2'),
       ).thenAnswer((_) => Future.value(user2AvatarUrl));
       when(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u1'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u1'),
       ).thenAnswer((_) => Future.value(null));
       when(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u3'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u3'),
       ).thenAnswer((_) => Future.value(null));
 
       final Stream<List<Player>?> players$ = repositoryImpl.getAllPlayers();
@@ -56,13 +56,13 @@ void main() {
       );
       verify(dbUserService.fetchAllUsers).called(1);
       verify(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u2'),
       ).called(1);
       verify(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u1'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u1'),
       ).called(1);
       verify(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: 'u3'),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u3'),
       ).called(1);
     },
   );
@@ -77,7 +77,7 @@ void main() {
       final UserDto userDto = createUserDto(id: playerId, username: 'player 1');
       const Player expectedPlayer = Player(id: playerId, username: 'player 1');
       dbUserService.mockFetchUserById(userDto: userDto);
-      dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: null);
+      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
 
       final Stream<Player?> player1$ = repositoryImpl.getPlayerById(
         playerId: playerId,
@@ -93,7 +93,7 @@ void main() {
         () => dbUserService.fetchUserById(userId: playerId),
       ).called(1);
       verify(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: playerId),
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: playerId),
       ).called(1);
     },
   );

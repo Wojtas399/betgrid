@@ -43,7 +43,7 @@ class PlayerRepositoryImpl extends Repository<Player>
     final List<UserDto> userDtos = await _dbUserService.fetchAllUsers();
     final List<Player> players = [];
     for (final userDto in userDtos) {
-      final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
+      final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
         userId: userDto.id,
       );
       final Player player = mapPlayerFromUserDto(userDto, avatarUrl);
@@ -56,7 +56,7 @@ class PlayerRepositoryImpl extends Repository<Player>
     final UserDto? userDto =
         await _dbUserService.fetchUserById(userId: playerId);
     if (userDto == null) return null;
-    final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
+    final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: playerId,
     );
     final Player player = mapPlayerFromUserDto(userDto, avatarUrl);

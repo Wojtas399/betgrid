@@ -13,7 +13,7 @@ class FirebaseAvatarService {
         'Avatars/$userId.jpg',
       );
 
-  Future<String?> loadAvatarUrlForUser({required String userId}) async =>
+  Future<String?> fetchAvatarUrlForUser({required String userId}) async =>
       await _doesUserAvatarExists(userId)
           ? await _getAvatarRef(userId).getDownloadURL()
           : null;
