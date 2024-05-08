@@ -10,17 +10,17 @@ class MockFirebaseGrandPrixBetService extends Mock
     registerFallbackValue(FakeGrandPrixBetDto());
   }
 
-  void mockLoadAllGrandPrixBets(List<GrandPrixBetDto> grandPrixBetDtos) {
+  void mockFetchAllGrandPrixBets(List<GrandPrixBetDto> grandPrixBetDtos) {
     when(
-      () => loadAllGrandPrixBets(
+      () => fetchAllGrandPrixBets(
         userId: any(named: 'userId'),
       ),
     ).thenAnswer((_) => Future.value(grandPrixBetDtos));
   }
 
-  void mockLoadGrandPrixBetByGrandPrixId(GrandPrixBetDto? grandPrixBetDto) {
+  void mockFetchGrandPrixBetByGrandPrixId(GrandPrixBetDto? grandPrixBetDto) {
     when(
-      () => loadGrandPrixBetByGrandPrixId(
+      () => fetchGrandPrixBetByGrandPrixId(
         userId: any(named: 'userId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),

@@ -38,8 +38,4 @@ abstract interface class GrandPrixBetRepository {
 
 @Riverpod(keepAlive: true)
 GrandPrixBetRepository grandPrixBetRepository(GrandPrixBetRepositoryRef ref) =>
-    GrandPrixBetRepositoryImpl(
-      firebaseGrandPrixBetService: ref.read(
-        firebaseGrandPrixBetServiceProvider,
-      ),
-    );
+    GrandPrixBetRepositoryImpl(ref.read(firebaseGrandPrixBetServiceProvider));

@@ -9,14 +9,14 @@ part 'firebase_grand_prix_bet_service.g.dart';
 
 @injectable
 class FirebaseGrandPrixBetService {
-  Future<List<GrandPrixBetDto>> loadAllGrandPrixBets({
+  Future<List<GrandPrixBetDto>> fetchAllGrandPrixBets({
     required String userId,
   }) async {
     final snapshot = await getGrandPrixBetsRef(userId).get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future<GrandPrixBetDto?> loadGrandPrixBetByGrandPrixId({
+  Future<GrandPrixBetDto?> fetchGrandPrixBetByGrandPrixId({
     required String userId,
     required String grandPrixId,
   }) async {

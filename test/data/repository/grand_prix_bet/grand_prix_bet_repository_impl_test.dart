@@ -14,9 +14,7 @@ void main() {
   const String playerId = 'u1';
 
   setUp(() {
-    repositoryImpl = GrandPrixBetRepositoryImpl(
-      firebaseGrandPrixBetService: dbGrandPrixBetService,
-    );
+    repositoryImpl = GrandPrixBetRepositoryImpl(dbGrandPrixBetService);
   });
 
   tearDown(() {
@@ -26,7 +24,9 @@ void main() {
   test(
     'getAllGrandPrixBetsForPlayer, '
     'repository state is empty, '
-    'should load grand prix bets from db, add them to repo and emit them',
+    'should load grand prix bets from db, add them to repo state and emit them '
+    'if repo state is empty, '
+    "should only emit player's grand prix bets if their exist in repo state",
     () async {
       final List<GrandPrixBetDto> grandPrixBetDtos = [
         createGrandPrixBetDto(id: 'gpb1', grandPrixId: 'gp1'),
@@ -38,80 +38,31 @@ void main() {
         createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
         createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
       ];
-      dbGrandPrixBetService.mockLoadAllGrandPrixBets(grandPrixBetDtos);
+      dbGrandPrixBetService.mockFetchAllGrandPrixBets(grandPrixBetDtos);
 
-      final Stream<List<GrandPrixBet>?> grandPrixBets$ =
+      final Stream<List<GrandPrixBet>?> grandPrixBets1$ =
+          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
+      final Stream<List<GrandPrixBet>?> grandPrixBets2$ =
           repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
 
-      expect(grandPrixBets$, emits(expectedGrandPrixBets));
+      expect(await grandPrixBets1$.first, expectedGrandPrixBets);
+      expect(await grandPrixBets2$.first, expectedGrandPrixBets);
       expect(
-        repositoryImpl.repositoryState$,
-        emitsInOrder([[], expectedGrandPrixBets]),
+        await repositoryImpl.repositoryState$.first,
+        expectedGrandPrixBets,
       );
-      await repositoryImpl.repositoryState$.first;
       verify(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
+        () => dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId),
       ).called(1);
-    },
-  );
-
-  test(
-    'getAllGrandPrixBetsForPlayer, '
-    'repository state contains grand prix bets, '
-    "should only emit player's grand prix bets from repository state",
-    () async {
-      final List<GrandPrixBet> expectedGrandPrixBets = [
-        createGrandPrixBet(id: 'gpb1', grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb2', grandPrixId: 'gp2'),
-        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
-      ];
-      repositoryImpl = GrandPrixBetRepositoryImpl(
-        firebaseGrandPrixBetService: dbGrandPrixBetService,
-        initialData: expectedGrandPrixBets,
-      );
-
-      final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
-
-      expect(grandPrixBets$, emits(expectedGrandPrixBets));
-      expect(repositoryImpl.repositoryState$, emits(expectedGrandPrixBets));
-      await repositoryImpl.repositoryState$.first;
-      verifyNever(
-        () => dbGrandPrixBetService.loadAllGrandPrixBets(userId: playerId),
-      );
     },
   );
 
   test(
     'getBetByGrandPrixIdAndPlayerId, '
     'bet with matching grand prix id and player id exists in state, '
-    'should return first matching grand prix',
-    () async {
-      final List<GrandPrixBet> grandPrixBets = [
-        createGrandPrixBet(id: 'gpb1', playerId: 'u2', grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb2', playerId: playerId, grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
-        createGrandPrixBet(id: 'gpb4', grandPrixId: 'gp1'),
-      ];
-      repositoryImpl = GrandPrixBetRepositoryImpl(
-        firebaseGrandPrixBetService: dbGrandPrixBetService,
-        initialData: grandPrixBets,
-      );
-
-      final Stream<GrandPrixBet?> grandPrixBet$ =
-          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
-        playerId: playerId,
-        grandPrixId: 'gp1',
-      );
-
-      expect(grandPrixBet$, emits(grandPrixBets[1]));
-    },
-  );
-
-  test(
-    'getBetByGrandPrixIdAndPlayerId, '
-    'there is no bet with matching grand prix id and player id in state, '
-    'should load bet from db, add it to repository state and emit it',
+    'should load gp bet from db, add it to repo state and emit it if there is no '
+    'matching gp bet in repo state, '
+    'should return first matching grand prix bet if it exists in repo state, ',
     () async {
       const String grandPrixId = 'gp1';
       final GrandPrixBetDto grandPrixBetDto = createGrandPrixBetDto(
@@ -119,38 +70,32 @@ void main() {
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      final GrandPrixBet grandPrixBet = createGrandPrixBet(
+      final GrandPrixBet expectedGrandPrixBet = createGrandPrixBet(
         id: 'gpb1',
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      final List<GrandPrixBet> grandPrixBets = [
-        createGrandPrixBet(id: 'gpb2', playerId: 'u2', grandPrixId: 'gp1'),
-        createGrandPrixBet(id: 'gpb3', grandPrixId: 'gp3'),
-      ];
-      dbGrandPrixBetService.mockLoadGrandPrixBetByGrandPrixId(grandPrixBetDto);
-      repositoryImpl = GrandPrixBetRepositoryImpl(
-        firebaseGrandPrixBetService: dbGrandPrixBetService,
-        initialData: grandPrixBets,
-      );
+      dbGrandPrixBetService.mockFetchGrandPrixBetByGrandPrixId(grandPrixBetDto);
 
-      final Stream<GrandPrixBet?> grandPrixBet$ =
+      final Stream<GrandPrixBet?> grandPrixBet1$ =
           repositoryImpl.getBetByGrandPrixIdAndPlayerId(
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        grandPrixId: 'gp1',
+      );
+      final Stream<GrandPrixBet?> grandPrixBet2$ =
+          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
+        playerId: playerId,
+        grandPrixId: 'gp1',
       );
 
-      expect(grandPrixBet$, emits(grandPrixBet));
+      expect(await grandPrixBet1$.first, expectedGrandPrixBet);
+      expect(await grandPrixBet2$.first, expectedGrandPrixBet);
       expect(
-        repositoryImpl.repositoryState$,
-        emitsInOrder([
-          grandPrixBets,
-          [...grandPrixBets, grandPrixBet],
-        ]),
+        await repositoryImpl.repositoryState$.first,
+        [expectedGrandPrixBet],
       );
-      await repositoryImpl.repositoryState$.first;
       verify(
-        () => dbGrandPrixBetService.loadGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           userId: playerId,
           grandPrixId: grandPrixId,
         ),
@@ -160,7 +105,8 @@ void main() {
 
   test(
     'addGrandPrixBets, '
-    'for each grand prix bet should call db method to add this bet to db',
+    'for each grand prix bet should call db method to add this bet to db and to '
+    'repo state',
     () async {
       final List<GrandPrixBet> grandPrixBets = [
         createGrandPrixBet(id: 'gpb1'),
@@ -179,6 +125,7 @@ void main() {
         grandPrixBets: grandPrixBets,
       );
 
+      expect(repositoryImpl.repositoryState$, emits(grandPrixBets));
       verify(
         () => dbGrandPrixBetService.addGrandPrixBet(
           userId: playerId,
@@ -270,13 +217,14 @@ void main() {
         createGrandPrixBet(id: 'gpb2'),
         createGrandPrixBet(id: 'gpb3'),
       ];
+      dbGrandPrixBetService.mockAddGrandPrixBet();
       dbGrandPrixBetService.mockUpdateGrandPrixBet(updatedGrandPrixBetDto);
-      repositoryImpl = GrandPrixBetRepositoryImpl(
-        firebaseGrandPrixBetService: dbGrandPrixBetService,
-        initialData: existingGrandPrixBets,
-      );
 
-      repositoryImpl.updateGrandPrixBet(
+      await repositoryImpl.addGrandPrixBets(
+        playerId: playerId,
+        grandPrixBets: existingGrandPrixBets,
+      );
+      await repositoryImpl.updateGrandPrixBet(
         playerId: playerId,
         grandPrixBetId: grandPrixBetId,
         qualiStandingsByDriverIds: qualiStandingsByDriverIds,
@@ -292,13 +240,10 @@ void main() {
 
       expect(
         repositoryImpl.repositoryState$,
-        emitsInOrder([
-          existingGrandPrixBets,
-          [
-            updatedGrandPrixBet,
-            existingGrandPrixBets[1],
-            existingGrandPrixBets.last,
-          ]
+        emits([
+          updatedGrandPrixBet,
+          existingGrandPrixBets[1],
+          existingGrandPrixBets.last,
         ]),
       );
       verify(
