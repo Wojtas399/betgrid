@@ -12,52 +12,9 @@ void main() {
 
   test(
     'getPointsForPlayerByGrandPrixId, '
-    'grand prix bet points exists in repository state, '
-    'should emit grand prix bet points from repository state',
-    () async {
-      const String playerId = 'p1';
-      const String grandPrixId = 'gp2';
-      final List<GrandPrixBetPoints> existingEntities = [
-        createGrandPrixBetPoints(
-          id: grandPrixId,
-          playerId: playerId,
-          grandPrixId: 'gp1',
-        ),
-        createGrandPrixBetPoints(
-          id: 'gp3',
-          playerId: 'p2',
-          grandPrixId: grandPrixId,
-        ),
-        createGrandPrixBetPoints(
-          id: 'gp1',
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ),
-        createGrandPrixBetPoints(
-          id: 'gp4',
-          playerId: 'p2',
-          grandPrixId: 'gp1',
-        ),
-      ];
-      final repositoryImpl = GrandPrixBetPointsRepositoryImpl(
-        firebaseGrandPrixBetPointsService: dbBetPointsService,
-        initialData: existingEntities,
-      );
-
-      final Stream<GrandPrixBetPoints?> points$ =
-          repositoryImpl.getPointsForPlayerByGrandPrixId(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
-
-      expect(points$, emits(existingEntities[2]));
-    },
-  );
-
-  test(
-    'getPointsForPlayerByGrandPrixId, '
-    'grand prix bet points do not exist in repository state, '
-    'should load grand prix bet points from db, add it to repository state and emit it',
+    'should load grand prix bet points from db, add it to repo state and emit it '
+    'if it does not exist in repo state, '
+    'should only emit grand prix bet points if it already exists in repo state, ',
     () async {
       const String playerId = 'p1';
       const String grandPrixId = 'gp2';
@@ -73,42 +30,33 @@ void main() {
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      final List<GrandPrixBetPoints> existingEntities = [
-        createGrandPrixBetPoints(
-          id: 'gp1',
-          playerId: 'p1',
-          grandPrixId: 'gp1',
-        ),
-        createGrandPrixBetPoints(
-          id: 'gp3',
-          playerId: 'p2',
-          grandPrixId: grandPrixId,
-        ),
-      ];
-      dbBetPointsService.mockLoadGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+      dbBetPointsService.mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
         grandPrixBetPointsDto: grandPrixBetPointsDto,
       );
       final repositoryImpl = GrandPrixBetPointsRepositoryImpl(
-        firebaseGrandPrixBetPointsService: dbBetPointsService,
-        initialData: existingEntities,
+        dbBetPointsService,
       );
 
-      final Stream<GrandPrixBetPoints?> points$ =
+      final Stream<GrandPrixBetPoints?> points1$ =
+          repositoryImpl.getPointsForPlayerByGrandPrixId(
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      );
+      final Stream<GrandPrixBetPoints?> points2$ =
           repositoryImpl.getPointsForPlayerByGrandPrixId(
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
 
-      expect(await points$.first, expectedGrandPrixBetPoints);
+      expect(await points1$.first, expectedGrandPrixBetPoints);
+      expect(await points2$.first, expectedGrandPrixBetPoints);
       expect(
-        repositoryImpl.repositoryState$,
-        emits([
-          ...existingEntities,
-          expectedGrandPrixBetPoints,
-        ]),
+        await repositoryImpl.repositoryState$.first,
+        [expectedGrandPrixBetPoints],
       );
       verify(
-        () => dbBetPointsService.loadGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () =>
+            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
           playerId: playerId,
           grandPrixId: grandPrixId,
         ),

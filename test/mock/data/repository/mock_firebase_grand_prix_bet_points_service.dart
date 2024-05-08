@@ -4,11 +4,11 @@ import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseGrandPrixBetPointsService extends Mock
     implements FirebaseGrandPrixBetPointsService {
-  void mockLoadGrandPrixBetPointsByPlayerIdAndGrandPrixId({
+  void mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId({
     GrandPrixBetPointsDto? grandPrixBetPointsDto,
   }) {
     when(
-      () => loadGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+      () => fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
         playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),

@@ -18,7 +18,5 @@ GrandPrixBetPointsRepository grandPrixBetPointsRepository(
   GrandPrixBetPointsRepositoryRef ref,
 ) =>
     GrandPrixBetPointsRepositoryImpl(
-      firebaseGrandPrixBetPointsService: ref.read(
-        firebaseGrandPrixBetPointsServiceProvider,
-      ),
+      ref.read(firebaseGrandPrixBetPointsServiceProvider),
     );

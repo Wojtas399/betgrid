@@ -9,7 +9,7 @@ part 'firebase_grand_prix_bet_points_service.g.dart';
 @injectable
 class FirebaseGrandPrixBetPointsService {
   Future<GrandPrixBetPointsDto?>
-      loadGrandPrixBetPointsByPlayerIdAndGrandPrixId({
+      fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId({
     required String playerId,
     required String grandPrixId,
   }) async {

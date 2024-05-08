@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_points_service.dart';
@@ -7,15 +8,12 @@ import '../../mapper/grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_points_repository.dart';
 
+@LazySingleton(as: GrandPrixBetPointsRepository)
 class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     implements GrandPrixBetPointsRepository {
   final FirebaseGrandPrixBetPointsService _dbBetPointsService;
 
-  GrandPrixBetPointsRepositoryImpl({
-    required FirebaseGrandPrixBetPointsService
-        firebaseGrandPrixBetPointsService,
-    super.initialData,
-  }) : _dbBetPointsService = firebaseGrandPrixBetPointsService;
+  GrandPrixBetPointsRepositoryImpl(this._dbBetPointsService);
 
   @override
   Stream<GrandPrixBetPoints?> getPointsForPlayerByGrandPrixId({
@@ -37,7 +35,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     String playerId,
   ) async {
     final GrandPrixBetPointsDto? dto = await _dbBetPointsService
-        .loadGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        .fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
       playerId: playerId,
       grandPrixId: grandPrixId,
     );
