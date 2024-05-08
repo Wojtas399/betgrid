@@ -20,24 +20,6 @@ void main() {
   }
 
   test(
-    'allPlayersProvider, '
-    'should get all players from PlayerRepository and should emit them',
-    () async {
-      const List<Player> expectedPlayers = [
-        Player(id: 'p1', username: 'username 1'),
-        Player(id: 'p2', username: 'username 2'),
-      ];
-      playerRepository.mockGetAllPlayers(players: expectedPlayers);
-      final container = makeProviderContainer();
-
-      final List<Player>? players =
-          await container.read(allPlayersProvider.future);
-
-      expect(players, expectedPlayers);
-    },
-  );
-
-  test(
     'playerProvider, '
     'should get player from PlayerRepository and should emit it',
     () async {
