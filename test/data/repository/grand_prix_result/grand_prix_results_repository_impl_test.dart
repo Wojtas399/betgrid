@@ -13,33 +13,9 @@ void main() {
 
   test(
     'getResultsForGrandPrix, '
-    'results for given grand prix exists in repo state, '
-    'should emit existing results',
-    () {
-      const String grandPrixId = 'gp1';
-      final GrandPrixResults expectedGrandPrixResults =
-          createGrandPrixResults(id: 'r1', grandPrixId: grandPrixId);
-      final List<GrandPrixResults> existingResults = [
-        createGrandPrixResults(id: 'r2', grandPrixId: 'gp2'),
-        createGrandPrixResults(id: 'r3', grandPrixId: 'gp3'),
-        expectedGrandPrixResults,
-      ];
-      final repositoryImpl = GrandPrixResultsRepositoryImpl(
-        firebaseGrandPrixResultsService: dbGrandPrixResultService,
-        initialData: existingResults,
-      );
-
-      final Stream<GrandPrixResults?> results$ =
-          repositoryImpl.getResultForGrandPrix(grandPrixId: grandPrixId);
-
-      expect(results$, emits(expectedGrandPrixResults));
-    },
-  );
-
-  test(
-    'getResultsForGrandPrix, '
-    'results for given grand prix does not exist in repo state, '
-    'should load grand prix results from db, add it to repo and emit it',
+    'should load grand prix results from db, add it to repo state and emit it if '
+    'it does not already exist in repo state, '
+    'should only emit existing results if it exist in repo state',
     () async {
       const String grandPrixId = 'gp1';
       final GrandPrixResultsDto gpResultsDto = createGrandPrixResultsDto(
@@ -50,28 +26,23 @@ void main() {
         id: 'r1',
         grandPrixId: grandPrixId,
       );
-      final List<GrandPrixResults> existingResults = [
-        createGrandPrixResults(id: 'r2', grandPrixId: 'gp2'),
-        createGrandPrixResults(id: 'r3', grandPrixId: 'gp3'),
-      ];
-      dbGrandPrixResultService.mockLoadResultsForGrandPrix(
+      dbGrandPrixResultService.mockFetchResultsForGrandPrix(
         grandPrixResultDto: gpResultsDto,
       );
       final repositoryImpl = GrandPrixResultsRepositoryImpl(
-        firebaseGrandPrixResultsService: dbGrandPrixResultService,
-        initialData: existingResults,
+        dbGrandPrixResultService,
       );
 
-      final Stream<GrandPrixResults?> results$ =
+      final Stream<GrandPrixResults?> results1$ =
+          repositoryImpl.getResultForGrandPrix(grandPrixId: grandPrixId);
+      final Stream<GrandPrixResults?> results2$ =
           repositoryImpl.getResultForGrandPrix(grandPrixId: grandPrixId);
 
-      expect(await results$.first, expectedGpResults);
-      expect(
-        repositoryImpl.repositoryState$,
-        emits([...existingResults, expectedGpResults]),
-      );
+      expect(await results1$.first, expectedGpResults);
+      expect(await results2$.first, expectedGpResults);
+      expect(await repositoryImpl.repositoryState$.first, [expectedGpResults]);
       verify(
-        () => dbGrandPrixResultService.loadResultsForGrandPrix(
+        () => dbGrandPrixResultService.fetchResultsForGrandPrix(
           grandPrixId: grandPrixId,
         ),
       ).called(1);

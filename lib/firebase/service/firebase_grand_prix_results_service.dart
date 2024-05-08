@@ -8,7 +8,7 @@ part 'firebase_grand_prix_results_service.g.dart';
 
 @injectable
 class FirebaseGrandPrixResultsService {
-  Future<GrandPrixResultsDto?> loadResultsForGrandPrix({
+  Future<GrandPrixResultsDto?> fetchResultsForGrandPrix({
     required String grandPrixId,
   }) async {
     final snapshot = await getGrandPrixResultsRef()

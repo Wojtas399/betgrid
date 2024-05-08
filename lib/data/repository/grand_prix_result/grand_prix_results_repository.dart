@@ -17,7 +17,7 @@ GrandPrixResultsRepository grandPrixResultsRepository(
   GrandPrixResultsRepositoryRef ref,
 ) =>
     GrandPrixResultsRepositoryImpl(
-      firebaseGrandPrixResultsService: ref.read(
+      ref.read(
         firebaseGrandPrixResultsServiceProvider,
       ),
     );

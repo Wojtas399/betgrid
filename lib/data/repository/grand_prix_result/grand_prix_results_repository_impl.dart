@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_results_service.dart';
@@ -7,14 +8,12 @@ import '../../mapper/grand_prix_results_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_results_repository.dart';
 
+@LazySingleton(as: GrandPrixResultsRepository)
 class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     implements GrandPrixResultsRepository {
   final FirebaseGrandPrixResultsService _dbGrandPrixResultsService;
 
-  GrandPrixResultsRepositoryImpl({
-    required FirebaseGrandPrixResultsService firebaseGrandPrixResultsService,
-    super.initialData,
-  }) : _dbGrandPrixResultsService = firebaseGrandPrixResultsService;
+  GrandPrixResultsRepositoryImpl(this._dbGrandPrixResultsService);
 
   @override
   Stream<GrandPrixResults?> getResultForGrandPrix({
@@ -33,7 +32,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     String grandPrixId,
   ) async {
     final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService
-        .loadResultsForGrandPrix(grandPrixId: grandPrixId);
+        .fetchResultsForGrandPrix(grandPrixId: grandPrixId);
     if (gpResultsDto == null) return null;
     final GrandPrixResults gpResults = mapGrandPrixResultsFromDto(gpResultsDto);
     addEntity(gpResults);
