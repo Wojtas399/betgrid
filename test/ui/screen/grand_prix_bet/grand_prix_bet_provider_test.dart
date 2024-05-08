@@ -1,14 +1,17 @@
-import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/ui/provider/grand_prix_id_provider.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/grand_prix_bet_provider.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/provider/player_id_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 
 void main() {
+  final grandPrixBetRepository = MockGrandPrixBetRepository();
   const String grandPrixId = 'gp1';
   const String playerId = 'p1';
 
@@ -21,18 +24,17 @@ void main() {
       overrides: [
         grandPrixIdProvider.overrideWithValue(grandPrixId),
         playerIdProvider.overrideWithValue(playerId),
-        if (grandPrixId != null && playerId != null)
-          grandPrixBetByPlayerIdAndGrandPrixIdProvider(
-            playerId: playerId,
-            grandPrixId: grandPrixId,
-          ).overrideWith(
-            (_) => Stream.value(grandPrixBet),
-          ),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<GrandPrixBetRepository>(
+      () => grandPrixBetRepository,
+    );
+  });
 
   test(
     'player id is null, '
@@ -86,10 +88,10 @@ void main() {
         grandPrixId: grandPrixId,
         playerId: playerId,
       );
+      grandPrixBetRepository.mockGetBetByGrandPrixIdAndPlayerId(expectedBet);
       final container = makeProviderContainer(
         playerId: playerId,
         grandPrixId: grandPrixId,
-        grandPrixBet: expectedBet,
       );
 
       final GrandPrixBet? bet = await container.read(

@@ -1,7 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../model/grand_prix_bet.dart';
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository_method_providers.dart';
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../../dependency_injection.dart';
 import '../../../provider/grand_prix_id_provider.dart';
 import 'player_id_provider.dart';
 
@@ -14,10 +15,11 @@ Future<GrandPrixBet?> grandPrixBet(GrandPrixBetRef ref) async {
   if (grandPrixId == null || playerId == null) {
     throw '[GrandPrixBetProvider] Cannot find grand prix id or player id';
   }
-  return await ref.watch(
-    grandPrixBetByPlayerIdAndGrandPrixIdProvider(
-      playerId: playerId,
-      grandPrixId: grandPrixId,
-    ).future,
-  );
+  return await getIt
+      .get<GrandPrixBetRepository>()
+      .getBetByGrandPrixIdAndPlayerId(
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      )
+      .first;
 }
