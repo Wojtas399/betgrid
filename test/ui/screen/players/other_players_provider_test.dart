@@ -1,5 +1,5 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
-import 'package:betgrid/data/repository/player/player_repository_method_providers.dart';
+import 'package:betgrid/data/repository/player/player_repository.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/players/provider/other_players_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,28 +8,20 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/data/repository/mock_player_repository.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
-
-  ProviderContainer makeProviderContainer({
-    List<Player>? allPlayers,
-  }) {
-    final container = ProviderContainer(
-      overrides: [
-        allPlayersProvider.overrideWith((_) => Stream.value(allPlayers)),
-      ],
-    );
-    addTearDown(container.dispose);
-    return container;
-  }
+  final playerRepository = MockPlayerRepository();
 
   setUpAll(() {
     GetIt.I.registerSingleton<AuthRepository>(authRepository);
+    GetIt.I.registerLazySingleton<PlayerRepository>(() => playerRepository);
   });
 
   tearDown(() {
     reset(authRepository);
+    reset(playerRepository);
   });
 
   test(
@@ -37,7 +29,7 @@ void main() {
     'should return null',
     () async {
       authRepository.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
 
       final List<Player>? otherPlayers = await container.read(
         otherPlayersProvider.future,
@@ -64,9 +56,8 @@ void main() {
         allPlayers.last,
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);
-      final container = makeProviderContainer(
-        allPlayers: allPlayers,
-      );
+      playerRepository.mockGetAllPlayers(players: allPlayers);
+      final container = ProviderContainer();
 
       final List<Player>? otherPlayers = await container.read(
         otherPlayersProvider.future,
