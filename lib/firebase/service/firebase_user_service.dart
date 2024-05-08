@@ -9,12 +9,12 @@ part 'firebase_user_service.g.dart';
 
 @injectable
 class FirebaseUserService {
-  Future<UserDto?> loadUserById({required String userId}) async {
+  Future<UserDto?> fetchUserById({required String userId}) async {
     final snapshot = await getUsersRef().doc(userId).get();
     return snapshot.data();
   }
 
-  Future<List<UserDto>> loadAllUsers() async {
+  Future<List<UserDto>> fetchAllUsers() async {
     final snapshot = await getUsersRef().get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }

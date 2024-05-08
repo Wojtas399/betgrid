@@ -69,7 +69,7 @@ void main() {
         createUser(id: 'u1', username: 'username 1'),
         createUser(id: 'u3', username: 'username 3'),
       ];
-      dbUserService.mockLoadUserById(userDto: expectedUserDto);
+      dbUserService.mockFetchUserById(userDto: expectedUserDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: avatarUrl);
       repositoryImpl = UserRepositoryImpl(
         firebaseUserService: dbUserService,
@@ -88,7 +88,7 @@ void main() {
         ]),
       );
       await repositoryImpl.repositoryState$.first;
-      verify(() => dbUserService.loadUserById(userId: id)).called(1);
+      verify(() => dbUserService.fetchUserById(userId: id)).called(1);
       await repositoryImpl.repositoryState$.first;
       verify(() => dbAvatarService.loadAvatarUrlForUser(userId: id)).called(1);
     },

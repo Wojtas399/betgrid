@@ -16,6 +16,6 @@ abstract interface class PlayerRepository {
 @Riverpod(keepAlive: true)
 PlayerRepository playerRepository(PlayerRepositoryRef ref) =>
     PlayerRepositoryImpl(
-      firebaseUserService: ref.read(firebaseUserServiceProvider),
-      firebaseAvatarService: ref.read(firebaseAvatarServiceProvider),
+      ref.read(firebaseUserServiceProvider),
+      ref.read(firebaseAvatarServiceProvider),
     );

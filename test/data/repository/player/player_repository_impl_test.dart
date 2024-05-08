@@ -14,10 +14,7 @@ void main() {
   late PlayerRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = PlayerRepositoryImpl(
-      firebaseUserService: dbUserService,
-      firebaseAvatarService: dbAvatarService,
-    );
+    repositoryImpl = PlayerRepositoryImpl(dbUserService, dbAvatarService);
   });
 
   test(
@@ -39,7 +36,7 @@ void main() {
         const Player(id: 'u1', username: 'username 1'),
         const Player(id: 'u3', username: 'username 3'),
       ];
-      dbUserService.mockLoadAllUsers(userDtos: userDtos);
+      dbUserService.mockFetchAllUsers(userDtos: userDtos);
       when(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
       ).thenAnswer((_) => Future.value(user2AvatarUrl));
@@ -57,7 +54,7 @@ void main() {
         repositoryImpl.repositoryState$,
         emits(expectedPlayers),
       );
-      verify(dbUserService.loadAllUsers).called(1);
+      verify(dbUserService.fetchAllUsers).called(1);
       verify(
         () => dbAvatarService.loadAvatarUrlForUser(userId: 'u2'),
       ).called(1);
@@ -72,67 +69,28 @@ void main() {
 
   test(
     'getPlayerById, '
-    'player exists in repository state, '
-    'should emit existing player',
-    () async {
-      const String playerId = 'p1';
-      const Player expectedPlayer = Player(id: playerId, username: 'player 1');
-      const List<Player> existingPlayers = [
-        Player(id: 'p2', username: 'player 2'),
-        Player(id: 'p3', username: 'player 3'),
-        expectedPlayer,
-      ];
-      repositoryImpl = PlayerRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingPlayers,
-      );
-
-      final Stream<Player?> player$ = repositoryImpl.getPlayerById(
-        playerId: playerId,
-      );
-
-      expect(player$, emits(expectedPlayer));
-      verifyNever(
-        () => dbUserService.loadUserById(userId: playerId),
-      );
-      verifyNever(
-        () => dbAvatarService.loadAvatarUrlForUser(userId: playerId),
-      );
-    },
-  );
-
-  test(
-    'getPlayerById, '
-    'player does not exist in repository state, '
-    'should load player from db, add it to repo state and emit it',
+    'should load player from db, add it to repo state and emit it if it does '
+    'not exist in repo state, '
+    'should only emit player if it exists in repo state',
     () async {
       const String playerId = 'p1';
       final UserDto userDto = createUserDto(id: playerId, username: 'player 1');
       const Player expectedPlayer = Player(id: playerId, username: 'player 1');
-      const List<Player> existingPlayers = [
-        Player(id: 'p2', username: 'player 2'),
-        Player(id: 'p3', username: 'player 3'),
-      ];
-      dbUserService.mockLoadUserById(userDto: userDto);
+      dbUserService.mockFetchUserById(userDto: userDto);
       dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: null);
-      repositoryImpl = PlayerRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingPlayers,
-      );
 
-      final Stream<Player?> player$ = repositoryImpl.getPlayerById(
+      final Stream<Player?> player1$ = repositoryImpl.getPlayerById(
+        playerId: playerId,
+      );
+      final Stream<Player?> player2$ = repositoryImpl.getPlayerById(
         playerId: playerId,
       );
 
-      expect(await player$.first, expectedPlayer);
-      expect(
-        repositoryImpl.repositoryState$,
-        emits([...existingPlayers, expectedPlayer]),
-      );
+      expect(await player1$.first, expectedPlayer);
+      expect(await player2$.first, expectedPlayer);
+      expect(await repositoryImpl.repositoryState$.first, [expectedPlayer]);
       verify(
-        () => dbUserService.loadUserById(userId: playerId),
+        () => dbUserService.fetchUserById(userId: playerId),
       ).called(1);
       verify(
         () => dbAvatarService.loadAvatarUrlForUser(userId: playerId),

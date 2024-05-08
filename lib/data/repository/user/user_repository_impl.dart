@@ -116,7 +116,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<User?> _fetchUserFromDb(String userId) async {
-    final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
+    final UserDto? userDto = await _dbUserService.fetchUserById(userId: userId);
     if (userDto == null) return null;
     final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
       userId: userId,
