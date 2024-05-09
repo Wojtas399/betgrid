@@ -33,7 +33,7 @@ class LoggedUserController extends _$LoggedUserController {
     }
     try {
       _emitLoading();
-      await ref.read(userRepositoryProvider).addUser(
+      await getIt.get<UserRepository>().addUser(
             userId: loggedUserId,
             username: username,
             avatarImgPath: avatarImgPath,
@@ -59,7 +59,7 @@ class LoggedUserController extends _$LoggedUserController {
     }
     try {
       _emitLoading();
-      await ref.read(userRepositoryProvider).updateUserData(
+      await getIt.get<UserRepository>().updateUserData(
             userId: loggedUserId,
             username: username,
           );
@@ -74,7 +74,7 @@ class LoggedUserController extends _$LoggedUserController {
         await getIt.get<AuthRepository>().loggedUserId$.first;
     if (loggedUserId != null) {
       _emitLoading();
-      await ref.read(userRepositoryProvider).updateUserAvatar(
+      await getIt.get<UserRepository>().updateUserAvatar(
             userId: loggedUserId,
             avatarImgPath: newAvatarImgPath,
           );

@@ -18,18 +18,9 @@ void main() {
   final userRepository = MockUserRepository();
   const String loggedUserId = 'u1';
 
-  ProviderContainer makeProviderContainer() {
-    final container = ProviderContainer(
-      overrides: [
-        userRepositoryProvider.overrideWithValue(userRepository),
-      ],
-    );
-    addTearDown(container.dispose);
-    return container;
-  }
-
   setUpAll(() {
     GetIt.I.registerSingleton<AuthRepository>(authRepository);
+    GetIt.I.registerLazySingleton<UserRepository>(() => userRepository);
     registerFallbackValue(
       const AsyncData(LoggedUserControllerStateInitial()),
     );
@@ -45,7 +36,7 @@ void main() {
     'should emit initial state',
     () async {
       const expectedState = LoggedUserControllerStateInitial();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
 
       final state = await container.read(loggedUserControllerProvider.future);
 
@@ -63,7 +54,7 @@ void main() {
       const ThemeMode themeMode = ThemeMode.system;
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
       const expectedError = LoggedUserControllerStateEmptyUsername();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -117,7 +108,7 @@ void main() {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
       const expectedError = LoggedUserControllerStateLoggedUserIdNotFound();
       authRepository.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -175,7 +166,7 @@ void main() {
       userRepository.mockAddUser(
         throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
       );
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -242,7 +233,7 @@ void main() {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
       authRepository.mockGetLoggedUserId(loggedUserId);
       userRepository.mockAddUser();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
@@ -301,7 +292,7 @@ void main() {
     () async {
       const String newUsername = '';
       const expectedError = LoggedUserControllerStateEmptyUsername();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -349,7 +340,7 @@ void main() {
       const String newUsername = 'new username';
       const expectedError = LoggedUserControllerStateLoggedUserIdNotFound();
       authRepository.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -401,7 +392,7 @@ void main() {
       userRepository.mockUpdateUserData(
         throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
       );
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -459,7 +450,7 @@ void main() {
       const String newUsername = 'new username';
       authRepository.mockGetLoggedUserId(loggedUserId);
       userRepository.mockUpdateUserData();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
@@ -513,7 +504,7 @@ void main() {
       const String newAvatarImgPath = 'avatar/path';
       const expectedError = LoggedUserControllerStateLoggedUserIdNotFound();
       authRepository.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
 
       Object? error;
@@ -561,7 +552,7 @@ void main() {
       const String newAvatarImgPath = 'avatar/path';
       authRepository.mockGetLoggedUserId(loggedUserId);
       userRepository.mockUpdateUserAvatar();
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
       final listener = Listener<AsyncValue<LoggedUserControllerState>>();
       container.listen(
         loggedUserControllerProvider,
