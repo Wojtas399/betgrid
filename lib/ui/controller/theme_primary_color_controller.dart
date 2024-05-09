@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/user/user_repository.dart';
+import '../../dependency_injection.dart';
 import '../../model/user.dart';
 import '../provider/logged_user_provider.dart';
 
@@ -23,7 +24,7 @@ class ThemePrimaryColorController extends _$ThemePrimaryColorController {
   void changeThemePrimaryColor(ThemePrimaryColor color) async {
     state = AsyncData(color);
     if (_loggedUserId != null) {
-      await ref.read(userRepositoryProvider).updateUserData(
+      await getIt.get<UserRepository>().updateUserData(
             userId: _loggedUserId!,
             themePrimaryColor: color,
           );
