@@ -4,6 +4,7 @@ import 'package:betgrid/ui/controller/theme_mode_controller.dart';
 import 'package:betgrid/ui/provider/logged_user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../creator/user_creator.dart';
@@ -17,12 +18,15 @@ void main() {
     final container = ProviderContainer(
       overrides: [
         loggedUserProvider.overrideWith((_) => Future.value(loggedUser)),
-        userRepositoryProvider.overrideWithValue(userRepository),
       ],
     );
     addTearDown(container.dispose);
     return container;
   }
+
+  setUpAll(() {
+    GetIt.I.registerLazySingleton<UserRepository>(() => userRepository);
+  });
 
   tearDown(() {
     reset(userRepository);
