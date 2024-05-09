@@ -29,31 +29,33 @@ void main() {
   test(
     'list of all grand prixes is null, '
     'should return empty array',
-    () async {
+    () {
       grandPrixRepository.mockGetAllGrandPrixes(null);
 
-      final grandPrixesWithPoints = await useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
+          useCase(playerId: playerId);
 
-      expect(grandPrixesWithPoints, []);
+      expect(grandPrixesWithPoints$, emits([]));
     },
   );
 
   test(
     'list of all grand prixes is empty, '
     'should return empty array',
-    () async {
+    () {
       grandPrixRepository.mockGetAllGrandPrixes([]);
 
-      final grandPrixesWithPoints = await useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
+          useCase(playerId: playerId);
 
-      expect(grandPrixesWithPoints, []);
+      expect(grandPrixesWithPoints$, emits([]));
     },
   );
 
   test(
     'should sort grand prixes by round number in ascending order and '
     'should load total points for each grand prix',
-    () async {
+    () {
       final List<GrandPrix> allGrandPrixes = [
         createGrandPrix(id: 'gp1', roundNumber: 3),
         createGrandPrix(id: 'gp2', roundNumber: 1),
@@ -108,9 +110,10 @@ void main() {
         ),
       );
 
-      final grandPrixesWithPoints = await useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
+          useCase(playerId: playerId);
 
-      expect(grandPrixesWithPoints, expectedGrandPrixesWithPoints);
+      expect(grandPrixesWithPoints$, emits(expectedGrandPrixesWithPoints));
     },
   );
 }

@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../data/repository/grand_prix/grand_prix_repository.dart';
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../model/grand_prix.dart';
+import '../model/grand_prix_bet_points.dart';
 
 @injectable
 class GetGrandPrixesWithPointsUseCase {
@@ -15,31 +16,49 @@ class GetGrandPrixesWithPointsUseCase {
     this._grandPrixBetPointsRepository,
   );
 
-  Future<List<GrandPrixWithPoints>> call({
+  Stream<List<GrandPrixWithPoints>> call({
     required String playerId,
-  }) async {
-    final List<GrandPrix>? allGrandPrixes =
-        await _grandPrixRepository.getAllGrandPrixes().first;
-    allGrandPrixes?.sort(
+  }) async* {
+    final Stream<List<GrandPrix>?> allGrandPrixes$ =
+        _grandPrixRepository.getAllGrandPrixes();
+    await for (final allGrandPrixes in allGrandPrixes$) {
+      if (allGrandPrixes == null) {
+        yield [];
+      } else {
+        final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
+            _getPointsForEachGrandPrix(playerId, allGrandPrixes);
+        await for (final grandPrixesWithPoints in grandPrixesWithPoints$) {
+          yield grandPrixesWithPoints;
+        }
+      }
+    }
+  }
+
+  Stream<List<GrandPrixWithPoints>> _getPointsForEachGrandPrix(
+    String playerId,
+    List<GrandPrix> allGrandPrixes,
+  ) async* {
+    final List<GrandPrix> sortedGrandPrixes = [...allGrandPrixes];
+    sortedGrandPrixes.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
     final List<GrandPrixWithPoints> grandPrixesWithPoints = [];
-    for (final gp in [...?allGrandPrixes]) {
-      final pointsForGp = (await _grandPrixBetPointsRepository
-              .getPointsForPlayerByGrandPrixId(
-                playerId: playerId,
-                grandPrixId: gp.id,
-              )
-              .first)
-          ?.totalPoints;
-      grandPrixesWithPoints.add(
-        GrandPrixWithPoints(
-          grandPrix: gp,
-          points: pointsForGp,
-        ),
+    for (final gp in [...sortedGrandPrixes]) {
+      final Stream<GrandPrixBetPoints?> gpPoints$ =
+          _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        playerId: playerId,
+        grandPrixId: gp.id,
       );
+      await for (final gpPoints in gpPoints$) {
+        grandPrixesWithPoints.add(
+          GrandPrixWithPoints(
+            grandPrix: gp,
+            points: gpPoints?.totalPoints,
+          ),
+        );
+      }
     }
-    return grandPrixesWithPoints;
+    yield grandPrixesWithPoints;
   }
 }
 
