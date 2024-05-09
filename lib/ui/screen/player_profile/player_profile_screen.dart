@@ -111,8 +111,7 @@ class _GrandPrixes extends ConsumerWidget {
     );
 
     return SliverGrandPrixesList(
-      playerId: playerId,
-      grandPrixesWithPoints: [...?grandPrixesWithPointsAsyncVal.value],
+      grandPrixesWithPoints: [],
       onGrandPrixPressed: (String grandPrixId) {
         context.navigateTo(
           GrandPrixBetRoute(
