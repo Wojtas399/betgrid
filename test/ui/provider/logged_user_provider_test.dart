@@ -1,5 +1,5 @@
 import 'package:betgrid/data/repository/auth/auth_repository.dart';
-import 'package:betgrid/data/repository/user/user_repository_method_providers.dart';
+import 'package:betgrid/data/repository/user/user_repository.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:betgrid/ui/provider/logged_user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,32 +9,20 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../creator/user_creator.dart';
 import '../../mock/data/repository/mock_auth_repository.dart';
+import '../../mock/data/repository/mock_user_repository.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
-
-  ProviderContainer makeProviderContainer({
-    String? loggedUserId,
-    User? loggedUser,
-  }) {
-    final container = ProviderContainer(
-      overrides: [
-        if (loggedUserId != null)
-          userProvider(userId: loggedUserId).overrideWith(
-            (_) => Stream.value(loggedUser),
-          ),
-      ],
-    );
-    addTearDown(container.dispose);
-    return container;
-  }
+  final userRepository = MockUserRepository();
 
   setUpAll(() {
     GetIt.I.registerSingleton<AuthRepository>(authRepository);
+    GetIt.I.registerLazySingleton<UserRepository>(() => userRepository);
   });
 
   tearDown(() {
     reset(authRepository);
+    reset(userRepository);
   });
 
   test(
@@ -43,7 +31,7 @@ void main() {
     'should emit null',
     () async {
       authRepository.mockGetLoggedUserId(null);
-      final container = makeProviderContainer();
+      final container = ProviderContainer();
 
       final User? loggedUser = await container.read(loggedUserProvider.future);
 
@@ -61,10 +49,8 @@ void main() {
         username: 'username',
       );
       authRepository.mockGetLoggedUserId(loggedUserId);
-      final container = makeProviderContainer(
-        loggedUserId: loggedUserId,
-        loggedUser: expectedLoggedUser,
-      );
+      userRepository.mockGetUserById(user: expectedLoggedUser);
+      final container = ProviderContainer();
 
       final User? loggedUser = await container.read(loggedUserProvider.future);
 
