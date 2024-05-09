@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../data/repository/grand_prix/grand_prix_repository.dart';
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
@@ -22,7 +23,7 @@ class GetGrandPrixesWithPointsUseCase {
     final Stream<List<GrandPrix>?> allGrandPrixes$ =
         _grandPrixRepository.getAllGrandPrixes();
     await for (final allGrandPrixes in allGrandPrixes$) {
-      if (allGrandPrixes == null) {
+      if (allGrandPrixes == null || allGrandPrixes.isEmpty) {
         yield [];
       } else {
         final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
@@ -37,28 +38,31 @@ class GetGrandPrixesWithPointsUseCase {
   Stream<List<GrandPrixWithPoints>> _getPointsForEachGrandPrix(
     String playerId,
     List<GrandPrix> allGrandPrixes,
-  ) async* {
+  ) {
     final List<GrandPrix> sortedGrandPrixes = [...allGrandPrixes];
     sortedGrandPrixes.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
-    final List<GrandPrixWithPoints> grandPrixesWithPoints = [];
+    final List<Stream<GrandPrixWithPoints>> grandPrixesWithPoints = [];
     for (final gp in [...sortedGrandPrixes]) {
-      final Stream<GrandPrixBetPoints?> gpPoints$ =
-          _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
-        playerId: playerId,
-        grandPrixId: gp.id,
+      final Stream<GrandPrixWithPoints> gpWithPoints$ = Rx.combineLatest2(
+        Stream.value(gp),
+        _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+          playerId: playerId,
+          grandPrixId: gp.id,
+        ),
+        (
+          GrandPrix grandPrix,
+          GrandPrixBetPoints? grandPrixPoints,
+        ) =>
+            GrandPrixWithPoints(
+          grandPrix: grandPrix,
+          points: grandPrixPoints?.totalPoints,
+        ),
       );
-      await for (final gpPoints in gpPoints$) {
-        grandPrixesWithPoints.add(
-          GrandPrixWithPoints(
-            grandPrix: gp,
-            points: gpPoints?.totalPoints,
-          ),
-        );
-      }
+      grandPrixesWithPoints.add(gpWithPoints$);
     }
-    yield grandPrixesWithPoints;
+    return Rx.combineLatest(grandPrixesWithPoints, (values) => values);
   }
 }
 
