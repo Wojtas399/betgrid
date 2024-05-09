@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../data/repository/grand_prix/grand_prix_repository.dart';
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
@@ -36,18 +37,21 @@ class GetPlayerPointsUseCase {
   Stream<double?> _calculateTotalPoints(
     String playerId,
     List<GrandPrix> allGrandPrixes,
-  ) async* {
-    double totalPoints = 0.0;
+  ) {
+    final List<Stream<GrandPrixBetPoints?>> betPointsForGrandPrixes = [];
     for (final grandPrix in allGrandPrixes) {
       final Stream<GrandPrixBetPoints?> gpPoints$ =
           _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
         playerId: playerId,
         grandPrixId: grandPrix.id,
       );
-      await for (final gpPoints in gpPoints$) {
-        totalPoints += gpPoints != null ? gpPoints.totalPoints : 0;
-      }
+      betPointsForGrandPrixes.add(gpPoints$);
     }
-    yield totalPoints;
+    return Rx.combineLatest(
+      betPointsForGrandPrixes,
+      (values) => values
+          .map((betPoints) => betPoints?.totalPoints ?? 0)
+          .reduce((totalPoints, pointsForGp) => totalPoints + pointsForGp),
+    );
   }
 }
