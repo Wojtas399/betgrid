@@ -1,71 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/grand_prix_id_provider.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
 import 'grand_prix_points_summary.dart';
-import 'provider/grand_prix_bet_provider.dart';
-import 'provider/player_id_provider.dart';
-import 'provider/results_for_grand_prix_provider.dart';
 
-class GrandPrixBetQualifications extends ConsumerWidget {
+class GrandPrixBetQualifications extends StatelessWidget {
   const GrandPrixBetQualifications({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final List<String?>? standings = ref.watch(
-      grandPrixBetProvider.select(
-        (state) => state.value?.qualiStandingsByDriverIds,
-      ),
+  Widget build(BuildContext context) {
+    final List<String?>? betStandings = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBet?.qualiStandingsByDriverIds,
     );
-    final List<String?>? resultsStandings = ref.watch(
-      resultsForGrandPrixProvider.select(
-        (state) => state.value?.qualiStandingsByDriverIds,
-      ),
+    final List<String?>? resultsStandings = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixResults?.qualiStandingsByDriverIds,
     );
-    final String? grandPrixId = ref.watch(grandPrixIdProvider);
-    final String? playerId = ref.watch(playerIdProvider);
-    QualiBetPoints? qualiPointsDetails;
-    if (grandPrixId != null && playerId != null) {
-      //TODO
-      // qualiPointsDetails = ref.watch(
-      //   grandPrixBetPointsProvider(
-      //     grandPrixId: grandPrixId,
-      //     playerId: playerId,
-      //   ).select((state) => state.value?.qualiBetPoints),
-      // );
-    }
-    const List<double>? positionsPoints = null;
-    // qualiPointsDetails != null
-    //     ? [
-    //         qualiPointsDetails.q3P1Points,
-    //         qualiPointsDetails.q3P2Points,
-    //         qualiPointsDetails.q3P3Points,
-    //         qualiPointsDetails.q3P4Points,
-    //         qualiPointsDetails.q3P5Points,
-    //         qualiPointsDetails.q3P6Points,
-    //         qualiPointsDetails.q3P7Points,
-    //         qualiPointsDetails.q3P8Points,
-    //         qualiPointsDetails.q3P9Points,
-    //         qualiPointsDetails.q3P10Points,
-    //         qualiPointsDetails.q2P11Points,
-    //         qualiPointsDetails.q2P12Points,
-    //         qualiPointsDetails.q2P13Points,
-    //         qualiPointsDetails.q2P14Points,
-    //         qualiPointsDetails.q2P15Points,
-    //         qualiPointsDetails.q1P16Points,
-    //         qualiPointsDetails.q1P17Points,
-    //         qualiPointsDetails.q1P18Points,
-    //         qualiPointsDetails.q1P19Points,
-    //         qualiPointsDetails.q1P20Points,
-    //       ]
-    //     : null;
+    final QualiBetPoints? qualiPointsDetails = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.qualiBetPoints,
+    );
+    final List<double>? positionsPoints = qualiPointsDetails != null
+        ? [
+            qualiPointsDetails.q3P1Points,
+            qualiPointsDetails.q3P2Points,
+            qualiPointsDetails.q3P3Points,
+            qualiPointsDetails.q3P4Points,
+            qualiPointsDetails.q3P5Points,
+            qualiPointsDetails.q3P6Points,
+            qualiPointsDetails.q3P7Points,
+            qualiPointsDetails.q3P8Points,
+            qualiPointsDetails.q3P9Points,
+            qualiPointsDetails.q3P10Points,
+            qualiPointsDetails.q2P11Points,
+            qualiPointsDetails.q2P12Points,
+            qualiPointsDetails.q2P13Points,
+            qualiPointsDetails.q2P14Points,
+            qualiPointsDetails.q2P15Points,
+            qualiPointsDetails.q1P16Points,
+            qualiPointsDetails.q1P17Points,
+            qualiPointsDetails.q1P18Points,
+            qualiPointsDetails.q1P19Points,
+            qualiPointsDetails.q1P20Points,
+          ]
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +75,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                   _ => null,
                 },
                 betChild: DriverDescription(
-                  driverId: standings![itemIndex],
+                  driverId: betStandings![itemIndex],
                 ),
                 resultsChild: DriverDescription(
                   driverId: resultsStandings?[itemIndex],

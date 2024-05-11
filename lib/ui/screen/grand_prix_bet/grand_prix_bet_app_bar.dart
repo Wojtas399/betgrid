@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/auth/auth_repository.dart';
-import '../../../dependency_injection.dart';
-import 'provider/grand_prix_name_provider.dart';
-import 'provider/player_id_provider.dart';
-import 'provider/player_username_provider.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -15,41 +11,34 @@ class GrandPrixBetAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: const _GrandPrixName(),
-      scrolledUnderElevation: 0.0,
-    );
-  }
+  Widget build(BuildContext context) => AppBar(
+        title: const _GrandPrixName(),
+        scrolledUnderElevation: 0.0,
+      );
 }
 
-class _GrandPrixName extends ConsumerWidget {
+class _GrandPrixName extends StatelessWidget {
   const _GrandPrixName();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
-    final String? playerId = ref.watch(playerIdProvider);
-    final Stream<String?> loggedUserId$ =
-        getIt.get<AuthRepository>().loggedUserId$;
-    final AsyncValue<String?> playerUsername =
-        ref.watch(playerUsernameProvider);
-
-    return StreamBuilder(
-      stream: loggedUserId$,
-      builder: (_, AsyncSnapshot<String?> asyncSnapshot) {
-        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-        if (grandPrixName is AsyncData && playerUsername is AsyncData) {
-          String title = grandPrixName.value!;
-          if (playerId != asyncSnapshot.data && playerUsername.value != null) {
-            title += ' (${playerUsername.value})';
-          }
-          return Text(title);
-        }
-        return const Text('--');
-      },
+  Widget build(BuildContext context) {
+    final String? playerUsername = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.playerUsername,
     );
+    final String? grandPrixName = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.grandPrixName,
+    );
+    final bool? isPlayerIdSameAsLoggedUserId = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.isPlayerIdSameAsLoggedUserId,
+    );
+
+    String title = '--';
+    if (grandPrixName != null && playerUsername != null) {
+      title = grandPrixName;
+      if (isPlayerIdSameAsLoggedUserId == false) {
+        title += ' ($playerUsername)';
+      }
+    }
+    return Text(title);
   }
 }

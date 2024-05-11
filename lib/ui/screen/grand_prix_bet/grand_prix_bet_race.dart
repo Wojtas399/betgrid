@@ -1,45 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
+import '../../../model/grand_prix_bet.dart';
 import '../../../model/grand_prix_bet_points.dart';
+import '../../../model/grand_prix_results.dart';
 import '../../component/text_component.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/grand_prix_id_provider.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
 import 'grand_prix_points_summary.dart';
-import 'provider/grand_prix_bet_provider.dart';
-import 'provider/player_id_provider.dart';
-import 'provider/results_for_grand_prix_provider.dart';
 
-class GrandPrixBetRace extends ConsumerWidget {
+class GrandPrixBetRace extends StatelessWidget {
   const GrandPrixBetRace({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final grandPrixBet = ref.watch(grandPrixBetProvider);
-    final raceResults = ref.watch(
-      resultsForGrandPrixProvider.select(
-        (state) => state.value?.raceResults,
-      ),
+  Widget build(BuildContext context) {
+    final GrandPrixBet? grandPrixBet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet,
     );
-    final String? grandPrixId = ref.watch(grandPrixIdProvider);
-    final String? playerId = ref.watch(playerIdProvider);
-    RaceBetPoints? racePointsDetails;
-    if (grandPrixId != null && playerId != null) {
-      //TODO
-      // racePointsDetails = ref.watch(
-      //   grandPrixBetPointsProvider(
-      //     grandPrixId: grandPrixId,
-      //     playerId: playerId,
-      //   ).select(
-      //     (state) => state.value?.raceBetPoints,
-      //   ),
-      // );
-    }
+    final RaceResults? raceResults = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.grandPrixResults?.raceResults,
+    );
+    final RaceBetPoints? racePointsDetails = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.raceBetPoints,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,11 +39,11 @@ class GrandPrixBetRace extends ConsumerWidget {
               5,
               (index) {
                 final String? betDriverId = switch (index) {
-                  0 => grandPrixBet.value?.p1DriverId,
-                  1 => grandPrixBet.value?.p2DriverId,
-                  2 => grandPrixBet.value?.p3DriverId,
-                  3 => grandPrixBet.value?.p10DriverId,
-                  4 => grandPrixBet.value?.fastestLapDriverId,
+                  0 => grandPrixBet?.p1DriverId,
+                  1 => grandPrixBet?.p2DriverId,
+                  2 => grandPrixBet?.p3DriverId,
+                  3 => grandPrixBet?.p10DriverId,
+                  4 => grandPrixBet?.fastestLapDriverId,
                   _ => null,
                 };
                 final String? resultsDriverId = switch (index) {
@@ -100,7 +89,7 @@ class GrandPrixBetRace extends ConsumerWidget {
               betChild: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...?grandPrixBet.value?.dnfDriverIds.map(
+                  ...?grandPrixBet?.dnfDriverIds.map(
                     (e) => DriverDescription(driverId: e),
                   ),
                 ],
@@ -124,8 +113,7 @@ class GrandPrixBetRace extends ConsumerWidget {
             GrandPrixBetRow(
               label: 'SC',
               betChild: Text(
-                grandPrixBet.value?.willBeSafetyCar?.toI8nString(context) ??
-                    '--',
+                grandPrixBet?.willBeSafetyCar?.toI8nString(context) ?? '--',
               ),
               resultsChild: Text(
                 raceResults?.wasThereSafetyCar.toI8nString(context) ?? '--',
@@ -135,7 +123,7 @@ class GrandPrixBetRace extends ConsumerWidget {
             GrandPrixBetRow(
               label: 'RF',
               betChild: Text(
-                grandPrixBet.value?.willBeRedFlag?.toI8nString(context) ?? '--',
+                grandPrixBet?.willBeRedFlag?.toI8nString(context) ?? '--',
               ),
               resultsChild: Text(
                 raceResults?.wasThereRedFlag.toI8nString(context) ?? '--',

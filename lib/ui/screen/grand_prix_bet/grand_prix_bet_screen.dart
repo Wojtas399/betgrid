@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../provider/grand_prix_id_provider.dart';
+import '../../../dependency_injection.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_app_bar.dart';
 import 'grand_prix_bet_body.dart';
-import 'provider/player_id_provider.dart';
 
 @RoutePage()
 class GrandPrixBetScreen extends StatelessWidget {
@@ -19,18 +19,17 @@ class GrandPrixBetScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      overrides: [
-        grandPrixIdProvider.overrideWithValue(grandPrixId),
-        playerIdProvider.overrideWithValue(playerId),
-      ],
-      child: const Scaffold(
-        appBar: GrandPrixBetAppBar(),
-        body: SafeArea(
-          child: GrandPrixBetBody(),
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) => getIt.get<GrandPrixBetCubit>()
+          ..initialize(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          ),
+        child: const Scaffold(
+          appBar: GrandPrixBetAppBar(),
+          body: SafeArea(
+            child: GrandPrixBetBody(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
