@@ -18,7 +18,7 @@ class PlayerItem extends StatelessWidget {
 
   void _onTap(BuildContext context) {
     context.navigateTo(
-      PlayerProfileRoute(player: player),
+      PlayerProfileRoute(playerId: player.id),
     );
   }
 
