@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../model/user.dart' as user;
@@ -7,7 +8,7 @@ import '../../../../model/user.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../controller/logged_user/logged_user_controller.dart';
-import '../../../controller/theme_mode_controller.dart';
+import '../../../controller/theme_mode_cubit.dart';
 import '../../../controller/theme_primary_color_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../provider/logged_user_provider.dart';
@@ -80,17 +81,15 @@ class _SubmitButton extends ConsumerWidget {
         (notifierState) => notifierState.avatarImgPath,
       ),
     );
-    final AsyncValue<user.ThemeMode> themeMode = ref.read(
-      themeModeControllerProvider,
-    );
+    final user.ThemeMode themeMode = context.read<ThemeModeCubit>().state;
     final AsyncValue<user.ThemePrimaryColor> themePrimaryColor = ref.read(
       themePrimaryColorControllerProvider,
     );
-    if (themeMode.hasValue && themePrimaryColor.hasValue) {
+    if (themePrimaryColor.hasValue) {
       await ref.read(loggedUserControllerProvider.notifier).addData(
             username: username,
             avatarImgPath: avatarImgPath,
-            themeMode: themeMode.value!,
+            themeMode: themeMode,
             themePrimaryColor: themePrimaryColor.value!,
           );
     }
