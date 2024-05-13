@@ -8,11 +8,10 @@ import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
 import 'firebase_options.dart';
-import 'model/user.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
-import 'ui/controller/theme_mode_cubit.dart';
-import 'ui/controller/theme_primary_color_controller.dart';
+import 'ui/controller/theme_cubit.dart';
+import 'ui/controller/theme_state.dart';
 import 'ui/extensions/theme_mode_extensions.dart';
 import 'ui/extensions/theme_primary_color_extensions.dart';
 
@@ -25,45 +24,50 @@ void main() async {
   Intl.defaultLocale = 'pl';
   runApp(
     ProviderScope(
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => getIt.get<ThemeModeCubit>(),
-          ),
-        ],
+      child: BlocProvider(
+        create: (_) => getIt.get<ThemeCubit>()..initialize(),
         child: const _MyApp(),
       ),
     ),
   );
 }
 
-class _MyApp extends ConsumerWidget {
+class _MyApp extends StatelessWidget {
   const _MyApp();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<ThemePrimaryColor> themePrimaryColor = ref.watch(
-      themePrimaryColorControllerProvider,
-    );
-    final themeMode = context.watch<ThemeModeCubit>().state;
+  Widget build(BuildContext context) {
+    final ThemeState? themeState = context.watch<ThemeCubit>().state;
 
-    return MaterialApp.router(
-      title: 'BetGrid',
-      routerConfig: getIt<AppRouter>().config(
-        navigatorObservers: () => [
-          HeroController(),
-        ],
-      ),
-      localizationsDelegates: const [
-        Str.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('pl')],
-      themeMode: themeMode.toMaterialThemeMode,
-      theme: AppTheme.lightTheme(themePrimaryColor.value?.toMaterialColor),
-      darkTheme: AppTheme.darkTheme(themePrimaryColor.value?.toMaterialColor),
-    );
+    return themeState != null
+        ? MaterialApp.router(
+            title: 'BetGrid',
+            routerConfig: getIt<AppRouter>().config(
+              navigatorObservers: () => [
+                HeroController(),
+              ],
+            ),
+            localizationsDelegates: const [
+              Str.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('pl')],
+            themeMode: themeState.themeMode.toMaterialThemeMode,
+            theme: AppTheme.lightTheme(themeState.primaryColor.toMaterialColor),
+            darkTheme:
+                AppTheme.darkTheme(themeState.primaryColor.toMaterialColor),
+          )
+        : const _SplashScreen();
+  }
+}
+
+class _SplashScreen extends StatelessWidget {
+  const _SplashScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return const CircularProgressIndicator();
   }
 }

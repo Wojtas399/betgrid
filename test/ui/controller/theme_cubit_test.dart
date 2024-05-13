@@ -1,6 +1,7 @@
 import 'package:betgrid/data/exception/user_repository_exception.dart';
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/controller/theme_mode_cubit.dart';
+import 'package:betgrid/ui/controller/theme_cubit.dart';
+import 'package:betgrid/ui/controller/theme_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,7 +14,7 @@ void main() {
   final authRepository = MockAuthRepository();
   final userRepository = MockUserRepository();
 
-  ThemeModeCubit createCubit() => ThemeModeCubit(
+  ThemeCubit createCubit() => ThemeCubit(
         authRepository,
         userRepository,
       );
@@ -53,17 +54,23 @@ void main() {
 
   blocTest(
     'initialize, '
-    "should emit logged user's theme mode",
+    "should emit logged user's theme mode and primary color",
     build: () => createCubit(),
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(themeMode: ThemeMode.dark),
+        user: createUser(
+          themeMode: ThemeMode.dark,
+          themePrimaryColor: ThemePrimaryColor.blue,
+        ),
       );
     },
     act: (cubit) async => await cubit.initialize(),
     expect: () => [
-      ThemeMode.dark,
+      const ThemeState(
+        themeMode: ThemeMode.dark,
+        primaryColor: ThemePrimaryColor.blue,
+      ),
     ],
     verify: (_) {
       verify(() => authRepository.loggedUserId$).called(1);
@@ -79,8 +86,8 @@ void main() {
     setUp: () => authRepository.mockGetLoggedUserId(null),
     act: (cubit) async => await cubit.changeThemeMode(ThemeMode.light),
     expect: () => [
-      ThemeMode.light,
-      ThemeMode.system,
+      const ThemeState(themeMode: ThemeMode.light),
+      const ThemeState(themeMode: ThemeMode.system),
     ],
     verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
   );
@@ -98,8 +105,8 @@ void main() {
     },
     act: (cubit) async => await cubit.changeThemeMode(ThemeMode.light),
     expect: () => [
-      ThemeMode.light,
-      ThemeMode.system,
+      const ThemeState(themeMode: ThemeMode.light),
+      const ThemeState(themeMode: ThemeMode.system),
     ],
     verify: (_) {
       verify(() => authRepository.loggedUserId$).called(1);
@@ -123,7 +130,7 @@ void main() {
     },
     act: (cubit) async => await cubit.changeThemeMode(ThemeMode.light),
     expect: () => [
-      ThemeMode.light,
+      const ThemeState(themeMode: ThemeMode.light),
     ],
     verify: (_) {
       verify(() => authRepository.loggedUserId$).called(1);
@@ -131,6 +138,77 @@ void main() {
         () => userRepository.updateUserData(
           userId: 'u1',
           themeMode: ThemeMode.light,
+        ),
+      ).called(1);
+    },
+  );
+
+  blocTest(
+    'changePrimaryColor, '
+    'logged user id is null, '
+    'should emit previous state',
+    build: () => createCubit(),
+    setUp: () => authRepository.mockGetLoggedUserId(null),
+    act: (cubit) async => await cubit.changePrimaryColor(
+      ThemePrimaryColor.blue,
+    ),
+    expect: () => [
+      const ThemeState(primaryColor: ThemePrimaryColor.blue),
+      const ThemeState(primaryColor: ThemePrimaryColor.defaultRed),
+    ],
+    verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
+  );
+
+  blocTest(
+    'changePrimaryColor, '
+    'method to update user data throws UserNotFound exception, '
+    'should emit previous state',
+    build: () => createCubit(),
+    setUp: () {
+      authRepository.mockGetLoggedUserId('u1');
+      userRepository.mockUpdateUserData(
+        throwable: const UserRepositoryExceptionUserNotFound(),
+      );
+    },
+    act: (cubit) async => await cubit.changePrimaryColor(
+      ThemePrimaryColor.blue,
+    ),
+    expect: () => [
+      const ThemeState(primaryColor: ThemePrimaryColor.blue),
+      const ThemeState(primaryColor: ThemePrimaryColor.defaultRed),
+    ],
+    verify: (_) {
+      verify(() => authRepository.loggedUserId$).called(1);
+      verify(
+        () => userRepository.updateUserData(
+          userId: 'u1',
+          themePrimaryColor: ThemePrimaryColor.blue,
+        ),
+      ).called(1);
+    },
+  );
+
+  blocTest(
+    'changePrimaryColor, '
+    'should call method from UserRepository to update user data with new theme '
+    'primary color',
+    build: () => createCubit(),
+    setUp: () {
+      authRepository.mockGetLoggedUserId('u1');
+      userRepository.mockUpdateUserData();
+    },
+    act: (cubit) async => await cubit.changePrimaryColor(
+      ThemePrimaryColor.blue,
+    ),
+    expect: () => [
+      const ThemeState(primaryColor: ThemePrimaryColor.blue),
+    ],
+    verify: (_) {
+      verify(() => authRepository.loggedUserId$).called(1);
+      verify(
+        () => userRepository.updateUserData(
+          userId: 'u1',
+          themePrimaryColor: ThemePrimaryColor.blue,
         ),
       ).called(1);
     },

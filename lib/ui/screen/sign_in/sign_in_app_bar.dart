@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../../../model/user.dart' as user;
 import '../../component/gap/gap_horizontal.dart';
-import '../../controller/theme_mode_cubit.dart';
+import '../../controller/theme_cubit.dart';
 import '../../extensions/build_context_extensions.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -33,14 +33,16 @@ class _ThemeSwitch extends StatelessWidget {
   const _ThemeSwitch();
 
   void _onSwitchChanged(bool isSwitched, BuildContext context) {
-    context.read<ThemeModeCubit>().changeThemeMode(
+    context.read<ThemeCubit>().changeThemeMode(
           isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    final user.ThemeMode themeMode = context.watch<ThemeModeCubit>().state;
+    final user.ThemeMode? themeMode = context.select(
+      (ThemeCubit cubit) => cubit.state?.themeMode,
+    );
 
     return Switch(
       value: themeMode == user.ThemeMode.dark,

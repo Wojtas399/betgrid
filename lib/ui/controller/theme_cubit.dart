@@ -5,29 +5,40 @@ import 'package:rxdart/rxdart.dart';
 import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../model/user.dart';
+import 'theme_state.dart';
 
 @injectable
-class ThemeModeCubit extends Cubit<ThemeMode> {
+class ThemeCubit extends Cubit<ThemeState?> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
-  ThemeModeCubit(
+  ThemeCubit(
     this._authRepository,
     this._userRepository,
-  ) : super(ThemeMode.system);
+  ) : super(null);
 
   Future<void> initialize() async {
     final Stream<User?> loggedUser$ = _getLoggedUser();
     await for (final loggedUser in loggedUser$) {
       if (loggedUser != null) {
-        emit(loggedUser.themeMode);
+        emit(ThemeState(
+          themeMode: loggedUser.themeMode,
+          primaryColor: loggedUser.themePrimaryColor,
+        ));
+      } else {
+        emit(const ThemeState(
+          themeMode: ThemeMode.system,
+          primaryColor: ThemePrimaryColor.defaultRed,
+        ));
       }
     }
   }
 
   Future<void> changeThemeMode(ThemeMode themeMode) async {
-    final ThemeMode prevThemeMode = state;
-    emit(themeMode);
+    final ThemeState? prevState = state;
+    emit(state?.copyWith(
+      themeMode: themeMode,
+    ));
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
       try {
@@ -36,10 +47,30 @@ class ThemeModeCubit extends Cubit<ThemeMode> {
           themeMode: themeMode,
         );
       } catch (_) {
-        emit(prevThemeMode);
+        emit(prevState);
       }
     } else {
-      emit(prevThemeMode);
+      emit(prevState);
+    }
+  }
+
+  Future<void> changePrimaryColor(ThemePrimaryColor primaryColor) async {
+    final ThemeState? prevState = state;
+    emit(state?.copyWith(
+      primaryColor: primaryColor,
+    ));
+    final String? loggedUserId = await _authRepository.loggedUserId$.first;
+    if (loggedUserId != null) {
+      try {
+        await _userRepository.updateUserData(
+          userId: loggedUserId,
+          themePrimaryColor: primaryColor,
+        );
+      } catch (_) {
+        emit(prevState);
+      }
+    } else {
+      emit(prevState);
     }
   }
 
