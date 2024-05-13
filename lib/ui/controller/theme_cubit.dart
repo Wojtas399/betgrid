@@ -26,10 +26,7 @@ class ThemeCubit extends Cubit<ThemeState?> {
           primaryColor: loggedUser.themePrimaryColor,
         ));
       } else {
-        emit(const ThemeState(
-          themeMode: ThemeMode.system,
-          primaryColor: ThemePrimaryColor.defaultRed,
-        ));
+        emit(const ThemeState());
       }
     }
   }
