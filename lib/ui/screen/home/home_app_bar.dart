@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/logged_user_provider.dart';
+import 'cubit/home_cubit.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -27,20 +26,16 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _Avatar extends ConsumerWidget {
+class _Avatar extends StatelessWidget {
   const _Avatar();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String? username = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.username,
-      ),
+  Widget build(BuildContext context) {
+    final String? username = context.select(
+      (HomeCubit cubit) => cubit.state.username,
     );
-    final String? avatarUrl = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.avatarUrl,
-      ),
+    final String? avatarUrl = context.select(
+      (HomeCubit cubit) => cubit.state.avatarUrl,
     );
 
     return IconButton(
