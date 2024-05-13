@@ -47,7 +47,6 @@ class HomeCubit extends Cubit<HomeState> {
         ));
       } else {
         if (await _doesLoggedUserNotHaveBets(loggedUser.id)) {
-          print('Initialize bets!');
           await _initializeBets(loggedUser.id);
         }
         emit(state.copyWith(

@@ -15,15 +15,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(title),
-      actions: const [
-        _Avatar(),
-        GapHorizontal8(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => AppBar(
+        title: Text(title),
+        actions: const [
+          _Avatar(),
+          GapHorizontal8(),
+        ],
+      );
 }
 
 class _Avatar extends StatelessWidget {
