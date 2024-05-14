@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/user.dart' as user;
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
+import 'cubit/profile_cubit.dart';
 import 'profile_username_dialog.dart';
 
-class ProfileUsername extends ConsumerWidget {
+class ProfileUsername extends StatelessWidget {
   const ProfileUsername({super.key});
 
-  Future<void> _onEdit(String? currentUsername, BuildContext context) async {
+  Future<void> _onEdit(BuildContext context) async {
     await showFullScreenDialog(
-      const ProfileUsernameDialog(),
+      BlocProvider.value(
+        value: context.read<ProfileCubit>(),
+        child: const ProfileUsernameDialog(),
+      ),
     );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String? username = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<user.User?> loggedUserData) =>
-            loggedUserData.value?.username,
-      ),
+  Widget build(BuildContext context) {
+    final String? username = context.select(
+      (ProfileCubit cubit) => cubit.state.username,
     );
 
     return Column(
@@ -46,7 +45,7 @@ class ProfileUsername extends ConsumerWidget {
             children: [
               BodyLarge('$username'),
               IconButton(
-                onPressed: () => _onEdit(username, context),
+                onPressed: () => _onEdit(context),
                 icon: const Icon(Icons.edit),
               ),
             ],
