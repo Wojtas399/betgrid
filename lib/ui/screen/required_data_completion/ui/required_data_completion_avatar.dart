@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/dialog/actions_dialog_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
@@ -9,35 +9,31 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../service/dialog_service.dart';
 import '../../../service/image_service.dart';
-import '../controller/required_data_completion_controller.dart';
+import '../cubit/required_data_completion_cubit.dart';
 
 class RequiredDataCompletionAvatar extends StatelessWidget {
   const RequiredDataCompletionAvatar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
-          child: _Avatar(),
-        ),
-        GapVertical16(),
-        _AvatarButtons(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+            child: _Avatar(),
+          ),
+          GapVertical16(),
+          _AvatarButtons(),
+        ],
+      );
 }
 
-class _Avatar extends ConsumerWidget {
+class _Avatar extends StatelessWidget {
   const _Avatar();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String? avatarImgPath = ref.watch(
-      requiredDataCompletionControllerProvider.select(
-        (state) => state.avatarImgPath,
-      ),
+  Widget build(BuildContext context) {
+    final String? avatarImgPath = context.select(
+      (RequiredDataCompletionCubit cubit) => cubit.state.avatarImgPath,
     );
 
     return Center(
@@ -60,19 +56,23 @@ class _Avatar extends ConsumerWidget {
   }
 }
 
-class _AvatarButtons extends ConsumerWidget {
+class _AvatarButtons extends StatelessWidget {
   const _AvatarButtons();
 
-  Future<void> _onChangeAvatar(BuildContext context, WidgetRef ref) async {
+  Future<void> _onChangeAvatar(BuildContext context) async {
     final _AvatarImageSource? source = await _askForAvatarImageSource(context);
     if (source == null) return;
     final String? avatarImgPath = await switch (source) {
       _AvatarImageSource.gallery => pickImage(),
       _AvatarImageSource.camera => capturePhoto(),
     };
-    ref
-        .read(requiredDataCompletionControllerProvider.notifier)
-        .updateAvatarImgPath(avatarImgPath);
+    if (context.mounted) {
+      context.read<RequiredDataCompletionCubit>().updateAvatar(avatarImgPath);
+    }
+  }
+
+  void _onDeleteAvatar(BuildContext context) {
+    context.read<RequiredDataCompletionCubit>().updateAvatar(null);
   }
 
   Future<_AvatarImageSource?> _askForAvatarImageSource(
@@ -95,11 +95,9 @@ class _AvatarButtons extends ConsumerWidget {
       );
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bool doesAvatarExist = ref.watch(
-      requiredDataCompletionControllerProvider.select(
-        (state) => state.avatarImgPath != null,
-      ),
+  Widget build(BuildContext context) {
+    final bool doesAvatarExist = context.select(
+      (RequiredDataCompletionCubit cubit) => cubit.state.doesAvatarExist,
     );
 
     return Center(
@@ -109,7 +107,7 @@ class _AvatarButtons extends ConsumerWidget {
           SizedBox(
             width: doesAvatarExist ? 125 : 175,
             child: FilledButton(
-              onPressed: () => _onChangeAvatar(context, ref),
+              onPressed: () => _onChangeAvatar(context),
               child: Text(
                 doesAvatarExist
                     ? context.str.requiredDataCompletionChangeAvatar
@@ -122,11 +120,7 @@ class _AvatarButtons extends ConsumerWidget {
             SizedBox(
               width: 125,
               child: OutlinedButton(
-                onPressed: () {
-                  ref
-                      .read(requiredDataCompletionControllerProvider.notifier)
-                      .updateAvatarImgPath(null);
-                },
+                onPressed: () => _onDeleteAvatar(context),
                 child: Text(context.str.delete),
               ),
             ),

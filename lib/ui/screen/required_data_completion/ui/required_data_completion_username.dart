@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
-import '../../../controller/logged_user/logged_user_controller.dart';
-import '../../../controller/logged_user/logged_user_controller_state.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../controller/required_data_completion_controller.dart';
+import '../cubit/required_data_completion_cubit.dart';
+import '../cubit/required_data_completion_state.dart';
 
-class RequiredDataCompletionUsername extends ConsumerStatefulWidget {
+class RequiredDataCompletionUsername extends StatefulWidget {
   const RequiredDataCompletionUsername({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _State();
+  State<StatefulWidget> createState() => _State();
 }
 
-class _State extends ConsumerState<RequiredDataCompletionUsername> {
+class _State extends State<RequiredDataCompletionUsername> {
   bool _canValidateTextField = false;
   bool _isUsernameEmpty = false;
   bool _isUsernameAlreadyTaken = false;
 
-  void _onTextFieldChanged(String username, WidgetRef ref) {
+  void _onTextFieldChanged(String username) {
     setState(() {
       _isUsernameAlreadyTaken = false;
       _isUsernameEmpty = false;
       _canValidateTextField = false;
     });
-    ref
-        .read(requiredDataCompletionControllerProvider.notifier)
-        .updateUsername(username);
+    context.read<RequiredDataCompletionCubit>().updateUsername(username);
   }
 
   String? _validate(BuildContext context) {
@@ -38,53 +35,46 @@ class _State extends ConsumerState<RequiredDataCompletionUsername> {
     return null;
   }
 
-  void _onLoggedUserControllerStateChanged(
-    AsyncValue<void> asyncValue,
-    BuildContext context,
-  ) {
-    if (asyncValue is AsyncError) {
-      final state = asyncValue.error;
-      if (state is LoggedUserControllerStateNewUsernameIsAlreadyTaken) {
-        setState(() {
-          _isUsernameAlreadyTaken = true;
-          _canValidateTextField = true;
-        });
-      } else if (state is LoggedUserControllerStateEmptyUsername) {
-        setState(() {
-          _isUsernameEmpty = true;
-          _canValidateTextField = true;
-        });
-      }
+  void _onCubitStatusChanged(RequiredDataCompletionStateStatus status) {
+    if (status == RequiredDataCompletionStateStatus.usernameIsAlreadyTaken) {
+      setState(() {
+        _isUsernameAlreadyTaken = true;
+        _canValidateTextField = true;
+      });
+    } else if (status == RequiredDataCompletionStateStatus.usernameIsEmpty) {
+      setState(() {
+        _isUsernameEmpty = true;
+        _canValidateTextField = true;
+      });
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    ref.listen(
-      loggedUserControllerProvider,
-      (_, next) => _onLoggedUserControllerStateChanged(next, context),
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TitleLarge(context.str.username),
-          const GapVertical16(),
-          TextFormField(
-            decoration: InputDecoration(hintText: context.str.usernameHintText),
-            onChanged: (String value) {
-              _onTextFieldChanged(value, ref);
-            },
-            validator: (_) => _validate(context),
-            autovalidateMode: AutovalidateMode.always,
-            onTapOutside: (_) {
-              FocusScope.of(context).unfocus();
-            },
+  Widget build(BuildContext context) =>
+      BlocListener<RequiredDataCompletionCubit, RequiredDataCompletionState>(
+        listenWhen: (prevState, currState) =>
+            prevState.status != currState.status,
+        listener: (_, RequiredDataCompletionState state) =>
+            _onCubitStatusChanged(state.status),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleLarge(context.str.username),
+              const GapVertical16(),
+              TextFormField(
+                decoration:
+                    InputDecoration(hintText: context.str.usernameHintText),
+                onChanged: _onTextFieldChanged,
+                validator: (_) => _validate(context),
+                autovalidateMode: AutovalidateMode.always,
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      );
 }
