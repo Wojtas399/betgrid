@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../model/user.dart' as user;
@@ -16,7 +15,7 @@ class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-        title: Text(Str.of(context).signInScreenTitle),
+        title: Text(context.str.signInScreenTitle),
         actions: [
           Icon(
             MdiIcons.themeLightDark,
