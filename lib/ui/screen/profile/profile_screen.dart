@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../dependency_injection.dart';
 import '../../../model/user.dart' as user;
+import '../../common_cubit/theme_cubit.dart';
 import '../../component/gap/gap_vertical.dart';
 import '../../component/text_component.dart';
 import '../../component/theme_mode_selection_component.dart';
 import '../../component/theme_primary_color_selection_component.dart';
-import '../../controller/theme_cubit.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'cubit/profile_cubit.dart';
 import 'profile_avatar.dart';

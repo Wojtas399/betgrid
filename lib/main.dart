@@ -8,10 +8,10 @@ import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
 import 'firebase_options.dart';
+import 'ui/common_cubit/theme_cubit.dart';
+import 'ui/common_cubit/theme_state.dart';
 import 'ui/config/router/app_router.dart';
 import 'ui/config/theme/theme.dart';
-import 'ui/controller/theme_cubit.dart';
-import 'ui/controller/theme_state.dart';
 import 'ui/extensions/theme_mode_extensions.dart';
 import 'ui/extensions/theme_primary_color_extensions.dart';
 

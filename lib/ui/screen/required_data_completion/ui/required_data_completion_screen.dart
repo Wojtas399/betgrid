@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
+import '../../../common_cubit/theme_cubit.dart';
+import '../../../common_cubit/theme_state.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
-import '../../../controller/theme_cubit.dart';
-import '../../../controller/theme_state.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../service/dialog_service.dart';
 import '../cubit/required_data_completion_cubit.dart';

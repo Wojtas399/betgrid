@@ -4,8 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../model/user.dart' as user;
+import '../../common_cubit/theme_cubit.dart';
 import '../../component/gap/gap_horizontal.dart';
-import '../../controller/theme_cubit.dart';
 import '../../extensions/build_context_extensions.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
