@@ -4,9 +4,12 @@ import 'package:injectable/injectable.dart';
 import '../../../firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../../model/grand_prix_bet.dart';
+import '../../../ui/extensions/stream_extensions.dart';
 import '../../mapper/grand_prix_bet_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_repository.dart';
+
+typedef _GrandPrixBetFetchData = ({String playerId, String grandPrixId});
 
 @LazySingleton(as: GrandPrixBetRepository)
 class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
@@ -26,7 +29,44 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }
 
   @override
-  Stream<GrandPrixBet?> getBetByGrandPrixIdAndPlayerId({
+  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayers({
+    required List<String> idsOfPlayers,
+    required List<String> idsOfGrandPrixes,
+  }) =>
+      repositoryState$.asyncMap(
+        (List<GrandPrixBet> existingGpBets) async {
+          final List<GrandPrixBet> gpBets = [];
+          final List<_GrandPrixBetFetchData> dataOfMissingGpBets = [];
+          for (final playerId in idsOfPlayers) {
+            for (final grandPrixId in idsOfGrandPrixes) {
+              final GrandPrixBet? existingGpBet =
+                  existingGpBets.firstWhereOrNull(
+                (GrandPrixBet gpBet) =>
+                    gpBet.grandPrixId == grandPrixId &&
+                    gpBet.playerId == playerId,
+              );
+              if (existingGpBet != null) {
+                gpBets.add(existingGpBet);
+              } else {
+                dataOfMissingGpBets.add((
+                  playerId: playerId,
+                  grandPrixId: grandPrixId,
+                ));
+              }
+            }
+          }
+          if (dataOfMissingGpBets.isNotEmpty) {
+            final missingGpBets = await _fetchManyGrandPrixBetsFromDb(
+              dataOfMissingGpBets,
+            );
+            gpBets.addAll(missingGpBets);
+          }
+          return gpBets;
+        },
+      ).distinctList();
+
+  @override
+  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixIdAndPlayerId({
     required String playerId,
     required String grandPrixId,
   }) async* {
@@ -36,14 +76,16 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
             grandPrixBet.playerId == playerId &&
             grandPrixBet.grandPrixId == grandPrixId,
       );
-      grandPrixBet ??=
-          await _fetchGrandPrixBetByGrandPrixIdFromDb(playerId, grandPrixId);
+      grandPrixBet ??= await _fetchGrandPrixBetFromDb((
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      ));
       yield grandPrixBet;
     }
   }
 
   @override
-  Future<void> addGrandPrixBets({
+  Future<void> addGrandPrixBetsForPlayer({
     required String playerId,
     required List<GrandPrixBet> grandPrixBets,
   }) async {
@@ -64,14 +106,32 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     setEntities(grandPrixBets);
   }
 
-  Future<GrandPrixBet?> _fetchGrandPrixBetByGrandPrixIdFromDb(
-    String userId,
-    String grandPrixId,
+  Future<List<GrandPrixBet>> _fetchManyGrandPrixBetsFromDb(
+    List<_GrandPrixBetFetchData> gpBetsData,
+  ) async {
+    final List<GrandPrixBet> fetchedGpBets = [];
+    for (final _GrandPrixBetFetchData gpBetData in gpBetsData) {
+      final GrandPrixBetDto? gpBetDto =
+          await _dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        playerId: gpBetData.playerId,
+        grandPrixId: gpBetData.grandPrixId,
+      );
+      if (gpBetDto != null) {
+        final GrandPrixBet gpBet = mapGrandPrixBetFromDto(gpBetDto);
+        fetchedGpBets.add(gpBet);
+      }
+    }
+    addEntities(fetchedGpBets);
+    return fetchedGpBets;
+  }
+
+  Future<GrandPrixBet?> _fetchGrandPrixBetFromDb(
+    _GrandPrixBetFetchData gpBetData,
   ) async {
     final GrandPrixBetDto? betDto =
         await _dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
-      userId: userId,
-      grandPrixId: grandPrixId,
+      playerId: gpBetData.playerId,
+      grandPrixId: gpBetData.grandPrixId,
     );
     if (betDto == null) return null;
     final GrandPrixBet bet = mapGrandPrixBetFromDto(betDto);

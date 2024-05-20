@@ -58,7 +58,132 @@ void main() {
   );
 
   test(
-    'getBetByGrandPrixIdAndPlayerId, '
+    'getGrandPrixBetsForPlayers, '
+    'should emit bets which already exists in repo state and should fetch bets '
+    'which do not exist in repo state',
+    () async {
+      final GrandPrixBetDto player1Gp1BetDto = createGrandPrixBetDto(
+        id: 'p1gp1',
+        playerId: 'p1',
+        grandPrixId: 'gp1',
+      );
+      final GrandPrixBetDto player1Gp2BetDto = createGrandPrixBetDto(
+        id: 'p1gp2',
+        playerId: 'p1',
+        grandPrixId: 'gp2',
+      );
+      final GrandPrixBetDto player2Gp1BetDto = createGrandPrixBetDto(
+        id: 'p2gp1',
+        playerId: 'p2',
+        grandPrixId: 'gp1',
+      );
+      final GrandPrixBetDto player2Gp2BetDto = createGrandPrixBetDto(
+        id: 'p2gp2',
+        playerId: 'p2',
+        grandPrixId: 'gp2',
+      );
+      final List<GrandPrixBet> expectedGpBets1 = [
+        createGrandPrixBet(
+          id: 'p1gp1',
+          playerId: 'p1',
+          grandPrixId: 'gp1',
+        ),
+        createGrandPrixBet(
+          id: 'p2gp1',
+          playerId: 'p2',
+          grandPrixId: 'gp1',
+        )
+      ];
+      final List<GrandPrixBet> expectedGpBets2 = [
+        createGrandPrixBet(
+          id: 'p1gp1',
+          playerId: 'p1',
+          grandPrixId: 'gp1',
+        ),
+        createGrandPrixBet(
+          id: 'p2gp1',
+          playerId: 'p2',
+          grandPrixId: 'gp1',
+        ),
+        createGrandPrixBet(
+          id: 'p1gp2',
+          playerId: 'p1',
+          grandPrixId: 'gp2',
+        ),
+        createGrandPrixBet(
+          id: 'p2gp2',
+          playerId: 'p2',
+          grandPrixId: 'gp2',
+        ),
+      ];
+      when(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p1',
+          grandPrixId: 'gp1',
+        ),
+      ).thenAnswer((_) => Future.value(player1Gp1BetDto));
+      when(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p1',
+          grandPrixId: 'gp2',
+        ),
+      ).thenAnswer((_) => Future.value(player1Gp2BetDto));
+      when(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p2',
+          grandPrixId: 'gp1',
+        ),
+      ).thenAnswer((_) => Future.value(player2Gp1BetDto));
+      when(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p2',
+          grandPrixId: 'gp2',
+        ),
+      ).thenAnswer((_) => Future.value(player2Gp2BetDto));
+
+      final Stream<List<GrandPrixBet>> gpBets1$ =
+          repositoryImpl.getGrandPrixBetsForPlayers(
+        idsOfPlayers: ['p1', 'p2'],
+        idsOfGrandPrixes: ['gp1'],
+      );
+      final Stream<List<GrandPrixBet>> gpBets2$ =
+          repositoryImpl.getGrandPrixBetsForPlayers(
+        idsOfPlayers: ['p1', 'p2'],
+        idsOfGrandPrixes: ['gp1', 'gp2'],
+      );
+
+      expect(await gpBets1$.first, expectedGpBets1);
+      expect(await gpBets2$.first, expectedGpBets2);
+      expect(await repositoryImpl.repositoryState$.first, expectedGpBets2);
+      verify(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p1',
+          grandPrixId: 'gp1',
+        ),
+      ).called(1);
+      verify(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p1',
+          grandPrixId: 'gp2',
+        ),
+      ).called(1);
+      verify(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p2',
+          grandPrixId: 'gp1',
+        ),
+      ).called(1);
+      verify(
+        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          playerId: 'p2',
+          grandPrixId: 'gp2',
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'getGrandPrixBetByGrandPrixIdAndPlayerId, '
     'bet with matching grand prix id and player id exists in state, '
     'should load gp bet from db, add it to repo state and emit it if there is no '
     'matching gp bet in repo state, '
@@ -78,12 +203,12 @@ void main() {
       dbGrandPrixBetService.mockFetchGrandPrixBetByGrandPrixId(grandPrixBetDto);
 
       final Stream<GrandPrixBet?> grandPrixBet1$ =
-          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
+          repositoryImpl.getGrandPrixBetByGrandPrixIdAndPlayerId(
         playerId: playerId,
         grandPrixId: 'gp1',
       );
       final Stream<GrandPrixBet?> grandPrixBet2$ =
-          repositoryImpl.getBetByGrandPrixIdAndPlayerId(
+          repositoryImpl.getGrandPrixBetByGrandPrixIdAndPlayerId(
         playerId: playerId,
         grandPrixId: 'gp1',
       );
@@ -96,7 +221,7 @@ void main() {
       );
       verify(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
-          userId: playerId,
+          playerId: playerId,
           grandPrixId: grandPrixId,
         ),
       ).called(1);
@@ -104,7 +229,7 @@ void main() {
   );
 
   test(
-    'addGrandPrixBets, '
+    'addGrandPrixBetsForPlayer, '
     'for each grand prix bet should call db method to add this bet to db and to '
     'repo state',
     () async {
@@ -120,7 +245,7 @@ void main() {
       ];
       dbGrandPrixBetService.mockAddGrandPrixBet();
 
-      await repositoryImpl.addGrandPrixBets(
+      await repositoryImpl.addGrandPrixBetsForPlayer(
         playerId: playerId,
         grandPrixBets: grandPrixBets,
       );

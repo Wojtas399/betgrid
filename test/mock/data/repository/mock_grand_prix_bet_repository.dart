@@ -4,7 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRepository extends Mock
     implements GrandPrixBetRepository {
-  void mockGetAllGrandPrixBetsForPlayer({List<GrandPrixBet>? grandPrixBets}) {
+  void mockGetAllGrandPrixBetsForPlayer({
+    List<GrandPrixBet>? grandPrixBets,
+  }) {
     when(
       () => getAllGrandPrixBetsForPlayer(
         playerId: any(named: 'playerId'),
@@ -12,18 +14,31 @@ class MockGrandPrixBetRepository extends Mock
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
-  void mockGetBetByGrandPrixIdAndPlayerId(GrandPrixBet? grandPrixBet) {
+  void mockGetGrandPrixBetsForPlayers({
+    required List<GrandPrixBet> grandPrixBets,
+  }) {
     when(
-      () => getBetByGrandPrixIdAndPlayerId(
+      () => getGrandPrixBetsForPlayers(
+        idsOfPlayers: any(named: 'idsOfPlayers'),
+        idsOfGrandPrixes: any(named: 'idsOfGrandPrixes'),
+      ),
+    ).thenAnswer((_) => Stream.value(grandPrixBets));
+  }
+
+  void mockGetGrandPrixBetByGrandPrixIdAndPlayerId({
+    GrandPrixBet? grandPrixBet,
+  }) {
+    when(
+      () => getGrandPrixBetByGrandPrixIdAndPlayerId(
         playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBet));
   }
 
-  void mockAddGrandPrixBets() {
+  void mockAddGrandPrixBetsForPlayer() {
     when(
-      () => addGrandPrixBets(
+      () => addGrandPrixBetsForPlayer(
         playerId: any(named: 'playerId'),
         grandPrixBets: any(named: 'grandPrixBets'),
       ),

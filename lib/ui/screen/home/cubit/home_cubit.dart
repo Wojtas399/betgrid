@@ -62,7 +62,7 @@ class HomeCubit extends Cubit<HomeState> {
     final List<GrandPrix>? grandPrixes =
         await _grandPrixRepository.getAllGrandPrixes().first;
     if (grandPrixes != null && grandPrixes.isNotEmpty) {
-      await _grandPrixBetRepository.addGrandPrixBets(
+      await _grandPrixBetRepository.addGrandPrixBetsForPlayer(
         playerId: loggedUserId,
         grandPrixBets: _createBetsForGrandPrixes(
           grandPrixes,

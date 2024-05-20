@@ -14,10 +14,10 @@ class FirebaseGrandPrixBetService {
   }
 
   Future<GrandPrixBetDto?> fetchGrandPrixBetByGrandPrixId({
-    required String userId,
+    required String playerId,
     required String grandPrixId,
   }) async {
-    final snapshot = await getGrandPrixBetsRef(userId)
+    final snapshot = await getGrandPrixBetsRef(playerId)
         .where('grandPrixId', isEqualTo: grandPrixId)
         .get();
     if (snapshot.docs.isEmpty) return null;

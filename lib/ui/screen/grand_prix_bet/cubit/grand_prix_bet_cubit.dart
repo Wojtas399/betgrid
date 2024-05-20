@@ -66,7 +66,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         _authRepository.loggedUserId$,
         _getPlayerUsername(playerId),
         _getGrandPrixName(grandPrixId),
-        _grandPrixBetRepository.getBetByGrandPrixIdAndPlayerId(
+        _grandPrixBetRepository.getGrandPrixBetByGrandPrixIdAndPlayerId(
           playerId: playerId,
           grandPrixId: grandPrixId,
         ),

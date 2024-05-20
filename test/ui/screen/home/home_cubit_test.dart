@@ -285,7 +285,7 @@ void main() {
         createGrandPrix(id: 'gp2'),
         createGrandPrix(id: 'gp3'),
       ]);
-      grandPrixBetRepository.mockAddGrandPrixBets();
+      grandPrixBetRepository.mockAddGrandPrixBetsForPlayer();
     },
     build: () => createCubit(),
     act: (cubit) async => await cubit.initialize(),
@@ -306,7 +306,7 @@ void main() {
       ).called(1);
       verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
       verify(
-        () => grandPrixBetRepository.addGrandPrixBets(
+        () => grandPrixBetRepository.addGrandPrixBetsForPlayer(
           playerId: 'u1',
           grandPrixBets: [
             createGrandPrixBet(playerId: 'u1', grandPrixId: 'gp1'),
