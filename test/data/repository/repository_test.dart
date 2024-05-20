@@ -126,6 +126,32 @@ void main() {
 
   test(
     'addEntities, '
+    'list of entities to add is empty, '
+    'should throw exception',
+    () {
+      const List<TestModel> entitiesToAdd = [];
+      const List<TestModel> existingEntities = [
+        TestModel(id: 'e3', name: 'third entity'),
+        TestModel(id: 'e4', name: 'fourth entity'),
+        TestModel(id: 'e5', name: 'fifth entity'),
+      ];
+      final String expectedException =
+          '[Repository] List of entities (type $TestModel) to add is empty';
+      repository = TestRepository(initialData: existingEntities);
+
+      Object? exception;
+      try {
+        repository.addEntities(entitiesToAdd);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception, expectedException);
+    },
+  );
+
+  test(
+    'addEntities, '
     'one of the entities already exists in state, '
     'should throw exception',
     () {

@@ -35,6 +35,9 @@ abstract class Repository<T extends Entity> {
   }
 
   void addEntities(Iterable<T> entities) {
+    if (entities.isEmpty) {
+      throw '[Repository] List of entities (type $T) to add is empty';
+    }
     final List<T> updatedEntities = [..._repositoryState$.value];
     for (final entity in entities) {
       final bool doesEntityExist = updatedEntities.firstWhereOrNull(
@@ -45,8 +48,8 @@ abstract class Repository<T extends Entity> {
         throw '[Repository] Entity $entity already exists in repository state';
       }
       updatedEntities.add(entity);
-      _repositoryState$.add(updatedEntities);
     }
+    _repositoryState$.add(updatedEntities);
   }
 
   void updateEntity(T entity) {
