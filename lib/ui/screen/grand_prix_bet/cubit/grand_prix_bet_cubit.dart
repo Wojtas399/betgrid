@@ -70,7 +70,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           playerId: playerId,
           grandPrixId: grandPrixId,
         ),
-        _grandPrixResultsRepository.getResultForGrandPrix(
+        _grandPrixResultsRepository.getGrandPrixResultsForGrandPrix(
           grandPrixId: grandPrixId,
         ),
         _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(

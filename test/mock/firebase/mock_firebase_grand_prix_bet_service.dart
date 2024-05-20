@@ -21,7 +21,7 @@ class MockFirebaseGrandPrixBetService extends Mock
   void mockFetchGrandPrixBetByGrandPrixId(GrandPrixBetDto? grandPrixBetDto) {
     when(
       () => fetchGrandPrixBetByGrandPrixId(
-        userId: any(named: 'userId'),
+        playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Future.value(grandPrixBetDto));

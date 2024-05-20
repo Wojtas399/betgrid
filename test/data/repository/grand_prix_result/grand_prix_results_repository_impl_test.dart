@@ -9,7 +9,16 @@ import '../../../creator/grand_prix_results_dto_creator.dart';
 import '../../../mock/firebase/mock_firebase_grand_prix_results_service.dart';
 
 void main() {
-  final dbGrandPrixResultService = MockFirebaseGrandPrixResultsService();
+  final dbGrandPrixResultsService = MockFirebaseGrandPrixResultsService();
+  late GrandPrixResultsRepositoryImpl repositoryImpl;
+
+  setUp(() {
+    repositoryImpl = GrandPrixResultsRepositoryImpl(dbGrandPrixResultsService);
+  });
+
+  tearDown(() {
+    reset(dbGrandPrixResultsService);
+  });
 
   test(
     'getResultsForGrandPrix, '
@@ -26,24 +35,115 @@ void main() {
         id: 'r1',
         grandPrixId: grandPrixId,
       );
-      dbGrandPrixResultService.mockFetchResultsForGrandPrix(
+      dbGrandPrixResultsService.mockFetchResultsForGrandPrix(
         grandPrixResultDto: gpResultsDto,
       );
       final repositoryImpl = GrandPrixResultsRepositoryImpl(
-        dbGrandPrixResultService,
+        dbGrandPrixResultsService,
       );
 
       final Stream<GrandPrixResults?> results1$ =
-          repositoryImpl.getResultForGrandPrix(grandPrixId: grandPrixId);
+          repositoryImpl.getGrandPrixResultsForGrandPrix(
+        grandPrixId: grandPrixId,
+      );
       final Stream<GrandPrixResults?> results2$ =
-          repositoryImpl.getResultForGrandPrix(grandPrixId: grandPrixId);
+          repositoryImpl.getGrandPrixResultsForGrandPrix(
+        grandPrixId: grandPrixId,
+      );
 
       expect(await results1$.first, expectedGpResults);
       expect(await results2$.first, expectedGpResults);
       expect(await repositoryImpl.repositoryState$.first, [expectedGpResults]);
       verify(
-        () => dbGrandPrixResultService.fetchResultsForGrandPrix(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
           grandPrixId: grandPrixId,
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'getResultsForGrandPrixes, '
+    'should emit gp results which already exists in repo state and should fetch '
+    'gp results which do not exist in repo state',
+    () async {
+      final GrandPrixResultsDto gp1ResultsDto = createGrandPrixResultsDto(
+        id: 'gpr1',
+        grandPrixId: 'gp1',
+      );
+      final GrandPrixResultsDto gp2ResultsDto = createGrandPrixResultsDto(
+        id: 'gpr2',
+        grandPrixId: 'gp2',
+      );
+      final GrandPrixResultsDto gp3ResultsDto = createGrandPrixResultsDto(
+        id: 'gpr3',
+        grandPrixId: 'gp3',
+      );
+      final List<GrandPrixResults> expectedGpResults1 = [
+        createGrandPrixResults(
+          id: 'gpr1',
+          grandPrixId: 'gp1',
+        ),
+        createGrandPrixResults(
+          id: 'gpr2',
+          grandPrixId: 'gp2',
+        ),
+      ];
+      final List<GrandPrixResults> expectedGpResults2 = [
+        createGrandPrixResults(
+          id: 'gpr1',
+          grandPrixId: 'gp1',
+        ),
+        createGrandPrixResults(
+          id: 'gpr2',
+          grandPrixId: 'gp2',
+        ),
+        createGrandPrixResults(
+          id: 'gpr3',
+          grandPrixId: 'gp3',
+        ),
+      ];
+      when(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp1',
+        ),
+      ).thenAnswer((_) => Future.value(gp1ResultsDto));
+      when(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp2',
+        ),
+      ).thenAnswer((_) => Future.value(gp2ResultsDto));
+      when(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp3',
+        ),
+      ).thenAnswer((_) => Future.value(gp3ResultsDto));
+
+      final Stream<List<GrandPrixResults>> gpResults1$ =
+          repositoryImpl.getGrandPrixResultsForGrandPrixes(
+        idsOfGrandPrixes: ['gp1', 'gp2'],
+      );
+      final Stream<List<GrandPrixResults>> gpResults2$ =
+          repositoryImpl.getGrandPrixResultsForGrandPrixes(
+        idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+      );
+
+      expect(await gpResults1$.first, expectedGpResults1);
+      expect(await gpResults2$.first, expectedGpResults2);
+      expect(await repositoryImpl.repositoryState$.first, expectedGpResults2);
+      verify(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp1',
+        ),
+      ).called(1);
+      verify(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp2',
+        ),
+      ).called(1);
+      verify(
+        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+          grandPrixId: 'gp3',
         ),
       ).called(1);
     },

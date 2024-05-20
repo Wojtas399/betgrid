@@ -4,11 +4,21 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixResultsRepository extends Mock
     implements GrandPrixResultsRepository {
-  void mockGetResultsForGrandPrix({GrandPrixResults? results}) {
+  void mockGetGrandPrixResultsForGrandPrix({GrandPrixResults? results}) {
     when(
-      () => getResultForGrandPrix(
+      () => getGrandPrixResultsForGrandPrix(
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(results));
+  }
+
+  void mockGetGrandPrixResultsForGrandPrixes({
+    required List<GrandPrixResults> grandPrixesResults,
+  }) {
+    when(
+      () => getGrandPrixResultsForGrandPrixes(
+        idsOfGrandPrixes: any(named: 'idsOfGrandPrixes'),
+      ),
+    ).thenAnswer((_) => Stream.value(grandPrixesResults));
   }
 }
