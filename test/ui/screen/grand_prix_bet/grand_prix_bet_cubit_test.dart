@@ -60,7 +60,7 @@ void main() {
       grandPrixRepository.mockGetGrandPrixById(
         createGrandPrix(name: 'grand prix'),
       );
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixIdAndPlayerId(
+      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: createGrandPrixBet(id: 'gpb1'),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
@@ -108,7 +108,7 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixIdAndPlayerId(
+        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
           playerId: 'p1',
           grandPrixId: 'gp1',
         ),
@@ -142,7 +142,7 @@ void main() {
       grandPrixRepository.mockGetGrandPrixById(
         createGrandPrix(name: 'grand prix'),
       );
-      grandPrixBetRepository.mockGetGrandPrixBetByGrandPrixIdAndPlayerId(
+      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: createGrandPrixBet(id: 'gpb1'),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
@@ -190,7 +190,7 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBetByGrandPrixIdAndPlayerId(
+        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
           playerId: 'p1',
           grandPrixId: 'gp1',
         ),

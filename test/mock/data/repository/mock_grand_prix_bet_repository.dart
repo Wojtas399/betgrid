@@ -14,22 +14,22 @@ class MockGrandPrixBetRepository extends Mock
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
-  void mockGetGrandPrixBetsForPlayers({
+  void mockGetGrandPrixBetsForPlayersAndGrandPrixes({
     required List<GrandPrixBet> grandPrixBets,
   }) {
     when(
-      () => getGrandPrixBetsForPlayers(
+      () => getGrandPrixBetsForPlayersAndGrandPrixes(
         idsOfPlayers: any(named: 'idsOfPlayers'),
         idsOfGrandPrixes: any(named: 'idsOfGrandPrixes'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
-  void mockGetGrandPrixBetByGrandPrixIdAndPlayerId({
+  void mockGetGrandPrixBetForPlayerAndGrandPrix({
     GrandPrixBet? grandPrixBet,
   }) {
     when(
-      () => getGrandPrixBetByGrandPrixIdAndPlayerId(
+      () => getGrandPrixBetForPlayerAndGrandPrix(
         playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),

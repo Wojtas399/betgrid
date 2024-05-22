@@ -29,7 +29,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }
 
   @override
-  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayers({
+  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayersAndGrandPrixes({
     required List<String> idsOfPlayers,
     required List<String> idsOfGrandPrixes,
   }) =>
@@ -66,7 +66,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       ).distinctList();
 
   @override
-  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixIdAndPlayerId({
+  Stream<GrandPrixBet?> getGrandPrixBetForPlayerAndGrandPrix({
     required String playerId,
     required String grandPrixId,
   }) async* {

@@ -5,12 +5,12 @@ abstract interface class GrandPrixBetRepository {
     required String playerId,
   });
 
-  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayers({
+  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayersAndGrandPrixes({
     required List<String> idsOfPlayers,
     required List<String> idsOfGrandPrixes,
   });
 
-  Stream<GrandPrixBet?> getGrandPrixBetByGrandPrixIdAndPlayerId({
+  Stream<GrandPrixBet?> getGrandPrixBetForPlayerAndGrandPrix({
     required String playerId,
     required String grandPrixId,
   });
