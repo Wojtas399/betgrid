@@ -66,7 +66,8 @@ void main() {
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
         results: createGrandPrixResults(id: 'gpr1'),
       );
-      grandPrixBetPointsRepository.mockGetPointsForPlayerByGrandPrixId(
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp1'),
       );
       driverRepository.mockGetAllDrivers(
@@ -118,7 +119,8 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: 'p1',
           grandPrixId: 'gp1',
         ),
@@ -146,7 +148,8 @@ void main() {
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
         results: createGrandPrixResults(id: 'gpr1'),
       );
-      grandPrixBetPointsRepository.mockGetPointsForPlayerByGrandPrixId(
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp1'),
       );
       driverRepository.mockGetAllDrivers(
@@ -198,7 +201,8 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: 'p1',
           grandPrixId: 'gp1',
         ),

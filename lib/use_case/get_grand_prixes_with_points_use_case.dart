@@ -47,7 +47,8 @@ class GetGrandPrixesWithPointsUseCase {
     for (final gp in [...sortedGrandPrixes]) {
       final Stream<GrandPrixWithPoints> gpWithPoints$ = Rx.combineLatest2(
         Stream.value(gp),
-        _grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        _grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
           grandPrixId: gp.id,
         ),

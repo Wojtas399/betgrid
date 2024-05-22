@@ -80,7 +80,8 @@ void main() {
       ];
       grandPrixRepository.mockGetAllGrandPrixes(allGrandPrixes);
       when(
-        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
           grandPrixId: 'gp1',
         ),
@@ -90,7 +91,8 @@ void main() {
         ),
       );
       when(
-        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
           grandPrixId: 'gp2',
         ),
@@ -100,7 +102,8 @@ void main() {
         ),
       );
       when(
-        () => grandPrixBetPointsRepository.getPointsForPlayerByGrandPrixId(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
           grandPrixId: 'gp3',
         ),
