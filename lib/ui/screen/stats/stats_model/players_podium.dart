@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../model/player.dart';
 
-class PlayersPodiumChartData extends Equatable {
-  final PlayersPodiumChartPlayer p1Player;
-  final PlayersPodiumChartPlayer? p2Player;
-  final PlayersPodiumChartPlayer? p3Player;
+class PlayersPodium extends Equatable {
+  final PlayersPodiumPlayer p1Player;
+  final PlayersPodiumPlayer? p2Player;
+  final PlayersPodiumPlayer? p3Player;
 
-  const PlayersPodiumChartData({
+  const PlayersPodium({
     required this.p1Player,
     this.p2Player,
     this.p3Player,
@@ -17,11 +17,11 @@ class PlayersPodiumChartData extends Equatable {
   List<Object?> get props => [p1Player, p2Player, p3Player];
 }
 
-class PlayersPodiumChartPlayer extends Equatable {
+class PlayersPodiumPlayer extends Equatable {
   final Player player;
   final double points;
 
-  const PlayersPodiumChartPlayer({
+  const PlayersPodiumPlayer({
     required this.player,
     required this.points,
   });

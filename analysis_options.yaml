@@ -23,6 +23,7 @@ linter:
     avoid_empty_else: true
     sort_child_properties_last: true
     use_key_in_widget_constructors: true
+    prefer_const_declarations: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

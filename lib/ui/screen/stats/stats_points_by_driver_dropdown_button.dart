@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/driver/driver_repository.dart';
-import '../../../dependency_injection.dart';
 import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import 'provider/stats_data_provider.dart';
+import 'cubit/stats_cubit.dart';
 
-class StatsPointsByDriverDropdownButton extends ConsumerStatefulWidget {
+class StatsPointsByDriverDropdownButton extends StatefulWidget {
   const StatsPointsByDriverDropdownButton({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _State();
+  State<StatefulWidget> createState() => _State();
 }
 
-class _State extends ConsumerState<StatsPointsByDriverDropdownButton> {
+class _State extends State<StatsPointsByDriverDropdownButton> {
   String? _selectedDriverId;
 
-  void _onDriverChanged(String? driverId, WidgetRef ref) {
+  void _onDriverChanged(String? driverId) {
     if (driverId != null) {
-      ref.read(statsProvider.notifier).onDriverChanged(driverId);
+      context.read<StatsCubit>().onDriverChanged(driverId);
       setState(() {
         _selectedDriverId = driverId;
       });
@@ -30,36 +28,29 @@ class _State extends ConsumerState<StatsPointsByDriverDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<List<Driver>> allDrivers$ =
-        getIt.get<DriverRepository>().getAllDrivers();
-
-    return StreamBuilder(
-      stream: allDrivers$,
-      builder: (_, AsyncSnapshot<List<Driver>> asyncSnapshot) {
-        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        final List<Driver> allDrivers = [...?asyncSnapshot.data];
-        allDrivers.sort(
-          (d1, d2) => d1.team.toString().compareTo(d2.team.toString()),
-        );
-        return SizedBox(
-          width: double.infinity,
-          child: DropdownButton<String>(
-            isExpanded: true,
-            value: _selectedDriverId,
-            hint: Text(context.str.statsSelectDriver),
-            items: allDrivers
-                .map((Driver driver) => _DriverDescription(driver))
-                .toList(),
-            onChanged: (String? driverId) => _onDriverChanged(driverId, ref),
-          ),
-        );
-      },
+    final bool isCubitLoading = context.select(
+      (StatsCubit cubit) => cubit.state.isLoading,
     );
+    final Iterable<Driver>? allDrivers = context.select(
+      (StatsCubit cubit) => cubit.state.allDrivers,
+    );
+
+    return isCubitLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            width: double.infinity,
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: _selectedDriverId,
+              hint: Text(context.str.statsSelectDriver),
+              items: allDrivers
+                  ?.map((Driver driver) => _DriverDescription(driver))
+                  .toList(),
+              onChanged: (String? driverId) => _onDriverChanged(driverId),
+            ),
+          );
   }
 }
 
