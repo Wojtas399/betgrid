@@ -57,7 +57,7 @@ class _ColorItem extends StatelessWidget {
           shape: BoxShape.circle,
           border: isSelected
               ? Border.all(
-                  color: context.colorScheme.onBackground,
+                  color: context.colorScheme.onSurface,
                   width: 2.0,
                 )
               : null,
