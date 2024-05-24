@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 class GapHorizontal extends StatelessWidget {
   final double gap;
 
-  const GapHorizontal(this.gap, {super.key});
+  const GapHorizontal(
+    this.gap, {
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(width: gap);
-  }
+  Widget build(BuildContext context) => SizedBox(width: gap);
 }
 
 class GapHorizontal4 extends GapHorizontal {

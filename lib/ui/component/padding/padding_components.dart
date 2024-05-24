@@ -11,14 +11,15 @@ abstract class CustomPadding extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(padding),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.all(padding),
+        child: child,
+      );
 }
 
 class Padding24 extends CustomPadding {
-  const Padding24({super.key, required super.child}) : super(padding: 24);
+  const Padding24({
+    super.key,
+    required super.child,
+  }) : super(padding: 24);
 }

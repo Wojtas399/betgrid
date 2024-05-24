@@ -13,7 +13,10 @@ import 'cubit/players_state.dart';
 class PlayerItem extends StatelessWidget {
   final PlayerWithPoints playerWithPoints;
 
-  const PlayerItem({super.key, required this.playerWithPoints});
+  const PlayerItem({
+    super.key,
+    required this.playerWithPoints,
+  });
 
   void _onTap(BuildContext context) {
     context.navigateTo(
@@ -47,7 +50,9 @@ class PlayerItem extends StatelessWidget {
 class _Avatar extends StatelessWidget {
   final Player player;
 
-  const _Avatar({required this.player});
+  const _Avatar({
+    required this.player,
+  });
 
   @override
   Widget build(BuildContext context) => Hero(
@@ -71,7 +76,9 @@ class _Avatar extends StatelessWidget {
 class _Points extends StatelessWidget {
   final double points;
 
-  const _Points({required this.points});
+  const _Points({
+    required this.points,
+  });
 
   @override
   Widget build(BuildContext context) => Row(

@@ -64,7 +64,5 @@ class _SplashScreen extends StatelessWidget {
   const _SplashScreen();
 
   @override
-  Widget build(BuildContext context) {
-    return const CircularProgressIndicator();
-  }
+  Widget build(BuildContext context) => const CircularProgressIndicator();
 }

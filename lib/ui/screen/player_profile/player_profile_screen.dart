@@ -17,7 +17,10 @@ import 'cubit/player_profile_cubit.dart';
 class PlayerProfileScreen extends StatelessWidget {
   final String playerId;
 
-  const PlayerProfileScreen({super.key, required this.playerId});
+  const PlayerProfileScreen({
+    super.key,
+    required this.playerId,
+  });
 
   @override
   Widget build(BuildContext context) => BlocProvider(

@@ -6,7 +6,5 @@ class HomeBaseScreen extends StatelessWidget {
   const HomeBaseScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AutoRouter();
-  }
+  Widget build(BuildContext context) => const AutoRouter();
 }
