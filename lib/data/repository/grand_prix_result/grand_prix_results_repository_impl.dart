@@ -72,17 +72,17 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
   Future<List<GrandPrixResults>> _fetchResultsForGrandPrixesFromDb(
     Iterable<String> idsOfGrandPrixes,
   ) async {
-    final List<GrandPrixResults> loadedGrandPrixesResults = [];
+    final List<GrandPrixResults> fetchedGpResults = [];
     for (final String gpId in idsOfGrandPrixes) {
       final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService
           .fetchResultsForGrandPrix(grandPrixId: gpId);
       if (gpResultsDto != null) {
         final GrandPrixResults gpResults =
             mapGrandPrixResultsFromDto(gpResultsDto);
-        loadedGrandPrixesResults.add(gpResults);
+        fetchedGpResults.add(gpResults);
       }
     }
-    addEntities(loadedGrandPrixesResults);
-    return loadedGrandPrixesResults;
+    if (fetchedGpResults.isNotEmpty) addEntities(fetchedGpResults);
+    return fetchedGpResults;
   }
 }

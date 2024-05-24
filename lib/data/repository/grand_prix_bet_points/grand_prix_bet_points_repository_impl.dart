@@ -92,7 +92,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
         fetchedBetPoints.add(gpBetPoints);
       }
     }
-    addEntities(fetchedBetPoints);
+    if (fetchedBetPoints.isNotEmpty) addEntities(fetchedBetPoints);
     return fetchedBetPoints;
   }
 
