@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../dependency_injection.dart';
 import '../../../model/user.dart' as user;
@@ -82,7 +81,7 @@ class _ThemeMode extends StatelessWidget {
   }
 }
 
-class _ThemePrimaryColor extends ConsumerWidget {
+class _ThemePrimaryColor extends StatelessWidget {
   const _ThemePrimaryColor();
 
   void _onPrimaryColorChanged(
@@ -93,7 +92,7 @@ class _ThemePrimaryColor extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final user.ThemePrimaryColor? themePrimaryColor = context.select(
       (ThemeCubit cubit) => cubit.state?.primaryColor,
     );

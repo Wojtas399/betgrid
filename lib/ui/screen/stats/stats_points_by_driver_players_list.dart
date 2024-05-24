@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
@@ -9,11 +8,11 @@ import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'cubit/stats_cubit.dart';
 
-class StatsPointsByDriverPlayersList extends ConsumerWidget {
+class StatsPointsByDriverPlayersList extends StatelessWidget {
   const StatsPointsByDriverPlayersList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final bool isLoading = context.select(
       (StatsCubit cubit) => cubit.state.arePointsForDriverLoading,
     );

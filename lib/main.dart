@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
@@ -23,11 +22,9 @@ void main() async {
   );
   Intl.defaultLocale = 'pl';
   runApp(
-    ProviderScope(
-      child: BlocProvider(
-        create: (_) => getIt.get<ThemeCubit>()..initialize(),
-        child: const _MyApp(),
-      ),
+    BlocProvider(
+      create: (_) => getIt.get<ThemeCubit>()..initialize(),
+      child: const _MyApp(),
     ),
   );
 }
