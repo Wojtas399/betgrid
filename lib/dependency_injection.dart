@@ -13,5 +13,5 @@ final getIt = GetIt.instance;
 )
 void configureDependencies() {
   getIt.init();
-  getIt.registerLazySingleton(() => AppRouter());
+  getIt.registerSingleton(AppRouter());
 }

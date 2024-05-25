@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository_method_providers.dart';
 import '../../../dependency_injection.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import '../../config/theme/custom_colors.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/grand_prix_id_provider.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';
 import 'grand_prix_points_summary.dart';
-import 'provider/grand_prix_bet_provider.dart';
-import 'provider/player_id_provider.dart';
-import 'provider/results_for_grand_prix_provider.dart';
 
-class GrandPrixBetQualifications extends ConsumerWidget {
+class GrandPrixBetQualifications extends StatelessWidget {
   const GrandPrixBetQualifications({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final List<String?>? standings = ref.watch(
-      grandPrixBetProvider.select(
-        (state) => state.value?.qualiStandingsByDriverIds,
-      ),
+  Widget build(BuildContext context) {
+    final List<String?>? betStandings = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBet?.qualiStandingsByDriverIds,
     );
-    final List<String?>? resultsStandings = ref.watch(
-      resultsForGrandPrixProvider.select(
-        (state) => state.value?.qualiStandingsByDriverIds,
-      ),
+    final List<String?>? resultsStandings = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixResults?.qualiStandingsByDriverIds,
     );
-    final String? grandPrixId = ref.watch(grandPrixIdProvider);
-    final String? playerId = ref.watch(playerIdProvider);
-    QualiBetPoints? qualiPointsDetails;
-    if (grandPrixId != null && playerId != null) {
-      qualiPointsDetails = ref.watch(
-        grandPrixBetPointsProvider(
-          grandPrixId: grandPrixId,
-          playerId: playerId,
-        ).select((state) => state.value?.qualiBetPoints),
-      );
-    }
+    final QualiBetPoints? qualiPointsDetails = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.qualiBetPoints,
+    );
     final List<double>? positionsPoints = qualiPointsDetails != null
         ? [
             qualiPointsDetails.q3P1Points,
@@ -88,7 +75,7 @@ class GrandPrixBetQualifications extends ConsumerWidget {
                   _ => null,
                 },
                 betChild: DriverDescription(
-                  driverId: standings![itemIndex],
+                  driverId: betStandings![itemIndex],
                 ),
                 resultsChild: DriverDescription(
                   driverId: resultsStandings?[itemIndex],

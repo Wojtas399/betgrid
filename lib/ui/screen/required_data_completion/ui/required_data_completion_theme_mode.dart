@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/user.dart' as user;
+import '../../../common_cubit/theme_cubit.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../component/theme_mode_selection_component.dart';
-import '../../../controller/theme_mode_controller.dart';
 import '../../../extensions/build_context_extensions.dart';
 
 class RequiredDataCompletionThemeMode extends StatelessWidget {
@@ -27,22 +27,23 @@ class RequiredDataCompletionThemeMode extends StatelessWidget {
   }
 }
 
-class _ThemeModeTypes extends ConsumerWidget {
+class _ThemeModeTypes extends StatelessWidget {
   const _ThemeModeTypes();
 
+  void _onThemeModeChanged(user.ThemeMode themeMode, BuildContext context) {
+    context.read<ThemeCubit>().changeThemeMode(themeMode);
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<user.ThemeMode> themeMode = ref.watch(
-      themeModeControllerProvider,
+  Widget build(BuildContext context) {
+    final user.ThemeMode? themeMode = context.select(
+      (ThemeCubit cubit) => cubit.state?.themeMode,
     );
 
     return ThemeModeSelection(
-      selectedThemeMode: themeMode.value,
-      onThemeModeChanged: (user.ThemeMode themeMode) {
-        ref
-            .read(themeModeControllerProvider.notifier)
-            .changeThemeMode(themeMode);
-      },
+      selectedThemeMode: themeMode,
+      onThemeModeChanged: (user.ThemeMode themeMode) =>
+          _onThemeModeChanged(themeMode, context),
     );
   }
 }

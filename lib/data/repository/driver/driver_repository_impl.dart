@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../firebase/model/driver_dto/driver_dto.dart';
 import '../../../firebase/service/firebase_driver_service.dart';
@@ -7,14 +8,12 @@ import '../../mapper/driver_mapper.dart';
 import '../repository.dart';
 import 'driver_repository.dart';
 
+@LazySingleton(as: DriverRepository)
 class DriverRepositoryImpl extends Repository<Driver>
     implements DriverRepository {
   final FirebaseDriverService _dbDriverService;
 
-  DriverRepositoryImpl({
-    required FirebaseDriverService firebaseDriverService,
-    super.initialData,
-  }) : _dbDriverService = firebaseDriverService;
+  DriverRepositoryImpl(this._dbDriverService);
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {

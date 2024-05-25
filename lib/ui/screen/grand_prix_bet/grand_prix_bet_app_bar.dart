@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/auth/auth_repository_method_providers.dart';
-import 'provider/grand_prix_name_provider.dart';
-import 'provider/player_id_provider.dart';
-import 'provider/player_username_provider.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -14,32 +11,34 @@ class GrandPrixBetAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: const _GrandPrixName(),
-      scrolledUnderElevation: 0.0,
-    );
-  }
+  Widget build(BuildContext context) => AppBar(
+        title: const _GrandPrixName(),
+        scrolledUnderElevation: 0.0,
+      );
 }
 
-class _GrandPrixName extends ConsumerWidget {
+class _GrandPrixName extends StatelessWidget {
   const _GrandPrixName();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<String?> grandPrixName = ref.watch(grandPrixNameProvider);
-    final String? playerId = ref.watch(playerIdProvider);
-    final String? loggedUserId = ref.watch(loggedUserIdProvider).value;
-    final AsyncValue<String?> playerUsername =
-        ref.watch(playerUsernameProvider);
+  Widget build(BuildContext context) {
+    final String? playerUsername = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.playerUsername,
+    );
+    final String? grandPrixName = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.grandPrixName,
+    );
+    final bool? isPlayerIdSameAsLoggedUserId = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.isPlayerIdSameAsLoggedUserId,
+    );
 
-    if (grandPrixName is AsyncData && playerUsername is AsyncData) {
-      String title = grandPrixName.value!;
-      if (playerId != loggedUserId && playerUsername.value != null) {
-        title += ' (${playerUsername.value})';
+    String title = '--';
+    if (grandPrixName != null && playerUsername != null) {
+      title = grandPrixName;
+      if (isPlayerIdSameAsLoggedUserId == false) {
+        title += ' ($playerUsername)';
       }
-      return Text(title);
     }
-    return const Text('--');
+    return Text(title);
   }
 }

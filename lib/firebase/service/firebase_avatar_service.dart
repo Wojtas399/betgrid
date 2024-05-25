@@ -2,16 +2,15 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:injectable/injectable.dart';
 
-part 'firebase_avatar_service.g.dart';
-
+@injectable
 class FirebaseAvatarService {
   Reference _getAvatarRef(String userId) => FirebaseStorage.instance.ref(
         'Avatars/$userId.jpg',
       );
 
-  Future<String?> loadAvatarUrlForUser({required String userId}) async =>
+  Future<String?> fetchAvatarUrlForUser({required String userId}) async =>
       await _doesUserAvatarExists(userId)
           ? await _getAvatarRef(userId).getDownloadURL()
           : null;
@@ -40,7 +39,3 @@ class FirebaseAvatarService {
         null;
   }
 }
-
-@riverpod
-FirebaseAvatarService firebaseAvatarService(FirebaseAvatarServiceRef ref) =>
-    FirebaseAvatarService();

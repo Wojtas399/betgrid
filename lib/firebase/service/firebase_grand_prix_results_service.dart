@@ -1,12 +1,11 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
 import '../model/grand_prix_result_dto/grand_prix_results_dto.dart';
 
-part 'firebase_grand_prix_results_service.g.dart';
-
+@injectable
 class FirebaseGrandPrixResultsService {
-  Future<GrandPrixResultsDto?> loadResultsForGrandPrix({
+  Future<GrandPrixResultsDto?> fetchResultsForGrandPrix({
     required String grandPrixId,
   }) async {
     final snapshot = await getGrandPrixResultsRef()
@@ -17,9 +16,3 @@ class FirebaseGrandPrixResultsService {
     return snapshot.docs.first.data();
   }
 }
-
-@riverpod
-FirebaseGrandPrixResultsService firebaseGrandPrixResultsService(
-  FirebaseGrandPrixResultsServiceRef ref,
-) =>
-    FirebaseGrandPrixResultsService();

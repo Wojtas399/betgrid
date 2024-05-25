@@ -1,52 +1,50 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/user.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../config/router/app_router.dart';
-import '../../provider/logged_user_provider.dart';
+import 'cubit/home_cubit.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const HomeAppBar({super.key, required this.title});
+  const HomeAppBar({
+    super.key,
+    required this.title,
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(title),
-      actions: const [
-        _Avatar(),
-        GapHorizontal8(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => AppBar(
+        title: Text(title),
+        actions: const [
+          _Avatar(),
+          GapHorizontal8(),
+        ],
+      );
 }
 
-class _Avatar extends ConsumerWidget {
+class _Avatar extends StatelessWidget {
   const _Avatar();
 
+  void _onAvatarPressed(BuildContext context) {
+    context.navigateTo(const ProfileRoute());
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String? username = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.username,
-      ),
+  Widget build(BuildContext context) {
+    final String? username = context.select(
+      (HomeCubit cubit) => cubit.state.username,
     );
-    final String? avatarUrl = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<User?> loggedUserData) => loggedUserData.value?.avatarUrl,
-      ),
+    final String? avatarUrl = context.select(
+      (HomeCubit cubit) => cubit.state.avatarUrl,
     );
 
     return IconButton(
-      onPressed: () {
-        context.navigateTo(const ProfileRoute());
-      },
+      onPressed: () => _onAvatarPressed(context),
       icon: CircleAvatar(
         backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
         child: username == null && avatarUrl == null

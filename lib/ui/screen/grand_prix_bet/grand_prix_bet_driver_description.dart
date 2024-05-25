@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/driver/driver_repository_method_providers.dart';
 import '../../../model/driver.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text_component.dart';
+import 'cubit/grand_prix_bet_cubit.dart';
 
-class DriverDescription extends ConsumerWidget {
+class DriverDescription extends StatelessWidget {
   final String? driverId;
 
   const DriverDescription({super.key, required this.driverId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Driver? driver;
-    if (driverId != null) {
-      driver = ref.watch(driverProvider(driverId: driverId!)).value;
-    }
+  Widget build(BuildContext context) {
+    final Driver? driver = driverId != null
+        ? context.select(
+            (GrandPrixBetCubit cubit) => cubit.state.getDriverById(driverId!),
+          )
+        : null;
 
     return driver != null
         ? Row(

@@ -11,9 +11,7 @@ void main() {
   late DriverRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = DriverRepositoryImpl(
-      firebaseDriverService: dbDriverService,
-    );
+    repositoryImpl = DriverRepositoryImpl(dbDriverService);
   });
 
   tearDown(() {
@@ -23,7 +21,9 @@ void main() {
   test(
     'getAllDrivers, '
     'repository state is empty, '
-    'should fetch drivers from db, add them to repo and emit them',
+    'should fetch drivers from db, add them to repo state and emit them if repo '
+    'state is empty, '
+    'should only emit all drivers if repo state is not empty',
     () async {
       const List<DriverDto> driverDtos = [
         DriverDto(
@@ -73,93 +73,21 @@ void main() {
       ];
       dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
 
-      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
+      final Stream<List<Driver>> allDrivers1$ = repositoryImpl.getAllDrivers();
+      final Stream<List<Driver>> allDrivers2$ = repositoryImpl.getAllDrivers();
 
-      expect(await allDrivers$.first, expectedDrivers);
+      expect(await allDrivers1$.first, expectedDrivers);
+      expect(await allDrivers2$.first, expectedDrivers);
       expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
       verify(dbDriverService.fetchAllDrivers).called(1);
     },
   );
 
   test(
-    'getAllDrivers, '
-    'repository state contains drivers, '
-    'should only emit all drivers from repository state',
-    () async {
-      const List<Driver> expectedDrivers = [
-        Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 100,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 1,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd3',
-          name: 'Luis',
-          surname: 'Hamilton',
-          number: 44,
-          team: Team.mercedes,
-        ),
-      ];
-      repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
-        initialData: expectedDrivers,
-      );
-
-      final Stream<List<Driver>> allDrivers$ = repositoryImpl.getAllDrivers();
-
-      expect(await allDrivers$.first, expectedDrivers);
-      verifyNever(dbDriverService.fetchAllDrivers);
-    },
-  );
-
-  test(
     'getDriverById, '
-    'driver exists in repository state, '
-    'should emit existing driver',
-    () {
-      final List<Driver> existingDrivers = [
-        const Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 1,
-          team: Team.ferrari,
-        ),
-        const Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 2,
-          team: Team.redBullRacing,
-        ),
-      ];
-      final expectedDriver = existingDrivers.first;
-      repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
-        initialData: existingDrivers,
-      );
-
-      final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
-        driverId: expectedDriver.id,
-      );
-
-      expect(driver$, emits(expectedDriver));
-    },
-  );
-
-  test(
-    'getDriverById, '
-    'driver does not exist in repository state, '
-    'should fetch driver from db, add it to repo state and emit it',
+    'should fetch driver from db, add it to repo state and emit it if driver '
+    'does not exist in repo state, '
+    'should only emit driver if it exists in repo state',
     () async {
       const DriverDto expectedDriverDto = DriverDto(
         id: 'd3',
@@ -175,37 +103,18 @@ void main() {
         number: 100,
         team: Team.mercedes,
       );
-      final List<Driver> existingDrivers = [
-        const Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 1,
-          team: Team.ferrari,
-        ),
-        const Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 2,
-          team: Team.redBullRacing,
-        ),
-      ];
       dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
-      repositoryImpl = DriverRepositoryImpl(
-        firebaseDriverService: dbDriverService,
-        initialData: existingDrivers,
-      );
 
-      final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
+      final Stream<Driver?> driver1$ = repositoryImpl.getDriverById(
+        driverId: expectedDriver.id,
+      );
+      final Stream<Driver?> driver2$ = repositoryImpl.getDriverById(
         driverId: expectedDriver.id,
       );
 
-      expect(await driver$.first, expectedDriver);
-      expect(
-        repositoryImpl.repositoryState$,
-        emits([...existingDrivers, expectedDriver]),
-      );
+      expect(await driver1$.first, expectedDriver);
+      expect(await driver2$.first, expectedDriver);
+      expect(await repositoryImpl.repositoryState$.first, [expectedDriver]);
       verify(
         () => dbDriverService.fetchDriverById(driverId: expectedDriver.id),
       ).called(1);

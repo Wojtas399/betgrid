@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
@@ -8,17 +9,16 @@ import '../../mapper/player_mapper.dart';
 import '../repository.dart';
 import 'player_repository.dart';
 
+@LazySingleton(as: PlayerRepository)
 class PlayerRepositoryImpl extends Repository<Player>
     implements PlayerRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
 
-  PlayerRepositoryImpl({
-    required FirebaseUserService firebaseUserService,
-    required FirebaseAvatarService firebaseAvatarService,
-    super.initialData,
-  })  : _dbUserService = firebaseUserService,
-        _dbAvatarService = firebaseAvatarService;
+  PlayerRepositoryImpl(
+    this._dbUserService,
+    this._dbAvatarService,
+  );
 
   @override
   Stream<List<Player>?> getAllPlayers() async* {
@@ -40,10 +40,10 @@ class PlayerRepositoryImpl extends Repository<Player>
   }
 
   Future<void> _fetchAllPlayersFromDb() async {
-    final List<UserDto> userDtos = await _dbUserService.loadAllUsers();
+    final List<UserDto> userDtos = await _dbUserService.fetchAllUsers();
     final List<Player> players = [];
     for (final userDto in userDtos) {
-      final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
+      final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
         userId: userDto.id,
       );
       final Player player = mapPlayerFromUserDto(userDto, avatarUrl);
@@ -54,9 +54,9 @@ class PlayerRepositoryImpl extends Repository<Player>
 
   Future<Player?> _fetchPlayerFromDb(String playerId) async {
     final UserDto? userDto =
-        await _dbUserService.loadUserById(userId: playerId);
+        await _dbUserService.fetchUserById(userId: playerId);
     if (userDto == null) return null;
-    final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
+    final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: playerId,
     );
     final Player player = mapPlayerFromUserDto(userDto, avatarUrl);

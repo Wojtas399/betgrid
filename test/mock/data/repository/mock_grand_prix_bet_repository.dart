@@ -4,7 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRepository extends Mock
     implements GrandPrixBetRepository {
-  void mockGetAllGrandPrixBetsForPlayer({List<GrandPrixBet>? grandPrixBets}) {
+  void mockGetAllGrandPrixBetsForPlayer({
+    List<GrandPrixBet>? grandPrixBets,
+  }) {
     when(
       () => getAllGrandPrixBetsForPlayer(
         playerId: any(named: 'playerId'),
@@ -12,38 +14,33 @@ class MockGrandPrixBetRepository extends Mock
     ).thenAnswer((_) => Stream.value(grandPrixBets));
   }
 
-  void mockGetBetByGrandPrixIdAndPlayerId(GrandPrixBet? grandPrixBet) {
+  void mockGetGrandPrixBetsForPlayersAndGrandPrixes({
+    required List<GrandPrixBet> grandPrixBets,
+  }) {
     when(
-      () => getBetByGrandPrixIdAndPlayerId(
+      () => getGrandPrixBetsForPlayersAndGrandPrixes(
+        idsOfPlayers: any(named: 'idsOfPlayers'),
+        idsOfGrandPrixes: any(named: 'idsOfGrandPrixes'),
+      ),
+    ).thenAnswer((_) => Stream.value(grandPrixBets));
+  }
+
+  void mockGetGrandPrixBetForPlayerAndGrandPrix({
+    GrandPrixBet? grandPrixBet,
+  }) {
+    when(
+      () => getGrandPrixBetForPlayerAndGrandPrix(
         playerId: any(named: 'playerId'),
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBet));
   }
 
-  void mockAddGrandPrixBets() {
+  void mockAddGrandPrixBetsForPlayer() {
     when(
-      () => addGrandPrixBets(
+      () => addGrandPrixBetsForPlayer(
         playerId: any(named: 'playerId'),
         grandPrixBets: any(named: 'grandPrixBets'),
-      ),
-    ).thenAnswer((_) => Future.value());
-  }
-
-  void mockUpdateGrandPrixBet() {
-    when(
-      () => updateGrandPrixBet(
-        playerId: any(named: 'playerId'),
-        grandPrixBetId: any(named: 'grandPrixBetId'),
-        qualiStandingsByDriverIds: any(named: 'qualiStandingsByDriverIds'),
-        p1DriverId: any(named: 'p1DriverId'),
-        p2DriverId: any(named: 'p2DriverId'),
-        p3DriverId: any(named: 'p3DriverId'),
-        p10DriverId: any(named: 'p10DriverId'),
-        fastestLapDriverId: any(named: 'fastestLapDriverId'),
-        dnfDriverIds: any(named: 'dnfDriverIds'),
-        willBeSafetyCar: any(named: 'willBeSafetyCar'),
-        willBeRedFlag: any(named: 'willBeRedFlag'),
       ),
     ).thenAnswer((_) => Future.value());
   }

@@ -8,16 +8,16 @@ class MockFirebaseUserService extends Mock implements FirebaseUserService {
     registerFallbackValue(ThemePrimaryColorDto.defaultRed);
   }
 
-  void mockLoadUserById({UserDto? userDto}) {
+  void mockFetchUserById({UserDto? userDto}) {
     when(
-      () => loadUserById(
+      () => fetchUserById(
         userId: any(named: 'userId'),
       ),
     ).thenAnswer((_) => Future.value(userDto));
   }
 
-  void mockLoadAllUsers({required List<UserDto> userDtos}) {
-    when(loadAllUsers).thenAnswer((_) => Future.value(userDtos));
+  void mockFetchAllUsers({required List<UserDto> userDtos}) {
+    when(fetchAllUsers).thenAnswer((_) => Future.value(userDtos));
   }
 
   void mockAddUser({UserDto? addedUserDto}) {

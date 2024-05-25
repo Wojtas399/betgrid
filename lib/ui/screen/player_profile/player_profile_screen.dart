@@ -1,127 +1,157 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../dependency_injection.dart';
 import '../../../model/player.dart';
+import '../../../use_case/get_grand_prixes_with_points_use_case.dart';
 import '../../component/avatar_component.dart';
 import '../../component/sliver_grand_prixes_list_component.dart';
 import '../../component/sliver_player_total_points_component.dart';
 import '../../component/text_component.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/grand_prixes_with_points_provider.dart';
-import '../../provider/player_points_provider.dart';
+import 'cubit/player_profile_cubit.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
-  final Player player;
+  final String playerId;
 
-  const PlayerProfileScreen({super.key, required this.player});
+  const PlayerProfileScreen({
+    super.key,
+    required this.playerId,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _AppBar(
-            backgroundColor: context.colorScheme.primary,
-            foregroundColor: Theme.of(context).canvasColor,
-            player: player,
-            context: context,
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) =>
+            getIt.get<PlayerProfileCubit>()..initialize(playerId: playerId),
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              _AppBar.build(
+                backgroundColor: context.colorScheme.primary,
+                foregroundColor: Theme.of(context).canvasColor,
+              ),
+              const _TotalPoints(),
+              const _GrandPrixes(),
+            ],
           ),
-          _TotalPoints(playerId: player.id),
-          _GrandPrixes(playerId: player.id),
-        ],
-      ),
-    );
-  }
+        ),
+      );
 }
 
 class _AppBar extends SliverAppBar {
-  _AppBar({
-    required Player player,
-    required BuildContext context,
+  const _AppBar({
     super.backgroundColor,
     super.foregroundColor,
+    super.flexibleSpace,
   }) : super(
           pinned: true,
           expandedHeight: 300,
           surfaceTintColor: Colors.transparent,
-          flexibleSpace: FlexibleSpaceBar(
-            title: TitleLarge(
-              player.username,
-              color: Theme.of(context).canvasColor,
-            ),
-            centerTitle: true,
-            titlePadding: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 0,
-            ),
-            background: LayoutBuilder(
-              builder: (_, BoxConstraints constraints) {
-                final double avatarSize = constraints.maxHeight * 0.55;
-
-                return Center(
-                  child: SizedBox(
-                    width: avatarSize,
-                    height: avatarSize,
-                    child: Hero(
-                      tag: player.id,
-                      child: Avatar(
-                        avatarUrl: player.avatarUrl,
-                        username: player.username,
-                        usernameFontSize: 56,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
         );
+
+  factory _AppBar.build({
+    required Color backgroundColor,
+    required Color foregroundColor,
+  }) =>
+      _AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        flexibleSpace: Builder(
+          builder: (BuildContext context) {
+            final Player? player = context.select(
+              (PlayerProfileCubit cubit) => cubit.state.player,
+            );
+
+            return player != null
+                ? FlexibleSpaceBar(
+                    title: TitleLarge(
+                      player.username,
+                      color: Theme.of(context).canvasColor,
+                    ),
+                    centerTitle: true,
+                    titlePadding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 0,
+                    ),
+                    background: LayoutBuilder(
+                      builder: (_, BoxConstraints constraints) {
+                        final double avatarSize = constraints.maxHeight * 0.55;
+
+                        return Center(
+                          child: SizedBox(
+                            width: avatarSize,
+                            height: avatarSize,
+                            child: Hero(
+                              tag: player.id,
+                              child: Avatar(
+                                avatarUrl: player.avatarUrl,
+                                username: player.username,
+                                usernameFontSize: 56,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : const CircularProgressIndicator();
+          },
+        ),
+      );
 }
 
-class _TotalPoints extends ConsumerWidget {
-  final String playerId;
-
-  const _TotalPoints({required this.playerId});
+class _TotalPoints extends StatelessWidget {
+  const _TotalPoints();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final totalPointsAsyncVal = ref.watch(
-      playerPointsProvider(playerId: playerId),
+  Widget build(BuildContext context) {
+    final isCubitLoading = context.select(
+      (PlayerProfileCubit cubit) => cubit.state.isLoading,
+    );
+    final totalPoints = context.select(
+      (PlayerProfileCubit cubit) => cubit.state.totalPoints,
     );
 
     return SliverPlayerTotalPoints(
-      points: totalPointsAsyncVal.value,
-      isLoading: totalPointsAsyncVal.isLoading,
+      points: totalPoints,
+      isLoading: isCubitLoading,
     );
   }
 }
 
-class _GrandPrixes extends ConsumerWidget {
-  final String playerId;
+class _GrandPrixes extends StatelessWidget {
+  const _GrandPrixes();
 
-  const _GrandPrixes({required this.playerId});
+  void _onGrandPrixPressed(String grandPrixId, BuildContext context) {
+    final String? playerId =
+        context.read<PlayerProfileCubit>().state.player?.id;
+    if (playerId != null) {
+      context.navigateTo(
+        GrandPrixBetRoute(
+          grandPrixId: grandPrixId,
+          playerId: playerId,
+        ),
+      );
+    }
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final grandPrixesWithPointsAsyncVal = ref.watch(
-      grandPrixesWithPointsProvider(playerId: playerId),
+  Widget build(BuildContext context) {
+    final bool isCubitLoading = context.select(
+      (PlayerProfileCubit cubit) => cubit.state.isLoading,
+    );
+    final List<GrandPrixWithPoints> grandPrixesWithPoints = context.select(
+      (PlayerProfileCubit cubit) => cubit.state.grandPrixesWithPoints,
     );
 
     return SliverGrandPrixesList(
-      playerId: playerId,
-      grandPrixesWithPoints: [...?grandPrixesWithPointsAsyncVal.value],
-      onGrandPrixPressed: (String grandPrixId) {
-        context.navigateTo(
-          GrandPrixBetRoute(
-            grandPrixId: grandPrixId,
-            playerId: playerId,
-          ),
-        );
-      },
-      isLoading: grandPrixesWithPointsAsyncVal.isLoading,
+      grandPrixesWithPoints: grandPrixesWithPoints,
+      onGrandPrixPressed: (String grandPrixId) =>
+          _onGrandPrixPressed(grandPrixId, context),
+      isLoading: isCubitLoading,
     );
   }
 }

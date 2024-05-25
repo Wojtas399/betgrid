@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
@@ -11,16 +12,15 @@ import '../../mapper/user_mapper.dart';
 import '../repository.dart';
 import 'user_repository.dart';
 
+@LazySingleton(as: UserRepository)
 class UserRepositoryImpl extends Repository<User> implements UserRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
 
-  UserRepositoryImpl({
-    required FirebaseUserService firebaseUserService,
-    required FirebaseAvatarService firebaseAvatarService,
-    super.initialData,
-  })  : _dbUserService = firebaseUserService,
-        _dbAvatarService = firebaseAvatarService;
+  UserRepositoryImpl(
+    this._dbUserService,
+    this._dbAvatarService,
+  );
 
   @override
   Stream<User?> getUserById({required String userId}) async* {
@@ -116,9 +116,9 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<User?> _fetchUserFromDb(String userId) async {
-    final UserDto? userDto = await _dbUserService.loadUserById(userId: userId);
+    final UserDto? userDto = await _dbUserService.fetchUserById(userId: userId);
     if (userDto == null) return null;
-    final String? avatarUrl = await _dbAvatarService.loadAvatarUrlForUser(
+    final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: userId,
     );
     final User user = mapUserFromDto(userDto, avatarUrl);

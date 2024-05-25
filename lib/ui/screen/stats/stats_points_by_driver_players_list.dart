@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../model/player.dart';
 import '../../component/avatar_component.dart';
 import '../../component/padding/padding_components.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
-import 'provider/points_by_driver_data.dart';
-import 'provider/stats_data_provider.dart';
+import 'cubit/stats_cubit.dart';
 
-class StatsPointsByDriverPlayersList extends ConsumerWidget {
+class StatsPointsByDriverPlayersList extends StatelessWidget {
   const StatsPointsByDriverPlayersList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<PointsByDriverPlayerPoints>?> pointsByDriverData =
-        ref.watch(
-      statsProvider.select(
-        (AsyncValue<StatsData?> statsData) => statsData.isLoading
-            ? const AsyncLoading()
-            : AsyncData(statsData.value?.pointsByDriverChartData),
-      ),
+  Widget build(BuildContext context) {
+    final bool isLoading = context.select(
+      (StatsCubit cubit) => cubit.state.arePointsForDriverLoading,
+    );
+    final pointsByDriverData = context.select(
+      (StatsCubit cubit) => cubit.state.pointsByDriver,
     );
 
-    if (pointsByDriverData is AsyncLoading) return const _LoadingContent();
-    if (pointsByDriverData.value == null) return const SizedBox();
-    if (pointsByDriverData.value!.isEmpty) return const _NoSelectedDriverInfo();
-    final playersPoints = [...pointsByDriverData.value!];
+    if (isLoading) return const _LoadingContent();
+    if (pointsByDriverData?.isEmpty == true) {
+      return const _NoSelectedDriverInfo();
+    }
+    final playersPoints = [...?pointsByDriverData];
     playersPoints.sort(
       (p1, p2) => p1.points != p2.points
           ? p2.points.compareTo(p1.points)

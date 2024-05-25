@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../model/user.dart' as user;
 import '../../component/avatar_component.dart';
 import '../../component/dialog/actions_dialog_component.dart';
-import '../../controller/logged_user/logged_user_controller.dart';
 import '../../extensions/build_context_extensions.dart';
-import '../../provider/logged_user_provider.dart';
 import '../../service/dialog_service.dart';
 import '../../service/image_service.dart';
+import 'cubit/profile_cubit.dart';
 
 enum _AvatarActions { selectFromGallery, capturePhoto, delete }
 
-class ProfileAvatar extends ConsumerWidget {
+class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({super.key});
 
-  Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
+  Future<void> _onPressed(BuildContext context) async {
     final _AvatarActions? action = await _askForAvatarAction(context);
-    switch (action) {
-      case _AvatarActions.selectFromGallery:
-        await _changeAvatar(ImageSource.gallery, ref);
-      case _AvatarActions.capturePhoto:
-        await _changeAvatar(ImageSource.camera, ref);
-      case _AvatarActions.delete:
-        await _deleteAvatar(ref);
-      case null:
-        break;
+    if (context.mounted) {
+      switch (action) {
+        case _AvatarActions.selectFromGallery:
+          await _changeAvatar(ImageSource.gallery, context);
+        case _AvatarActions.capturePhoto:
+          await _changeAvatar(ImageSource.camera, context);
+        case _AvatarActions.delete:
+          await _deleteAvatar(context);
+        case null:
+          break;
+      }
     }
   }
 
@@ -52,44 +52,38 @@ class ProfileAvatar extends ConsumerWidget {
         ],
       );
 
-  Future<void> _changeAvatar(ImageSource imageSource, WidgetRef ref) async {
+  Future<void> _changeAvatar(
+    ImageSource imageSource,
+    BuildContext context,
+  ) async {
     final String? newAvatarImgPath = await switch (imageSource) {
       ImageSource.camera => capturePhoto(),
       ImageSource.gallery => pickImage(),
     };
-    if (newAvatarImgPath != null) {
+    if (newAvatarImgPath != null && context.mounted) {
       showLoadingDialog();
-      await ref
-          .read(loggedUserControllerProvider.notifier)
-          .updateAvatar(newAvatarImgPath);
+      await context.read<ProfileCubit>().updateAvatar(newAvatarImgPath);
       closeLoadingDialog();
     }
   }
 
-  Future<void> _deleteAvatar(WidgetRef ref) async {
+  Future<void> _deleteAvatar(BuildContext context) async {
     showLoadingDialog();
-    await ref.read(loggedUserControllerProvider.notifier).updateAvatar(null);
+    await context.read<ProfileCubit>().updateAvatar(null);
     closeLoadingDialog();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String? username = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<user.User?> loggedUserData) =>
-            loggedUserData.value?.username,
-      ),
+  Widget build(BuildContext context) {
+    final String? username = context.select(
+      (ProfileCubit cubit) => cubit.state.username,
     );
-    final String? avatarUrl = ref.watch(
-      loggedUserProvider.select(
-        (AsyncValue<user.User?> loggedUser) => loggedUser.value?.avatarUrl,
-      ),
+    final String? avatarUrl = context.select(
+      (ProfileCubit cubit) => cubit.state.avatarUrl,
     );
 
     return GestureDetector(
-      onTap: () {
-        _onPressed(context, ref);
-      },
+      onTap: () => _onPressed(context),
       child: Center(
         child: SizedBox(
           width: 250,

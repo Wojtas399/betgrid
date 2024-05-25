@@ -1,24 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
 import '../model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
-part 'firebase_grand_prix_bet_service.g.dart';
-
+@injectable
 class FirebaseGrandPrixBetService {
-  Future<List<GrandPrixBetDto>> loadAllGrandPrixBets({
+  Future<List<GrandPrixBetDto>> fetchAllGrandPrixBets({
     required String userId,
   }) async {
     final snapshot = await getGrandPrixBetsRef(userId).get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future<GrandPrixBetDto?> loadGrandPrixBetByGrandPrixId({
-    required String userId,
+  Future<GrandPrixBetDto?> fetchGrandPrixBetByGrandPrixId({
+    required String playerId,
     required String grandPrixId,
   }) async {
-    final snapshot = await getGrandPrixBetsRef(userId)
+    final snapshot = await getGrandPrixBetsRef(playerId)
         .where('grandPrixId', isEqualTo: grandPrixId)
         .get();
     if (snapshot.docs.isEmpty) return null;
@@ -73,9 +72,3 @@ class FirebaseGrandPrixBetService {
     return doc.data();
   }
 }
-
-@riverpod
-FirebaseGrandPrixBetService firebaseGrandPrixBetService(
-  FirebaseGrandPrixBetServiceRef ref,
-) =>
-    FirebaseGrandPrixBetService();

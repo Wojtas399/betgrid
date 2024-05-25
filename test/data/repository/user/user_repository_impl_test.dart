@@ -17,80 +17,47 @@ void main() {
   const String userId = 'u1';
 
   setUp(() {
-    repositoryImpl = UserRepositoryImpl(
-      firebaseUserService: dbUserService,
-      firebaseAvatarService: dbAvatarService,
-    );
+    repositoryImpl = UserRepositoryImpl(dbUserService, dbAvatarService);
   });
 
   tearDown(() {
     reset(dbUserService);
+    reset(dbAvatarService);
   });
 
   test(
     'getUserById, '
-    'user exists in repository state, '
-    'should return user from state',
-    () {
-      final User expectedUser = createUser(id: 'u2', username: 'username 2');
-      final List<User> existingUsers = [
-        createUser(id: 'u1', username: 'username 1'),
-        expectedUser,
-        createUser(id: 'u3', username: 'username 3'),
-      ];
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
-
-      final Stream<User?> user$ = repositoryImpl.getUserById(userId: 'u2');
-
-      expect(user$, emits(expectedUser));
-    },
-  );
-
-  test(
-    'getUserById, '
-    'user does not exist in repository state, '
-    'should load user data and avatar from db, should add him to repo state and '
-    'should emit him',
+    'should load user data and avatar from db, should add its data to repo state '
+    'and should emit them if user does not exist in repo state, '
+    'should only emit user if it exists in repo state',
     () async {
-      const String id = 'u2';
-      const String username = 'username 2';
+      const String username = 'username';
       const String avatarUrl = 'avatar/url';
-      final UserDto expectedUserDto = createUserDto(id: id, username: username);
+      final UserDto expectedUserDto = createUserDto(
+        id: userId,
+        username: username,
+      );
       final User expectedUser = createUser(
-        id: id,
+        id: userId,
         username: username,
         avatarUrl: avatarUrl,
       );
-      final List<User> existingUsers = [
-        createUser(id: 'u1', username: 'username 1'),
-        createUser(id: 'u3', username: 'username 3'),
-      ];
-      dbUserService.mockLoadUserById(userDto: expectedUserDto);
-      dbAvatarService.mockLoadAvatarUrlForUser(avatarUrl: avatarUrl);
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
+      dbUserService.mockFetchUserById(userDto: expectedUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: avatarUrl);
+      repositoryImpl = UserRepositoryImpl(dbUserService, dbAvatarService);
 
-      final Stream<User?> user$ = repositoryImpl.getUserById(userId: id);
+      final Stream<User?> user1$ = repositoryImpl.getUserById(userId: userId);
+      final Stream<User?> user2$ = repositoryImpl.getUserById(userId: userId);
 
-      expect(user$, emits(expectedUser));
-      expect(
-        repositoryImpl.repositoryState$,
-        emitsInOrder([
-          existingUsers,
-          [...existingUsers, expectedUser]
-        ]),
-      );
-      await repositoryImpl.repositoryState$.first;
-      verify(() => dbUserService.loadUserById(userId: id)).called(1);
-      await repositoryImpl.repositoryState$.first;
-      verify(() => dbAvatarService.loadAvatarUrlForUser(userId: id)).called(1);
+      expect(await user1$.first, expectedUser);
+      expect(await user2$.first, expectedUser);
+      expect(await repositoryImpl.repositoryState$.first, [expectedUser]);
+      verify(
+        () => dbUserService.fetchUserById(userId: userId),
+      ).called(1);
+      verify(
+        () => dbAvatarService.fetchAvatarUrlForUser(userId: userId),
+      ).called(1);
     },
   );
 
@@ -251,16 +218,6 @@ void main() {
     'user does not exists in repo state, '
     'should finish method call',
     () async {
-      final List<User> existingUsers = [
-        createUser(id: 'u2'),
-        createUser(id: 'u3'),
-      ];
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
-
       await repositoryImpl.updateUserData(userId: userId);
 
       verifyNever(
@@ -284,22 +241,20 @@ void main() {
     'new username is already taken, '
     'should throw UserRepositoryExceptionUsernameAlreadyTaken exception',
     () async {
-      const String newUsername = 'new username';
-      final List<User> existingUsers = [
-        createUser(id: userId),
-        createUser(id: 'u2'),
-        createUser(id: 'u3'),
-      ];
-      const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
-      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
+      final UserDto existingUserDto = createUserDto(
+        id: userId,
+        username: 'username',
       );
+      const String newUsername = 'new username';
+      const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
+      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
+      dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
 
       Object? exception;
       try {
+        final user$ = repositoryImpl.getUserById(userId: userId);
+        await user$.first;
         await repositoryImpl.updateUserData(
           userId: userId,
           username: newUsername,
@@ -328,28 +283,26 @@ void main() {
     'updated user is not returned from db, '
     'should throw UserRepositoryExceptionUserNotFound exception',
     () async {
+      final UserDto existingUserDto = createUserDto(
+        id: userId,
+        username: 'username',
+      );
       const String newUsername = 'new username';
       const ThemeMode newThemeMode = ThemeMode.system;
       const ThemePrimaryColor newThemePrimaryColor = ThemePrimaryColor.pink;
       const ThemeModeDto newThemeModeDto = ThemeModeDto.system;
       const ThemePrimaryColorDto newThemePrimaryColorDto =
           ThemePrimaryColorDto.pink;
-      final List<User> existingUsers = [
-        createUser(id: userId),
-        createUser(id: 'u2'),
-        createUser(id: 'u3'),
-      ];
       const expectedException = UserRepositoryExceptionUserNotFound();
+      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: null);
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
 
       Object? exception;
       try {
+        final user$ = repositoryImpl.getUserById(userId: userId);
+        await user$.first;
         await repositoryImpl.updateUserData(
           userId: userId,
           username: newUsername,
@@ -379,6 +332,10 @@ void main() {
     'updateUserData, '
     'should update user in db and in repo state',
     () async {
+      final UserDto existingUserDto = createUserDto(
+        id: userId,
+        username: 'username',
+      );
       const String newUsername = 'new username';
       const ThemeMode newThemeMode = ThemeMode.system;
       const ThemePrimaryColor newThemePrimaryColor = ThemePrimaryColor.pink;
@@ -397,19 +354,13 @@ void main() {
         themeMode: newThemeModeDto,
         themePrimaryColor: newThemePrimaryColorDto,
       );
-      final List<User> existingUsers = [
-        createUser(id: userId),
-        createUser(id: 'u2'),
-        createUser(id: 'u3'),
-      ];
+      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
 
+      final user$ = repositoryImpl.getUserById(userId: userId);
+      await user$.first;
       await repositoryImpl.updateUserData(
         userId: userId,
         username: newUsername,
@@ -418,8 +369,8 @@ void main() {
       );
 
       expect(
-        repositoryImpl.repositoryState$,
-        emits([updatedUser, existingUsers[1], existingUsers[2]]),
+        await repositoryImpl.repositoryState$.first,
+        [updatedUser],
       );
       verify(
         () => dbUserService.isUsernameAlreadyTaken(username: newUsername),
@@ -441,28 +392,25 @@ void main() {
     'should remove avatar from db and should update user data if it exists in '
     'repo state',
     () async {
-      final User existingUser = createUser(id: userId, avatarUrl: 'avr/u/r/l');
+      final UserDto existingUserDto = createUserDto(id: userId);
+      const String existingUserAvatarUrl = 'avr/u/r/l';
       final User updatedUser = createUser(id: userId, avatarUrl: null);
-      final List<User> existingUsers = [
-        createUser(id: 'u2', avatarUrl: 'avatar/url'),
-        existingUser,
-        createUser(id: 'u3', avatarUrl: 'avr/url'),
-      ];
-      dbAvatarService.mockRemoveAvatarForUser();
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
+      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(
+        avatarUrl: existingUserAvatarUrl,
       );
+      dbAvatarService.mockRemoveAvatarForUser();
 
+      final user$ = repositoryImpl.getUserById(userId: userId);
+      await user$.first;
       await repositoryImpl.updateUserAvatar(
         userId: userId,
         avatarImgPath: null,
       );
 
       expect(
-        repositoryImpl.repositoryState$,
-        emits([existingUsers.first, updatedUser, existingUsers.last]),
+        await repositoryImpl.repositoryState$.first,
+        [updatedUser],
       );
       verify(
         () => dbAvatarService.removeAvatarForUser(userId: userId),
@@ -484,29 +432,26 @@ void main() {
     () async {
       const String newAvatarImgPath = 'avatar/img/path';
       const String newAvatarUrl = 'newAvr/url';
-      final User existingUser = createUser(id: userId, avatarUrl: 'avr/u/r/l');
+      final UserDto existingUserDto = createUserDto(id: userId);
+      const String existingUserAvatarUrl = 'avr/u/r/l';
       final User updatedUser = createUser(id: userId, avatarUrl: newAvatarUrl);
-      final List<User> existingUsers = [
-        createUser(id: 'u2', avatarUrl: 'avatar/url'),
-        existingUser,
-        createUser(id: 'u3', avatarUrl: 'avr/url'),
-      ];
+      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbAvatarService.mockFetchAvatarUrlForUser(
+        avatarUrl: existingUserAvatarUrl,
+      );
       dbAvatarService.mockRemoveAvatarForUser();
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: newAvatarUrl);
-      repositoryImpl = UserRepositoryImpl(
-        firebaseUserService: dbUserService,
-        firebaseAvatarService: dbAvatarService,
-        initialData: existingUsers,
-      );
 
+      final user$ = repositoryImpl.getUserById(userId: userId);
+      await user$.first;
       await repositoryImpl.updateUserAvatar(
         userId: userId,
         avatarImgPath: newAvatarImgPath,
       );
 
       expect(
-        repositoryImpl.repositoryState$,
-        emits([existingUsers.first, updatedUser, existingUsers.last]),
+        await repositoryImpl.repositoryState$.first,
+        [updatedUser],
       );
       verify(
         () => dbAvatarService.removeAvatarForUser(userId: userId),
