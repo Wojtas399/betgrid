@@ -30,6 +30,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 class _Avatar extends StatelessWidget {
   const _Avatar();
 
+  void _onAvatarPressed(BuildContext context) {
+    context.navigateTo(const ProfileRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     final String? username = context.select(
@@ -40,9 +44,7 @@ class _Avatar extends StatelessWidget {
     );
 
     return IconButton(
-      onPressed: () {
-        context.navigateTo(const ProfileRoute());
-      },
+      onPressed: () => _onAvatarPressed(context),
       icon: CircleAvatar(
         backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
         child: username == null && avatarUrl == null
