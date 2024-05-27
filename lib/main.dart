@@ -36,42 +36,23 @@ class _MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeState? themeState = context.watch<ThemeCubit>().state;
 
-    return themeState != null
-        ? MaterialApp.router(
-            title: 'BetGrid',
-            routerConfig: getIt<AppRouter>().config(
-              navigatorObservers: () => [
-                HeroController(),
-              ],
-            ),
-            localizationsDelegates: const [
-              Str.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('pl')],
-            themeMode: themeState.themeMode.toMaterialThemeMode,
-            theme: AppTheme.lightTheme(themeState.primaryColor.toMaterialColor),
-            darkTheme:
-                AppTheme.darkTheme(themeState.primaryColor.toMaterialColor),
-          )
-        : const _SplashScreen();
+    return MaterialApp.router(
+      title: 'BetGrid',
+      routerConfig: getIt<AppRouter>().config(
+        navigatorObservers: () => [
+          HeroController(),
+        ],
+      ),
+      localizationsDelegates: const [
+        Str.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('pl')],
+      themeMode: themeState?.themeMode.toMaterialThemeMode,
+      theme: AppTheme.lightTheme(themeState?.primaryColor.toMaterialColor),
+      darkTheme: AppTheme.darkTheme(themeState?.primaryColor.toMaterialColor),
+    );
   }
-}
-
-class _SplashScreen extends StatelessWidget {
-  const _SplashScreen();
-
-  @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.black,
-        child: const SafeArea(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: Colors.red,
-            ),
-          ),
-        ),
-      );
 }
