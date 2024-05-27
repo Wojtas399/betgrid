@@ -30,17 +30,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 8,
             podium_and_p10_multiplier = None,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = 8 + 2 + (3 * 1.5) + 2
+            total_points = 8 + 2 + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -74,17 +74,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 8,
             podium_and_p10_multiplier = None,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = 8 + 2 + (3 * 1.5) + 2
+            total_points = 8 + 2 + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -118,17 +118,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 0,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 8,
             podium_and_p10_multiplier = None,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = 8 + 2 + (3 * 1.5) + 2
+            total_points = 8 + 2 + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -162,17 +162,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 0,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 6,
             podium_and_p10_multiplier = None,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = 6 + 2 + (3 * 1.5) + 2
+            total_points = 6 + 2 + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -206,17 +206,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 0,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = (10 * 1.5) + (3 * 1.5) + 2
+            total_points = (10 * 1.5) + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -294,17 +294,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
             dnf_driver3_points = 0,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 2,
+            dnf_points = 4,
             dnf_multiplier = None,
             safety_car_and_red_flag_points = 2,
-            total_points = (10 * 1.5) + 2 + 2 + 2
+            total_points = (10 * 1.5) + 2 + 4 + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -338,17 +338,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
+            dnf_driver1_points = 2,
             dnf_driver2_points = 0,
             dnf_driver3_points = 0,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 1,
+            dnf_points = 2,
             dnf_multiplier = None,
             safety_car_and_red_flag_points = 2,
-            total_points = (10 * 1.5) + 2 + 1 + 2
+            total_points = (10 * 1.5) + 2 + 2 + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -426,17 +426,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 0,
             red_flag_points = 1,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 1,
-            total_points = (10 * 1.5) + 2 + (3 * 1.5) + 1
+            total_points = (10 * 1.5) + 2 + (6 * 1.5) + 1
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -470,17 +470,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 0,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 1,
-            total_points = (10 * 1.5) + 2 + (3 * 1.5) + 1
+            total_points = (10 * 1.5) + 2 + (6 * 1.5) + 1
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -722,17 +722,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 2,
             p10_points = 4,
             fastest_lap_points = 2,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 1,
             red_flag_points = 1,
             podium_and_p10_points = 10,
             podium_and_p10_multiplier = 1.5,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 2,
-            total_points = (10 * 1.5) + 2 + (3 * 1.5) + 2
+            total_points = (10 * 1.5) + 2 + (6 * 1.5) + 2
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -768,15 +768,15 @@ class RacePointsServiceTest(unittest.TestCase):
             fastest_lap_points = 2,
             dnf_driver1_points = 0,
             dnf_driver2_points = 0,
-            dnf_driver3_points = 1,
+            dnf_driver3_points = 2,
             safety_car_points = 0,
             red_flag_points = 1,
             podium_and_p10_points = 6,
             podium_and_p10_multiplier = None,
-            dnf_points = 1,
+            dnf_points = 2,
             dnf_multiplier = None,
             safety_car_and_red_flag_points = 1,
-            total_points = 6 + 2 + 1 + 1
+            total_points = 6 + 2 + 2 + 1
         )
 
         points = calculate_points_for_race(race_bets, race_results)
@@ -854,17 +854,17 @@ class RacePointsServiceTest(unittest.TestCase):
             p3_points = 0,
             p10_points = 0,
             fastest_lap_points = 0,
-            dnf_driver1_points = 1,
-            dnf_driver2_points = 1,
-            dnf_driver3_points = 1,
+            dnf_driver1_points = 2,
+            dnf_driver2_points = 2,
+            dnf_driver3_points = 2,
             safety_car_points = 0,
             red_flag_points = 0,
             podium_and_p10_points = 0,
             podium_and_p10_multiplier = None,
-            dnf_points = 3,
+            dnf_points = 6,
             dnf_multiplier = 1.5,
             safety_car_and_red_flag_points = 0,
-            total_points = 3 * 1.5
+            total_points = 6 * 1.5
         )
 
         points = calculate_points_for_race(race_bets, race_results)
