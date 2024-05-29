@@ -13,7 +13,6 @@ import '../../../../data/repository/grand_prix_result/grand_prix_results_reposit
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/driver.dart';
 import '../../../../model/grand_prix.dart';
-import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../model/player.dart';
 import '../../../service/date_service.dart';
@@ -52,15 +51,26 @@ class StatsCubit extends Cubit<StatsState> {
   ) : super(const StatsState());
 
   Future<void> initialize() async {
-    final Stream<List<Player>?> allPlayers$ = _playerRepository.getAllPlayers();
-    await for (final allPlayers in allPlayers$) {
-      if (allPlayers == null || allPlayers.isEmpty) {
-        emit(state.copyWith(
-          status: StatsStateStatus.playersDontExist,
-        ));
-      } else {
-        await _initializePlayersPodiumAndPointsHistoryStats(allPlayers);
-      }
+    final listenedParams$ = Rx.combineLatest3(
+      _playersPodiumMaker(),
+      _pointsHistoryMaker(),
+      _driverRepository.getAllDrivers(),
+      (playersPodium, pointsHistory, allDrivers) => _ListenedParams(
+        playersPodium: playersPodium,
+        pointsHistory: pointsHistory,
+        allDrivers: allDrivers,
+      ),
+    );
+    await for (final params in listenedParams$) {
+      final sortedDrivers = [...params.allDrivers];
+      sortedDrivers.sort(_sortDriversByTeam);
+      emit(state.copyWith(
+        status: StatsStateStatus.completed,
+        playersPodium: params.playersPodium,
+        pointsHistory: params.pointsHistory,
+        pointsByDriver: [],
+        allDrivers: sortedDrivers,
+      ));
     }
   }
 
@@ -80,32 +90,6 @@ class StatsCubit extends Cubit<StatsState> {
     }
   }
 
-  Future<void> _initializePlayersPodiumAndPointsHistoryStats(
-    List<Player> players,
-  ) async {
-    final listenedParams$ = _getGlobalListenedParams(players);
-    await for (final params in listenedParams$) {
-      final PlayersPodium? playersPodiumData = _playersPodiumMaker.prepareStats(
-        players: players,
-        grandPrixBetsPoints: params.gpBetsPoints,
-      );
-      final PointsHistory? pointsHistoryData = _pointsHistoryMaker.prepareStats(
-        players: players,
-        finishedGrandPrixes: params.finishedGrandPrixes,
-        grandPrixBetsPoints: params.gpBetsPoints,
-      );
-      final sortedDrivers = [...params.allDrivers];
-      sortedDrivers.sort(_sortDriversByTeam);
-      emit(state.copyWith(
-        status: StatsStateStatus.completed,
-        playersPodium: playersPodiumData,
-        pointsHistory: pointsHistoryData,
-        pointsByDriver: [],
-        allDrivers: sortedDrivers,
-      ));
-    }
-  }
-
   Future<void> _initializePointsByDriverStats(
     String driverId,
     List<Player> players,
@@ -118,25 +102,6 @@ class StatsCubit extends Cubit<StatsState> {
       ));
     }
   }
-
-  Stream<_ListenedParams> _getGlobalListenedParams(
-    Iterable<Player> players,
-  ) =>
-      _getFinishedGrandPrixes().switchMap(
-        (finishedGrandPrixes) => Rx.combineLatest3(
-          Stream.value(finishedGrandPrixes),
-          _getGpBetPointsForPlayersAndGrandPrixes(
-            players,
-            finishedGrandPrixes,
-          ),
-          _driverRepository.getAllDrivers(),
-          (finishedGrandPrixes, gpBetsPoints, allDrivers) => _ListenedParams(
-            finishedGrandPrixes: finishedGrandPrixes,
-            gpBetsPoints: gpBetsPoints,
-            allDrivers: allDrivers,
-          ),
-        ),
-      );
 
   int _sortDriversByTeam(Driver d1, Driver d2) =>
       d1.team.toString().compareTo(d2.team.toString());
@@ -171,24 +136,6 @@ class StatsCubit extends Cubit<StatsState> {
         },
       );
 
-  Stream<Iterable<GrandPrixBetPoints?>> _getGpBetPointsForPlayersAndGrandPrixes(
-    Iterable<Player> players,
-    Iterable<GrandPrix> grandPrixes,
-  ) {
-    final List<Stream<GrandPrixBetPoints?>> pointsForBets = [];
-    for (final player in players) {
-      for (final gp in grandPrixes) {
-        final gpBetPoints$ = _grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
-          playerId: player.id,
-          grandPrixId: gp.id,
-        );
-        pointsForBets.add(gpBetPoints$);
-      }
-    }
-    return Rx.combineLatest(pointsForBets, (values) => values);
-  }
-
   Stream<List<PointsByDriverPlayerPoints>?> _calculatePlayersPointsForDriver(
     String driverId,
     List<Player> players,
@@ -219,20 +166,20 @@ class StatsCubit extends Cubit<StatsState> {
 }
 
 class _ListenedParams extends Equatable {
-  final Iterable<GrandPrix> finishedGrandPrixes;
-  final Iterable<GrandPrixBetPoints?> gpBetsPoints;
+  final PlayersPodium? playersPodium;
+  final PointsHistory? pointsHistory;
   final Iterable<Driver> allDrivers;
 
   const _ListenedParams({
-    required this.finishedGrandPrixes,
-    required this.gpBetsPoints,
+    required this.playersPodium,
+    required this.pointsHistory,
     required this.allDrivers,
   });
 
   @override
   List<Object?> get props => [
-        finishedGrandPrixes,
-        gpBetsPoints,
+        playersPodium,
+        pointsHistory,
         allDrivers,
       ];
 }

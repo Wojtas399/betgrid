@@ -1,72 +1,95 @@
+import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/stats/stats_maker/points_history_maker.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
+import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/use_case/mock_get_finished_grand_prixes_use_case.dart';
+import '../../../mock/use_case/mock_get_grand_prixes_bet_points_use_case.dart';
 
 void main() {
-  const maker = PointsHistoryMaker();
+  final playerRepository = MockPlayerRepository();
+  final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
+  final getGrandPrixesBetPointsUseCase = MockGetGrandPrixesBetPointsUseCase();
+  late PointsHistoryMaker maker;
+
+  setUp(() {
+    maker = PointsHistoryMaker(
+      playerRepository,
+      getFinishedGrandPrixesUseCase,
+      getGrandPrixesBetPointsUseCase,
+    );
+  });
+
+  tearDown(() {
+    reset(playerRepository);
+    reset(getFinishedGrandPrixesUseCase);
+    reset(getGrandPrixesBetPointsUseCase);
+  });
 
   test(
-    'prepareStats, '
     'list of players is empty, '
-    'should throw exception',
-    () {
-      const String expectedException =
-          '[PointsHistoryMaker] List of players is empty';
-
-      Object? exception;
-      try {
-        maker.prepareStats(
-          players: [],
-          finishedGrandPrixes: [],
-          grandPrixBetsPoints: [],
-        );
-      } catch (e) {
-        exception = e;
-      }
-
-      expect(exception, expectedException);
-    },
-  );
-
-  test(
-    'prepareStats, '
-    'list of finished grand prixes is empty, '
-    'should return null',
-    () {
-      final players = [
-        createPlayer(id: 'p1'),
-      ];
-
-      final pointsHistory = maker.prepareStats(
-        players: players,
-        finishedGrandPrixes: [],
-        grandPrixBetsPoints: [],
+    'should emit null',
+    () async {
+      playerRepository.mockGetAllPlayers(players: []);
+      getFinishedGrandPrixesUseCase.mock(
+        finishedGrandPrixes: [
+          createGrandPrix(id: 'gp1'),
+          createGrandPrix(id: 'gp2'),
+        ],
       );
 
-      expect(pointsHistory, null);
+      final Stream<PointsHistory?> pointsHistory$ = maker();
+
+      expect(await pointsHistory$.first, null);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
     },
   );
 
   test(
-    'prepareStats, '
-    'for each player should create cumulative history of points gained for each '
+    'list of finished grand prixes is empty, '
+    'should return null',
+    () async {
+      playerRepository.mockGetAllPlayers(
+        players: [
+          createPlayer(id: 'p1'),
+          createPlayer(id: 'p2'),
+        ],
+      );
+      getFinishedGrandPrixesUseCase.mock(
+        finishedGrandPrixes: [],
+      );
+
+      final Stream<PointsHistory?> pointsHistory$ = maker();
+
+      expect(await pointsHistory$.first, null);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
+    },
+  );
+
+  test(
+    'for each player should create cumulative sum of points gained for each '
     'grand prix',
-    () {
-      final players = [
+    () async {
+      final List<Player> players = [
         createPlayer(id: 'p1'),
         createPlayer(id: 'p2'),
         createPlayer(id: 'p3'),
       ];
-      final finishedGrandPrixes = [
+      final List<GrandPrix> finishedGrandPrixes = [
         createGrandPrix(id: 'gp1', roundNumber: 2),
         createGrandPrix(id: 'gp2', roundNumber: 3),
         createGrandPrix(id: 'gp3', roundNumber: 1),
       ];
-      final grandPrixBetsPoints = [
+      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         createGrandPrixBetPoints(
           playerId: 'p1',
           grandPrixId: 'gp1',
@@ -164,14 +187,25 @@ void main() {
           ),
         ],
       );
-
-      final pointsHistory = maker.prepareStats(
-        players: players,
+      playerRepository.mockGetAllPlayers(players: players);
+      getFinishedGrandPrixesUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
-        grandPrixBetsPoints: grandPrixBetsPoints,
+      );
+      getGrandPrixesBetPointsUseCase.mock(
+        grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      expect(pointsHistory, expectedPointsHistory);
+      final Stream<PointsHistory?> pointsHistory$ = maker();
+
+      expect(await pointsHistory$.first, expectedPointsHistory);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
+      verify(
+        () => getGrandPrixesBetPointsUseCase.call(
+          playersIds: ['p1', 'p2', 'p3'],
+          grandPrixesIds: ['gp1', 'gp2', 'gp3'],
+        ),
+      ).called(1);
     },
   );
 }

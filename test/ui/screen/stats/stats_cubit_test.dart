@@ -80,90 +80,11 @@ void main() {
 
   blocTest(
     'initialize, '
-    'list of all players is null, '
-    'should emit state with status set to playersDontExist',
-    build: () => createCubit(),
-    setUp: () => playerRepository.mockGetAllPlayers(players: null),
-    act: (cubit) async => await cubit.initialize(),
-    expect: () => [
-      const StatsState(
-        status: StatsStateStatus.playersDontExist,
-      ),
-    ],
-    verify: (_) => verify(() => playerRepository.getAllPlayers()).called(1),
-  );
-
-  blocTest(
-    'initialize, '
-    'list of all players is empty, '
-    'should emit state with status set to playersDontExist',
-    build: () => createCubit(),
-    setUp: () => playerRepository.mockGetAllPlayers(players: []),
-    act: (cubit) async => await cubit.initialize(),
-    expect: () => [
-      const StatsState(
-        status: StatsStateStatus.playersDontExist,
-      ),
-    ],
-    verify: (_) => verify(() => playerRepository.getAllPlayers()).called(1),
-  );
-
-  blocTest(
-    'initialize, '
     'should emit state with data of players podium chart and points history '
     'chart and list of all drivers',
     build: () => createCubit(),
     setUp: () {
-      playerRepository.mockGetAllPlayers(players: [
-        createPlayer(id: 'p1'),
-        createPlayer(id: 'p2'),
-      ]);
-      grandPrixRepository.mockGetAllGrandPrixes([
-        createGrandPrix(
-          id: 'gp1',
-          roundNumber: 2,
-          startDate: DateTime(2024, 5, 22),
-        ),
-        createGrandPrix(
-          id: 'gp2',
-          roundNumber: 1,
-          startDate: DateTime(2024, 5, 20),
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          roundNumber: 3,
-          startDate: DateTime(2024, 5, 23),
-        ),
-      ]);
-      dateService.mockGetNow(
-        now: DateTime(2024, 5, 22, 10, 30),
-      );
-      driverRepository.mockGetAllDrivers(allDrivers: [
-        createDriver(id: 'd1', team: Team.ferrari),
-        createDriver(id: 'd2', team: Team.redBullRacing),
-        createDriver(id: 'd3', team: Team.alpine),
-      ]);
-      mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: 'p1',
-        grandPrixId: 'gp1',
-        expectedGrandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp1'),
-      );
-      mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: 'p1',
-        grandPrixId: 'gp2',
-        expectedGrandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp2'),
-      );
-      mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: 'p2',
-        grandPrixId: 'gp1',
-        expectedGrandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp3'),
-      );
-      mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: 'p2',
-        grandPrixId: 'gp2',
-        expectedGrandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp4'),
-      );
-      playersPodiumMaker.mockPrepareStats(
+      playersPodiumMaker.mock(
         playersPodium: PlayersPodium(
           p1Player: PlayersPodiumPlayer(
             player: createPlayer(id: 'p3'),
@@ -171,12 +92,17 @@ void main() {
           ),
         ),
       );
-      pointsHistoryMaker.mockPrepareStats(
+      pointsHistoryMaker.mock(
         pointsHistory: const PointsHistory(
           players: [],
           grandPrixes: [],
         ),
       );
+      driverRepository.mockGetAllDrivers(allDrivers: [
+        createDriver(id: 'd1', team: Team.ferrari),
+        createDriver(id: 'd2', team: Team.redBullRacing),
+        createDriver(id: 'd3', team: Team.alpine),
+      ]);
     },
     act: (cubit) async => await cubit.initialize(),
     expect: () => [
@@ -201,78 +127,9 @@ void main() {
       ),
     ],
     verify: (_) {
-      verify(() => playerRepository.getAllPlayers()).called(1);
-      verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
-      verify(() => dateService.getNow()).called(1);
+      verify(playersPodiumMaker.call).called(1);
+      verify(pointsHistoryMaker.call).called(1);
       verify(() => driverRepository.getAllDrivers()).called(1);
-      verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
-        ),
-      ).called(1);
-      verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
-        ),
-      ).called(1);
-      verify(
-        () => playersPodiumMaker.prepareStats(
-          players: [
-            createPlayer(id: 'p1'),
-            createPlayer(id: 'p2'),
-          ],
-          grandPrixBetsPoints: [
-            createGrandPrixBetPoints(id: 'gpbp1'),
-            createGrandPrixBetPoints(id: 'gpbp2'),
-            createGrandPrixBetPoints(id: 'gpbp3'),
-            createGrandPrixBetPoints(id: 'gpbp4'),
-          ],
-        ),
-      ).called(1);
-      verify(
-        () => pointsHistoryMaker.prepareStats(
-          players: [
-            createPlayer(id: 'p1'),
-            createPlayer(id: 'p2'),
-          ],
-          finishedGrandPrixes: [
-            createGrandPrix(
-              id: 'gp1',
-              roundNumber: 2,
-              startDate: DateTime(2024, 5, 22),
-            ),
-            createGrandPrix(
-              id: 'gp2',
-              roundNumber: 1,
-              startDate: DateTime(2024, 5, 20),
-            ),
-          ],
-          grandPrixBetsPoints: [
-            createGrandPrixBetPoints(id: 'gpbp1'),
-            createGrandPrixBetPoints(id: 'gpbp2'),
-            createGrandPrixBetPoints(id: 'gpbp3'),
-            createGrandPrixBetPoints(id: 'gpbp4'),
-          ],
-        ),
-      ).called(1);
     },
   );
 
@@ -282,8 +139,11 @@ void main() {
     'should emit state with status set to playersDontExist',
     build: () => createCubit(),
     setUp: () => playerRepository.mockGetAllPlayers(players: null),
-    act: (cubit) async => await cubit.initialize(),
+    act: (cubit) async => await cubit.onDriverChanged('d1'),
     expect: () => [
+      const StatsState(
+        status: StatsStateStatus.pointsForDriverLoading,
+      ),
       const StatsState(
         status: StatsStateStatus.playersDontExist,
       ),
@@ -297,8 +157,11 @@ void main() {
     'should emit state with status set to playersDontExist',
     build: () => createCubit(),
     setUp: () => playerRepository.mockGetAllPlayers(players: []),
-    act: (cubit) async => await cubit.initialize(),
+    act: (cubit) async => await cubit.onDriverChanged('d1'),
     expect: () => [
+      const StatsState(
+        status: StatsStateStatus.pointsForDriverLoading,
+      ),
       const StatsState(
         status: StatsStateStatus.playersDontExist,
       ),

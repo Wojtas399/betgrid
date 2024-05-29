@@ -3,14 +3,9 @@ import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPlayersPodiumMaker extends Mock implements PlayersPodiumMaker {
-  void mockPrepareStats({
-    required PlayersPodium playersPodium,
+  void mock({
+    PlayersPodium? playersPodium,
   }) {
-    when(
-      () => prepareStats(
-        players: any(named: 'players'),
-        grandPrixBetsPoints: any(named: 'grandPrixBetsPoints'),
-      ),
-    ).thenReturn(playersPodium);
+    when(call).thenAnswer((_) => Stream.value(playersPodium));
   }
 }

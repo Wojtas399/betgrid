@@ -1,24 +1,65 @@
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../../../../data/repository/player/player_repository.dart';
+import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
+import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
+import '../../../../use_case/get_grand_prixes_bet_points_use_case.dart';
 import '../stats_model/players_podium.dart';
 
 @injectable
 class PlayersPodiumMaker {
-  const PlayersPodiumMaker();
+  final PlayerRepository _playerRepository;
+  final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
+  final GetGrandPrixesBetPointsUseCase _getGrandPrixesBetPointsUseCase;
 
-  PlayersPodium? prepareStats({
-    required Iterable<Player> players,
-    required Iterable<GrandPrixBetPoints?> grandPrixBetsPoints,
-  }) {
-    if (players.isEmpty) throw '[PlayersPodiumMaker] List of players is empty';
-    if (grandPrixBetsPoints.isEmpty) return null;
+  const PlayersPodiumMaker(
+    this._playerRepository,
+    this._getFinishedGrandPrixesUseCase,
+    this._getGrandPrixesBetPointsUseCase,
+  );
+
+  Stream<PlayersPodium?> call() => Rx.combineLatest2(
+        _playerRepository.getAllPlayers().whereNotNull(),
+        _getFinishedGrandPrixesUseCase(),
+        (
+          List<Player> allPlayers,
+          List<GrandPrix> finishedGrandPrixes,
+        ) =>
+            (allPlayers: allPlayers, finishedGrandPrixes: finishedGrandPrixes),
+      ).switchMap(
+        (data) {
+          if (data.allPlayers.isEmpty || data.finishedGrandPrixes.isEmpty) {
+            return Stream.value(null);
+          }
+          final playersIds = data.allPlayers.map((p) => p.id);
+          final grandPrixesIds = data.finishedGrandPrixes.map((gp) => gp.id);
+          return Rx.combineLatest2(
+            _getGrandPrixesBetPointsUseCase(
+              playersIds: playersIds,
+              grandPrixesIds: grandPrixesIds,
+            ),
+            Stream.value(data.allPlayers),
+            (
+              List<GrandPrixBetPoints> grandPrixesBetPoints,
+              List<Player> players,
+            ) =>
+                _createStats(players, grandPrixesBetPoints),
+          );
+        },
+      );
+
+  PlayersPodium _createStats(
+    Iterable<Player> players,
+    Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
+  ) {
     final List<PlayersPodiumPlayer> podiumData = players.map(
       (Player player) {
-        final Iterable<double> pointsForEachGp = grandPrixBetsPoints
-            .where((betPoints) => betPoints?.playerId == player.id)
-            .map((betPoints) => betPoints?.totalPoints ?? 0.0);
+        final Iterable<double> pointsForEachGp = grandPrixesBetPoints
+            .where((betPoints) => betPoints.playerId == player.id)
+            .map((betPoints) => betPoints.totalPoints);
         final double totalPoints = pointsForEachGp.isNotEmpty
             ? pointsForEachGp.reduce(
                 (totalPoints, gpBetPoints) => totalPoints + gpBetPoints,
