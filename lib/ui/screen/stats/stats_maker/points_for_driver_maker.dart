@@ -1,41 +1,110 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../../data/repository/player/player_repository.dart';
+import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../model/player.dart';
+import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
 import '../stats_model/points_by_driver.dart';
 
 @injectable
 class PointsForDriverMaker {
-  const PointsForDriverMaker();
+  final PlayerRepository _playerRepository;
+  final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
+  final GrandPrixResultsRepository _grandPrixResultsRepository;
+  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final GrandPrixBetRepository _grandPrixBetRepository;
 
-  List<PointsByDriverPlayerPoints>? prepareStats({
+  const PointsForDriverMaker(
+    this._playerRepository,
+    this._getFinishedGrandPrixesUseCase,
+    this._grandPrixResultsRepository,
+    this._grandPrixBetPointsRepository,
+    this._grandPrixBetRepository,
+  );
+
+  Stream<List<PointsByDriverPlayerPoints>?> call({
     required String driverId,
-    required Iterable<Player> players,
-    required Iterable<String> grandPrixesIds,
-    required Iterable<GrandPrixResults?> grandPrixesResults,
-    required Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
-    required Iterable<GrandPrixBet> grandPrixesBets,
-  }) {
-    if (players.isEmpty) {
-      throw '[PointsForDriverMaker] List of players is empty';
-    }
-    if (grandPrixesIds.isEmpty) return null;
+  }) =>
+      Rx.combineLatest2(
+        _playerRepository.getAllPlayers().whereNotNull(),
+        _getFinishedGrandPrixesUseCase(),
+        (
+          List<Player> allPlayers,
+          List<GrandPrix> finishedGrandPrixes,
+        ) =>
+            (allPlayers: allPlayers, finishedGrandPrixes: finishedGrandPrixes),
+      ).switchMap(
+        (data) {
+          if (data.allPlayers.isEmpty || data.finishedGrandPrixes.isEmpty) {
+            return Stream.value(null);
+          }
+          final List<String> allPlayersIds =
+              data.allPlayers.map((p) => p.id).toList();
+          final List<String> finishedGrandPrixesIds =
+              data.finishedGrandPrixes.map((gp) => gp.id).toList();
+          return Rx.combineLatest5(
+            Stream.value(data.allPlayers),
+            Stream.value(finishedGrandPrixesIds),
+            _grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
+              idsOfGrandPrixes: finishedGrandPrixesIds,
+            ),
+            _grandPrixBetPointsRepository
+                .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+              idsOfPlayers: allPlayersIds,
+              idsOfGrandPrixes: finishedGrandPrixesIds,
+            ),
+            _grandPrixBetRepository.getGrandPrixBetsForPlayersAndGrandPrixes(
+              idsOfPlayers: allPlayersIds,
+              idsOfGrandPrixes: finishedGrandPrixesIds,
+            ),
+            (
+              List<Player> allPlayers,
+              List<String> finishedGrandPrixesIds,
+              List<GrandPrixResults> grandPrixesResults,
+              List<GrandPrixBetPoints> grandPrixesBetPoints,
+              List<GrandPrixBet> grandPrixBets,
+            ) =>
+                _calculatePointsForDriver(
+              driverId,
+              allPlayers,
+              finishedGrandPrixesIds,
+              grandPrixesResults,
+              grandPrixesBetPoints,
+              grandPrixBets,
+            ),
+          );
+        },
+      );
+
+  List<PointsByDriverPlayerPoints>? _calculatePointsForDriver(
+    String driverId,
+    Iterable<Player> players,
+    Iterable<String> grandPrixesIds,
+    Iterable<GrandPrixResults> grandPrixesResults,
+    Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
+    Iterable<GrandPrixBet> grandPrixBets,
+  ) {
     return players.map(
       (Player player) {
         final pointsForDriverInEachGp = grandPrixesIds.map(
           (String grandPrixId) {
             final gpResults = grandPrixesResults.firstWhereOrNull(
-              (gpResults) => gpResults?.grandPrixId == grandPrixId,
+              (gpResults) => gpResults.grandPrixId == grandPrixId,
             );
             final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
               (gpBetPoints) =>
                   gpBetPoints.grandPrixId == grandPrixId &&
                   gpBetPoints.playerId == player.id,
             );
-            final gpBet = grandPrixesBets.firstWhere(
+            final gpBet = grandPrixBets.firstWhere(
               (gpBet) =>
                   gpBet.grandPrixId == grandPrixId &&
                   gpBet.playerId == player.id,

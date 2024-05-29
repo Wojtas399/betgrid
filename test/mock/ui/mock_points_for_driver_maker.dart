@@ -3,18 +3,13 @@ import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPointsForDriverMaker extends Mock implements PointsForDriverMaker {
-  void mockPrepareStats({
+  void mock({
     required List<PointsByDriverPlayerPoints> playersPointsForDriver,
   }) {
     when(
-      () => prepareStats(
+      () => call(
         driverId: any(named: 'driverId'),
-        players: any(named: 'players'),
-        grandPrixesIds: any(named: 'grandPrixesIds'),
-        grandPrixesResults: any(named: 'grandPrixesResults'),
-        grandPrixesBetPoints: any(named: 'grandPrixesBetPoints'),
-        grandPrixesBets: any(named: 'grandPrixesBets'),
       ),
-    ).thenReturn(playersPointsForDriver);
+    ).thenAnswer((_) => Stream.value(playersPointsForDriver));
   }
 }

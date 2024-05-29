@@ -9,28 +9,28 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
 import '../../../mock/use_case/mock_get_finished_grand_prixes_use_case.dart';
-import '../../../mock/use_case/mock_get_grand_prixes_bet_points_use_case.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
   final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
-  final getGrandPrixesBetPointsUseCase = MockGetGrandPrixesBetPointsUseCase();
+  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   late PlayersPodiumMaker maker;
 
   setUp(() {
     maker = PlayersPodiumMaker(
       playerRepository,
       getFinishedGrandPrixesUseCase,
-      getGrandPrixesBetPointsUseCase,
+      grandPrixBetPointsRepository,
     );
   });
 
   tearDown(() {
     reset(playerRepository);
     reset(getFinishedGrandPrixesUseCase);
-    reset(getGrandPrixesBetPointsUseCase);
+    reset(grandPrixBetPointsRepository);
   });
 
   test(
@@ -101,7 +101,8 @@ void main() {
       getFinishedGrandPrixesUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
       );
-      getGrandPrixesBetPointsUseCase.mock(
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -111,9 +112,10 @@ void main() {
       verify(playerRepository.getAllPlayers).called(1);
       verify(getFinishedGrandPrixesUseCase.call).called(1);
       verify(
-        () => getGrandPrixesBetPointsUseCase(
-          playersIds: ['p1'],
-          grandPrixesIds: ['gp1', 'gp2'],
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          idsOfPlayers: ['p1'],
+          idsOfGrandPrixes: ['gp1', 'gp2'],
         ),
       ).called(1);
     },
@@ -152,7 +154,8 @@ void main() {
       getFinishedGrandPrixesUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
       );
-      getGrandPrixesBetPointsUseCase.mock(
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -162,9 +165,10 @@ void main() {
       verify(playerRepository.getAllPlayers).called(1);
       verify(getFinishedGrandPrixesUseCase.call).called(1);
       verify(
-        () => getGrandPrixesBetPointsUseCase(
-          playersIds: ['p1', 'p2'],
-          grandPrixesIds: ['gp1', 'gp2'],
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          idsOfPlayers: ['p1', 'p2'],
+          idsOfGrandPrixes: ['gp1', 'gp2'],
         ),
       ).called(1);
     },
@@ -212,7 +216,8 @@ void main() {
       getFinishedGrandPrixesUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
       );
-      getGrandPrixesBetPointsUseCase.mock(
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -222,9 +227,10 @@ void main() {
       verify(playerRepository.getAllPlayers).called(1);
       verify(getFinishedGrandPrixesUseCase.call).called(1);
       verify(
-        () => getGrandPrixesBetPointsUseCase(
-          playersIds: ['p1', 'p2', 'p3', 'p4'],
-          grandPrixesIds: ['gp1', 'gp2'],
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          idsOfPlayers: ['p1', 'p2', 'p3', 'p4'],
+          idsOfGrandPrixes: ['gp1', 'gp2'],
         ),
       ).called(1);
     },
