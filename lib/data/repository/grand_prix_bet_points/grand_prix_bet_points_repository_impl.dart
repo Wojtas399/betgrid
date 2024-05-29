@@ -16,7 +16,7 @@ typedef _GrandPrixBetPointsFetchData = ({String playerId, String grandPrixId});
 class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     implements GrandPrixBetPointsRepository {
   final FirebaseGrandPrixBetPointsService _dbBetPointsService;
-  final getGrandPrixBetPointsForPlayerAndGrandPrixMutex = Mutex();
+  final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
 
   GrandPrixBetPointsRepositoryImpl(this._dbBetPointsService);
 
@@ -25,62 +25,62 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
       getGrandPrixBetPointsForPlayersAndGrandPrixes({
     required List<String> idsOfPlayers,
     required List<String> idsOfGrandPrixes,
-  }) =>
-          repositoryState$.asyncMap(
-            (List<GrandPrixBetPoints> existingBetPointsForGps) async {
-              final List<GrandPrixBetPoints> betPointsForGps = [];
-              final List<_GrandPrixBetPointsFetchData>
-                  dataOfMissingBetPointsForGps = [];
-              for (final playerId in idsOfPlayers) {
-                for (final gpId in idsOfGrandPrixes) {
-                  final GrandPrixBetPoints? existingGpBetPoints =
-                      existingBetPointsForGps.firstWhereOrNull(
-                    (GrandPrixBetPoints gpBetPoints) =>
-                        gpBetPoints.grandPrixId == gpId &&
-                        gpBetPoints.playerId == playerId,
-                  );
-                  if (existingGpBetPoints != null) {
-                    betPointsForGps.add(existingGpBetPoints);
-                  } else {
-                    dataOfMissingBetPointsForGps.add((
-                      playerId: playerId,
-                      grandPrixId: gpId,
-                    ));
-                  }
-                }
-              }
-              if (dataOfMissingBetPointsForGps.isNotEmpty) {
-                final missingGpBetPoints =
-                    await _fetchManyGrandPrixBetPointsFromDb(
-                  dataOfMissingBetPointsForGps,
-                );
-                betPointsForGps.addAll(missingGpBetPoints);
-              }
-              return betPointsForGps;
-            },
-          ).distinctList();
+  }) async* {
+    await _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.acquire();
+    final stream$ = repositoryState$.asyncMap(
+      (List<GrandPrixBetPoints> existingBetPointsForGps) async {
+        final List<GrandPrixBetPoints> betPointsForGps = [];
+        final List<_GrandPrixBetPointsFetchData> dataOfMissingBetPointsForGps =
+            [];
+        for (final playerId in idsOfPlayers) {
+          for (final gpId in idsOfGrandPrixes) {
+            final GrandPrixBetPoints? existingGpBetPoints =
+                existingBetPointsForGps.firstWhereOrNull(
+              (GrandPrixBetPoints gpBetPoints) =>
+                  gpBetPoints.grandPrixId == gpId &&
+                  gpBetPoints.playerId == playerId,
+            );
+            if (existingGpBetPoints != null) {
+              betPointsForGps.add(existingGpBetPoints);
+            } else {
+              dataOfMissingBetPointsForGps.add((
+                playerId: playerId,
+                grandPrixId: gpId,
+              ));
+            }
+          }
+        }
+        if (dataOfMissingBetPointsForGps.isNotEmpty) {
+          final missingGpBetPoints = await _fetchManyGrandPrixBetPointsFromDb(
+            dataOfMissingBetPointsForGps,
+          );
+          betPointsForGps.addAll(missingGpBetPoints);
+        }
+        if (_getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.isLocked) {
+          _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.release();
+        }
+        return betPointsForGps;
+      },
+    ).distinctList();
+    await for (final data in stream$) {
+      yield data;
+    }
+  }
 
   @override
   Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndGrandPrix({
     required String playerId,
     required String grandPrixId,
   }) async* {
-    await getGrandPrixBetPointsForPlayerAndGrandPrixMutex.acquire();
     await for (final entities in repositoryState$) {
       GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId && entity.grandPrixId == grandPrixId,
       );
-      try {
-        points ??= await _fetchGrandPrixBetPointsFromDb((
-          playerId: playerId,
-          grandPrixId: grandPrixId,
-        ));
-      } finally {
-        if (getGrandPrixBetPointsForPlayerAndGrandPrixMutex.isLocked) {
-          getGrandPrixBetPointsForPlayerAndGrandPrixMutex.release();
-        }
-      }
+      points ??= await _fetchGrandPrixBetPointsFromDb((
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      ));
       yield points;
     }
   }
