@@ -3,7 +3,7 @@ import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/screen/stats/stats_maker/points_for_driver_maker.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -27,10 +27,10 @@ void main() {
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
-  late PointsForDriverMaker maker;
+  late CreatePointsForDriverStats createPointsForDriverStats;
 
   setUp(() {
-    maker = PointsForDriverMaker(
+    createPointsForDriverStats = CreatePointsForDriverStats(
       playerRepository,
       getFinishedGrandPrixesUseCase,
       grandPrixResultsRepository,
@@ -59,7 +59,8 @@ void main() {
         ],
       );
 
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ = maker(
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
         driverId: 'd1',
       );
 
@@ -81,7 +82,8 @@ void main() {
       );
       getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
 
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ = maker(
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
         driverId: 'd1',
       );
 
@@ -331,7 +333,8 @@ void main() {
         grandPrixBets: grandPrixBets,
       );
 
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ = maker(
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
         driverId: 'd1',
       );
 

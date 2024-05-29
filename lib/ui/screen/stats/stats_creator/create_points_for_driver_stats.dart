@@ -15,14 +15,14 @@ import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
 import '../stats_model/points_by_driver.dart';
 
 @injectable
-class PointsForDriverMaker {
+class CreatePointsForDriverStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
 
-  const PointsForDriverMaker(
+  const CreatePointsForDriverStats(
     this._playerRepository,
     this._getFinishedGrandPrixesUseCase,
     this._grandPrixResultsRepository,

@@ -10,12 +10,12 @@ import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
 import '../stats_model/players_podium.dart';
 
 @injectable
-class PlayersPodiumMaker {
+class CreatePlayersPodiumStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
-  const PlayersPodiumMaker(
+  const CreatePlayersPodiumStats(
     this._playerRepository,
     this._getFinishedGrandPrixesUseCase,
     this._grandPrixBetPointsRepository,

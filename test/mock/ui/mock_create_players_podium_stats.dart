@@ -1,8 +1,9 @@
-import 'package:betgrid/ui/screen/stats/stats_maker/players_podium_maker.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_players_podium_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockPlayersPodiumMaker extends Mock implements PlayersPodiumMaker {
+class MockCreatePlayersPodiumStats extends Mock
+    implements CreatePlayersPodiumStats {
   void mock({
     PlayersPodium? playersPodium,
   }) {

@@ -1,7 +1,7 @@
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/screen/stats/stats_maker/players_podium_maker.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_players_podium_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,10 +17,10 @@ void main() {
   final playerRepository = MockPlayerRepository();
   final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
-  late PlayersPodiumMaker maker;
+  late CreatePlayersPodiumStats createPlayersPodiumStats;
 
   setUp(() {
-    maker = PlayersPodiumMaker(
+    createPlayersPodiumStats = CreatePlayersPodiumStats(
       playerRepository,
       getFinishedGrandPrixesUseCase,
       grandPrixBetPointsRepository,
@@ -45,7 +45,7 @@ void main() {
         ],
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = maker();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
 
       expect(await playersPodium$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -65,7 +65,7 @@ void main() {
       );
       getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
 
-      final Stream<PlayersPodium?> playersPodium$ = maker();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
 
       expect(await playersPodium$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -106,7 +106,7 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = maker();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);
@@ -159,7 +159,7 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = maker();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);
@@ -221,7 +221,7 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = maker();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);

@@ -11,12 +11,12 @@ import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
 import '../stats_model/points_history.dart';
 
 @injectable
-class PointsHistoryMaker {
+class CreatePointsHistoryStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
-  const PointsHistoryMaker(
+  const CreatePointsHistoryStats(
     this._playerRepository,
     this._getFinishedGrandPrixesUseCase,
     this._grandPrixBetPointsRepository,

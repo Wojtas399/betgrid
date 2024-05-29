@@ -1,7 +1,7 @@
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/ui/screen/stats/stats_maker/points_history_maker.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_points_history_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,10 +17,10 @@ void main() {
   final playerRepository = MockPlayerRepository();
   final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
-  late PointsHistoryMaker maker;
+  late CreatePointsHistoryStats createPointsHistoryStats;
 
   setUp(() {
-    maker = PointsHistoryMaker(
+    createPointsHistoryStats = CreatePointsHistoryStats(
       playerRepository,
       getFinishedGrandPrixesUseCase,
       grandPrixBetPointsRepository,
@@ -45,7 +45,7 @@ void main() {
         ],
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = maker();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
 
       expect(await pointsHistory$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -67,7 +67,7 @@ void main() {
         finishedGrandPrixes: [],
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = maker();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
 
       expect(await pointsHistory$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -196,7 +196,7 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = maker();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
 
       expect(await pointsHistory$.first, expectedPointsHistory);
       verify(playerRepository.getAllPlayers).called(1);

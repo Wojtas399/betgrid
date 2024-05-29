@@ -7,9 +7,9 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/driver/driver_repository.dart';
 import '../../../../model/driver.dart';
-import '../stats_maker/players_podium_maker.dart';
-import '../stats_maker/points_for_driver_maker.dart';
-import '../stats_maker/points_history_maker.dart';
+import '../stats_creator/create_players_podium_stats.dart';
+import '../stats_creator/create_points_for_driver_stats.dart';
+import '../stats_creator/create_points_history_stats.dart';
 import '../stats_model/players_podium.dart';
 import '../stats_model/points_history.dart';
 import 'stats_state.dart';
@@ -17,21 +17,21 @@ import 'stats_state.dart';
 @injectable
 class StatsCubit extends Cubit<StatsState> {
   final DriverRepository _driverRepository;
-  final PlayersPodiumMaker _playersPodiumMaker;
-  final PointsHistoryMaker _pointsHistoryMaker;
-  final PointsForDriverMaker _pointsForDriverMaker;
+  final CreatePlayersPodiumStats _createPlayersPodiumStats;
+  final CreatePointsHistoryStats _createPointsHistoryStats;
+  final CreatePointsForDriverStats _createPointsForDriverStats;
 
   StatsCubit(
     this._driverRepository,
-    this._playersPodiumMaker,
-    this._pointsHistoryMaker,
-    this._pointsForDriverMaker,
+    this._createPlayersPodiumStats,
+    this._createPointsHistoryStats,
+    this._createPointsForDriverStats,
   ) : super(const StatsState());
 
   Future<void> initialize() async {
     final listenedParams$ = Rx.combineLatest3(
-      _playersPodiumMaker(),
-      _pointsHistoryMaker(),
+      _createPlayersPodiumStats(),
+      _createPointsHistoryStats(),
       _driverRepository.getAllDrivers(),
       (playersPodium, pointsHistory, allDrivers) => _ListenedParams(
         playersPodium: playersPodium,
@@ -56,7 +56,7 @@ class StatsCubit extends Cubit<StatsState> {
     emit(state.copyWith(
       status: StatsStateStatus.pointsForDriverLoading,
     ));
-    final pointsByDriverData$ = _pointsForDriverMaker(driverId: driverId);
+    final pointsByDriverData$ = _createPointsForDriverStats(driverId: driverId);
     await for (final pointsByDriverData in pointsByDriverData$) {
       emit(state.copyWith(
         status: StatsStateStatus.completed,

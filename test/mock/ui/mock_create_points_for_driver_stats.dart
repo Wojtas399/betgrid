@@ -1,8 +1,9 @@
-import 'package:betgrid/ui/screen/stats/stats_maker/points_for_driver_maker.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockPointsForDriverMaker extends Mock implements PointsForDriverMaker {
+class MockCreatePointsForDriverStats extends Mock
+    implements CreatePointsForDriverStats {
   void mock({
     required List<PointsByDriverPlayerPoints> playersPointsForDriver,
   }) {

@@ -11,28 +11,28 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/driver_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_driver_repository.dart';
-import '../../../mock/ui/mock_players_podium_maker.dart';
-import '../../../mock/ui/mock_points_for_driver_maker.dart';
-import '../../../mock/ui/mock_points_history_maker.dart';
+import '../../../mock/ui/mock_create_players_podium_stats.dart';
+import '../../../mock/ui/mock_create_points_for_driver_stats.dart';
+import '../../../mock/ui/mock_create_points_history_stats.dart';
 
 void main() {
   final driverRepository = MockDriverRepository();
-  final playersPodiumMaker = MockPlayersPodiumMaker();
-  final pointsHistoryMaker = MockPointsHistoryMaker();
-  final pointsForDriverMaker = MockPointsForDriverMaker();
+  final createPlayersPodiumStats = MockCreatePlayersPodiumStats();
+  final createPointsHistoryStats = MockCreatePointsHistoryStats();
+  final createPointsForDriverStats = MockCreatePointsForDriverStats();
 
   StatsCubit createCubit() => StatsCubit(
         driverRepository,
-        playersPodiumMaker,
-        pointsHistoryMaker,
-        pointsForDriverMaker,
+        createPlayersPodiumStats,
+        createPointsHistoryStats,
+        createPointsForDriverStats,
       );
 
   tearDown(() {
     reset(driverRepository);
-    reset(playersPodiumMaker);
-    reset(pointsHistoryMaker);
-    reset(pointsForDriverMaker);
+    reset(createPlayersPodiumStats);
+    reset(createPointsHistoryStats);
+    reset(createPointsForDriverStats);
   });
 
   blocTest(
@@ -41,7 +41,7 @@ void main() {
     'chart and list of all drivers',
     build: () => createCubit(),
     setUp: () {
-      playersPodiumMaker.mock(
+      createPlayersPodiumStats.mock(
         playersPodium: PlayersPodium(
           p1Player: PlayersPodiumPlayer(
             player: createPlayer(id: 'p3'),
@@ -49,7 +49,7 @@ void main() {
           ),
         ),
       );
-      pointsHistoryMaker.mock(
+      createPointsHistoryStats.mock(
         pointsHistory: const PointsHistory(
           players: [],
           grandPrixes: [],
@@ -84,8 +84,8 @@ void main() {
       ),
     ],
     verify: (_) {
-      verify(playersPodiumMaker.call).called(1);
-      verify(pointsHistoryMaker.call).called(1);
+      verify(createPlayersPodiumStats.call).called(1);
+      verify(createPointsHistoryStats.call).called(1);
       verify(() => driverRepository.getAllDrivers()).called(1);
     },
   );
@@ -94,7 +94,7 @@ void main() {
     'onDriverChanged, '
     'should emit state with points for driver chart data',
     build: () => createCubit(),
-    setUp: () => pointsForDriverMaker.mock(
+    setUp: () => createPointsForDriverStats.mock(
       playersPointsForDriver: [
         PointsByDriverPlayerPoints(
           player: createPlayer(id: 'p1'),
@@ -118,7 +118,7 @@ void main() {
       ),
     ],
     verify: (_) => verify(
-      () => pointsForDriverMaker.call(driverId: 'd1'),
+      () => createPointsForDriverStats.call(driverId: 'd1'),
     ).called(1),
   );
 }
