@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 import '../../../firebase/service/firebase_grand_prix_bet_points_service.dart';
@@ -15,6 +16,7 @@ typedef _GrandPrixBetPointsFetchData = ({String playerId, String grandPrixId});
 class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     implements GrandPrixBetPointsRepository {
   final FirebaseGrandPrixBetPointsService _dbBetPointsService;
+  final getGrandPrixBetPointsForPlayerAndGrandPrixMutex = Mutex();
 
   GrandPrixBetPointsRepositoryImpl(this._dbBetPointsService);
 
@@ -63,15 +65,22 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     required String playerId,
     required String grandPrixId,
   }) async* {
+    await getGrandPrixBetPointsForPlayerAndGrandPrixMutex.acquire();
     await for (final entities in repositoryState$) {
       GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId && entity.grandPrixId == grandPrixId,
       );
-      points ??= await _fetchGrandPrixBetPointsFromDb((
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      ));
+      try {
+        points ??= await _fetchGrandPrixBetPointsFromDb((
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        ));
+      } finally {
+        if (getGrandPrixBetPointsForPlayerAndGrandPrixMutex.isLocked) {
+          getGrandPrixBetPointsForPlayerAndGrandPrixMutex.release();
+        }
+      }
       yield points;
     }
   }
