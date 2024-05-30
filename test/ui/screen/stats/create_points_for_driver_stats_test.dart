@@ -1,77 +1,113 @@
-import 'package:betgrid/ui/screen/stats/stats_maker/points_for_driver_maker.dart';
+import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/grand_prix_bet.dart';
+import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/grand_prix_results.dart';
+import 'package:betgrid/model/player.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
 import '../../../creator/race_bet_points_creator.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
+import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/use_case/mock_get_finished_grand_prixes_use_case.dart';
 
 void main() {
-  const maker = PointsForDriverMaker();
+  final playerRepository = MockPlayerRepository();
+  final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
+  final grandPrixResultsRepository = MockGrandPrixResultsRepository();
+  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final grandPrixBetRepository = MockGrandPrixBetRepository();
+  late CreatePointsForDriverStats createPointsForDriverStats;
+
+  setUp(() {
+    createPointsForDriverStats = CreatePointsForDriverStats(
+      playerRepository,
+      getFinishedGrandPrixesUseCase,
+      grandPrixResultsRepository,
+      grandPrixBetPointsRepository,
+      grandPrixBetRepository,
+    );
+  });
+
+  tearDown(() {
+    reset(playerRepository);
+    reset(getFinishedGrandPrixesUseCase);
+    reset(grandPrixResultsRepository);
+    reset(grandPrixBetPointsRepository);
+    reset(grandPrixBetRepository);
+  });
 
   test(
-    'prepareStats, '
-    'list of players is empty, '
-    'should throw exception',
-    () {
-      const String expectedException =
-          '[PointsForDriverMaker] List of players is empty';
-
-      Object? exception;
-      try {
-        maker.prepareStats(
-          driverId: 'd1',
-          players: [],
-          grandPrixesIds: [],
-          grandPrixesResults: [],
-          grandPrixesBetPoints: [],
-          grandPrixesBets: [],
-        );
-      } catch (e) {
-        exception = e;
-      }
-
-      expect(exception, expectedException);
-    },
-  );
-
-  test(
-    'prepareStats, '
-    'list of ids of grand prixes is empty, '
-    'should return null',
-    () {
-      final players = [
-        createPlayer(id: 'p1'),
-      ];
-
-      final pointsForDriver = maker.prepareStats(
-        driverId: 'd1',
-        players: players,
-        grandPrixesIds: [],
-        grandPrixesResults: [],
-        grandPrixesBetPoints: [],
-        grandPrixesBets: [],
+    'list of all players is empty, '
+    'should emit null',
+    () async {
+      playerRepository.mockGetAllPlayers(players: []);
+      getFinishedGrandPrixesUseCase.mock(
+        finishedGrandPrixes: [
+          createGrandPrix(id: 'gp1'),
+          createGrandPrix(id: 'gp2'),
+        ],
       );
 
-      expect(pointsForDriver, null);
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
+        driverId: 'd1',
+      );
+
+      expect(await pointsForDriver$.first, null);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
     },
   );
 
   test(
-    'prepareStats, '
+    'list of ids of finished grand prixes is empty, '
+    'should return null',
+    () async {
+      playerRepository.mockGetAllPlayers(
+        players: [
+          createPlayer(id: 'p1'),
+          createPlayer(id: 'p2'),
+        ],
+      );
+      getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
+
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
+        driverId: 'd1',
+      );
+
+      expect(await pointsForDriver$.first, null);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
+    },
+  );
+
+  test(
     'for each player should sum points received for driver in every grand prix',
-    () {
+    () async {
       const String driverId = 'd1';
-      final players = [
+      final List<Player> players = [
         createPlayer(id: 'p1'),
         createPlayer(id: 'p2'),
         createPlayer(id: 'p3'),
       ];
-      final grandPrixesIds = ['gp1', 'gp2', 'gp3'];
-      final grandPrixesResults = [
+      final List<GrandPrix> finishedGrandPrixes = [
+        createGrandPrix(id: 'gp1'),
+        createGrandPrix(id: 'gp2'),
+        createGrandPrix(id: 'gp3'),
+      ];
+      final List<GrandPrixResults> grandPrixesResults = [
         createGrandPrixResults(
           grandPrixId: 'gp1',
           qualiStandingsByDriverIds: [
@@ -172,7 +208,7 @@ void main() {
           ),
         ),
       ];
-      final grandPrixesBetPoints = [
+      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         createGrandPrixBetPoints(
           playerId: 'p1',
           grandPrixId: 'gp1',
@@ -229,7 +265,7 @@ void main() {
           raceBetPoints: createRaceBetPoints(p2Points: 2, dnfDriver1Points: 2),
         ),
       ];
-      final grandPrixesBets = [
+      final List<GrandPrixBet> grandPrixBets = [
         createGrandPrixBet(
           playerId: 'p1',
           grandPrixId: 'gp1',
@@ -282,17 +318,47 @@ void main() {
           points: 2,
         ),
       ];
-
-      final pointsForDriver = maker.prepareStats(
-        driverId: driverId,
-        players: players,
-        grandPrixesIds: grandPrixesIds,
+      playerRepository.mockGetAllPlayers(players: players);
+      getFinishedGrandPrixesUseCase.mock(
+        finishedGrandPrixes: finishedGrandPrixes,
+      );
+      grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrixes(
         grandPrixesResults: grandPrixesResults,
+      );
+      grandPrixBetPointsRepository
+          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
-        grandPrixesBets: grandPrixesBets,
+      );
+      grandPrixBetRepository.mockGetGrandPrixBetsForPlayersAndGrandPrixes(
+        grandPrixBets: grandPrixBets,
       );
 
-      expect(pointsForDriver, expectedPointsForDriver);
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
+        driverId: 'd1',
+      );
+
+      expect(await pointsForDriver$.first, expectedPointsForDriver);
+      verify(playerRepository.getAllPlayers).called(1);
+      verify(getFinishedGrandPrixesUseCase.call).called(1);
+      verify(
+        () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
+          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+        ),
+      ).called(1);
+      verify(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          idsOfPlayers: ['p1', 'p2', 'p3'],
+          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+        ),
+      ).called(1);
+      verify(
+        () => grandPrixBetRepository.getGrandPrixBetsForPlayersAndGrandPrixes(
+          idsOfPlayers: ['p1', 'p2', 'p3'],
+          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+        ),
+      ).called(1);
     },
   );
 }

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../firebase/model/user_dto/user_dto.dart';
 import '../../../firebase/service/firebase_avatar_service.dart';
@@ -14,6 +15,7 @@ import 'user_repository.dart';
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl extends Repository<User> implements UserRepository {
+  final getUserByIdMutex = Mutex();
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
 
@@ -24,9 +26,14 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
 
   @override
   Stream<User?> getUserById({required String userId}) async* {
+    await getUserByIdMutex.acquire();
     await for (final users in repositoryState$) {
       User? user = users.firstWhereOrNull((user) => user.id == userId);
-      user ??= await _fetchUserFromDb(userId);
+      try {
+        user ??= await _fetchUserFromDb(userId);
+      } finally {
+        if (getUserByIdMutex.isLocked) getUserByIdMutex.release();
+      }
       yield user;
     }
   }

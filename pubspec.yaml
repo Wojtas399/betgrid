@@ -39,6 +39,7 @@ dependencies:
   syncfusion_flutter_charts: ^24.2.9
   flutter_bloc: ^8.1.5
   bloc_test: ^9.1.7
+  mutex: ^3.1.0
 
 dev_dependencies:
   flutter_test:
