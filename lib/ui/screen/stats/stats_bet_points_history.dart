@@ -9,7 +9,12 @@ import 'cubit/stats_cubit.dart';
 import 'stats_model/points_history.dart';
 
 class StatsBetPointsHistory extends StatelessWidget {
-  const StatsBetPointsHistory({super.key});
+  final bool showPointsForEachRound;
+
+  const StatsBetPointsHistory({
+    super.key,
+    this.showPointsForEachRound = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,8 @@ class StatsBetPointsHistory extends StatelessWidget {
                             ),
                             const GapHorizontal8(),
                           ],
-                          LabelMedium('${point.y}'),
+                          if (showPointsForEachRound || isLastGrandPrix)
+                            LabelMedium('${point.y}'),
                         ],
                       );
                     },
