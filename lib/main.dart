@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,10 +22,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Intl.defaultLocale = 'pl';
-  runApp(
-    BlocProvider(
-      create: (_) => getIt.get<ThemeCubit>()..initialize(),
-      child: const _MyApp(),
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then(
+    (_) => runApp(
+      BlocProvider(
+        create: (_) => getIt.get<ThemeCubit>()..initialize(),
+        child: const _MyApp(),
+      ),
     ),
   );
 }
