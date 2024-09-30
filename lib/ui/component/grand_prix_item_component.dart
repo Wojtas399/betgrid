@@ -71,7 +71,6 @@ class _CountryFlag extends StatelessWidget {
           countryAlpha2Code,
           height: 48,
           width: 62,
-          borderRadius: 8,
         ),
       );
 }
