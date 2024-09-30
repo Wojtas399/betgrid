@@ -2,6 +2,7 @@ import 'package:betgrid/model/grand_prix.dart';
 
 GrandPrix createGrandPrix({
   String id = '',
+  int season = 2024,
   int roundNumber = 1,
   String name = '',
   String countryAlpha2Code = '',
@@ -10,6 +11,7 @@ GrandPrix createGrandPrix({
 }) =>
     GrandPrix(
       id: id,
+      season: season,
       roundNumber: roundNumber,
       name: name,
       countryAlpha2Code: countryAlpha2Code,

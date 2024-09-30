@@ -9,6 +9,7 @@ void main() {
     'should map GrandPrixDto model to GrandPrix model',
     () {
       const String id = 'gp1';
+      const int season = 2024;
       const int roundNumber = 3;
       const String name = 'Monaco GP';
       const String countryAlpha2Code = 'PL';
@@ -24,6 +25,7 @@ void main() {
       );
       final gp = GrandPrix(
         id: id,
+        season: season,
         roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,
