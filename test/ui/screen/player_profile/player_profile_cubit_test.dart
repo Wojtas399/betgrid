@@ -27,7 +27,7 @@ void main() {
     build: () => createCubit(),
     setUp: () {
       playerRepository.mockGetPlayerById(
-        player: createPlayer(id: 'p1'),
+        player: PlayerCreator(id: 'p1').createEntity(),
       );
       getPlayerPointsUseCase.mock(points: 10.2);
       getGrandPrixesWithPointsUseCase.mock(
@@ -45,7 +45,7 @@ void main() {
     expect: () => [
       PlayerProfileState(
         status: PlayerProfileStateStatus.completed,
-        player: createPlayer(id: 'p1'),
+        player: PlayerCreator(id: 'p1').createEntity(),
         totalPoints: 10.2,
         grandPrixesWithPoints: [
           GrandPrixWithPoints(

@@ -55,7 +55,7 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('p1');
       playerRepository.mockGetPlayerById(
-        player: createPlayer(username: 'username'),
+        player: PlayerCreator(username: 'username').createEntity(),
       );
       grandPrixRepository.mockGetGrandPrixById(
         GrandPrixCreator(name: 'grand prix').createEntity(),
@@ -139,7 +139,7 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       playerRepository.mockGetPlayerById(
-        player: createPlayer(username: 'username'),
+        player: PlayerCreator(username: 'username').createEntity(),
       );
       grandPrixRepository.mockGetGrandPrixById(
         GrandPrixCreator(name: 'grand prix').createEntity(),

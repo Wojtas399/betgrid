@@ -49,9 +49,9 @@ void main() {
       authRepository.mockGetLoggedUserId('u1');
       playerRepository.mockGetAllPlayers(
         players: [
-          createPlayer(id: 'u1'),
-          createPlayer(id: 'u2'),
-          createPlayer(id: 'u3'),
+          PlayerCreator(id: 'u1').createEntity(),
+          PlayerCreator(id: 'u2').createEntity(),
+          PlayerCreator(id: 'u3').createEntity(),
         ],
       );
       when(
@@ -67,11 +67,11 @@ void main() {
         status: PlayersStateStatus.completed,
         playersWithTheirPoints: [
           PlayerWithPoints(
-            player: createPlayer(id: 'u2'),
+            player: PlayerCreator(id: 'u2').createEntity(),
             totalPoints: 12.5,
           ),
           PlayerWithPoints(
-            player: createPlayer(id: 'u3'),
+            player: PlayerCreator(id: 'u3').createEntity(),
             totalPoints: 22.2,
           ),
         ],

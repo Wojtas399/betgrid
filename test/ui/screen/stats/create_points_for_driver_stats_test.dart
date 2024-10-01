@@ -76,8 +76,8 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
-          createPlayer(id: 'p1'),
-          createPlayer(id: 'p2'),
+          PlayerCreator(id: 'p1').createEntity(),
+          PlayerCreator(id: 'p2').createEntity(),
         ],
       );
       getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
@@ -98,9 +98,9 @@ void main() {
     () async {
       const String driverId = 'd1';
       final List<Player> players = [
-        createPlayer(id: 'p1'),
-        createPlayer(id: 'p2'),
-        createPlayer(id: 'p3'),
+        PlayerCreator(id: 'p1').createEntity(),
+        PlayerCreator(id: 'p2').createEntity(),
+        PlayerCreator(id: 'p3').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -306,15 +306,15 @@ void main() {
       ];
       final expectedPointsForDriver = [
         PointsByDriverPlayerPoints(
-          player: createPlayer(id: 'p1'),
+          player: PlayerCreator(id: 'p1').createEntity(),
           points: 9,
         ),
         PointsByDriverPlayerPoints(
-          player: createPlayer(id: 'p2'),
+          player: PlayerCreator(id: 'p2').createEntity(),
           points: 6,
         ),
         PointsByDriverPlayerPoints(
-          player: createPlayer(id: 'p3'),
+          player: PlayerCreator(id: 'p3').createEntity(),
           points: 2,
         ),
       ];

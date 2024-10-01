@@ -59,8 +59,8 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
-          createPlayer(id: 'p1'),
-          createPlayer(id: 'p2'),
+          PlayerCreator(id: 'p1').createEntity(),
+          PlayerCreator(id: 'p2').createEntity(),
         ],
       );
       getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
@@ -79,7 +79,7 @@ void main() {
     'only p1 position',
     () async {
       final List<Player> players = [
-        createPlayer(id: 'p1'),
+        PlayerCreator(id: 'p1').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -105,7 +105,7 @@ void main() {
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p1'),
+          player: PlayerCreator(id: 'p1').createEntity(),
           points: 25,
         ),
       );
@@ -139,8 +139,8 @@ void main() {
     'p1 and p2 positions',
     () async {
       final List<Player> players = [
-        createPlayer(id: 'p1'),
-        createPlayer(id: 'p2'),
+        PlayerCreator(id: 'p1').createEntity(),
+        PlayerCreator(id: 'p2').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -166,11 +166,11 @@ void main() {
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p1'),
+          player: PlayerCreator(id: 'p1').createEntity(),
           points: 25,
         ),
         p2Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p2'),
+          player: PlayerCreator(id: 'p2').createEntity(),
           points: 20,
         ),
       );
@@ -203,10 +203,10 @@ void main() {
     'top 3 players',
     () async {
       final List<Player> players = [
-        createPlayer(id: 'p1'),
-        createPlayer(id: 'p2'),
-        createPlayer(id: 'p3'),
-        createPlayer(id: 'p4'),
+        PlayerCreator(id: 'p1').createEntity(),
+        PlayerCreator(id: 'p2').createEntity(),
+        PlayerCreator(id: 'p3').createEntity(),
+        PlayerCreator(id: 'p4').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -248,15 +248,15 @@ void main() {
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p3'),
+          player: PlayerCreator(id: 'p3').createEntity(),
           points: 39.44,
         ),
         p2Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p1'),
+          player: PlayerCreator(id: 'p1').createEntity(),
           points: 25,
         ),
         p3Player: PlayersPodiumPlayer(
-          player: createPlayer(id: 'p4'),
+          player: PlayerCreator(id: 'p4').createEntity(),
           points: 24.98,
         ),
       );

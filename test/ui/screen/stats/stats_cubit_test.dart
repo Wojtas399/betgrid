@@ -43,7 +43,7 @@ void main() {
       createPlayersPodiumStats.mock(
         playersPodium: PlayersPodium(
           p1Player: PlayersPodiumPlayer(
-            player: createPlayer(id: 'p3'),
+            player: PlayerCreator(id: 'p3').createEntity(),
             points: 33,
           ),
         ),
@@ -75,7 +75,7 @@ void main() {
         status: StatsStateStatus.completed,
         playersPodium: PlayersPodium(
           p1Player: PlayersPodiumPlayer(
-            player: createPlayer(id: 'p3'),
+            player: PlayerCreator(id: 'p3').createEntity(),
             points: 33,
           ),
         ),
@@ -114,7 +114,7 @@ void main() {
     setUp: () => createPointsForDriverStats.mock(
       playersPointsForDriver: [
         PointsByDriverPlayerPoints(
-          player: createPlayer(id: 'p1'),
+          player: PlayerCreator(id: 'p1').createEntity(),
           points: 22.22,
         ),
       ],
@@ -128,7 +128,7 @@ void main() {
         status: StatsStateStatus.completed,
         pointsByDriver: [
           PointsByDriverPlayerPoints(
-            player: createPlayer(id: 'p1'),
+            player: PlayerCreator(id: 'p1').createEntity(),
             points: 22.22,
           ),
         ],
