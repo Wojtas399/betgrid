@@ -212,25 +212,25 @@ void main() {
         createGrandPrixBetPoints(
           playerId: 'p1',
           grandPrixId: 'gp1',
-          qualiBetPoints: createQualiBetPoints(q3P1Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
           raceBetPoints: createRaceBetPoints(p1Points: 2, fastestLapPoints: 2),
         ),
         createGrandPrixBetPoints(
           playerId: 'p1',
           grandPrixId: 'gp2',
-          qualiBetPoints: createQualiBetPoints(q1P20Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q1P20Points: 1).createEntity(),
           raceBetPoints: createRaceBetPoints(dnfDriver1Points: 2),
         ),
         createGrandPrixBetPoints(
           playerId: 'p1',
           grandPrixId: 'gp3',
-          qualiBetPoints: createQualiBetPoints(q3P1Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
           raceBetPoints: createRaceBetPoints(p3Points: 2),
         ),
         createGrandPrixBetPoints(
           playerId: 'p2',
           grandPrixId: 'gp1',
-          qualiBetPoints: createQualiBetPoints(q3P4Points: 2),
+          qualiBetPoints: QualiBetPointsCreator(q3P4Points: 2).createEntity(),
           raceBetPoints: createRaceBetPoints(
             p2Points: 2,
             p10Points: 2,
@@ -240,28 +240,28 @@ void main() {
         createGrandPrixBetPoints(
           playerId: 'p2',
           grandPrixId: 'gp2',
-          qualiBetPoints: createQualiBetPoints(q2P12Points: 2),
+          qualiBetPoints: QualiBetPointsCreator(q2P12Points: 2).createEntity(),
         ),
         createGrandPrixBetPoints(
           playerId: 'p2',
           grandPrixId: 'gp3',
-          qualiBetPoints: createQualiBetPoints(q3P1Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
           raceBetPoints: createRaceBetPoints(p3Points: 2),
         ),
         createGrandPrixBetPoints(
           playerId: 'p3',
           grandPrixId: 'gp1',
-          qualiBetPoints: createQualiBetPoints(q3P10Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q3P10Points: 1).createEntity(),
         ),
         createGrandPrixBetPoints(
           playerId: 'p3',
           grandPrixId: 'gp2',
-          qualiBetPoints: createQualiBetPoints(q1P18Points: 1),
+          qualiBetPoints: QualiBetPointsCreator(q1P18Points: 1).createEntity(),
         ),
         createGrandPrixBetPoints(
           playerId: 'p3',
           grandPrixId: 'gp3',
-          qualiBetPoints: createQualiBetPoints(q3P5Points: 2),
+          qualiBetPoints: QualiBetPointsCreator(q3P5Points: 2).createEntity(),
           raceBetPoints: createRaceBetPoints(p2Points: 2, dnfDriver1Points: 2),
         ),
       ];
