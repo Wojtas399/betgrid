@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -45,11 +48,23 @@ android {
         applicationId "com.example.betgrid"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+    }
+
+    flavorDimensions "env"
+    productFlavors {
+        dev {
+            dimension "env"
+            applicationId "com.example.betgrid.dev"
+        }
+        prod {
+            dimension "env"
+            applicationId "com.example.betgrid"
+        }
     }
 
     buildTypes {

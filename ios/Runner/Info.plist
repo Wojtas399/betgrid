@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>GIDClientID</key>
-    <string>$(CLIENT_ID).apps.googleusercontent.com</string>
+    <string>$(GOOGLE_SERVICE_CLIENT_ID).apps.googleusercontent.com</string>
     <key>CFBundleURLTypes</key>
     <array>
     	<dict>
@@ -29,7 +29,7 @@
     		<string>Editor</string>
     		<key>CFBundleURLSchemes</key>
     		<array>
-    			<string>com.googleusercontent.apps.$(CLIENT_ID)</string>
+    			<string>com.googleusercontent.apps.$(GOOGLE_SERVICE_CLIENT_ID)</string>
     		</array>
     	</dict>
     </array>
