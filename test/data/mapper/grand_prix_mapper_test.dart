@@ -1,5 +1,5 @@
+import 'package:betgrid/data/firebase/model/grand_prix_dto/grand_prix_dto.dart';
 import 'package:betgrid/data/mapper/grand_prix_mapper.dart';
-import 'package:betgrid/firebase/model/grand_prix_dto/grand_prix_dto.dart';
 import 'package:betgrid/model/grand_prix.dart';
 import 'package:flutter_test/flutter_test.dart';
 

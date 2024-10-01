@@ -1,5 +1,5 @@
-import 'package:betgrid/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
-import 'package:betgrid/firebase/service/firebase_grand_prix_bet_service.dart';
+import 'package:betgrid/data/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
+import 'package:betgrid/data/firebase/service/firebase_grand_prix_bet_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class FakeGrandPrixBetDto extends Fake implements GrandPrixBetDto {}

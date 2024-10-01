@@ -1,5 +1,5 @@
-import '../../firebase/model/user_dto/user_dto.dart';
 import '../../model/user.dart';
+import '../firebase/model/user_dto/user_dto.dart';
 
 ThemeMode mapThemeModeFromDto(ThemeModeDto themeModeDto) =>
     switch (themeModeDto) {

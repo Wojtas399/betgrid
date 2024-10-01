@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../firebase/model/user_dto/user_dto.dart';
-import '../../../firebase/service/firebase_avatar_service.dart';
-import '../../../firebase/service/firebase_user_service.dart';
 import '../../../model/player.dart';
+import '../../firebase/model/user_dto/user_dto.dart';
+import '../../firebase/service/firebase_avatar_service.dart';
+import '../../firebase/service/firebase_user_service.dart';
 import '../../mapper/player_mapper.dart';
 import '../repository.dart';
 import 'player_repository.dart';

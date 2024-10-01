@@ -1,5 +1,5 @@
-import '../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 import '../../model/grand_prix_bet_points.dart';
+import '../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 
 QualiBetPoints mapQualiBetPointsFromDto(QualiBetPointsDto qualiBetPointsDto) =>
     QualiBetPoints(

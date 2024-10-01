@@ -1,4 +1,4 @@
-import 'package:betgrid/firebase/service/firebase_avatar_service.dart';
+import 'package:betgrid/data/firebase/service/firebase_avatar_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAvatarService extends Mock implements FirebaseAvatarService {

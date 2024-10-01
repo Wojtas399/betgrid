@@ -2,11 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../../firebase/model/user_dto/user_dto.dart';
-import '../../../firebase/service/firebase_avatar_service.dart';
-import '../../../firebase/service/firebase_user_service.dart';
 import '../../../model/user.dart';
 import '../../exception/user_repository_exception.dart';
+import '../../firebase/model/user_dto/user_dto.dart';
+import '../../firebase/service/firebase_avatar_service.dart';
+import '../../firebase/service/firebase_user_service.dart';
 import '../../mapper/theme_mode_mapper.dart';
 import '../../mapper/theme_primary_color_mapper.dart';
 import '../../mapper/user_mapper.dart';

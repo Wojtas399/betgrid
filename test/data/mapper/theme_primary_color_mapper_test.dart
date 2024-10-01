@@ -1,5 +1,5 @@
+import 'package:betgrid/data/firebase/model/user_dto/user_dto.dart';
 import 'package:betgrid/data/mapper/theme_primary_color_mapper.dart';
-import 'package:betgrid/firebase/model/user_dto/user_dto.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 

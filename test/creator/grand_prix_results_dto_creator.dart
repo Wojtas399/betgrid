@@ -1,4 +1,4 @@
-import 'package:betgrid/firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
+import 'package:betgrid/data/firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 
 GrandPrixResultsDto createGrandPrixResultsDto({
   String id = '',

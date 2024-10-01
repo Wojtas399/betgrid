@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
-import '../../../firebase/service/firebase_grand_prix_bet_points_service.dart';
 import '../../../model/grand_prix_bet_points.dart';
 import '../../../ui/extensions/stream_extensions.dart';
+import '../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import '../../firebase/service/firebase_grand_prix_bet_points_service.dart';
 import '../../mapper/grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_points_repository.dart';

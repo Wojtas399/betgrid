@@ -1,5 +1,5 @@
-import '../../firebase/model/user_dto/user_dto.dart';
 import '../../model/user.dart';
+import '../firebase/model/user_dto/user_dto.dart';
 import 'theme_mode_mapper.dart';
 import 'theme_primary_color_mapper.dart';
 

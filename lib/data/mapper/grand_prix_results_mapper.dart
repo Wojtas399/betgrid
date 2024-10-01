@@ -1,5 +1,5 @@
-import '../../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import '../../model/grand_prix_results.dart';
+import '../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 
 GrandPrixResults mapGrandPrixResultsFromDto(
   GrandPrixResultsDto grandPrixResultsDto,

@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../firebase/service/firebase_auth_service.dart';
 import '../../../model/auth_state.dart';
+import '../../firebase/service/firebase_auth_service.dart';
 import 'auth_repository.dart';
 
 @Singleton(as: AuthRepository)

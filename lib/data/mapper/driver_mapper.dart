@@ -1,5 +1,5 @@
-import '../../firebase/model/driver_dto/driver_dto.dart';
 import '../../model/driver.dart';
+import '../firebase/model/driver_dto/driver_dto.dart';
 import 'team_mapper.dart';
 
 Driver mapDriverFromDto(DriverDto driverDto) => Driver(

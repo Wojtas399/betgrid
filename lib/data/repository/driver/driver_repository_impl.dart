@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../firebase/model/driver_dto/driver_dto.dart';
-import '../../../firebase/service/firebase_driver_service.dart';
 import '../../../model/driver.dart';
+import '../../firebase/model/driver_dto/driver_dto.dart';
+import '../../firebase/service/firebase_driver_service.dart';
 import '../../mapper/driver_mapper.dart';
 import '../repository.dart';
 import 'driver_repository.dart';

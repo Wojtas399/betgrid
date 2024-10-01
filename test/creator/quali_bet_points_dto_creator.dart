@@ -1,4 +1,4 @@
-import 'package:betgrid/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 
 QualiBetPointsDto createQualiBetPointsDto({
   double totalPoints = 0.0,

@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
-import '../../../firebase/service/firebase_grand_prix_results_service.dart';
 import '../../../model/grand_prix_results.dart';
 import '../../../ui/extensions/stream_extensions.dart';
+import '../../firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
+import '../../firebase/service/firebase_grand_prix_results_service.dart';
 import '../../mapper/grand_prix_results_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_results_repository.dart';

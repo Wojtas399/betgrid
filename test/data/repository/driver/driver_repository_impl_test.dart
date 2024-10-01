@@ -1,5 +1,5 @@
+import 'package:betgrid/data/firebase/model/driver_dto/driver_dto.dart';
 import 'package:betgrid/data/repository/driver/driver_repository_impl.dart';
-import 'package:betgrid/firebase/model/driver_dto/driver_dto.dart';
 import 'package:betgrid/model/driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

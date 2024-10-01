@@ -1,5 +1,5 @@
-import '../../firebase/model/driver_dto/driver_dto.dart';
 import '../../model/driver.dart';
+import '../firebase/model/driver_dto/driver_dto.dart';
 
 Team mapTeamFromDto(TeamDto teamDto) => switch (teamDto) {
       TeamDto.mercedes => Team.mercedes,

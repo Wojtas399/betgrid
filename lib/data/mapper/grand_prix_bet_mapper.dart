@@ -1,5 +1,5 @@
-import '../../firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 import '../../model/grand_prix_bet.dart';
+import '../firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
 GrandPrixBet mapGrandPrixBetFromDto(GrandPrixBetDto grandPrixBetDto) =>
     GrandPrixBet(

@@ -1,4 +1,4 @@
-import 'package:betgrid/firebase/service/firebase_auth_service.dart';
+import 'package:betgrid/data/firebase/service/firebase_auth_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAuthService extends Mock implements FirebaseAuthService {
