@@ -64,7 +64,7 @@ void main() {
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
-        results: createGrandPrixResults(id: 'gpr1'),
+        results: GrandPrixResultsCreator(id: 'gpr1').createEntity(),
       );
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
@@ -91,7 +91,7 @@ void main() {
         grandPrixName: 'grand prix',
         isPlayerIdSameAsLoggedUserId: true,
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),
-        grandPrixResults: createGrandPrixResults(id: 'gpr1'),
+        grandPrixResults: GrandPrixResultsCreator(id: 'gpr1').createEntity(),
         grandPrixBetPoints:
             GrandPrixBetPointsCreator(id: 'gpbp1').createEntity(),
         allDrivers: [
@@ -148,7 +148,7 @@ void main() {
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
-        results: createGrandPrixResults(id: 'gpr1'),
+        results: GrandPrixResultsCreator(id: 'gpr1').createEntity(),
       );
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
@@ -175,7 +175,7 @@ void main() {
         grandPrixName: 'grand prix',
         isPlayerIdSameAsLoggedUserId: false,
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),
-        grandPrixResults: createGrandPrixResults(id: 'gpr1'),
+        grandPrixResults: GrandPrixResultsCreator(id: 'gpr1').createEntity(),
         grandPrixBetPoints:
             GrandPrixBetPointsCreator(id: 'gpbp1').createEntity(),
         allDrivers: [

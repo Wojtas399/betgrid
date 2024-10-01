@@ -108,7 +108,7 @@ void main() {
         GrandPrixCreator(id: 'gp3').createEntity(),
       ];
       final List<GrandPrixResults> grandPrixesResults = [
-        createGrandPrixResults(
+        GrandPrixResultsCreator(
           grandPrixId: 'gp1',
           qualiStandingsByDriverIds: [
             driverId,
@@ -132,16 +132,14 @@ void main() {
             'd19',
             'd20',
           ],
-          raceResults: createRaceResults(
-            p1DriverId: driverId,
-            p2DriverId: 'd2',
-            p3DriverId: 'd3',
-            p10DriverId: 'd10',
-            fastestLapDriverId: driverId,
-            dnfDriverIds: ['d18', 'd19', 'd20'],
-          ),
-        ),
-        createGrandPrixResults(
+          p1DriverId: driverId,
+          p2DriverId: 'd2',
+          p3DriverId: 'd3',
+          p10DriverId: 'd10',
+          fastestLapDriverId: driverId,
+          dnfDriverIds: ['d18', 'd19', 'd20'],
+        ).createEntity(),
+        GrandPrixResultsCreator(
           grandPrixId: 'gp2',
           qualiStandingsByDriverIds: [
             'd20',
@@ -165,16 +163,14 @@ void main() {
             'd2',
             'd9',
           ],
-          raceResults: createRaceResults(
-            p1DriverId: 'd20',
-            p2DriverId: 'd19',
-            p3DriverId: 'd18',
-            p10DriverId: 'd11',
-            fastestLapDriverId: 'd20',
-            dnfDriverIds: [driverId, 'd2'],
-          ),
-        ),
-        createGrandPrixResults(
+          p1DriverId: 'd20',
+          p2DriverId: 'd19',
+          p3DriverId: 'd18',
+          p10DriverId: 'd11',
+          fastestLapDriverId: 'd20',
+          dnfDriverIds: [driverId, 'd2'],
+        ).createEntity(),
+        GrandPrixResultsCreator(
           grandPrixId: 'gp3',
           qualiStandingsByDriverIds: [
             'd20',
@@ -198,15 +194,13 @@ void main() {
             'd10',
             driverId,
           ],
-          raceResults: createRaceResults(
-            p1DriverId: 'd3',
-            p2DriverId: 'd2',
-            p3DriverId: driverId,
-            p10DriverId: 'd4',
-            fastestLapDriverId: 'd3',
-            dnfDriverIds: [driverId],
-          ),
-        ),
+          p1DriverId: 'd3',
+          p2DriverId: 'd2',
+          p3DriverId: driverId,
+          p10DriverId: 'd4',
+          fastestLapDriverId: 'd3',
+          dnfDriverIds: [driverId],
+        ).createEntity(),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
