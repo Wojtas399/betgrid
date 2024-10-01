@@ -50,31 +50,31 @@ void main() {
     () {
       final DateTime now = DateTime(2024, 05, 28, 14, 30);
       final List<GrandPrix> allGrandPrixes = [
-        createGrandPrix(
+        GrandPrixCreator(
           id: 'gp1',
           startDate: DateTime(2024, 05, 27),
           endDate: DateTime(2024, 05, 29),
-        ),
-        createGrandPrix(
+        ).createEntity(),
+        GrandPrixCreator(
           id: 'gp2',
           startDate: DateTime(2024, 05, 20),
           endDate: DateTime(2024, 05, 22),
-        ),
-        createGrandPrix(
+        ).createEntity(),
+        GrandPrixCreator(
           id: 'gp3',
           startDate: DateTime(2024, 06, 02),
           endDate: DateTime(2024, 06, 04),
-        ),
-        createGrandPrix(
+        ).createEntity(),
+        GrandPrixCreator(
           id: 'gp4',
           startDate: DateTime(2024, 05, 28),
           endDate: DateTime(2024, 05, 30),
-        ),
-        createGrandPrix(
+        ).createEntity(),
+        GrandPrixCreator(
           id: 'gp5',
           startDate: DateTime(2024, 07, 10),
           endDate: DateTime(2024, 07, 12),
-        ),
+        ).createEntity(),
       ];
       final List<GrandPrix> expectedGrandPrixes = [
         allGrandPrixes.first,

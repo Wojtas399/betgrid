@@ -57,9 +57,9 @@ void main() {
     'should load total points for each grand prix',
     () {
       final List<GrandPrix> allGrandPrixes = [
-        createGrandPrix(id: 'gp1', roundNumber: 3),
-        createGrandPrix(id: 'gp2', roundNumber: 1),
-        createGrandPrix(id: 'gp3', roundNumber: 2),
+        GrandPrixCreator(id: 'gp1', roundNumber: 3).createEntity(),
+        GrandPrixCreator(id: 'gp2', roundNumber: 1).createEntity(),
+        GrandPrixCreator(id: 'gp3', roundNumber: 2).createEntity(),
       ];
       const double gp1TotalPoints = 10.2;
       const double gp2TotalPoints = 6.5;

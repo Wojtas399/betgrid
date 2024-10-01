@@ -281,9 +281,9 @@ void main() {
         grandPrixBets: null,
       );
       grandPrixRepository.mockGetAllGrandPrixes([
-        createGrandPrix(id: 'gp1'),
-        createGrandPrix(id: 'gp2'),
-        createGrandPrix(id: 'gp3'),
+        GrandPrixCreator(id: 'gp1').createEntity(),
+        GrandPrixCreator(id: 'gp2').createEntity(),
+        GrandPrixCreator(id: 'gp3').createEntity(),
       ]);
       grandPrixBetRepository.mockAddGrandPrixBetsForPlayer();
     },

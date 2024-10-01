@@ -52,11 +52,11 @@ void main() {
       getGrandPrixesWithPointsUseCase.mock(
         grandPrixesWithPoints: [
           GrandPrixWithPoints(
-            grandPrix: createGrandPrix(id: 'gp1'),
+            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
             points: 20.0,
           ),
           GrandPrixWithPoints(
-            grandPrix: createGrandPrix(id: 'gp2'),
+            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
             points: 10.0,
           ),
         ],
@@ -70,11 +70,11 @@ void main() {
         totalPoints: 30,
         grandPrixesWithPoints: [
           GrandPrixWithPoints(
-            grandPrix: createGrandPrix(id: 'gp1'),
+            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
             points: 20.0,
           ),
           GrandPrixWithPoints(
-            grandPrix: createGrandPrix(id: 'gp2'),
+            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
             points: 10.0,
           ),
         ],

@@ -58,7 +58,7 @@ void main() {
         player: createPlayer(username: 'username'),
       );
       grandPrixRepository.mockGetGrandPrixById(
-        createGrandPrix(name: 'grand prix'),
+        GrandPrixCreator(name: 'grand prix').createEntity(),
       );
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),
@@ -142,7 +142,7 @@ void main() {
         player: createPlayer(username: 'username'),
       );
       grandPrixRepository.mockGetGrandPrixById(
-        createGrandPrix(name: 'grand prix'),
+        GrandPrixCreator(name: 'grand prix').createEntity(),
       );
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: GrandPrixBetCreator(id: 'gpb1').createEntity(),

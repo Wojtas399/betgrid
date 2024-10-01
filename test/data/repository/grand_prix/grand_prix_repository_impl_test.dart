@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_creator.dart';
-import '../../../creator/grand_prix_dto_creator.dart';
 import '../../../mock/firebase/mock_firebase_grand_prix_service.dart';
 
 void main() {
@@ -27,34 +26,24 @@ void main() {
     'repo state is empty, '
     'should only emit all grand prixes if repo state is not empty',
     () async {
-      final List<GrandPrixDto> grandPrixDtos = [
-        createGrandPrixDto(
+      final List<GrandPrixCreator> grandPrixCreators = [
+        GrandPrixCreator(
           id: 'gp1',
           name: 'Grand Prix 1',
         ),
-        createGrandPrixDto(
+        GrandPrixCreator(
           id: 'gp2',
           name: 'Grand Prix 2',
         ),
-        createGrandPrixDto(
+        GrandPrixCreator(
           id: 'gp3',
           name: 'Grand Prix 3',
         ),
       ];
-      final List<GrandPrix> expectedGrandPrixes = [
-        createGrandPrix(
-          id: 'gp1',
-          name: 'Grand Prix 1',
-        ),
-        createGrandPrix(
-          id: 'gp2',
-          name: 'Grand Prix 2',
-        ),
-        createGrandPrix(
-          id: 'gp3',
-          name: 'Grand Prix 3',
-        ),
-      ];
+      final List<GrandPrixDto> grandPrixDtos =
+          grandPrixCreators.map((creator) => creator.createDto()).toList();
+      final List<GrandPrix> expectedGrandPrixes =
+          grandPrixCreators.map((creator) => creator.createEntity()).toList();
       dbGrandPrixService.mockFetchAllGrandPrixes(
         grandPrixDtos: grandPrixDtos,
       );
@@ -79,14 +68,12 @@ void main() {
     'does not exist in repo state',
     () async {
       const String grandPrixId = 'gp2';
-      final GrandPrixDto grandPrixDto = createGrandPrixDto(
+      final GrandPrixCreator grandPrixCreator = GrandPrixCreator(
         id: grandPrixId,
         name: 'Grand Prix 2',
       );
-      final GrandPrix expectedGrandPrix = createGrandPrix(
-        id: grandPrixId,
-        name: 'Grand Prix 2',
-      );
+      final GrandPrixDto grandPrixDto = grandPrixCreator.createDto();
+      final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
       dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
 
       final Stream<GrandPrix?> grandPrix1$ = repositoryImpl.getGrandPrixById(

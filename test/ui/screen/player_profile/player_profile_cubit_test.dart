@@ -32,8 +32,12 @@ void main() {
       getPlayerPointsUseCase.mock(points: 10.2);
       getGrandPrixesWithPointsUseCase.mock(
         grandPrixesWithPoints: [
-          GrandPrixWithPoints(grandPrix: createGrandPrix(id: 'gp1')),
-          GrandPrixWithPoints(grandPrix: createGrandPrix(id: 'gp2')),
+          GrandPrixWithPoints(
+            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
+          ),
+          GrandPrixWithPoints(
+            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
+          ),
         ],
       );
     },
@@ -44,8 +48,12 @@ void main() {
         player: createPlayer(id: 'p1'),
         totalPoints: 10.2,
         grandPrixesWithPoints: [
-          GrandPrixWithPoints(grandPrix: createGrandPrix(id: 'gp1')),
-          GrandPrixWithPoints(grandPrix: createGrandPrix(id: 'gp2')),
+          GrandPrixWithPoints(
+            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
+          ),
+          GrandPrixWithPoints(
+            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
+          ),
         ],
       ),
     ],

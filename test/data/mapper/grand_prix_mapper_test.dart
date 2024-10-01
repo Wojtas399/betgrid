@@ -17,6 +17,7 @@ void main() {
       final DateTime endDate = DateTime(2024, 1, 3);
       final gpDto = GrandPrixDto(
         id: id,
+        season: season,
         roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,

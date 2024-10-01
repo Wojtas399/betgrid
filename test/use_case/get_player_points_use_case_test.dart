@@ -46,9 +46,9 @@ void main() {
       const double gp3Points = 12.25;
       const double expectedPoints = gp1Points + gp2Points + gp3Points;
       final List<GrandPrix> grandPrixes = [
-        createGrandPrix(id: 'gp1'),
-        createGrandPrix(id: 'gp2'),
-        createGrandPrix(id: 'gp3'),
+        GrandPrixCreator(id: 'gp1').createEntity(),
+        GrandPrixCreator(id: 'gp2').createEntity(),
+        GrandPrixCreator(id: 'gp3').createEntity(),
       ];
       grandPrixRepository.mockGetAllGrandPrixes(grandPrixes);
       when(
