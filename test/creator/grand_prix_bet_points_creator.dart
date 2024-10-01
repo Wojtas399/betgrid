@@ -1,6 +1,8 @@
+import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 
 import 'quali_bet_points_creator.dart';
+import 'race_bet_points_creator.dart';
 
 class GrandPrixBetPointsCreator {
   final String id;
@@ -8,7 +10,7 @@ class GrandPrixBetPointsCreator {
   final String grandPrixId;
   final double totalPoints;
   final QualiBetPointsCreator? qualiBetPointsCreator;
-  final RaceBetPoints? raceBetPoints;
+  final RaceBetPointsCreator? raceBetPointsCreator;
 
   const GrandPrixBetPointsCreator({
     this.id = '',
@@ -16,23 +18,24 @@ class GrandPrixBetPointsCreator {
     this.grandPrixId = '',
     this.totalPoints = 0.0,
     this.qualiBetPointsCreator,
-    this.raceBetPoints,
+    this.raceBetPointsCreator,
   });
-}
 
-GrandPrixBetPoints createGrandPrixBetPoints({
-  String id = '',
-  String playerId = '',
-  String grandPrixId = '',
-  double totalPoints = 0.0,
-  QualiBetPoints? qualiBetPoints,
-  RaceBetPoints? raceBetPoints,
-}) =>
-    GrandPrixBetPoints(
-      id: id,
-      playerId: playerId,
-      grandPrixId: grandPrixId,
-      totalPoints: totalPoints,
-      qualiBetPoints: qualiBetPoints,
-      raceBetPoints: raceBetPoints,
-    );
+  GrandPrixBetPoints createEntity() => GrandPrixBetPoints(
+        id: id,
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+        totalPoints: totalPoints,
+        qualiBetPoints: qualiBetPointsCreator?.createEntity(),
+        raceBetPoints: raceBetPointsCreator?.createEntity(),
+      );
+
+  GrandPrixBetPointsDto createDto() => GrandPrixBetPointsDto(
+        id: id,
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+        totalPoints: totalPoints,
+        qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
+        raceBetPointsDto: raceBetPointsCreator?.createDto(),
+      );
+}

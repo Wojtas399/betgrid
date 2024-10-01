@@ -86,10 +86,22 @@ void main() {
         createGrandPrix(id: 'gp2'),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 15),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 12.5),
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 10),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 7.5),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 15,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 12.5,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 10,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 7.5,
+        ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
@@ -135,10 +147,22 @@ void main() {
         createGrandPrix(id: 'gp2'),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 15),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 12.5),
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 10),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 7.5),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 15,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 12.5,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 10,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 7.5,
+        ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
@@ -189,14 +213,38 @@ void main() {
         createGrandPrix(id: 'gp2'),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 15),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 12.5),
-        createGrandPrixBetPoints(playerId: 'p3', totalPoints: 22.22),
-        createGrandPrixBetPoints(playerId: 'p4', totalPoints: 14.99),
-        createGrandPrixBetPoints(playerId: 'p1', totalPoints: 10),
-        createGrandPrixBetPoints(playerId: 'p2', totalPoints: 7.5),
-        createGrandPrixBetPoints(playerId: 'p3', totalPoints: 17.22),
-        createGrandPrixBetPoints(playerId: 'p4', totalPoints: 9.99),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 15,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 12.5,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p3',
+          totalPoints: 22.22,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p4',
+          totalPoints: 14.99,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p1',
+          totalPoints: 10,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p2',
+          totalPoints: 7.5,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p3',
+          totalPoints: 17.22,
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          playerId: 'p4',
+          totalPoints: 9.99,
+        ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(

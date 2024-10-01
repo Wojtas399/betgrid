@@ -87,7 +87,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          createGrandPrixBetPoints(totalPoints: gp1TotalPoints),
+          GrandPrixBetPointsCreator(totalPoints: gp1TotalPoints).createEntity(),
         ),
       );
       when(
@@ -98,7 +98,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          createGrandPrixBetPoints(totalPoints: gp2TotalPoints),
+          GrandPrixBetPointsCreator(totalPoints: gp2TotalPoints).createEntity(),
         ),
       );
       when(
@@ -109,7 +109,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          createGrandPrixBetPoints(totalPoints: gp3TotalPoints),
+          GrandPrixBetPointsCreator(totalPoints: gp3TotalPoints).createEntity(),
         ),
       );
 

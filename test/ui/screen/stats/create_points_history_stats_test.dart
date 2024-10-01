@@ -90,46 +90,46 @@ void main() {
         createGrandPrix(id: 'gp3', roundNumber: 1),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp1',
           totalPoints: 20,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp2',
           totalPoints: 12.2,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp3',
           totalPoints: 17,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp1',
           totalPoints: 5.5,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp2',
           totalPoints: 17,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp3',
           totalPoints: 9,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p3',
           grandPrixId: 'gp1',
           totalPoints: 15,
-        ),
-        createGrandPrixBetPoints(
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p3',
           grandPrixId: 'gp2',
           totalPoints: 17,
-        ),
+        ).createEntity(),
       ];
       final PointsHistory expectedPointsHistory = PointsHistory(
         players: players,

@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_bet_points_dto_creator.dart';
 import '../../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
 
 void main() {
@@ -25,102 +24,90 @@ void main() {
     'should emit bet points which already exists in repo state and should fetch '
     'bet points which do not exist in repo state',
     () async {
-      final GrandPrixBetPointsDto player1Gp1BetPointsDto =
-          createGrandPrixBetPointsDto(
-        id: 'p1gp1',
-        playerId: 'p1',
-        grandPrixId: 'gp1',
-      );
-      final GrandPrixBetPointsDto player1Gp2BetPointsDto =
-          createGrandPrixBetPointsDto(
-        id: 'p1gp2',
-        playerId: 'p1',
-        grandPrixId: 'gp2',
-      );
-      final GrandPrixBetPointsDto player2Gp1BetPointsDto =
-          createGrandPrixBetPointsDto(
-        id: 'p2gp1',
-        playerId: 'p2',
-        grandPrixId: 'gp1',
-      );
-      final GrandPrixBetPointsDto player2Gp2BetPointsDto =
-          createGrandPrixBetPointsDto(
-        id: 'p2gp2',
-        playerId: 'p2',
-        grandPrixId: 'gp2',
-      );
-      final List<GrandPrixBetPoints> expectedGpBetPoints1 = [
-        createGrandPrixBetPoints(
-          id: 'p1gp1',
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+      const String player1Id = 'p1';
+      const String player2Id = 'p2';
+      const String gp1Id = 'gp1';
+      const String gp2Id = 'gp2';
+      final List<GrandPrixBetPointsCreator> player1GpBetPointsCreators = [
+        GrandPrixBetPointsCreator(
+          id: '$player1Id$gp1Id',
+          playerId: player1Id,
+          grandPrixId: gp1Id,
         ),
-        createGrandPrixBetPoints(
-          id: 'p2gp1',
-          playerId: 'p2',
-          grandPrixId: 'gp1',
-        )
+        GrandPrixBetPointsCreator(
+          id: '$player1Id$gp2Id',
+          playerId: player1Id,
+          grandPrixId: gp2Id,
+        ),
+      ];
+      final List<GrandPrixBetPointsCreator> player2GpBetPointsCreators = [
+        GrandPrixBetPointsCreator(
+          id: '$player2Id$gp1Id',
+          playerId: player2Id,
+          grandPrixId: gp1Id,
+        ),
+        GrandPrixBetPointsCreator(
+          id: '$player2Id$gp2Id',
+          playerId: player2Id,
+          grandPrixId: gp2Id,
+        ),
+      ];
+      final List<GrandPrixBetPoints> expectedGpBetPoints1 = [
+        player1GpBetPointsCreators.first.createEntity(),
+        player2GpBetPointsCreators.first.createEntity(),
       ];
       final List<GrandPrixBetPoints> expectedGpBetPoints2 = [
-        createGrandPrixBetPoints(
-          id: 'p1gp1',
-          playerId: 'p1',
-          grandPrixId: 'gp1',
-        ),
-        createGrandPrixBetPoints(
-          id: 'p2gp1',
-          playerId: 'p2',
-          grandPrixId: 'gp1',
-        ),
-        createGrandPrixBetPoints(
-          id: 'p1gp2',
-          playerId: 'p1',
-          grandPrixId: 'gp2',
-        ),
-        createGrandPrixBetPoints(
-          id: 'p2gp2',
-          playerId: 'p2',
-          grandPrixId: 'gp2',
-        ),
+        player1GpBetPointsCreators.first.createEntity(),
+        player2GpBetPointsCreators.first.createEntity(),
+        player1GpBetPointsCreators.last.createEntity(),
+        player2GpBetPointsCreators.last.createEntity(),
       ];
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+          playerId: player1Id,
+          grandPrixId: gp1Id,
         ),
-      ).thenAnswer((_) => Future.value(player1Gp1BetPointsDto));
+      ).thenAnswer(
+        (_) => Future.value(player1GpBetPointsCreators.first.createDto()),
+      );
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
+          playerId: player1Id,
+          grandPrixId: gp2Id,
         ),
-      ).thenAnswer((_) => Future.value(player1Gp2BetPointsDto));
+      ).thenAnswer(
+        (_) => Future.value(player1GpBetPointsCreators.last.createDto()),
+      );
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
+          playerId: player2Id,
+          grandPrixId: gp1Id,
         ),
-      ).thenAnswer((_) => Future.value(player2Gp1BetPointsDto));
+      ).thenAnswer(
+        (_) => Future.value(player2GpBetPointsCreators.first.createDto()),
+      );
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
+          playerId: player2Id,
+          grandPrixId: gp2Id,
         ),
-      ).thenAnswer((_) => Future.value(player2Gp2BetPointsDto));
+      ).thenAnswer(
+        (_) => Future.value(player2GpBetPointsCreators.last.createDto()),
+      );
 
       final Stream<List<GrandPrixBetPoints>> gpBetPoints1$ =
           repositoryImpl.getGrandPrixBetPointsForPlayersAndGrandPrixes(
-        idsOfPlayers: ['p1', 'p2'],
-        idsOfGrandPrixes: ['gp1'],
+        idsOfPlayers: [player1Id, player2Id],
+        idsOfGrandPrixes: [gp1Id],
       );
       final Stream<List<GrandPrixBetPoints>> gpBetPoints2$ =
           repositoryImpl.getGrandPrixBetPointsForPlayersAndGrandPrixes(
-        idsOfPlayers: ['p1', 'p2'],
-        idsOfGrandPrixes: ['gp1', 'gp2'],
+        idsOfPlayers: [player1Id, player2Id],
+        idsOfGrandPrixes: [gp1Id, gp2Id],
       );
 
       expect(await gpBetPoints1$.first, expectedGpBetPoints1);
@@ -129,29 +116,29 @@ void main() {
       verify(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+          playerId: player1Id,
+          grandPrixId: gp1Id,
         ),
       ).called(1);
       verify(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
+          playerId: player1Id,
+          grandPrixId: gp2Id,
         ),
       ).called(1);
       verify(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
+          playerId: player2Id,
+          grandPrixId: gp1Id,
         ),
       ).called(1);
       verify(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
+          playerId: player2Id,
+          grandPrixId: gp2Id,
         ),
       ).called(1);
     },
@@ -165,18 +152,16 @@ void main() {
     () async {
       const String playerId = 'p1';
       const String grandPrixId = 'gp2';
-      const GrandPrixBetPointsDto grandPrixBetPointsDto = GrandPrixBetPointsDto(
+      final GrandPrixBetPointsCreator grandPrixBetPointsCreator =
+          GrandPrixBetPointsCreator(
         id: grandPrixId,
         playerId: playerId,
         grandPrixId: grandPrixId,
-        totalPoints: 0.0,
       );
+      final GrandPrixBetPointsDto grandPrixBetPointsDto =
+          grandPrixBetPointsCreator.createDto();
       final GrandPrixBetPoints expectedGrandPrixBetPoints =
-          createGrandPrixBetPoints(
-        id: grandPrixId,
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
+          grandPrixBetPointsCreator.createEntity();
       dbBetPointsService.mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
         grandPrixBetPointsDto: grandPrixBetPointsDto,
       );

@@ -209,68 +209,67 @@ void main() {
         ),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp1',
-          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
-          raceBetPoints: RaceBetPointsCreator(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: RaceBetPointsCreator(
             p1Points: 2,
             fastestLapPoints: 2,
-          ).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          ),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp2',
-          qualiBetPoints: QualiBetPointsCreator(q1P20Points: 1).createEntity(),
-          raceBetPoints:
-              RaceBetPointsCreator(dnfDriver1Points: 2).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q1P20Points: 1),
+          raceBetPointsCreator: RaceBetPointsCreator(dnfDriver1Points: 2),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p1',
           grandPrixId: 'gp3',
-          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
-          raceBetPoints: RaceBetPointsCreator(p3Points: 2).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp1',
-          qualiBetPoints: QualiBetPointsCreator(q3P4Points: 2).createEntity(),
-          raceBetPoints: RaceBetPointsCreator(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P4Points: 2),
+          raceBetPointsCreator: RaceBetPointsCreator(
             p2Points: 2,
             p10Points: 2,
             fastestLapPoints: 2,
-          ).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          ),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp2',
-          qualiBetPoints: QualiBetPointsCreator(q2P12Points: 2).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q2P12Points: 2),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p2',
           grandPrixId: 'gp3',
-          qualiBetPoints: QualiBetPointsCreator(q3P1Points: 1).createEntity(),
-          raceBetPoints: RaceBetPointsCreator(p3Points: 2).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p3',
           grandPrixId: 'gp1',
-          qualiBetPoints: QualiBetPointsCreator(q3P10Points: 1).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P10Points: 1),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p3',
           grandPrixId: 'gp2',
-          qualiBetPoints: QualiBetPointsCreator(q1P18Points: 1).createEntity(),
-        ),
-        createGrandPrixBetPoints(
+          qualiBetPointsCreator: QualiBetPointsCreator(q1P18Points: 1),
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
           playerId: 'p3',
           grandPrixId: 'gp3',
-          qualiBetPoints: QualiBetPointsCreator(q3P5Points: 2).createEntity(),
-          raceBetPoints: RaceBetPointsCreator(
+          qualiBetPointsCreator: QualiBetPointsCreator(q3P5Points: 2),
+          raceBetPointsCreator: RaceBetPointsCreator(
             p2Points: 2,
             dnfDriver1Points: 2,
-          ).createEntity(),
-        ),
+          ),
+        ).createEntity(),
       ];
       final List<GrandPrixBet> grandPrixBets = [
         GrandPrixBetCreator(
