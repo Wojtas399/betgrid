@@ -7,6 +7,7 @@ import 'model/grand_prix_dto/grand_prix_dto.dart';
 import 'model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import 'model/user_dto/user_dto.dart';
 
+//TODO: Add season param
 CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
     FirebaseFirestore.instance
         .collection('GrandPrixes')
@@ -14,7 +15,11 @@ CollectionReference<GrandPrixDto> getGrandPrixesRef() =>
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
             if (data == null) throw 'Grand prix document data was null';
-            return GrandPrixDto.fromIdAndJson(snapshot.id, data);
+            return GrandPrixDto.fromFirebase(
+              id: snapshot.id,
+              season: 2024, //TODO: Pass season param here
+              json: data,
+            );
           },
           toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
         );

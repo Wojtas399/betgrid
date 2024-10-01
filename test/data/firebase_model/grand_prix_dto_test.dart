@@ -10,7 +10,7 @@ void main() {
 
   test(
     'fromJson, '
-    'should map json model to class model ignoring id',
+    'should map json model to class model ignoring id and season',
     () {
       final Map<String, Object?> json = {
         'roundNumber': roundNumber,
@@ -36,7 +36,7 @@ void main() {
 
   test(
     'toJson, '
-    'should map class model to json model ignoring id',
+    'should map class model to json model ignoring id and season',
     () {
       final GrandPrixDto model = GrandPrixDto(
         roundNumber: roundNumber,
@@ -61,10 +61,11 @@ void main() {
   );
 
   test(
-    'fromIdAndJson, '
-    'should map json model to class model with given id',
+    'fromFirebase, '
+    'should map json model to class model with given id and season',
     () {
       const String id = 'gp1';
+      const int season = 2024;
       final Map<String, Object?> json = {
         'roundNumber': roundNumber,
         'name': name,
@@ -73,15 +74,20 @@ void main() {
         'endDate': endDate.toIso8601String(),
       };
       final GrandPrixDto expectedModel = GrandPrixDto(
-        roundNumber: roundNumber,
         id: id,
+        season: season,
+        roundNumber: roundNumber,
         name: name,
         countryAlpha2Code: countryAlpha2Code,
         startDate: startDate,
         endDate: endDate,
       );
 
-      final GrandPrixDto model = GrandPrixDto.fromIdAndJson(id, json);
+      final GrandPrixDto model = GrandPrixDto.fromFirebase(
+        id: id,
+        season: season,
+        json: json,
+      );
 
       expect(model, expectedModel);
     },

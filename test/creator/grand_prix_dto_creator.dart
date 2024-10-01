@@ -2,6 +2,7 @@ import 'package:betgrid/data/firebase/model/grand_prix_dto/grand_prix_dto.dart';
 
 GrandPrixDto createGrandPrixDto({
   String id = '',
+  int season = 0,
   int roundNumber = 1,
   String name = '',
   String countryAlpha2Code = '',
@@ -10,6 +11,7 @@ GrandPrixDto createGrandPrixDto({
 }) =>
     GrandPrixDto(
       id: id,
+      season: season,
       roundNumber: roundNumber,
       name: name,
       countryAlpha2Code: countryAlpha2Code,
