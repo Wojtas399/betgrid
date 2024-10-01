@@ -83,8 +83,8 @@ void main() {
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: [
-          createGrandPrixBet(id: 'gpb1'),
-          createGrandPrixBet(id: 'gpb2'),
+          GrandPrixBetCreator(id: 'gpb1').createEntity(),
+          GrandPrixBetCreator(id: 'gpb2').createEntity(),
         ],
       );
     },
@@ -309,9 +309,18 @@ void main() {
         () => grandPrixBetRepository.addGrandPrixBetsForPlayer(
           playerId: 'u1',
           grandPrixBets: [
-            createGrandPrixBet(playerId: 'u1', grandPrixId: 'gp1'),
-            createGrandPrixBet(playerId: 'u1', grandPrixId: 'gp2'),
-            createGrandPrixBet(playerId: 'u1', grandPrixId: 'gp3'),
+            GrandPrixBetCreator(
+              playerId: 'u1',
+              grandPrixId: 'gp1',
+            ).createEntity(),
+            GrandPrixBetCreator(
+              playerId: 'u1',
+              grandPrixId: 'gp2',
+            ).createEntity(),
+            GrandPrixBetCreator(
+              playerId: 'u1',
+              grandPrixId: 'gp3',
+            ).createEntity(),
           ],
         ),
       ).called(1);

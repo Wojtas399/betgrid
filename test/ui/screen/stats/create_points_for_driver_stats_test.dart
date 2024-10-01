@@ -266,43 +266,43 @@ void main() {
         ),
       ];
       final List<GrandPrixBet> grandPrixBets = [
-        createGrandPrixBet(
+        GrandPrixBetCreator(
           playerId: 'p1',
           grandPrixId: 'gp1',
           dnfDriverIds: [driverId, 'd2', 'd3'],
-        ),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p1',
           grandPrixId: 'gp2',
           dnfDriverIds: [driverId, null, null],
-        ),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p1',
           grandPrixId: 'gp3',
           dnfDriverIds: [driverId, 'd2', null],
-        ),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p2',
           grandPrixId: 'gp1',
           dnfDriverIds: [driverId, 'd2', 'd20'],
-        ),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p2',
           grandPrixId: 'gp2',
           dnfDriverIds: [null, null, null],
-        ),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p2',
           grandPrixId: 'gp3',
           dnfDriverIds: ['d14', 'd15', null],
-        ),
-        createGrandPrixBet(playerId: 'p3', grandPrixId: 'gp1'),
-        createGrandPrixBet(playerId: 'p3', grandPrixId: 'gp2'),
-        createGrandPrixBet(
+        ).createEntity(),
+        GrandPrixBetCreator(playerId: 'p3', grandPrixId: 'gp1').createEntity(),
+        GrandPrixBetCreator(playerId: 'p3', grandPrixId: 'gp2').createEntity(),
+        GrandPrixBetCreator(
           playerId: 'p3',
           grandPrixId: 'gp3',
           dnfDriverIds: [driverId, 'd15', 'd18'],
-        ),
+        ).createEntity(),
       ];
       final expectedPointsForDriver = [
         PointsByDriverPlayerPoints(
