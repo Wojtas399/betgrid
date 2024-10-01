@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../creator/quali_bet_points_creator.dart';
 import '../../creator/race_bet_points_creator.dart';
-import '../../creator/race_bet_points_dto_creator.dart';
 
 void main() {
   test(
@@ -21,26 +20,21 @@ void main() {
         q3P1Points: 2.0,
         q2P12Points: 2.0,
       );
+      final RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator(
+        totalPoints: 6.0,
+        p1Points: 1.0,
+        p2Points: 1.0,
+        p3Points: 1.0,
+        p10Points: 2.0,
+        fastestLapPoints: 1.0,
+      );
       final QualiBetPointsDto qualiBetPointsDto =
           qualiBetPointsCreator.createDto();
       final QualiBetPoints qualiBetPoints =
           qualiBetPointsCreator.createEntity();
-      final RaceBetPointsDto raceBetPointsDto = createRaceBetPointsDto(
-        totalPoints: 6.0,
-        p1Points: 1.0,
-        p2Points: 1.0,
-        p3Points: 1.0,
-        p10Points: 2.0,
-        fastestLapPoints: 1.0,
-      );
-      final RaceBetPoints raceBetPoints = createRaceBetPoints(
-        totalPoints: 6.0,
-        p1Points: 1.0,
-        p2Points: 1.0,
-        p3Points: 1.0,
-        p10Points: 2.0,
-        fastestLapPoints: 1.0,
-      );
+      final RaceBetPointsDto raceBetPointsDto =
+          raceBetPointsCreator.createDto();
+      final RaceBetPoints raceBetPoints = raceBetPointsCreator.createEntity();
       final GrandPrixBetPointsDto grandPrixBetPointsDto = GrandPrixBetPointsDto(
         id: id,
         playerId: playerId,
