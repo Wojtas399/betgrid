@@ -72,9 +72,9 @@ void main() {
       );
       driverRepository.mockGetAllDrivers(
         allDrivers: [
-          createDriver(id: 'd1'),
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
+          DriverCreator(id: 'd1').createEntity(),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
         ],
       );
     },
@@ -93,9 +93,9 @@ void main() {
         grandPrixResults: createGrandPrixResults(id: 'gpr1'),
         grandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp1'),
         allDrivers: [
-          createDriver(id: 'd1'),
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
+          DriverCreator(id: 'd1').createEntity(),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
         ],
       ),
     ],
@@ -154,9 +154,9 @@ void main() {
       );
       driverRepository.mockGetAllDrivers(
         allDrivers: [
-          createDriver(id: 'd1'),
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
+          DriverCreator(id: 'd1').createEntity(),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
         ],
       );
     },
@@ -175,9 +175,9 @@ void main() {
         grandPrixResults: createGrandPrixResults(id: 'gpr1'),
         grandPrixBetPoints: createGrandPrixBetPoints(id: 'gpbp1'),
         allDrivers: [
-          createDriver(id: 'd1'),
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
+          DriverCreator(id: 'd1').createEntity(),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
         ],
       ),
     ],

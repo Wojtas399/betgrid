@@ -18,6 +18,8 @@ class Driver extends Entity {
   List<Object?> get props => [id, name, surname, number, team];
 }
 
+//TODO: Colors should not be defined here because it makes Driver entity
+//TODO: dependent of UI.
 enum Team {
   mercedes(0xFF86d1c0),
   alpine(0xFF4891cc),

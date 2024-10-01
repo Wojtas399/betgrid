@@ -40,9 +40,9 @@ void main() {
     () {
       final state = GrandPrixBetState(
         allDrivers: [
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
-          createDriver(id: 'd4'),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
+          DriverCreator(id: 'd4').createEntity(),
         ],
       );
 
@@ -58,16 +58,16 @@ void main() {
     () {
       final state = GrandPrixBetState(
         allDrivers: [
-          createDriver(id: 'd1'),
-          createDriver(id: 'd2'),
-          createDriver(id: 'd3'),
-          createDriver(id: 'd4'),
+          DriverCreator(id: 'd1').createEntity(),
+          DriverCreator(id: 'd2').createEntity(),
+          DriverCreator(id: 'd3').createEntity(),
+          DriverCreator(id: 'd4').createEntity(),
         ],
       );
 
       final Driver? driver = state.getDriverById('d1');
 
-      expect(driver, createDriver(id: 'd1'));
+      expect(driver, DriverCreator(id: 'd1').createEntity());
     },
   );
 }

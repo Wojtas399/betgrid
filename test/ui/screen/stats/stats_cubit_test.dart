@@ -1,4 +1,3 @@
-import 'package:betgrid/model/driver.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_cubit.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
@@ -56,9 +55,18 @@ void main() {
         ),
       );
       driverRepository.mockGetAllDrivers(allDrivers: [
-        createDriver(id: 'd1', team: Team.ferrari),
-        createDriver(id: 'd2', team: Team.redBullRacing),
-        createDriver(id: 'd3', team: Team.alpine),
+        DriverCreator(
+          id: 'd1',
+          team: DriverCreatorTeam.ferrari,
+        ).createEntity(),
+        DriverCreator(
+          id: 'd2',
+          team: DriverCreatorTeam.redBullRacing,
+        ).createEntity(),
+        DriverCreator(
+          id: 'd3',
+          team: DriverCreatorTeam.alpine,
+        ).createEntity(),
       ]);
     },
     act: (cubit) async => await cubit.initialize(),
@@ -77,9 +85,18 @@ void main() {
         ),
         pointsByDriver: [],
         allDrivers: [
-          createDriver(id: 'd3', team: Team.alpine),
-          createDriver(id: 'd1', team: Team.ferrari),
-          createDriver(id: 'd2', team: Team.redBullRacing),
+          DriverCreator(
+            id: 'd3',
+            team: DriverCreatorTeam.alpine,
+          ).createEntity(),
+          DriverCreator(
+            id: 'd1',
+            team: DriverCreatorTeam.ferrari,
+          ).createEntity(),
+          DriverCreator(
+            id: 'd2',
+            team: DriverCreatorTeam.redBullRacing,
+          ).createEntity(),
         ],
       ),
     ],
