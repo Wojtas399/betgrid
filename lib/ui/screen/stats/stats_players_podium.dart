@@ -38,7 +38,8 @@ class StatsPlayersPodium extends StatelessWidget {
       primaryXAxis: const CategoryAxis(),
       primaryYAxis: NumericAxis(
         minimum: 0,
-        maximum: playersPodium!.p1Player.points * 1.8,
+        maximum:
+            playersPodium != null ? playersPodium.p1Player.points * 1.8 : 0,
         // interval: 5,
       ),
       series: <CartesianSeries<PlayersPodiumPlayer, String>>[
