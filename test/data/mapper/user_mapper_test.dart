@@ -3,9 +3,16 @@ import 'package:betgrid/data/mapper/user_mapper.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../mock/data/mapper/mock_theme_mode_mapper.dart';
+import '../../mock/data/mapper/mock_theme_primary_color_mapper.dart';
+
 void main() {
+  final themeModeMapper = MockThemeModeMapper();
+  final themePrimaryColorMapper = MockThemePrimaryColorMapper();
+  final mapper = UserMapper(themeModeMapper, themePrimaryColorMapper);
+
   test(
-    'mapUserFromDto, '
+    'mapFromDto, '
     'should map user from UserDto model to User model',
     () {
       const String id = 'u1';
@@ -29,8 +36,17 @@ void main() {
         themeMode: themeMode,
         themePrimaryColor: themePrimaryColor,
       );
+      themeModeMapper.mockMapFromDto(
+        expectedThemeMode: themeMode,
+      );
+      themePrimaryColorMapper.mockMapFromDto(
+        expectedThemePrimaryColor: themePrimaryColor,
+      );
 
-      final User user = mapUserFromDto(userDto, avatarUrl);
+      final User user = mapper.mapFromDto(
+        userDto: userDto,
+        avatarUrl: avatarUrl,
+      );
 
       expect(user, expectedUser);
     },
