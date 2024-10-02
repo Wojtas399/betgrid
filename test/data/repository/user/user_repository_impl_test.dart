@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
+import '../../../mock/data/mapper/mock_theme_mode_mapper.dart';
 import '../../../mock/data/mapper/mock_user_mapper.dart';
 import '../../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../../mock/firebase/mock_firebase_user_service.dart';
@@ -14,6 +15,7 @@ void main() {
   final dbUserService = MockFirebaseUserService();
   final dbAvatarService = MockFirebaseAvatarService();
   final userMapper = MockUserMapper();
+  final themeModeMapper = MockThemeModeMapper();
   late UserRepositoryImpl repositoryImpl;
   const String userId = 'u1';
 
@@ -22,6 +24,7 @@ void main() {
       dbUserService,
       dbAvatarService,
       userMapper,
+      themeModeMapper,
     );
   });
 
@@ -29,6 +32,7 @@ void main() {
     reset(dbUserService);
     reset(dbAvatarService);
     reset(userMapper);
+    reset(themeModeMapper);
   });
 
   test(
@@ -116,6 +120,7 @@ void main() {
         themePrimaryColor: themePrimaryColor,
       );
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      themeModeMapper.mockMapToDto(expectedThemeModeDto: themeModeDto);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       userMapper.mockMapFromDto(expectedUser: addedUser);
 
@@ -166,6 +171,7 @@ void main() {
         themePrimaryColor: themePrimaryColor,
       );
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      themeModeMapper.mockMapToDto(expectedThemeModeDto: themeModeDto);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
       userMapper.mockMapFromDto(expectedUser: addedUser);
@@ -313,6 +319,7 @@ void main() {
       );
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      themeModeMapper.mockMapToDto(expectedThemeModeDto: newThemeModeDto);
       dbUserService.mockUpdateUser(updatedUserDto: null);
 
       Object? exception;
@@ -371,6 +378,7 @@ void main() {
       ).thenReturn(existingUserCreator.createEntity());
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
+      themeModeMapper.mockMapToDto(expectedThemeModeDto: newThemeModeDto);
       dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
       when(
         () => userMapper.mapFromDto(userDto: updatedUserDto),

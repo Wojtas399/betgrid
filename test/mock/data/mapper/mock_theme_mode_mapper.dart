@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockThemeModeMapper extends Mock implements ThemeModeMapper {
   MockThemeModeMapper() {
+    registerFallbackValue(ThemeMode.light);
     registerFallbackValue(ThemeModeDto.light);
   }
 
@@ -14,5 +15,13 @@ class MockThemeModeMapper extends Mock implements ThemeModeMapper {
     when(
       () => mapFromDto(any()),
     ).thenReturn(expectedThemeMode);
+  }
+
+  void mockMapToDto({
+    required ThemeModeDto expectedThemeModeDto,
+  }) {
+    when(
+      () => mapToDto(any()),
+    ).thenReturn(expectedThemeModeDto);
   }
 }

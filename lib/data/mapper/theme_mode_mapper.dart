@@ -17,16 +17,3 @@ class ThemeModeMapper {
         ThemeMode.system => ThemeModeDto.system,
       };
 }
-
-ThemeMode mapThemeModeFromDto(ThemeModeDto themeModeDto) =>
-    switch (themeModeDto) {
-      ThemeModeDto.light => ThemeMode.light,
-      ThemeModeDto.dark => ThemeMode.dark,
-      ThemeModeDto.system => ThemeMode.system,
-    };
-
-ThemeModeDto mapThemeModeToDto(ThemeMode themeMode) => switch (themeMode) {
-      ThemeMode.light => ThemeModeDto.light,
-      ThemeMode.dark => ThemeModeDto.dark,
-      ThemeMode.system => ThemeModeDto.system,
-    };

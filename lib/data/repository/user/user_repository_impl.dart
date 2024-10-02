@@ -19,11 +19,13 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
   final UserMapper _userMapper;
+  final ThemeModeMapper _themeModeMapper;
 
   UserRepositoryImpl(
     this._dbUserService,
     this._dbAvatarService,
     this._userMapper,
+    this._themeModeMapper,
   );
 
   @override
@@ -56,7 +58,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     final UserDto? addedUserDto = await _dbUserService.addUser(
       userId: userId,
       username: username,
-      themeMode: mapThemeModeToDto(themeMode),
+      themeMode: _themeModeMapper.mapToDto(themeMode),
       themePrimaryColor: mapThemePrimaryColorToDto(themePrimaryColor),
     );
     if (addedUserDto == null) throw "Added user's data not found";
@@ -90,7 +92,8 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     final UserDto? updatedUserDto = await _dbUserService.updateUser(
       userId: userId,
       username: username,
-      themeMode: themeMode != null ? mapThemeModeToDto(themeMode) : null,
+      themeMode:
+          themeMode != null ? _themeModeMapper.mapToDto(themeMode) : null,
       themePrimaryColor: themePrimaryColor != null
           ? mapThemePrimaryColorToDto(themePrimaryColor)
           : null,
