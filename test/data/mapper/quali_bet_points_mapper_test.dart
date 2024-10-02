@@ -4,8 +4,10 @@ import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final mapper = QualiBetPointsMapper();
+
   test(
-    'mapQualiBetPointsFromDto, '
+    'mapFromDto, '
     'should map QualiBetPointsDto model to QualiBetPoints model',
     () {
       const double totalPoints = 22;
@@ -97,7 +99,7 @@ void main() {
         multiplier: multiplier,
       );
 
-      final QualiBetPoints qualiBetPoints = mapQualiBetPointsFromDto(
+      final QualiBetPoints qualiBetPoints = mapper.mapFromDto(
         qualiBetPointsDto,
       );
 
