@@ -25,7 +25,10 @@ void main() {
         avatarUrl: avatarUrl,
       );
 
-      final Player player = mapper.mapFromDto(userDto, avatarUrl);
+      final Player player = mapper.mapFromDto(
+        userDto: userDto,
+        avatarUrl: avatarUrl,
+      );
 
       expect(player, expectedPlayer);
     },

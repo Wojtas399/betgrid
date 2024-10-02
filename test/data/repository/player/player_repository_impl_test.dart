@@ -5,16 +5,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
+import '../../../mock/data/mapper/mock_player_mapper.dart';
 import '../../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../../mock/firebase/mock_firebase_user_service.dart';
 
 void main() {
   final dbUserService = MockFirebaseUserService();
   final dbAvatarService = MockFirebaseAvatarService();
+  final playerMapper = MockPlayerMapper();
   late PlayerRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = PlayerRepositoryImpl(dbUserService, dbAvatarService);
+    repositoryImpl = PlayerRepositoryImpl(
+      dbUserService,
+      dbAvatarService,
+      playerMapper,
+    );
+  });
+
+  tearDown(() {
+    reset(dbUserService);
+    reset(dbAvatarService);
+    reset(playerMapper);
   });
 
   test(
@@ -22,18 +34,18 @@ void main() {
     'should load all players from db, add them to repo state and emit them',
     () async {
       final List<UserDto> userDtos = [
-        UserCreator(id: 'u2', username: 'username 2').createDto(),
         UserCreator(id: 'u1', username: 'username 1').createDto(),
+        UserCreator(id: 'u2', username: 'username 2').createDto(),
         UserCreator(id: 'u3', username: 'username 3').createDto(),
       ];
       const String user2AvatarUrl = 'avatar/url';
       final List<Player> expectedPlayers = [
+        const Player(id: 'u1', username: 'username 1'),
         const Player(
           id: 'u2',
           username: 'username 2',
           avatarUrl: user2AvatarUrl,
         ),
-        const Player(id: 'u1', username: 'username 1'),
         const Player(id: 'u3', username: 'username 3'),
       ];
       dbUserService.mockFetchAllUsers(userDtos: userDtos);
@@ -46,6 +58,22 @@ void main() {
       when(
         () => dbAvatarService.fetchAvatarUrlForUser(userId: 'u3'),
       ).thenAnswer((_) => Future.value(null));
+      when(
+        () => playerMapper.mapFromDto(
+          userDto: userDtos.first,
+        ),
+      ).thenReturn(expectedPlayers.first);
+      when(
+        () => playerMapper.mapFromDto(
+          userDto: userDtos[1],
+          avatarUrl: user2AvatarUrl,
+        ),
+      ).thenReturn(expectedPlayers[1]);
+      when(
+        () => playerMapper.mapFromDto(
+          userDto: userDtos.last,
+        ),
+      ).thenReturn(expectedPlayers.last);
 
       final Stream<List<Player>?> players$ = repositoryImpl.getAllPlayers();
 
@@ -81,6 +109,7 @@ void main() {
       const Player expectedPlayer = Player(id: playerId, username: 'player 1');
       dbUserService.mockFetchUserById(userDto: userDto);
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
+      playerMapper.mockMapFromDto(expectedPlayer: expectedPlayer);
 
       final Stream<Player?> player1$ = repositoryImpl.getPlayerById(
         playerId: playerId,

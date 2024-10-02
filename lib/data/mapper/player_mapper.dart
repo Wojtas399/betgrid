@@ -5,7 +5,11 @@ import '../firebase/model/user_dto/user_dto.dart';
 
 @injectable
 class PlayerMapper {
-  Player mapFromDto(UserDto userDto, String? avatarUrl) => Player(
+  Player mapFromDto({
+    required UserDto userDto,
+    String? avatarUrl,
+  }) =>
+      Player(
         id: userDto.id,
         username: userDto.username,
         avatarUrl: avatarUrl,

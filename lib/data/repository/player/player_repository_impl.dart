@@ -14,10 +14,12 @@ class PlayerRepositoryImpl extends Repository<Player>
     implements PlayerRepository {
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
+  final PlayerMapper _playerMapper;
 
   PlayerRepositoryImpl(
     this._dbUserService,
     this._dbAvatarService,
+    this._playerMapper,
   );
 
   @override
@@ -46,7 +48,10 @@ class PlayerRepositoryImpl extends Repository<Player>
       final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
         userId: userDto.id,
       );
-      final Player player = mapPlayerFromUserDto(userDto, avatarUrl);
+      final Player player = _playerMapper.mapFromDto(
+        userDto: userDto,
+        avatarUrl: avatarUrl,
+      );
       players.add(player);
     }
     setEntities(players);
@@ -59,7 +64,10 @@ class PlayerRepositoryImpl extends Repository<Player>
     final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: playerId,
     );
-    final Player player = mapPlayerFromUserDto(userDto, avatarUrl);
+    final Player player = _playerMapper.mapFromDto(
+      userDto: userDto,
+      avatarUrl: avatarUrl,
+    );
     addEntity(player);
     return player;
   }
