@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
 import '../../../mock/data/mapper/mock_theme_mode_mapper.dart';
+import '../../../mock/data/mapper/mock_theme_primary_color_mapper.dart';
 import '../../../mock/data/mapper/mock_user_mapper.dart';
 import '../../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../../mock/firebase/mock_firebase_user_service.dart';
@@ -16,6 +17,7 @@ void main() {
   final dbAvatarService = MockFirebaseAvatarService();
   final userMapper = MockUserMapper();
   final themeModeMapper = MockThemeModeMapper();
+  final themePrimaryColorMapper = MockThemePrimaryColorMapper();
   late UserRepositoryImpl repositoryImpl;
   const String userId = 'u1';
 
@@ -25,6 +27,7 @@ void main() {
       dbAvatarService,
       userMapper,
       themeModeMapper,
+      themePrimaryColorMapper,
     );
   });
 
@@ -33,6 +36,7 @@ void main() {
     reset(dbAvatarService);
     reset(userMapper);
     reset(themeModeMapper);
+    reset(themePrimaryColorMapper);
   });
 
   test(
@@ -121,6 +125,9 @@ void main() {
       );
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       themeModeMapper.mockMapToDto(expectedThemeModeDto: themeModeDto);
+      themePrimaryColorMapper.mockMapToDto(
+        expectedThemePrimaryColorDto: themePrimaryColorDto,
+      );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       userMapper.mockMapFromDto(expectedUser: addedUser);
 
@@ -172,6 +179,9 @@ void main() {
       );
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       themeModeMapper.mockMapToDto(expectedThemeModeDto: themeModeDto);
+      themePrimaryColorMapper.mockMapToDto(
+        expectedThemePrimaryColorDto: themePrimaryColorDto,
+      );
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
       userMapper.mockMapFromDto(expectedUser: addedUser);
@@ -320,6 +330,9 @@ void main() {
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       themeModeMapper.mockMapToDto(expectedThemeModeDto: newThemeModeDto);
+      themePrimaryColorMapper.mockMapToDto(
+        expectedThemePrimaryColorDto: newThemePrimaryColorDto,
+      );
       dbUserService.mockUpdateUser(updatedUserDto: null);
 
       Object? exception;
@@ -379,6 +392,9 @@ void main() {
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       themeModeMapper.mockMapToDto(expectedThemeModeDto: newThemeModeDto);
+      themePrimaryColorMapper.mockMapToDto(
+        expectedThemePrimaryColorDto: newThemePrimaryColorDto,
+      );
       dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
       when(
         () => userMapper.mapFromDto(userDto: updatedUserDto),

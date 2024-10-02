@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 class MockThemePrimaryColorMapper extends Mock
     implements ThemePrimaryColorMapper {
   MockThemePrimaryColorMapper() {
+    registerFallbackValue(ThemePrimaryColor.defaultRed);
     registerFallbackValue(ThemePrimaryColorDto.defaultRed);
   }
 
@@ -15,5 +16,13 @@ class MockThemePrimaryColorMapper extends Mock
     when(
       () => mapFromDto(any()),
     ).thenReturn(expectedThemePrimaryColor);
+  }
+
+  void mockMapToDto({
+    required ThemePrimaryColorDto expectedThemePrimaryColorDto,
+  }) {
+    when(
+      () => mapToDto(any()),
+    ).thenReturn(expectedThemePrimaryColorDto);
   }
 }
