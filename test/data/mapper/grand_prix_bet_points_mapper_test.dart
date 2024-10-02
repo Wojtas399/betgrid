@@ -2,13 +2,28 @@ import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto/grand_prix
 import 'package:betgrid/data/mapper/grand_prix_bet_points_mapper.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../creator/quali_bet_points_creator.dart';
 import '../../creator/race_bet_points_creator.dart';
+import '../../mock/data/mapper/mock_quali_bet_points_mapper.dart';
+import '../../mock/data/mapper/mock_race_bet_points_mapper.dart';
 
 void main() {
+  final qualiBetPointsMapper = MockQualiBetPointsMapper();
+  final raceBetPointsMapper = MockRaceBetPointsMapper();
+  final mapper = GrandPrixBetPointsMapper(
+    qualiBetPointsMapper,
+    raceBetPointsMapper,
+  );
+
+  tearDown(() {
+    reset(qualiBetPointsMapper);
+    reset(raceBetPointsMapper);
+  });
+
   test(
-    'mapGrandPrixBetPointsFromDto, '
+    'mapFromDto, '
     'should map GrandPrixBetPointsDto model to GrandPrixBetPoints model',
     () {
       const String id = 'gpbp1';
@@ -51,9 +66,15 @@ void main() {
         qualiBetPoints: qualiBetPoints,
         raceBetPoints: raceBetPoints,
       );
+      qualiBetPointsMapper.mockMapFromDto(
+        expectedQualiBetPoints: qualiBetPoints,
+      );
+      raceBetPointsMapper.mockMapFromDto(
+        expectedRaceBetPoints: raceBetPoints,
+      );
 
       final GrandPrixBetPoints grandPrixBetPoints =
-          mapGrandPrixBetPointsFromDto(grandPrixBetPointsDto);
+          mapper.mapFromDto(grandPrixBetPointsDto);
 
       expect(grandPrixBetPoints, expectedGrandPrixBetPoints);
     },
