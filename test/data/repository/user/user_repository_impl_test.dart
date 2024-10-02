@@ -6,22 +6,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
+import '../../../mock/data/mapper/mock_user_mapper.dart';
 import '../../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../../mock/firebase/mock_firebase_user_service.dart';
 
 void main() {
   final dbUserService = MockFirebaseUserService();
   final dbAvatarService = MockFirebaseAvatarService();
+  final userMapper = MockUserMapper();
   late UserRepositoryImpl repositoryImpl;
   const String userId = 'u1';
 
   setUp(() {
-    repositoryImpl = UserRepositoryImpl(dbUserService, dbAvatarService);
+    repositoryImpl = UserRepositoryImpl(
+      dbUserService,
+      dbAvatarService,
+      userMapper,
+    );
   });
 
   tearDown(() {
     reset(dbUserService);
     reset(dbAvatarService);
+    reset(userMapper);
   });
 
   test(
@@ -41,7 +48,7 @@ void main() {
       final User expectedUser = userCreator.createEntity();
       dbUserService.mockFetchUserById(userDto: expectedUserDto);
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: avatarUrl);
-      repositoryImpl = UserRepositoryImpl(dbUserService, dbAvatarService);
+      userMapper.mockMapFromDto(expectedUser: expectedUser);
 
       final Stream<User?> user1$ = repositoryImpl.getUserById(userId: userId);
       final Stream<User?> user2$ = repositoryImpl.getUserById(userId: userId);
@@ -110,6 +117,7 @@ void main() {
       );
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
+      userMapper.mockMapFromDto(expectedUser: addedUser);
 
       await repositoryImpl.addUser(
         userId: userId,
@@ -160,6 +168,7 @@ void main() {
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockAddUser(addedUserDto: addedUserDto);
       dbAvatarService.mockAddAvatarForUser(addedAvatarUrl: avatarUrl);
+      userMapper.mockMapFromDto(expectedUser: addedUser);
 
       await repositoryImpl.addUser(
         userId: userId,
@@ -238,13 +247,18 @@ void main() {
     'new username is already taken, '
     'should throw UserRepositoryExceptionUsernameAlreadyTaken exception',
     () async {
-      final UserDto existingUserDto = UserCreator(
+      final UserCreator existingUserCreator = UserCreator(
         id: userId,
         username: 'username',
-      ).createDto();
+      );
       const String newUsername = 'new username';
       const expectedException = UserRepositoryExceptionUsernameAlreadyTaken();
-      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbUserService.mockFetchUserById(
+        userDto: existingUserCreator.createDto(),
+      );
+      userMapper.mockMapFromDto(
+        expectedUser: existingUserCreator.createEntity(),
+      );
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: true);
 
@@ -280,10 +294,10 @@ void main() {
     'updated user is not returned from db, '
     'should throw UserRepositoryExceptionUserNotFound exception',
     () async {
-      final UserDto existingUserDto = UserCreator(
+      final UserCreator existingUserCreator = UserCreator(
         id: userId,
         username: 'username',
-      ).createDto();
+      );
       const String newUsername = 'new username';
       const ThemeMode newThemeMode = ThemeMode.system;
       const ThemePrimaryColor newThemePrimaryColor = ThemePrimaryColor.pink;
@@ -291,7 +305,12 @@ void main() {
       const ThemePrimaryColorDto newThemePrimaryColorDto =
           ThemePrimaryColorDto.pink;
       const expectedException = UserRepositoryExceptionUserNotFound();
-      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbUserService.mockFetchUserById(
+        userDto: existingUserCreator.createDto(),
+      );
+      userMapper.mockMapFromDto(
+        expectedUser: existingUserCreator.createEntity(),
+      );
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: null);
@@ -329,10 +348,10 @@ void main() {
     'updateUserData, '
     'should update user in db and in repo state',
     () async {
-      final UserDto existingUserDto = UserCreator(
+      final UserCreator existingUserCreator = UserCreator(
         id: userId,
         username: 'username',
-      ).createDto();
+      );
       const String newUsername = 'new username';
       const ThemeModeDto newThemeModeDto = ThemeModeDto.system;
       const ThemePrimaryColorDto newThemePrimaryColorDto =
@@ -343,12 +362,19 @@ void main() {
         themeMode: UserCreatorThemeMode.system,
         themePrimaryColor: UserCreatorThemePrimaryColor.pink,
       );
-      final User updatedUser = updatedUserCreator.createEntity();
+      final UserDto existingUserDto = existingUserCreator.createDto();
       final UserDto updatedUserDto = updatedUserCreator.createDto();
+      final User updatedUser = updatedUserCreator.createEntity();
       dbUserService.mockFetchUserById(userDto: existingUserDto);
+      when(
+        () => userMapper.mapFromDto(userDto: existingUserDto),
+      ).thenReturn(existingUserCreator.createEntity());
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
       dbUserService.mockIsUsernameAlreadyTaken(isAlreadyTaken: false);
       dbUserService.mockUpdateUser(updatedUserDto: updatedUserDto);
+      when(
+        () => userMapper.mapFromDto(userDto: updatedUserDto),
+      ).thenReturn(updatedUser);
 
       final user$ = repositoryImpl.getUserById(userId: userId);
       await user$.first;
@@ -383,10 +409,15 @@ void main() {
     'should remove avatar from db and should update user data if it exists in '
     'repo state',
     () async {
-      final UserDto existingUserDto = UserCreator(id: userId).createDto();
+      final UserCreator existingUserCreator = UserCreator(id: userId);
       const String existingUserAvatarUrl = 'avr/u/r/l';
       final User updatedUser = UserCreator(id: userId).createEntity();
-      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbUserService.mockFetchUserById(
+        userDto: existingUserCreator.createDto(),
+      );
+      userMapper.mockMapFromDto(
+        expectedUser: existingUserCreator.createEntity(),
+      );
       dbAvatarService.mockFetchAvatarUrlForUser(
         avatarUrl: existingUserAvatarUrl,
       );
@@ -423,13 +454,18 @@ void main() {
     () async {
       const String newAvatarImgPath = 'avatar/img/path';
       const String newAvatarUrl = 'newAvr/url';
-      final UserDto existingUserDto = UserCreator(id: userId).createDto();
+      final UserCreator existingUserCreator = UserCreator(id: userId);
       const String existingUserAvatarUrl = 'avr/u/r/l';
       final User updatedUser = UserCreator(
         id: userId,
         avatarUrl: newAvatarUrl,
       ).createEntity();
-      dbUserService.mockFetchUserById(userDto: existingUserDto);
+      dbUserService.mockFetchUserById(
+        userDto: existingUserCreator.createDto(),
+      );
+      userMapper.mockMapFromDto(
+        expectedUser: existingUserCreator.createEntity(),
+      );
       dbAvatarService.mockFetchAvatarUrlForUser(
         avatarUrl: existingUserAvatarUrl,
       );

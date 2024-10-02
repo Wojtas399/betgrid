@@ -18,10 +18,12 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   final getUserByIdMutex = Mutex();
   final FirebaseUserService _dbUserService;
   final FirebaseAvatarService _dbAvatarService;
+  final UserMapper _userMapper;
 
   UserRepositoryImpl(
     this._dbUserService,
     this._dbAvatarService,
+    this._userMapper,
   );
 
   @override
@@ -65,7 +67,10 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
         avatarImgPath: avatarImgPath,
       );
     }
-    final User addedUser = mapUserFromDto(addedUserDto, avatarUrl);
+    final User addedUser = _userMapper.mapFromDto(
+      userDto: addedUserDto,
+      avatarUrl: avatarUrl,
+    );
     addEntity(addedUser);
   }
 
@@ -93,7 +98,10 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     if (updatedUserDto == null) {
       throw const UserRepositoryExceptionUserNotFound();
     }
-    user = mapUserFromDto(updatedUserDto, user.avatarUrl);
+    user = _userMapper.mapFromDto(
+      userDto: updatedUserDto,
+      avatarUrl: user.avatarUrl,
+    );
     updateEntity(user);
   }
 
@@ -128,7 +136,10 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: userId,
     );
-    final User user = mapUserFromDto(userDto, avatarUrl);
+    final User user = _userMapper.mapFromDto(
+      userDto: userDto,
+      avatarUrl: avatarUrl,
+    );
     addEntity(user);
     return user;
   }

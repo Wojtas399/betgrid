@@ -28,11 +28,3 @@ class UserMapper {
             _themePrimaryColorMapper.mapFromDto(userDto.themePrimaryColor),
       );
 }
-
-User mapUserFromDto(UserDto userDto, String? avatarUrl) => User(
-      id: userDto.id,
-      username: userDto.username,
-      avatarUrl: avatarUrl,
-      themeMode: mapThemeModeFromDto(userDto.themeMode),
-      themePrimaryColor: mapThemePrimaryColorFromDto(userDto.themePrimaryColor),
-    );
