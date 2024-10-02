@@ -18,9 +18,10 @@ void main() {
   const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
   const bool wasThereSafetyCar = true;
   const bool wasThereRedFlag = false;
+  final mapper = GrandPrixResultsMapper();
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'should map GrandPrixResultsDto model to GrandPrixResults model',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
@@ -52,7 +53,7 @@ void main() {
         ),
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -61,7 +62,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'p1DriverId is null, '
     'should set race results as null',
     () {
@@ -85,7 +86,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -94,7 +95,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'p2DriverId is null, '
     'should set race results as null',
     () {
@@ -118,7 +119,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -127,7 +128,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'p3DriverId is null, '
     'should set race results as null',
     () {
@@ -151,7 +152,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -160,7 +161,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'p10DriverId is null, '
     'should set race results as null',
     () {
@@ -184,7 +185,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -193,7 +194,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'fastestLapDriverId is null, '
     'should set race results as null',
     () {
@@ -217,7 +218,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -226,7 +227,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'dnfDriverIds param is null, '
     'should set race results as null',
     () {
@@ -250,7 +251,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -259,7 +260,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'wasThereSafetyCar is null, '
     'should set race results as null',
     () {
@@ -283,7 +284,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
@@ -292,7 +293,7 @@ void main() {
   );
 
   test(
-    'mapGrandPrixResultsFromDto, '
+    'mapFromDto, '
     'wasThereRedFlag is null, '
     'should set race results as null',
     () {
@@ -316,7 +317,7 @@ void main() {
         raceResults: null,
       );
 
-      final GrandPrixResults grandPrixResults = mapGrandPrixResultsFromDto(
+      final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
       );
 
