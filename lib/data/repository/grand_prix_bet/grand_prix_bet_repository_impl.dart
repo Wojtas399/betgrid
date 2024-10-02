@@ -15,8 +15,12 @@ typedef _GrandPrixBetFetchData = ({String playerId, String grandPrixId});
 class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     implements GrandPrixBetRepository {
   final FirebaseGrandPrixBetService _dbGrandPrixBetService;
+  final GrandPrixBetMapper _grandPrixBetMapper;
 
-  GrandPrixBetRepositoryImpl(this._dbGrandPrixBetService);
+  GrandPrixBetRepositoryImpl(
+    this._dbGrandPrixBetService,
+    this._grandPrixBetMapper,
+  );
 
   @override
   Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
@@ -92,7 +96,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     for (final grandPrixBet in grandPrixBets) {
       await _dbGrandPrixBetService.addGrandPrixBet(
         userId: playerId,
-        grandPrixBetDto: mapGrandPrixBetToDto(grandPrixBet),
+        grandPrixBetDto: _grandPrixBetMapper.mapToDto(grandPrixBet),
       );
     }
     addEntities(grandPrixBets);
@@ -102,7 +106,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final List<GrandPrixBetDto> grandPrixBetDtos =
         await _dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId);
     final List<GrandPrixBet> grandPrixBets =
-        grandPrixBetDtos.map(mapGrandPrixBetFromDto).toList();
+        grandPrixBetDtos.map(_grandPrixBetMapper.mapFromDto).toList();
     setEntities(grandPrixBets);
   }
 
@@ -117,7 +121,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
         grandPrixId: gpBetData.grandPrixId,
       );
       if (gpBetDto != null) {
-        final GrandPrixBet gpBet = mapGrandPrixBetFromDto(gpBetDto);
+        final GrandPrixBet gpBet = _grandPrixBetMapper.mapFromDto(gpBetDto);
         fetchedGpBets.add(gpBet);
       }
     }
@@ -134,7 +138,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       grandPrixId: gpBetData.grandPrixId,
     );
     if (betDto == null) return null;
-    final GrandPrixBet bet = mapGrandPrixBetFromDto(betDto);
+    final GrandPrixBet bet = _grandPrixBetMapper.mapFromDto(betDto);
     addEntity(bet);
     return bet;
   }
