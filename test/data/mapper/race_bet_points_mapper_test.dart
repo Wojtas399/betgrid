@@ -4,8 +4,10 @@ import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final mapper = RaceBetPointsMapper();
+
   test(
-    'mapRaceBetPointsFromDto, '
+    'mapFromDto, '
     'should map RaceBetPointsDto model to RaceBetPoints model',
     () {
       const double totalPoints = 20.0;
@@ -61,9 +63,7 @@ void main() {
         safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
       );
 
-      final RaceBetPoints raceBetPoints = mapRaceBetPointsFromDto(
-        raceBetPointsDto,
-      );
+      final RaceBetPoints raceBetPoints = mapper.mapFromDto(raceBetPointsDto);
 
       expect(raceBetPoints, expectedRaceBetPoints);
     },
