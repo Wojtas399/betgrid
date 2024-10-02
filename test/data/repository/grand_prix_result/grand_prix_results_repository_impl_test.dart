@@ -1,21 +1,28 @@
+import 'package:betgrid/data/firebase/model/grand_prix_result_dto/grand_prix_results_dto.dart';
 import 'package:betgrid/data/repository/grand_prix_result/grand_prix_results_repository_impl.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_results_creator.dart';
+import '../../../mock/data/mapper/mock_grand_prix_results_mapper.dart';
 import '../../../mock/firebase/mock_firebase_grand_prix_results_service.dart';
 
 void main() {
   final dbGrandPrixResultsService = MockFirebaseGrandPrixResultsService();
+  final grandPrixResultsMapper = MockGrandPrixResultsMapper();
   late GrandPrixResultsRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = GrandPrixResultsRepositoryImpl(dbGrandPrixResultsService);
+    repositoryImpl = GrandPrixResultsRepositoryImpl(
+      dbGrandPrixResultsService,
+      grandPrixResultsMapper,
+    );
   });
 
   tearDown(() {
     reset(dbGrandPrixResultsService);
+    reset(grandPrixResultsMapper);
   });
 
   test(
@@ -35,8 +42,8 @@ void main() {
       dbGrandPrixResultsService.mockFetchResultsForGrandPrix(
         grandPrixResultDto: grandPrixResultsCreator.createDto(),
       );
-      final repositoryImpl = GrandPrixResultsRepositoryImpl(
-        dbGrandPrixResultsService,
+      grandPrixResultsMapper.mockMapFromDto(
+        expectedGrandPrixResults: expectedGpResults,
       );
 
       final Stream<GrandPrixResults?> results1$ =
@@ -67,42 +74,53 @@ void main() {
       const String gp1Id = 'gp1';
       const String gp2Id = 'gp2';
       const String gp3Id = 'gp3';
-      final GrandPrixResultsCreator gp1ResultsCreator = GrandPrixResultsCreator(
-        id: 'gpr1',
-        grandPrixId: gp1Id,
-      );
-      final GrandPrixResultsCreator gp2ResultsCreator = GrandPrixResultsCreator(
-        id: 'gpr2',
-        grandPrixId: gp2Id,
-      );
-      final GrandPrixResultsCreator gp3ResultsCreator = GrandPrixResultsCreator(
-        id: 'gpr3',
-        grandPrixId: gp3Id,
-      );
+      final List<GrandPrixResultsCreator> gpResultsCreators = [
+        GrandPrixResultsCreator(
+          id: 'gpr1',
+          grandPrixId: gp1Id,
+        ),
+        GrandPrixResultsCreator(
+          id: 'gpr2',
+          grandPrixId: gp2Id,
+        ),
+        GrandPrixResultsCreator(
+          id: 'gpr3',
+          grandPrixId: gp3Id,
+        ),
+      ];
+      final List<GrandPrixResultsDto> gpResultsDtos =
+          gpResultsCreators.map((creator) => creator.createDto()).toList();
+      final List<GrandPrixResults> gpResults =
+          gpResultsCreators.map((creator) => creator.createEntity()).toList();
       final List<GrandPrixResults> expectedGpResults1 = [
-        gp1ResultsCreator.createEntity(),
-        gp2ResultsCreator.createEntity(),
+        gpResults.first,
+        gpResults[1],
       ];
-      final List<GrandPrixResults> expectedGpResults2 = [
-        gp1ResultsCreator.createEntity(),
-        gp2ResultsCreator.createEntity(),
-        gp3ResultsCreator.createEntity(),
-      ];
+      final List<GrandPrixResults> expectedGpResults2 = gpResults;
       when(
         () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
           grandPrixId: gp1Id,
         ),
-      ).thenAnswer((_) => Future.value(gp1ResultsCreator.createDto()));
+      ).thenAnswer((_) => Future.value(gpResultsDtos.first));
       when(
         () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
           grandPrixId: gp2Id,
         ),
-      ).thenAnswer((_) => Future.value(gp2ResultsCreator.createDto()));
+      ).thenAnswer((_) => Future.value(gpResultsDtos[1]));
       when(
         () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
           grandPrixId: gp3Id,
         ),
-      ).thenAnswer((_) => Future.value(gp3ResultsCreator.createDto()));
+      ).thenAnswer((_) => Future.value(gpResultsDtos.last));
+      when(
+        () => grandPrixResultsMapper.mapFromDto(gpResultsDtos.first),
+      ).thenReturn(gpResults.first);
+      when(
+        () => grandPrixResultsMapper.mapFromDto(gpResultsDtos[1]),
+      ).thenReturn(gpResults[1]);
+      when(
+        () => grandPrixResultsMapper.mapFromDto(gpResultsDtos.last),
+      ).thenReturn(gpResults.last);
 
       final Stream<List<GrandPrixResults>> gpResults1$ =
           repositoryImpl.getGrandPrixResultsForGrandPrixes(

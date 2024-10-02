@@ -13,8 +13,12 @@ import 'grand_prix_results_repository.dart';
 class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     implements GrandPrixResultsRepository {
   final FirebaseGrandPrixResultsService _dbGrandPrixResultsService;
+  final GrandPrixResultsMapper _grandPrixResultsMapper;
 
-  GrandPrixResultsRepositoryImpl(this._dbGrandPrixResultsService);
+  GrandPrixResultsRepositoryImpl(
+    this._dbGrandPrixResultsService,
+    this._grandPrixResultsMapper,
+  );
 
   @override
   Stream<GrandPrixResults?> getGrandPrixResultsForGrandPrix({
@@ -64,7 +68,8 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService
         .fetchResultsForGrandPrix(grandPrixId: grandPrixId);
     if (gpResultsDto == null) return null;
-    final GrandPrixResults gpResults = mapGrandPrixResultsFromDto(gpResultsDto);
+    final GrandPrixResults gpResults =
+        _grandPrixResultsMapper.mapFromDto(gpResultsDto);
     addEntity(gpResults);
     return gpResults;
   }
@@ -78,7 +83,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
           .fetchResultsForGrandPrix(grandPrixId: gpId);
       if (gpResultsDto != null) {
         final GrandPrixResults gpResults =
-            mapGrandPrixResultsFromDto(gpResultsDto);
+            _grandPrixResultsMapper.mapFromDto(gpResultsDto);
         fetchedGpResults.add(gpResults);
       }
     }
