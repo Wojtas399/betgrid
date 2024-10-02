@@ -4,79 +4,81 @@ import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final mapper = ThemeModeMapper();
+
   test(
-    'mapThemeModeFromDto, '
+    'mapFromDto, '
     'ThemeModeDto.light should be mapped to ThemeMode.light',
     () {
       const ThemeModeDto themeModeDto = ThemeModeDto.light;
       const ThemeMode expectedThemeMode = ThemeMode.light;
 
-      final ThemeMode themeMode = mapThemeModeFromDto(themeModeDto);
+      final ThemeMode themeMode = mapper.mapFromDto(themeModeDto);
 
       expect(themeMode, expectedThemeMode);
     },
   );
 
   test(
-    'mapThemeModeFromDto, '
+    'mapFromDto, '
     'ThemeModeDto.dark should be mapped to ThemeMode.dark',
     () {
       const ThemeModeDto themeModeDto = ThemeModeDto.dark;
       const ThemeMode expectedThemeMode = ThemeMode.dark;
 
-      final ThemeMode themeMode = mapThemeModeFromDto(themeModeDto);
+      final ThemeMode themeMode = mapper.mapFromDto(themeModeDto);
 
       expect(themeMode, expectedThemeMode);
     },
   );
 
   test(
-    'mapThemeModeFromDto, '
+    'mapFromDto, '
     'ThemeModeDto.system should be mapped to ThemeMode.system',
     () {
       const ThemeModeDto themeModeDto = ThemeModeDto.system;
       const ThemeMode expectedThemeMode = ThemeMode.system;
 
-      final ThemeMode themeMode = mapThemeModeFromDto(themeModeDto);
+      final ThemeMode themeMode = mapper.mapFromDto(themeModeDto);
 
       expect(themeMode, expectedThemeMode);
     },
   );
 
   test(
-    'mapThemeModeToDto, '
+    'mapToDto, '
     'ThemeMode.light should be mapped to ThemeModeDto.light',
     () {
       const ThemeMode themeMode = ThemeMode.light;
       const ThemeModeDto expectedThemeModeDto = ThemeModeDto.light;
 
-      final ThemeModeDto themeModeDto = mapThemeModeToDto(themeMode);
+      final ThemeModeDto themeModeDto = mapper.mapToDto(themeMode);
 
       expect(themeModeDto, expectedThemeModeDto);
     },
   );
 
   test(
-    'mapThemeModeToDto, '
+    'mapToDto, '
     'ThemeMode.dark should be mapped to ThemeModeDto.dark',
     () {
       const ThemeMode themeMode = ThemeMode.dark;
       const ThemeModeDto expectedThemeModeDto = ThemeModeDto.dark;
 
-      final ThemeModeDto themeModeDto = mapThemeModeToDto(themeMode);
+      final ThemeModeDto themeModeDto = mapper.mapToDto(themeMode);
 
       expect(themeModeDto, expectedThemeModeDto);
     },
   );
 
   test(
-    'mapThemeModeToDto, '
+    'mapToDto, '
     'ThemeMode.system should be mapped to ThemeModeDto.system',
     () {
       const ThemeMode themeMode = ThemeMode.system;
       const ThemeModeDto expectedThemeModeDto = ThemeModeDto.system;
 
-      final ThemeModeDto themeModeDto = mapThemeModeToDto(themeMode);
+      final ThemeModeDto themeModeDto = mapper.mapToDto(themeMode);
 
       expect(themeModeDto, expectedThemeModeDto);
     },

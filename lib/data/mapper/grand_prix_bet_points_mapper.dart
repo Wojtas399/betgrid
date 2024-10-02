@@ -35,19 +35,3 @@ class GrandPrixBetPointsMapper {
             : null,
       );
 }
-
-GrandPrixBetPoints mapGrandPrixBetPointsFromDto(
-  GrandPrixBetPointsDto grandPrixBetPointsDto,
-) =>
-    GrandPrixBetPoints(
-      id: grandPrixBetPointsDto.id,
-      playerId: grandPrixBetPointsDto.playerId,
-      grandPrixId: grandPrixBetPointsDto.grandPrixId,
-      totalPoints: grandPrixBetPointsDto.totalPoints,
-      qualiBetPoints: grandPrixBetPointsDto.qualiBetPointsDto != null
-          ? mapQualiBetPointsFromDto(grandPrixBetPointsDto.qualiBetPointsDto!)
-          : null,
-      raceBetPoints: grandPrixBetPointsDto.raceBetPointsDto != null
-          ? mapRaceBetPointsFromDto(grandPrixBetPointsDto.raceBetPointsDto!)
-          : null,
-    );
