@@ -4,8 +4,10 @@ import 'package:betgrid/model/grand_prix.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final mapper = GrandPrixMapper();
+
   test(
-    'mapGrandPrixFromDto, '
+    'mapFromDto, '
     'should map GrandPrixDto model to GrandPrix model',
     () {
       const String id = 'gp1';
@@ -34,7 +36,7 @@ void main() {
         endDate: endDate,
       );
 
-      final GrandPrix mappedGp = mapGrandPrixFromDto(gpDto);
+      final GrandPrix mappedGp = mapper.mapFromDto(gpDto);
 
       expect(mappedGp, gp);
     },
