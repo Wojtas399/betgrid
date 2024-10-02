@@ -5,22 +5,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_creator.dart';
+import '../../../mock/data/mapper/mock_grand_prix_mapper.dart';
 import '../../../mock/firebase/mock_firebase_grand_prix_service.dart';
 
 void main() {
   final dbGrandPrixService = MockFirebaseGrandPrixService();
+  final grandPrixMapper = MockGrandPrixMapper();
   late GrandPrixRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = GrandPrixRepositoryImpl(dbGrandPrixService);
+    repositoryImpl = GrandPrixRepositoryImpl(
+      dbGrandPrixService,
+      grandPrixMapper,
+    );
   });
 
   tearDown(() {
     reset(dbGrandPrixService);
+    reset(grandPrixMapper);
   });
 
   test(
-    'loadAllGrandPrixes, '
+    'getAllGrandPrixes, '
     'repository state is empty, '
     'should load grand prixes from db, add them to repo state and emit them if '
     'repo state is empty, '
@@ -47,6 +53,15 @@ void main() {
       dbGrandPrixService.mockFetchAllGrandPrixes(
         grandPrixDtos: grandPrixDtos,
       );
+      when(
+        () => grandPrixMapper.mapFromDto(grandPrixDtos.first),
+      ).thenReturn(expectedGrandPrixes.first);
+      when(
+        () => grandPrixMapper.mapFromDto(grandPrixDtos[1]),
+      ).thenReturn(expectedGrandPrixes[1]);
+      when(
+        () => grandPrixMapper.mapFromDto(grandPrixDtos.last),
+      ).thenReturn(expectedGrandPrixes.last);
 
       final Stream<List<GrandPrix>?> grandPrixes1$ =
           repositoryImpl.getAllGrandPrixes();
@@ -75,6 +90,7 @@ void main() {
       final GrandPrixDto grandPrixDto = grandPrixCreator.createDto();
       final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
       dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
+      grandPrixMapper.mockMapFromDto(expectedGrandPrix: expectedGrandPrix);
 
       final Stream<GrandPrix?> grandPrix1$ = repositoryImpl.getGrandPrixById(
         grandPrixId: grandPrixId,

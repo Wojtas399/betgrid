@@ -12,8 +12,12 @@ import 'grand_prix_repository.dart';
 class GrandPrixRepositoryImpl extends Repository<GrandPrix>
     implements GrandPrixRepository {
   final FirebaseGrandPrixService _dbGrandPrixService;
+  final GrandPrixMapper _grandPrixMapper;
 
-  GrandPrixRepositoryImpl(this._dbGrandPrixService);
+  GrandPrixRepositoryImpl(
+    this._dbGrandPrixService,
+    this._grandPrixMapper,
+  );
 
   @override
   Stream<List<GrandPrix>?> getAllGrandPrixes() async* {
@@ -38,7 +42,7 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
     final List<GrandPrixDto> grandPrixDtos =
         await _dbGrandPrixService.fetchAllGrandPrixes();
     final List<GrandPrix> grandPrixes =
-        grandPrixDtos.map(mapGrandPrixFromDto).toList();
+        grandPrixDtos.map(_grandPrixMapper.mapFromDto).toList();
     setEntities(grandPrixes);
   }
 
@@ -48,7 +52,7 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
       grandPrixId: grandPrixId,
     );
     if (grandPrixDto == null) return null;
-    final GrandPrix grandPrix = mapGrandPrixFromDto(grandPrixDto);
+    final GrandPrix grandPrix = _grandPrixMapper.mapFromDto(grandPrixDto);
     addEntity(grandPrix);
     return grandPrix;
   }
