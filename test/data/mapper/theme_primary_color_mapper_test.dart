@@ -4,8 +4,10 @@ import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final mapper = ThemePrimaryColorMapper();
+
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.defaultRed should be mapped to ThemePrimaryColor.defaultRed',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -14,14 +16,14 @@ void main() {
           ThemePrimaryColor.defaultRed;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.pink should be mapped to ThemePrimaryColor.pink',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -30,14 +32,14 @@ void main() {
           ThemePrimaryColor.pink;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.purple should be mapped to ThemePrimaryColor.purple',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -46,14 +48,14 @@ void main() {
           ThemePrimaryColor.purple;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.purple should be mapped to ThemePrimaryColor.purple',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -62,14 +64,14 @@ void main() {
           ThemePrimaryColor.purple;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.brown should be mapped to ThemePrimaryColor.brown',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -78,14 +80,14 @@ void main() {
           ThemePrimaryColor.brown;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.orange should be mapped to ThemePrimaryColor.orange',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -94,14 +96,14 @@ void main() {
           ThemePrimaryColor.orange;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.yellow should be mapped to ThemePrimaryColor.yellow',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -110,14 +112,14 @@ void main() {
           ThemePrimaryColor.yellow;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.green should be mapped to ThemePrimaryColor.green',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -126,14 +128,14 @@ void main() {
           ThemePrimaryColor.green;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorFromDto, '
+    'mapFromDto, '
     'ThemePrimaryColorDto.blue should be mapped to ThemePrimaryColor.blue',
     () {
       const ThemePrimaryColorDto themePrimaryColorDto =
@@ -142,14 +144,14 @@ void main() {
           ThemePrimaryColor.blue;
 
       final ThemePrimaryColor themePrimaryColor =
-          mapThemePrimaryColorFromDto(themePrimaryColorDto);
+          mapper.mapFromDto(themePrimaryColorDto);
 
       expect(themePrimaryColor, expectedThemePrimaryColor);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.defaultRed should be mapped to ThemePrimaryColorDto.defaultRed',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.defaultRed;
@@ -157,14 +159,14 @@ void main() {
           ThemePrimaryColorDto.defaultRed;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.pink should be mapped to ThemePrimaryColorDto.pink',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
@@ -172,14 +174,14 @@ void main() {
           ThemePrimaryColorDto.pink;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.purple should be mapped to ThemePrimaryColorDto.purple',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.purple;
@@ -187,14 +189,14 @@ void main() {
           ThemePrimaryColorDto.purple;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.brown should be mapped to ThemePrimaryColorDto.brown',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.brown;
@@ -202,14 +204,14 @@ void main() {
           ThemePrimaryColorDto.brown;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.orange should be mapped to ThemePrimaryColorDto.orange',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.orange;
@@ -217,14 +219,14 @@ void main() {
           ThemePrimaryColorDto.orange;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.yellow should be mapped to ThemePrimaryColorDto.yellow',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.yellow;
@@ -232,14 +234,14 @@ void main() {
           ThemePrimaryColorDto.yellow;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.green should be mapped to ThemePrimaryColorDto.green',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.green;
@@ -247,14 +249,14 @@ void main() {
           ThemePrimaryColorDto.green;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
   );
 
   test(
-    'mapThemePrimaryColorToDto, '
+    'mapToDto, '
     'ThemePrimaryColor.blue should be mapped to ThemePrimaryColorDto.blue',
     () {
       const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.blue;
@@ -262,7 +264,7 @@ void main() {
           ThemePrimaryColorDto.blue;
 
       final ThemePrimaryColorDto themePrimaryColorDto =
-          mapThemePrimaryColorToDto(themePrimaryColor);
+          mapper.mapToDto(themePrimaryColor);
 
       expect(themePrimaryColorDto, expectedThemePrimaryColorDto);
     },
