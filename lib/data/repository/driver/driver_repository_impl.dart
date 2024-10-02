@@ -12,8 +12,12 @@ import 'driver_repository.dart';
 class DriverRepositoryImpl extends Repository<Driver>
     implements DriverRepository {
   final FirebaseDriverService _dbDriverService;
+  final DriverMapper _driverMapper;
 
-  DriverRepositoryImpl(this._dbDriverService);
+  DriverRepositoryImpl(
+    this._dbDriverService,
+    this._driverMapper,
+  );
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {
@@ -36,7 +40,8 @@ class DriverRepositoryImpl extends Repository<Driver>
 
   Future<void> _fetchAllDriversFromDb() async {
     final List<DriverDto> driverDtos = await _dbDriverService.fetchAllDrivers();
-    final List<Driver> drivers = driverDtos.map(mapDriverFromDto).toList();
+    final List<Driver> drivers =
+        driverDtos.map(_driverMapper.mapFromDto).toList();
     setEntities(drivers);
   }
 
@@ -45,7 +50,7 @@ class DriverRepositoryImpl extends Repository<Driver>
       driverId: driverId,
     );
     if (driverDto == null) return null;
-    final Driver driver = mapDriverFromDto(driverDto);
+    final Driver driver = _driverMapper.mapFromDto(driverDto);
     addEntity(driver);
     return driver;
   }

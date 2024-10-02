@@ -1,3 +1,4 @@
+import 'package:betgrid/data/firebase/model/driver_dto/driver_dto.dart';
 import 'package:betgrid/model/driver.dart';
 
 class DriverCreator {
@@ -23,6 +24,14 @@ class DriverCreator {
         team: _entityTeam,
       );
 
+  DriverDto createDto() => DriverDto(
+        id: id,
+        name: name,
+        surname: surname,
+        number: number,
+        team: _dtoTeam,
+      );
+
   Team get _entityTeam => switch (team) {
         DriverCreatorTeam.mercedes => Team.mercedes,
         DriverCreatorTeam.alpine => Team.alpine,
@@ -34,6 +43,19 @@ class DriverCreator {
         DriverCreatorTeam.ferrari => Team.ferrari,
         DriverCreatorTeam.kickSauber => Team.kickSauber,
         DriverCreatorTeam.williams => Team.williams,
+      };
+
+  TeamDto get _dtoTeam => switch (team) {
+        DriverCreatorTeam.mercedes => TeamDto.mercedes,
+        DriverCreatorTeam.alpine => TeamDto.alpine,
+        DriverCreatorTeam.haasF1Team => TeamDto.haasF1Team,
+        DriverCreatorTeam.redBullRacing => TeamDto.redBullRacing,
+        DriverCreatorTeam.mcLaren => TeamDto.mcLaren,
+        DriverCreatorTeam.astonMartin => TeamDto.astonMartin,
+        DriverCreatorTeam.rb => TeamDto.rb,
+        DriverCreatorTeam.ferrari => TeamDto.ferrari,
+        DriverCreatorTeam.kickSauber => TeamDto.kickSauber,
+        DriverCreatorTeam.williams => TeamDto.williams,
       };
 }
 

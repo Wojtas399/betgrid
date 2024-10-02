@@ -4,18 +4,21 @@ import 'package:betgrid/model/driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../mock/data/mapper/mock_driver_mapper.dart';
 import '../../../mock/firebase/mock_firebase_driver_service.dart';
 
 void main() {
   final dbDriverService = MockFirebaseDriverService();
+  final driverMapper = MockDriverMapper();
   late DriverRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = DriverRepositoryImpl(dbDriverService);
+    repositoryImpl = DriverRepositoryImpl(dbDriverService, driverMapper);
   });
 
   tearDown(() {
     reset(dbDriverService);
+    reset(driverMapper);
   });
 
   test(
@@ -72,6 +75,15 @@ void main() {
         ),
       ];
       dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
+      when(
+        () => driverMapper.mapFromDto(driverDtos.first),
+      ).thenReturn(expectedDrivers.first);
+      when(
+        () => driverMapper.mapFromDto(driverDtos[1]),
+      ).thenReturn(expectedDrivers[1]);
+      when(
+        () => driverMapper.mapFromDto(driverDtos.last),
+      ).thenReturn(expectedDrivers.last);
 
       final Stream<List<Driver>> allDrivers1$ = repositoryImpl.getAllDrivers();
       final Stream<List<Driver>> allDrivers2$ = repositoryImpl.getAllDrivers();
@@ -104,6 +116,7 @@ void main() {
         team: Team.mercedes,
       );
       dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
+      driverMapper.mockMapFromDto(expectedDriver: expectedDriver);
 
       final Stream<Driver?> driver1$ = repositoryImpl.getDriverById(
         driverId: expectedDriver.id,

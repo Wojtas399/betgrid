@@ -3,9 +3,14 @@ import 'package:betgrid/data/mapper/driver_mapper.dart';
 import 'package:betgrid/model/driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../mock/data/mapper/mock_team_mapper.dart';
+
 void main() {
+  final teamMapper = MockTeamMapper();
+  final mapper = DriverMapper(teamMapper);
+
   test(
-    'mapDriverFromDto, '
+    'mapFromDto, '
     'should map DriverDto model to Driver model',
     () {
       const String id = 'd1';
@@ -28,8 +33,9 @@ void main() {
         number: number,
         team: team,
       );
+      teamMapper.mockMapFromDto(expectedTeam: team);
 
-      final Driver driver = mapDriverFromDto(driverDto);
+      final Driver driver = mapper.mapFromDto(driverDto);
 
       expect(driver, expectedDriver);
     },
