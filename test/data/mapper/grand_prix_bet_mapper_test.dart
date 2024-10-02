@@ -24,9 +24,10 @@ void main() {
   const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
   const bool willBeSafetyCar = true;
   const bool willBeRedFlag = false;
+  final mapper = GrandPrixBetMapper();
 
   test(
-    'mapGrandPrixBetFromDto, '
+    'mapFromDto, '
     'should map GrandPrixBetDto model to GrandPrixBet model',
     () {
       final GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
@@ -58,14 +59,14 @@ void main() {
         willBeRedFlag: willBeRedFlag,
       );
 
-      final GrandPrixBet grandPrixBet = mapGrandPrixBetFromDto(grandPrixBetDto);
+      final GrandPrixBet grandPrixBet = mapper.mapFromDto(grandPrixBetDto);
 
       expect(grandPrixBet, expectedGrandPrixBet);
     },
   );
 
   test(
-    'mapGrandPrixBetToDto, '
+    'mapToDto, '
     'should map GrandPrixBet model to GrandPrixBetDto model',
     () {
       final GrandPrixBet grandPrixBet = GrandPrixBet(
@@ -97,7 +98,7 @@ void main() {
         willBeRedFlag: willBeRedFlag,
       );
 
-      final GrandPrixBetDto dto = mapGrandPrixBetToDto(grandPrixBet);
+      final GrandPrixBetDto dto = mapper.mapToDto(grandPrixBet);
 
       expect(dto, expectedDto);
     },
