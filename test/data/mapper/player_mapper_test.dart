@@ -6,8 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../creator/user_creator.dart';
 
 void main() {
+  final mapper = PlayerMapper();
+
   test(
-    'mapPlayerFromUserDto, '
+    'mapFromDto, '
     'should map UserDto model to Player model',
     () {
       const String id = 'u1';
@@ -23,7 +25,7 @@ void main() {
         avatarUrl: avatarUrl,
       );
 
-      final Player player = mapPlayerFromUserDto(userDto, avatarUrl);
+      final Player player = mapper.mapFromDto(userDto, avatarUrl);
 
       expect(player, expectedPlayer);
     },
