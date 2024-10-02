@@ -16,9 +16,13 @@ typedef _GrandPrixBetPointsFetchData = ({String playerId, String grandPrixId});
 class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     implements GrandPrixBetPointsRepository {
   final FirebaseGrandPrixBetPointsService _dbBetPointsService;
+  final GrandPrixBetPointsMapper _grandPrixBetPointsMapper;
   final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
 
-  GrandPrixBetPointsRepositoryImpl(this._dbBetPointsService);
+  GrandPrixBetPointsRepositoryImpl(
+    this._dbBetPointsService,
+    this._grandPrixBetPointsMapper,
+  );
 
   @override
   Stream<List<GrandPrixBetPoints>>
@@ -97,7 +101,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
       );
       if (gpBetPointsDto != null) {
         final GrandPrixBetPoints gpBetPoints =
-            mapGrandPrixBetPointsFromDto(gpBetPointsDto);
+            _grandPrixBetPointsMapper.mapFromDto(gpBetPointsDto);
         fetchedBetPoints.add(gpBetPoints);
       }
     }
@@ -114,7 +118,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
       grandPrixId: gpBetPointsData.grandPrixId,
     );
     if (dto == null) return null;
-    final GrandPrixBetPoints entity = mapGrandPrixBetPointsFromDto(dto);
+    final GrandPrixBetPoints entity = _grandPrixBetPointsMapper.mapFromDto(dto);
     addEntity(entity);
     return entity;
   }

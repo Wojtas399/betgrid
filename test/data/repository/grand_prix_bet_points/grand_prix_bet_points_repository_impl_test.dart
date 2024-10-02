@@ -5,18 +5,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../mock/data/mapper/mock_grand_prix_bet_points_mapper.dart';
 import '../../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
 
 void main() {
   final dbBetPointsService = MockFirebaseGrandPrixBetPointsService();
+  final grandPrixBetPointsMapper = MockGrandPrixBetPointsMapper();
   late GrandPrixBetPointsRepositoryImpl repositoryImpl;
 
   setUp(() {
-    repositoryImpl = GrandPrixBetPointsRepositoryImpl(dbBetPointsService);
+    repositoryImpl = GrandPrixBetPointsRepositoryImpl(
+      dbBetPointsService,
+      grandPrixBetPointsMapper,
+    );
   });
 
   tearDown(() {
     reset(dbBetPointsService);
+    reset(grandPrixBetPointsMapper);
   });
 
   test(
@@ -52,15 +58,31 @@ void main() {
           grandPrixId: gp2Id,
         ),
       ];
+      final List<GrandPrixBetPointsDto> player1GpBetPointsDtos =
+          player1GpBetPointsCreators
+              .map((creator) => creator.createDto())
+              .toList();
+      final List<GrandPrixBetPointsDto> player2GpBetPointsDtos =
+          player2GpBetPointsCreators
+              .map((creator) => creator.createDto())
+              .toList();
+      final List<GrandPrixBetPoints> player1GpBetPoints =
+          player1GpBetPointsCreators
+              .map((creator) => creator.createEntity())
+              .toList();
+      final List<GrandPrixBetPoints> player2GpBetPoints =
+          player2GpBetPointsCreators
+              .map((creator) => creator.createEntity())
+              .toList();
       final List<GrandPrixBetPoints> expectedGpBetPoints1 = [
-        player1GpBetPointsCreators.first.createEntity(),
-        player2GpBetPointsCreators.first.createEntity(),
+        player1GpBetPoints.first,
+        player2GpBetPoints.first,
       ];
       final List<GrandPrixBetPoints> expectedGpBetPoints2 = [
-        player1GpBetPointsCreators.first.createEntity(),
-        player2GpBetPointsCreators.first.createEntity(),
-        player1GpBetPointsCreators.last.createEntity(),
-        player2GpBetPointsCreators.last.createEntity(),
+        player1GpBetPoints.first,
+        player2GpBetPoints.first,
+        player1GpBetPoints.last,
+        player2GpBetPoints.last,
       ];
       when(
         () =>
@@ -68,36 +90,40 @@ void main() {
           playerId: player1Id,
           grandPrixId: gp1Id,
         ),
-      ).thenAnswer(
-        (_) => Future.value(player1GpBetPointsCreators.first.createDto()),
-      );
+      ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.first));
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
           playerId: player1Id,
           grandPrixId: gp2Id,
         ),
-      ).thenAnswer(
-        (_) => Future.value(player1GpBetPointsCreators.last.createDto()),
-      );
+      ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.last));
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
           playerId: player2Id,
           grandPrixId: gp1Id,
         ),
-      ).thenAnswer(
-        (_) => Future.value(player2GpBetPointsCreators.first.createDto()),
-      );
+      ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.first));
       when(
         () =>
             dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
           playerId: player2Id,
           grandPrixId: gp2Id,
         ),
-      ).thenAnswer(
-        (_) => Future.value(player2GpBetPointsCreators.last.createDto()),
-      );
+      ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.last));
+      when(
+        () => grandPrixBetPointsMapper.mapFromDto(player1GpBetPointsDtos.first),
+      ).thenReturn(player1GpBetPoints.first);
+      when(
+        () => grandPrixBetPointsMapper.mapFromDto(player1GpBetPointsDtos.last),
+      ).thenReturn(player1GpBetPoints.last);
+      when(
+        () => grandPrixBetPointsMapper.mapFromDto(player2GpBetPointsDtos.first),
+      ).thenReturn(player2GpBetPoints.first);
+      when(
+        () => grandPrixBetPointsMapper.mapFromDto(player2GpBetPointsDtos.last),
+      ).thenReturn(player2GpBetPoints.last);
 
       final Stream<List<GrandPrixBetPoints>> gpBetPoints1$ =
           repositoryImpl.getGrandPrixBetPointsForPlayersAndGrandPrixes(
@@ -164,6 +190,9 @@ void main() {
           grandPrixBetPointsCreator.createEntity();
       dbBetPointsService.mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
         grandPrixBetPointsDto: grandPrixBetPointsDto,
+      );
+      grandPrixBetPointsMapper.mockMapFromDto(
+        expectedGrandPrixBetPoints: expectedGrandPrixBetPoints,
       );
 
       final Stream<GrandPrixBetPoints?> points1$ =
