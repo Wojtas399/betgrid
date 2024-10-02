@@ -75,11 +75,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: [
@@ -115,11 +115,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: null,
@@ -154,11 +154,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: null,
@@ -193,11 +193,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: [],
@@ -232,11 +232,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: [],
@@ -271,11 +271,11 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-        ),
+        ).createEntity(),
       );
       grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
         grandPrixBets: null,

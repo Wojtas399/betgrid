@@ -4,7 +4,7 @@ import 'package:betgrid/model/player.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/user_dto_creator.dart';
+import '../../../creator/user_creator.dart';
 import '../../../mock/firebase/mock_firebase_avatar_service.dart';
 import '../../../mock/firebase/mock_firebase_user_service.dart';
 
@@ -22,9 +22,9 @@ void main() {
     'should load all players from db, add them to repo state and emit them',
     () async {
       final List<UserDto> userDtos = [
-        createUserDto(id: 'u2', username: 'username 2'),
-        createUserDto(id: 'u1', username: 'username 1'),
-        createUserDto(id: 'u3', username: 'username 3'),
+        UserCreator(id: 'u2', username: 'username 2').createDto(),
+        UserCreator(id: 'u1', username: 'username 1').createDto(),
+        UserCreator(id: 'u3', username: 'username 3').createDto(),
       ];
       const String user2AvatarUrl = 'avatar/url';
       final List<Player> expectedPlayers = [
@@ -74,7 +74,10 @@ void main() {
     'should only emit player if it exists in repo state',
     () async {
       const String playerId = 'p1';
-      final UserDto userDto = createUserDto(id: playerId, username: 'player 1');
+      final UserDto userDto = UserCreator(
+        id: playerId,
+        username: 'player 1',
+      ).createDto();
       const Player expectedPlayer = Player(id: playerId, username: 'player 1');
       dbUserService.mockFetchUserById(userDto: userDto);
       dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);

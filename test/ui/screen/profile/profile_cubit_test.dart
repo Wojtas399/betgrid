@@ -46,13 +46,13 @@ void main() {
     setUp: () {
       authRepository.mockGetLoggedUserId('u1');
       userRepository.mockGetUserById(
-        user: createUser(
+        user: UserCreator(
           id: 'u1',
           username: 'username',
           avatarUrl: 'avatar/url',
-          themeMode: ThemeMode.dark,
-          themePrimaryColor: ThemePrimaryColor.brown,
-        ),
+          themeMode: UserCreatorThemeMode.dark,
+          themePrimaryColor: UserCreatorThemePrimaryColor.brown,
+        ).createEntity(),
       );
     },
     act: (cubit) async => await cubit.initialize(),

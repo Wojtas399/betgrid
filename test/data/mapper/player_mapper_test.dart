@@ -3,7 +3,7 @@ import 'package:betgrid/data/mapper/player_mapper.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../creator/user_dto_creator.dart';
+import '../../creator/user_creator.dart';
 
 void main() {
   test(
@@ -13,10 +13,10 @@ void main() {
       const String id = 'u1';
       const String username = 'username';
       const String avatarUrl = 'avatar/url';
-      final UserDto userDto = createUserDto(
+      final UserDto userDto = UserCreator(
         id: id,
         username: username,
-      );
+      ).createDto();
       const Player expectedPlayer = Player(
         id: id,
         username: username,
