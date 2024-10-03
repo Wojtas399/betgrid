@@ -50,7 +50,7 @@ void main() {
 
   test(
     'fromFirebase, '
-    'should map json model to class model with given id',
+    'should map json model to class model with given id and playerId',
     () {
       const String id = 'd1';
       const String playerId = 'p1';

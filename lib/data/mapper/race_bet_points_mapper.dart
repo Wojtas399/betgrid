@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../model/grand_prix_bet_points.dart';
-import '../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import '../firebase/model/race_bet_points_dto.dart';
 
 @injectable
 class RaceBetPointsMapper {

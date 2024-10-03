@@ -94,7 +94,7 @@ class FirebaseCollections {
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
               if (data == null) throw 'Grand prix bet points document was null';
-              return GrandPrixBetPointsDto.fromIdPlayerIdAndJson(
+              return GrandPrixBetPointsDto.fromFirebase(
                 id: snapshot.id,
                 playerId: userId,
                 json: data,

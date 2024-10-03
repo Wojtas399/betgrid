@@ -1,4 +1,4 @@
-import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import 'package:betgrid/data/firebase/model/race_bet_points_dto.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 
 class RaceBetPointsCreator {
@@ -75,4 +75,23 @@ class RaceBetPointsCreator {
         redFlagPoints: redFlagPoints,
         safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
       );
+
+  Map<String, Object?> createJson() => {
+        'totalPoints': totalPoints,
+        'p1Points': p1Points,
+        'p2Points': p2Points,
+        'p3Points': p3Points,
+        'p10Points': p10Points,
+        'fastestLapPoints': fastestLapPoints,
+        'podiumAndP10Points': podiumAndP10Points,
+        'podiumAndP10Multiplier': podiumAndP10Multiplier,
+        'dnfPoints': dnfPoints,
+        'dnfDriver1Points': dnfDriver1Points,
+        'dnfDriver2Points': dnfDriver2Points,
+        'dnfDriver3Points': dnfDriver3Points,
+        'dnfMultiplier': dnfMultiplier,
+        'safetyCarPoints': safetyCarPoints,
+        'redFlagPoints': redFlagPoints,
+        'safetyCarAndRedFlagPoints': safetyCarAndRedFlagPoints,
+      };
 }
