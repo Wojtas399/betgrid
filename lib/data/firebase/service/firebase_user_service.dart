@@ -6,13 +6,17 @@ import '../model/user_dto/user_dto.dart';
 
 @injectable
 class FirebaseUserService {
+  final FirebaseCollections _firebaseCollections;
+
+  const FirebaseUserService(this._firebaseCollections);
+
   Future<UserDto?> fetchUserById({required String userId}) async {
-    final snapshot = await getUsersRef().doc(userId).get();
+    final snapshot = await _firebaseCollections.users().doc(userId).get();
     return snapshot.data();
   }
 
   Future<List<UserDto>> fetchAllUsers() async {
-    final snapshot = await getUsersRef().get();
+    final snapshot = await _firebaseCollections.users().get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
@@ -22,7 +26,7 @@ class FirebaseUserService {
     required ThemeModeDto themeMode,
     required ThemePrimaryColorDto themePrimaryColor,
   }) async {
-    final docRef = getUsersRef().doc(userId);
+    final docRef = _firebaseCollections.users().doc(userId);
     await docRef.set(
       UserDto(
         username: username,
@@ -35,7 +39,8 @@ class FirebaseUserService {
   }
 
   Future<bool> isUsernameAlreadyTaken({required String username}) async {
-    final snapshot = await getUsersRef()
+    final snapshot = await _firebaseCollections
+        .users()
         .where('username', isEqualTo: username)
         .limit(1)
         .get();
@@ -48,7 +53,7 @@ class FirebaseUserService {
     ThemeModeDto? themeMode,
     ThemePrimaryColorDto? themePrimaryColor,
   }) async {
-    final docRef = getUsersRef().doc(userId);
+    final docRef = _firebaseCollections.users().doc(userId);
     DocumentSnapshot<UserDto> doc = await docRef.get();
     UserDto? data = doc.data();
     if (data == null) {
