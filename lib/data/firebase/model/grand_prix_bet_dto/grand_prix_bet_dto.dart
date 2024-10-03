@@ -27,10 +27,10 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
   factory GrandPrixBetDto.fromJson(Map<String, Object?> json) =>
       _$GrandPrixBetDtoFromJson(json);
 
-  factory GrandPrixBetDto.fromIdPlayerIdAndJson(
-    String id,
-    String playerId,
-    Map<String, Object?> json,
-  ) =>
+  factory GrandPrixBetDto.fromFirebase({
+    required String id,
+    required String playerId,
+    required Map<String, Object?> json,
+  }) =>
       GrandPrixBetDto.fromJson(json).copyWith(id: id, playerId: playerId);
 }

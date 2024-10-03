@@ -49,7 +49,7 @@ void main() {
   );
 
   test(
-    'fromIdPlayerIdAndJson, '
+    'fromFirebase, '
     'should map json model to class model with given id',
     () {
       const String id = 'd1';
@@ -81,8 +81,11 @@ void main() {
         willBeSafetyCar: willBeSafetyCar,
       );
 
-      final GrandPrixBetDto model =
-          GrandPrixBetDto.fromIdPlayerIdAndJson(id, playerId, json);
+      final GrandPrixBetDto model = GrandPrixBetDto.fromFirebase(
+        id: id,
+        playerId: playerId,
+        json: json,
+      );
 
       expect(model, expectedModel);
     },

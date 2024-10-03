@@ -74,10 +74,10 @@ class FirebaseCollections {
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
               if (data == null) throw 'Grand prix bet document was null';
-              return GrandPrixBetDto.fromIdPlayerIdAndJson(
-                snapshot.id,
-                userId,
-                data,
+              return GrandPrixBetDto.fromFirebase(
+                id: snapshot.id,
+                playerId: userId,
+                json: data,
               );
             },
             toFirestore: (GrandPrixBetDto dto, _) => dto.toJson(),
