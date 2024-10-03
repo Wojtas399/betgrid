@@ -18,7 +18,10 @@ class DriverDto with _$DriverDto {
   factory DriverDto.fromJson(Map<String, Object?> json) =>
       _$DriverDtoFromJson(json);
 
-  factory DriverDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+  factory DriverDto.fromFirebase({
+    required String id,
+    required Map<String, Object?> json,
+  }) =>
       DriverDto.fromJson(json).copyWith(id: id);
 }
 

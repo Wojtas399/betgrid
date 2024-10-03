@@ -31,7 +31,7 @@ void main() {
   );
 
   test(
-    'fromIdAndJson, '
+    'fromFirebase, '
     'should map json model to class model with given id',
     () {
       const String id = 'd1';
@@ -49,7 +49,7 @@ void main() {
         team: team,
       );
 
-      final DriverDto model = DriverDto.fromIdAndJson(id, json);
+      final DriverDto model = DriverDto.fromFirebase(id: id, json: json);
 
       expect(model, expectedModel);
     },

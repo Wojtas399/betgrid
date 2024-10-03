@@ -33,7 +33,10 @@ class FirebaseCollections {
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
               if (data == null) throw 'Driver document data was null';
-              return DriverDto.fromIdAndJson(snapshot.id, data);
+              return DriverDto.fromFirebase(
+                id: snapshot.id,
+                json: data,
+              );
             },
             toFirestore: (DriverDto dto, _) => dto.toJson(),
           );
