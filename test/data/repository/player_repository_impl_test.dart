@@ -95,38 +95,68 @@ void main() {
     },
   );
 
-  test(
-    'getPlayerById, '
-    'should load player from db, add it to repo state and emit it if it does '
-    'not exist in repo state, '
-    'should only emit player if it exists in repo state',
-    () async {
+  group(
+    'getPlayerById, ',
+    () {
       const String playerId = 'p1';
-      final UserDto userDto = UserCreator(
-        id: playerId,
-        username: 'player 1',
-      ).createDto();
-      const Player expectedPlayer = Player(id: playerId, username: 'player 1');
-      dbUserService.mockFetchUserById(userDto: userDto);
-      dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
-      playerMapper.mockMapFromDto(expectedPlayer: expectedPlayer);
+      final List<Player> existingPlayers = [
+        Player(id: 'p2', username: 'player 2'),
+        Player(id: 'p3', username: 'player 3'),
+      ];
 
-      final Stream<Player?> player1$ = repositoryImpl.getPlayerById(
-        playerId: playerId,
-      );
-      final Stream<Player?> player2$ = repositoryImpl.getPlayerById(
-        playerId: playerId,
+      test(
+        'should only emit player if it already exists in repo state',
+        () async {
+          final Player existingPlayer = Player(
+            id: playerId,
+            username: 'player 1',
+          );
+          repositoryImpl.addEntities(
+            [...existingPlayers, existingPlayer],
+          );
+
+          final Stream<Player?> player$ = repositoryImpl.getPlayerById(
+            playerId: playerId,
+          );
+
+          expect(await player$.first, existingPlayer);
+        },
       );
 
-      expect(await player1$.first, expectedPlayer);
-      expect(await player2$.first, expectedPlayer);
-      expect(await repositoryImpl.repositoryState$.first, [expectedPlayer]);
-      verify(
-        () => dbUserService.fetchUserById(userId: playerId),
-      ).called(1);
-      verify(
-        () => dbAvatarService.fetchAvatarUrlForUser(userId: playerId),
-      ).called(1);
+      test(
+        'should fetch player from db, add it to repo state and emit it if it '
+        'does not exist in repo state',
+        () async {
+          final UserDto userDto = UserCreator(
+            id: playerId,
+            username: 'player 1',
+          ).createDto();
+          const Player expectedPlayer = Player(
+            id: playerId,
+            username: 'player 1',
+          );
+          dbUserService.mockFetchUserById(userDto: userDto);
+          dbAvatarService.mockFetchAvatarUrlForUser(avatarUrl: null);
+          playerMapper.mockMapFromDto(expectedPlayer: expectedPlayer);
+          repositoryImpl.addEntities(existingPlayers);
+
+          final Stream<Player?> player$ = repositoryImpl.getPlayerById(
+            playerId: playerId,
+          );
+
+          expect(await player$.first, expectedPlayer);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingPlayers, expectedPlayer],
+          );
+          verify(
+            () => dbUserService.fetchUserById(userId: playerId),
+          ).called(1);
+          verify(
+            () => dbAvatarService.fetchAvatarUrlForUser(userId: playerId),
+          ).called(1);
+        },
+      );
     },
   );
 }
