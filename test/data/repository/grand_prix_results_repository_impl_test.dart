@@ -25,51 +25,82 @@ void main() {
     reset(grandPrixResultsMapper);
   });
 
-  test(
-    'getResultsForGrandPrix, '
-    'should load grand prix results from db, add it to repo state and emit it if '
-    'it does not already exist in repo state, '
-    'should only emit existing results if it exist in repo state',
-    () async {
+  group(
+    'getResultsForGrandPrix, ',
+    () {
       const String grandPrixId = 'gp1';
       final GrandPrixResultsCreator grandPrixResultsCreator =
           GrandPrixResultsCreator(
         id: 'r1',
         grandPrixId: grandPrixId,
       );
-      final GrandPrixResults expectedGpResults =
-          grandPrixResultsCreator.createEntity();
-      dbGrandPrixResultsService.mockFetchResultsForGrandPrix(
-        grandPrixResultDto: grandPrixResultsCreator.createDto(),
-      );
-      grandPrixResultsMapper.mockMapFromDto(
-        expectedGrandPrixResults: expectedGpResults,
+      final List<GrandPrixResults> existingGrandPrixesResults = [
+        GrandPrixResultsCreator(
+          id: 'r2',
+          grandPrixId: 'gp2',
+        ).createEntity(),
+        GrandPrixResultsCreator(
+          id: 'r3',
+          grandPrixId: 'gp3',
+        ).createEntity(),
+      ];
+
+      test(
+        'should only emit results if they already exists in repo state',
+        () async {
+          final GrandPrixResults existingGrandPrixResults =
+              grandPrixResultsCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingGrandPrixesResults, existingGrandPrixResults],
+          );
+
+          final Stream<GrandPrixResults?> results$ =
+              repositoryImpl.getGrandPrixResultsForGrandPrix(
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await results$.first, existingGrandPrixResults);
+        },
       );
 
-      final Stream<GrandPrixResults?> results1$ =
-          repositoryImpl.getGrandPrixResultsForGrandPrix(
-        grandPrixId: grandPrixId,
-      );
-      final Stream<GrandPrixResults?> results2$ =
-          repositoryImpl.getGrandPrixResultsForGrandPrix(
-        grandPrixId: grandPrixId,
-      );
+      test(
+        'should fetch grand prix results from db, add them to repo state and '
+        'emit them if they do not exists in repo state',
+        () async {
+          final GrandPrixResults expectedGpResults =
+              grandPrixResultsCreator.createEntity();
+          dbGrandPrixResultsService.mockFetchResultsForGrandPrix(
+            grandPrixResultDto: grandPrixResultsCreator.createDto(),
+          );
+          grandPrixResultsMapper.mockMapFromDto(
+            expectedGrandPrixResults: expectedGpResults,
+          );
+          repositoryImpl.addEntities(existingGrandPrixesResults);
 
-      expect(await results1$.first, expectedGpResults);
-      expect(await results2$.first, expectedGpResults);
-      expect(await repositoryImpl.repositoryState$.first, [expectedGpResults]);
-      verify(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: grandPrixId,
-        ),
-      ).called(1);
+          final Stream<GrandPrixResults?> results$ =
+              repositoryImpl.getGrandPrixResultsForGrandPrix(
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await results$.first, expectedGpResults);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingGrandPrixesResults, expectedGpResults],
+          );
+          verify(
+            () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
+              grandPrixId: grandPrixId,
+            ),
+          ).called(1);
+        },
+      );
     },
   );
 
   test(
     'getResultsForGrandPrixes, '
-    'should emit gp results which already exists in repo state and should fetch '
-    'gp results which do not exist in repo state',
+    'should emit gp results which already exists in repo state and should '
+    'fetch gp results which do not exist in repo state',
     () async {
       const String gp1Id = 'gp1';
       const String gp2Id = 'gp2';
