@@ -5,12 +5,12 @@ import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/user_creator.dart';
-import '../../../mock/data/mapper/mock_theme_mode_mapper.dart';
-import '../../../mock/data/mapper/mock_theme_primary_color_mapper.dart';
-import '../../../mock/data/mapper/mock_user_mapper.dart';
-import '../../../mock/firebase/mock_firebase_avatar_service.dart';
-import '../../../mock/firebase/mock_firebase_user_service.dart';
+import '../../creator/user_creator.dart';
+import '../../mock/data/mapper/mock_theme_mode_mapper.dart';
+import '../../mock/data/mapper/mock_theme_primary_color_mapper.dart';
+import '../../mock/data/mapper/mock_user_mapper.dart';
+import '../../mock/firebase/mock_firebase_avatar_service.dart';
+import '../../mock/firebase/mock_firebase_user_service.dart';
 
 void main() {
   final dbUserService = MockFirebaseUserService();

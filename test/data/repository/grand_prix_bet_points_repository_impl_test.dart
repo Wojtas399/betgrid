@@ -4,9 +4,9 @@ import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../mock/data/mapper/mock_grand_prix_bet_points_mapper.dart';
-import '../../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
+import '../../creator/grand_prix_bet_points_creator.dart';
+import '../../mock/data/mapper/mock_grand_prix_bet_points_mapper.dart';
+import '../../mock/data/repository/mock_firebase_grand_prix_bet_points_service.dart';
 
 void main() {
   final dbBetPointsService = MockFirebaseGrandPrixBetPointsService();
