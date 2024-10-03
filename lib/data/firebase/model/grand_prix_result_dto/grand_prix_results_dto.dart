@@ -24,9 +24,9 @@ class GrandPrixResultsDto with _$GrandPrixResultsDto {
   factory GrandPrixResultsDto.fromJson(Map<String, Object?> json) =>
       _$GrandPrixResultsDtoFromJson(json);
 
-  factory GrandPrixResultsDto.fromIdAndJson(
-    String id,
-    Map<String, Object?> json,
-  ) =>
+  factory GrandPrixResultsDto.fromFirebase({
+    required String id,
+    required Map<String, Object?> json,
+  }) =>
       GrandPrixResultsDto.fromJson(json).copyWith(id: id);
 }

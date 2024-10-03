@@ -50,7 +50,10 @@ class FirebaseCollections {
               if (data == null) {
                 throw 'Grand prix result document data was null';
               }
-              return GrandPrixResultsDto.fromIdAndJson(snapshot.id, data);
+              return GrandPrixResultsDto.fromFirebase(
+                id: snapshot.id,
+                json: data,
+              );
             },
             toFirestore: (GrandPrixResultsDto dto, _) => dto.toJson(),
           );
