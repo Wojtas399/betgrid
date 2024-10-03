@@ -1,4 +1,4 @@
-import 'package:betgrid/data/firebase/model/driver_dto/driver_dto.dart';
+import 'package:betgrid/data/firebase/model/driver_dto.dart';
 import 'package:betgrid/data/firebase/service/firebase_driver_service.dart';
 import 'package:mocktail/mocktail.dart';
 

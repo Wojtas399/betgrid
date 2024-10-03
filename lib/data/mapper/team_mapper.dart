@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../model/driver.dart';
-import '../firebase/model/driver_dto/driver_dto.dart';
+import '../firebase/model/driver_dto.dart';
 
 @injectable
 class TeamMapper {

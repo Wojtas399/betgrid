@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../model/user.dart';
-import '../firebase/model/user_dto/user_dto.dart';
+import '../firebase/model/user_dto.dart';
 
 @injectable
 class ThemeModeMapper {

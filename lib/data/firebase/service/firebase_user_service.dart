@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
-import '../model/user_dto/user_dto.dart';
+import '../model/user_dto.dart';
 
 @injectable
 class FirebaseUserService {

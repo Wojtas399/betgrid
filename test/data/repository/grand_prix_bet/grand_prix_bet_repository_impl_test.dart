@@ -1,4 +1,4 @@
-import 'package:betgrid/data/firebase/model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
+import 'package:betgrid/data/firebase/model/grand_prix_bet_dto.dart';
 import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository_impl.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:flutter_test/flutter_test.dart';

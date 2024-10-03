@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../quali_bet_points_dto.dart';
-import '../race_bet_points_dto.dart';
+import 'quali_bet_points_dto.dart';
+import 'race_bet_points_dto.dart';
 
 part 'grand_prix_bet_points_dto.freezed.dart';
 part 'grand_prix_bet_points_dto.g.dart';

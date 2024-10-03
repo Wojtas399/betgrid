@@ -1,4 +1,4 @@
-import 'package:betgrid/data/firebase/model/user_dto/user_dto.dart';
+import 'package:betgrid/data/firebase/model/user_dto.dart';
 import 'package:betgrid/data/repository/player/player_repository_impl.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:flutter_test/flutter_test.dart';

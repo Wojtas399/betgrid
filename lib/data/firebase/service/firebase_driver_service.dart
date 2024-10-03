@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
-import '../model/driver_dto/driver_dto.dart';
+import '../model/driver_dto.dart';
 
 @injectable
 class FirebaseDriverService {

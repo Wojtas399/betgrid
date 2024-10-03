@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../collections.dart';
-import '../model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import '../model/grand_prix_bet_points_dto.dart';
 
 @injectable
 class FirebaseGrandPrixBetPointsService {

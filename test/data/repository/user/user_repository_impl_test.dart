@@ -1,5 +1,5 @@
 import 'package:betgrid/data/exception/user_repository_exception.dart';
-import 'package:betgrid/data/firebase/model/user_dto/user_dto.dart';
+import 'package:betgrid/data/firebase/model/user_dto.dart';
 import 'package:betgrid/data/repository/user/user_repository_impl.dart';
 import 'package:betgrid/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';

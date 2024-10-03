@@ -1,4 +1,4 @@
-import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
+import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 
 import 'quali_bet_points_creator.dart';

@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../model/grand_prix.dart';
-import '../../firebase/model/grand_prix_dto/grand_prix_dto.dart';
+import '../../firebase/model/grand_prix_dto.dart';
 import '../../firebase/service/firebase_grand_prix_service.dart';
 import '../../mapper/grand_prix_mapper.dart';
 import '../repository.dart';

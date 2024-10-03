@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
-import 'model/driver_dto/driver_dto.dart';
-import 'model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
-import 'model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
-import 'model/grand_prix_dto/grand_prix_dto.dart';
-import 'model/grand_prix_result_dto/grand_prix_results_dto.dart';
-import 'model/user_dto/user_dto.dart';
+import 'model/driver_dto.dart';
+import 'model/grand_prix_bet_dto.dart';
+import 'model/grand_prix_bet_points_dto.dart';
+import 'model/grand_prix_dto.dart';
+import 'model/grand_prix_results_dto.dart';
+import 'model/user_dto.dart';
 
 @injectable
 class FirebaseCollections {
