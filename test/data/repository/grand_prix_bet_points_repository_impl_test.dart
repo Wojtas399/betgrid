@@ -170,55 +170,86 @@ void main() {
     },
   );
 
-  test(
-    'getGrandPrixBetPointsForPlayerAndGrandPrix, '
-    'should load grand prix bet points from db, add it to repo state and emit it '
-    'if it does not exist in repo state, '
-    'should only emit grand prix bet points if it already exists in repo state, ',
-    () async {
+  group(
+    'getGrandPrixBetPointsForPlayerAndGrandPrix, ',
+    () {
       const String playerId = 'p1';
       const String grandPrixId = 'gp2';
       final GrandPrixBetPointsCreator grandPrixBetPointsCreator =
           GrandPrixBetPointsCreator(
-        id: grandPrixId,
+        id: '$playerId$grandPrixId',
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      final GrandPrixBetPointsDto grandPrixBetPointsDto =
-          grandPrixBetPointsCreator.createDto();
-      final GrandPrixBetPoints expectedGrandPrixBetPoints =
-          grandPrixBetPointsCreator.createEntity();
-      dbBetPointsService.mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
-        grandPrixBetPointsDto: grandPrixBetPointsDto,
-      );
-      grandPrixBetPointsMapper.mockMapFromDto(
-        expectedGrandPrixBetPoints: expectedGrandPrixBetPoints,
-      );
-
-      final Stream<GrandPrixBetPoints?> points1$ =
-          repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
-      final Stream<GrandPrixBetPoints?> points2$ =
-          repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
-
-      expect(await points1$.first, expectedGrandPrixBetPoints);
-      expect(await points2$.first, expectedGrandPrixBetPoints);
-      expect(
-        await repositoryImpl.repositoryState$.first,
-        [expectedGrandPrixBetPoints],
-      );
-      verify(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+      final List<GrandPrixBetPoints> existingEntities = [
+        GrandPrixBetPointsCreator(
+          id: '${playerId}gp1',
           playerId: playerId,
+          grandPrixId: 'gp1',
+        ).createEntity(),
+        GrandPrixBetPointsCreator(
+          id: 'p2$grandPrixId',
+          playerId: 'p2',
           grandPrixId: grandPrixId,
-        ),
-      ).called(1);
+        ).createEntity(),
+      ];
+
+      test(
+        'should only emit grand prix bet points if it already exists in repo state',
+        () async {
+          final GrandPrixBetPoints existingGrandPrixBetPoints =
+              grandPrixBetPointsCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingEntities, existingGrandPrixBetPoints],
+          );
+
+          final Stream<GrandPrixBetPoints?> points$ =
+              repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await points$.first, existingGrandPrixBetPoints);
+        },
+      );
+
+      test(
+        'should fetch grand prix bet points from db, add it to repo state and '
+        'emit it if it does not exist in repo state',
+        () async {
+          final GrandPrixBetPointsDto grandPrixBetPointsDto =
+              grandPrixBetPointsCreator.createDto();
+          final GrandPrixBetPoints expectedGrandPrixBetPoints =
+              grandPrixBetPointsCreator.createEntity();
+          dbBetPointsService
+              .mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+            grandPrixBetPointsDto: grandPrixBetPointsDto,
+          );
+          grandPrixBetPointsMapper.mockMapFromDto(
+            expectedGrandPrixBetPoints: expectedGrandPrixBetPoints,
+          );
+          repositoryImpl.addEntities(existingEntities);
+
+          final Stream<GrandPrixBetPoints?> points$ =
+              repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await points$.first, expectedGrandPrixBetPoints);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingEntities, expectedGrandPrixBetPoints],
+          );
+          verify(
+            () => dbBetPointsService
+                .fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+              playerId: playerId,
+              grandPrixId: grandPrixId,
+            ),
+          ).called(1);
+        },
+      );
     },
   );
 }
