@@ -4,6 +4,7 @@ import 'package:betgrid/model/driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../creator/driver_creator.dart';
 import '../../mock/data/mapper/mock_driver_mapper.dart';
 import '../../mock/firebase/mock_firebase_driver_service.dart';
 
@@ -21,116 +22,133 @@ void main() {
     reset(driverMapper);
   });
 
-  test(
-    'getAllDrivers, '
-    'repository state is empty, '
-    'should fetch drivers from db, add them to repo state and emit them if repo '
-    'state is empty, '
-    'should only emit all drivers if repo state is not empty',
-    () async {
-      const List<DriverDto> driverDtos = [
-        DriverDto(
+  group(
+    'getAllDrivers, ',
+    () {
+      final List<DriverCreator> driverCreators = [
+        DriverCreator(
           id: 'd1',
           name: 'Robert',
           surname: 'Kubica',
           number: 100,
-          team: TeamDto.redBullRacing,
+          team: DriverCreatorTeam.redBullRacing,
         ),
-        DriverDto(
+        DriverCreator(
           id: 'd2',
           name: 'Max',
           surname: 'Verstappen',
           number: 1,
-          team: TeamDto.redBullRacing,
+          team: DriverCreatorTeam.redBullRacing,
         ),
-        DriverDto(
+        DriverCreator(
           id: 'd3',
           name: 'Luis',
           surname: 'Hamilton',
           number: 44,
-          team: TeamDto.mercedes,
+          team: DriverCreatorTeam.mercedes,
         ),
       ];
-      const List<Driver> expectedDrivers = [
-        Driver(
-          id: 'd1',
-          name: 'Robert',
-          surname: 'Kubica',
-          number: 100,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd2',
-          name: 'Max',
-          surname: 'Verstappen',
-          number: 1,
-          team: Team.redBullRacing,
-        ),
-        Driver(
-          id: 'd3',
-          name: 'Luis',
-          surname: 'Hamilton',
-          number: 44,
-          team: Team.mercedes,
-        ),
-      ];
-      dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
-      when(
-        () => driverMapper.mapFromDto(driverDtos.first),
-      ).thenReturn(expectedDrivers.first);
-      when(
-        () => driverMapper.mapFromDto(driverDtos[1]),
-      ).thenReturn(expectedDrivers[1]);
-      when(
-        () => driverMapper.mapFromDto(driverDtos.last),
-      ).thenReturn(expectedDrivers.last);
 
-      final Stream<List<Driver>> allDrivers1$ = repositoryImpl.getAllDrivers();
-      final Stream<List<Driver>> allDrivers2$ = repositoryImpl.getAllDrivers();
+      test(
+        'should fetch drivers from db, add them to repo state and emit them if '
+        'repo state is empty',
+        () async {
+          final List<DriverDto> driverDtos =
+              driverCreators.map((creator) => creator.createDto()).toList();
+          final List<Driver> expectedDrivers =
+              driverCreators.map((creator) => creator.createEntity()).toList();
+          dbDriverService.mockFetchAllDrivers(allDriverDtos: driverDtos);
+          when(
+            () => driverMapper.mapFromDto(driverDtos.first),
+          ).thenReturn(expectedDrivers.first);
+          when(
+            () => driverMapper.mapFromDto(driverDtos[1]),
+          ).thenReturn(expectedDrivers[1]);
+          when(
+            () => driverMapper.mapFromDto(driverDtos.last),
+          ).thenReturn(expectedDrivers.last);
 
-      expect(await allDrivers1$.first, expectedDrivers);
-      expect(await allDrivers2$.first, expectedDrivers);
-      expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
-      verify(dbDriverService.fetchAllDrivers).called(1);
+          final Stream<List<Driver>> allDrivers$ =
+              repositoryImpl.getAllDrivers();
+
+          expect(await allDrivers$.first, expectedDrivers);
+          expect(repositoryImpl.repositoryState$, emits(expectedDrivers));
+          verify(dbDriverService.fetchAllDrivers).called(1);
+        },
+      );
+
+      test(
+        'should only emit all drivers if repo state is not empty',
+        () async {
+          final List<Driver> existingDrivers =
+              driverCreators.map((creator) => creator.createEntity()).toList();
+          repositoryImpl.addEntities(existingDrivers);
+
+          final Stream<List<Driver>> allDrivers$ =
+              repositoryImpl.getAllDrivers();
+
+          expect(await allDrivers$.first, existingDrivers);
+        },
+      );
     },
   );
 
-  test(
-    'getDriverById, '
-    'should fetch driver from db, add it to repo state and emit it if driver '
-    'does not exist in repo state, '
-    'should only emit driver if it exists in repo state',
-    () async {
-      const DriverDto expectedDriverDto = DriverDto(
-        id: 'd3',
+  group(
+    'getDriverById, ',
+    () {
+      const String driverId = 'd1';
+      const DriverCreator driverCreator = DriverCreator(
+        id: driverId,
         name: 'Juan',
         surname: 'Pablo',
         number: 100,
-        team: TeamDto.mercedes,
+        team: DriverCreatorTeam.mercedes,
       );
-      const Driver expectedDriver = Driver(
-        id: 'd3',
-        name: 'Juan',
-        surname: 'Pablo',
-        number: 100,
-        team: Team.mercedes,
-      );
-      dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
-      driverMapper.mockMapFromDto(expectedDriver: expectedDriver);
+      final List<Driver> existingDrivers = [
+        DriverCreator(id: 'd2').createEntity(),
+        DriverCreator(id: 'd3').createEntity(),
+      ];
 
-      final Stream<Driver?> driver1$ = repositoryImpl.getDriverById(
-        driverId: expectedDriver.id,
-      );
-      final Stream<Driver?> driver2$ = repositoryImpl.getDriverById(
-        driverId: expectedDriver.id,
+      test(
+        'should fetch driver from db, add it to repo state and emit it if '
+        'driver does not exist in repo state',
+        () async {
+          final DriverDto expectedDriverDto = driverCreator.createDto();
+          final Driver expectedDriver = driverCreator.createEntity();
+          dbDriverService.mockFetchDriverById(driverDto: expectedDriverDto);
+          driverMapper.mockMapFromDto(expectedDriver: expectedDriver);
+          repositoryImpl.addEntities(existingDrivers);
+
+          final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
+            driverId: expectedDriver.id,
+          );
+
+          expect(await driver$.first, expectedDriver);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingDrivers, expectedDriver],
+          );
+          verify(
+            () => dbDriverService.fetchDriverById(driverId: expectedDriver.id),
+          ).called(1);
+        },
       );
 
-      expect(await driver1$.first, expectedDriver);
-      expect(await driver2$.first, expectedDriver);
-      expect(await repositoryImpl.repositoryState$.first, [expectedDriver]);
-      verify(
-        () => dbDriverService.fetchDriverById(driverId: expectedDriver.id),
-      ).called(1);
+      test(
+        'should only emit driver if it already exists in repo state',
+        () async {
+          final Driver expectedDriver = driverCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingDrivers, expectedDriver],
+          );
+
+          final Stream<Driver?> driver$ = repositoryImpl.getDriverById(
+            driverId: expectedDriver.id,
+          );
+
+          expect(await driver$.first, expectedDriver);
+        },
+      );
     },
   );
 }
