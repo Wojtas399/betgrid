@@ -52,3 +52,4 @@ firebase_options_dev.dart
 .firebaserc
 firebase.json
 serviceAccountKey.json
+google-services.json
