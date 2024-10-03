@@ -6,10 +6,14 @@ import '../model/grand_prix_bet_dto/grand_prix_bet_dto.dart';
 
 @injectable
 class FirebaseGrandPrixBetService {
+  final FirebaseCollections _firebaseCollections;
+
+  const FirebaseGrandPrixBetService(this._firebaseCollections);
+
   Future<List<GrandPrixBetDto>> fetchAllGrandPrixBets({
     required String userId,
   }) async {
-    final snapshot = await getGrandPrixBetsRef(userId).get();
+    final snapshot = await _firebaseCollections.grandPrixesBets(userId).get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
@@ -17,7 +21,8 @@ class FirebaseGrandPrixBetService {
     required String playerId,
     required String grandPrixId,
   }) async {
-    final snapshot = await getGrandPrixBetsRef(playerId)
+    final snapshot = await _firebaseCollections
+        .grandPrixesBets(playerId)
         .where('grandPrixId', isEqualTo: grandPrixId)
         .get();
     if (snapshot.docs.isEmpty) return null;
@@ -28,7 +33,7 @@ class FirebaseGrandPrixBetService {
     required String userId,
     required GrandPrixBetDto grandPrixBetDto,
   }) async {
-    await getGrandPrixBetsRef(userId).add(grandPrixBetDto);
+    await _firebaseCollections.grandPrixesBets(userId).add(grandPrixBetDto);
   }
 
   Future<GrandPrixBetDto?> updateGrandPrixBet({
@@ -44,7 +49,8 @@ class FirebaseGrandPrixBetService {
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {
-    final docRef = getGrandPrixBetsRef(userId).doc(grandPrixBetId);
+    final docRef =
+        _firebaseCollections.grandPrixesBets(userId).doc(grandPrixBetId);
     DocumentSnapshot<GrandPrixBetDto> doc = await docRef.get();
     GrandPrixBetDto? data = doc.data();
     if (data == null) {
