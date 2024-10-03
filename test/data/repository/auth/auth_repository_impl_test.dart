@@ -17,27 +17,30 @@ void main() {
     reset(dbAuthService);
   });
 
-  test(
-    'authState, '
-    'should emit AuthStateUserIsSignedOut if logged user id got from db is null',
+  group(
+    'authState, ',
     () {
-      dbAuthService.mockGetLoggedUserId(null);
+      test(
+        'should emit AuthStateUserIsSignedOut if logged user id got from db is null',
+        () {
+          dbAuthService.mockGetLoggedUserId(null);
 
-      final Stream<AuthState?> authState$ = repositoryImpl.authState$;
+          final Stream<AuthState?> authState$ = repositoryImpl.authState$;
 
-      expect(authState$, emits(const AuthStateUserIsSignedOut()));
-    },
-  );
+          expect(authState$, emits(const AuthStateUserIsSignedOut()));
+        },
+      );
 
-  test(
-    'authState, '
-    'should emit AuthStateUserIsSignedIn if logged user id got from db is not null',
-    () {
-      dbAuthService.mockGetLoggedUserId('u1');
+      test(
+        'should emit AuthStateUserIsSignedIn if logged user id got from db is not null',
+        () {
+          dbAuthService.mockGetLoggedUserId('u1');
 
-      final Stream<AuthState?> authState$ = repositoryImpl.authState$;
+          final Stream<AuthState?> authState$ = repositoryImpl.authState$;
 
-      expect(authState$, emits(const AuthStateUserIsSignedIn()));
+          expect(authState$, emits(const AuthStateUserIsSignedIn()));
+        },
+      );
     },
   );
 
