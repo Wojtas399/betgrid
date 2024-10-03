@@ -25,13 +25,9 @@ void main() {
     reset(grandPrixMapper);
   });
 
-  test(
-    'getAllGrandPrixes, '
-    'repository state is empty, '
-    'should load grand prixes from db, add them to repo state and emit them if '
-    'repo state is empty, '
-    'should only emit all grand prixes if repo state is not empty',
-    () async {
+  group(
+    'getAllGrandPrixes, ',
+    () {
       final List<GrandPrixCreator> grandPrixCreators = [
         GrandPrixCreator(
           id: 'gp1',
@@ -46,65 +42,114 @@ void main() {
           name: 'Grand Prix 3',
         ),
       ];
-      final List<GrandPrixDto> grandPrixDtos =
-          grandPrixCreators.map((creator) => creator.createDto()).toList();
-      final List<GrandPrix> expectedGrandPrixes =
-          grandPrixCreators.map((creator) => creator.createEntity()).toList();
-      dbGrandPrixService.mockFetchAllGrandPrixes(
-        grandPrixDtos: grandPrixDtos,
+
+      test(
+        'should only emit all grand prixes if repo state is not empty',
+        () async {
+          final List<GrandPrix> existingGrandPrixes = grandPrixCreators
+              .map((creator) => creator.createEntity())
+              .toList();
+          repositoryImpl.addEntities(existingGrandPrixes);
+
+          final Stream<List<GrandPrix>?> grandPrixes$ =
+              repositoryImpl.getAllGrandPrixes();
+
+          expect(await grandPrixes$.first, existingGrandPrixes);
+        },
       );
-      when(
-        () => grandPrixMapper.mapFromDto(grandPrixDtos.first),
-      ).thenReturn(expectedGrandPrixes.first);
-      when(
-        () => grandPrixMapper.mapFromDto(grandPrixDtos[1]),
-      ).thenReturn(expectedGrandPrixes[1]);
-      when(
-        () => grandPrixMapper.mapFromDto(grandPrixDtos.last),
-      ).thenReturn(expectedGrandPrixes.last);
 
-      final Stream<List<GrandPrix>?> grandPrixes1$ =
-          repositoryImpl.getAllGrandPrixes();
-      final Stream<List<GrandPrix>?> grandPrixes2$ =
-          repositoryImpl.getAllGrandPrixes();
+      test(
+        'should fetch grand prixes from db, add them to repo state and emit '
+        'them if repo state is empty',
+        () async {
+          final List<GrandPrixDto> grandPrixDtos =
+              grandPrixCreators.map((creator) => creator.createDto()).toList();
+          final List<GrandPrix> expectedGrandPrixes = grandPrixCreators
+              .map((creator) => creator.createEntity())
+              .toList();
+          dbGrandPrixService.mockFetchAllGrandPrixes(
+            grandPrixDtos: grandPrixDtos,
+          );
+          when(
+            () => grandPrixMapper.mapFromDto(grandPrixDtos.first),
+          ).thenReturn(expectedGrandPrixes.first);
+          when(
+            () => grandPrixMapper.mapFromDto(grandPrixDtos[1]),
+          ).thenReturn(expectedGrandPrixes[1]);
+          when(
+            () => grandPrixMapper.mapFromDto(grandPrixDtos.last),
+          ).thenReturn(expectedGrandPrixes.last);
 
-      expect(await grandPrixes1$.first, expectedGrandPrixes);
-      expect(await grandPrixes2$.first, expectedGrandPrixes);
-      expect(await repositoryImpl.repositoryState$.first, expectedGrandPrixes);
-      verify(dbGrandPrixService.fetchAllGrandPrixes).called(1);
+          final Stream<List<GrandPrix>?> grandPrixes$ =
+              repositoryImpl.getAllGrandPrixes();
+
+          expect(await grandPrixes$.first, expectedGrandPrixes);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            expectedGrandPrixes,
+          );
+          verify(dbGrandPrixService.fetchAllGrandPrixes).called(1);
+        },
+      );
     },
   );
 
-  test(
-    'getGrandPrixById, '
-    'grand prix exists in repository state, '
-    'should only emit grand prix if it exists in repo state, '
-    'should load grand prix from db, add it to repo state and emit it if it '
-    'does not exist in repo state',
-    () async {
+  group(
+    'getGrandPrixById, ',
+    () {
       const String grandPrixId = 'gp2';
       final GrandPrixCreator grandPrixCreator = GrandPrixCreator(
         id: grandPrixId,
         name: 'Grand Prix 2',
       );
-      final GrandPrixDto grandPrixDto = grandPrixCreator.createDto();
-      final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
-      dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
-      grandPrixMapper.mockMapFromDto(expectedGrandPrix: expectedGrandPrix);
+      final List<GrandPrix> existingGrandPrixes = [
+        GrandPrixCreator(id: 'gp1').createEntity(),
+        GrandPrixCreator(id: 'gp3').createEntity(),
+      ];
 
-      final Stream<GrandPrix?> grandPrix1$ = repositoryImpl.getGrandPrixById(
-        grandPrixId: grandPrixId,
-      );
-      final Stream<GrandPrix?> grandPrix2$ = repositoryImpl.getGrandPrixById(
-        grandPrixId: grandPrixId,
+      test(
+        'should only emit grand prix if it already exists in repo state',
+        () async {
+          final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
+          repositoryImpl.addEntities([
+            ...existingGrandPrixes,
+            expectedGrandPrix,
+          ]);
+
+          final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await grandPrix$.first, expectedGrandPrix);
+        },
       );
 
-      expect(await grandPrix1$.first, expectedGrandPrix);
-      expect(await grandPrix2$.first, expectedGrandPrix);
-      expect(await repositoryImpl.repositoryState$.first, [expectedGrandPrix]);
-      verify(
-        () => dbGrandPrixService.fetchGrandPrixById(grandPrixId: grandPrixId),
-      ).called(1);
+      test(
+        'should fetch grand prix from db, add it to repo state and emit it if '
+        'it does not exist in repo state',
+        () async {
+          final GrandPrixDto grandPrixDto = grandPrixCreator.createDto();
+          final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
+          dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
+          grandPrixMapper.mockMapFromDto(expectedGrandPrix: expectedGrandPrix);
+          repositoryImpl.addEntities(existingGrandPrixes);
+
+          final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await grandPrix$.first, expectedGrandPrix);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingGrandPrixes, expectedGrandPrix],
+          );
+          verify(
+            () => dbGrandPrixService.fetchGrandPrixById(
+              grandPrixId: grandPrixId,
+            ),
+          ).called(1);
+        },
+      );
     },
   );
 }
