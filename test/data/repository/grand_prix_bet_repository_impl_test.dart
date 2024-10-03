@@ -26,48 +26,64 @@ void main() {
     reset(grandPrixBetMapper);
   });
 
-  test(
-    'getAllGrandPrixBetsForPlayer, '
-    'repository state is empty, '
-    'should load grand prix bets from db, add them to repo state and emit them '
-    'if repo state is empty, '
-    "should only emit player's grand prix bets if their exist in repo state",
-    () async {
+  group(
+    'getAllGrandPrixBetsForPlayer, ',
+    () {
       final List<GrandPrixBetCreator> grandPrixBetCreators = [
         GrandPrixBetCreator(id: 'gpb1', grandPrixId: 'gp1'),
         GrandPrixBetCreator(id: 'gpb2', grandPrixId: 'gp2'),
         GrandPrixBetCreator(id: 'gpb3', grandPrixId: 'gp3'),
       ];
-      final List<GrandPrixBetDto> grandPrixBetDtos =
-          grandPrixBetCreators.map((creator) => creator.createDto()).toList();
-      final List<GrandPrixBet> expectedGrandPrixBets = grandPrixBetCreators
-          .map((creator) => creator.createEntity())
-          .toList();
-      dbGrandPrixBetService.mockFetchAllGrandPrixBets(grandPrixBetDtos);
-      when(
-        () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.first),
-      ).thenReturn(expectedGrandPrixBets.first);
-      when(
-        () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos[1]),
-      ).thenReturn(expectedGrandPrixBets[1]);
-      when(
-        () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.last),
-      ).thenReturn(expectedGrandPrixBets.last);
 
-      final Stream<List<GrandPrixBet>?> grandPrixBets1$ =
-          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
-      final Stream<List<GrandPrixBet>?> grandPrixBets2$ =
-          repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
+      test(
+        'should only emit matching grand prix bets if repo state is not empty',
+        () async {
+          final List<GrandPrixBet> existingGrandPrixBets = grandPrixBetCreators
+              .map((creator) => creator.createEntity())
+              .toList();
+          repositoryImpl.addEntities(existingGrandPrixBets);
 
-      expect(await grandPrixBets1$.first, expectedGrandPrixBets);
-      expect(await grandPrixBets2$.first, expectedGrandPrixBets);
-      expect(
-        await repositoryImpl.repositoryState$.first,
-        expectedGrandPrixBets,
+          final Stream<List<GrandPrixBet>?> grandPrixBets$ =
+              repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
+
+          expect(await grandPrixBets$.first, existingGrandPrixBets);
+        },
       );
-      verify(
-        () => dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId),
-      ).called(1);
+
+      test(
+        'should fetch grand prix bets from db, add them to repo state and emit '
+        'them if repo state is empty',
+        () async {
+          final List<GrandPrixBetDto> grandPrixBetDtos = grandPrixBetCreators
+              .map((creator) => creator.createDto())
+              .toList();
+          final List<GrandPrixBet> expectedGrandPrixBets = grandPrixBetCreators
+              .map((creator) => creator.createEntity())
+              .toList();
+          dbGrandPrixBetService.mockFetchAllGrandPrixBets(grandPrixBetDtos);
+          when(
+            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.first),
+          ).thenReturn(expectedGrandPrixBets.first);
+          when(
+            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos[1]),
+          ).thenReturn(expectedGrandPrixBets[1]);
+          when(
+            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.last),
+          ).thenReturn(expectedGrandPrixBets.last);
+
+          final Stream<List<GrandPrixBet>?> grandPrixBets$ =
+              repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
+
+          expect(await grandPrixBets$.first, expectedGrandPrixBets);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            expectedGrandPrixBets,
+          );
+          verify(
+            () => dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId),
+          ).called(1);
+        },
+      );
     },
   );
 
@@ -202,50 +218,82 @@ void main() {
     },
   );
 
-  test(
-    'getGrandPrixBetForPlayerAndGrandPrix, '
-    'bet with matching grand prix id and player id exists in state, '
-    'should load gp bet from db, add it to repo state and emit it if there is no '
-    'matching gp bet in repo state, '
-    'should return first matching grand prix bet if it exists in repo state, ',
-    () async {
+  group(
+    'getGrandPrixBetForPlayerAndGrandPrix, ',
+    () {
       const String grandPrixId = 'gp1';
       final GrandPrixBetCreator grandPrixBetCreator = GrandPrixBetCreator(
         id: 'gpb1',
         playerId: playerId,
         grandPrixId: grandPrixId,
       );
-      final GrandPrixBetDto grandPrixBetDto = grandPrixBetCreator.createDto();
-      final GrandPrixBet expectedGrandPrixBet =
-          grandPrixBetCreator.createEntity();
-      dbGrandPrixBetService.mockFetchGrandPrixBetByGrandPrixId(grandPrixBetDto);
-      grandPrixBetMapper.mockMapFromDto(
-        expectedGrandPrixBet: expectedGrandPrixBet,
-      );
-
-      final Stream<GrandPrixBet?> grandPrixBet1$ =
-          repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
-      final Stream<GrandPrixBet?> grandPrixBet2$ =
-          repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
-
-      expect(await grandPrixBet1$.first, expectedGrandPrixBet);
-      expect(await grandPrixBet2$.first, expectedGrandPrixBet);
-      expect(
-        await repositoryImpl.repositoryState$.first,
-        [expectedGrandPrixBet],
-      );
-      verify(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
-          playerId: playerId,
+      final List<GrandPrixBet> existingEntities = [
+        GrandPrixBetCreator(
+          id: 'gpb2',
+          playerId: 'p2',
           grandPrixId: grandPrixId,
-        ),
-      ).called(1);
+        ).createEntity(),
+        GrandPrixBetCreator(
+          id: 'gpb3',
+          playerId: playerId,
+          grandPrixId: 'gp2',
+        ).createEntity(),
+      ];
+
+      test(
+        'should emit first matching grand prix if it already exists in repo '
+        'state',
+        () async {
+          final GrandPrixBet existingGrandPrixBet =
+              grandPrixBetCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingEntities, existingGrandPrixBet],
+          );
+
+          final Stream<GrandPrixBet?> grandPrixBet$ =
+              repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await grandPrixBet$.first, existingGrandPrixBet);
+        },
+      );
+
+      test(
+        'should fetch gp bet from db, add it to repo state and emit it if '
+        'there is no matching gp bet in repo state',
+        () async {
+          final GrandPrixBetDto grandPrixBetDto =
+              grandPrixBetCreator.createDto();
+          final GrandPrixBet expectedGrandPrixBet =
+              grandPrixBetCreator.createEntity();
+          dbGrandPrixBetService
+              .mockFetchGrandPrixBetByGrandPrixId(grandPrixBetDto);
+          grandPrixBetMapper.mockMapFromDto(
+            expectedGrandPrixBet: expectedGrandPrixBet,
+          );
+          repositoryImpl.addEntities(existingEntities);
+
+          final Stream<GrandPrixBet?> grandPrixBet$ =
+              repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          );
+
+          expect(await grandPrixBet$.first, expectedGrandPrixBet);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingEntities, expectedGrandPrixBet],
+          );
+          verify(
+            () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+              playerId: playerId,
+              grandPrixId: grandPrixId,
+            ),
+          ).called(1);
+        },
+      );
     },
   );
 
