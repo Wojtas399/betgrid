@@ -29,7 +29,7 @@ void main() {
   );
 
   test(
-    'fromIdAndJson, '
+    'fromFirebase, '
     'should map json model to class model with given id',
     () {
       final Map<String, Object?> json = {
@@ -44,7 +44,10 @@ void main() {
         themePrimaryColor: themePrimaryColor,
       );
 
-      final UserDto model = UserDto.fromIdAndJson(id, json);
+      final UserDto model = UserDto.fromFirebase(
+        id: id,
+        json: json,
+      );
 
       expect(model, expectedModel);
     },

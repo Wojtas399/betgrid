@@ -17,7 +17,10 @@ class UserDto with _$UserDto {
   factory UserDto.fromJson(Map<String, Object?> json) =>
       _$UserDtoFromJson(json);
 
-  factory UserDto.fromIdAndJson(String id, Map<String, Object?> json) =>
+  factory UserDto.fromFirebase({
+    required String id,
+    required Map<String, Object?> json,
+  }) =>
       UserDto.fromJson(json).copyWith(id: id);
 }
 
