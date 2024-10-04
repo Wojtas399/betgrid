@@ -27,65 +27,66 @@ void main() {
     reset(getPlayerPointsUseCase);
   });
 
-  blocTest(
-    'initialize, '
-    'logged user does not exist, '
-    'should emit state with loggedUserDoesNotExist status',
-    build: () => createCubit(),
-    setUp: () => authRepository.mockGetLoggedUserId(null),
-    act: (cubit) => cubit.initialize(),
-    expect: () => [
-      const BetsState(
-        status: BetsStateStatus.loggedUserDoesNotExist,
-      ),
-    ],
-    verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
-  );
+  group(
+    'initialize, ',
+    () {
+      const String loggedUserId = 'u1';
+      final List<GrandPrixWithPoints> grandPrixesWithPoints = [
+        GrandPrixWithPoints(
+          grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
+          points: 20.0,
+        ),
+        GrandPrixWithPoints(
+          grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
+          points: 10.0,
+        ),
+      ];
 
-  blocTest(
-    'initialize, '
-    "should emit player's total points and grand prixes with points",
-    build: () => createCubit(),
-    setUp: () {
-      authRepository.mockGetLoggedUserId('u1');
-      getPlayerPointsUseCase.mock(points: 30);
-      getGrandPrixesWithPointsUseCase.mock(
-        grandPrixesWithPoints: [
-          GrandPrixWithPoints(
-            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
-            points: 20.0,
-          ),
-          GrandPrixWithPoints(
-            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
-            points: 10.0,
+      blocTest(
+        'should emit state with loggedUserDoesNotExist status if logged user '
+        'does not exist',
+        build: () => createCubit(),
+        setUp: () => authRepository.mockGetLoggedUserId(null),
+        act: (cubit) => cubit.initialize(),
+        expect: () => [
+          const BetsState(
+            status: BetsStateStatus.loggedUserDoesNotExist,
           ),
         ],
+        verify: (_) => verify(
+          () => authRepository.loggedUserId$,
+        ).called(1),
       );
-    },
-    act: (cubit) => cubit.initialize(),
-    expect: () => [
-      BetsState(
-        status: BetsStateStatus.completed,
-        loggedUserId: 'u1',
-        totalPoints: 30,
-        grandPrixesWithPoints: [
-          GrandPrixWithPoints(
-            grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
-            points: 20.0,
-          ),
-          GrandPrixWithPoints(
-            grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
-            points: 10.0,
-          ),
+
+      blocTest(
+        "should emit player's total points and grand prixes with points",
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          getPlayerPointsUseCase.mock(points: 30);
+          getGrandPrixesWithPointsUseCase.mock(
+            grandPrixesWithPoints: grandPrixesWithPoints,
+          );
+        },
+        act: (cubit) => cubit.initialize(),
+        expect: () => [
+          BetsState(
+            status: BetsStateStatus.completed,
+            loggedUserId: loggedUserId,
+            totalPoints: 30,
+            grandPrixesWithPoints: grandPrixesWithPoints,
+          )
         ],
-      )
-    ],
-    verify: (_) {
-      verify(() => authRepository.loggedUserId$).called(1);
-      verify(() => getPlayerPointsUseCase.call(playerId: 'u1')).called(1);
-      verify(
-        () => getGrandPrixesWithPointsUseCase.call(playerId: 'u1'),
-      ).called(1);
+        verify: (_) {
+          verify(() => authRepository.loggedUserId$).called(1);
+          verify(
+            () => getPlayerPointsUseCase.call(playerId: loggedUserId),
+          ).called(1);
+          verify(
+            () => getGrandPrixesWithPointsUseCase.call(playerId: loggedUserId),
+          ).called(1);
+        },
+      );
     },
   );
 }
