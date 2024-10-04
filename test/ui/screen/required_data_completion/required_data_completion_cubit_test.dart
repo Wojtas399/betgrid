@@ -49,139 +49,141 @@ void main() {
     ],
   );
 
-  blocTest(
-    'submit, '
-    'username is empty, '
-    'should emit state with status set to usernameIsEmpty',
-    build: () => createCubit(),
-    act: (cubit) async => await cubit.submit(
-      themeMode: ThemeMode.system,
-      themePrimaryColor: ThemePrimaryColor.pink,
-    ),
-    expect: () => [
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.usernameIsEmpty,
-      ),
-    ],
-  );
+  group(
+    'submit, ',
+    () {
+      const ThemeMode themeMode = ThemeMode.system;
+      const ThemePrimaryColor themePrimaryColor = ThemePrimaryColor.pink;
+      const String loggedUserId = 'u1';
+      const String username = 'username';
+      const String avatarPath = 'avatar/img/path';
+      RequiredDataCompletionState? state;
 
-  blocTest(
-    'submit, '
-    'logged user id is null, '
-    'should emit state with status set to loggedUserDoesNotExist',
-    build: () => createCubit(),
-    setUp: () => authRepository.mockGetLoggedUserId(null),
-    act: (cubit) async {
-      cubit.updateUsername('username');
-      await cubit.submit(
-        themeMode: ThemeMode.system,
-        themePrimaryColor: ThemePrimaryColor.pink,
-      );
-    },
-    expect: () => [
-      const RequiredDataCompletionState(
-        username: 'username',
-      ),
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.loggedUserDoesNotExist,
-        username: 'username',
-      ),
-    ],
-    verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
-  );
-
-  blocTest(
-    'submit, '
-    'should call method from UserRepository to add user data',
-    build: () => createCubit(),
-    setUp: () {
-      authRepository.mockGetLoggedUserId('u1');
-      userRepository.mockAddUser();
-    },
-    act: (cubit) async {
-      cubit.updateUsername('username');
-      cubit.updateAvatar('avatar/img/path');
-      await cubit.submit(
-        themeMode: ThemeMode.system,
-        themePrimaryColor: ThemePrimaryColor.pink,
-      );
-    },
-    expect: () => [
-      const RequiredDataCompletionState(
-        username: 'username',
-      ),
-      const RequiredDataCompletionState(
-        username: 'username',
-        avatarImgPath: 'avatar/img/path',
-      ),
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.loading,
-        username: 'username',
-        avatarImgPath: 'avatar/img/path',
-      ),
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.dataSaved,
-        username: 'username',
-        avatarImgPath: 'avatar/img/path',
-      ),
-    ],
-    verify: (_) {
-      verify(() => authRepository.loggedUserId$).called(1);
-      verify(
-        () => userRepository.addUser(
-          userId: 'u1',
-          username: 'username',
-          avatarImgPath: 'avatar/img/path',
-          themeMode: ThemeMode.system,
-          themePrimaryColor: ThemePrimaryColor.pink,
+      blocTest(
+        'should emit state with status set to usernameIsEmpty if username is '
+        'empty',
+        build: () => createCubit(),
+        act: (cubit) async => await cubit.submit(
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
         ),
-      ).called(1);
-    },
-  );
+        expect: () => [
+          const RequiredDataCompletionState(
+            status: RequiredDataCompletionStateStatus.usernameIsEmpty,
+          ),
+        ],
+      );
 
-  blocTest(
-    'submit, '
-    'method from UserRepository to add user data throws UsernameAlreadyTaken '
-    'exception, '
-    'should emit state with status set to userIsAlreadyTaken',
-    build: () => createCubit(),
-    setUp: () {
-      authRepository.mockGetLoggedUserId('u1');
-      userRepository.mockAddUser(
-        throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
+      blocTest(
+        'should emit state with status set to loggedUserDoesNotExist if '
+        'logged user id is null',
+        build: () => createCubit(),
+        setUp: () => authRepository.mockGetLoggedUserId(null),
+        act: (cubit) async {
+          cubit.updateUsername(username);
+          await cubit.submit(
+            themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
+          );
+        },
+        expect: () => [
+          state = const RequiredDataCompletionState(
+            username: username,
+          ),
+          state = state?.copyWith(
+            status: RequiredDataCompletionStateStatus.loggedUserDoesNotExist,
+          ),
+        ],
+        verify: (_) => verify(
+          () => authRepository.loggedUserId$,
+        ).called(1),
       );
-    },
-    act: (cubit) async {
-      cubit.updateUsername('username');
-      await cubit.submit(
-        themeMode: ThemeMode.system,
-        themePrimaryColor: ThemePrimaryColor.pink,
+
+      blocTest(
+        'should call method from UserRepository to add user data',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          userRepository.mockAddUser();
+        },
+        act: (cubit) async {
+          cubit.updateUsername(username);
+          cubit.updateAvatar(avatarPath);
+          await cubit.submit(
+            themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
+          );
+        },
+        expect: () => [
+          state = const RequiredDataCompletionState(
+            username: username,
+          ),
+          state = state?.copyWith(
+            avatarImgPath: avatarPath,
+          ),
+          state = state?.copyWith(
+            status: RequiredDataCompletionStateStatus.loading,
+          ),
+          state = state?.copyWith(
+            status: RequiredDataCompletionStateStatus.dataSaved,
+          ),
+        ],
+        verify: (_) {
+          verify(() => authRepository.loggedUserId$).called(1);
+          verify(
+            () => userRepository.addUser(
+              userId: loggedUserId,
+              username: username,
+              avatarImgPath: avatarPath,
+              themeMode: themeMode,
+              themePrimaryColor: themePrimaryColor,
+            ),
+          ).called(1);
+        },
       );
-    },
-    expect: () => [
-      const RequiredDataCompletionState(
-        username: 'username',
-      ),
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.loading,
-        username: 'username',
-      ),
-      const RequiredDataCompletionState(
-        status: RequiredDataCompletionStateStatus.usernameIsAlreadyTaken,
-        username: 'username',
-      ),
-    ],
-    verify: (_) {
-      verify(() => authRepository.loggedUserId$).called(1);
-      verify(
-        () => userRepository.addUser(
-          userId: 'u1',
-          username: 'username',
-          avatarImgPath: null,
-          themeMode: ThemeMode.system,
-          themePrimaryColor: ThemePrimaryColor.pink,
-        ),
-      ).called(1);
+
+      blocTest(
+        'should emit state with status set to userIsAlreadyTaken if method '
+        'from UserRepository to add user data throws UsernameAlreadyTaken '
+        'exception',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          userRepository.mockAddUser(
+            throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
+          );
+        },
+        act: (cubit) async {
+          cubit.updateUsername(username);
+          await cubit.submit(
+            themeMode: themeMode,
+            themePrimaryColor: themePrimaryColor,
+          );
+        },
+        expect: () => [
+          state = const RequiredDataCompletionState(
+            username: username,
+          ),
+          state = state?.copyWith(
+            status: RequiredDataCompletionStateStatus.loading,
+          ),
+          state = state?.copyWith(
+            status: RequiredDataCompletionStateStatus.usernameIsAlreadyTaken,
+          ),
+        ],
+        verify: (_) {
+          verify(() => authRepository.loggedUserId$).called(1);
+          verify(
+            () => userRepository.addUser(
+              userId: loggedUserId,
+              username: username,
+              avatarImgPath: null,
+              themeMode: themeMode,
+              themePrimaryColor: themePrimaryColor,
+            ),
+          ).called(1);
+        },
+      );
     },
   );
 }
