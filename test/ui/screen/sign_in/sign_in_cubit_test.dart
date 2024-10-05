@@ -16,38 +16,43 @@ void main() {
     reset(authRepository);
   });
 
-  blocTest(
-    'initialize, '
-    'auth state is set to AuthStateUserIsSignedIn, '
-    'should emit state with status set to userIsAlreadySignedIn',
-    build: () => createCubit(),
-    setUp: () => authRepository.mockGetAuthState(
-      authState: const AuthStateUserIsSignedIn(),
-    ),
-    act: (cubit) async => await cubit.initialize(),
-    expect: () => [
-      const SignInState(
-        status: SignInStateStatus.userIsAlreadySignedIn,
-      ),
-    ],
-    verify: (_) => verify(() => authRepository.authState$).called(1),
-  );
+  group(
+    'initialize, ',
+    () {
+      tearDown(() {
+        verify(() => authRepository.authState$).called(1);
+      });
 
-  blocTest(
-    'initialize, '
-    'auth state is set to AuthStateUserIsSignedOut, '
-    'should emit state with status set to completed',
-    build: () => createCubit(),
-    setUp: () => authRepository.mockGetAuthState(
-      authState: const AuthStateUserIsSignedOut(),
-    ),
-    act: (cubit) async => await cubit.initialize(),
-    expect: () => [
-      const SignInState(
-        status: SignInStateStatus.completed,
-      ),
-    ],
-    verify: (_) => verify(() => authRepository.authState$).called(1),
+      blocTest(
+        'should emit state with status set to userIsAlreadySignedIn if auth '
+        'state is set to AuthStateUserIsSignedIn',
+        build: () => createCubit(),
+        setUp: () => authRepository.mockGetAuthState(
+          authState: const AuthStateUserIsSignedIn(),
+        ),
+        act: (cubit) async => await cubit.initialize(),
+        expect: () => [
+          const SignInState(
+            status: SignInStateStatus.userIsAlreadySignedIn,
+          ),
+        ],
+      );
+
+      blocTest(
+        'should emit state with status set to completed if auth state is set '
+        'to AuthStateUserIsSignedOut',
+        build: () => createCubit(),
+        setUp: () => authRepository.mockGetAuthState(
+          authState: const AuthStateUserIsSignedOut(),
+        ),
+        act: (cubit) async => await cubit.initialize(),
+        expect: () => [
+          const SignInState(
+            status: SignInStateStatus.completed,
+          ),
+        ],
+      );
+    },
   );
 
   blocTest(
