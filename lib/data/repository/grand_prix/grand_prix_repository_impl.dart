@@ -40,7 +40,7 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
 
   Future<void> _fetchAllGrandPrixesFromDb() async {
     final List<GrandPrixDto> grandPrixDtos =
-        await _dbGrandPrixService.fetchAllGrandPrixes();
+        await _dbGrandPrixService.fetchAllGrandPrixesFromSeason(2024);
     final List<GrandPrix> grandPrixes =
         grandPrixDtos.map(_grandPrixMapper.mapFromDto).toList();
     setEntities(grandPrixes);
@@ -48,7 +48,8 @@ class GrandPrixRepositoryImpl extends Repository<GrandPrix>
 
   Future<GrandPrix?> _fetchGrandPrixFromDb(String grandPrixId) async {
     final GrandPrixDto? grandPrixDto =
-        await _dbGrandPrixService.fetchGrandPrixById(
+        await _dbGrandPrixService.fetchGrandPrixFromSeasonById(
+      season: 2024,
       grandPrixId: grandPrixId,
     );
     if (grandPrixDto == null) return null;

@@ -4,15 +4,22 @@ import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseGrandPrixService extends Mock
     implements FirebaseGrandPrixService {
-  void mockFetchAllGrandPrixes({required List<GrandPrixDto> grandPrixDtos}) {
-    when(fetchAllGrandPrixes).thenAnswer((_) => Future.value(grandPrixDtos));
+  void mockFetchAllGrandPrixesFromSeason({
+    required List<GrandPrixDto> expectedGrandPrixDtos,
+  }) {
+    when(
+      () => fetchAllGrandPrixesFromSeason(any()),
+    ).thenAnswer((_) => Future.value(expectedGrandPrixDtos));
   }
 
-  void mockFetchGrandPrixById(GrandPrixDto? grandPrixDto) {
+  void mockFetchGrandPrixFromSeasonById({
+    GrandPrixDto? expectedGrandPrixDto,
+  }) {
     when(
-      () => fetchGrandPrixById(
+      () => fetchGrandPrixFromSeasonById(
+        season: any(named: 'season'),
         grandPrixId: any(named: 'grandPrixId'),
       ),
-    ).thenAnswer((_) => Future.value(grandPrixDto));
+    ).thenAnswer((_) => Future.value(expectedGrandPrixDto));
   }
 }

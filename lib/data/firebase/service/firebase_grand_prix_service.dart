@@ -9,16 +9,18 @@ class FirebaseGrandPrixService {
 
   const FirebaseGrandPrixService(this._firebaseCollections);
 
-  Future<List<GrandPrixDto>> fetchAllGrandPrixes() async {
-    final snapshot = await _firebaseCollections.grandPrixes(season: 2024).get();
+  Future<List<GrandPrixDto>> fetchAllGrandPrixesFromSeason(int season) async {
+    final snapshot =
+        await _firebaseCollections.grandPrixes(season: season).get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future<GrandPrixDto?> fetchGrandPrixById({
+  Future<GrandPrixDto?> fetchGrandPrixFromSeasonById({
+    required int season,
     required String grandPrixId,
   }) async {
     final snapshot = await _firebaseCollections
-        .grandPrixes(season: 2024)
+        .grandPrixes(season: season)
         .doc(grandPrixId)
         .get();
     return snapshot.data();

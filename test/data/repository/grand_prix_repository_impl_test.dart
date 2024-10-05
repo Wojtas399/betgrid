@@ -67,8 +67,8 @@ void main() {
           final List<GrandPrix> expectedGrandPrixes = grandPrixCreators
               .map((creator) => creator.createEntity())
               .toList();
-          dbGrandPrixService.mockFetchAllGrandPrixes(
-            grandPrixDtos: grandPrixDtos,
+          dbGrandPrixService.mockFetchAllGrandPrixesFromSeason(
+            expectedGrandPrixDtos: grandPrixDtos,
           );
           when(
             () => grandPrixMapper.mapFromDto(grandPrixDtos.first),
@@ -88,7 +88,9 @@ void main() {
             await repositoryImpl.repositoryState$.first,
             expectedGrandPrixes,
           );
-          verify(dbGrandPrixService.fetchAllGrandPrixes).called(1);
+          verify(
+            () => dbGrandPrixService.fetchAllGrandPrixesFromSeason(2024),
+          ).called(1);
         },
       );
     },
@@ -130,7 +132,9 @@ void main() {
         () async {
           final GrandPrixDto grandPrixDto = grandPrixCreator.createDto();
           final GrandPrix expectedGrandPrix = grandPrixCreator.createEntity();
-          dbGrandPrixService.mockFetchGrandPrixById(grandPrixDto);
+          dbGrandPrixService.mockFetchGrandPrixFromSeasonById(
+            expectedGrandPrixDto: grandPrixDto,
+          );
           grandPrixMapper.mockMapFromDto(expectedGrandPrix: expectedGrandPrix);
           repositoryImpl.addEntities(existingGrandPrixes);
 
@@ -144,7 +148,8 @@ void main() {
             [...existingGrandPrixes, expectedGrandPrix],
           );
           verify(
-            () => dbGrandPrixService.fetchGrandPrixById(
+            () => dbGrandPrixService.fetchGrandPrixFromSeasonById(
+              season: 2024,
               grandPrixId: grandPrixId,
             ),
           ).called(1);
