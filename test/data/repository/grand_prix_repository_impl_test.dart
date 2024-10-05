@@ -12,6 +12,7 @@ void main() {
   final dbGrandPrixService = MockFirebaseGrandPrixService();
   final grandPrixMapper = MockGrandPrixMapper();
   late GrandPrixRepositoryImpl repositoryImpl;
+  const int season = 2024;
 
   setUp(() {
     repositoryImpl = GrandPrixRepositoryImpl(
@@ -26,7 +27,7 @@ void main() {
   });
 
   group(
-    'getAllGrandPrixes, ',
+    'getAllGrandPrixesFromSeason, ',
     () {
       final List<GrandPrixCreator> grandPrixCreators = [
         GrandPrixCreator(
@@ -52,7 +53,7 @@ void main() {
           repositoryImpl.addEntities(existingGrandPrixes);
 
           final Stream<List<GrandPrix>?> grandPrixes$ =
-              repositoryImpl.getAllGrandPrixes();
+              repositoryImpl.getAllGrandPrixesFromSeason(season);
 
           expect(await grandPrixes$.first, existingGrandPrixes);
         },
@@ -81,7 +82,7 @@ void main() {
           ).thenReturn(expectedGrandPrixes.last);
 
           final Stream<List<GrandPrix>?> grandPrixes$ =
-              repositoryImpl.getAllGrandPrixes();
+              repositoryImpl.getAllGrandPrixesFromSeason(season);
 
           expect(await grandPrixes$.first, expectedGrandPrixes);
           expect(
@@ -97,7 +98,7 @@ void main() {
   );
 
   group(
-    'getGrandPrixById, ',
+    'getGrandPrixByIdFromSeason, ',
     () {
       const String grandPrixId = 'gp2';
       final GrandPrixCreator grandPrixCreator = GrandPrixCreator(
@@ -118,7 +119,9 @@ void main() {
             expectedGrandPrix,
           ]);
 
-          final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
+          final Stream<GrandPrix?> grandPrix$ =
+              repositoryImpl.getGrandPrixByIdFromSeason(
+            season: season,
             grandPrixId: grandPrixId,
           );
 
@@ -138,7 +141,9 @@ void main() {
           grandPrixMapper.mockMapFromDto(expectedGrandPrix: expectedGrandPrix);
           repositoryImpl.addEntities(existingGrandPrixes);
 
-          final Stream<GrandPrix?> grandPrix$ = repositoryImpl.getGrandPrixById(
+          final Stream<GrandPrix?> grandPrix$ =
+              repositoryImpl.getGrandPrixByIdFromSeason(
+            season: season,
             grandPrixId: grandPrixId,
           );
 

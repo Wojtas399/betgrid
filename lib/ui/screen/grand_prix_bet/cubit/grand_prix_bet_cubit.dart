@@ -104,7 +104,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
       .map((Player? player) => player?.username);
 
   Stream<String?> _getGrandPrixName(String grandPrixId) => _grandPrixRepository
-      .getGrandPrixById(grandPrixId: grandPrixId)
+      .getGrandPrixByIdFromSeason(season: 2024, grandPrixId: grandPrixId) //TODO
       .map((GrandPrix? grandPrix) => grandPrix?.name);
 }
 

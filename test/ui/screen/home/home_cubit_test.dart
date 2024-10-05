@@ -122,7 +122,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
-          grandPrixRepository.mockGetAllGrandPrixes(null);
+          grandPrixRepository.mockGetAllGrandPrixesFromSeason();
         },
         build: () => createCubit(),
         act: (cubit) async => await cubit.initialize(),
@@ -138,7 +138,9 @@ void main() {
               playerId: loggedUserId,
             ),
           ).called(1);
-          verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
+          verify(
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+          ).called(1);
         },
       );
 
@@ -150,7 +152,9 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
-          grandPrixRepository.mockGetAllGrandPrixes([]);
+          grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+            expectedGrandPrixes: [],
+          );
         },
         build: () => createCubit(),
         act: (cubit) async => await cubit.initialize(),
@@ -166,7 +170,9 @@ void main() {
               playerId: loggedUserId,
             ),
           ).called(1);
-          verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
+          verify(
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+          ).called(1);
         },
       );
 
@@ -178,7 +184,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: [],
           );
-          grandPrixRepository.mockGetAllGrandPrixes(null);
+          grandPrixRepository.mockGetAllGrandPrixesFromSeason();
         },
         build: () => createCubit(),
         act: (cubit) async => await cubit.initialize(),
@@ -194,7 +200,9 @@ void main() {
               playerId: loggedUserId,
             ),
           ).called(1);
-          verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
+          verify(
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+          ).called(1);
         },
       );
 
@@ -206,7 +214,9 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: [],
           );
-          grandPrixRepository.mockGetAllGrandPrixes([]);
+          grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+            expectedGrandPrixes: [],
+          );
         },
         build: () => createCubit(),
         act: (cubit) async => await cubit.initialize(),
@@ -222,7 +232,9 @@ void main() {
               playerId: loggedUserId,
             ),
           ).called(1);
-          verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
+          verify(
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+          ).called(1);
         },
       );
 
@@ -233,11 +245,13 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
-          grandPrixRepository.mockGetAllGrandPrixes([
-            GrandPrixCreator(id: 'gp1').createEntity(),
-            GrandPrixCreator(id: 'gp2').createEntity(),
-            GrandPrixCreator(id: 'gp3').createEntity(),
-          ]);
+          grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+            expectedGrandPrixes: [
+              GrandPrixCreator(id: 'gp1').createEntity(),
+              GrandPrixCreator(id: 'gp2').createEntity(),
+              GrandPrixCreator(id: 'gp3').createEntity(),
+            ],
+          );
           grandPrixBetRepository.mockAddGrandPrixBetsForPlayer();
         },
         build: () => createCubit(),
@@ -253,7 +267,9 @@ void main() {
               playerId: loggedUserId,
             ),
           ).called(1);
-          verify(() => grandPrixRepository.getAllGrandPrixes()).called(1);
+          verify(
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024),
+          ).called(1);
           verify(
             () => grandPrixBetRepository.addGrandPrixBetsForPlayer(
               playerId: loggedUserId,

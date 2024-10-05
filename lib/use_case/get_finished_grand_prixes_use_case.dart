@@ -15,7 +15,8 @@ class GetFinishedGrandPrixesUseCase {
   );
 
   Stream<List<GrandPrix>> call() =>
-      _grandPrixRepository.getAllGrandPrixes().map(
+      //TODO
+      _grandPrixRepository.getAllGrandPrixesFromSeason(2024).map(
         (List<GrandPrix>? allGrandPrixes) {
           if (allGrandPrixes == null || allGrandPrixes.isEmpty) return [];
           final now = _dateService.getNow();

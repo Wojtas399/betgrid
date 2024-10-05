@@ -30,7 +30,7 @@ void main() {
     'list of all grand prixes is null, '
     'should return empty array',
     () {
-      grandPrixRepository.mockGetAllGrandPrixes(null);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
       final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
           useCase(playerId: playerId);
@@ -43,7 +43,9 @@ void main() {
     'list of all grand prixes is empty, '
     'should return empty array',
     () {
-      grandPrixRepository.mockGetAllGrandPrixes([]);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: [],
+      );
 
       final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
           useCase(playerId: playerId);
@@ -78,7 +80,9 @@ void main() {
           points: gp1TotalPoints,
         ),
       ];
-      grandPrixRepository.mockGetAllGrandPrixes(allGrandPrixes);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: allGrandPrixes,
+      );
       when(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(

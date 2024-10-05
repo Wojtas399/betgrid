@@ -30,7 +30,7 @@ void main() {
     'list of all grand prixes does not exist, '
     'should return null',
     () {
-      grandPrixRepository.mockGetAllGrandPrixes(null);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
       final Stream<double?> playerPoints$ = useCase(playerId: playerId);
 
@@ -50,7 +50,9 @@ void main() {
         GrandPrixCreator(id: 'gp2').createEntity(),
         GrandPrixCreator(id: 'gp3').createEntity(),
       ];
-      grandPrixRepository.mockGetAllGrandPrixes(grandPrixes);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: grandPrixes,
+      );
       when(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(

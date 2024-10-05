@@ -25,7 +25,7 @@ void main() {
     'List of all grand prixes is null, '
     'should return empty list',
     () {
-      grandPrixRepository.mockGetAllGrandPrixes(null);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
       final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 
@@ -37,7 +37,9 @@ void main() {
     'List of all grand prixes is empty, '
     'should return empty list',
     () {
-      grandPrixRepository.mockGetAllGrandPrixes([]);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: [],
+      );
 
       final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 
@@ -81,7 +83,9 @@ void main() {
         allGrandPrixes[1],
         allGrandPrixes[3],
       ];
-      grandPrixRepository.mockGetAllGrandPrixes(allGrandPrixes);
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: allGrandPrixes,
+      );
       dateService.mockGetNow(now: now);
 
       final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();

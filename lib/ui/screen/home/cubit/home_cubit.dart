@@ -59,8 +59,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _initializeBets(String loggedUserId) async {
-    final List<GrandPrix>? grandPrixes =
-        await _grandPrixRepository.getAllGrandPrixes().first;
+    final List<GrandPrix>? grandPrixes = await _grandPrixRepository
+        .getAllGrandPrixesFromSeason(2024)
+        .first; //TODO
     if (grandPrixes != null && grandPrixes.isNotEmpty) {
       await _grandPrixBetRepository.addGrandPrixBetsForPlayer(
         playerId: loggedUserId,
