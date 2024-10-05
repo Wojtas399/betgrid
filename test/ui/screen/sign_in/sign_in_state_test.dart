@@ -15,42 +15,41 @@ void main() {
     },
   );
 
-  test(
-    'isUserAlreadySignedIn, '
-    'status is set to userIsAlreadySignedIn, '
-    'should be true',
+  group(
+    'isUserAlreadySignedIn, ',
     () {
-      const state = SignInState(
-        status: SignInStateStatus.userIsAlreadySignedIn,
+      test(
+        'should be true if status is set to userIsAlreadySignedIn',
+        () {
+          const state = SignInState(
+            status: SignInStateStatus.userIsAlreadySignedIn,
+          );
+
+          expect(state.isUserAlreadySignedIn, true);
+        },
       );
 
-      expect(state.isUserAlreadySignedIn, true);
-    },
-  );
+      test(
+        'should be false if status is set to loading',
+        () {
+          const state = SignInState(
+            status: SignInStateStatus.loading,
+          );
 
-  test(
-    'isUserAlreadySignedIn, '
-    'status is not set to loading, '
-    'should be false',
-    () {
-      const state = SignInState(
-        status: SignInStateStatus.loading,
+          expect(state.isUserAlreadySignedIn, false);
+        },
       );
 
-      expect(state.isUserAlreadySignedIn, false);
-    },
-  );
+      test(
+        'should be false if status is set to completed',
+        () {
+          const state = SignInState(
+            status: SignInStateStatus.completed,
+          );
 
-  test(
-    'isUserAlreadySignedIn, '
-    'status is not set to completed, '
-    'should be false',
-    () {
-      const state = SignInState(
-        status: SignInStateStatus.completed,
+          expect(state.isUserAlreadySignedIn, false);
+        },
       );
-
-      expect(state.isUserAlreadySignedIn, false);
     },
   );
 }
