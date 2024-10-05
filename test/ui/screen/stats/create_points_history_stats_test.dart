@@ -34,8 +34,7 @@ void main() {
   });
 
   test(
-    'list of players is empty, '
-    'should emit null',
+    'should emit null if list of players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
       getFinishedGrandPrixesUseCase.mock(
@@ -54,8 +53,7 @@ void main() {
   );
 
   test(
-    'list of finished grand prixes is empty, '
-    'should return null',
+    'should return null if list of finished grand prixes is empty',
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
@@ -91,62 +89,62 @@ void main() {
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 20,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 12.2,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp3',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.last.id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 5.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp3',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.last.id,
           totalPoints: 9,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp1',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp2',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
       ];
       final PointsHistory expectedPointsHistory = PointsHistory(
         players: players,
-        grandPrixes: const [
+        grandPrixes: [
           PointsHistoryGrandPrix(
             roundNumber: 1,
             playersPoints: [
               PointsHistoryPlayerPoints(
-                playerId: 'p1',
+                playerId: players.first.id,
                 points: 17,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p2',
+                playerId: players[1].id,
                 points: 9,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p3',
+                playerId: players.last.id,
                 points: 0,
               ),
             ],
@@ -155,15 +153,15 @@ void main() {
             roundNumber: 2,
             playersPoints: [
               PointsHistoryPlayerPoints(
-                playerId: 'p1',
+                playerId: players.first.id,
                 points: 37,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p2',
+                playerId: players[1].id,
                 points: 14.5,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p3',
+                playerId: players.last.id,
                 points: 15,
               ),
             ],
@@ -172,15 +170,15 @@ void main() {
             roundNumber: 3,
             playersPoints: [
               PointsHistoryPlayerPoints(
-                playerId: 'p1',
+                playerId: players.first.id,
                 points: 49.2,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p2',
+                playerId: players[1].id,
                 points: 31.5,
               ),
               PointsHistoryPlayerPoints(
-                playerId: 'p3',
+                playerId: players.last.id,
                 points: 32,
               ),
             ],
@@ -204,8 +202,8 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2', 'p3'],
-          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+          idsOfPlayers: players.map((player) => player.id).toList(),
+          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
