@@ -34,8 +34,7 @@ void main() {
   });
 
   test(
-    'list of all players is empty, '
-    'should emit null',
+    'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
       getFinishedGrandPrixesUseCase.mock(
@@ -54,8 +53,7 @@ void main() {
   );
 
   test(
-    'list of finished grand prixes is empty, '
-    'should emit null',
+    'should emit null if list of finished grand prixes is empty',
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
@@ -74,9 +72,8 @@ void main() {
   );
 
   test(
-    'there is only 1 player, '
     'should sum player total points for each grand prix and should emit '
-    'only p1 position',
+    'only p1 position if there is only 1 player',
     () async {
       final List<Player> players = [
         PlayerCreator(id: 'p1').createEntity(),
@@ -87,25 +84,17 @@ void main() {
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          totalPoints: 12.5,
-        ).createEntity(),
-        GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 10,
-        ).createEntity(),
-        GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          totalPoints: 7.5,
         ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p1').createEntity(),
+          player: players.first,
           points: 25,
         ),
       );
@@ -126,17 +115,16 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1'],
-          idsOfGrandPrixes: ['gp1', 'gp2'],
+          idsOfPlayers: players.map((player) => player.id).toList(),
+          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
   );
 
   test(
-    'there are only 2 players, '
     'should sum each player total points for each grand prix and should return '
-    'p1 and p2 positions',
+    'p1 and p2 positions if there are only 2 players',
     () async {
       final List<Player> players = [
         PlayerCreator(id: 'p1').createEntity(),
@@ -148,29 +136,29 @@ void main() {
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
+          playerId: players.last.id,
           totalPoints: 12.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 10,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
+          playerId: players.last.id,
           totalPoints: 7.5,
         ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p1').createEntity(),
+          player: players.first,
           points: 25,
         ),
         p2Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p2').createEntity(),
+          player: players.last,
           points: 20,
         ),
       );
@@ -191,8 +179,8 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2'],
-          idsOfGrandPrixes: ['gp1', 'gp2'],
+          idsOfPlayers: players.map((player) => player.id).toList(),
+          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
@@ -214,49 +202,49 @@ void main() {
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
+          playerId: players[1].id,
           totalPoints: 12.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
+          playerId: players[2].id,
           totalPoints: 22.22,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p4',
+          playerId: players.last.id,
           totalPoints: 14.99,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
+          playerId: players.first.id,
           totalPoints: 10,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
+          playerId: players[1].id,
           totalPoints: 7.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
+          playerId: players[2].id,
           totalPoints: 17.22,
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p4',
+          playerId: players.last.id,
           totalPoints: 9.99,
         ).createEntity(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p3').createEntity(),
+          player: players[2],
           points: 39.44,
         ),
         p2Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p1').createEntity(),
+          player: players.first,
           points: 25,
         ),
         p3Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p4').createEntity(),
+          player: players.last,
           points: 24.98,
         ),
       );
@@ -277,8 +265,8 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2', 'p3', 'p4'],
-          idsOfGrandPrixes: ['gp1', 'gp2'],
+          idsOfPlayers: players.map((player) => player.id).toList(),
+          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
