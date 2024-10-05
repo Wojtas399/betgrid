@@ -48,8 +48,7 @@ void main() {
   });
 
   test(
-    'list of all players is empty, '
-    'should emit null',
+    'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
       getFinishedGrandPrixesUseCase.mock(
@@ -71,8 +70,7 @@ void main() {
   );
 
   test(
-    'list of ids of finished grand prixes is empty, '
-    'should return null',
+    'should return null if list of ids of finished grand prixes is empty',
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
@@ -107,9 +105,13 @@ void main() {
         GrandPrixCreator(id: 'gp2').createEntity(),
         GrandPrixCreator(id: 'gp3').createEntity(),
       ];
+      final List<String> playersIds =
+          players.map((player) => player.id).toList();
+      final List<String> finishedGrandPrixesIds =
+          finishedGrandPrixes.map((gp) => gp.id).toList();
       final List<GrandPrixResults> grandPrixesResults = [
         GrandPrixResultsCreator(
-          grandPrixId: 'gp1',
+          grandPrixId: finishedGrandPrixes.first.id,
           qualiStandingsByDriverIds: [
             driverId,
             'd2',
@@ -140,7 +142,7 @@ void main() {
           dnfDriverIds: ['d18', 'd19', 'd20'],
         ).createEntity(),
         GrandPrixResultsCreator(
-          grandPrixId: 'gp2',
+          grandPrixId: finishedGrandPrixes[1].id,
           qualiStandingsByDriverIds: [
             'd20',
             'd19',
@@ -171,7 +173,7 @@ void main() {
           dnfDriverIds: [driverId, 'd2'],
         ).createEntity(),
         GrandPrixResultsCreator(
-          grandPrixId: 'gp3',
+          grandPrixId: finishedGrandPrixes.last.id,
           qualiStandingsByDriverIds: [
             'd20',
             'd11',
@@ -204,8 +206,8 @@ void main() {
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.first.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
           raceBetPointsCreator: RaceBetPointsCreator(
             p1Points: 2,
@@ -213,20 +215,20 @@ void main() {
           ),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes[1].id,
           qualiBetPointsCreator: QualiBetPointsCreator(q1P20Points: 1),
           raceBetPointsCreator: RaceBetPointsCreator(dnfDriver1Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp3',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.last.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
           raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.first.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P4Points: 2),
           raceBetPointsCreator: RaceBetPointsCreator(
             p2Points: 2,
@@ -235,29 +237,29 @@ void main() {
           ),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes[1].id,
           qualiBetPointsCreator: QualiBetPointsCreator(q2P12Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp3',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.last.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
           raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp1',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes.first.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P10Points: 1),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp2',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes[1].id,
           qualiBetPointsCreator: QualiBetPointsCreator(q1P18Points: 1),
         ).createEntity(),
         GrandPrixBetPointsCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp3',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes.last.id,
           qualiBetPointsCreator: QualiBetPointsCreator(q3P5Points: 2),
           raceBetPointsCreator: RaceBetPointsCreator(
             p2Points: 2,
@@ -267,54 +269,60 @@ void main() {
       ];
       final List<GrandPrixBet> grandPrixBets = [
         GrandPrixBetCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.first.id,
           dnfDriverIds: [driverId, 'd2', 'd3'],
         ).createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes[1].id,
           dnfDriverIds: [driverId, null, null],
         ).createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p1',
-          grandPrixId: 'gp3',
+          playerId: players.first.id,
+          grandPrixId: finishedGrandPrixes.last.id,
           dnfDriverIds: [driverId, 'd2', null],
         ).createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.first.id,
           dnfDriverIds: [driverId, 'd2', 'd20'],
         ).createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes[1].id,
           dnfDriverIds: [null, null, null],
         ).createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p2',
-          grandPrixId: 'gp3',
+          playerId: players[1].id,
+          grandPrixId: finishedGrandPrixes.last.id,
           dnfDriverIds: ['d14', 'd15', null],
         ).createEntity(),
-        GrandPrixBetCreator(playerId: 'p3', grandPrixId: 'gp1').createEntity(),
-        GrandPrixBetCreator(playerId: 'p3', grandPrixId: 'gp2').createEntity(),
         GrandPrixBetCreator(
-          playerId: 'p3',
-          grandPrixId: 'gp3',
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes.first.id,
+        ).createEntity(),
+        GrandPrixBetCreator(
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes[1].id,
+        ).createEntity(),
+        GrandPrixBetCreator(
+          playerId: players.last.id,
+          grandPrixId: finishedGrandPrixes.last.id,
           dnfDriverIds: [driverId, 'd15', 'd18'],
         ).createEntity(),
       ];
       final expectedPointsForDriver = [
         PointsByDriverPlayerPoints(
-          player: PlayerCreator(id: 'p1').createEntity(),
+          player: players.first,
           points: 9,
         ),
         PointsByDriverPlayerPoints(
-          player: PlayerCreator(id: 'p2').createEntity(),
+          player: players[1],
           points: 6,
         ),
         PointsByDriverPlayerPoints(
-          player: PlayerCreator(id: 'p3').createEntity(),
+          player: players.last,
           points: 2,
         ),
       ];
@@ -343,20 +351,20 @@ void main() {
       verify(getFinishedGrandPrixesUseCase.call).called(1);
       verify(
         () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
-          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+          idsOfGrandPrixes: finishedGrandPrixesIds,
         ),
       ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2', 'p3'],
-          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+          idsOfPlayers: playersIds,
+          idsOfGrandPrixes: finishedGrandPrixesIds,
         ),
       ).called(1);
       verify(
         () => grandPrixBetRepository.getGrandPrixBetsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2', 'p3'],
-          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
+          idsOfPlayers: playersIds,
+          idsOfGrandPrixes: finishedGrandPrixesIds,
         ),
       ).called(1);
     },
