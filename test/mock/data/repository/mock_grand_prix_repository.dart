@@ -11,12 +11,11 @@ class MockGrandPrixRepository extends Mock implements GrandPrixRepository {
     ).thenAnswer((_) => Stream.value(expectedGrandPrixes));
   }
 
-  void mockGetGrandPrixByIdFromSeason({
+  void mockGetGrandPrixById({
     GrandPrix? expectedGrandPrix,
   }) {
     when(
-      () => getGrandPrixByIdFromSeason(
-        season: any(named: 'season'),
+      () => getGrandPrixById(
         grandPrixId: any(named: 'grandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(expectedGrandPrix));

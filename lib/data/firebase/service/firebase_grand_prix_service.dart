@@ -15,12 +15,11 @@ class FirebaseGrandPrixService {
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future<GrandPrixDto?> fetchGrandPrixFromSeasonById({
-    required int season,
+  Future<GrandPrixDto?> fetchGrandPrixById({
     required String grandPrixId,
   }) async {
     final snapshot = await _firebaseCollections
-        .grandPrixes(season: season)
+        .grandPrixes(season: 2024) //TODO: We should modify it
         .doc(grandPrixId)
         .get();
     return snapshot.data();

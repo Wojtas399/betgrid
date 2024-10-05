@@ -88,7 +88,7 @@ void main() {
 
       setUp(() {
         playerRepository.mockGetPlayerById(player: player);
-        grandPrixRepository.mockGetGrandPrixByIdFromSeason(
+        grandPrixRepository.mockGetGrandPrixById(
           expectedGrandPrix: grandPrix,
         );
         grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
@@ -110,8 +110,7 @@ void main() {
           () => playerRepository.getPlayerById(playerId: playerId),
         ).called(1);
         verify(
-          () => grandPrixRepository.getGrandPrixByIdFromSeason(
-            season: 2024, //TODO
+          () => grandPrixRepository.getGrandPrixById(
             grandPrixId: grandPrixId,
           ),
         ).called(1);
