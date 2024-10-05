@@ -216,20 +216,13 @@ void main() {
       });
 
       test(
-        'should throw exception if list of entities to add or update is empty',
+        'should do nothing if list of entities to add or update is empty',
         () {
           final List<TestModel> entitiesToAddOrUpdate = [];
-          final String expectedException =
-              '[Repository] List of entities (type $TestModel) to add or update is empty';
 
-          Object? exception;
-          try {
-            repository.addOrUpdateEntities(entitiesToAddOrUpdate);
-          } catch (e) {
-            exception = e;
-          }
+          repository.addOrUpdateEntities(entitiesToAddOrUpdate);
 
-          expect(exception, expectedException);
+          expect(repository.repositoryState$, emits(existingEntities));
         },
       );
 
