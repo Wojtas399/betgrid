@@ -52,6 +52,24 @@ abstract class Repository<T extends Entity> {
     _repositoryState$.add(updatedEntities);
   }
 
+  void addOrUpdateEntities(Iterable<T> entitiesToAddOrUpdate) {
+    if (entitiesToAddOrUpdate.isEmpty) {
+      throw '[Repository] List of entities (type $T) to add or update is empty';
+    }
+    final List<T> updatedEntities = [..._repositoryState$.value];
+    for (final entity in entitiesToAddOrUpdate) {
+      final int existingEntityIndex = updatedEntities.indexWhere(
+        (element) => element.id == entity.id,
+      );
+      if (existingEntityIndex >= 0) {
+        updatedEntities[existingEntityIndex] = entity;
+      } else {
+        updatedEntities.add(entity);
+      }
+    }
+    _repositoryState$.add(updatedEntities);
+  }
+
   void updateEntity(T entity) {
     final List<T> entities = [..._repositoryState$.value];
     final int entityIndex = entities.indexWhere(
