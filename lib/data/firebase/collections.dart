@@ -12,21 +12,25 @@ import 'model/user_dto.dart';
 class FirebaseCollections {
   const FirebaseCollections();
 
-  //TODO: Add season param
-  CollectionReference<GrandPrixDto> grandPrixes() => FirebaseFirestore.instance
-      .collection('GrandPrixes')
-      .withConverter<GrandPrixDto>(
-        fromFirestore: (snapshot, _) {
-          final data = snapshot.data();
-          if (data == null) throw 'Grand prix document data was null';
-          return GrandPrixDto.fromFirebase(
-            id: snapshot.id,
-            season: 2024, //TODO: Pass season param here
-            json: data,
+  CollectionReference<GrandPrixDto> grandPrixes({
+    required int season,
+  }) =>
+      FirebaseFirestore.instance
+          .collection('Seasons')
+          .doc('$season')
+          .collection('GrandPrixes')
+          .withConverter<GrandPrixDto>(
+            fromFirestore: (snapshot, _) {
+              final data = snapshot.data();
+              if (data == null) throw 'Grand prix document data was null';
+              return GrandPrixDto.fromFirebase(
+                id: snapshot.id,
+                season: season,
+                json: data,
+              );
+            },
+            toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
           );
-        },
-        toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
-      );
 
   CollectionReference<DriverDto> drivers() =>
       FirebaseFirestore.instance.collection('Drivers').withConverter<DriverDto>(
