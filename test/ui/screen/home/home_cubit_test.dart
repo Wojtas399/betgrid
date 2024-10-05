@@ -12,18 +12,21 @@ import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../../mock/data/repository/mock_user_repository.dart';
+import '../../../mock/ui/mock_date_service.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final userRepository = MockUserRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixRepository = MockGrandPrixRepository();
+  final dateService = MockDateService();
 
   HomeCubit createCubit() => HomeCubit(
         authRepository,
         userRepository,
         grandPrixBetRepository,
         grandPrixRepository,
+        dateService,
       );
 
   tearDown(() {
@@ -31,12 +34,14 @@ void main() {
     reset(userRepository);
     reset(grandPrixBetRepository);
     reset(grandPrixRepository);
+    reset(dateService);
   });
 
   group(
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
+      final DateTime now = DateTime(2024);
       final User loggedUser = UserCreator(
         id: loggedUserId,
         username: 'username',
@@ -89,14 +94,12 @@ void main() {
       blocTest(
         'should emit state with username, avatarUrl and status set as '
         'completed if logged user already has bets',
-        setUp: () {
-          grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
-            grandPrixBets: [
-              GrandPrixBetCreator(id: 'gpb1').createEntity(),
-              GrandPrixBetCreator(id: 'gpb2').createEntity(),
-            ],
-          );
-        },
+        setUp: () => grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
+          grandPrixBets: [
+            GrandPrixBetCreator(id: 'gpb1').createEntity(),
+            GrandPrixBetCreator(id: 'gpb2').createEntity(),
+          ],
+        ),
         build: () => createCubit(),
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
@@ -122,6 +125,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
+          dateService.mockGetNow(now: now);
           grandPrixRepository.mockGetAllGrandPrixesFromSeason();
         },
         build: () => createCubit(),
@@ -139,7 +143,7 @@ void main() {
             ),
           ).called(1);
           verify(
-            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
           ).called(1);
         },
       );
@@ -152,6 +156,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
+          dateService.mockGetNow(now: now);
           grandPrixRepository.mockGetAllGrandPrixesFromSeason(
             expectedGrandPrixes: [],
           );
@@ -171,7 +176,7 @@ void main() {
             ),
           ).called(1);
           verify(
-            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
           ).called(1);
         },
       );
@@ -184,6 +189,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: [],
           );
+          dateService.mockGetNow(now: now);
           grandPrixRepository.mockGetAllGrandPrixesFromSeason();
         },
         build: () => createCubit(),
@@ -201,7 +207,7 @@ void main() {
             ),
           ).called(1);
           verify(
-            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
           ).called(1);
         },
       );
@@ -214,6 +220,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: [],
           );
+          dateService.mockGetNow(now: now);
           grandPrixRepository.mockGetAllGrandPrixesFromSeason(
             expectedGrandPrixes: [],
           );
@@ -233,7 +240,7 @@ void main() {
             ),
           ).called(1);
           verify(
-            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024), //TODO
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
           ).called(1);
         },
       );
@@ -245,6 +252,7 @@ void main() {
           grandPrixBetRepository.mockGetAllGrandPrixBetsForPlayer(
             grandPrixBets: null,
           );
+          dateService.mockGetNow(now: now);
           grandPrixRepository.mockGetAllGrandPrixesFromSeason(
             expectedGrandPrixes: [
               GrandPrixCreator(id: 'gp1').createEntity(),
@@ -268,7 +276,7 @@ void main() {
             ),
           ).called(1);
           verify(
-            () => grandPrixRepository.getAllGrandPrixesFromSeason(2024),
+            () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
           ).called(1);
           verify(
             () => grandPrixBetRepository.addGrandPrixBetsForPlayer(

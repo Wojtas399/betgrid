@@ -8,6 +8,7 @@ import '../../../../data/repository/user/user_repository.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/user.dart';
+import '../../../service/date_service.dart';
 import 'home_state.dart';
 
 @injectable
@@ -16,12 +17,14 @@ class HomeCubit extends Cubit<HomeState> {
   final UserRepository _userRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GrandPrixRepository _grandPrixRepository;
+  final DateService _dateService;
 
   HomeCubit(
     this._authRepository,
     this._userRepository,
     this._grandPrixBetRepository,
     this._grandPrixRepository,
+    this._dateService,
   ) : super(const HomeState());
 
   Future<void> initialize() async {
@@ -59,9 +62,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _initializeBets(String loggedUserId) async {
+    final int currentYear = _dateService.getNow().year;
     final List<GrandPrix>? grandPrixes = await _grandPrixRepository
-        .getAllGrandPrixesFromSeason(2024)
-        .first; //TODO
+        .getAllGrandPrixesFromSeason(currentYear)
+        .first;
     if (grandPrixes != null && grandPrixes.isNotEmpty) {
       await _grandPrixBetRepository.addGrandPrixBetsForPlayer(
         playerId: loggedUserId,
