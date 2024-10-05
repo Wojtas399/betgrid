@@ -9,9 +9,7 @@ class GrandPrixDto with _$GrandPrixDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
-    @JsonKey(includeFromJson: false, includeToJson: false)
-    @Default(0)
-    int season,
+    required int season,
     required int roundNumber,
     required String name,
     required String countryAlpha2Code,
@@ -24,11 +22,7 @@ class GrandPrixDto with _$GrandPrixDto {
 
   factory GrandPrixDto.fromFirebase({
     required String id,
-    required int season,
     required Map<String, Object?> json,
   }) =>
-      GrandPrixDto.fromJson(json).copyWith(
-        id: id,
-        season: season,
-      );
+      GrandPrixDto.fromJson(json).copyWith(id: id);
 }
