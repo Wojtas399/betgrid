@@ -11,20 +11,21 @@ import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../model/player.dart';
-import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
+import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import '../stats_model/points_by_driver.dart';
 
 @injectable
 class CreatePointsForDriverStats {
   final PlayerRepository _playerRepository;
-  final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
+  final GetFinishedGrandPrixesFromCurrentSeasonUseCase
+      _getFinishedGrandPrixesFromCurrentSeasonUseCase;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
 
   const CreatePointsForDriverStats(
     this._playerRepository,
-    this._getFinishedGrandPrixesUseCase,
+    this._getFinishedGrandPrixesFromCurrentSeasonUseCase,
     this._grandPrixResultsRepository,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetRepository,
@@ -35,12 +36,15 @@ class CreatePointsForDriverStats {
   }) =>
       Rx.combineLatest2(
         _playerRepository.getAllPlayers().whereNotNull(),
-        _getFinishedGrandPrixesUseCase(),
+        _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
         (
           List<Player> allPlayers,
           List<GrandPrix> finishedGrandPrixes,
         ) =>
-            (allPlayers: allPlayers, finishedGrandPrixes: finishedGrandPrixes),
+            (
+          allPlayers: allPlayers,
+          finishedGrandPrixes: finishedGrandPrixes,
+        ),
       ).switchMap(
         (data) {
           if (data.allPlayers.isEmpty || data.finishedGrandPrixes.isEmpty) {

@@ -1,5 +1,5 @@
 import 'package:betgrid/model/grand_prix.dart';
-import 'package:betgrid/use_case/get_finished_grand_prixes_use_case.dart';
+import 'package:betgrid/use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,20 +10,27 @@ import '../mock/ui/mock_date_service.dart';
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
   final dateService = MockDateService();
-  late GetFinishedGrandPrixesUseCase useCase;
+  late GetFinishedGrandPrixesFromCurrentSeasonUseCase useCase;
+  final DateTime now = DateTime(2024, 05, 28, 14, 30);
 
   setUp(() {
-    useCase = GetFinishedGrandPrixesUseCase(grandPrixRepository, dateService);
+    useCase = GetFinishedGrandPrixesFromCurrentSeasonUseCase(
+      grandPrixRepository,
+      dateService,
+    );
+    dateService.mockGetNow(now: now);
   });
 
   tearDown(() {
+    verify(
+      () => grandPrixRepository.getAllGrandPrixesFromSeason(now.year),
+    ).called(1);
     reset(grandPrixRepository);
     reset(dateService);
   });
 
   test(
-    'List of all grand prixes is null, '
-    'should return empty list',
+    'should return empty list if list of all grand prixes is null',
     () {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
@@ -34,8 +41,7 @@ void main() {
   );
 
   test(
-    'List of all grand prixes is empty, '
-    'should return empty list',
+    'should return empty list if list of all grand prixes is empty',
     () {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason(
         expectedGrandPrixes: [],
@@ -48,9 +54,8 @@ void main() {
   );
 
   test(
-    'Should return grand prixes which start date is before now date',
+    'should return grand prixes which start date is before now date',
     () {
-      final DateTime now = DateTime(2024, 05, 28, 14, 30);
       final List<GrandPrix> allGrandPrixes = [
         GrandPrixCreator(
           id: 'gp1',
@@ -86,7 +91,6 @@ void main() {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason(
         expectedGrandPrixes: allGrandPrixes,
       );
-      dateService.mockGetNow(now: now);
 
       final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 

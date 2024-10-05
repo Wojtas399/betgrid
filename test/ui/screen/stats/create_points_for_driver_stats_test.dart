@@ -19,11 +19,12 @@ import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
-import '../../../mock/use_case/mock_get_finished_grand_prixes_use_case.dart';
+import '../../../mock/use_case/mock_get_finished_grand_prixes_from_current_season_use_case.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
-  final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
+  final getFinishedGrandPrixesFromCurrentSeasonUseCase =
+      MockGetFinishedGrandPrixesFromCurrentSeasonUseCase();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
@@ -32,7 +33,7 @@ void main() {
   setUp(() {
     createPointsForDriverStats = CreatePointsForDriverStats(
       playerRepository,
-      getFinishedGrandPrixesUseCase,
+      getFinishedGrandPrixesFromCurrentSeasonUseCase,
       grandPrixResultsRepository,
       grandPrixBetPointsRepository,
       grandPrixBetRepository,
@@ -41,7 +42,7 @@ void main() {
 
   tearDown(() {
     reset(playerRepository);
-    reset(getFinishedGrandPrixesUseCase);
+    reset(getFinishedGrandPrixesFromCurrentSeasonUseCase);
     reset(grandPrixResultsRepository);
     reset(grandPrixBetPointsRepository);
     reset(grandPrixBetRepository);
@@ -51,7 +52,7 @@ void main() {
     'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
-      getFinishedGrandPrixesUseCase.mock(
+      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
         finishedGrandPrixes: [
           GrandPrixCreator(id: 'gp1').createEntity(),
           GrandPrixCreator(id: 'gp2').createEntity(),
@@ -65,7 +66,7 @@ void main() {
 
       expect(await pointsForDriver$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
+      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
     },
   );
 
@@ -78,7 +79,8 @@ void main() {
           PlayerCreator(id: 'p2').createEntity(),
         ],
       );
-      getFinishedGrandPrixesUseCase.mock(finishedGrandPrixes: []);
+      getFinishedGrandPrixesFromCurrentSeasonUseCase
+          .mock(finishedGrandPrixes: []);
 
       final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
@@ -87,7 +89,7 @@ void main() {
 
       expect(await pointsForDriver$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
+      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
     },
   );
 
@@ -327,7 +329,7 @@ void main() {
         ),
       ];
       playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesUseCase.mock(
+      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrixes(
@@ -348,7 +350,7 @@ void main() {
 
       expect(await pointsForDriver$.first, expectedPointsForDriver);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
+      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
         () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
           idsOfGrandPrixes: finishedGrandPrixesIds,

@@ -7,24 +7,25 @@ import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
-import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
+import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import '../stats_model/points_history.dart';
 
 @injectable
 class CreatePointsHistoryStats {
   final PlayerRepository _playerRepository;
-  final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
+  final GetFinishedGrandPrixesFromCurrentSeasonUseCase
+      _getFinishedGrandPrixesFromCurrentSeasonUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
   const CreatePointsHistoryStats(
     this._playerRepository,
-    this._getFinishedGrandPrixesUseCase,
+    this._getFinishedGrandPrixesFromCurrentSeasonUseCase,
     this._grandPrixBetPointsRepository,
   );
 
   Stream<PointsHistory?> call() => Rx.combineLatest2(
         _playerRepository.getAllPlayers().whereNotNull(),
-        _getFinishedGrandPrixesUseCase(),
+        _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
         (
           List<Player> allPlayers,
           List<GrandPrix> finishedGrandPrixes,
