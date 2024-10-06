@@ -14,6 +14,10 @@ enum GrandPrixBetStateStatus {
   loggedUserDoesNotExist,
 }
 
+extension GrandPrixBetStateStatusExtensions on GrandPrixBetStateStatus {
+  bool get isLoading => this == GrandPrixBetStateStatus.loading;
+}
+
 @freezed
 class GrandPrixBetState with _$GrandPrixBetState {
   const GrandPrixBetState._();

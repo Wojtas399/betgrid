@@ -15,8 +15,7 @@ class GrandPrixBetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCubitLoading = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.status == GrandPrixBetStateStatus.loading,
+      (GrandPrixBetCubit cubit) => cubit.state.status.isLoading,
     );
 
     return isCubitLoading
