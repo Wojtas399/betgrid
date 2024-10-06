@@ -47,6 +47,10 @@ void main() {
         ),
       ];
 
+      tearDown(() {
+        verify(() => authRepository.loggedUserId$).called(1);
+      });
+
       blocTest(
         'should emit state with loggedUserDoesNotExist status if logged user '
         'does not exist',
@@ -58,9 +62,39 @@ void main() {
             status: BetsStateStatus.loggedUserDoesNotExist,
           ),
         ],
-        verify: (_) => verify(
-          () => authRepository.loggedUserId$,
-        ).called(1),
+      );
+
+      blocTest(
+        'should emit noBets status if logged user has 0 total points and the '
+        'list of grand prixes with points is empty',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          getPlayerPointsUseCase.mock();
+          dateService.mockGetNow(now: now);
+          getGrandPrixesWithPointsUseCase.mock(grandPrixesWithPoints: []);
+        },
+        act: (cubit) async => await cubit.initialize(),
+        expect: () => [
+          const BetsState(
+            status: BetsStateStatus.noBets,
+            loggedUserId: loggedUserId,
+          ),
+        ],
+        verify: (_) {
+          verify(
+            () => getPlayerPointsUseCase.call(
+              playerId: loggedUserId,
+              season: now.year,
+            ),
+          ).called(1);
+          verify(
+            () => getGrandPrixesWithPointsUseCase.call(
+              playerId: loggedUserId,
+              season: now.year,
+            ),
+          ).called(1);
+        },
       );
 
       blocTest(
@@ -84,7 +118,6 @@ void main() {
           )
         ],
         verify: (_) {
-          verify(() => authRepository.loggedUserId$).called(1);
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,

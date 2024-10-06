@@ -54,12 +54,20 @@ class BetsCubit extends Cubit<BetsState> {
           _ListenedParams(totalPoints, grandPrixesWithPoints),
     );
     await for (final listenedParams in listenedParams$) {
-      emit(state.copyWith(
-        status: BetsStateStatus.completed,
-        loggedUserId: loggedUserId,
-        totalPoints: listenedParams.totalPoints,
-        grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
-      ));
+      if (listenedParams.totalPoints == null &&
+          listenedParams.grandPrixesWithPoints.isEmpty) {
+        emit(state.copyWith(
+          status: BetsStateStatus.noBets,
+          loggedUserId: loggedUserId,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: BetsStateStatus.completed,
+          loggedUserId: loggedUserId,
+          totalPoints: listenedParams.totalPoints,
+          grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
+        ));
+      }
     }
   }
 }
