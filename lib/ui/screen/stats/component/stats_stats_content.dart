@@ -1,65 +1,77 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
-import '../../../component/sliver_grand_prixes_list_component.dart';
-import '../../../component/sliver_player_total_points_component.dart';
-import '../../../config/router/app_router.dart';
-import '../../bets/cubit/bets_cubit.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/padding/padding_components.dart';
+import '../../../component/text_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../service/dialog_service.dart';
+import '../cubit/stats_cubit.dart';
+import 'stats_bet_points_history.dart';
+import 'stats_bet_points_history_preview.dart';
+import 'stats_players_podium.dart';
+import 'stats_points_by_driver_dropdown_button.dart';
+import 'stats_points_by_driver_players_list.dart';
 
 class StatsStatsContent extends StatelessWidget {
   const StatsStatsContent({super.key});
 
-  @override
-  Widget build(BuildContext context) => const CustomScrollView(
-        slivers: [
-          _TotalPoints(),
-          _GrandPrixes(),
-        ],
-      );
-}
-
-class _TotalPoints extends StatelessWidget {
-  const _TotalPoints();
-
-  @override
-  Widget build(BuildContext context) {
-    final double? totalPoints = context.select(
-      (BetsCubit cubit) => cubit.state.totalPoints,
-    );
-
-    return SliverPlayerTotalPoints(
-      points: totalPoints!,
+  Future<void> _onShowPointsHistoryPreview(BuildContext context) async {
+    await showFullScreenDialog(
+      BlocProvider.value(
+        value: context.read<StatsCubit>(),
+        child: const StatsBetPointsHistoryPreview(),
+      ),
     );
   }
-}
 
-class _GrandPrixes extends StatelessWidget {
-  const _GrandPrixes();
-
-  void _onGrandPrixPressed(String grandPrixId, BuildContext context) {
-    final String? loggedUserId = context.read<BetsCubit>().state.loggedUserId;
-    if (loggedUserId != null) {
-      context.navigateTo(
-        GrandPrixBetRoute(
-          grandPrixId: grandPrixId,
-          playerId: loggedUserId,
+  @override
+  Widget build(BuildContext context) => SingleChildScrollView(
+        child: Padding24(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleLarge(
+                context.str.statsTop3Players,
+                fontWeight: FontWeight.bold,
+              ),
+              const GapVertical16(),
+              const SizedBox(
+                height: 300,
+                child: StatsPlayersPodium(),
+              ),
+              const GapVertical32(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TitleLarge(
+                    context.str.statsPointsHistory,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  IconButton(
+                    onPressed: () => _onShowPointsHistoryPreview(context),
+                    icon: const Icon(
+                      Icons.open_in_full,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+              const GapVertical16(),
+              const SizedBox(
+                height: 300,
+                child: StatsBetPointsHistory(),
+              ),
+              const GapVertical32(),
+              TitleLarge(
+                context.str.statsPointsByDriver,
+                fontWeight: FontWeight.bold,
+              ),
+              const GapVertical16(),
+              const StatsPointsByDriverDropdownButton(),
+              const StatsPointsByDriverPlayersList(),
+            ],
+          ),
         ),
       );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final List<GrandPrixWithPoints>? grandPrixesWithPoints = context.select(
-      (BetsCubit cubit) => cubit.state.grandPrixesWithPoints,
-    );
-
-    return SliverGrandPrixesList(
-      grandPrixesWithPoints: grandPrixesWithPoints!,
-      onGrandPrixPressed: (String grandPrixId) =>
-          _onGrandPrixPressed(grandPrixId, context),
-    );
-  }
 }
