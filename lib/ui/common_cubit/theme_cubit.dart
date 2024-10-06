@@ -8,14 +8,14 @@ import '../../model/user.dart';
 import 'theme_state.dart';
 
 @injectable
-class ThemeCubit extends Cubit<ThemeState?> {
+class ThemeCubit extends Cubit<ThemeState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
   ThemeCubit(
     this._authRepository,
     this._userRepository,
-  ) : super(null);
+  ) : super(const ThemeState());
 
   Future<void> initialize() async {
     final Stream<User?> loggedUser$ = _getLoggedUser();
@@ -32,8 +32,8 @@ class ThemeCubit extends Cubit<ThemeState?> {
   }
 
   Future<void> changeThemeMode(ThemeMode themeMode) async {
-    final ThemeState? prevState = state;
-    emit(state?.copyWith(
+    final ThemeState prevState = state;
+    emit(state.copyWith(
       themeMode: themeMode,
     ));
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
@@ -52,8 +52,8 @@ class ThemeCubit extends Cubit<ThemeState?> {
   }
 
   Future<void> changePrimaryColor(ThemePrimaryColor primaryColor) async {
-    final ThemeState? prevState = state;
-    emit(state?.copyWith(
+    final ThemeState prevState = state;
+    emit(state.copyWith(
       primaryColor: primaryColor,
     ));
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
