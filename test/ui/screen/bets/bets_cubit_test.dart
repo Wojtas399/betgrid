@@ -86,7 +86,10 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => getPlayerPointsUseCase.call(playerId: loggedUserId),
+            () => getPlayerPointsUseCase.call(
+              playerId: loggedUserId,
+              season: now.year,
+            ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(

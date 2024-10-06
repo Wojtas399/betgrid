@@ -8,29 +8,34 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final playerRepository = MockPlayerRepository();
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
+  final dateService = MockDateService();
 
   PlayersCubit createCubit() => PlayersCubit(
         authRepository,
         playerRepository,
         getPlayerPointsUseCase,
+        dateService,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(playerRepository);
     reset(getPlayerPointsUseCase);
+    reset(dateService);
   });
 
   group(
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
+      final DateTime now = DateTime(2024);
       final List<Player> players = [
         PlayerCreator(id: loggedUserId).createEntity(),
         PlayerCreator(id: 'u2').createEntity(),
@@ -57,11 +62,18 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           playerRepository.mockGetAllPlayers(players: players);
+          dateService.mockGetNow(now: now);
           when(
-            () => getPlayerPointsUseCase.call(playerId: 'u2'),
+            () => getPlayerPointsUseCase.call(
+              playerId: players[1].id,
+              season: now.year,
+            ),
           ).thenAnswer((_) => Stream.value(12.5));
           when(
-            () => getPlayerPointsUseCase.call(playerId: 'u3'),
+            () => getPlayerPointsUseCase.call(
+              playerId: players.last.id,
+              season: now.year,
+            ),
           ).thenAnswer((_) => Stream.value(22.2));
         },
         act: (cubit) async => await cubit.initialize(),
@@ -84,10 +96,16 @@ void main() {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(() => playerRepository.getAllPlayers()).called(1);
           verify(
-            () => getPlayerPointsUseCase.call(playerId: 'u2'),
+            () => getPlayerPointsUseCase.call(
+              playerId: players[1].id,
+              season: now.year,
+            ),
           ).called(1);
           verify(
-            () => getPlayerPointsUseCase.call(playerId: 'u3'),
+            () => getPlayerPointsUseCase.call(
+              playerId: players.last.id,
+              season: now.year,
+            ),
           ).called(1);
         },
       );

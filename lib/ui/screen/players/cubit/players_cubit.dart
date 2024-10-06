@@ -6,6 +6,7 @@ import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/player.dart';
 import '../../../../use_case/get_player_points_use_case.dart';
+import '../../../service/date_service.dart';
 import 'players_state.dart';
 
 @injectable
@@ -13,11 +14,13 @@ class PlayersCubit extends Cubit<PlayersState> {
   final AuthRepository _authRepository;
   final PlayerRepository _playerRepository;
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
+  final DateService _dateService;
 
   PlayersCubit(
     this._authRepository,
     this._playerRepository,
     this._getPlayerPointsUseCase,
+    this._dateService,
   ) : super(const PlayersState());
 
   Future<void> initialize() async {
@@ -72,8 +75,10 @@ class PlayersCubit extends Cubit<PlayersState> {
       allPlayers.where((Player player) => player.id != loggedUserId);
 
   Stream<PlayerWithPoints> _getPointsForPlayer(Player player) async* {
+    final int currentYear = _dateService.getNow().year;
     final Stream<double?> points$ = _getPlayerPointsUseCase(
       playerId: player.id,
+      season: currentYear,
     );
     await for (final points in points$) {
       if (points != null) {

@@ -43,8 +43,8 @@ void main() {
       ];
 
       blocTest(
-        'initialize, '
-        'should load and emit player data, total points and grand prixes with points',
+        'should load and emit player data, total points and grand prixes with '
+        'points',
         build: () => createCubit(),
         setUp: () {
           playerRepository.mockGetPlayerById(player: player);
@@ -68,7 +68,10 @@ void main() {
             () => playerRepository.getPlayerById(playerId: playerId),
           ).called(1);
           verify(
-            () => getPlayerPointsUseCase.call(playerId: playerId),
+            () => getPlayerPointsUseCase.call(
+              playerId: playerId,
+              season: now.year,
+            ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(

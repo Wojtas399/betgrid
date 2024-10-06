@@ -43,7 +43,10 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     final int currentYear = _dateService.getNow().year;
     return Rx.combineLatest3(
       _playerRepository.getPlayerById(playerId: playerId),
-      _getPlayerPointsUseCase(playerId: playerId),
+      _getPlayerPointsUseCase(
+        playerId: playerId,
+        season: currentYear,
+      ),
       _getGrandPrixesWithPointsUseCase(
         playerId: playerId,
         season: currentYear,

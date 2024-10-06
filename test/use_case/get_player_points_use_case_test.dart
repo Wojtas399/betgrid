@@ -11,8 +11,9 @@ import '../mock/data/repository/mock_grand_prix_repository.dart';
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
-  const String playerId = 'p1';
   late GetPlayerPointsUseCase useCase;
+  const String playerId = 'p1';
+  const int season = 2024;
 
   setUp(() {
     useCase = GetPlayerPointsUseCase(
@@ -27,12 +28,14 @@ void main() {
   });
 
   test(
-    'list of all grand prixes does not exist, '
-    'should return null',
+    'should return null if list of all grand prixes does not exist',
     () {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
-      final Stream<double?> playerPoints$ = useCase(playerId: playerId);
+      final Stream<double?> playerPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
 
       expect(playerPoints$, emits(null));
     },
@@ -87,7 +90,10 @@ void main() {
         ),
       );
 
-      final Stream<double?> playerPoints$ = useCase(playerId: playerId);
+      final Stream<double?> playerPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
 
       expect(playerPoints$, emits(expectedPoints));
     },

@@ -45,7 +45,10 @@ class BetsCubit extends Cubit<BetsState> {
   Future<void> _initializeListenedParams(String loggedUserId) async {
     final int currentYear = _dateService.getNow().year;
     final Stream<_ListenedParams> listenedParams$ = Rx.combineLatest2(
-      _getPlayerPointsUseCase(playerId: loggedUserId).whereNotNull(),
+      _getPlayerPointsUseCase(
+        playerId: loggedUserId,
+        season: currentYear,
+      ).whereNotNull(),
       _getGrandPrixesWithPointsUseCase(
         playerId: loggedUserId,
         season: currentYear,

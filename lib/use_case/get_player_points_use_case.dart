@@ -18,10 +18,10 @@ class GetPlayerPointsUseCase {
 
   Stream<double?> call({
     required String playerId,
+    required int season,
   }) async* {
-    //TODO
     final Stream<List<GrandPrix>?> allGrandPrixes$ =
-        _grandPrixRepository.getAllGrandPrixesFromSeason(2024);
+        _grandPrixRepository.getAllGrandPrixesFromSeason(season);
     await for (final allGrandPrixes in allGrandPrixes$) {
       if (allGrandPrixes == null) {
         yield null;
