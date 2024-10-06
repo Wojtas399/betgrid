@@ -1,19 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../model/player.dart';
-import '../../component/avatar_component.dart';
-import '../../component/gap/gap_horizontal.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text_component.dart';
-import '../../config/router/app_router.dart';
-import '../../extensions/build_context_extensions.dart';
-import 'cubit/players_state.dart';
+import '../../../../model/player.dart';
+import '../../../component/avatar_component.dart';
+import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text_component.dart';
+import '../../../config/router/app_router.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../cubit/players_state.dart';
 
-class PlayerItem extends StatelessWidget {
+class PlayersPlayerItem extends StatelessWidget {
   final PlayerWithPoints playerWithPoints;
 
-  const PlayerItem({
+  const PlayersPlayerItem({
     super.key,
     required this.playerWithPoints,
   });

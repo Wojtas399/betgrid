@@ -42,6 +42,10 @@ void main() {
         const PlayerCreator(id: 'u3').createEntity(),
       ];
 
+      tearDown(() {
+        verify(() => authRepository.loggedUserId$).called(1);
+      });
+
       blocTest(
         'should emit state with status set to loggedUserDoesNotExist if logged '
         'user id is null',
@@ -53,7 +57,24 @@ void main() {
             status: PlayersStateStatus.loggedUserDoesNotExist,
           ),
         ],
-        verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
+      );
+
+      blocTest(
+        'should emit only completed status if there are no other players',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          playerRepository.mockGetAllPlayers(
+            players: [players.first],
+          );
+        },
+        act: (cubit) async => await cubit.initialize(),
+        expect: () => [
+          const PlayersState(
+            status: PlayersStateStatus.completed,
+          ),
+        ],
+        verify: (_) => verify(playerRepository.getAllPlayers).called(1),
       );
 
       blocTest(
@@ -93,7 +114,6 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => authRepository.loggedUserId$).called(1);
           verify(() => playerRepository.getAllPlayers()).called(1);
           verify(
             () => getPlayerPointsUseCase.call(

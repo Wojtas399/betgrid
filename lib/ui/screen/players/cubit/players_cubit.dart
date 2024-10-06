@@ -37,7 +37,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   }
 
   Future<void> _initializePlayersWithTheirPoints(String loggedUserId) async {
-    final Stream<List<PlayerWithPoints>> playersWithTheirPoints$ =
+    final Stream<List<PlayerWithPoints>?> playersWithTheirPoints$ =
         _getPlayersWithTheirPoints(loggedUserId);
     await for (final playersWithTheirPoints in playersWithTheirPoints$) {
       emit(state.copyWith(
@@ -47,32 +47,34 @@ class PlayersCubit extends Cubit<PlayersState> {
     }
   }
 
-  Stream<List<PlayerWithPoints>> _getPlayersWithTheirPoints(
+  Stream<List<PlayerWithPoints>?> _getPlayersWithTheirPoints(
     String loggedUserId,
   ) =>
       _playerRepository
           .getAllPlayers()
-          .whereNotNull()
           .map(
-            (List<Player> allPlayers) =>
+            (List<Player>? allPlayers) =>
                 _getOnlyOtherPlayers(allPlayers, loggedUserId),
           )
           .map(
-            (Iterable<Player> otherPlayers) =>
-                otherPlayers.map(_getPointsForPlayer),
+            (Iterable<Player>? otherPlayers) =>
+                otherPlayers?.map(_getPointsForPlayer),
           )
           .switchMap(
-            (Iterable<Stream<PlayerWithPoints>> streams) => Rx.combineLatest(
-              streams,
-              (List<PlayerWithPoints> values) => values,
-            ),
+            (Iterable<Stream<PlayerWithPoints>>? streams) =>
+                streams?.isNotEmpty == true
+                    ? Rx.combineLatest(
+                        streams!,
+                        (List<PlayerWithPoints> values) => values,
+                      )
+                    : Stream.value(null),
           );
 
-  Iterable<Player> _getOnlyOtherPlayers(
-    List<Player> allPlayers,
+  Iterable<Player>? _getOnlyOtherPlayers(
+    List<Player>? allPlayers,
     String loggedUserId,
   ) =>
-      allPlayers.where((Player player) => player.id != loggedUserId);
+      allPlayers?.where((Player player) => player.id != loggedUserId);
 
   Stream<PlayerWithPoints> _getPointsForPlayer(Player player) async* {
     final int currentYear = _dateService.getNow().year;
