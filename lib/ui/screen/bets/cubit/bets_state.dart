@@ -8,10 +8,13 @@ enum BetsStateStatus {
   loading,
   completed,
   loggedUserDoesNotExist,
+  noBets,
 }
 
 extension BetsStateStatusExtensions on BetsStateStatus {
   bool get isLoading => this == BetsStateStatus.loading;
+
+  bool get areNoBets => this == BetsStateStatus.noBets;
 }
 
 @freezed

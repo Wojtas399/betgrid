@@ -56,6 +56,66 @@ void main() {
           expect(state.status.isLoading, false);
         },
       );
+
+      test(
+        'should return false if status is set as noBets',
+        () {
+          const state = BetsState(
+            status: BetsStateStatus.noBets,
+          );
+
+          expect(state.status.isLoading, false);
+        },
+      );
+    },
+  );
+
+  group(
+    'status.areNoBets, ',
+    () {
+      test(
+        'should return true if status is set as noBets',
+        () {
+          const state = BetsState(
+            status: BetsStateStatus.noBets,
+          );
+
+          expect(state.status.areNoBets, true);
+        },
+      );
+
+      test(
+        'should return false if status is set as loading',
+        () {
+          const state = BetsState(
+            status: BetsStateStatus.loading,
+          );
+
+          expect(state.status.areNoBets, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as completed',
+        () {
+          const state = BetsState(
+            status: BetsStateStatus.completed,
+          );
+
+          expect(state.status.areNoBets, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as loggedUserDoesNotExist',
+        () {
+          const state = BetsState(
+            status: BetsStateStatus.loggedUserDoesNotExist,
+          );
+
+          expect(state.status.areNoBets, false);
+        },
+      );
     },
   );
 
