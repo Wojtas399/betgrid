@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../component/avatar_component.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text_component.dart';
-import '../../extensions/build_context_extensions.dart';
-import 'cubit/stats_cubit.dart';
-import 'cubit/stats_state.dart';
-import 'stats_model/players_podium.dart';
+import '../../../component/avatar_component.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../cubit/stats_cubit.dart';
+import '../cubit/stats_state.dart';
+import '../stats_model/players_podium.dart';
 
 class StatsPlayersPodium extends StatelessWidget {
   const StatsPlayersPodium({super.key});

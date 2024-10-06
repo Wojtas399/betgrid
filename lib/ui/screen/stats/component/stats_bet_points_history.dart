@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../component/avatar_component.dart';
-import '../../component/gap/gap_horizontal.dart';
-import '../../component/text_component.dart';
-import 'cubit/stats_cubit.dart';
-import 'cubit/stats_state.dart';
-import 'stats_model/points_history.dart';
+import '../../../component/avatar_component.dart';
+import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/text_component.dart';
+import '../cubit/stats_cubit.dart';
+import '../cubit/stats_state.dart';
+import '../stats_model/points_history.dart';
 
 class StatsBetPointsHistory extends StatelessWidget {
   final bool showPointsForEachRound;

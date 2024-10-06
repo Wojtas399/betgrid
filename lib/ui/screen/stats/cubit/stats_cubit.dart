@@ -33,22 +33,33 @@ class StatsCubit extends Cubit<StatsState> {
       _createPlayersPodiumStats(),
       _createPointsHistoryStats(),
       _driverRepository.getAllDrivers(),
-      (playersPodium, pointsHistory, allDrivers) => _ListenedParams(
+      (
+        PlayersPodium? playersPodium,
+        PointsHistory? pointsHistory,
+        List<Driver> allDrivers,
+      ) =>
+          _ListenedParams(
         playersPodium: playersPodium,
         pointsHistory: pointsHistory,
         allDrivers: allDrivers,
       ),
     );
     await for (final params in listenedParams$) {
-      final sortedDrivers = [...params.allDrivers];
-      sortedDrivers.sort(_sortDriversByTeam);
-      emit(state.copyWith(
-        status: StatsStateStatus.completed,
-        playersPodium: params.playersPodium,
-        pointsHistory: params.pointsHistory,
-        pointsByDriver: [],
-        allDrivers: sortedDrivers,
-      ));
+      if (params.noData) {
+        emit(state.copyWith(
+          status: StatsStateStatus.noData,
+        ));
+      } else {
+        final sortedDrivers = [...params.allDrivers];
+        sortedDrivers.sort(_sortDriversByTeam);
+        emit(state.copyWith(
+          status: StatsStateStatus.completed,
+          playersPodium: params.playersPodium,
+          pointsHistory: params.pointsHistory,
+          pointsByDriver: [],
+          allDrivers: sortedDrivers,
+        ));
+      }
     }
   }
 
@@ -86,4 +97,7 @@ class _ListenedParams extends Equatable {
         pointsHistory,
         allDrivers,
       ];
+
+  bool get noData =>
+      playersPodium == null && pointsHistory == null && allDrivers.isEmpty;
 }

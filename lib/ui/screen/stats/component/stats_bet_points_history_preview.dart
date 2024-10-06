@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../component/padding/padding_components.dart';
-import '../../extensions/build_context_extensions.dart';
+import '../../../component/padding/padding_components.dart';
+import '../../../extensions/build_context_extensions.dart';
 import 'stats_bet_points_history.dart';
 
 class StatsBetPointsHistoryPreview extends StatefulWidget {

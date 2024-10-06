@@ -10,6 +10,7 @@ part 'stats_state.freezed.dart';
 enum StatsStateStatus {
   loading,
   pointsForDriverLoading,
+  noData,
   completed,
   playersDontExist,
 }
@@ -19,6 +20,8 @@ extension StatsStateStatusExtensions on StatsStateStatus {
 
   bool get arePointsForDriverLoading =>
       this == StatsStateStatus.pointsForDriverLoading;
+
+  bool get isNoData => this == StatsStateStatus.noData;
 }
 
 @freezed

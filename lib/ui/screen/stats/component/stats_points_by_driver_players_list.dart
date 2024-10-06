@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/player.dart';
-import '../../component/avatar_component.dart';
-import '../../component/padding/padding_components.dart';
-import '../../component/text_component.dart';
-import '../../extensions/build_context_extensions.dart';
-import 'cubit/stats_cubit.dart';
-import 'cubit/stats_state.dart';
+import '../../../../model/player.dart';
+import '../../../component/avatar_component.dart';
+import '../../../component/padding/padding_components.dart';
+import '../../../component/text_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../cubit/stats_cubit.dart';
+import '../cubit/stats_state.dart';
 
 class StatsPointsByDriverPlayersList extends StatelessWidget {
   const StatsPointsByDriverPlayersList({super.key});

@@ -51,6 +51,17 @@ void main() {
       );
 
       test(
+        'should return false if status is set as noData',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.noData,
+          );
+
+          expect(state.status.isLoading, false);
+        },
+      );
+
+      test(
         'should return false if status is set as completed',
         () {
           final state = StatsState(
@@ -100,6 +111,17 @@ void main() {
       );
 
       test(
+        'should return false if status is set as noData',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.noData,
+          );
+
+          expect(state.status.arePointsForDriverLoading, false);
+        },
+      );
+
+      test(
         'should return false if status is set as completed',
         () {
           final state = StatsState(
@@ -118,6 +140,66 @@ void main() {
           );
 
           expect(state.status.arePointsForDriverLoading, false);
+        },
+      );
+    },
+  );
+
+  group(
+    'status.isNoData, ',
+    () {
+      test(
+        'should return true if status is set as noData',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.noData,
+          );
+
+          expect(state.status.isNoData, true);
+        },
+      );
+
+      test(
+        'should return false if status is set as loading',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.loading,
+          );
+
+          expect(state.status.isNoData, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as pointsForDriverLoading',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.pointsForDriverLoading,
+          );
+
+          expect(state.status.isNoData, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as completed',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.completed,
+          );
+
+          expect(state.status.isNoData, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as playersDontExist',
+        () {
+          final state = StatsState(
+            status: StatsStateStatus.playersDontExist,
+          );
+
+          expect(state.status.isNoData, false);
         },
       );
     },

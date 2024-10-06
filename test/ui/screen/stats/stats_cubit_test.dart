@@ -63,6 +63,29 @@ void main() {
         ).createEntity(),
       ];
 
+      tearDown(() {
+        verify(createPlayersPodiumStats.call).called(1);
+        verify(createPointsHistoryStats.call).called(1);
+        verify(driverRepository.getAllDrivers).called(1);
+      });
+
+      blocTest(
+        'should emit noData status if players podium and points history data '
+        'are null and list of all drivers is empty',
+        build: () => createCubit(),
+        setUp: () {
+          createPlayersPodiumStats.mock();
+          createPointsHistoryStats.mock();
+          driverRepository.mockGetAllDrivers(allDrivers: []);
+        },
+        act: (cubit) async => await cubit.initialize(),
+        expect: () => [
+          StatsState(
+            status: StatsStateStatus.noData,
+          ),
+        ],
+      );
+
       blocTest(
         'should emit state with data of players podium chart and points '
         'history chart and list of all drivers sorted by team',
@@ -90,11 +113,6 @@ void main() {
             ],
           ),
         ],
-        verify: (_) {
-          verify(createPlayersPodiumStats.call).called(1);
-          verify(createPointsHistoryStats.call).called(1);
-          verify(() => driverRepository.getAllDrivers()).called(1);
-        },
       );
     },
   );
