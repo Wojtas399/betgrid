@@ -14,6 +14,13 @@ enum StatsStateStatus {
   playersDontExist,
 }
 
+extension StatsStateStatusExtensions on StatsStateStatus {
+  bool get isLoading => this == StatsStateStatus.loading;
+
+  bool get arePointsForDriverLoading =>
+      this == StatsStateStatus.pointsForDriverLoading;
+}
+
 @freezed
 class StatsState with _$StatsState {
   const StatsState._();
@@ -25,9 +32,4 @@ class StatsState with _$StatsState {
     List<Driver>? allDrivers,
     List<PointsByDriverPlayerPoints>? pointsByDriver,
   }) = _StatsState;
-
-  bool get isLoading => status == StatsStateStatus.loading;
-
-  bool get arePointsForDriverLoading =>
-      status == StatsStateStatus.pointsForDriverLoading;
 }

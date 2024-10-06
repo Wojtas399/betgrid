@@ -6,6 +6,7 @@ import '../../component/avatar_component.dart';
 import '../../component/gap/gap_horizontal.dart';
 import '../../component/text_component.dart';
 import 'cubit/stats_cubit.dart';
+import 'cubit/stats_state.dart';
 import 'stats_model/points_history.dart';
 
 class StatsBetPointsHistory extends StatelessWidget {
@@ -19,7 +20,7 @@ class StatsBetPointsHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCubitLoading = context.select(
-      (StatsCubit cubit) => cubit.state.isLoading,
+      (StatsCubit cubit) => cubit.state.status.isLoading,
     );
     final PointsHistory? pointsHistory = context.select(
       (StatsCubit cubit) => cubit.state.pointsHistory,

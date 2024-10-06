@@ -7,6 +7,7 @@ import '../../component/padding/padding_components.dart';
 import '../../component/text_component.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'cubit/stats_cubit.dart';
+import 'cubit/stats_state.dart';
 
 class StatsPointsByDriverPlayersList extends StatelessWidget {
   const StatsPointsByDriverPlayersList({super.key});
@@ -14,7 +15,7 @@ class StatsPointsByDriverPlayersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isLoading = context.select(
-      (StatsCubit cubit) => cubit.state.arePointsForDriverLoading,
+      (StatsCubit cubit) => cubit.state.status.arePointsForDriverLoading,
     );
     final pointsByDriverData = context.select(
       (StatsCubit cubit) => cubit.state.pointsByDriver,
