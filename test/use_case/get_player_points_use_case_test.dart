@@ -42,6 +42,22 @@ void main() {
   );
 
   test(
+    'should return null if list of all grand prixes is empty',
+    () {
+      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
+        expectedGrandPrixes: [],
+      );
+
+      final Stream<double?> playerPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
+
+      expect(playerPoints$, emits(null));
+    },
+  );
+
+  test(
     'should sum points of each grand prix',
     () async {
       const double gp1Points = 10.0;

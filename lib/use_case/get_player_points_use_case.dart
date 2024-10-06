@@ -23,14 +23,14 @@ class GetPlayerPointsUseCase {
     final Stream<List<GrandPrix>?> allGrandPrixes$ =
         _grandPrixRepository.getAllGrandPrixesFromSeason(season);
     await for (final allGrandPrixes in allGrandPrixes$) {
-      if (allGrandPrixes == null) {
-        yield null;
-      } else {
+      if (allGrandPrixes?.isNotEmpty == true) {
         final Stream<double?> totalPoints$ =
-            _calculateTotalPoints(playerId, allGrandPrixes);
+            _calculateTotalPoints(playerId, allGrandPrixes!);
         await for (final totalPoints in totalPoints$) {
           yield totalPoints;
         }
+      } else {
+        yield null;
       }
     }
   }
