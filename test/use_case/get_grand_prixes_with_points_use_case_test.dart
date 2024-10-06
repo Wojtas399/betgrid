@@ -11,8 +11,9 @@ import '../mock/data/repository/mock_grand_prix_repository.dart';
 void main() {
   final grandPrixRepository = MockGrandPrixRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
-  const String playerId = 'p1';
   late GetGrandPrixesWithPointsUseCase useCase;
+  const String playerId = 'p1';
+  const int season = 2024;
 
   setUp(() {
     useCase = GetGrandPrixesWithPointsUseCase(
@@ -27,36 +28,38 @@ void main() {
   });
 
   test(
-    'list of all grand prixes is null, '
-    'should return empty array',
+    'should return empty array if list of all grand prixes is null',
     () {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason();
 
-      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
-          useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
 
       expect(grandPrixesWithPoints$, emits([]));
     },
   );
 
   test(
-    'list of all grand prixes is empty, '
-    'should return empty array',
+    'should return empty array if list of all grand prixes is empty',
     () {
       grandPrixRepository.mockGetAllGrandPrixesFromSeason(
         expectedGrandPrixes: [],
       );
 
-      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
-          useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
 
       expect(grandPrixesWithPoints$, emits([]));
     },
   );
 
   test(
-    'should sort grand prixes by round number in ascending order and '
-    'should load total points for each grand prix',
+    'should sort grand prixes by round number in ascending order and should '
+    'load total points for each grand prix',
     () {
       final List<GrandPrix> allGrandPrixes = [
         GrandPrixCreator(id: 'gp1', roundNumber: 3).createEntity(),
@@ -87,7 +90,7 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
-          grandPrixId: 'gp1',
+          grandPrixId: allGrandPrixes.first.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -98,7 +101,7 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
-          grandPrixId: 'gp2',
+          grandPrixId: allGrandPrixes[1].id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -109,7 +112,7 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
-          grandPrixId: 'gp3',
+          grandPrixId: allGrandPrixes.last.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -117,8 +120,10 @@ void main() {
         ),
       );
 
-      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
-          useCase(playerId: playerId);
+      final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ = useCase(
+        playerId: playerId,
+        season: season,
+      );
 
       expect(grandPrixesWithPoints$, emits(expectedGrandPrixesWithPoints));
     },

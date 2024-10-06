@@ -9,6 +9,7 @@ class MockGetGrandPrixesWithPointsUseCase extends Mock
     when(
       () => call(
         playerId: any(named: 'playerId'),
+        season: any(named: 'season'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixesWithPoints));
   }
