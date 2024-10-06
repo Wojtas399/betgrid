@@ -7,7 +7,7 @@ import 'text_component.dart';
 class SliverPlayerTotalPoints extends SliverPadding {
   SliverPlayerTotalPoints({
     super.key,
-    double? points,
+    required double points,
     bool isLoading = false,
   }) : super(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),

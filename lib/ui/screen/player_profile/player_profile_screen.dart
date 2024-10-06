@@ -116,7 +116,7 @@ class _TotalPoints extends StatelessWidget {
     );
 
     return SliverPlayerTotalPoints(
-      points: totalPoints,
+      points: totalPoints ?? 0.0, //TODO
       isLoading: isCubitLoading,
     );
   }

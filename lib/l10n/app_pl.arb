@@ -19,6 +19,8 @@
     "statsNoSelectedDriver": "Nie wybrano kierowcy",
     "@__________BETS__________": {},
     "betsScreenTitle": "Typy",
+    "betsNoBetsTitle": "Brak możliwości typowania",
+    "betsNoBetsMessage": "Na chwilę obecną nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione.",
     "@__________PLAYERS__________": {},
     "playersScreenTitle": "Gracze",
     "@__________GRAND_PRIX_BET__________": {},

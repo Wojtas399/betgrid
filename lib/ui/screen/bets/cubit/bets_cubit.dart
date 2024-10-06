@@ -21,13 +21,7 @@ class BetsCubit extends Cubit<BetsState> {
     this._getPlayerPointsUseCase,
     this._getGrandPrixesWithPointsUseCase,
     this._dateService,
-  ) : super(
-          const BetsState(
-            status: BetsStateStatus.loading,
-            totalPoints: 0.0,
-            grandPrixesWithPoints: [],
-          ),
-        );
+  ) : super(const BetsState());
 
   Future<void> initialize() async {
     final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
@@ -48,13 +42,13 @@ class BetsCubit extends Cubit<BetsState> {
       _getPlayerPointsUseCase(
         playerId: loggedUserId,
         season: currentYear,
-      ).whereNotNull(),
+      ),
       _getGrandPrixesWithPointsUseCase(
         playerId: loggedUserId,
         season: currentYear,
-      ).whereNotNull(),
+      ),
       (
-        double totalPoints,
+        double? totalPoints,
         List<GrandPrixWithPoints> grandPrixesWithPoints,
       ) =>
           _ListenedParams(totalPoints, grandPrixesWithPoints),
@@ -71,7 +65,7 @@ class BetsCubit extends Cubit<BetsState> {
 }
 
 class _ListenedParams extends Equatable {
-  final double totalPoints;
+  final double? totalPoints;
   final List<GrandPrixWithPoints> grandPrixesWithPoints;
 
   const _ListenedParams(

@@ -10,12 +10,16 @@ enum BetsStateStatus {
   loggedUserDoesNotExist,
 }
 
+extension BetsStateStatusExtensions on BetsStateStatus {
+  bool get isLoading => this == BetsStateStatus.loading;
+}
+
 @freezed
 class BetsState with _$BetsState {
   const factory BetsState({
     @Default(BetsStateStatus.loading) BetsStateStatus status,
-    @Default('') String loggedUserId,
-    @Default(0.0) double totalPoints,
-    @Default([]) List<GrandPrixWithPoints> grandPrixesWithPoints,
+    String? loggedUserId,
+    double? totalPoints,
+    List<GrandPrixWithPoints>? grandPrixesWithPoints,
   }) = _BetsState;
 }
