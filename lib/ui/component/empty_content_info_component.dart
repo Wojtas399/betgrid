@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/gap/gap_vertical.dart';
-import '../../../component/padding/padding_components.dart';
-import '../../../component/text_component.dart';
-import '../../../extensions/build_context_extensions.dart';
+import '../extensions/build_context_extensions.dart';
+import 'gap/gap_vertical.dart';
+import 'padding/padding_components.dart';
+import 'text_component.dart';
 
-class StatsNoDataInfo extends StatelessWidget {
-  const StatsNoDataInfo({super.key});
+class EmptyContentInfo extends StatelessWidget {
+  final String title;
+  final String message;
+
+  const EmptyContentInfo({
+    super.key,
+    required this.title,
+    required this.message,
+  });
 
   @override
   Widget build(BuildContext context) => Padding24(
@@ -15,12 +22,12 @@ class StatsNoDataInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TitleLarge(
-                context.str.statsNoDataTitle,
+                title,
                 fontWeight: FontWeight.bold,
               ),
               const GapVertical16(),
               BodyMedium(
-                context.str.statsNoDataMessage,
+                message,
                 textAlign: TextAlign.center,
                 color: context.colorScheme.outline,
               ),

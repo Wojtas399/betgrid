@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
+import '../../../component/empty_content_info_component.dart';
+import '../../../extensions/build_context_extensions.dart';
 import '../cubit/bets_cubit.dart';
 import '../cubit/bets_state.dart';
 import 'bets_list_of_bets.dart';
-import 'bets_no_bets_info.dart';
 
 class BetsBody extends StatelessWidget {
   const BetsBody({super.key});
@@ -28,7 +29,10 @@ class BetsBody extends StatelessWidget {
             child: CircularProgressIndicator(),
           )
         : totalPoints == null || grandPrixesWithPoints == null
-            ? const BetsNoBetsInfo()
+            ? EmptyContentInfo(
+                title: context.str.betsNoBetsTitle,
+                message: context.str.betsNoBetsMessage,
+              )
             : const BetsListOfBets();
   }
 }

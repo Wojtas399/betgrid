@@ -21,7 +21,7 @@
     "statsNoDataMessage": "Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk",
     "@__________BETS__________": {},
     "betsScreenTitle": "Typy",
-    "betsNoBetsTitle": "Brak możliwości typowania",
+    "betsNoBetsTitle": "Brak możliwości typowania", 
     "betsNoBetsMessage": "Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione",
     "@__________PLAYERS__________": {},
     "playersScreenTitle": "Gracze",

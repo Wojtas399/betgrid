@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../component/empty_content_info_component.dart';
+import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
-import 'stats_no_data_info.dart';
 import 'stats_stats_content.dart';
 
 class StatsBody extends StatelessWidget {
@@ -16,7 +17,10 @@ class StatsBody extends StatelessWidget {
     );
 
     return status.isNoData
-        ? const StatsNoDataInfo()
+        ? EmptyContentInfo(
+            title: context.str.statsNoDataTitle,
+            message: context.str.statsNoDataMessage,
+          )
         : const StatsStatsContent();
   }
 }

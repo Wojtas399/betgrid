@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../component/empty_content_info_component.dart';
+import '../../../extensions/build_context_extensions.dart';
 import '../cubit/players_cubit.dart';
 import '../cubit/players_state.dart';
-import 'players_no_players_info.dart';
 import 'players_player_item.dart';
 
 class PlayersBody extends StatelessWidget {
@@ -33,6 +34,9 @@ class PlayersBody extends StatelessWidget {
                   playerWithPoints: playersWithTheirPoints[playerIndex],
                 ),
               )
-            : const PlayersNoPlayersInfo();
+            : EmptyContentInfo(
+                title: context.str.playersNoOtherPlayersTitle,
+                message: context.str.playersNoOtherPlayersMessage,
+              );
   }
 }
