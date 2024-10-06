@@ -58,8 +58,8 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
-          PlayerCreator(id: 'p1').createEntity(),
-          PlayerCreator(id: 'p2').createEntity(),
+          const PlayerCreator(id: 'p1').createEntity(),
+          const PlayerCreator(id: 'p2').createEntity(),
         ],
       );
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
@@ -79,9 +79,9 @@ void main() {
     'grand prix',
     () async {
       final List<Player> players = [
-        PlayerCreator(id: 'p1').createEntity(),
-        PlayerCreator(id: 'p2').createEntity(),
-        PlayerCreator(id: 'p3').createEntity(),
+        const PlayerCreator(id: 'p1').createEntity(),
+        const PlayerCreator(id: 'p2').createEntity(),
+        const PlayerCreator(id: 'p3').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1', roundNumber: 2).createEntity(),

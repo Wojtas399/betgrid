@@ -6,7 +6,9 @@ import '../../../creator/quali_bet_points_creator.dart';
 
 class MockQualiBetPointsMapper extends Mock implements QualiBetPointsMapper {
   MockQualiBetPointsMapper() {
-    registerFallbackValue(QualiBetPointsCreator().createDto());
+    registerFallbackValue(
+      const QualiBetPointsCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

@@ -43,14 +43,14 @@ void main() {
     'getUserById, ',
     () {
       const String avatarUrl = 'avatar/url';
-      final UserCreator userCreator = UserCreator(
+      const UserCreator userCreator = UserCreator(
         id: userId,
         username: 'username',
         avatarUrl: avatarUrl,
       );
       final List<User> existingUsers = [
-        UserCreator(id: 'u2').createEntity(),
-        UserCreator(id: 'u3').createEntity(),
+        const UserCreator(id: 'u2').createEntity(),
+        const UserCreator(id: 'u3').createEntity(),
       ];
 
       test(
@@ -142,7 +142,7 @@ void main() {
         'should only add user data to db and to repository state if '
         'avatarImgPath is null',
         () async {
-          final UserCreator addedUserCreator = UserCreator(
+          const UserCreator addedUserCreator = UserCreator(
             id: userId,
             username: username,
             themeMode: UserCreatorThemeMode.dark,
@@ -179,7 +179,7 @@ void main() {
         () async {
           const String avatarImgPath = 'avatar/img';
           const String avatarUrl = 'avatar/url';
-          final UserCreator addedUserCreator = UserCreator(
+          const UserCreator addedUserCreator = UserCreator(
             id: userId,
             username: username,
             avatarUrl: avatarUrl,
@@ -230,7 +230,7 @@ void main() {
       const ThemeModeDto newThemeModeDto = ThemeModeDto.system;
       const ThemePrimaryColorDto newThemePrimaryColorDto =
           ThemePrimaryColorDto.pink;
-      final UserCreator existingUserCreator = UserCreator(
+      const UserCreator existingUserCreator = UserCreator(
         id: userId,
         username: 'username',
       );
@@ -368,7 +368,7 @@ void main() {
       test(
         'should update user in db and in repo state',
         () async {
-          final UserCreator updatedUserCreator = UserCreator(
+          const UserCreator updatedUserCreator = UserCreator(
             id: userId,
             username: newUsername,
             themeMode: UserCreatorThemeMode.system,
@@ -419,7 +419,7 @@ void main() {
   group(
     'updateUserAvatar, ',
     () {
-      final UserCreator existingUserCreator = UserCreator(id: userId);
+      const UserCreator existingUserCreator = UserCreator(id: userId);
       const String existingUserAvatarUrl = 'avr/u/r/l';
 
       setUp(() {
@@ -438,7 +438,7 @@ void main() {
         'should remove avatar from db if avatarImgPath is null and should '
         'update user data if it exists in repo state',
         () async {
-          final User updatedUser = UserCreator(id: userId).createEntity();
+          final User updatedUser = const UserCreator(id: userId).createEntity();
           dbAvatarService.mockRemoveAvatarForUser();
 
           final user$ = repositoryImpl.getUserById(userId: userId);
@@ -471,7 +471,7 @@ void main() {
         () async {
           const String newAvatarImgPath = 'avatar/img/path';
           const String newAvatarUrl = 'newAvr/url';
-          final User updatedUser = UserCreator(
+          final User updatedUser = const UserCreator(
             id: userId,
             avatarUrl: newAvatarUrl,
           ).createEntity();

@@ -25,7 +25,7 @@ void main() {
   group(
     'getAllDrivers, ',
     () {
-      final List<DriverCreator> driverCreators = [
+      const List<DriverCreator> driverCreators = [
         DriverCreator(
           id: 'd1',
           name: 'Robert',
@@ -105,8 +105,8 @@ void main() {
         team: DriverCreatorTeam.mercedes,
       );
       final List<Driver> existingDrivers = [
-        DriverCreator(id: 'd2').createEntity(),
-        DriverCreator(id: 'd3').createEntity(),
+        const DriverCreator(id: 'd2').createEntity(),
+        const DriverCreator(id: 'd3').createEntity(),
       ];
 
       test(

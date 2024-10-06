@@ -34,9 +34,9 @@ void main() {
     'should load all players from db, add them to repo state and emit them',
     () async {
       final List<UserDto> userDtos = [
-        UserCreator(id: 'u1', username: 'username 1').createDto(),
-        UserCreator(id: 'u2', username: 'username 2').createDto(),
-        UserCreator(id: 'u3', username: 'username 3').createDto(),
+        const UserCreator(id: 'u1', username: 'username 1').createDto(),
+        const UserCreator(id: 'u2', username: 'username 2').createDto(),
+        const UserCreator(id: 'u3', username: 'username 3').createDto(),
       ];
       const String user2AvatarUrl = 'avatar/url';
       final List<Player> expectedPlayers = [
@@ -99,7 +99,7 @@ void main() {
     'getPlayerById, ',
     () {
       const String playerId = 'p1';
-      final List<Player> existingPlayers = [
+      const List<Player> existingPlayers = [
         Player(id: 'p2', username: 'player 2'),
         Player(id: 'p3', username: 'player 3'),
       ];
@@ -107,7 +107,7 @@ void main() {
       test(
         'should only emit player if it already exists in repo state',
         () async {
-          final Player existingPlayer = Player(
+          const Player existingPlayer = Player(
             id: playerId,
             username: 'player 1',
           );
@@ -127,7 +127,7 @@ void main() {
         'should fetch player from db, add it to repo state and emit it if it '
         'does not exist in repo state',
         () async {
-          final UserDto userDto = UserCreator(
+          final UserDto userDto = const UserCreator(
             id: playerId,
             username: 'player 1',
           ).createDto();

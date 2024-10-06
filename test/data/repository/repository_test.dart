@@ -205,7 +205,7 @@ void main() {
   group(
     'addOrUpdateEntities, ',
     () {
-      final List<TestModel> existingEntities = [
+      const List<TestModel> existingEntities = [
         TestModel(id: 'e1', name: 'entity 1'),
         TestModel(id: 'e2', name: 'entity 2'),
         TestModel(id: 'e3', name: 'entity 3'),
@@ -229,7 +229,7 @@ void main() {
       test(
         'should add new entities and update existing entities',
         () {
-          final List<TestModel> entitiesToAddOrUpdate = [
+          const List<TestModel> entitiesToAddOrUpdate = [
             TestModel(id: 'e1', name: 'updated entity 1'),
             TestModel(id: 'e3', name: 'updated entity 3'),
             TestModel(id: 'e4', name: 'entity 4'),

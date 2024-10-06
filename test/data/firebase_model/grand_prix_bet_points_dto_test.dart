@@ -7,8 +7,8 @@ import '../../creator/race_bet_points_creator.dart';
 void main() {
   const String grandPrixId = 'gp1';
   const double totalPoints = 10.2;
-  final QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator();
-  final RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator();
+  const QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator();
+  const RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator();
 
   test(
     'fromJson, '

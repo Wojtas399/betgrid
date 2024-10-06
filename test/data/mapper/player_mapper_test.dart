@@ -15,7 +15,7 @@ void main() {
       const String id = 'u1';
       const String username = 'username';
       const String avatarUrl = 'avatar/url';
-      final UserDto userDto = UserCreator(
+      final UserDto userDto = const UserCreator(
         id: id,
         username: username,
       ).createDto();

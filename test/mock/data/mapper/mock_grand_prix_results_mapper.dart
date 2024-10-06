@@ -7,7 +7,9 @@ import '../../../creator/grand_prix_results_creator.dart';
 class MockGrandPrixResultsMapper extends Mock
     implements GrandPrixResultsMapper {
   MockGrandPrixResultsMapper() {
-    registerFallbackValue(GrandPrixResultsCreator().createDto());
+    registerFallbackValue(
+      const GrandPrixResultsCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

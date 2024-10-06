@@ -8,14 +8,14 @@ void main() {
   test(
     'default state',
     () {
-      final BetsState expectedDefaultState = BetsState(
+      const BetsState expectedDefaultState = BetsState(
         status: BetsStateStatus.loading,
         loggedUserId: null,
         totalPoints: null,
         grandPrixesWithPoints: null,
       );
 
-      final BetsState defaultState = BetsState();
+      const BetsState defaultState = BetsState();
 
       expect(defaultState, expectedDefaultState);
     },
@@ -27,7 +27,7 @@ void main() {
       test(
         'should return true if status is set as loading',
         () {
-          final state = BetsState(
+          const state = BetsState(
             status: BetsStateStatus.loading,
           );
 
@@ -38,7 +38,7 @@ void main() {
       test(
         'should return false if status is set as completed',
         () {
-          final state = BetsState(
+          const state = BetsState(
             status: BetsStateStatus.completed,
           );
 
@@ -49,7 +49,7 @@ void main() {
       test(
         'should return false if status is set as loggedUserDoesNotExist',
         () {
-          final state = BetsState(
+          const state = BetsState(
             status: BetsStateStatus.loggedUserDoesNotExist,
           );
 
@@ -62,7 +62,7 @@ void main() {
   group(
     'copyWith status',
     () {
-      BetsState state = BetsState();
+      BetsState state = const BetsState();
 
       test(
         'should set new value if passed value is not null',
@@ -91,7 +91,7 @@ void main() {
   group(
     'copyWith loggedUserId',
     () {
-      BetsState state = BetsState();
+      BetsState state = const BetsState();
 
       test(
         'should set new value if passed value is not null',
@@ -129,7 +129,7 @@ void main() {
   group(
     'copyWith totalPoints',
     () {
-      BetsState state = BetsState();
+      BetsState state = const BetsState();
 
       test(
         'should set new value if passed value is not null',
@@ -167,7 +167,7 @@ void main() {
   group(
     'copyWith grandPrixesWithPoints',
     () {
-      BetsState state = BetsState();
+      BetsState state = const BetsState();
 
       test(
         'should set new value if passed value is not null',

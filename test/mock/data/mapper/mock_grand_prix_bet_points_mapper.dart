@@ -7,7 +7,9 @@ import '../../../creator/grand_prix_bet_points_creator.dart';
 class MockGrandPrixBetPointsMapper extends Mock
     implements GrandPrixBetPointsMapper {
   MockGrandPrixBetPointsMapper() {
-    registerFallbackValue(GrandPrixBetPointsCreator().createDto());
+    registerFallbackValue(
+      const GrandPrixBetPointsCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

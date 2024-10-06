@@ -42,7 +42,7 @@ void main() {
     () {
       const String loggedUserId = 'u1';
       final DateTime now = DateTime(2024);
-      final User loggedUser = UserCreator(
+      final User loggedUser = const UserCreator(
         id: loggedUserId,
         username: 'username',
         avatarUrl: 'avatar/url',

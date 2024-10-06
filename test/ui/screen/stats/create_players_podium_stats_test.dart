@@ -58,8 +58,8 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
-          PlayerCreator(id: 'p1').createEntity(),
-          PlayerCreator(id: 'p2').createEntity(),
+          const PlayerCreator(id: 'p1').createEntity(),
+          const PlayerCreator(id: 'p2').createEntity(),
         ],
       );
       getFinishedGrandPrixesFromCurrentSeasonUseCase
@@ -78,7 +78,7 @@ void main() {
     'only p1 position if there is only 1 player',
     () async {
       final List<Player> players = [
-        PlayerCreator(id: 'p1').createEntity(),
+        const PlayerCreator(id: 'p1').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -129,8 +129,8 @@ void main() {
     'p1 and p2 positions if there are only 2 players',
     () async {
       final List<Player> players = [
-        PlayerCreator(id: 'p1').createEntity(),
-        PlayerCreator(id: 'p2').createEntity(),
+        const PlayerCreator(id: 'p1').createEntity(),
+        const PlayerCreator(id: 'p2').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -193,10 +193,10 @@ void main() {
     'top 3 players',
     () async {
       final List<Player> players = [
-        PlayerCreator(id: 'p1').createEntity(),
-        PlayerCreator(id: 'p2').createEntity(),
-        PlayerCreator(id: 'p3').createEntity(),
-        PlayerCreator(id: 'p4').createEntity(),
+        const PlayerCreator(id: 'p1').createEntity(),
+        const PlayerCreator(id: 'p2').createEntity(),
+        const PlayerCreator(id: 'p3').createEntity(),
+        const PlayerCreator(id: 'p4').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),

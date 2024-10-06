@@ -75,8 +75,8 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(
         players: [
-          PlayerCreator(id: 'p1').createEntity(),
-          PlayerCreator(id: 'p2').createEntity(),
+          const PlayerCreator(id: 'p1').createEntity(),
+          const PlayerCreator(id: 'p2').createEntity(),
         ],
       );
       getFinishedGrandPrixesFromCurrentSeasonUseCase
@@ -98,9 +98,9 @@ void main() {
     () async {
       const String driverId = 'd1';
       final List<Player> players = [
-        PlayerCreator(id: 'p1').createEntity(),
-        PlayerCreator(id: 'p2').createEntity(),
-        PlayerCreator(id: 'p3').createEntity(),
+        const PlayerCreator(id: 'p1').createEntity(),
+        const PlayerCreator(id: 'p2').createEntity(),
+        const PlayerCreator(id: 'p3').createEntity(),
       ];
       final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixCreator(id: 'gp1').createEntity(),
@@ -210,8 +210,8 @@ void main() {
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
           grandPrixId: finishedGrandPrixes.first.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: RaceBetPointsCreator(
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: const RaceBetPointsCreator(
             p1Points: 2,
             fastestLapPoints: 2,
           ),
@@ -219,20 +219,20 @@ void main() {
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
           grandPrixId: finishedGrandPrixes[1].id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q1P20Points: 1),
-          raceBetPointsCreator: RaceBetPointsCreator(dnfDriver1Points: 2),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q1P20Points: 1),
+          raceBetPointsCreator: const RaceBetPointsCreator(dnfDriver1Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
           grandPrixId: finishedGrandPrixes.last.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: const RaceBetPointsCreator(p3Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
           grandPrixId: finishedGrandPrixes.first.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P4Points: 2),
-          raceBetPointsCreator: RaceBetPointsCreator(
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P4Points: 2),
+          raceBetPointsCreator: const RaceBetPointsCreator(
             p2Points: 2,
             p10Points: 2,
             fastestLapPoints: 2,
@@ -241,29 +241,29 @@ void main() {
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
           grandPrixId: finishedGrandPrixes[1].id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q2P12Points: 2),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q2P12Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
           grandPrixId: finishedGrandPrixes.last.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: RaceBetPointsCreator(p3Points: 2),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
+          raceBetPointsCreator: const RaceBetPointsCreator(p3Points: 2),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
           grandPrixId: finishedGrandPrixes.first.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P10Points: 1),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P10Points: 1),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
           grandPrixId: finishedGrandPrixes[1].id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q1P18Points: 1),
+          qualiBetPointsCreator: const QualiBetPointsCreator(q1P18Points: 1),
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
           grandPrixId: finishedGrandPrixes.last.id,
-          qualiBetPointsCreator: QualiBetPointsCreator(q3P5Points: 2),
-          raceBetPointsCreator: RaceBetPointsCreator(
+          qualiBetPointsCreator: const QualiBetPointsCreator(q3P5Points: 2),
+          raceBetPointsCreator: const RaceBetPointsCreator(
             p2Points: 2,
             dnfDriver1Points: 2,
           ),

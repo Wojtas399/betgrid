@@ -6,7 +6,9 @@ import '../../../creator/race_bet_points_creator.dart';
 
 class MockRaceBetPointsMapper extends Mock implements RaceBetPointsMapper {
   MockRaceBetPointsMapper() {
-    registerFallbackValue(RaceBetPointsCreator().createDto());
+    registerFallbackValue(
+      const RaceBetPointsCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

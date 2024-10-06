@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../creator/quali_bet_points_creator.dart';
 
 void main() {
-  final QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator(
+  const QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator(
     q1Multiplier: 1.2,
     q3Multiplier: 2.5,
     multiplier: 3.8,

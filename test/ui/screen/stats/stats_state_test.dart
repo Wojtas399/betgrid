@@ -11,7 +11,7 @@ void main() {
   test(
     'default state',
     () {
-      final expectedDefaultState = StatsState(
+      const expectedDefaultState = StatsState(
         status: StatsStateStatus.loading,
         playersPodium: null,
         pointsHistory: null,
@@ -19,7 +19,7 @@ void main() {
         pointsByDriver: null,
       );
 
-      final defaultState = StatsState();
+      const defaultState = StatsState();
 
       expect(defaultState, expectedDefaultState);
     },
@@ -31,7 +31,7 @@ void main() {
       test(
         'should return true if status is set as loading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.loading,
           );
 
@@ -42,7 +42,7 @@ void main() {
       test(
         'should return false if status is set as pointsForDriverLoading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.pointsForDriverLoading,
           );
 
@@ -53,7 +53,7 @@ void main() {
       test(
         'should return false if status is set as noData',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.noData,
           );
 
@@ -64,7 +64,7 @@ void main() {
       test(
         'should return false if status is set as completed',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.completed,
           );
 
@@ -75,7 +75,7 @@ void main() {
       test(
         'should return false if status is set as playersDontExist',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.playersDontExist,
           );
 
@@ -91,7 +91,7 @@ void main() {
       test(
         'should return true if status is set as pointsForDriverLoading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.pointsForDriverLoading,
           );
 
@@ -102,7 +102,7 @@ void main() {
       test(
         'should return false if status is set as loading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.loading,
           );
 
@@ -113,7 +113,7 @@ void main() {
       test(
         'should return false if status is set as noData',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.noData,
           );
 
@@ -124,7 +124,7 @@ void main() {
       test(
         'should return false if status is set as completed',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.completed,
           );
 
@@ -135,7 +135,7 @@ void main() {
       test(
         'should return false if status is set as playersDontExist',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.playersDontExist,
           );
 
@@ -151,7 +151,7 @@ void main() {
       test(
         'should return true if status is set as noData',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.noData,
           );
 
@@ -162,7 +162,7 @@ void main() {
       test(
         'should return false if status is set as loading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.loading,
           );
 
@@ -173,7 +173,7 @@ void main() {
       test(
         'should return false if status is set as pointsForDriverLoading',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.pointsForDriverLoading,
           );
 
@@ -184,7 +184,7 @@ void main() {
       test(
         'should return false if status is set as completed',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.completed,
           );
 
@@ -195,7 +195,7 @@ void main() {
       test(
         'should return false if status is set as playersDontExist',
         () {
-          final state = StatsState(
+          const state = StatsState(
             status: StatsStateStatus.playersDontExist,
           );
 
@@ -208,7 +208,7 @@ void main() {
   group(
     'copyWith status',
     () {
-      StatsState state = StatsState();
+      StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',
@@ -237,14 +237,14 @@ void main() {
   group(
     'copyWith playersPodium',
     () {
-      StatsState state = StatsState();
+      StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',
         () {
           final PlayersPodium newValue = PlayersPodium(
             p1Player: PlayersPodiumPlayer(
-              player: PlayerCreator(id: 'p1').createEntity(),
+              player: const PlayerCreator(id: 'p1').createEntity(),
               points: 22.2,
             ),
           );
@@ -280,12 +280,12 @@ void main() {
   group(
     'copyWith pointsHistory',
     () {
-      StatsState state = StatsState();
+      StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',
         () {
-          final PointsHistory newValue = PointsHistory(
+          const PointsHistory newValue = PointsHistory(
             players: [],
             grandPrixes: [],
           );
@@ -321,7 +321,7 @@ void main() {
   group(
     'copyWith allDrivers',
     () {
-      StatsState state = StatsState();
+      StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',
@@ -359,7 +359,7 @@ void main() {
   group(
     'copyWith pointsByDriver',
     () {
-      StatsState state = StatsState();
+      StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',

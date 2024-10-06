@@ -40,7 +40,7 @@ void main() {
     () {
       final PlayersPodium playersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: PlayerCreator(id: 'p3').createEntity(),
+          player: const PlayerCreator(id: 'p3').createEntity(),
           points: 33,
         ),
       );
@@ -49,15 +49,15 @@ void main() {
         grandPrixes: [],
       );
       final List<Driver> allDrivers = [
-        DriverCreator(
+        const DriverCreator(
           id: 'd1',
           team: DriverCreatorTeam.ferrari,
         ).createEntity(),
-        DriverCreator(
+        const DriverCreator(
           id: 'd2',
           team: DriverCreatorTeam.redBullRacing,
         ).createEntity(),
-        DriverCreator(
+        const DriverCreator(
           id: 'd3',
           team: DriverCreatorTeam.alpine,
         ).createEntity(),
@@ -79,7 +79,7 @@ void main() {
           driverRepository.mockGetAllDrivers(allDrivers: []);
         },
         act: (cubit) async => await cubit.initialize(),
-        expect: () => [
+        expect: () => const [
           StatsState(
             status: StatsStateStatus.noData,
           ),
@@ -122,7 +122,7 @@ void main() {
     () {
       final PointsByDriverPlayerPoints playerPointsForDriver =
           PointsByDriverPlayerPoints(
-        player: PlayerCreator(id: 'p1').createEntity(),
+        player: const PlayerCreator(id: 'p1').createEntity(),
         points: 22.22,
       );
 

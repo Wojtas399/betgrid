@@ -58,23 +58,26 @@ void main() {
     () {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
-      final Player player = PlayerCreator(username: 'username').createEntity();
+      final Player player = const PlayerCreator(
+        username: 'username',
+      ).createEntity();
       final GrandPrix grandPrix = GrandPrixCreator(
         name: 'grand prix',
       ).createEntity();
       final GrandPrixBet grandPrixBet = GrandPrixBetCreator(
         id: 'gpb1',
       ).createEntity();
-      final GrandPrixResults grandPrixResults = GrandPrixResultsCreator(
+      final GrandPrixResults grandPrixResults = const GrandPrixResultsCreator(
         id: 'gpr1',
       ).createEntity();
-      final GrandPrixBetPoints grandPrixBetPoints = GrandPrixBetPointsCreator(
+      final GrandPrixBetPoints grandPrixBetPoints =
+          const GrandPrixBetPointsCreator(
         id: 'gpbp1',
       ).createEntity();
       final List<Driver> allDrivers = [
-        DriverCreator(id: 'd1').createEntity(),
-        DriverCreator(id: 'd2').createEntity(),
-        DriverCreator(id: 'd3').createEntity(),
+        const DriverCreator(id: 'd1').createEntity(),
+        const DriverCreator(id: 'd2').createEntity(),
+        const DriverCreator(id: 'd3').createEntity(),
       ];
       final GrandPrixBetState expectedState = GrandPrixBetState(
         status: GrandPrixBetStateStatus.completed,

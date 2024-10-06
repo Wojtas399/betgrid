@@ -28,7 +28,7 @@ void main() {
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
-      final User loggedUser = UserCreator(
+      final User loggedUser = const UserCreator(
         id: 'u1',
         username: 'username',
         avatarUrl: 'avatar/url',

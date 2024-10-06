@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../creator/race_bet_points_creator.dart';
 
 void main() {
-  final RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator(
+  const RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator(
     dnfMultiplier: 3.2,
   );
 

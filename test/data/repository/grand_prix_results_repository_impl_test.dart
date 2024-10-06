@@ -29,17 +29,17 @@ void main() {
     'getResultsForGrandPrix, ',
     () {
       const String grandPrixId = 'gp1';
-      final GrandPrixResultsCreator grandPrixResultsCreator =
+      const GrandPrixResultsCreator grandPrixResultsCreator =
           GrandPrixResultsCreator(
         id: 'r1',
         grandPrixId: grandPrixId,
       );
       final List<GrandPrixResults> existingGrandPrixesResults = [
-        GrandPrixResultsCreator(
+        const GrandPrixResultsCreator(
           id: 'r2',
           grandPrixId: 'gp2',
         ).createEntity(),
-        GrandPrixResultsCreator(
+        const GrandPrixResultsCreator(
           id: 'r3',
           grandPrixId: 'gp3',
         ).createEntity(),
@@ -105,7 +105,7 @@ void main() {
       const String gp1Id = 'gp1';
       const String gp2Id = 'gp2';
       const String gp3Id = 'gp3';
-      final List<GrandPrixResultsCreator> gpResultsCreators = [
+      const List<GrandPrixResultsCreator> gpResultsCreators = [
         GrandPrixResultsCreator(
           id: 'gpr1',
           grandPrixId: gp1Id,

@@ -37,9 +37,9 @@ void main() {
       const String loggedUserId = 'u1';
       final DateTime now = DateTime(2024);
       final List<Player> players = [
-        PlayerCreator(id: loggedUserId).createEntity(),
-        PlayerCreator(id: 'u2').createEntity(),
-        PlayerCreator(id: 'u3').createEntity(),
+        const PlayerCreator(id: loggedUserId).createEntity(),
+        const PlayerCreator(id: 'u2').createEntity(),
+        const PlayerCreator(id: 'u3').createEntity(),
       ];
 
       blocTest(

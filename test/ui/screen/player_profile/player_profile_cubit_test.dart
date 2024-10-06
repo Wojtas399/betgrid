@@ -31,7 +31,7 @@ void main() {
     () {
       const String playerId = 'p1';
       final DateTime now = DateTime(2024);
-      final Player player = PlayerCreator(id: playerId).createEntity();
+      final Player player = const PlayerCreator(id: playerId).createEntity();
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(

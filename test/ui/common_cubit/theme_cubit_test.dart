@@ -66,7 +66,7 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetUserById(
-            user: User(
+            user: const User(
               id: loggedUserId,
               username: 'username',
               themeMode: themeMode,

@@ -6,7 +6,9 @@ import '../../../creator/driver_creator.dart';
 
 class MockDriverMapper extends Mock implements DriverMapper {
   MockDriverMapper() {
-    registerFallbackValue(DriverCreator().createDto());
+    registerFallbackValue(
+      const DriverCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

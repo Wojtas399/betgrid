@@ -32,12 +32,12 @@ void main() {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
       const double totalPoints = 10.0;
-      final QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator(
+      const QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator(
         totalPoints: 4.0,
         q3P1Points: 2.0,
         q2P12Points: 2.0,
       );
-      final RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator(
+      const RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator(
         totalPoints: 6.0,
         p1Points: 1.0,
         p2Points: 1.0,

@@ -6,7 +6,9 @@ import '../../../creator/user_creator.dart';
 
 class MockUserMapper extends Mock implements UserMapper {
   MockUserMapper() {
-    registerFallbackValue(UserCreator().createDto());
+    registerFallbackValue(
+      const UserCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({
