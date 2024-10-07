@@ -11,23 +11,21 @@ class SignInCubit extends Cubit<SignInState> {
 
   SignInCubit(
     this._authRepository,
-  ) : super(const SignInState());
+  ) : super(const SignInStateCompleted());
 
   Future<void> initialize() async {
     final Stream<AuthState> authState$ = _authRepository.authState$;
     await for (final authState in authState$) {
-      emit(state.copyWith(
-        status: authState is AuthStateUserIsSignedIn
-            ? SignInStateStatus.userIsAlreadySignedIn
-            : SignInStateStatus.completed,
-      ));
+      emit(
+        authState is AuthStateUserIsSignedIn
+            ? const SignInStateUserIsAlreadySignedIn()
+            : const SignInStateCompleted(),
+      );
     }
   }
 
   Future<void> signInWithGoogle() async {
-    emit(state.copyWith(
-      status: SignInStateStatus.loading,
-    ));
+    emit(const SignInStateLoading());
     await _authRepository.signInWithGoogle();
   }
 }

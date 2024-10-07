@@ -24,32 +24,28 @@ void main() {
       });
 
       blocTest(
-        'should emit state with status set to userIsAlreadySignedIn if auth '
-        'state is set to AuthStateUserIsSignedIn',
+        'should emit SignInStateUserIsAlreadySigneIn state if auth state is '
+        'set to AuthStateUserIsSignedIn',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetAuthState(
           authState: const AuthStateUserIsSignedIn(),
         ),
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
-          const SignInState(
-            status: SignInStateStatus.userIsAlreadySignedIn,
-          ),
+          const SignInStateUserIsAlreadySignedIn(),
         ],
       );
 
       blocTest(
-        'should emit state with status set to completed if auth state is set '
-        'to AuthStateUserIsSignedOut',
+        'should emit SignInStateCompleted state if auth state is set to '
+        'AuthStateUserIsSignedOut',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetAuthState(
           authState: const AuthStateUserIsSignedOut(),
         ),
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
-          const SignInState(
-            status: SignInStateStatus.completed,
-          ),
+          const SignInStateCompleted(),
         ],
       );
     },
@@ -62,9 +58,7 @@ void main() {
     setUp: () => authRepository.mockSignInWithGoogle(),
     act: (cubit) async => await cubit.signInWithGoogle(),
     expect: () => [
-      const SignInState(
-        status: SignInStateStatus.loading,
-      ),
+      const SignInStateLoading(),
     ],
     verify: (_) => verify(authRepository.signInWithGoogle).called(1),
   );

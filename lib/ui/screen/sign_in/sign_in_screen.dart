@@ -24,20 +24,17 @@ class _Content extends StatelessWidget {
   const _Content();
 
   void _onAuthStateChanged(
-    bool isUserAlreadySignedIn,
     BuildContext context,
+    SignInState state,
   ) {
-    if (isUserAlreadySignedIn) {
+    if (state is SignInStateUserIsAlreadySignedIn) {
       context.replaceRoute(const HomeRoute());
     }
   }
 
   @override
   Widget build(BuildContext context) => BlocListener<SignInCubit, SignInState>(
-        listenWhen: (prevState, currState) =>
-            prevState.isUserAlreadySignedIn != currState.isUserAlreadySignedIn,
-        listener: (_, SignInState state) =>
-            _onAuthStateChanged(state.isUserAlreadySignedIn, context),
+        listener: _onAuthStateChanged,
         child: const Scaffold(
           appBar: SignInAppBar(),
           body: SignInBody(),
