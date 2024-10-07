@@ -75,8 +75,7 @@ void main() {
       );
 
       blocTest(
-        'should emit state with status set to loggedUserDoesNotExist if '
-        'logged user id is null',
+        'should finish method call if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
         act: (cubit) async {
@@ -90,13 +89,8 @@ void main() {
           state = const RequiredDataCompletionState(
             username: username,
           ),
-          state = state?.copyWith(
-            status: RequiredDataCompletionStateStatus.loggedUserDoesNotExist,
-          ),
         ],
-        verify: (_) => verify(
-          () => authRepository.loggedUserId$,
-        ).called(1),
+        verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
       );
 
       blocTest(

@@ -40,10 +40,7 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
       return;
     }
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
-    if (loggedUserId == null) {
-      _emitStatus(RequiredDataCompletionStateStatus.loggedUserDoesNotExist);
-      return;
-    }
+    if (loggedUserId == null) return;
     try {
       _emitStatus(RequiredDataCompletionStateStatus.loading);
       await _userRepository.addUser(

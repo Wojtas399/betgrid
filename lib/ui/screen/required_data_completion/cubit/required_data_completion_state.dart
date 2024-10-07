@@ -5,7 +5,6 @@ part 'required_data_completion_state.freezed.dart';
 enum RequiredDataCompletionStateStatus {
   loading,
   completed,
-  loggedUserDoesNotExist,
   usernameIsEmpty,
   usernameIsAlreadyTaken,
   dataSaved,
