@@ -54,13 +54,13 @@ class _State extends State<ProfileUsernameDialog> {
   }
 
   void _onProfileStateStatusChanged(ProfileStateStatus status) {
-    if (status == ProfileStateStatus.loading) {
+    if (status.isLoading) {
       showLoadingDialog();
-    } else if (status == ProfileStateStatus.usernameUpdated) {
+    } else if (status.isUsernameUpdated) {
       closeLoadingDialog();
       context.maybePop();
       showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
-    } else if (status == ProfileStateStatus.newUsernameIsAlreadyTaken) {
+    } else if (status.isNewUsernameAlreadyTaken) {
       closeLoadingDialog();
       setState(() {
         _isUsernameAlreadyTaken = true;

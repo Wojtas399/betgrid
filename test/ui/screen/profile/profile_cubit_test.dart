@@ -36,18 +36,16 @@ void main() {
         themePrimaryColor: UserCreatorThemePrimaryColor.brown,
       ).createEntity();
 
+      tearDown(() {
+        verify(() => authRepository.loggedUserId$).called(1);
+      });
+
       blocTest(
-        'should emit state with status set as loggedUserDoesNotExist if '
-        'logged user id is null',
+        'should do nothing if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
         act: (cubit) async => await cubit.initialize(),
-        expect: () => [
-          const ProfileState(
-            status: ProfileStateStatus.loggedUserDoesNotExist,
-          ),
-        ],
-        verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
+        expect: () => [],
       );
 
       blocTest(
@@ -67,12 +65,9 @@ void main() {
             themePrimaryColor: loggedUser.themePrimaryColor,
           ),
         ],
-        verify: (_) {
-          verify(() => authRepository.loggedUserId$).called(1);
-          verify(
-            () => userRepository.getUserById(userId: loggedUserId),
-          ).called(1);
-        },
+        verify: (_) => verify(
+          () => userRepository.getUserById(userId: loggedUserId),
+        ).called(1),
       );
     },
   );
@@ -128,15 +123,10 @@ void main() {
       const String newUsername = 'new username';
 
       blocTest(
-        'should emit state with status set to newUsernameIsEmpty if new '
-        'username is empty',
+        'should do nothing if new username is empty',
         build: () => createCubit(),
         act: (cubit) async => await cubit.updateUsername(''),
-        expect: () => [
-          const ProfileState(
-            status: ProfileStateStatus.newUsernameIsEmpty,
-          ),
-        ],
+        expect: () => [],
       );
 
       blocTest(

@@ -20,11 +20,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> initialize() async {
     final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
     await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId == null) {
-        emit(state.copyWith(
-          status: ProfileStateStatus.loggedUserDoesNotExist,
-        ));
-      } else {
+      if (loggedUserId != null) {
         await _initializeLoggedUserData(loggedUserId);
       }
     }
@@ -47,12 +43,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> updateUsername(String newUsername) async {
-    if (newUsername.isEmpty) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.newUsernameIsEmpty,
-      ));
-      return;
-    }
+    if (newUsername.isEmpty) return;
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
     try {
