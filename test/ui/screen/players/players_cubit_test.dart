@@ -47,16 +47,11 @@ void main() {
       });
 
       blocTest(
-        'should emit state with status set to loggedUserDoesNotExist if logged '
-        'user id is null',
+        'should do nothing if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
         act: (cubit) async => await cubit.initialize(),
-        expect: () => [
-          const PlayersState(
-            status: PlayersStateStatus.loggedUserDoesNotExist,
-          ),
-        ],
+        expect: () => [],
       );
 
       blocTest(

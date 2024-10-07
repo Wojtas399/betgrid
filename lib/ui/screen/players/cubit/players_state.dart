@@ -8,7 +8,10 @@ part 'players_state.freezed.dart';
 enum PlayersStateStatus {
   loading,
   completed,
-  loggedUserDoesNotExist,
+}
+
+extension PlayerStateStatusExtensions on PlayersStateStatus {
+  bool get isLoading => this == PlayersStateStatus.loading;
 }
 
 @freezed
@@ -19,8 +22,6 @@ class PlayersState with _$PlayersState {
     @Default(PlayersStateStatus.loading) PlayersStateStatus status,
     List<PlayerWithPoints>? playersWithTheirPoints,
   }) = _PlayersState;
-
-  bool get isLoading => status == PlayersStateStatus.loading;
 }
 
 class PlayerWithPoints extends Equatable {

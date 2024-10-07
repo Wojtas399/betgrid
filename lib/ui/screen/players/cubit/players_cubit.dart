@@ -26,11 +26,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   Future<void> initialize() async {
     final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
     await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId == null) {
-        emit(state.copyWith(
-          status: PlayersStateStatus.loggedUserDoesNotExist,
-        ));
-      } else {
+      if (loggedUserId != null) {
         await _initializePlayersWithTheirPoints(loggedUserId);
       }
     }

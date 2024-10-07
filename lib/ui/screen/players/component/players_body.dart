@@ -13,7 +13,7 @@ class PlayersBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCubitLoading = context.select(
-      (PlayersCubit cubit) => cubit.state.isLoading,
+      (PlayersCubit cubit) => cubit.state.status.isLoading,
     );
     final List<PlayerWithPoints>? playersWithTheirPoints = context.select(
       (PlayersCubit cubit) => cubit.state.playersWithTheirPoints,
