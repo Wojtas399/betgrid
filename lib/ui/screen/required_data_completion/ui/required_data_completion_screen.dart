@@ -33,9 +33,9 @@ class _Content extends StatelessWidget {
     RequiredDataCompletionStateStatus status,
     BuildContext context,
   ) {
-    if (status == RequiredDataCompletionStateStatus.loading) {
+    if (status.isLoading) {
       showLoadingDialog();
-    } else if (status == RequiredDataCompletionStateStatus.dataSaved) {
+    } else if (status.hasDataBeenSaved) {
       closeLoadingDialog();
       context.maybePop();
     }

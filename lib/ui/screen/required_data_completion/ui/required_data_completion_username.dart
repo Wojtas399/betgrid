@@ -36,12 +36,12 @@ class _State extends State<RequiredDataCompletionUsername> {
   }
 
   void _onCubitStatusChanged(RequiredDataCompletionStateStatus status) {
-    if (status == RequiredDataCompletionStateStatus.usernameIsAlreadyTaken) {
+    if (status.isUsernameAlreadyTaken) {
       setState(() {
         _isUsernameAlreadyTaken = true;
         _canValidateTextField = true;
       });
-    } else if (status == RequiredDataCompletionStateStatus.usernameIsEmpty) {
+    } else if (status.isUsernameEmpty) {
       setState(() {
         _isUsernameEmpty = true;
         _canValidateTextField = true;

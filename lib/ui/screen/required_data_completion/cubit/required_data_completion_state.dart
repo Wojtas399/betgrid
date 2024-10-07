@@ -10,6 +10,20 @@ enum RequiredDataCompletionStateStatus {
   dataSaved,
 }
 
+extension RequiredDataCompletionStateStatusExtensions
+    on RequiredDataCompletionStateStatus {
+  bool get isLoading => this == RequiredDataCompletionStateStatus.loading;
+
+  bool get isUsernameEmpty =>
+      this == RequiredDataCompletionStateStatus.usernameIsEmpty;
+
+  bool get isUsernameAlreadyTaken =>
+      this == RequiredDataCompletionStateStatus.usernameIsAlreadyTaken;
+
+  bool get hasDataBeenSaved =>
+      this == RequiredDataCompletionStateStatus.dataSaved;
+}
+
 @freezed
 class RequiredDataCompletionState with _$RequiredDataCompletionState {
   const RequiredDataCompletionState._();
