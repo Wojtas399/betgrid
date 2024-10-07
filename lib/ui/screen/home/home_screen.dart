@@ -26,7 +26,7 @@ class _Content extends StatelessWidget {
   const _Content();
 
   void _onCubitStatusChanged(HomeStateStatus status) async {
-    if (status == HomeStateStatus.loggedUserDataNotCompleted) {
+    if (status.isLoggedUserDataNotCompleted) {
       await showFullScreenDialog(const RequiredDataCompletionScreen());
     }
   }

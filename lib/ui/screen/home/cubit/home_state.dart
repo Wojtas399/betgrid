@@ -9,6 +9,11 @@ enum HomeStateStatus {
   loggedUserDataNotCompleted,
 }
 
+extension HomeStateStatusExtensions on HomeStateStatus {
+  bool get isLoggedUserDataNotCompleted =>
+      this == HomeStateStatus.loggedUserDataNotCompleted;
+}
+
 @freezed
 class HomeState with _$HomeState {
   const factory HomeState({
