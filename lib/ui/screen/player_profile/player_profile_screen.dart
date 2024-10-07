@@ -12,6 +12,7 @@ import '../../component/text_component.dart';
 import '../../config/router/app_router.dart';
 import '../../extensions/build_context_extensions.dart';
 import 'cubit/player_profile_cubit.dart';
+import 'cubit/player_profile_state.dart';
 
 @RoutePage()
 class PlayerProfileScreen extends StatelessWidget {
@@ -109,7 +110,7 @@ class _TotalPoints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCubitLoading = context.select(
-      (PlayerProfileCubit cubit) => cubit.state.isLoading,
+      (PlayerProfileCubit cubit) => cubit.state.status.isLoading,
     );
     final totalPoints = context.select(
       (PlayerProfileCubit cubit) => cubit.state.totalPoints,
@@ -141,7 +142,7 @@ class _GrandPrixes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCubitLoading = context.select(
-      (PlayerProfileCubit cubit) => cubit.state.isLoading,
+      (PlayerProfileCubit cubit) => cubit.state.status.isLoading,
     );
     final List<GrandPrixWithPoints> grandPrixesWithPoints = context.select(
       (PlayerProfileCubit cubit) => cubit.state.grandPrixesWithPoints,

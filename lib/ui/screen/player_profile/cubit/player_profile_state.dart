@@ -10,6 +10,10 @@ enum PlayerProfileStateStatus {
   completed,
 }
 
+extension PlayerProfileStateStatusExtensions on PlayerProfileStateStatus {
+  bool get isLoading => this == PlayerProfileStateStatus.loading;
+}
+
 @freezed
 class PlayerProfileState with _$PlayerProfileState {
   const PlayerProfileState._();
@@ -20,6 +24,4 @@ class PlayerProfileState with _$PlayerProfileState {
     double? totalPoints,
     @Default([]) List<GrandPrixWithPoints> grandPrixesWithPoints,
   }) = _PlayerProfileState;
-
-  bool get isLoading => status == PlayerProfileStateStatus.loading;
 }
