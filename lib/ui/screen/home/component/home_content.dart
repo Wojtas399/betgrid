@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../config/router/app_router.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../service/dialog_service.dart';
-import '../../required_data_completion/ui/required_data_completion_screen.dart';
+import '../../required_data_completion/required_data_completion_screen.dart';
 import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 import 'home_app_bar.dart';
