@@ -35,7 +35,7 @@ class _Colors extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemePrimaryColor? selectedThemePrimaryColor = context.select(
-      (ThemeCubit cubit) => cubit.state?.primaryColor,
+      (ThemeCubit cubit) => cubit.state.primaryColor,
     );
 
     return ThemePrimaryColorSelection(

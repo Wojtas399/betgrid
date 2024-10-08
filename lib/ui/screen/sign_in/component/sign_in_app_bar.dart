@@ -40,7 +40,7 @@ class _ThemeSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user.ThemeMode? themeMode = context.select(
-      (ThemeCubit cubit) => cubit.state?.themeMode,
+      (ThemeCubit cubit) => cubit.state.themeMode,
     );
 
     return Switch(

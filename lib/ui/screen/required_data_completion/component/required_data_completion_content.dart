@@ -46,13 +46,11 @@ class _SubmitButton extends StatelessWidget {
   const _SubmitButton();
 
   Future<void> _onPressed(BuildContext context) async {
-    final ThemeState? themeState = context.read<ThemeCubit>().state;
-    if (themeState != null) {
-      await context.read<RequiredDataCompletionCubit>().submit(
-            themeMode: themeState.themeMode,
-            themePrimaryColor: themeState.primaryColor,
-          );
-    }
+    final ThemeState themeState = context.read<ThemeCubit>().state;
+    await context.read<RequiredDataCompletionCubit>().submit(
+          themeMode: themeState.themeMode,
+          themePrimaryColor: themeState.primaryColor,
+        );
   }
 
   @override
