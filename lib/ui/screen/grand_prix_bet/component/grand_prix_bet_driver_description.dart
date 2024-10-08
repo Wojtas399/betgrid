@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/driver.dart';
-import '../../component/gap/gap_horizontal.dart';
-import '../../component/text_component.dart';
-import 'cubit/grand_prix_bet_cubit.dart';
+import '../../../../model/driver.dart';
+import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/text_component.dart';
+import '../cubit/grand_prix_bet_cubit.dart';
 
 class DriverDescription extends StatelessWidget {
   final String? driverId;

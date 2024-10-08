@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../dependency_injection.dart';
-import '../../../model/grand_prix_bet.dart';
-import '../../../model/grand_prix_bet_points.dart';
-import '../../../model/grand_prix_results.dart';
-import '../../component/text_component.dart';
-import '../../config/theme/custom_colors.dart';
-import '../../extensions/build_context_extensions.dart';
-import 'cubit/grand_prix_bet_cubit.dart';
+import '../../../../../dependency_injection.dart';
+import '../../../../model/grand_prix_bet.dart';
+import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/grand_prix_results.dart';
+import '../../../component/text_component.dart';
+import '../../../config/theme/custom_colors.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
 import 'grand_prix_bet_table.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text_component.dart';
-import '../../extensions/build_context_extensions.dart';
-import 'cubit/grand_prix_bet_cubit.dart';
-import 'cubit/grand_prix_bet_state.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../cubit/grand_prix_bet_cubit.dart';
+import '../cubit/grand_prix_bet_state.dart';
 import 'grand_prix_bet_qualifications.dart';
 import 'grand_prix_bet_race.dart';
 

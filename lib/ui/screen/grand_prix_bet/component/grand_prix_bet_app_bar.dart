@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/grand_prix_bet_cubit.dart';
+import '../cubit/grand_prix_bet_cubit.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
     implements PreferredSizeWidget {
