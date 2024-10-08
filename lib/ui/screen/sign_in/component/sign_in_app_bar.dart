@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../../../model/user.dart' as user;
-import '../../common_cubit/theme_cubit.dart';
-import '../../component/gap/gap_horizontal.dart';
-import '../../extensions/build_context_extensions.dart';
+import '../../../../../model/user.dart' as user;
+import '../../../common_cubit/theme_cubit.dart';
+import '../../../component/gap/gap_horizontal.dart';
+import '../../../extensions/build_context_extensions.dart';
 
 class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SignInAppBar({super.key});

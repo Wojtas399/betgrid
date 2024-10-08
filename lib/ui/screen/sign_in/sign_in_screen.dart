@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
 import '../../config/router/app_router.dart';
+import 'component/sign_in_content.dart';
 import 'cubit/sign_in_cubit.dart';
 import 'cubit/sign_in_state.dart';
-import 'sign_in_app_bar.dart';
-import 'sign_in_body.dart';
 
 @RoutePage()
 class SignInScreen extends StatelessWidget {
@@ -16,12 +15,16 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (_) => getIt.get<SignInCubit>()..initialize(),
-        child: const _Content(),
+        child: const _AuthStateListener(
+          child: SignInContent(),
+        ),
       );
 }
 
-class _Content extends StatelessWidget {
-  const _Content();
+class _AuthStateListener extends StatelessWidget {
+  final Widget child;
+
+  const _AuthStateListener({required this.child});
 
   void _onAuthStateChanged(
     BuildContext context,
@@ -35,9 +38,6 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocListener<SignInCubit, SignInState>(
         listener: _onAuthStateChanged,
-        child: const Scaffold(
-          appBar: SignInAppBar(),
-          body: SignInBody(),
-        ),
+        child: child,
       );
 }
