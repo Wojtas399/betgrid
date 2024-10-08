@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/gap/gap_vertical.dart';
-import '../../component/text_component.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../service/dialog_service.dart';
-import 'cubit/profile_cubit.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../component/text_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../service/dialog_service.dart';
+import '../cubit/profile_cubit.dart';
 import 'profile_username_dialog.dart';
 
 class ProfileUsername extends StatelessWidget {

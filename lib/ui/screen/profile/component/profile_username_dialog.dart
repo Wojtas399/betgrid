@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../component/button/big_button.dart';
-import '../../component/gap/gap_vertical.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../service/dialog_service.dart';
-import 'cubit/profile_cubit.dart';
-import 'cubit/profile_state.dart';
+import '../../../component/button/big_button.dart';
+import '../../../component/gap/gap_vertical.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../service/dialog_service.dart';
+import '../cubit/profile_cubit.dart';
+import '../cubit/profile_state.dart';
 
 class ProfileUsernameDialog extends StatefulWidget {
   const ProfileUsernameDialog({super.key});

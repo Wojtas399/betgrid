@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../component/avatar_component.dart';
-import '../../component/dialog/actions_dialog_component.dart';
-import '../../extensions/build_context_extensions.dart';
-import '../../service/dialog_service.dart';
-import '../../service/image_service.dart';
-import 'cubit/profile_cubit.dart';
+import '../../../component/avatar_component.dart';
+import '../../../component/dialog/actions_dialog_component.dart';
+import '../../../extensions/build_context_extensions.dart';
+import '../../../service/dialog_service.dart';
+import '../../../service/image_service.dart';
+import '../cubit/profile_cubit.dart';
 
 enum _AvatarActions { selectFromGallery, capturePhoto, delete }
 
