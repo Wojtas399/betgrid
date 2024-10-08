@@ -10,8 +10,8 @@ import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 import 'home_app_bar.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
 
   void _onCubitStatusChanged(HomeStateStatus status) async {
     if (status.isLoggedUserDataNotCompleted) {

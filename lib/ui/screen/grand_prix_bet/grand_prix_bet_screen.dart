@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
-import 'component/grand_prix_bet_app_bar.dart';
-import 'component/grand_prix_bet_body.dart';
+import 'component/grand_prix_bet_content.dart';
 import 'cubit/grand_prix_bet_cubit.dart';
 
 @RoutePage()
@@ -25,11 +24,6 @@ class GrandPrixBetScreen extends StatelessWidget {
             playerId: playerId,
             grandPrixId: grandPrixId,
           ),
-        child: const Scaffold(
-          appBar: GrandPrixBetAppBar(),
-          body: SafeArea(
-            child: GrandPrixBetBody(),
-          ),
-        ),
+        child: const GrandPrixBetContent(),
       );
 }

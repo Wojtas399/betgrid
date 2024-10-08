@@ -7,8 +7,8 @@ import '../cubit/bets_cubit.dart';
 import '../cubit/bets_state.dart';
 import 'bets_list_of_bets.dart';
 
-class BetsBody extends StatelessWidget {
-  const BetsBody({super.key});
+class BetsContent extends StatelessWidget {
+  const BetsContent({super.key});
 
   @override
   Widget build(BuildContext context) {

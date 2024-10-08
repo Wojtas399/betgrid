@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
-import 'component/player_profile_body.dart';
+import 'component/player_profile_content.dart';
 import 'cubit/player_profile_cubit.dart';
 
 @RoutePage()
@@ -19,6 +19,6 @@ class PlayerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider(
         create: (_) =>
             getIt.get<PlayerProfileCubit>()..initialize(playerId: playerId),
-        child: const PlayerProfileBody(),
+        child: const PlayerProfileContent(),
       );
 }

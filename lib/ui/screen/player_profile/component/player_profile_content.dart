@@ -11,8 +11,8 @@ import '../cubit/player_profile_cubit.dart';
 import '../cubit/player_profile_state.dart';
 import 'player_profile_app_bar.dart';
 
-class PlayerProfileBody extends StatelessWidget {
-  const PlayerProfileBody({super.key});
+class PlayerProfileContent extends StatelessWidget {
+  const PlayerProfileContent({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
