@@ -42,6 +42,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# IOS related
+Debug.xcconfig
+Release.xcconfig
+
 # Additional
 *.g.dart
 *.freezed.dart
