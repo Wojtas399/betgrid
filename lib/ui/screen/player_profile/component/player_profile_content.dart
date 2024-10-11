@@ -15,18 +15,35 @@ class PlayerProfileContent extends StatelessWidget {
   const PlayerProfileContent({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            PlayerProfileAppBar.build(
-              backgroundColor: context.colorScheme.primary,
-              foregroundColor: Theme.of(context).canvasColor,
-            ),
-            const _TotalPoints(),
-            const _GrandPrixes(),
-          ],
-        ),
+  Widget build(BuildContext context) => const Scaffold(
+        body: _Body(),
       );
+}
+
+class _Body extends StatelessWidget {
+  const _Body();
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isCubitLoading = context.select(
+      (PlayerProfileCubit cubit) => cubit.state.status.isLoading,
+    );
+
+    return isCubitLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : CustomScrollView(
+            slivers: [
+              PlayerProfileAppBar.build(
+                backgroundColor: context.colorScheme.primary,
+                foregroundColor: Theme.of(context).canvasColor,
+              ),
+              const _TotalPoints(),
+              const _GrandPrixes(),
+            ],
+          );
+  }
 }
 
 class _TotalPoints extends StatelessWidget {
@@ -37,12 +54,12 @@ class _TotalPoints extends StatelessWidget {
     final isCubitLoading = context.select(
       (PlayerProfileCubit cubit) => cubit.state.status.isLoading,
     );
-    final totalPoints = context.select(
+    final double? totalPoints = context.select(
       (PlayerProfileCubit cubit) => cubit.state.totalPoints,
     );
 
     return SliverPlayerTotalPoints(
-      points: totalPoints ?? 0.0, //TODO
+      points: totalPoints!,
       isLoading: isCubitLoading,
     );
   }
