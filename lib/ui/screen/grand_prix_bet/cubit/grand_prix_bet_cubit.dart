@@ -16,6 +16,7 @@ import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../model/player.dart';
+import '../../../service/date_service.dart';
 import 'grand_prix_bet_state.dart';
 
 @injectable
@@ -27,6 +28,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final GrandPrixResultsRepository _grandPrixResultsRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final DriverRepository _driverRepository;
+  final DateService _dateService;
 
   GrandPrixBetCubit(
     this._authRepository,
@@ -36,6 +38,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     this._grandPrixResultsRepository,
     this._grandPrixBetPointsRepository,
     this._driverRepository,
+    this._dateService,
   ) : super(const GrandPrixBetState());
 
   Future<void> initialize({
@@ -45,10 +48,18 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     final Stream<_ListenedParams> listenedParams$ =
         _getListenedParams(playerId, grandPrixId);
     await for (final listenedParams in listenedParams$) {
+      final DateTime now = _dateService.getNow();
+      final DateTime? gpStartDate =
+          listenedParams.grandPrixListenedParams?.startDate;
+      bool? canEdit;
+      if (gpStartDate != null) {
+        canEdit = _dateService.isDateABeforeDateB(now, gpStartDate);
+      }
       emit(state.copyWith(
         status: GrandPrixBetStateStatus.completed,
+        canEdit: canEdit,
         playerUsername: listenedParams.playerUsername,
-        grandPrixName: listenedParams.grandPrixName,
+        grandPrixName: listenedParams.grandPrixListenedParams?.name,
         isPlayerIdSameAsLoggedUserId: listenedParams.loggedUserId == playerId,
         grandPrixBet: listenedParams.grandPrixBet,
         grandPrixResults: listenedParams.grandPrixResults,
@@ -65,7 +76,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
       Rx.combineLatest7(
         _authRepository.loggedUserId$,
         _getPlayerUsername(playerId),
-        _getGrandPrixName(grandPrixId),
+        _getGrandPrixListenedParams(grandPrixId),
         _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
           playerId: playerId,
           grandPrixId: grandPrixId,
@@ -82,7 +93,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         (
           String? loggedUserId,
           String? playerUsername,
-          String? grandPrixName,
+          _GrandPrixListenedParams? grandPrixListenedParams,
           GrandPrixBet? grandPrixBet,
           GrandPrixResults? grandPrixResults,
           GrandPrixBetPoints? grandPrixBetPoints,
@@ -91,7 +102,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
             _ListenedParams(
           loggedUserId: loggedUserId,
           playerUsername: playerUsername,
-          grandPrixName: grandPrixName,
+          grandPrixListenedParams: grandPrixListenedParams,
           grandPrixBet: grandPrixBet,
           grandPrixResults: grandPrixResults,
           grandPrixBetPoints: grandPrixBetPoints,
@@ -103,15 +114,23 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
       .getPlayerById(playerId: playerId)
       .map((Player? player) => player?.username);
 
-  Stream<String?> _getGrandPrixName(String grandPrixId) => _grandPrixRepository
-      .getGrandPrixById(grandPrixId: grandPrixId)
-      .map((GrandPrix? grandPrix) => grandPrix?.name);
+  Stream<_GrandPrixListenedParams?> _getGrandPrixListenedParams(
+    String grandPrixId,
+  ) =>
+      _grandPrixRepository.getGrandPrixById(grandPrixId: grandPrixId).map(
+            (GrandPrix? grandPrix) => grandPrix != null
+                ? _GrandPrixListenedParams(
+                    name: grandPrix.name,
+                    startDate: grandPrix.startDate,
+                  )
+                : null,
+          );
 }
 
 class _ListenedParams extends Equatable {
   final String? loggedUserId;
   final String? playerUsername;
-  final String? grandPrixName;
+  final _GrandPrixListenedParams? grandPrixListenedParams;
   final GrandPrixBet? grandPrixBet;
   final GrandPrixResults? grandPrixResults;
   final GrandPrixBetPoints? grandPrixBetPoints;
@@ -120,7 +139,7 @@ class _ListenedParams extends Equatable {
   const _ListenedParams({
     this.loggedUserId,
     this.playerUsername,
-    this.grandPrixName,
+    this.grandPrixListenedParams,
     this.grandPrixBet,
     this.grandPrixResults,
     this.grandPrixBetPoints,
@@ -131,10 +150,23 @@ class _ListenedParams extends Equatable {
   List<Object?> get props => [
         loggedUserId,
         playerUsername,
-        grandPrixName,
+        grandPrixListenedParams,
         grandPrixBet,
         grandPrixResults,
         grandPrixBetPoints,
         allDrivers,
       ];
+}
+
+class _GrandPrixListenedParams extends Equatable {
+  final String name;
+  final DateTime startDate;
+
+  const _GrandPrixListenedParams({
+    required this.name,
+    required this.startDate,
+  });
+
+  @override
+  List<Object?> get props => [name, startDate];
 }

@@ -23,6 +23,7 @@ import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/ui/mock_date_service.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
@@ -32,6 +33,7 @@ void main() {
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final driverRepository = MockDriverRepository();
+  final dateService = MockDateService();
 
   GrandPrixBetCubit createCubit() => GrandPrixBetCubit(
         authRepository,
@@ -41,6 +43,7 @@ void main() {
         grandPrixResultsRepository,
         grandPrixBetPointsRepository,
         driverRepository,
+        dateService,
       );
 
   tearDown(() {
@@ -51,10 +54,13 @@ void main() {
     reset(grandPrixResultsRepository);
     reset(grandPrixBetPointsRepository);
     reset(driverRepository);
+    reset(dateService);
   });
 
   group(
-    'initialize, ',
+    'initialize, '
+    "should load player's username, grand prix name, results, bet, bet "
+    'points and allDrivers',
     () {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
@@ -63,6 +69,7 @@ void main() {
       ).createEntity();
       final GrandPrix grandPrix = GrandPrixCreator(
         name: 'grand prix',
+        startDate: DateTime(2024, 3, 3),
       ).createEntity();
       final GrandPrixBet grandPrixBet = GrandPrixBetCreator(
         id: 'gpb1',
@@ -79,8 +86,11 @@ void main() {
         const DriverCreator(id: 'd2').createEntity(),
         const DriverCreator(id: 'd3').createEntity(),
       ];
+      final DateTime now = DateTime(2024, 2, 2);
+      const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(
         status: GrandPrixBetStateStatus.completed,
+        canEdit: canEdit,
         playerUsername: player.username,
         grandPrixName: grandPrix.name,
         grandPrixBet: grandPrixBet,
@@ -105,6 +115,8 @@ void main() {
           grandPrixBetPoints: grandPrixBetPoints,
         );
         driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+        dateService.mockGetNow(now: now);
+        dateService.mockIsDateABeforeDateB(expected: canEdit);
       });
 
       tearDown(() {
@@ -136,14 +148,16 @@ void main() {
           ),
         ).called(1);
         verify(driverRepository.getAllDrivers).called(1);
+        verify(
+          () => dateService.isDateABeforeDateB(now, grandPrix.startDate),
+        ).called(1);
       });
 
       blocTest(
-        "should load player's username, grand prix name, results, bet, bet "
-        'points, allDrivers and should set isPlayerIdSameAsLoggedUserId param '
-        'as true if player is logged user',
-        setUp: () => authRepository.mockGetLoggedUserId(playerId),
+        'should set isPlayerIdSameAsLoggedUserId param as true if player is '
+        'logged user',
         build: () => createCubit(),
+        setUp: () => authRepository.mockGetLoggedUserId(playerId),
         act: (cubit) => cubit.initialize(
           playerId: playerId,
           grandPrixId: grandPrixId,
@@ -156,11 +170,10 @@ void main() {
       );
 
       blocTest(
-        "should load player's username, grand prix name, results, bet, bet "
-        'points, allDrivers and should set isPlayerIdSameAsLoggedUserId param '
-        'as false if player is not logged user',
-        setUp: () => authRepository.mockGetLoggedUserId('u1'),
+        'should set isPlayerIdSameAsLoggedUserId param as false if player is '
+        'not logged user',
         build: () => createCubit(),
+        setUp: () => authRepository.mockGetLoggedUserId('u1'),
         act: (cubit) => cubit.initialize(
           playerId: playerId,
           grandPrixId: grandPrixId,

@@ -164,6 +164,44 @@ void main() {
   );
 
   group(
+    'copyWith canEdit',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          const bool newValue = true;
+
+          state = state.copyWith(canEdit: newValue);
+
+          expect(state.canEdit, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final bool? currentValue = state.canEdit;
+
+          state = state.copyWith();
+
+          expect(state.canEdit, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(canEdit: null);
+
+          expect(state.canEdit, null);
+        },
+      );
+    },
+  );
+
+  group(
     'copyWith grandPrixName',
     () {
       GrandPrixBetState state = const GrandPrixBetState();
