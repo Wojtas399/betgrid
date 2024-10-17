@@ -75,7 +75,7 @@ class GrandPrixBetQualifications extends StatelessWidget {
                   _ => null,
                 },
                 betChild: DriverDescription(
-                  driverId: betStandings![itemIndex],
+                  driverId: betStandings?[itemIndex],
                 ),
                 resultsChild: DriverDescription(
                   driverId: resultsStandings?[itemIndex],
