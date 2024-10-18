@@ -2,5 +2,7 @@
 # Run "mason get" to install all registered bricks.
 # To learn more, visit https://docs.brickhub.dev.
 bricks:
+  screen:
+    path: mason_bricks/screen
   screen_component:
     path: mason_bricks/screen_component
