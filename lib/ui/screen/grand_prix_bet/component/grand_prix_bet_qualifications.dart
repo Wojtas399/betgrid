@@ -68,7 +68,7 @@ class GrandPrixBetQualifications extends StatelessWidget {
 
               return GrandPrixBetRow(
                 label: 'Q$qualiNumber P${itemIndex + 1}',
-                labelBackgroundColor: switch (itemIndex) {
+                labelColor: switch (itemIndex) {
                   0 => customColors?.p1,
                   1 => customColors?.p2,
                   2 => customColors?.p3,

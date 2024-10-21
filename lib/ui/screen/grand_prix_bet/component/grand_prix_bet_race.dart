@@ -64,7 +64,7 @@ class GrandPrixBetRace extends StatelessWidget {
                     4 => 'FL',
                     _ => '',
                   },
-                  labelBackgroundColor: switch (index) {
+                  labelColor: switch (index) {
                     0 => customColors?.p1,
                     1 => customColors?.p2,
                     2 => customColors?.p3,

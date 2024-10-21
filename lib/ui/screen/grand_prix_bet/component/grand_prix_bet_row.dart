@@ -10,7 +10,7 @@ class GrandPrixBetRow extends TableRow {
   GrandPrixBetRow({
     super.key,
     required String label,
-    Color? labelBackgroundColor,
+    Color? labelColor,
     required Widget betChild,
     required Widget resultsChild,
     double? points,
@@ -18,7 +18,7 @@ class GrandPrixBetRow extends TableRow {
           children: [
             GrandPrixBetLabelCell(
               label: label,
-              labelBackgroundColor: labelBackgroundColor,
+              labelColor: labelColor,
             ),
             _BetInfo(
               betChild: betChild,

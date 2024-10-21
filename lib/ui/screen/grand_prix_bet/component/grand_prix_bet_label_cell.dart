@@ -6,14 +6,11 @@ class GrandPrixBetLabelCell extends TableCell {
   GrandPrixBetLabelCell({
     super.key,
     required String label,
-    Color? labelBackgroundColor,
+    Color? labelColor,
   }) : super(
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: labelBackgroundColor,
-            ),
             height: 80,
             child: Center(
               child: Builder(
@@ -21,6 +18,7 @@ class GrandPrixBetLabelCell extends TableCell {
                   label,
                   fontWeight: FontWeight.bold,
                   textAlign: TextAlign.center,
+                  color: labelColor,
                 ),
               ),
             ),
