@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -52,6 +51,7 @@ class GrandPrixBetQualifications extends StatelessWidget {
             qualiPointsDetails.q1P20Points,
           ]
         : null;
+    final CustomColors? customColors = context.customColors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,9 +69,9 @@ class GrandPrixBetQualifications extends StatelessWidget {
               return GrandPrixBetRow(
                 label: 'Q$qualiNumber P${itemIndex + 1}',
                 labelBackgroundColor: switch (itemIndex) {
-                  0 => getIt<CustomColors>().gold,
-                  1 => getIt<CustomColors>().silver,
-                  2 => getIt<CustomColors>().brown,
+                  0 => customColors?.p1,
+                  1 => customColors?.p2,
+                  2 => customColors?.p3,
                   _ => null,
                 },
                 betChild: DriverDescription(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
@@ -29,6 +28,7 @@ class GrandPrixBetRace extends StatelessWidget {
       (GrandPrixBetCubit cubit) =>
           cubit.state.grandPrixBetPoints?.raceBetPoints,
     );
+    final CustomColors? customColors = context.customColors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,10 +65,10 @@ class GrandPrixBetRace extends StatelessWidget {
                     _ => '',
                   },
                   labelBackgroundColor: switch (index) {
-                    0 => getIt<CustomColors>().gold,
-                    1 => getIt<CustomColors>().silver,
-                    2 => getIt<CustomColors>().brown,
-                    4 => getIt<CustomColors>().violet,
+                    0 => customColors?.p1,
+                    1 => customColors?.p2,
+                    2 => customColors?.p3,
+                    4 => customColors?.fastestLap,
                     _ => null,
                   },
                   betChild: DriverDescription(driverId: betDriverId),

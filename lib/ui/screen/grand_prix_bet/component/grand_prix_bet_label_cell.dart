@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../component/text_component.dart';
-import '../../../extensions/build_context_extensions.dart';
 
 class GrandPrixBetLabelCell extends TableCell {
   GrandPrixBetLabelCell({
@@ -20,9 +19,6 @@ class GrandPrixBetLabelCell extends TableCell {
               child: Builder(
                 builder: (BuildContext context) => TitleMedium(
                   label,
-                  color: labelBackgroundColor != null
-                      ? Colors.white
-                      : context.colorScheme.inverseSurface,
                   fontWeight: FontWeight.bold,
                   textAlign: TextAlign.center,
                 ),
