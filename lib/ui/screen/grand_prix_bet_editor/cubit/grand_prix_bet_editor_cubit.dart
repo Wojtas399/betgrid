@@ -16,6 +16,11 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> initialize() async {
     final List<Driver> allDrivers =
         await _driverRepository.getAllDrivers().first;
+    allDrivers.sort(
+      (d1, d2) => d1.team.name.compareTo(d2.team.name) != 0
+          ? d1.team.name.compareTo(d2.team.name)
+          : d1.surname.compareTo(d2.surname),
+    );
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       allDrivers: allDrivers,

@@ -23,19 +23,36 @@ void main() {
     'initialize',
     () {
       final List<Driver> allDrivers = [
-        const DriverCreator(id: 'd1').createEntity(),
-        const DriverCreator(id: 'd2').createEntity(),
+        const DriverCreator(
+          id: 'd1',
+          team: DriverCreatorTeam.mercedes,
+          surname: 'Russel',
+        ).createEntity(),
+        const DriverCreator(
+          id: 'd2',
+          team: DriverCreatorTeam.alpine,
+        ).createEntity(),
+        const DriverCreator(
+          id: 'd3',
+          team: DriverCreatorTeam.mercedes,
+          surname: 'Hamilton',
+        ).createEntity(),
+      ];
+      final List<Driver> expectedSortedDrivers = [
+        allDrivers[1],
+        allDrivers.last,
+        allDrivers.first,
       ];
 
       blocTest(
-        'should load and emit list of all drivers',
+        'should load all drivers and should emit them sorted by team and surname',
         build: () => createCubit(),
         setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            allDrivers: allDrivers,
+            allDrivers: expectedSortedDrivers,
           ),
         ],
         verify: (_) => verify(driverRepository.getAllDrivers).called(1),
