@@ -39,7 +39,7 @@ class _MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeState? themeState = context.watch<ThemeCubit>().state;
+    final ThemeState themeState = context.watch<ThemeCubit>().state;
 
     return MaterialApp.router(
       title: 'BetGrid',
@@ -55,9 +55,9 @@ class _MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('pl')],
-      themeMode: themeState?.themeMode.toMaterialThemeMode,
-      theme: AppTheme.lightTheme(themeState?.primaryColor.toMaterialColor),
-      darkTheme: AppTheme.darkTheme(themeState?.primaryColor.toMaterialColor),
+      themeMode: themeState.themeMode.toMaterialThemeMode,
+      theme: AppTheme.lightTheme(themeState.primaryColor.toMaterialColor),
+      darkTheme: AppTheme.darkTheme(themeState.primaryColor.toMaterialColor),
     );
   }
 }

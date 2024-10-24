@@ -89,4 +89,65 @@ void main() {
       );
     },
   );
+
+  group(
+    'copyWith qualiStandingsByDriverIds',
+    () {
+      GrandPrixBetEditorState state = const GrandPrixBetEditorState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final List<String> newValue = ['d2', 'd1', 'd3'];
+
+          state = state.copyWith(qualiStandingsByDriverIds: newValue);
+
+          expect(state.qualiStandingsByDriverIds, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final List<String?> currentValue = state.qualiStandingsByDriverIds;
+
+          state = state.copyWith();
+
+          expect(state.qualiStandingsByDriverIds, currentValue);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith raceForm',
+    () {
+      GrandPrixBetEditorState state = const GrandPrixBetEditorState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          const RaceForm newValue = RaceForm(
+            p10DriverId: 'd1',
+            p3DriverId: 'd3',
+          );
+
+          state = state.copyWith(raceForm: newValue);
+
+          expect(state.raceForm, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final RaceForm currentValue = state.raceForm;
+
+          state = state.copyWith();
+
+          expect(state.raceForm, currentValue);
+        },
+      );
+    },
+  );
 }
