@@ -1,4 +1,5 @@
 import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -127,7 +128,8 @@ void main() {
       test(
         'should set new value if passed value is not null',
         () {
-          const RaceForm newValue = RaceForm(
+          const GrandPrixBetEditorRaceForm newValue =
+              GrandPrixBetEditorRaceForm(
             p10DriverId: 'd1',
             p3DriverId: 'd3',
           );
@@ -141,7 +143,7 @@ void main() {
       test(
         'should not change current value if passed value is not specified',
         () {
-          final RaceForm currentValue = state.raceForm;
+          final GrandPrixBetEditorRaceForm currentValue = state.raceForm;
 
           state = state.copyWith();
 
