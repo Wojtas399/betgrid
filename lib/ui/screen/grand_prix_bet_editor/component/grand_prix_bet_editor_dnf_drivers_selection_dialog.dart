@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/driver.dart';
+import '../../../component/driver_description_component.dart';
 import '../../../component/empty_content_info_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
-import 'grand_prix_bet_editor_driver_description.dart';
 
 class GrandPrixBetEditorDnfDriversSelectionDialog extends StatelessWidget {
   const GrandPrixBetEditorDnfDriversSelectionDialog({super.key});
@@ -98,9 +98,7 @@ class _DriverItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.all(16),
-          child: GrandPrixBetEditorDriverDescription(
-            driver: driver,
-          ),
+          child: DriverDescription(driver: driver),
         ),
       );
 }

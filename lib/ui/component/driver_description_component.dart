@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../model/driver.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/text_component.dart';
+import '../../model/driver.dart';
+import 'gap/gap_horizontal.dart';
+import 'text_component.dart';
 
-class GrandPrixBetEditorDriverDescription extends StatelessWidget {
+class DriverDescription extends StatelessWidget {
   final Driver driver;
 
-  const GrandPrixBetEditorDriverDescription({
+  const DriverDescription({
     super.key,
     required this.driver,
   });

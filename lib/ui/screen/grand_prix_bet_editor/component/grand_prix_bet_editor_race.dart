@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/driver.dart';
+import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -10,7 +11,6 @@ import '../../../service/dialog_service.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
 import 'grand_prix_bet_editor_boolean_field.dart';
 import 'grand_prix_bet_editor_dnf_drivers_selection_dialog.dart';
-import 'grand_prix_bet_editor_driver_description.dart';
 import 'grand_prix_bet_editor_driver_field.dart';
 import 'grand_prix_bet_editor_race_podium_and_p10.dart';
 
@@ -126,9 +126,7 @@ class _DnfDrivers extends StatelessWidget {
           if (dnfDrivers.isNotEmpty) ...[
             ...dnfDrivers
                 .map(
-                  (Driver driver) => GrandPrixBetEditorDriverDescription(
-                    driver: driver,
-                  ),
+                  (Driver driver) => DriverDescription(driver: driver),
                 )
                 .toList()
                 .separated(

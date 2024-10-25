@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/driver.dart';
-import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/driver_description_component.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
@@ -86,41 +86,11 @@ class _DriverSelectionFormField extends StatelessWidget {
         ...?allDrivers?.map(
           (driver) => DropdownMenuItem(
             value: driver.id,
-            child: _DriverDescription(driver),
+            child: DriverDescription(driver: driver),
           ),
         ),
       ],
       onChanged: _onDriverSelected,
     );
   }
-}
-
-class _DriverDescription extends StatelessWidget {
-  final Driver driver;
-
-  const _DriverDescription(this.driver);
-
-  @override
-  Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 4,
-            height: 20,
-            color: Color(driver.team.hexColor),
-          ),
-          const GapHorizontal8(),
-          BodyMedium(
-            '${driver.number}',
-            color: context.colorScheme.outline,
-          ),
-          const GapHorizontal16(),
-          BodyMedium(driver.name),
-          const GapHorizontal4(),
-          BodyMedium(
-            driver.surname,
-            fontWeight: FontWeight.bold,
-          ),
-        ],
-      );
 }
