@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../model/driver.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
-import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/widgets_list_extensions.dart';
+import '../../../service/dialog_service.dart';
+import '../cubit/grand_prix_bet_editor_cubit.dart';
 import 'grand_prix_bet_editor_boolean_field.dart';
+import 'grand_prix_bet_editor_dnf_drivers_selection_dialog.dart';
+import 'grand_prix_bet_editor_driver_description.dart';
 import 'grand_prix_bet_editor_driver_field.dart';
+import 'grand_prix_bet_editor_race_podium_and_p10.dart';
 
 class GrandPrixBetEditorRace extends StatelessWidget {
   const GrandPrixBetEditorRace({super.key});
@@ -19,7 +26,7 @@ class GrandPrixBetEditorRace extends StatelessWidget {
             subtitle: context.str.grandPrixBetEditorPodiumAndP10Subtitle,
           ),
           const GapVertical16(),
-          const _PodiumAndP10(),
+          const GrandPrixBetEditorRacePodiumAndP10(),
           const Divider(height: 32),
           _SectionHeader(
             title: context.str.grandPrixBetEditorFastestLapTitle,
@@ -78,81 +85,93 @@ class _SectionHeader extends StatelessWidget {
       );
 }
 
-class _PodiumAndP10 extends StatelessWidget {
-  const _PodiumAndP10();
-
-  @override
-  Widget build(BuildContext context) {
-    final CustomColors? customColors = context.customColors;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GrandPrixBetEditorDriverField(
-          label: 'P1',
-          labelColor: customColors?.p1,
-        ),
-        GrandPrixBetEditorDriverField(
-          label: 'P2',
-          labelColor: customColors?.p2,
-        ),
-        GrandPrixBetEditorDriverField(
-          label: 'P3',
-          labelColor: customColors?.p3,
-        ),
-        const GrandPrixBetEditorDriverField(
-          label: 'P10',
-        ),
-      ],
-    );
-  }
-}
-
 class _FastestLap extends StatelessWidget {
   const _FastestLap();
 
   @override
-  Widget build(BuildContext context) => const GrandPrixBetEditorDriverField();
+  Widget build(BuildContext context) => GrandPrixBetEditorDriverField(
+        selectedDriverId: context.select(
+          (GrandPrixBetEditorCubit cubit) =>
+              cubit.state.raceForm.fastestLapDriverId,
+        ),
+        onDriverSelected: context
+            .read<GrandPrixBetEditorCubit>()
+            .onRaceFastestLapDriverChanged,
+      );
 }
 
 class _DnfDrivers extends StatelessWidget {
   const _DnfDrivers();
 
-  void _onAddDriverPressed(BuildContext context) {
-    //TODO
+  Future<void> _onAddDriverPressed(BuildContext context) async {
+    await showFullScreenDialog(
+      BlocProvider.value(
+        value: context.read<GrandPrixBetEditorCubit>(),
+        child: const GrandPrixBetEditorDnfDriversSelectionDialog(),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) => Center(
-        child: OutlinedButton(
-          onPressed: () => _onAddDriverPressed(context),
-          child: Text(context.str.grandPrixBetEditorDnfAddDriver),
-        ),
-      );
+  Widget build(BuildContext context) {
+    final List<Driver> dnfDrivers = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
+    );
+
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (dnfDrivers.isNotEmpty) ...[
+            ...dnfDrivers
+                .map(
+                  (Driver driver) => GrandPrixBetEditorDriverDescription(
+                    driver: driver,
+                  ),
+                )
+                .toList()
+                .separated(
+                  const GapVertical16(),
+                ),
+            const GapVertical16(),
+          ],
+          OutlinedButton(
+            onPressed: () => _onAddDriverPressed(context),
+            child: Text(
+              dnfDrivers.isEmpty
+                  ? context.str.grandPrixBetEditorAddDriversToDnfList
+                  : context.str.grandPrixBetEditorEditDnfList,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _SafetyCar extends StatelessWidget {
   const _SafetyCar();
 
-  void _onAnswerChanged(bool answer, BuildContext context) {
-    //TODO
-  }
-
   @override
-  Widget build(BuildContext context) => GrandPrixBetEditorBooleanField(
-        onChanged: (bool answer) => _onAnswerChanged(answer, context),
-      );
+  Widget build(BuildContext context) {
+    final grandPrixBetEditorCubit = context.read<GrandPrixBetEditorCubit>();
+    return GrandPrixBetEditorBooleanField(
+      initialValue: grandPrixBetEditorCubit.state.raceForm.willBeSafetyCar,
+      onChanged: grandPrixBetEditorCubit.onSafetyCarPredictionChanged,
+    );
+  }
 }
 
 class _RedFlag extends StatelessWidget {
   const _RedFlag();
 
-  void _onAnswerChanged(bool answer, BuildContext context) {
-    //TODO
-  }
-
   @override
-  Widget build(BuildContext context) => GrandPrixBetEditorBooleanField(
-        onChanged: (bool answer) => _onAnswerChanged(answer, context),
-      );
+  Widget build(BuildContext context) {
+    final grandPrixBetEditorCubit = context.read<GrandPrixBetEditorCubit>();
+    return GrandPrixBetEditorBooleanField(
+      initialValue: grandPrixBetEditorCubit.state.raceForm.willBeRedFlag,
+      onChanged: grandPrixBetEditorCubit.onRedFlagPredictionChanged,
+    );
+  }
 }

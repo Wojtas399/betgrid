@@ -10,12 +10,14 @@ import '../cubit/grand_prix_bet_editor_cubit.dart';
 class GrandPrixBetEditorDriverField extends StatelessWidget {
   final String? label;
   final Color? labelColor;
+  final String? selectedDriverId;
   final Function(String)? onDriverSelected;
 
   const GrandPrixBetEditorDriverField({
     super.key,
     this.label,
     this.labelColor,
+    this.selectedDriverId,
     this.onDriverSelected,
   });
 
@@ -25,7 +27,7 @@ class GrandPrixBetEditorDriverField extends StatelessWidget {
           label != null
               ? Expanded(
                   flex: 1,
-                  child: TitleMedium(
+                  child: LabelLarge(
                     label!,
                     textAlign: TextAlign.center,
                     fontWeight: FontWeight.bold,
@@ -38,6 +40,7 @@ class GrandPrixBetEditorDriverField extends StatelessWidget {
           Expanded(
             flex: 5,
             child: _DriverSelectionFormField(
+              selectedDriverId: selectedDriverId,
               onDriverSelected: onDriverSelected,
             ),
           ),
@@ -46,9 +49,11 @@ class GrandPrixBetEditorDriverField extends StatelessWidget {
 }
 
 class _DriverSelectionFormField extends StatelessWidget {
+  final String? selectedDriverId;
   final Function(String)? onDriverSelected;
 
   const _DriverSelectionFormField({
+    this.selectedDriverId,
     this.onDriverSelected,
   });
 
@@ -65,6 +70,7 @@ class _DriverSelectionFormField extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
+      value: selectedDriverId,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,

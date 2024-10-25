@@ -68,6 +68,8 @@ class LabelLarge extends _TextComponent {
     super.data, {
     super.key,
     super.color,
+    super.textAlign,
+    super.fontWeight,
   }) : super(textStyleType: _TextStyleType.labelLarge);
 }
 

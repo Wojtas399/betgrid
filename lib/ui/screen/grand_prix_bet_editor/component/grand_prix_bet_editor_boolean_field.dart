@@ -4,10 +4,12 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 
 class GrandPrixBetEditorBooleanField extends StatefulWidget {
+  final bool? initialValue;
   final Function(bool) onChanged;
 
   const GrandPrixBetEditorBooleanField({
     super.key,
+    this.initialValue,
     required this.onChanged,
   });
 
@@ -17,6 +19,12 @@ class GrandPrixBetEditorBooleanField extends StatefulWidget {
 
 class _State extends State<GrandPrixBetEditorBooleanField> {
   bool? _state;
+
+  @override
+  void initState() {
+    _state = widget.initialValue;
+    super.initState();
+  }
 
   void _onYesChanged(bool? isChecked) {
     if (isChecked == true) {

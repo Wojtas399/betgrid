@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../data/repository/driver/driver_repository.dart';
 import '../../../../model/driver.dart';
+import '../../../extensions/drivers_list_extensions.dart';
 import 'grand_prix_bet_editor_state.dart';
 
 @injectable
@@ -16,14 +18,11 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> initialize() async {
     final List<Driver> allDrivers =
         await _driverRepository.getAllDrivers().first;
-    allDrivers.sort(
-      (d1, d2) => d1.team.name.compareTo(d2.team.name) != 0
-          ? d1.team.name.compareTo(d2.team.name)
-          : d1.surname.compareTo(d2.surname),
-    );
+    final List<Driver> sortedAllDrivers = [...allDrivers];
+    sortedAllDrivers.sortByTeamAndSurname();
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      allDrivers: allDrivers,
+      allDrivers: sortedAllDrivers,
     ));
   }
 
@@ -45,9 +44,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceP1Changed({
-    required String driverId,
-  }) {
+  void onRaceP1DriverChanged(String driverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -56,9 +53,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceP2Changed({
-    required String driverId,
-  }) {
+  void onRaceP2DriverChanged(String driverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -67,9 +62,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceP3Changed({
-    required String driverId,
-  }) {
+  void onRaceP3DriverChanged(String driverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -78,9 +71,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceP10Changed({
-    required String driverId,
-  }) {
+  void onRaceP10DriverChanged(String driverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -89,9 +80,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceFastestLapChanged({
-    required String driverId,
-  }) {
+  void onRaceFastestLapDriverChanged(String driverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -100,37 +89,27 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onDnfDriverAdded({
-    required String driverId,
-  }) {
-    if (state.raceForm.dnfDriverIds.contains(driverId)) return;
-    final List<String> updatedDnfDrivers = [...state.raceForm.dnfDriverIds];
-    updatedDnfDrivers.add(driverId);
+  void onDnfDriverSelected(String driverId) {
+    if (state.allDrivers == null) return;
+    final Driver? selectedDriver = state.allDrivers!.firstWhereOrNull(
+      (Driver driver) => driver.id == driverId,
+    );
+    if (selectedDriver == null) return;
+    final List<Driver> updatedDnfDrivers = [...state.raceForm.dnfDrivers];
+    if (updatedDnfDrivers.contains(selectedDriver)) {
+      updatedDnfDrivers.remove(selectedDriver);
+    } else {
+      updatedDnfDrivers.add(selectedDriver);
+    }
+    updatedDnfDrivers.sortByTeamAndSurname();
     emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        dnfDriverIds: updatedDnfDrivers,
+        dnfDrivers: updatedDnfDrivers,
       ),
     ));
   }
 
-  void onDnfDriverRemoved({
-    required String driverId,
-  }) {
-    if (!state.raceForm.dnfDriverIds.contains(driverId)) return;
-    final List<String> updatedDnfDrivers = [...state.raceForm.dnfDriverIds];
-    updatedDnfDrivers.removeWhere((String id) => id == driverId);
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        dnfDriverIds: updatedDnfDrivers,
-      ),
-    ));
-  }
-
-  void onSafetyCarChanged({
-    required bool willBeSafetyCar,
-  }) {
+  void onSafetyCarPredictionChanged(bool willBeSafetyCar) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
@@ -139,14 +118,17 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRedFlagChanged({
-    required bool willBeRedFlag,
-  }) {
+  void onRedFlagPredictionChanged(bool willBeRedFlag) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
         willBeRedFlag: willBeRedFlag,
       ),
     ));
+  }
+
+  Future<void> submit() async {
+    //TODO: Implement submit method
+    print(state);
   }
 }

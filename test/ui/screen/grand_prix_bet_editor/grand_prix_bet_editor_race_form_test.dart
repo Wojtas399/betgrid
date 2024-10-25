@@ -1,5 +1,8 @@
+import 'package:betgrid/model/driver.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../creator/driver_creator.dart';
 
 void main() {
   test(
@@ -11,7 +14,7 @@ void main() {
         p3DriverId: null,
         p10DriverId: null,
         fastestLapDriverId: null,
-        dnfDriverIds: [],
+        dnfDrivers: [],
         willBeSafetyCar: null,
         willBeRedFlag: null,
       );
@@ -213,29 +216,31 @@ void main() {
   );
 
   group(
-    'copyWith dnfDriverIds',
+    'copyWith dnfDrivers',
     () {
       GrandPrixBetEditorRaceForm state = const GrandPrixBetEditorRaceForm();
 
       test(
         'should set new value if passed value is not null',
         () {
-          const List<String> newValue = ['d1', 'd2'];
+          final List<Driver> newValue = [
+            const DriverCreator(id: 'd1').createEntity(),
+          ];
 
-          state = state.copyWith(dnfDriverIds: newValue);
+          state = state.copyWith(dnfDrivers: newValue);
 
-          expect(state.dnfDriverIds, newValue);
+          expect(state.dnfDrivers, newValue);
         },
       );
 
       test(
         'should not change current value if passed value is not specified',
         () {
-          final List<String> currentValue = state.dnfDriverIds;
+          final List<Driver> currentValue = state.dnfDrivers;
 
           state = state.copyWith();
 
-          expect(state.dnfDriverIds, currentValue);
+          expect(state.dnfDrivers, currentValue);
         },
       );
     },

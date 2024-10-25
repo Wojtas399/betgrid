@@ -5,6 +5,8 @@ import '../component/dialog/actions_dialog_component.dart';
 import '../component/dialog/loading_dialog.dart';
 import '../config/router/app_router.dart';
 
+//TODO: Change this global functions to singleton class with methods
+
 bool _isLoadingDialogOpened = false;
 
 void showLoadingDialog() {
@@ -64,7 +66,6 @@ Future<T?> showFullScreenDialog<T>(Widget dialog) async {
   if (context == null) return null;
   return await showGeneralDialog<T?>(
     context: context,
-    barrierColor: Colors.transparent,
     pageBuilder: (_, a1, a2) => Dialog.fullscreen(child: dialog),
     transitionBuilder: (BuildContext context, anim1, anim2, child) {
       return SlideTransition(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
+import '../cubit/grand_prix_bet_editor_cubit.dart';
 import 'grand_prix_bet_editor_driver_field.dart';
 
 class GrandPrixBetEditorQuali extends StatelessWidget {
@@ -13,11 +15,17 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
     String selectedDriverId,
     BuildContext context,
   ) {
-    //TODO
+    context.read<GrandPrixBetEditorCubit>().onQualiStandingsChanged(
+          standing: positionIndex + 1,
+          driverId: selectedDriverId,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<String?> qualiStandingsByDriverIds = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.qualiStandingsByDriverIds,
+    );
     final CustomColors? customColors = context.customColors;
 
     return Column(
@@ -33,6 +41,7 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
               2 => customColors?.p3,
               _ => null,
             },
+            selectedDriverId: qualiStandingsByDriverIds[positionIndex],
             onDriverSelected: (String selectedDriverId) => _onDriverSelected(
               positionIndex,
               selectedDriverId,

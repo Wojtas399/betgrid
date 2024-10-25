@@ -39,11 +39,6 @@ void main() {
           surname: 'Hamilton',
         ).createEntity(),
       ];
-      final List<Driver> expectedSortedDrivers = [
-        allDrivers[1],
-        allDrivers.last,
-        allDrivers.first,
-      ];
 
       blocTest(
         'should load all drivers and should emit them sorted by team and surname',
@@ -53,7 +48,11 @@ void main() {
         expect: () => [
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            allDrivers: expectedSortedDrivers,
+            allDrivers: [
+              allDrivers[1],
+              allDrivers.last,
+              allDrivers.first,
+            ],
           ),
         ],
         verify: (_) => verify(driverRepository.getAllDrivers).called(1),
@@ -114,10 +113,10 @@ void main() {
   );
 
   blocTest(
-    'onRaceP1Changed, '
+    'onRaceP1DriverChanged, '
     'should assign passed driverId to p1DriverId in raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRaceP1Changed(driverId: 'd1'),
+    act: (cubit) => cubit.onRaceP1DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -129,10 +128,10 @@ void main() {
   );
 
   blocTest(
-    'onRaceP2Changed, '
+    'onRaceP2DriverChanged, '
     'should assign passed driverId to p2DriverId in raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRaceP2Changed(driverId: 'd1'),
+    act: (cubit) => cubit.onRaceP2DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -144,10 +143,10 @@ void main() {
   );
 
   blocTest(
-    'onRaceP3Changed, '
+    'onRaceP3DriverChanged, '
     'should assign passed driverId to p3DriverId in raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRaceP3Changed(driverId: 'd1'),
+    act: (cubit) => cubit.onRaceP3DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -159,10 +158,10 @@ void main() {
   );
 
   blocTest(
-    'onRaceP10Changed, '
+    'onRaceP10DriverChanged, '
     'should assign passed driverId to p10DriverId in raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRaceP10Changed(driverId: 'd1'),
+    act: (cubit) => cubit.onRaceP10DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -174,10 +173,10 @@ void main() {
   );
 
   blocTest(
-    'onRaceFastestLapChanged, '
+    'onRaceFastestLapDriverChanged, '
     'should assign passed driverId to fastestLapDriverId in raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRaceFastestLapChanged(driverId: 'd1'),
+    act: (cubit) => cubit.onRaceFastestLapDriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -189,108 +188,125 @@ void main() {
   );
 
   group(
-    'onDnfDriverAdded',
+    'onDnfDriverSelected',
     () {
-      const String driver1Id = 'd1';
-      const String driver2Id = 'd2';
+      final List<Driver> allDrivers = [
+        const DriverCreator(
+          id: 'd1',
+          team: DriverCreatorTeam.mercedes,
+          surname: 'Russel',
+        ).createEntity(),
+        const DriverCreator(
+          id: 'd2',
+          team: DriverCreatorTeam.mercedes,
+          surname: 'Hamilton',
+        ).createEntity(),
+        const DriverCreator(
+          id: 'd3',
+          team: DriverCreatorTeam.alpine,
+        ).createEntity(),
+      ];
       GrandPrixBetEditorState? state;
 
       blocTest(
-        'should add driverId to dnfDriverIds list in raceForm',
+        'should do nothing if allDrivers list does not exist',
         build: () => createCubit(),
-        act: (cubit) {
-          cubit.onDnfDriverAdded(driverId: driver1Id);
-          cubit.onDnfDriverAdded(driverId: driver2Id);
+        act: (cubit) => cubit.onDnfDriverSelected('d1'),
+        expect: () => [],
+      );
+
+      blocTest(
+        'should do nothing if driver with matching id does not exist in '
+        'allDrivers list',
+        build: () => createCubit(),
+        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
+        act: (cubit) async {
+          await cubit.initialize();
+          cubit.onDnfDriverSelected('d4');
         },
         expect: () => [
-          state = const GrandPrixBetEditorState(
+          GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
+            allDrivers: allDrivers.reversed.toList(),
+          ),
+        ],
+      );
+
+      blocTest(
+        'should add driver with matching id to dnfDrivers list of raceForm and '
+        'should sort this list by team and surname',
+        build: () => createCubit(),
+        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
+        act: (cubit) async {
+          await cubit.initialize();
+          cubit.onDnfDriverSelected('d1');
+          cubit.onDnfDriverSelected('d2');
+          cubit.onDnfDriverSelected('d3');
+        },
+        expect: () => [
+          state = GrandPrixBetEditorState(
+            status: GrandPrixBetEditorStateStatus.completed,
+            allDrivers: allDrivers.reversed.toList(),
+          ),
+          state = state?.copyWith(
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id],
+              dnfDrivers: [
+                allDrivers.first,
+              ],
             ),
           ),
           state = state?.copyWith(
-            raceForm: const GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id, driver2Id],
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [
+                allDrivers[1],
+                allDrivers.first,
+              ],
+            ),
+          ),
+          state = state?.copyWith(
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: allDrivers.reversed.toList(),
             ),
           ),
         ],
       );
 
       blocTest(
-        'should do nothing if driverId already exists in dnfDriverIds list of '
-        'raceForm',
+        'should remove driver from dnfDrivers list of raceForm if it already '
+        'exists in it',
         build: () => createCubit(),
-        act: (cubit) {
-          cubit.onDnfDriverAdded(driverId: driver1Id);
-          cubit.onDnfDriverAdded(driverId: driver1Id);
+        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
+        act: (cubit) async {
+          await cubit.initialize();
+          cubit.onDnfDriverSelected('d1');
+          cubit.onDnfDriverSelected('d2');
+          cubit.onDnfDriverSelected('d1');
         },
         expect: () => [
-          const GrandPrixBetEditorState(
+          state = GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id],
-            ),
+            allDrivers: allDrivers.reversed.toList(),
           ),
-        ],
-      );
-    },
-  );
-
-  group(
-    'onDnfDriverRemoved',
-    () {
-      const String driver1Id = 'd1';
-      const String driver2Id = 'd2';
-      GrandPrixBetEditorState? state;
-
-      blocTest(
-        'should remove driverId from dnfDriverIds list of raceForm',
-        build: () => createCubit(),
-        act: (cubit) {
-          cubit.onDnfDriverAdded(driverId: driver1Id);
-          cubit.onDnfDriverAdded(driverId: driver2Id);
-          cubit.onDnfDriverRemoved(driverId: driver1Id);
-        },
-        expect: () => [
-          state = const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
+          state = state?.copyWith(
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id],
+              dnfDrivers: [
+                allDrivers.first,
+              ],
             ),
           ),
           state = state?.copyWith(
-            raceForm: const GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id, driver2Id],
-            ),
-          ),
-          state = state?.copyWith(
-            raceForm: const GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver2Id],
-            ),
-          ),
-        ],
-      );
-
-      blocTest(
-        'should do nothing if driverId does not exist in dnfDriverIds list of '
-        'raceForm',
-        build: () => createCubit(),
-        act: (cubit) {
-          cubit.onDnfDriverAdded(driverId: driver1Id);
-          cubit.onDnfDriverAdded(driverId: driver2Id);
-          cubit.onDnfDriverRemoved(driverId: 'd3');
-        },
-        expect: () => [
-          state = const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id],
+              dnfDrivers: [
+                allDrivers[1],
+                allDrivers.first,
+              ],
             ),
           ),
           state = state?.copyWith(
-            raceForm: const GrandPrixBetEditorRaceForm(
-              dnfDriverIds: [driver1Id, driver2Id],
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [
+                allDrivers[1],
+              ],
             ),
           ),
         ],
@@ -299,12 +315,10 @@ void main() {
   );
 
   blocTest(
-    'onSafetyCarChanged, '
+    'onSafetyCarPredictionChanged, '
     'should assign passed willBeSafetyCar to willBeSafetyCar of raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onSafetyCarChanged(
-      willBeSafetyCar: false,
-    ),
+    act: (cubit) => cubit.onSafetyCarPredictionChanged(false),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
@@ -316,12 +330,10 @@ void main() {
   );
 
   blocTest(
-    'onRedFlagChanged, '
+    'onRedFlagPredictionChanged, '
     'should assign passed willBeRedFlag to willBeRedFlag of raceForm',
     build: () => createCubit(),
-    act: (cubit) => cubit.onRedFlagChanged(
-      willBeRedFlag: false,
-    ),
+    act: (cubit) => cubit.onRedFlagPredictionChanged(false),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
