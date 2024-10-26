@@ -17,11 +17,25 @@ class GrandPrixBetEditorAppBar extends StatelessWidget
         centerTitle: false,
         title: Text(context.str.grandPrixBetEditorScreenTitle),
         actions: [
-          FilledButton(
-            onPressed: context.read<GrandPrixBetEditorCubit>().submit,
-            child: Text(context.str.save),
-          ),
+          const _SaveButton(),
           const GapHorizontal16(),
         ],
       );
+}
+
+class _SaveButton extends StatelessWidget {
+  const _SaveButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final bool canSave = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.canSave,
+    );
+
+    return FilledButton(
+      onPressed:
+          canSave ? context.read<GrandPrixBetEditorCubit>().submit : null,
+      child: Text(context.str.save),
+    );
+  }
 }

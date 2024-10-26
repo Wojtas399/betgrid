@@ -19,7 +19,6 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final DriverRepository _driverRepository;
   StreamSubscription<GrandPrixBet?>? _grandPrixBetListener;
-  GrandPrixBet? _grandPrixBet;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
@@ -179,7 +178,6 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
           );
 
   void _manageGrandPrixBetUpdate(GrandPrixBet? bet, List<Driver> allDrivers) {
-    _grandPrixBet = bet;
     List<Driver> dnfDrivers = state.raceForm.dnfDrivers;
     if (bet != null) {
       dnfDrivers = bet.dnfDriverIds
@@ -194,6 +192,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       allDrivers: allDrivers,
+      originalGrandPrixBet: bet,
       qualiStandingsByDriverIds:
           bet?.qualiStandingsByDriverIds ?? state.qualiStandingsByDriverIds,
       raceForm: state.raceForm.copyWith(

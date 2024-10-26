@@ -4,6 +4,7 @@ import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_edi
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../creator/driver_creator.dart';
+import '../../../creator/grand_prix_bet_creator.dart';
 
 void main() {
   test(
@@ -77,6 +78,309 @@ void main() {
           );
 
           expect(state.canSelectNextDnfDriver, true);
+        },
+      );
+    },
+  );
+
+  group(
+    'canSave',
+    () {
+      test(
+        'should be true if originalGrandPrixBet is null and '
+        'qualiStandingsByDriverIds contains at least 1 not null value',
+        () {
+          final state = GrandPrixBetEditorState(
+            qualiStandingsByDriverIds: List.generate(
+              20,
+              (int itemIndex) => itemIndex == 1 ? 'd2' : null,
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if qualiStandingsByDriverIds of originalGrandPrixBet '
+        'differ from qualiStandingsByDriverIds of state',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              qualiStandingsByDriverIds: List.generate(
+                20,
+                (int itemIndex) => itemIndex == 2 ? 'd2' : null,
+              ),
+            ).createEntity(),
+            qualiStandingsByDriverIds: List.generate(
+              20,
+              (int itemIndex) => itemIndex == 1 ? 'd2' : null,
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if p1DriverId of originalGrandPrixBet differ from '
+        'p1DriverId of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              p1DriverId: 'd1',
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              p1DriverId: 'd2',
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if p2DriverId of originalGrandPrixBet differ from '
+        'p2DriverId of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              p2DriverId: 'd1',
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              p2DriverId: 'd2',
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if p3DriverId of originalGrandPrixBet differ from '
+        'p3DriverId of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              p3DriverId: 'd1',
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              p3DriverId: 'd2',
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if p10DriverId of originalGrandPrixBet differ from '
+        'p10DriverId of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              p10DriverId: 'd1',
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              p10DriverId: 'd2',
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if fastestLapDriverId of originalGrandPrixBet differ '
+        'from fastestLapDriverId of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              fastestLapDriverId: 'd1',
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              fastestLapDriverId: 'd2',
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if dnfDriverIds of originalGrandPrix differ from '
+        'ids of dnfDrivers of raceForm (different length)',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d1', 'd2', null],
+            ).createEntity(),
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [
+                const DriverCreator(id: 'd1').createEntity(),
+              ],
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if dnfDriverIds of originalGrandPrix differ from '
+        'ids of dnfDrivers of raceForm (different drivers)',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d1', 'd2', null],
+            ).createEntity(),
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [
+                const DriverCreator(id: 'd1').createEntity(),
+                const DriverCreator(id: 'd3').createEntity(),
+              ],
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if willBeSafetyCar of originalGrandPrixBet differ from '
+        'willBeSafetyCar of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              willBeSafetyCar: true,
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              willBeSafetyCar: false,
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be true if willBeRedFlag of originalGrandPrixBet differ from '
+        'willBeRedFlag of raceForm',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              willBeRedFlag: true,
+            ).createEntity(),
+            raceForm: const GrandPrixBetEditorRaceForm(
+              willBeRedFlag: false,
+            ),
+          );
+
+          expect(state.canSave, true);
+        },
+      );
+
+      test(
+        'should be false if originalGrandPrixBet is null and '
+        'qualiStandingsByDriverIds of state has only null values',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: null,
+            qualiStandingsByDriverIds: List.generate(20, (_) => null),
+          );
+
+          expect(state.canSave, false);
+        },
+      );
+
+      test(
+        'should be false if qualiStandingsByDriverIds of originalGrandPrixBet '
+        'is equal to qualiStandingsByDriverIds of state',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              qualiStandingsByDriverIds: List.generate(
+                20,
+                (int itemIndex) => switch (itemIndex) {
+                  1 => 'd1',
+                  10 => 'd10',
+                  _ => null,
+                },
+              ),
+            ).createEntity(),
+            qualiStandingsByDriverIds: List.generate(
+              20,
+              (int itemIndex) => switch (itemIndex) {
+                1 => 'd1',
+                10 => 'd10',
+                _ => null,
+              },
+            ),
+          );
+
+          expect(state.canSave, false);
+        },
+      );
+
+      test(
+        'should be false if ids of dnfDrivers are the same as dnfDriverIds'
+        '(without null values) of originalGrandPrixBet',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d1', 'd2', null],
+            ).createEntity(),
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [
+                const DriverCreator(id: 'd2').createEntity(),
+                const DriverCreator(id: 'd1').createEntity(),
+              ],
+            ),
+          );
+
+          expect(state.canSave, false);
+        },
+      );
+
+      test(
+        'should be false if bets from state are the same as bets in '
+        'originalGrandPrixBet',
+        () {
+          final state = GrandPrixBetEditorState(
+            originalGrandPrixBet: GrandPrixBetCreator(
+              qualiStandingsByDriverIds: List.generate(
+                20,
+                (int itemIndex) => itemIndex == 1 ? 'd1' : null,
+              ),
+              p1DriverId: 'd1',
+              p2DriverId: 'd2',
+              p3DriverId: 'd3',
+              p10DriverId: 'd10',
+              fastestLapDriverId: 'd1',
+              dnfDriverIds: ['d1', 'd2', null],
+              willBeSafetyCar: false,
+              willBeRedFlag: true,
+            ).createEntity(),
+            qualiStandingsByDriverIds: List.generate(
+              20,
+              (int itemIndex) => itemIndex == 1 ? 'd1' : null,
+            ),
+            raceForm: GrandPrixBetEditorRaceForm(
+              p1DriverId: 'd1',
+              p2DriverId: 'd2',
+              p3DriverId: 'd3',
+              p10DriverId: 'd10',
+              fastestLapDriverId: 'd1',
+              dnfDrivers: [
+                const DriverCreator(id: 'd2').createEntity(),
+                const DriverCreator(id: 'd1').createEntity(),
+              ],
+              willBeSafetyCar: false,
+              willBeRedFlag: true,
+            ),
+          );
+
+          expect(state.canSave, false);
         },
       );
     },

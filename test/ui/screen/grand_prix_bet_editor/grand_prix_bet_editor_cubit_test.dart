@@ -112,6 +112,7 @@ void main() {
               allDrivers.last,
               allDrivers.first,
             ],
+            originalGrandPrixBet: bet,
             qualiStandingsByDriverIds: bet.qualiStandingsByDriverIds,
             raceForm: GrandPrixBetEditorRaceForm(
               p1DriverId: bet.p1DriverId,
@@ -127,6 +128,7 @@ void main() {
             ),
           ),
           state = state!.copyWith(
+            originalGrandPrixBet: updatedBet,
             raceForm: state!.raceForm.copyWith(
               dnfDrivers: [
                 allDrivers.first,
@@ -341,6 +343,9 @@ void main() {
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
             allDrivers: allDrivers,
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: [driverId, 'd2', null],
+            ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: allDrivers,
             ),
@@ -369,6 +374,9 @@ void main() {
           state = GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
             allDrivers: allDrivers,
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', null, null],
+            ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [allDrivers.last],
             ),
@@ -427,6 +435,9 @@ void main() {
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
             allDrivers: allDrivers,
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', null, null],
+            ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [allDrivers.last],
             ),
@@ -455,6 +466,9 @@ void main() {
           state = GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
             allDrivers: allDrivers,
+            originalGrandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', driverId, null],
+            ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [allDrivers.last, allDrivers.first],
             ),
