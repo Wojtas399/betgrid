@@ -25,6 +25,7 @@ class GrandPrixBetState with _$GrandPrixBetState {
   const factory GrandPrixBetState({
     @Default(GrandPrixBetStateStatus.loading) GrandPrixBetStateStatus status,
     bool? canEdit,
+    String? grandPrixId,
     String? grandPrixName,
     String? playerUsername,
     bool? isPlayerIdSameAsLoggedUserId,

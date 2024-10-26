@@ -92,6 +92,7 @@ void main() {
         status: GrandPrixBetStateStatus.completed,
         canEdit: canEdit,
         playerUsername: player.username,
+        grandPrixId: grandPrixId,
         grandPrixName: grandPrix.name,
         grandPrixBet: grandPrixBet,
         grandPrixResults: grandPrixResults,

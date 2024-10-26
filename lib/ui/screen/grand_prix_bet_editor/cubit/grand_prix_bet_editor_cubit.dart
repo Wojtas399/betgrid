@@ -1,29 +1,45 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/driver/driver_repository.dart';
+import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/driver.dart';
+import '../../../../model/grand_prix_bet.dart';
 import '../../../extensions/drivers_list_extensions.dart';
 import 'grand_prix_bet_editor_state.dart';
 
 @injectable
 class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
+  final AuthRepository _authRepository;
+  final GrandPrixBetRepository _grandPrixBetRepository;
   final DriverRepository _driverRepository;
+  StreamSubscription<GrandPrixBet?>? _grandPrixBetListener;
+  GrandPrixBet? _grandPrixBet;
 
   GrandPrixBetEditorCubit(
+    this._authRepository,
+    this._grandPrixBetRepository,
     this._driverRepository,
   ) : super(const GrandPrixBetEditorState());
 
-  Future<void> initialize() async {
-    final List<Driver> allDrivers =
-        await _driverRepository.getAllDrivers().first;
-    final List<Driver> sortedAllDrivers = [...allDrivers];
-    sortedAllDrivers.sortByTeamAndSurname();
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      allDrivers: sortedAllDrivers,
-    ));
+  @override
+  Future<void> close() {
+    _grandPrixBetListener?.cancel();
+    return super.close();
+  }
+
+  Future<void> initialize({
+    required String grandPrixId,
+  }) async {
+    final List<Driver> sortedAllDrivers = await _loadSortedAllDrivers();
+    _grandPrixBetListener = _getBetForGrandPrix(grandPrixId).listen(
+      (GrandPrixBet? bet) => _manageGrandPrixBetUpdate(bet, sortedAllDrivers),
+    );
   }
 
   void onQualiStandingsChanged({
@@ -130,5 +146,53 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> submit() async {
     //TODO: Implement submit method
     print(state);
+  }
+
+  Future<List<Driver>> _loadSortedAllDrivers() async {
+    final List<Driver> allDrivers =
+        await _driverRepository.getAllDrivers().first;
+    final List<Driver> sortedAllDrivers = [...allDrivers];
+    sortedAllDrivers.sortByTeamAndSurname();
+    return sortedAllDrivers;
+  }
+
+  Stream<GrandPrixBet?> _getBetForGrandPrix(String grandPrixId) =>
+      _authRepository.loggedUserId$.whereNotNull().switchMap(
+            (String loggedUserId) =>
+                _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+              playerId: loggedUserId,
+              grandPrixId: grandPrixId,
+            ),
+          );
+
+  void _manageGrandPrixBetUpdate(GrandPrixBet? bet, List<Driver> allDrivers) {
+    _grandPrixBet = bet;
+    List<Driver> dnfDrivers = state.raceForm.dnfDrivers;
+    if (bet != null) {
+      dnfDrivers = bet.dnfDriverIds
+          .whereNotNull()
+          .map(
+            (String driverId) => allDrivers.firstWhere(
+              (Driver driver) => driver.id == driverId,
+            ),
+          )
+          .toList();
+    }
+    emit(state.copyWith(
+      status: GrandPrixBetEditorStateStatus.completed,
+      allDrivers: allDrivers,
+      qualiStandingsByDriverIds:
+          bet?.qualiStandingsByDriverIds ?? state.qualiStandingsByDriverIds,
+      raceForm: state.raceForm.copyWith(
+        p1DriverId: bet?.p1DriverId,
+        p2DriverId: bet?.p2DriverId,
+        p3DriverId: bet?.p3DriverId,
+        p10DriverId: bet?.p10DriverId,
+        fastestLapDriverId: bet?.fastestLapDriverId,
+        dnfDrivers: dnfDrivers,
+        willBeSafetyCar: bet?.willBeSafetyCar,
+        willBeRedFlag: bet?.willBeRedFlag,
+      ),
+    ));
   }
 }

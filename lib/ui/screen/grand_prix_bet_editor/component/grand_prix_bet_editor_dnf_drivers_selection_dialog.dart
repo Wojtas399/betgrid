@@ -10,6 +10,8 @@ import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
 
+//TODO: Modify this to have a chance to select only 3 drivers
+
 class GrandPrixBetEditorDnfDriversSelectionDialog extends StatelessWidget {
   const GrandPrixBetEditorDnfDriversSelectionDialog({super.key});
 

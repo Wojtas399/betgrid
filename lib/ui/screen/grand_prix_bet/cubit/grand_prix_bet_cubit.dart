@@ -59,6 +59,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         status: GrandPrixBetStateStatus.completed,
         canEdit: canEdit,
         playerUsername: listenedParams.playerUsername,
+        grandPrixId: grandPrixId,
         grandPrixName: listenedParams.grandPrixListenedParams?.name,
         isPlayerIdSameAsLoggedUserId: listenedParams.loggedUserId == playerId,
         grandPrixBet: listenedParams.grandPrixBet,

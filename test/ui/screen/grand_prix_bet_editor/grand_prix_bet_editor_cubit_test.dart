@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_state.dart';
@@ -7,22 +10,33 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_creator.dart';
+import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/data/repository/mock_driver_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 
 void main() {
+  final authRepository = MockAuthRepository();
+  final grandPrixBetRepository = MockGrandPrixBetRepository();
   final driverRepository = MockDriverRepository();
+  const String grandPrixId = 'gp1';
 
   GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
+        authRepository,
+        grandPrixBetRepository,
         driverRepository,
       );
 
   tearDown(() {
+    reset(authRepository);
+    reset(grandPrixBetRepository);
     reset(driverRepository);
   });
 
   group(
     'initialize',
     () {
+      const String loggedUserId = 'u1';
       final List<Driver> allDrivers = [
         const DriverCreator(
           id: 'd1',
@@ -39,23 +53,98 @@ void main() {
           surname: 'Hamilton',
         ).createEntity(),
       ];
+      final bet = GrandPrixBetCreator(
+        qualiStandingsByDriverIds: List.generate(
+          20,
+          (int driverIndex) => 'd${driverIndex + 1}',
+        ),
+        p1DriverId: 'd1',
+        p2DriverId: 'd2',
+        p3DriverId: 'd3',
+        p10DriverId: 'd10',
+        fastestLapDriverId: 'd1',
+        dnfDriverIds: ['d1', null, null],
+        willBeSafetyCar: true,
+        willBeRedFlag: false,
+      ).createEntity();
+      final updatedBet = GrandPrixBetCreator(
+        qualiStandingsByDriverIds: List.generate(
+          20,
+          (int driverIndex) => 'd${driverIndex + 1}',
+        ),
+        p1DriverId: 'd1',
+        p2DriverId: 'd2',
+        p3DriverId: 'd3',
+        p10DriverId: 'd10',
+        fastestLapDriverId: 'd1',
+        dnfDriverIds: ['d1', 'd2', null],
+        willBeSafetyCar: true,
+        willBeRedFlag: false,
+      ).createEntity();
+      final bet$ = StreamController<GrandPrixBet>()..add(bet);
+      GrandPrixBetEditorState? state;
 
       blocTest(
-        'should load all drivers and should emit them sorted by team and surname',
+        'should load all drivers, should listen to grand prix bet and should '
+        'emit existing bets and all drivers sorted by team and surname',
         build: () => createCubit(),
-        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
-        act: (cubit) async => await cubit.initialize(),
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          when(
+            () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+              playerId: loggedUserId,
+              grandPrixId: grandPrixId,
+            ),
+          ).thenAnswer((_) => bet$.stream);
+        },
+        act: (cubit) async {
+          await cubit.initialize(
+            grandPrixId: grandPrixId,
+          );
+          bet$.add(updatedBet);
+        },
         expect: () => [
-          GrandPrixBetEditorState(
+          state = GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
             allDrivers: [
               allDrivers[1],
               allDrivers.last,
               allDrivers.first,
             ],
+            qualiStandingsByDriverIds: bet.qualiStandingsByDriverIds,
+            raceForm: GrandPrixBetEditorRaceForm(
+              p1DriverId: bet.p1DriverId,
+              p2DriverId: bet.p2DriverId,
+              p3DriverId: bet.p3DriverId,
+              p10DriverId: bet.p10DriverId,
+              fastestLapDriverId: bet.fastestLapDriverId,
+              dnfDrivers: [
+                allDrivers.first,
+              ],
+              willBeSafetyCar: bet.willBeSafetyCar,
+              willBeRedFlag: bet.willBeRedFlag,
+            ),
+          ),
+          state = state!.copyWith(
+            raceForm: state!.raceForm.copyWith(
+              dnfDrivers: [
+                allDrivers.first,
+                allDrivers[1],
+              ],
+            ),
           ),
         ],
-        verify: (_) => verify(driverRepository.getAllDrivers).called(1),
+        verify: (_) {
+          verify(driverRepository.getAllDrivers).called(1);
+          verify(() => authRepository.loggedUserId$).called(1);
+          verify(
+            () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+              playerId: loggedUserId,
+              grandPrixId: grandPrixId,
+            ),
+          ).called(1);
+        },
       );
     },
   );
@@ -208,6 +297,11 @@ void main() {
       ];
       GrandPrixBetEditorState? state;
 
+      setUp(() {
+        authRepository.mockGetLoggedUserId('u1');
+        grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix();
+      });
+
       blocTest(
         'should do nothing if allDrivers list does not exist',
         build: () => createCubit(),
@@ -221,7 +315,9 @@ void main() {
         build: () => createCubit(),
         setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
         act: (cubit) async {
-          await cubit.initialize();
+          await cubit.initialize(
+            grandPrixId: grandPrixId,
+          );
           cubit.onDnfDriverSelected('d4');
         },
         expect: () => [
@@ -238,7 +334,10 @@ void main() {
         build: () => createCubit(),
         setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
         act: (cubit) async {
-          await cubit.initialize();
+          await cubit.initialize(
+            grandPrixId: grandPrixId,
+          );
+          await cubit.stream.first;
           cubit.onDnfDriverSelected('d1');
           cubit.onDnfDriverSelected('d2');
           cubit.onDnfDriverSelected('d3');
@@ -277,7 +376,10 @@ void main() {
         build: () => createCubit(),
         setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
         act: (cubit) async {
-          await cubit.initialize();
+          await cubit.initialize(
+            grandPrixId: grandPrixId,
+          );
+          await cubit.stream.first;
           cubit.onDnfDriverSelected('d1');
           cubit.onDnfDriverSelected('d2');
           cubit.onDnfDriverSelected('d1');
