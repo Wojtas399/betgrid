@@ -12,6 +12,10 @@ enum GrandPrixBetEditorStateStatus {
 
 @freezed
 class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
+  final int _maxNumberOfDnfDriverPredictions = 3;
+
+  const GrandPrixBetEditorState._();
+
   const factory GrandPrixBetEditorState({
     @Default(GrandPrixBetEditorStateStatus.loading)
     GrandPrixBetEditorStateStatus status,
@@ -41,4 +45,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
     List<String?> qualiStandingsByDriverIds,
     @Default(GrandPrixBetEditorRaceForm()) GrandPrixBetEditorRaceForm raceForm,
   }) = _GrandPrixBetEditorState;
+
+  bool get canSelectNextDnfDriver =>
+      raceForm.dnfDrivers.length < _maxNumberOfDnfDriverPredictions;
 }

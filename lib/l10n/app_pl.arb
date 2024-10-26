@@ -49,7 +49,7 @@
     "grandPrixBetEditorFastestLapTitle": "Najszybsze okrążenie",
     "grandPrixBetEditorFastestLapSubtitle": "Wytypuj kierowcę, który przejedzie najszybsze okrążenie.",
     "grandPrixBetEditorDnfTitle": "DNF",
-    "grandPrixBetEditorDnfSubtitle": "Wytypuj kierowców, którzy nie ukończą wyścigu.",
+    "grandPrixBetEditorDnfSubtitle": "Wytypuj 3 kierowców, którzy nie ukończą wyścigu.",
     "grandPrixBetEditorAddDriversToDnfList": "Dodaj kierowców",
     "grandPrixBetEditorEditDnfList": "Edytuj listę",
     "grandPrixBetEditorNoDriversInfoTitle": "Brak kierowców",

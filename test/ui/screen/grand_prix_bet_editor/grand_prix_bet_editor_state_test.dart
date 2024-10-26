@@ -21,6 +21,68 @@ void main() {
   );
 
   group(
+    'canSelectNextDnfDriver',
+    () {
+      test(
+        'should be false if length of dnfDrivers list is higher than 3',
+        () {
+          final List<Driver> dnfDrivers = [
+            const DriverCreator(id: 'd1').createEntity(),
+            const DriverCreator(id: 'd2').createEntity(),
+            const DriverCreator(id: 'd3').createEntity(),
+            const DriverCreator(id: 'd4').createEntity(),
+          ];
+
+          final state = GrandPrixBetEditorState(
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: dnfDrivers,
+            ),
+          );
+
+          expect(state.canSelectNextDnfDriver, false);
+        },
+      );
+
+      test(
+        'should be false if length of dnfDrivers list is equal to 3',
+        () {
+          final List<Driver> dnfDrivers = [
+            const DriverCreator(id: 'd1').createEntity(),
+            const DriverCreator(id: 'd2').createEntity(),
+            const DriverCreator(id: 'd3').createEntity(),
+          ];
+
+          final state = GrandPrixBetEditorState(
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: dnfDrivers,
+            ),
+          );
+
+          expect(state.canSelectNextDnfDriver, false);
+        },
+      );
+
+      test(
+        'should be true if length of dnfDrivers list is lower than 3',
+        () {
+          final List<Driver> dnfDrivers = [
+            const DriverCreator(id: 'd1').createEntity(),
+            const DriverCreator(id: 'd2').createEntity(),
+          ];
+
+          final state = GrandPrixBetEditorState(
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: dnfDrivers,
+            ),
+          );
+
+          expect(state.canSelectNextDnfDriver, true);
+        },
+      );
+    },
+  );
+
+  group(
     'copyWith status',
     () {
       GrandPrixBetEditorState state = const GrandPrixBetEditorState();

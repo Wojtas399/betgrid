@@ -110,14 +110,27 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     final Driver? selectedDriver = state.allDrivers!.firstWhereOrNull(
       (Driver driver) => driver.id == driverId,
     );
-    if (selectedDriver == null) return;
-    final List<Driver> updatedDnfDrivers = [...state.raceForm.dnfDrivers];
-    if (updatedDnfDrivers.contains(selectedDriver)) {
-      updatedDnfDrivers.remove(selectedDriver);
-    } else {
-      updatedDnfDrivers.add(selectedDriver);
+    if (selectedDriver == null ||
+        state.raceForm.dnfDrivers.contains(selectedDriver)) {
+      return;
     }
-    updatedDnfDrivers.sortByTeamAndSurname();
+    final List<Driver> updatedDnfDrivers = [...state.raceForm.dnfDrivers];
+    updatedDnfDrivers.add(selectedDriver);
+    emit(state.copyWith(
+      raceForm: state.raceForm.copyWith(
+        dnfDrivers: updatedDnfDrivers,
+      ),
+    ));
+  }
+
+  void onDnfDriverRemoved(String driverId) {
+    if (state.allDrivers == null) return;
+    final int indexOfDriverToRemove = state.raceForm.dnfDrivers.indexWhere(
+      (Driver driver) => driver.id == driverId,
+    );
+    if (indexOfDriverToRemove == -1) return;
+    final List<Driver> updatedDnfDrivers = [...state.raceForm.dnfDrivers];
+    updatedDnfDrivers.removeAt(indexOfDriverToRemove);
     emit(state.copyWith(
       raceForm: state.raceForm.copyWith(
         dnfDrivers: updatedDnfDrivers,

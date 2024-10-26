@@ -279,33 +279,23 @@ void main() {
   group(
     'onDnfDriverSelected',
     () {
+      const String driverId = 'd1';
       final List<Driver> allDrivers = [
-        const DriverCreator(
-          id: 'd1',
-          team: DriverCreatorTeam.mercedes,
-          surname: 'Russel',
-        ).createEntity(),
-        const DriverCreator(
-          id: 'd2',
-          team: DriverCreatorTeam.mercedes,
-          surname: 'Hamilton',
-        ).createEntity(),
-        const DriverCreator(
-          id: 'd3',
-          team: DriverCreatorTeam.alpine,
-        ).createEntity(),
+        const DriverCreator(id: driverId).createEntity(),
+        const DriverCreator(id: 'd2').createEntity(),
       ];
       GrandPrixBetEditorState? state;
 
       setUp(() {
         authRepository.mockGetLoggedUserId('u1');
-        grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix();
       });
 
       blocTest(
-        'should do nothing if allDrivers list does not exist',
+        'should do nothing if allDrivers list is empty',
         build: () => createCubit(),
-        act: (cubit) => cubit.onDnfDriverSelected('d1'),
+        setUp: () =>
+            grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(),
+        act: (cubit) => cubit.onDnfDriverSelected(driverId),
         expect: () => [],
       );
 
@@ -313,102 +303,165 @@ void main() {
         'should do nothing if driver with matching id does not exist in '
         'allDrivers list',
         build: () => createCubit(),
-        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix();
+        },
         act: (cubit) async {
-          await cubit.initialize(
-            grandPrixId: grandPrixId,
-          );
-          cubit.onDnfDriverSelected('d4');
+          await cubit.initialize(grandPrixId: grandPrixId);
+          await cubit.stream.first;
+          cubit.onDnfDriverSelected('d3');
         },
         expect: () => [
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            allDrivers: allDrivers.reversed.toList(),
+            allDrivers: allDrivers,
           ),
         ],
       );
 
       blocTest(
-        'should add driver with matching id to dnfDrivers list of raceForm and '
-        'should sort this list by team and surname',
+        'should do nothing if driver with matching id already exists in '
+        'dnfDrivers list of raceForm',
         build: () => createCubit(),
-        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
-        act: (cubit) async {
-          await cubit.initialize(
-            grandPrixId: grandPrixId,
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
+            grandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: [driverId, 'd2', null],
+            ).createEntity(),
           );
+        },
+        act: (cubit) async {
+          await cubit.initialize(grandPrixId: grandPrixId);
           await cubit.stream.first;
-          cubit.onDnfDriverSelected('d1');
-          cubit.onDnfDriverSelected('d2');
-          cubit.onDnfDriverSelected('d3');
+          cubit.onDnfDriverSelected(driverId);
         },
         expect: () => [
-          state = GrandPrixBetEditorState(
+          GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            allDrivers: allDrivers.reversed.toList(),
-          ),
-          state = state?.copyWith(
+            allDrivers: allDrivers,
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: [
-                allDrivers.first,
-              ],
-            ),
-          ),
-          state = state?.copyWith(
-            raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: [
-                allDrivers[1],
-                allDrivers.first,
-              ],
-            ),
-          ),
-          state = state?.copyWith(
-            raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: allDrivers.reversed.toList(),
+              dnfDrivers: allDrivers,
             ),
           ),
         ],
       );
 
       blocTest(
-        'should remove driver from dnfDrivers list of raceForm if it already '
-        'exists in it',
+        'should add driver to dnfDrivers list of raceForm if driver with '
+        'matching id does not exist in this list',
         build: () => createCubit(),
-        setUp: () => driverRepository.mockGetAllDrivers(allDrivers: allDrivers),
-        act: (cubit) async {
-          await cubit.initialize(
-            grandPrixId: grandPrixId,
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
+            grandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', null, null],
+            ).createEntity(),
           );
+        },
+        act: (cubit) async {
+          await cubit.initialize(grandPrixId: grandPrixId);
           await cubit.stream.first;
-          cubit.onDnfDriverSelected('d1');
-          cubit.onDnfDriverSelected('d2');
-          cubit.onDnfDriverSelected('d1');
+          cubit.onDnfDriverSelected(driverId);
         },
         expect: () => [
           state = GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            allDrivers: allDrivers.reversed.toList(),
-          ),
-          state = state?.copyWith(
+            allDrivers: allDrivers,
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: [
-                allDrivers.first,
-              ],
+              dnfDrivers: [allDrivers.last],
             ),
           ),
-          state = state?.copyWith(
-            raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: [
-                allDrivers[1],
-                allDrivers.first,
-              ],
+          state = state!.copyWith(
+            raceForm: state!.raceForm.copyWith(
+              dnfDrivers: [allDrivers.last, allDrivers.first],
             ),
           ),
-          state = state?.copyWith(
+        ],
+      );
+    },
+  );
+
+  group(
+    'onDnfDriverRemoved',
+    () {
+      const String driverId = 'd1';
+      final List<Driver> allDrivers = [
+        const DriverCreator(id: driverId).createEntity(),
+        const DriverCreator(id: 'd2').createEntity(),
+      ];
+      GrandPrixBetEditorState? state;
+
+      setUp(() {
+        authRepository.mockGetLoggedUserId('u1');
+      });
+
+      blocTest(
+        'should do nothing if allDrivers list is empty',
+        build: () => createCubit(),
+        setUp: () =>
+            grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(),
+        act: (cubit) => cubit.onDnfDriverRemoved(driverId),
+        expect: () => [],
+      );
+
+      blocTest(
+        'should do nothing if driver with matching id does not exist in '
+        'dnfDrivers list of raceForm',
+        build: () => createCubit(),
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
+            grandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', null, null],
+            ).createEntity(),
+          );
+        },
+        act: (cubit) async {
+          await cubit.initialize(grandPrixId: grandPrixId);
+          await cubit.stream.first;
+          cubit.onDnfDriverRemoved(driverId);
+        },
+        expect: () => [
+          GrandPrixBetEditorState(
+            status: GrandPrixBetEditorStateStatus.completed,
+            allDrivers: allDrivers,
             raceForm: GrandPrixBetEditorRaceForm(
-              dnfDrivers: [
-                allDrivers[1],
-              ],
+              dnfDrivers: [allDrivers.last],
+            ),
+          ),
+        ],
+      );
+
+      blocTest(
+        'should remove driver from dnfDrivers list of raceForm if driver with '
+        'matching id exists in this list',
+        build: () => createCubit(),
+        setUp: () {
+          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
+            grandPrixBet: GrandPrixBetCreator(
+              dnfDriverIds: ['d2', driverId, null],
+            ).createEntity(),
+          );
+        },
+        act: (cubit) async {
+          await cubit.initialize(grandPrixId: grandPrixId);
+          await cubit.stream.first;
+          cubit.onDnfDriverRemoved(driverId);
+        },
+        expect: () => [
+          state = GrandPrixBetEditorState(
+            status: GrandPrixBetEditorStateStatus.completed,
+            allDrivers: allDrivers,
+            raceForm: GrandPrixBetEditorRaceForm(
+              dnfDrivers: [allDrivers.last, allDrivers.first],
+            ),
+          ),
+          state = state!.copyWith(
+            raceForm: state!.raceForm.copyWith(
+              dnfDrivers: [allDrivers.last],
             ),
           ),
         ],
