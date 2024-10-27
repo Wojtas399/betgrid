@@ -27,7 +27,9 @@ class MockFirebaseGrandPrixBetService extends Mock
     ).thenAnswer((_) => Future.value(grandPrixBetDto));
   }
 
-  void mockAddGrandPrixBet() {
+  void mockAddGrandPrixBet({
+    GrandPrixBetDto? expectedAddedGrandPrixBetDto,
+  }) {
     when(
       () => addGrandPrixBet(
         userId: any(named: 'userId'),
@@ -42,7 +44,7 @@ class MockFirebaseGrandPrixBetService extends Mock
         willBeSafetyCar: any(named: 'willBeSafetyCar'),
         willBeRedFlag: any(named: 'willBeRedFlag'),
       ),
-    ).thenAnswer((_) => Future.value());
+    ).thenAnswer((_) => Future.value(expectedAddedGrandPrixBetDto));
   }
 
   void mockUpdateGrandPrixBet(GrandPrixBetDto? updatedGrandPrixBetDto) {

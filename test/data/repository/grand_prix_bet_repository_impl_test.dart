@@ -296,4 +296,135 @@ void main() {
       );
     },
   );
+
+  group(
+    'addGrandPrixBet',
+    () {
+      const String playerId = 'p1';
+      const String grandPrixId = 'gp1';
+      final List<String?> qualiStandingsByDriverIds = List.generate(
+        20,
+        (int driverIndex) => switch (driverIndex) {
+          0 => 'd1',
+          9 => 'd10',
+          _ => null,
+        },
+      );
+      const String p1DriverId = 'd1';
+      const String p2DriverId = 'd2';
+      const String p3DriverId = 'd3';
+      const String p10DriverId = 'p10';
+      const String fastestLapDriverId = 'd1';
+      const List<String?> dnfDriverIds = ['d20', null, null];
+      const bool willBeSafetyCar = false;
+      const bool willBeRedFlag = true;
+      final List<GrandPrixBet> existingGrandPrixBets = [
+        GrandPrixBetCreator(id: 'gpb1').createEntity(),
+        GrandPrixBetCreator(id: 'gpb2').createEntity(),
+      ];
+
+      setUp(() {
+        repositoryImpl.addEntities(existingGrandPrixBets);
+      });
+
+      tearDown(() {
+        verify(
+          () => dbGrandPrixBetService.addGrandPrixBet(
+            userId: playerId,
+            grandPrixId: grandPrixId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          ),
+        ).called(1);
+      });
+
+      test(
+        'should call addGrandPrixBet method from FirebaseGrandPrixBetService '
+        'and should finish method call if this method returns null',
+        () async {
+          dbGrandPrixBetService.mockAddGrandPrixBet();
+
+          await repositoryImpl.addGrandPrixBet(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            existingGrandPrixBets,
+          );
+        },
+      );
+
+      test(
+        'should call addGrandPrixBet method from FirebaseGrandPrixBetService '
+        'and should add new grand prix bet to repo state',
+        () async {
+          const String addedGrandPrixBetId = 'gpb3';
+          final addedGrandPrixBetCreator = GrandPrixBetCreator(
+            id: addedGrandPrixBetId,
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+          final GrandPrixBetDto addedGrandPrixBetDto =
+              addedGrandPrixBetCreator.createDto();
+          final GrandPrixBet addedGrandPrixBet =
+              addedGrandPrixBetCreator.createEntity();
+          dbGrandPrixBetService.mockAddGrandPrixBet(
+            expectedAddedGrandPrixBetDto: addedGrandPrixBetDto,
+          );
+          grandPrixBetMapper.mockMapFromDto(
+            expectedGrandPrixBet: addedGrandPrixBet,
+          );
+
+          await repositoryImpl.addGrandPrixBet(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [
+              ...existingGrandPrixBets,
+              addedGrandPrixBet,
+            ],
+          );
+        },
+      );
+    },
+  );
 }

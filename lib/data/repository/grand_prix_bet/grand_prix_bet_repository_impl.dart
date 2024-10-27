@@ -88,6 +88,41 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     }
   }
 
+  @override
+  Future<void> addGrandPrixBet({
+    required String playerId,
+    required String grandPrixId,
+    List<String?> qualiStandingsByDriverIds = const [],
+    String? p1DriverId,
+    String? p2DriverId,
+    String? p3DriverId,
+    String? p10DriverId,
+    String? fastestLapDriverId,
+    List<String?> dnfDriverIds = const [],
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
+  }) async {
+    final GrandPrixBetDto? addedGrandPrixBetDto =
+        await _dbGrandPrixBetService.addGrandPrixBet(
+      userId: playerId,
+      grandPrixId: grandPrixId,
+      qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      p1DriverId: p1DriverId,
+      p2DriverId: p2DriverId,
+      p3DriverId: p3DriverId,
+      p10DriverId: p10DriverId,
+      fastestLapDriverId: fastestLapDriverId,
+      dnfDriverIds: dnfDriverIds,
+      willBeSafetyCar: willBeSafetyCar,
+      willBeRedFlag: willBeRedFlag,
+    );
+    if (addedGrandPrixBetDto != null) {
+      final GrandPrixBet addedGrandPrixBet =
+          _grandPrixBetMapper.mapFromDto(addedGrandPrixBetDto);
+      addEntity(addedGrandPrixBet);
+    }
+  }
+
   Future<void> _fetchAllGrandPrixBetsFromDb(String playerId) async {
     final List<GrandPrixBetDto> grandPrixBetDtos =
         await _dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId);
