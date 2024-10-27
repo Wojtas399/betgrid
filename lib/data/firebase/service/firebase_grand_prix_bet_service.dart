@@ -29,11 +29,35 @@ class FirebaseGrandPrixBetService {
     return snapshot.docs.first.data();
   }
 
-  Future<void> addGrandPrixBet({
+  Future<GrandPrixBetDto?> addGrandPrixBet({
     required String userId,
-    required GrandPrixBetDto grandPrixBetDto,
+    required String grandPrixId,
+    List<String?> qualiStandingsByDriverIds = const [],
+    String? p1DriverId,
+    String? p2DriverId,
+    String? p3DriverId,
+    String? p10DriverId,
+    String? fastestLapDriverId,
+    List<String?> dnfDriverIds = const [],
+    bool? willBeSafetyCar,
+    bool? willBeRedFlag,
   }) async {
-    await _firebaseCollections.grandPrixesBets(userId).add(grandPrixBetDto);
+    final grandPrixBetDto = GrandPrixBetDto(
+      grandPrixId: grandPrixId,
+      qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+      p1DriverId: p1DriverId,
+      p2DriverId: p2DriverId,
+      p3DriverId: p3DriverId,
+      p10DriverId: p10DriverId,
+      fastestLapDriverId: fastestLapDriverId,
+      dnfDriverIds: dnfDriverIds,
+      willBeSafetyCar: willBeSafetyCar,
+      willBeRedFlag: willBeRedFlag,
+    );
+    final docRef =
+        await _firebaseCollections.grandPrixesBets(userId).add(grandPrixBetDto);
+    final snapshot = await docRef.get();
+    return snapshot.data();
   }
 
   Future<GrandPrixBetDto?> updateGrandPrixBet({
