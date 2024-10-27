@@ -347,7 +347,7 @@ void main() {
 
       test(
         'should call addGrandPrixBet method from FirebaseGrandPrixBetService '
-        'and should finish method call if this method returns null',
+        'and should not do anything if this method returns null',
         () async {
           dbGrandPrixBetService.mockAddGrandPrixBet();
 
@@ -421,6 +421,136 @@ void main() {
             [
               ...existingGrandPrixBets,
               addedGrandPrixBet,
+            ],
+          );
+        },
+      );
+    },
+  );
+
+  group(
+    'updateGrandPrixBet',
+    () {
+      const String playerId = 'p1';
+      const String grandPrixBetId = 'gpb1';
+      final List<String?> qualiStandingsByDriverIds = List.generate(
+        20,
+        (int driverIndex) => switch (driverIndex) {
+          0 => 'd1',
+          9 => 'd10',
+          _ => null,
+        },
+      );
+      const String p1DriverId = 'd1';
+      const String p2DriverId = 'd2';
+      const String p3DriverId = 'd3';
+      const String p10DriverId = 'p10';
+      const String fastestLapDriverId = 'd1';
+      const List<String?> dnfDriverIds = ['d20', null, null];
+      const bool willBeSafetyCar = false;
+      const bool willBeRedFlag = true;
+      final List<GrandPrixBet> existingGrandPrixBets = [
+        GrandPrixBetCreator(id: 'gpb1').createEntity(),
+        GrandPrixBetCreator(id: 'gpb2').createEntity(),
+      ];
+
+      setUp(() {
+        repositoryImpl.addEntities(existingGrandPrixBets);
+      });
+
+      tearDown(() {
+        verify(
+          () => dbGrandPrixBetService.updateGrandPrixBet(
+            userId: playerId,
+            grandPrixBetId: grandPrixBetId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          ),
+        ).called(1);
+      });
+
+      test(
+        'should call updateGrandPrixBet method from FirebaseGrandPrixBetService'
+        ' and should not do anything else if this method returns null',
+        () async {
+          dbGrandPrixBetService.mockUpdateGrandPrixBet();
+
+          await repositoryImpl.updateGrandPrixBet(
+            playerId: playerId,
+            grandPrixBetId: grandPrixBetId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            existingGrandPrixBets,
+          );
+        },
+      );
+
+      test(
+        'should call updateGrandPrixBet method from FirebaseGrandPrixBetService'
+        ' and should update grand prix bet in repo state',
+        () async {
+          final updatedGrandPrixBetCreator = GrandPrixBetCreator(
+            id: grandPrixBetId,
+            playerId: playerId,
+            grandPrixId: 'gp1',
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+          final GrandPrixBetDto updatedGrandPrixBetDto =
+              updatedGrandPrixBetCreator.createDto();
+          final GrandPrixBet updatedGrandPrixBet =
+              updatedGrandPrixBetCreator.createEntity();
+          dbGrandPrixBetService.mockUpdateGrandPrixBet(
+            expectedUpdatedGrandPrixBetDto: updatedGrandPrixBetDto,
+          );
+          grandPrixBetMapper.mockMapFromDto(
+            expectedGrandPrixBet: updatedGrandPrixBet,
+          );
+
+          await repositoryImpl.updateGrandPrixBet(
+            playerId: playerId,
+            grandPrixBetId: grandPrixBetId,
+            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+            p1DriverId: p1DriverId,
+            p2DriverId: p2DriverId,
+            p3DriverId: p3DriverId,
+            p10DriverId: p10DriverId,
+            fastestLapDriverId: fastestLapDriverId,
+            dnfDriverIds: dnfDriverIds,
+            willBeSafetyCar: willBeSafetyCar,
+            willBeRedFlag: willBeRedFlag,
+          );
+
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [
+              updatedGrandPrixBet,
+              existingGrandPrixBets.last,
             ],
           );
         },
