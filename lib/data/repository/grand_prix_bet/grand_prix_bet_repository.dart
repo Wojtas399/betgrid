@@ -14,9 +14,4 @@ abstract interface class GrandPrixBetRepository {
     required String playerId,
     required String grandPrixId,
   });
-
-  Future<void> addGrandPrixBetsForPlayer({
-    required String playerId,
-    required List<GrandPrixBet> grandPrixBets,
-  });
 }

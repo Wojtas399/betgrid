@@ -35,13 +35,4 @@ class MockGrandPrixBetRepository extends Mock
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBet));
   }
-
-  void mockAddGrandPrixBetsForPlayer() {
-    when(
-      () => addGrandPrixBetsForPlayer(
-        playerId: any(named: 'playerId'),
-        grandPrixBets: any(named: 'grandPrixBets'),
-      ),
-    ).thenAnswer((_) => Future.value());
-  }
 }

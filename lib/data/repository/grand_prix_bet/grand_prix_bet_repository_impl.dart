@@ -88,20 +88,6 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     }
   }
 
-  @override
-  Future<void> addGrandPrixBetsForPlayer({
-    required String playerId,
-    required List<GrandPrixBet> grandPrixBets,
-  }) async {
-    for (final grandPrixBet in grandPrixBets) {
-      await _dbGrandPrixBetService.addGrandPrixBet(
-        userId: playerId,
-        grandPrixBetDto: _grandPrixBetMapper.mapToDto(grandPrixBet),
-      );
-    }
-    addEntities(grandPrixBets);
-  }
-
   Future<void> _fetchAllGrandPrixBetsFromDb(String playerId) async {
     final List<GrandPrixBetDto> grandPrixBetDtos =
         await _dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId);
