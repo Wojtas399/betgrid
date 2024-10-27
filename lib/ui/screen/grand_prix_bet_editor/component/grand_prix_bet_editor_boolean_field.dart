@@ -18,27 +18,31 @@ class GrandPrixBetEditorBooleanField extends StatefulWidget {
 }
 
 class _State extends State<GrandPrixBetEditorBooleanField> {
-  bool? _state;
+  bool? _selectedOption;
 
   @override
   void initState() {
-    _state = widget.initialValue;
+    _selectedOption = widget.initialValue;
     super.initState();
   }
 
   void _onYesChanged(bool? isChecked) {
-    if (isChecked == true) {
+    if (isChecked == true &&
+        (_selectedOption == null || _selectedOption == false)) {
       setState(() {
-        _state = true;
+        _selectedOption = true;
       });
+      widget.onChanged(true);
     }
   }
 
   void _onNoChanged(bool? isChecked) {
-    if (isChecked == true) {
+    if (isChecked == true &&
+        (_selectedOption == null || _selectedOption == true)) {
       setState(() {
-        _state = false;
+        _selectedOption = false;
       });
+      widget.onChanged(false);
     }
   }
 
@@ -47,15 +51,15 @@ class _State extends State<GrandPrixBetEditorBooleanField> {
         children: [
           Expanded(
             child: _CheckboxWithLabel(
-              label: context.str.save,
-              isChecked: _state == true,
+              label: context.str.yes,
+              isChecked: _selectedOption == true,
               onChanged: _onYesChanged,
             ),
           ),
           Expanded(
             child: _CheckboxWithLabel(
               label: context.str.no,
-              isChecked: _state == false,
+              isChecked: _selectedOption == false,
               onChanged: _onNoChanged,
             ),
           ),
@@ -77,7 +81,7 @@ class _CheckboxWithLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          BodyMedium(context.str.yes),
+          BodyMedium(label),
           Checkbox(
             value: isChecked,
             onChanged: onChanged,
