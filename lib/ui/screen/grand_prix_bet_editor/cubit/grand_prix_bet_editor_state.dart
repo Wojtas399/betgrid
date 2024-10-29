@@ -20,6 +20,8 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
   const GrandPrixBetEditorState._();
 
   const factory GrandPrixBetEditorState({
+    @Assert('qualiStandingsByDriverIds.length == 20')
+    @Assert('raceForm.dnfDrivers.length <= 3')
     @Default(GrandPrixBetEditorStateStatus.loading)
     GrandPrixBetEditorStateStatus status,
     GrandPrixBet? originalGrandPrixBet,
@@ -46,8 +48,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
       null,
       null,
     ])
-    List<String?>
-        qualiStandingsByDriverIds, //TODO: How to make it always of length 20
+    List<String?> qualiStandingsByDriverIds,
     @Default(GrandPrixBetEditorRaceForm()) GrandPrixBetEditorRaceForm raceForm,
   }) = _GrandPrixBetEditorState;
 
