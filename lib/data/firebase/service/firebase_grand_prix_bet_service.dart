@@ -38,7 +38,7 @@ class FirebaseGrandPrixBetService {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
-    List<String?> dnfDriverIds = const [],
+    List<String> dnfDriverIds = const [],
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {
@@ -69,7 +69,7 @@ class FirebaseGrandPrixBetService {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
-    List<String?>? dnfDriverIds,
+    List<String>? dnfDriverIds,
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {

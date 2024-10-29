@@ -63,7 +63,7 @@ void main() {
         p3DriverId: 'd3',
         p10DriverId: 'd10',
         fastestLapDriverId: 'd1',
-        dnfDriverIds: ['d1', null, null],
+        dnfDriverIds: ['d1'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).createEntity();
@@ -77,7 +77,7 @@ void main() {
         p3DriverId: 'd3',
         p10DriverId: 'd10',
         fastestLapDriverId: 'd1',
-        dnfDriverIds: ['d1', 'd2', null],
+        dnfDriverIds: ['d1', 'd2'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).createEntity();
@@ -314,7 +314,7 @@ void main() {
         seed: () => GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: [driverId, 'd2', null],
+            dnfDriverIds: [driverId, 'd2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: allDrivers,
@@ -331,7 +331,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2', null, null],
+            dnfDriverIds: ['d2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
@@ -376,7 +376,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2', null, null],
+            dnfDriverIds: ['d2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
@@ -393,7 +393,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2', driverId, null],
+            dnfDriverIds: ['d2', driverId],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last, allDrivers.first],

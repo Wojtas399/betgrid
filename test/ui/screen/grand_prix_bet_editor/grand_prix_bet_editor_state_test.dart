@@ -213,7 +213,7 @@ void main() {
         () {
           final state = GrandPrixBetEditorState(
             originalGrandPrixBet: GrandPrixBetCreator(
-              dnfDriverIds: ['d1', 'd2', null],
+              dnfDriverIds: ['d1', 'd2'],
             ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [
@@ -232,7 +232,7 @@ void main() {
         () {
           final state = GrandPrixBetEditorState(
             originalGrandPrixBet: GrandPrixBetCreator(
-              dnfDriverIds: ['d1', 'd2', null],
+              dnfDriverIds: ['d1', 'd2'],
             ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [
@@ -328,7 +328,7 @@ void main() {
         () {
           final state = GrandPrixBetEditorState(
             originalGrandPrixBet: GrandPrixBetCreator(
-              dnfDriverIds: ['d1', 'd2', null],
+              dnfDriverIds: ['d1', 'd2'],
             ).createEntity(),
             raceForm: GrandPrixBetEditorRaceForm(
               dnfDrivers: [
@@ -357,7 +357,7 @@ void main() {
               p3DriverId: 'd3',
               p10DriverId: 'd10',
               fastestLapDriverId: 'd1',
-              dnfDriverIds: ['d1', 'd2', null],
+              dnfDriverIds: ['d1', 'd2'],
               willBeSafetyCar: false,
               willBeRedFlag: true,
             ).createEntity(),

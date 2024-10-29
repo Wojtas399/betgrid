@@ -19,7 +19,7 @@ class GrandPrixBetDto with _$GrandPrixBetDto {
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
-    required List<String?> dnfDriverIds,
+    required List<String> dnfDriverIds,
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) = _GrandPrixBetDto;

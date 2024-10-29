@@ -278,12 +278,12 @@ void main() {
         GrandPrixBetCreator(
           playerId: players.first.id,
           grandPrixId: finishedGrandPrixes[1].id,
-          dnfDriverIds: [driverId, null, null],
+          dnfDriverIds: [driverId],
         ).createEntity(),
         GrandPrixBetCreator(
           playerId: players.first.id,
           grandPrixId: finishedGrandPrixes.last.id,
-          dnfDriverIds: [driverId, 'd2', null],
+          dnfDriverIds: [driverId, 'd2'],
         ).createEntity(),
         GrandPrixBetCreator(
           playerId: players[1].id,
@@ -293,12 +293,12 @@ void main() {
         GrandPrixBetCreator(
           playerId: players[1].id,
           grandPrixId: finishedGrandPrixes[1].id,
-          dnfDriverIds: [null, null, null],
+          dnfDriverIds: [],
         ).createEntity(),
         GrandPrixBetCreator(
           playerId: players[1].id,
           grandPrixId: finishedGrandPrixes.last.id,
-          dnfDriverIds: ['d14', 'd15', null],
+          dnfDriverIds: ['d14', 'd15'],
         ).createEntity(),
         GrandPrixBetCreator(
           playerId: players.last.id,

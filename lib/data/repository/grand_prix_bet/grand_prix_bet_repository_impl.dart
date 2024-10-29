@@ -98,12 +98,10 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
-    List<String?> dnfDriverIds = const [],
+    List<String> dnfDriverIds = const [],
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {
-    //TODO: When dnfDriverIds list has 1 or 2 elements we should add null values
-    //TODO: to have list of 3 elements (required in GrandPrixBet model)
     final GrandPrixBetDto? addedGrandPrixBetDto =
         await _dbGrandPrixBetService.addGrandPrixBet(
       userId: playerId,
@@ -135,7 +133,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     String? p3DriverId,
     String? p10DriverId,
     String? fastestLapDriverId,
-    List<String?>? dnfDriverIds,
+    List<String>? dnfDriverIds,
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {

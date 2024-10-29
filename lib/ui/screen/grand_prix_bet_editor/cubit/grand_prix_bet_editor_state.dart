@@ -21,7 +21,6 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
 
   const factory GrandPrixBetEditorState({
     @Assert('qualiStandingsByDriverIds.length == 20')
-    @Assert('raceForm.dnfDrivers.length <= 3')
     @Default(GrandPrixBetEditorStateStatus.loading)
     GrandPrixBetEditorStateStatus status,
     GrandPrixBet? originalGrandPrixBet,

@@ -11,7 +11,7 @@ class GrandPrixBetCreator {
   final String? p3DriverId;
   final String? p10DriverId;
   final String? fastestLapDriverId;
-  final List<String?> dnfDriverIds;
+  final List<String> dnfDriverIds;
   final bool? willBeSafetyCar;
   final bool? willBeRedFlag;
 
@@ -25,7 +25,7 @@ class GrandPrixBetCreator {
     this.p3DriverId,
     this.p10DriverId,
     this.fastestLapDriverId,
-    this.dnfDriverIds = const [null, null, null],
+    this.dnfDriverIds = const [],
     this.willBeSafetyCar,
     this.willBeRedFlag,
   }) {

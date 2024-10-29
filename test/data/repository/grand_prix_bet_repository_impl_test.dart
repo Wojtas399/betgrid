@@ -315,7 +315,7 @@ void main() {
       const String p3DriverId = 'd3';
       const String p10DriverId = 'p10';
       const String fastestLapDriverId = 'd1';
-      const List<String?> dnfDriverIds = ['d20', null, null];
+      const List<String> dnfDriverIds = ['d20'];
       const bool willBeSafetyCar = false;
       const bool willBeRedFlag = true;
       final List<GrandPrixBet> existingGrandPrixBets = [
@@ -446,7 +446,7 @@ void main() {
       const String p3DriverId = 'd3';
       const String p10DriverId = 'p10';
       const String fastestLapDriverId = 'd1';
-      const List<String?> dnfDriverIds = ['d20', null, null];
+      const List<String> dnfDriverIds = ['d20'];
       const bool willBeSafetyCar = false;
       const bool willBeRedFlag = true;
       final List<GrandPrixBet> existingGrandPrixBets = [
