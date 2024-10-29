@@ -525,7 +525,7 @@ void main() {
             allDrivers: allDrivers,
           ),
           state = state!.copyWith(
-            status: GrandPrixBetEditorStateStatus.loading,
+            status: GrandPrixBetEditorStateStatus.saving,
           ),
           state = state!.copyWith(
             status: GrandPrixBetEditorStateStatus.successfullySaved,
@@ -585,7 +585,7 @@ void main() {
             allDrivers: allDrivers,
           ),
           state = state!.copyWith(
-            status: GrandPrixBetEditorStateStatus.loading,
+            status: GrandPrixBetEditorStateStatus.saving,
           ),
           state = state!.copyWith(
             status: GrandPrixBetEditorStateStatus.successfullySaved,

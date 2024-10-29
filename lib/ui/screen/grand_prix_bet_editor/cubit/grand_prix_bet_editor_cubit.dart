@@ -162,7 +162,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
     emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.loading,
+      status: GrandPrixBetEditorStateStatus.saving,
     ));
     if (state.originalGrandPrixBet == null) {
       await _addGrandPrixBet(loggedUserId);

@@ -11,7 +11,7 @@ void main() {
     'default state',
     () {
       const expectedDefaultState = GrandPrixBetEditorState(
-        status: GrandPrixBetEditorStateStatus.loading,
+        status: GrandPrixBetEditorStateStatus.initializing,
         allDrivers: null,
       );
 

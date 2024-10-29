@@ -8,8 +8,9 @@ import 'grand_prix_bet_editor_race_form.dart';
 part 'grand_prix_bet_editor_state.freezed.dart';
 
 enum GrandPrixBetEditorStateStatus {
-  loading,
+  initializing,
   completed,
+  saving,
   successfullySaved,
 }
 
@@ -21,7 +22,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
 
   const factory GrandPrixBetEditorState({
     @Assert('qualiStandingsByDriverIds.length == 20')
-    @Default(GrandPrixBetEditorStateStatus.loading)
+    @Default(GrandPrixBetEditorStateStatus.initializing)
     GrandPrixBetEditorStateStatus status,
     GrandPrixBet? originalGrandPrixBet,
     List<Driver>? allDrivers,

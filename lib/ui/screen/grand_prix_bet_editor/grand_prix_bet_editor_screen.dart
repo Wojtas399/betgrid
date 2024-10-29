@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
+import '../../extensions/build_context_extensions.dart';
+import '../../service/dialog_service.dart';
 import 'component/grand_prix_bet_editor_content.dart';
 import 'cubit/grand_prix_bet_editor_cubit.dart';
+import 'cubit/grand_prix_bet_editor_state.dart';
 
 @RoutePage()
 class GrandPrixBetEditorScreen extends StatelessWidget {
@@ -21,6 +24,39 @@ class GrandPrixBetEditorScreen extends StatelessWidget {
           ..initialize(
             grandPrixId: grandPrixId,
           ),
-        child: const GrandPrixBetEditorContent(),
+        child: const _CubitStatusListener(
+          child: GrandPrixBetEditorContent(),
+        ),
+      );
+}
+
+class _CubitStatusListener extends StatelessWidget {
+  final Widget child;
+
+  const _CubitStatusListener({
+    required this.child,
+  });
+
+  void _onCubitStatusChanged(
+    BuildContext context,
+    GrandPrixBetEditorStateStatus status,
+  ) {
+    if (status == GrandPrixBetEditorStateStatus.saving) {
+      showLoadingDialog();
+    } else if (status == GrandPrixBetEditorStateStatus.successfullySaved) {
+      closeLoadingDialog();
+      showSnackbarMessage(context.str.grandPrixBetEditorSuccessfullySavedBets);
+      context.maybePop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocListener<GrandPrixBetEditorCubit, GrandPrixBetEditorState>(
+        listenWhen: (prevState, currState) =>
+            currState.status != prevState.status,
+        listener: (context, state) =>
+            _onCubitStatusChanged(context, state.status),
+        child: child,
       );
 }
