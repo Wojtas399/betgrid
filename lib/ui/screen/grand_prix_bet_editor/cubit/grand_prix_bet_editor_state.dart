@@ -10,6 +10,7 @@ part 'grand_prix_bet_editor_state.freezed.dart';
 enum GrandPrixBetEditorStateStatus {
   loading,
   completed,
+  successfullySaved,
 }
 
 @freezed

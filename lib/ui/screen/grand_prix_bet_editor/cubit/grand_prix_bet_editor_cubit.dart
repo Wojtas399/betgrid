@@ -19,6 +19,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final DriverRepository _driverRepository;
   StreamSubscription<GrandPrixBet?>? _grandPrixBetListener;
+  String? _grandPrixId;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
@@ -35,7 +36,8 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> initialize({
     required String grandPrixId,
   }) async {
-    final List<Driver> sortedAllDrivers = await _loadSortedAllDrivers();
+    _grandPrixId = grandPrixId;
+    final List<Driver> sortedAllDrivers = await _loadAllDriversAndSort();
     _grandPrixBetListener = _getBetForGrandPrix(grandPrixId).listen(
       (GrandPrixBet? bet) => _manageGrandPrixBetUpdate(bet, sortedAllDrivers),
     );
@@ -156,11 +158,23 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   }
 
   Future<void> submit() async {
-    //TODO: Implement submit method
-    print(state);
+    if (_grandPrixId == null) return;
+    final String? loggedUserId = await _authRepository.loggedUserId$.first;
+    if (loggedUserId == null) return;
+    emit(state.copyWith(
+      status: GrandPrixBetEditorStateStatus.loading,
+    ));
+    if (state.originalGrandPrixBet == null) {
+      await _addGrandPrixBet(loggedUserId);
+    } else {
+      await _updateGrandPrixBet(loggedUserId);
+    }
+    emit(state.copyWith(
+      status: GrandPrixBetEditorStateStatus.successfullySaved,
+    ));
   }
 
-  Future<List<Driver>> _loadSortedAllDrivers() async {
+  Future<List<Driver>> _loadAllDriversAndSort() async {
     final List<Driver> allDrivers =
         await _driverRepository.getAllDrivers().first;
     final List<Driver> sortedAllDrivers = [...allDrivers];
@@ -178,33 +192,69 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
           );
 
   void _manageGrandPrixBetUpdate(GrandPrixBet? bet, List<Driver> allDrivers) {
-    List<Driver> dnfDrivers = state.raceForm.dnfDrivers;
-    if (bet != null) {
-      dnfDrivers = bet.dnfDriverIds
-          .whereNotNull()
-          .map(
-            (String driverId) => allDrivers.firstWhere(
-              (Driver driver) => driver.id == driverId,
-            ),
-          )
-          .toList();
-    }
-    emit(state.copyWith(
+    GrandPrixBetEditorState newState = state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       allDrivers: allDrivers,
+    );
+    if (bet == null) {
+      emit(newState);
+      return;
+    }
+    final List<Driver> dnfDrivers = bet.dnfDriverIds
+        .whereNotNull()
+        .map(
+          (String driverId) => allDrivers.firstWhere(
+            (Driver driver) => driver.id == driverId,
+          ),
+        )
+        .toList();
+    emit(newState.copyWith(
       originalGrandPrixBet: bet,
-      qualiStandingsByDriverIds:
-          bet?.qualiStandingsByDriverIds ?? state.qualiStandingsByDriverIds,
+      qualiStandingsByDriverIds: bet.qualiStandingsByDriverIds,
       raceForm: state.raceForm.copyWith(
-        p1DriverId: bet?.p1DriverId,
-        p2DriverId: bet?.p2DriverId,
-        p3DriverId: bet?.p3DriverId,
-        p10DriverId: bet?.p10DriverId,
-        fastestLapDriverId: bet?.fastestLapDriverId,
+        p1DriverId: bet.p1DriverId,
+        p2DriverId: bet.p2DriverId,
+        p3DriverId: bet.p3DriverId,
+        p10DriverId: bet.p10DriverId,
+        fastestLapDriverId: bet.fastestLapDriverId,
         dnfDrivers: dnfDrivers,
-        willBeSafetyCar: bet?.willBeSafetyCar,
-        willBeRedFlag: bet?.willBeRedFlag,
+        willBeSafetyCar: bet.willBeSafetyCar,
+        willBeRedFlag: bet.willBeRedFlag,
       ),
     ));
+  }
+
+  Future<void> _addGrandPrixBet(String loggedUserId) async {
+    await _grandPrixBetRepository.addGrandPrixBet(
+      playerId: loggedUserId,
+      grandPrixId: _grandPrixId!,
+      qualiStandingsByDriverIds: state.qualiStandingsByDriverIds,
+      p1DriverId: state.raceForm.p1DriverId,
+      p2DriverId: state.raceForm.p2DriverId,
+      p3DriverId: state.raceForm.p3DriverId,
+      p10DriverId: state.raceForm.p10DriverId,
+      fastestLapDriverId: state.raceForm.fastestLapDriverId,
+      dnfDriverIds:
+          state.raceForm.dnfDrivers.map((Driver driver) => driver.id).toList(),
+      willBeSafetyCar: state.raceForm.willBeSafetyCar,
+      willBeRedFlag: state.raceForm.willBeRedFlag,
+    );
+  }
+
+  Future<void> _updateGrandPrixBet(String loggedUserId) async {
+    await _grandPrixBetRepository.updateGrandPrixBet(
+      playerId: loggedUserId,
+      grandPrixBetId: state.originalGrandPrixBet!.id,
+      qualiStandingsByDriverIds: state.qualiStandingsByDriverIds,
+      p1DriverId: state.raceForm.p1DriverId,
+      p2DriverId: state.raceForm.p2DriverId,
+      p3DriverId: state.raceForm.p3DriverId,
+      p10DriverId: state.raceForm.p10DriverId,
+      fastestLapDriverId: state.raceForm.fastestLapDriverId,
+      dnfDriverIds:
+          state.raceForm.dnfDrivers.map((Driver driver) => driver.id).toList(),
+      willBeSafetyCar: state.raceForm.willBeSafetyCar,
+      willBeRedFlag: state.raceForm.willBeRedFlag,
+    );
   }
 }
