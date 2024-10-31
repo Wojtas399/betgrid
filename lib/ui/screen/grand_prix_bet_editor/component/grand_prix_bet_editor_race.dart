@@ -150,10 +150,14 @@ class _SafetyCar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final grandPrixBetEditorCubit = context.read<GrandPrixBetEditorCubit>();
+    final bool? willBeSafetyCar = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.willBeSafetyCar,
+    );
+
     return GrandPrixBetEditorBooleanField(
-      initialValue: grandPrixBetEditorCubit.state.raceForm.willBeSafetyCar,
-      onChanged: grandPrixBetEditorCubit.onSafetyCarPredictionChanged,
+      selectedValue: willBeSafetyCar,
+      onValueSelected:
+          context.read<GrandPrixBetEditorCubit>().onSafetyCarPredictionChanged,
     );
   }
 }
@@ -163,10 +167,14 @@ class _RedFlag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final grandPrixBetEditorCubit = context.read<GrandPrixBetEditorCubit>();
+    final bool? willBeRedFlag = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.willBeRedFlag,
+    );
+
     return GrandPrixBetEditorBooleanField(
-      initialValue: grandPrixBetEditorCubit.state.raceForm.willBeRedFlag,
-      onChanged: grandPrixBetEditorCubit.onRedFlagPredictionChanged,
+      selectedValue: willBeRedFlag,
+      onValueSelected:
+          context.read<GrandPrixBetEditorCubit>().onRedFlagPredictionChanged,
     );
   }
 }
