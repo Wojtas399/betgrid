@@ -13,6 +13,19 @@ class GrandPrixBetQualifications extends StatelessWidget {
   const GrandPrixBetQualifications({super.key});
 
   @override
+  Widget build(BuildContext context) => const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _Positions(),
+          _Summary(),
+        ],
+      );
+}
+
+class _Positions extends StatelessWidget {
+  const _Positions();
+
+  @override
   Widget build(BuildContext context) {
     final List<String?>? betStandings = context.select(
       (GrandPrixBetCubit cubit) =>
@@ -53,69 +66,73 @@ class GrandPrixBetQualifications extends StatelessWidget {
     final CustomColors? customColors = context.customColors;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...List.generate(
           20,
-          (int itemIndex) {
-            final int qualiNumber = itemIndex > 14
-                ? 1
-                : itemIndex > 9
-                    ? 2
-                    : 3;
+          (int itemIndex) => GrandPrixBetItem(
+            label: 'P${itemIndex + 1}',
+            labelColor: switch (itemIndex) {
+              0 => customColors?.p1,
+              1 => customColors?.p2,
+              2 => customColors?.p3,
+              _ => null,
+            },
+            betChild: GrandPrixBetDriverDescription(
+              driverId: betStandings?[itemIndex],
+            ),
+            resultsChild: GrandPrixBetDriverDescription(
+              driverId: resultsStandings?[itemIndex],
+            ),
+            points: positionsPoints?[itemIndex],
+          ),
+        )
+      ],
+    );
+  }
+}
 
-            return GrandPrixBetItem(
-              label: 'Q$qualiNumber P${itemIndex + 1}',
-              labelColor: switch (itemIndex) {
-                0 => customColors?.p1,
-                1 => customColors?.p2,
-                2 => customColors?.p3,
-                _ => null,
-              },
-              betChild: GrandPrixBetDriverDescription(
-                driverId: betStandings?[itemIndex],
-              ),
-              resultsChild: GrandPrixBetDriverDescription(
-                driverId: resultsStandings?[itemIndex],
-              ),
-              points: positionsPoints?[itemIndex],
-            );
-          },
+class _Summary extends StatelessWidget {
+  const _Summary();
+
+  @override
+  Widget build(BuildContext context) {
+    final QualiBetPoints? qualiPointsDetails = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.qualiBetPoints,
+    );
+
+    return GrandPrixBetPointsSummary(
+      details: [
+        GrandPrixPointsSummaryDetail(
+          label: 'Q1',
+          value: '${qualiPointsDetails?.q1Points ?? '--'}',
         ),
-        GrandPrixBetPointsSummary(
-          details: [
-            GrandPrixPointsSummaryDetail(
-              label: 'Q1',
-              value: '${qualiPointsDetails?.q1Points ?? '--'}',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: 'Q2',
-              value: '${qualiPointsDetails?.q2Points ?? '--'}',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: 'Q3',
-              value: '${qualiPointsDetails?.q3Points ?? '--'}',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: '${context.str.grandPrixBetMultiplier} Q1',
-              value: qualiPointsDetails?.q1Multiplier?.toString() ?? '--',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: '${context.str.grandPrixBetMultiplier} Q2',
-              value: qualiPointsDetails?.q2Multiplier?.toString() ?? '--',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: '${context.str.grandPrixBetMultiplier} Q3',
-              value: qualiPointsDetails?.q3Multiplier?.toString() ?? '--',
-            ),
-            GrandPrixPointsSummaryDetail(
-              label: context.str.grandPrixBetMultiplier,
-              value: qualiPointsDetails?.multiplier?.toString() ?? '--',
-            ),
-          ],
-          totalPoints: qualiPointsDetails?.totalPoints,
+        GrandPrixPointsSummaryDetail(
+          label: 'Q2',
+          value: '${qualiPointsDetails?.q2Points ?? '--'}',
+        ),
+        GrandPrixPointsSummaryDetail(
+          label: 'Q3',
+          value: '${qualiPointsDetails?.q3Points ?? '--'}',
+        ),
+        GrandPrixPointsSummaryDetail(
+          label: '${context.str.grandPrixBetMultiplier} Q1',
+          value: qualiPointsDetails?.q1Multiplier?.toString() ?? '--',
+        ),
+        GrandPrixPointsSummaryDetail(
+          label: '${context.str.grandPrixBetMultiplier} Q2',
+          value: qualiPointsDetails?.q2Multiplier?.toString() ?? '--',
+        ),
+        GrandPrixPointsSummaryDetail(
+          label: '${context.str.grandPrixBetMultiplier} Q3',
+          value: qualiPointsDetails?.q3Multiplier?.toString() ?? '--',
+        ),
+        GrandPrixPointsSummaryDetail(
+          label: context.str.grandPrixBetMultiplier,
+          value: qualiPointsDetails?.multiplier?.toString() ?? '--',
         ),
       ],
+      totalPoints: qualiPointsDetails?.totalPoints,
     );
   }
 }
