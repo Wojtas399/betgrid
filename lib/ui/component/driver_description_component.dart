@@ -19,7 +19,10 @@ class DriverDescription extends StatelessWidget {
           Container(
             width: 4,
             height: 20,
-            color: Color(driver.team.hexColor),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: Color(driver.team.hexColor),
+            ),
           ),
           const GapHorizontal8(),
           BodyMedium('${driver.number}'),
