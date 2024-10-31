@@ -6,8 +6,7 @@ import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
-import 'grand_prix_bet_row.dart';
-import 'grand_prix_bet_table.dart';
+import 'grand_prix_bet_item.dart';
 import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetQualifications extends StatelessWidget {
@@ -56,34 +55,32 @@ class GrandPrixBetQualifications extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GrandPrixBetTable(
-          rows: List.generate(
-            20,
-            (int itemIndex) {
-              final int qualiNumber = itemIndex > 14
-                  ? 1
-                  : itemIndex > 9
-                      ? 2
-                      : 3;
+        ...List.generate(
+          20,
+          (int itemIndex) {
+            final int qualiNumber = itemIndex > 14
+                ? 1
+                : itemIndex > 9
+                    ? 2
+                    : 3;
 
-              return GrandPrixBetRow(
-                label: 'Q$qualiNumber P${itemIndex + 1}',
-                labelColor: switch (itemIndex) {
-                  0 => customColors?.p1,
-                  1 => customColors?.p2,
-                  2 => customColors?.p3,
-                  _ => null,
-                },
-                betChild: GrandPrixBetDriverDescription(
-                  driverId: betStandings?[itemIndex],
-                ),
-                resultsChild: GrandPrixBetDriverDescription(
-                  driverId: resultsStandings?[itemIndex],
-                ),
-                points: positionsPoints?[itemIndex],
-              );
-            },
-          ),
+            return GrandPrixBetItem(
+              label: 'Q$qualiNumber P${itemIndex + 1}',
+              labelColor: switch (itemIndex) {
+                0 => customColors?.p1,
+                1 => customColors?.p2,
+                2 => customColors?.p3,
+                _ => null,
+              },
+              betChild: GrandPrixBetDriverDescription(
+                driverId: betStandings?[itemIndex],
+              ),
+              resultsChild: GrandPrixBetDriverDescription(
+                driverId: resultsStandings?[itemIndex],
+              ),
+              points: positionsPoints?[itemIndex],
+            );
+          },
         ),
         GrandPrixBetPointsSummary(
           details: [

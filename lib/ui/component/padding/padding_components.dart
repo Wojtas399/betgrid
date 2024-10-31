@@ -23,3 +23,10 @@ class Padding24 extends CustomPadding {
     required super.child,
   }) : super(padding: 24);
 }
+
+class Padding16 extends CustomPadding {
+  const Padding16({
+    super.key,
+    required super.child,
+  }) : super(padding: 16);
+}

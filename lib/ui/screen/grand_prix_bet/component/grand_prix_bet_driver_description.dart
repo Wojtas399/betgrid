@@ -21,11 +21,6 @@ class GrandPrixBetDriverDescription extends StatelessWidget {
 
     return driver != null
         ? DriverDescription(driver: driver)
-        : const Center(
-            child: TitleMedium(
-              '--',
-              fontWeight: FontWeight.bold,
-            ),
-          );
+        : const TitleMedium('--');
   }
 }
