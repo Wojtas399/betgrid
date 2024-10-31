@@ -48,9 +48,7 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
               context,
             ),
           ),
-        ).separated(
-          const Divider(),
-        ),
+        ).separated(const Divider()),
       ],
     );
   }

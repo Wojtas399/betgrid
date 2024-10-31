@@ -74,10 +74,10 @@ class GrandPrixBetQualifications extends StatelessWidget {
                   2 => customColors?.p3,
                   _ => null,
                 },
-                betChild: DriverDescription(
+                betChild: GrandPrixBetDriverDescription(
                   driverId: betStandings?[itemIndex],
                 ),
-                resultsChild: DriverDescription(
+                resultsChild: GrandPrixBetDriverDescription(
                   driverId: resultsStandings?[itemIndex],
                 ),
                 points: positionsPoints?[itemIndex],

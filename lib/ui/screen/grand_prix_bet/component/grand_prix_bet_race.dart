@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
+import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_driver_description.dart';
 import 'grand_prix_bet_row.dart';
@@ -71,8 +73,12 @@ class GrandPrixBetRace extends StatelessWidget {
                     4 => customColors?.fastestLap,
                     _ => null,
                   },
-                  betChild: DriverDescription(driverId: betDriverId),
-                  resultsChild: DriverDescription(driverId: resultsDriverId),
+                  betChild: GrandPrixBetDriverDescription(
+                    driverId: betDriverId,
+                  ),
+                  resultsChild: GrandPrixBetDriverDescription(
+                    driverId: resultsDriverId,
+                  ),
                   points: switch (index) {
                     0 => racePointsDetails?.p1Points,
                     1 => racePointsDetails?.p2Points,
@@ -89,9 +95,11 @@ class GrandPrixBetRace extends StatelessWidget {
               betChild: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...?grandPrixBet?.dnfDriverIds.map(
-                    (e) => DriverDescription(driverId: e),
-                  ),
+                  ...?grandPrixBet?.dnfDriverIds
+                      .map(
+                        (e) => GrandPrixBetDriverDescription(driverId: e),
+                      )
+                      .separated(const GapVertical8()),
                 ],
               ),
               resultsChild: Column(
@@ -99,9 +107,9 @@ class GrandPrixBetRace extends StatelessWidget {
                 children: [
                   if (raceResults?.dnfDriverIds.isNotEmpty == true)
                     ...?raceResults?.dnfDriverIds.map(
-                      (e) => DriverDescription(driverId: e),
+                      (e) => GrandPrixBetDriverDescription(driverId: e),
                     ),
-                  if (raceResults?.dnfDriverIds.isEmpty == true)
+                  if (raceResults?.dnfDriverIds.isEmpty != false)
                     BodyMedium(
                       context.str.lack,
                       fontWeight: FontWeight.bold,

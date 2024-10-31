@@ -87,7 +87,6 @@ class _SelectedDrivers extends StatelessWidget {
                 ],
               ),
             )
-            .toList()
             .separated(const GapVertical8()),
       ],
     );
@@ -128,10 +127,7 @@ class _ListOfDriversToSelect extends StatelessWidget {
                           .onDnfDriverSelected(driver.id),
                     ),
                   )
-                  .toList()
-                  .separated(
-                    const SizedBox(height: 16),
-                  ),
+                  .separated(const SizedBox(height: 16)),
             ],
           ),
         ),

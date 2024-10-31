@@ -128,10 +128,7 @@ class _DnfDrivers extends StatelessWidget {
                 .map(
                   (Driver driver) => DriverDescription(driver: driver),
                 )
-                .toList()
-                .separated(
-                  const GapVertical16(),
-                ),
+                .separated(const GapVertical16()),
             const GapVertical16(),
           ],
           OutlinedButton(
