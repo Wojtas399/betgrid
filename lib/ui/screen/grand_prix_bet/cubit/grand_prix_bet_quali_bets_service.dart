@@ -18,6 +18,8 @@ class GrandPrixBetQualiBetsService {
   final DriverRepository _driverRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
+  final String _playerId;
+  final String _grandPrixId;
 
   GrandPrixBetQualiBetsService(
     this._grandPrixBetRepository,
@@ -25,56 +27,43 @@ class GrandPrixBetQualiBetsService {
     this._driverRepository,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
+    @factoryParam this._playerId,
+    @factoryParam this._grandPrixId,
   );
 
-  Stream<List<SingleDriverBet>> getQualiBets({
-    required String playerId,
-    required String grandPrixId,
-  }) =>
-      Rx.combineLatest4(
-        _getBetQualiStandingsByDriverIds(playerId, grandPrixId),
-        _getResultQualiStandingsByDriverIds(grandPrixId),
-        _driverRepository.getAllDrivers(),
-        _getQualiBetPoints(playerId, grandPrixId),
-        _prepareQualiBets,
-      );
+  Stream<List<SingleDriverBet>> getQualiBets() {
+    return Rx.combineLatest4(
+      _getBetQualiStandingsByDriverIds(),
+      _getResultQualiStandingsByDriverIds(),
+      _driverRepository.getAllDrivers(),
+      _getQualiBetPoints(),
+      _prepareQualiBets,
+    );
+  }
 
-  Stream<List<String?>?> _getBetQualiStandingsByDriverIds(
-    String playerId,
-    String grandPrixId,
-  ) =>
-      _grandPrixBetRepository
-          .getGrandPrixBetForPlayerAndGrandPrix(
-            playerId: playerId,
-            grandPrixId: grandPrixId,
-          )
-          .map(
-            (grandPrixBet) => grandPrixBet?.qualiStandingsByDriverIds,
-          );
+  Stream<List<String?>?> _getBetQualiStandingsByDriverIds() {
+    return _grandPrixBetRepository
+        .getGrandPrixBetForPlayerAndGrandPrix(
+          playerId: _playerId,
+          grandPrixId: _grandPrixId,
+        )
+        .map((grandPrixBet) => grandPrixBet?.qualiStandingsByDriverIds);
+  }
 
-  Stream<List<String?>?> _getResultQualiStandingsByDriverIds(
-    String grandPrixId,
-  ) =>
-      _grandPrixResultsRepository
-          .getGrandPrixResultsForGrandPrix(
-            grandPrixId: grandPrixId,
-          )
-          .map(
-            (grandPrixResults) => grandPrixResults?.qualiStandingsByDriverIds,
-          );
+  Stream<List<String?>?> _getResultQualiStandingsByDriverIds() {
+    return _grandPrixResultsRepository
+        .getGrandPrixResultsForGrandPrix(grandPrixId: _grandPrixId)
+        .map((grandPrixResults) => grandPrixResults?.qualiStandingsByDriverIds);
+  }
 
-  Stream<QualiBetPoints?> _getQualiBetPoints(
-    String playerId,
-    String grandPrixId,
-  ) =>
-      _grandPrixBetPointsRepository
-          .getGrandPrixBetPointsForPlayerAndGrandPrix(
-            playerId: playerId,
-            grandPrixId: grandPrixId,
-          )
-          .map(
-            (grandPrixBetPoints) => grandPrixBetPoints?.qualiBetPoints,
-          );
+  Stream<QualiBetPoints?> _getQualiBetPoints() {
+    return _grandPrixBetPointsRepository
+        .getGrandPrixBetPointsForPlayerAndGrandPrix(
+          playerId: _playerId,
+          grandPrixId: _grandPrixId,
+        )
+        .map((grandPrixBetPoints) => grandPrixBetPoints?.qualiBetPoints);
+  }
 
   List<SingleDriverBet> _prepareQualiBets(
     List<String?>? betQualiStandingsByDriverIds,

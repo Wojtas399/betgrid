@@ -21,20 +21,22 @@ void main() {
   final driverRepository = MockDriverRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
+  const String playerId = 'p1';
+  const String grandPrixId = 'gp1';
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
     driverRepository,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
+    playerId,
+    grandPrixId,
   );
 
   test(
     'should create list with 20 SingleDriverBet elements where each element '
     'has data corresponding to its position',
     () async {
-      const String playerId = 'p1';
-      const String grandPrixId = 'gp1';
       final List<Driver> allDrivers = List.generate(
         20,
         (int driverIndex) => DriverCreator(
@@ -249,10 +251,7 @@ void main() {
         ),
       ).thenReturn(BetStatus.win);
 
-      final Stream<List<SingleDriverBet>> bets$ = service.getQualiBets(
-        playerId: playerId,
-        grandPrixId: grandPrixId,
-      );
+      final Stream<List<SingleDriverBet>> bets$ = service.getQualiBets();
 
       expect(await bets$.first, expectedBets);
     },
