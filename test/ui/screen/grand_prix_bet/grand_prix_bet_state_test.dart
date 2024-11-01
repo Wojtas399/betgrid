@@ -22,6 +22,13 @@ void main() {
         grandPrixBet: null,
         grandPrixBetPoints: null,
         allDrivers: null,
+        qualiBets: null,
+        racePodiumBets: null,
+        raceP10Bet: null,
+        raceFastestLapBet: null,
+        raceDnfDriversBet: null,
+        raceSafetyCarBet: null,
+        raceRedFlagBet: null,
       );
 
       const defaultState = GrandPrixBetState();
@@ -465,6 +472,317 @@ void main() {
           state = state.copyWith(allDrivers: null);
 
           expect(state.allDrivers, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith qualiBets',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final List<SingleDriverBet> newValue = List.generate(
+            20,
+            (int i) => SingleDriverBet(
+              status: BetStatus.pending,
+              betDriver: DriverCreator(id: 'd${i + 1}').createEntity(),
+              resultDriver: DriverCreator(id: 'd${i + 1}').createEntity(),
+              points: 10.2,
+            ),
+          );
+
+          state = state.copyWith(qualiBets: newValue);
+
+          expect(state.qualiBets, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final List<SingleDriverBet>? currentValue = state.qualiBets;
+
+          state = state.copyWith();
+
+          expect(state.qualiBets, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(qualiBets: null);
+
+          expect(state.qualiBets, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith racePodiumBets',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final List<SingleDriverBet> newValue = List.generate(
+            3,
+            (int i) => SingleDriverBet(
+              status: BetStatus.pending,
+              betDriver: DriverCreator(id: 'd${i + 1}').createEntity(),
+              resultDriver: DriverCreator(id: 'd${i + 1}').createEntity(),
+              points: 10.2,
+            ),
+          );
+
+          state = state.copyWith(racePodiumBets: newValue);
+
+          expect(state.racePodiumBets, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final List<SingleDriverBet>? currentValue = state.racePodiumBets;
+
+          state = state.copyWith();
+
+          expect(state.racePodiumBets, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(racePodiumBets: null);
+
+          expect(state.racePodiumBets, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith raceP10Bet',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final SingleDriverBet newValue = SingleDriverBet(
+            status: BetStatus.pending,
+            betDriver: const DriverCreator(id: 'd1').createEntity(),
+            resultDriver: const DriverCreator(id: 'd1').createEntity(),
+            points: 10.2,
+          );
+
+          state = state.copyWith(raceP10Bet: newValue);
+
+          expect(state.raceP10Bet, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final SingleDriverBet? currentValue = state.raceP10Bet;
+
+          state = state.copyWith();
+
+          expect(state.raceP10Bet, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(raceP10Bet: null);
+
+          expect(state.raceP10Bet, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith raceFastestLapBet',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final SingleDriverBet newValue = SingleDriverBet(
+            status: BetStatus.pending,
+            betDriver: const DriverCreator(id: 'd1').createEntity(),
+            resultDriver: const DriverCreator(id: 'd1').createEntity(),
+            points: 10.2,
+          );
+
+          state = state.copyWith(raceFastestLapBet: newValue);
+
+          expect(state.raceFastestLapBet, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final SingleDriverBet? currentValue = state.raceFastestLapBet;
+
+          state = state.copyWith();
+
+          expect(state.raceFastestLapBet, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(raceFastestLapBet: null);
+
+          expect(state.raceFastestLapBet, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith raceDnfDriversBet',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          final MultipleDriversBet newValue = MultipleDriversBet(
+            status: BetStatus.pending,
+            betDrivers: [
+              const DriverCreator(id: 'd1').createEntity(),
+            ],
+            resultDrivers: [
+              const DriverCreator(id: 'd1').createEntity(),
+            ],
+            points: 10.2,
+          );
+
+          state = state.copyWith(raceDnfDriversBet: newValue);
+
+          expect(state.raceDnfDriversBet, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final MultipleDriversBet? currentValue = state.raceDnfDriversBet;
+
+          state = state.copyWith();
+
+          expect(state.raceDnfDriversBet, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(raceDnfDriversBet: null);
+
+          expect(state.raceDnfDriversBet, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWith raceSafetyCarBet',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          const BooleanBet newValue = BooleanBet(
+            status: BetStatus.pending,
+            betValue: true,
+            resultValue: true,
+            points: 10.2,
+          );
+
+          state = state.copyWith(raceSafetyCarBet: newValue);
+
+          expect(state.raceSafetyCarBet, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final BooleanBet? currentValue = state.raceSafetyCarBet;
+
+          state = state.copyWith();
+
+          expect(state.raceSafetyCarBet, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(raceSafetyCarBet: null);
+
+          expect(state.raceSafetyCarBet, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'copyWithraceRedFlagBet',
+    () {
+      GrandPrixBetState state = const GrandPrixBetState();
+
+      test(
+        'should set new value if passed value is not null',
+        () {
+          const BooleanBet newValue = BooleanBet(
+            status: BetStatus.pending,
+            betValue: true,
+            resultValue: true,
+            points: 10.2,
+          );
+
+          state = state.copyWith(raceRedFlagBet: newValue);
+
+          expect(state.raceRedFlagBet, newValue);
+        },
+      );
+
+      test(
+        'should not change current value if passed value is not specified',
+        () {
+          final BooleanBet? currentValue = state.raceRedFlagBet;
+
+          state = state.copyWith();
+
+          expect(state.raceRedFlagBet, currentValue);
+        },
+      );
+
+      test(
+        'should set null if passed value is null',
+        () {
+          state = state.copyWith(raceRedFlagBet: null);
+
+          expect(state.raceRedFlagBet, null);
         },
       );
     },
