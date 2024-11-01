@@ -58,7 +58,6 @@ class _Header extends StatelessWidget {
         children: [
           LabelLarge(
             label,
-            textAlign: TextAlign.center,
             fontWeight: FontWeight.bold,
             color: labelColor,
           ),
@@ -89,8 +88,18 @@ class _Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                LabelMedium(
+                  context.str.grandPrixBetChoice,
+                  fontWeight: FontWeight.w300,
+                ),
+                const GapVertical4(),
                 betChild,
-                const GapVertical16(),
+                const GapVertical8(),
+                LabelMedium(
+                  context.str.grandPrixBetResult,
+                  fontWeight: FontWeight.w300,
+                ),
+                const GapVertical4(),
                 resultsChild,
               ],
             ),

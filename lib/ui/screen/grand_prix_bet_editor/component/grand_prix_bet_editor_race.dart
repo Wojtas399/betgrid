@@ -29,7 +29,7 @@ class GrandPrixBetEditorRace extends StatelessWidget {
           const GrandPrixBetEditorRacePodiumAndP10(),
           const Divider(height: 32),
           _SectionHeader(
-            title: context.str.grandPrixBetEditorFastestLapTitle,
+            title: context.str.fastestLap,
             subtitle: context.str.grandPrixBetEditorFastestLapSubtitle,
           ),
           const GapVertical16(),
@@ -43,14 +43,14 @@ class GrandPrixBetEditorRace extends StatelessWidget {
           const _DnfDrivers(),
           const Divider(height: 32),
           _SectionHeader(
-            title: context.str.grandPrixBetEditorSafetyCarTitle,
+            title: context.str.safetyCar,
             subtitle: context.str.grandPrixBetEditorSafetyCarSubtitle,
           ),
           const GapVertical16(),
           const _SafetyCar(),
           const Divider(height: 32),
           _SectionHeader(
-            title: context.str.grandPrixBetEditorRedFlagTitle,
+            title: context.str.redFlag,
             subtitle: context.str.grandPrixBetEditorRedFlagSubtitle,
           ),
           const GapVertical16(),

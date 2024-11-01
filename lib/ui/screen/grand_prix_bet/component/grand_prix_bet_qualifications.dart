@@ -105,31 +105,31 @@ class _Summary extends StatelessWidget {
       details: [
         GrandPrixPointsSummaryDetail(
           label: 'Q1',
-          value: '${qualiPointsDetails?.q1Points ?? '--'}',
+          value: qualiPointsDetails?.q1Points,
         ),
         GrandPrixPointsSummaryDetail(
           label: 'Q2',
-          value: '${qualiPointsDetails?.q2Points ?? '--'}',
+          value: qualiPointsDetails?.q2Points,
         ),
         GrandPrixPointsSummaryDetail(
           label: 'Q3',
-          value: '${qualiPointsDetails?.q3Points ?? '--'}',
+          value: qualiPointsDetails?.q3Points,
         ),
         GrandPrixPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q1',
-          value: qualiPointsDetails?.q1Multiplier?.toString() ?? '--',
+          value: qualiPointsDetails?.q1Multiplier,
         ),
         GrandPrixPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q2',
-          value: qualiPointsDetails?.q2Multiplier?.toString() ?? '--',
+          value: qualiPointsDetails?.q2Multiplier,
         ),
         GrandPrixPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q3',
-          value: qualiPointsDetails?.q3Multiplier?.toString() ?? '--',
+          value: qualiPointsDetails?.q3Multiplier,
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetMultiplier,
-          value: qualiPointsDetails?.multiplier?.toString() ?? '--',
+          value: qualiPointsDetails?.multiplier,
         ),
       ],
       totalPoints: qualiPointsDetails?.totalPoints,

@@ -26,8 +26,10 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
               (detail) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BodyMedium('${detail.label}:'),
-                  BodyMedium(detail.value ?? '--'),
+                  BodyMedium(detail.label),
+                  BodyMedium(
+                    detail.value?.toString() ?? context.str.doubleDash,
+                  ),
                 ],
               ),
             ),
@@ -35,9 +37,9 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TitleMedium('${context.str.grandPrixBetTotal}: '),
+                TitleMedium(context.str.grandPrixBetTotal),
                 TitleMedium(
-                  '${totalPoints ?? '--'}',
+                  totalPoints?.toString() ?? context.str.doubleDash,
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
                 ),
@@ -50,7 +52,7 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
 
 class GrandPrixPointsSummaryDetail {
   final String label;
-  final String? value;
+  final double? value;
 
   const GrandPrixPointsSummaryDetail({
     required this.label,
