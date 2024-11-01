@@ -82,8 +82,8 @@ class SingleDriverBet extends Bet {
 }
 
 class MultipleDriversBet extends Bet {
-  final List<Driver>? betDrivers;
-  final List<Driver>? resultDrivers;
+  final List<Driver?>? betDrivers;
+  final List<Driver?>? resultDrivers;
   final double? points;
 
   const MultipleDriversBet({
