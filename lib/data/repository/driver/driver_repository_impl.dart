@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../model/driver.dart';
 import '../../firebase/model/driver_dto.dart';
@@ -13,6 +14,7 @@ class DriverRepositoryImpl extends Repository<Driver>
     implements DriverRepository {
   final FirebaseDriverService _dbDriverService;
   final DriverMapper _driverMapper;
+  final _getAllDriversMutex = Mutex();
 
   DriverRepositoryImpl(
     this._dbDriverService,
@@ -21,8 +23,12 @@ class DriverRepositoryImpl extends Repository<Driver>
 
   @override
   Stream<List<Driver>> getAllDrivers() async* {
+    await _getAllDriversMutex.acquire();
     if (isRepositoryStateEmpty) await _fetchAllDriversFromDb();
     await for (final allDrivers in repositoryState$) {
+      if (_getAllDriversMutex.isLocked) {
+        _getAllDriversMutex.release();
+      }
       yield allDrivers;
     }
   }
