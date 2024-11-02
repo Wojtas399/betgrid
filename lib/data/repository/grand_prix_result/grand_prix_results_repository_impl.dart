@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_results.dart';
 import '../../../ui/extensions/stream_extensions.dart';
@@ -14,6 +15,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     implements GrandPrixResultsRepository {
   final FirebaseGrandPrixResultsService _dbGrandPrixResultsService;
   final GrandPrixResultsMapper _grandPrixResultsMapper;
+  final _getGrandPrixResultsForGrandPrixMutex = Mutex();
 
   GrandPrixResultsRepositoryImpl(
     this._dbGrandPrixResultsService,
@@ -24,11 +26,15 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
   Stream<GrandPrixResults?> getGrandPrixResultsForGrandPrix({
     required String grandPrixId,
   }) async* {
+    await _getGrandPrixResultsForGrandPrixMutex.acquire();
     await for (final grandPrixesResults in repositoryState$) {
       GrandPrixResults? matchingGpResults = grandPrixesResults.firstWhereOrNull(
         (gpResults) => gpResults.grandPrixId == grandPrixId,
       );
       matchingGpResults ??= await _fetchResultsForGrandPrixFromDb(grandPrixId);
+      if (_getGrandPrixResultsForGrandPrixMutex.isLocked) {
+        _getGrandPrixResultsForGrandPrixMutex.release();
+      }
       yield matchingGpResults;
     }
   }
