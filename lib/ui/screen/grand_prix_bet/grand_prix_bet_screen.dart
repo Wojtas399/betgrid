@@ -6,8 +6,6 @@ import '../../../dependency_injection.dart';
 import 'component/grand_prix_bet_content.dart';
 import 'cubit/grand_prix_bet_cubit.dart';
 
-//TODO: Improve the UI of this screen
-
 @RoutePage()
 class GrandPrixBetScreen extends StatelessWidget {
   final String grandPrixId;
@@ -21,11 +19,10 @@ class GrandPrixBetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<GrandPrixBetCubit>()
-          ..initialize(
-            playerId: playerId,
-            grandPrixId: grandPrixId,
-          ),
+        create: (_) => getIt.get<GrandPrixBetCubit>(
+          param1: playerId,
+          param2: grandPrixId,
+        )..initialize(),
         child: const GrandPrixBetContent(),
       );
 }
