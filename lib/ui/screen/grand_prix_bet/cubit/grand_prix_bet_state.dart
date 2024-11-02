@@ -1,11 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../model/driver.dart';
-import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
-import '../../../../model/grand_prix_results.dart';
 
 part 'grand_prix_bet_state.freezed.dart';
 
@@ -32,10 +29,6 @@ class GrandPrixBetState with _$GrandPrixBetState {
     String? grandPrixName,
     String? playerUsername,
     bool? isPlayerIdSameAsLoggedUserId,
-    GrandPrixBet? grandPrixBet,
-    GrandPrixResults? grandPrixResults,
-    GrandPrixBetPoints? grandPrixBetPoints,
-    List<Driver>? allDrivers,
     List<SingleDriverBet>? qualiBets,
     List<SingleDriverBet>? racePodiumBets,
     SingleDriverBet? raceP10Bet,
@@ -43,11 +36,8 @@ class GrandPrixBetState with _$GrandPrixBetState {
     MultipleDriversBet? raceDnfDriversBet,
     BooleanBet? raceSafetyCarBet,
     BooleanBet? raceRedFlagBet,
+    GrandPrixBetPoints? grandPrixBetPoints,
   }) = _GrandPrixBetState;
-
-  Driver? getDriverById(String driverId) => allDrivers?.firstWhereOrNull(
-        (element) => element.id == driverId,
-      );
 }
 
 enum BetStatus { pending, win, loss }
