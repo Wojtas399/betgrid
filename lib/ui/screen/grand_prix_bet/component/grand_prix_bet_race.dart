@@ -46,6 +46,7 @@ class _P1 extends StatelessWidget {
     return GrandPrixBetItem(
       label: 'P1',
       labelColor: context.customColors?.p1,
+      betStatus: bet?.status,
       betChild: DriverDescription(driver: bet?.betDriver),
       resultsChild: DriverDescription(driver: bet?.resultDriver),
       points: bet?.points,
@@ -65,6 +66,7 @@ class _P2 extends StatelessWidget {
     return GrandPrixBetItem(
       label: 'P2',
       labelColor: context.customColors?.p2,
+      betStatus: bet?.status,
       betChild: DriverDescription(driver: bet?.betDriver),
       resultsChild: DriverDescription(driver: bet?.resultDriver),
       points: bet?.points,
@@ -84,6 +86,7 @@ class _P3 extends StatelessWidget {
     return GrandPrixBetItem(
       label: 'P3',
       labelColor: context.customColors?.p3,
+      betStatus: bet?.status,
       betChild: DriverDescription(driver: bet?.betDriver),
       resultsChild: DriverDescription(driver: bet?.resultDriver),
       points: bet?.points,
@@ -102,6 +105,7 @@ class _P10 extends StatelessWidget {
 
     return GrandPrixBetItem(
       label: 'P10',
+      betStatus: bet?.status,
       betChild: DriverDescription(driver: bet?.betDriver),
       resultsChild: DriverDescription(driver: bet?.resultDriver),
       points: bet?.points,
@@ -120,6 +124,7 @@ class _FastestLap extends StatelessWidget {
 
     return GrandPrixBetItem(
       label: context.str.fastestLap,
+      betStatus: bet?.status,
       betChild: DriverDescription(driver: bet?.betDriver),
       resultsChild: DriverDescription(driver: bet?.resultDriver),
       points: bet?.points,
@@ -140,6 +145,7 @@ class _DnfDrivers extends StatelessWidget {
 
     return GrandPrixBetItem(
       label: 'DNF',
+      betStatus: bet?.status,
       betChild: Column(
         children: [
           if (betDnfDrivers != null)
@@ -178,6 +184,7 @@ class _SafetyCar extends StatelessWidget {
 
     return GrandPrixBetItem(
       label: context.str.safetyCar,
+      betStatus: bet?.status,
       betChild: betSafetyCarStr != null
           ? BodyMedium(betSafetyCarStr)
           : const GrandPrixBetNoDataField(),
@@ -202,6 +209,7 @@ class _RedFlag extends StatelessWidget {
 
     return GrandPrixBetItem(
       label: context.str.redFlag,
+      betStatus: bet?.status,
       betChild: betRedFlagStr != null
           ? Text(betRedFlagStr)
           : const GrandPrixBetNoDataField(),

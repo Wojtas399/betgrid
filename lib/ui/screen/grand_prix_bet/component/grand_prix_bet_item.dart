@@ -5,10 +5,12 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../cubit/grand_prix_bet_state.dart';
 
 class GrandPrixBetItem extends StatelessWidget {
   final String label;
   final Color? labelColor;
+  final BetStatus? betStatus;
   final Widget betChild;
   final Widget resultsChild;
   final double? points;
@@ -17,6 +19,7 @@ class GrandPrixBetItem extends StatelessWidget {
     super.key,
     required this.label,
     this.labelColor,
+    required this.betStatus,
     required this.betChild,
     required this.resultsChild,
     this.points,
@@ -30,6 +33,7 @@ class GrandPrixBetItem extends StatelessWidget {
               _Header(
                 label: label,
                 labelColor: labelColor,
+                betStatus: betStatus,
               ),
               const Divider(height: 24),
               _Body(
@@ -46,10 +50,12 @@ class GrandPrixBetItem extends StatelessWidget {
 class _Header extends StatelessWidget {
   final String label;
   final Color? labelColor;
+  final BetStatus? betStatus;
 
   const _Header({
     required this.label,
     required this.labelColor,
+    required this.betStatus,
   });
 
   @override
@@ -61,11 +67,20 @@ class _Header extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: labelColor,
           ),
-          Icon(
-            Icons.access_time,
-            size: 20,
-            color: context.colorScheme.outline,
-          ),
+          if (betStatus != null)
+            Icon(
+              switch (betStatus!) {
+                BetStatus.pending => Icons.access_time,
+                BetStatus.win => Icons.check_circle,
+                BetStatus.loss => Icons.close,
+              },
+              size: 20,
+              color: switch (betStatus!) {
+                BetStatus.pending => context.colorScheme.outline,
+                BetStatus.win => context.customColors?.win,
+                BetStatus.loss => context.customColors?.loss,
+              },
+            ),
         ],
       );
 }

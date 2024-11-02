@@ -49,6 +49,7 @@ class _Positions extends StatelessWidget {
                       2 => customColors?.p3,
                       _ => null,
                     },
+                    betStatus: bet.status,
                     betChild: DriverDescription(driver: bet.betDriver),
                     resultsChild: DriverDescription(driver: bet.resultDriver),
                     points: bet.points,

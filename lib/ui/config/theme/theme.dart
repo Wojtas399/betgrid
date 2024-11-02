@@ -12,6 +12,8 @@ class AppTheme {
             p2: const Color(0xFF565d5a),
             p3: const Color(0xFF764d2c),
             fastestLap: const Color(0xFF6118a6),
+            win: const Color(0xFF48AB50),
+            loss: const Color(0xFFD91A20),
           ),
         ],
       );
@@ -24,8 +26,10 @@ class AppTheme {
           CustomColors(
             p1: const Color(0xFFFFE629),
             p2: const Color(0xFFB9C4bE),
-            p3: const Color(0xFFc4a482),
-            fastestLap: const Color(0xFFc26eff),
+            p3: const Color(0xFFC4A482),
+            fastestLap: const Color(0xFFC26Eff),
+            win: const Color(0xFF63D169),
+            loss: const Color(0xFFDC2828),
           ),
         ],
       );
