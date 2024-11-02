@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../component/dialog/actions_dialog_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
@@ -77,22 +78,23 @@ class _AvatarButtons extends StatelessWidget {
 
   Future<_AvatarImageSource?> _askForAvatarImageSource(
     BuildContext context,
-  ) async =>
-      await askForAction<_AvatarImageSource>(
-        title: context.str.requiredDataCompletionSelectAvatarSource,
-        actions: [
-          ActionsDialogItem(
-            icon: const Icon(Icons.image),
-            label: context.str.requiredDataCompletionAvatarSelectionGallery,
-            value: _AvatarImageSource.gallery,
-          ),
-          ActionsDialogItem(
-            icon: const Icon(Icons.camera_alt),
-            label: context.str.requiredDataCompletionAvatarSelectionCamera,
-            value: _AvatarImageSource.camera,
-          ),
-        ],
-      );
+  ) async {
+    return await getIt<DialogService>().askForAction<_AvatarImageSource>(
+      title: context.str.requiredDataCompletionSelectAvatarSource,
+      actions: [
+        ActionsDialogItem(
+          icon: const Icon(Icons.image),
+          label: context.str.requiredDataCompletionAvatarSelectionGallery,
+          value: _AvatarImageSource.gallery,
+        ),
+        ActionsDialogItem(
+          icon: const Icon(Icons.camera_alt),
+          label: context.str.requiredDataCompletionAvatarSelectionCamera,
+          value: _AvatarImageSource.camera,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

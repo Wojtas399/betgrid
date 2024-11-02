@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../component/button/big_button.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -54,14 +55,17 @@ class _State extends State<ProfileUsernameDialog> {
   }
 
   void _onProfileStateStatusChanged(ProfileStateStatus status) {
+    final dialogService = getIt<DialogService>();
     if (status.isLoading) {
-      showLoadingDialog();
+      dialogService.showLoadingDialog();
     } else if (status.isUsernameUpdated) {
-      closeLoadingDialog();
+      dialogService.closeLoadingDialog();
       context.maybePop();
-      showSnackbarMessage(context.str.profileSuccessfullySavedUsername);
+      dialogService.showSnackbarMessage(
+        context.str.profileSuccessfullySavedUsername,
+      );
     } else if (status.isNewUsernameAlreadyTaken) {
-      closeLoadingDialog();
+      dialogService.closeLoadingDialog();
       setState(() {
         _isUsernameAlreadyTaken = true;
       });

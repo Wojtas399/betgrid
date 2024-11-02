@@ -41,11 +41,14 @@ class _CubitStatusListener extends StatelessWidget {
     BuildContext context,
     GrandPrixBetEditorStateStatus status,
   ) {
+    final dialogService = getIt<DialogService>();
     if (status == GrandPrixBetEditorStateStatus.saving) {
-      showLoadingDialog();
+      dialogService.showLoadingDialog();
     } else if (status == GrandPrixBetEditorStateStatus.successfullySaved) {
-      closeLoadingDialog();
-      showSnackbarMessage(context.str.grandPrixBetEditorSuccessfullySavedBets);
+      dialogService.closeLoadingDialog();
+      dialogService.showSnackbarMessage(
+        context.str.grandPrixBetEditorSuccessfullySavedBets,
+      );
       context.maybePop();
     }
   }

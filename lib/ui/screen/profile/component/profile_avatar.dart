@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../component/avatar_component.dart';
 import '../../../component/dialog/actions_dialog_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -31,7 +32,7 @@ class ProfileAvatar extends StatelessWidget {
   }
 
   Future<_AvatarActions?> _askForAvatarAction(BuildContext context) async =>
-      await askForAction<_AvatarActions>(
+      await getIt<DialogService>().askForAction<_AvatarActions>(
         title: context.str.profileAvatarActionsTitle,
         actions: [
           ActionsDialogItem(
@@ -60,17 +61,19 @@ class ProfileAvatar extends StatelessWidget {
       ImageSource.camera => capturePhoto(),
       ImageSource.gallery => pickImage(),
     };
+    final dialogService = getIt<DialogService>();
     if (newAvatarImgPath != null && context.mounted) {
-      showLoadingDialog();
+      dialogService.showLoadingDialog();
       await context.read<ProfileCubit>().updateAvatar(newAvatarImgPath);
-      closeLoadingDialog();
+      dialogService.closeLoadingDialog();
     }
   }
 
   Future<void> _deleteAvatar(BuildContext context) async {
-    showLoadingDialog();
+    final dialogService = getIt<DialogService>();
+    dialogService.showLoadingDialog();
     await context.read<ProfileCubit>().updateAvatar(null);
-    closeLoadingDialog();
+    dialogService.closeLoadingDialog();
   }
 
   @override

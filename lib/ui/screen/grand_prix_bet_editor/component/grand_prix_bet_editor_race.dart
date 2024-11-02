@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../../model/driver.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
@@ -104,7 +105,7 @@ class _DnfDrivers extends StatelessWidget {
   const _DnfDrivers();
 
   Future<void> _onAddDriverPressed(BuildContext context) async {
-    await showFullScreenDialog(
+    await getIt<DialogService>().showFullScreenDialog(
       BlocProvider.value(
         value: context.read<GrandPrixBetEditorCubit>(),
         child: const GrandPrixBetEditorDnfDriversSelectionDialog(),

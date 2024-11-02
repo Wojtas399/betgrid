@@ -31,10 +31,11 @@ class _CubitStatusListener extends StatelessWidget {
     RequiredDataCompletionStateStatus status,
     BuildContext context,
   ) {
+    final dialogService = getIt<DialogService>();
     if (status.isLoading) {
-      showLoadingDialog();
+      dialogService.showLoadingDialog();
     } else if (status.hasDataBeenSaved) {
-      closeLoadingDialog();
+      dialogService.closeLoadingDialog();
       context.maybePop();
     }
   }

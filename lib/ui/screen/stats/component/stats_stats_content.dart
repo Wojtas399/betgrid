@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
@@ -17,7 +18,7 @@ class StatsStatsContent extends StatelessWidget {
   const StatsStatsContent({super.key});
 
   Future<void> _onShowPointsHistoryPreview(BuildContext context) async {
-    await showFullScreenDialog(
+    await getIt<DialogService>().showFullScreenDialog(
       BlocProvider.value(
         value: context.read<StatsCubit>(),
         child: const StatsBetPointsHistoryPreview(),

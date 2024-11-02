@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -12,7 +13,7 @@ class ProfileUsername extends StatelessWidget {
   const ProfileUsername({super.key});
 
   Future<void> _onEdit(BuildContext context) async {
-    await showFullScreenDialog(
+    await getIt<DialogService>().showFullScreenDialog(
       BlocProvider.value(
         value: context.read<ProfileCubit>(),
         child: const ProfileUsernameDialog(),
