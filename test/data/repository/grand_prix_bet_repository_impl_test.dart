@@ -26,67 +26,6 @@ void main() {
     reset(grandPrixBetMapper);
   });
 
-  group(
-    'getAllGrandPrixBetsForPlayer, ',
-    () {
-      final List<GrandPrixBetCreator> grandPrixBetCreators = [
-        GrandPrixBetCreator(id: 'gpb1', grandPrixId: 'gp1'),
-        GrandPrixBetCreator(id: 'gpb2', grandPrixId: 'gp2'),
-        GrandPrixBetCreator(id: 'gpb3', grandPrixId: 'gp3'),
-      ];
-
-      test(
-        'should only emit matching grand prix bets if repo state is not empty',
-        () async {
-          final List<GrandPrixBet> existingGrandPrixBets = grandPrixBetCreators
-              .map((creator) => creator.createEntity())
-              .toList();
-          repositoryImpl.addEntities(existingGrandPrixBets);
-
-          final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-              repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
-
-          expect(await grandPrixBets$.first, existingGrandPrixBets);
-        },
-      );
-
-      test(
-        'should fetch grand prix bets from db, add them to repo state and emit '
-        'them if repo state is empty',
-        () async {
-          final List<GrandPrixBetDto> grandPrixBetDtos = grandPrixBetCreators
-              .map((creator) => creator.createDto())
-              .toList();
-          final List<GrandPrixBet> expectedGrandPrixBets = grandPrixBetCreators
-              .map((creator) => creator.createEntity())
-              .toList();
-          dbGrandPrixBetService.mockFetchAllGrandPrixBets(grandPrixBetDtos);
-          when(
-            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.first),
-          ).thenReturn(expectedGrandPrixBets.first);
-          when(
-            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos[1]),
-          ).thenReturn(expectedGrandPrixBets[1]);
-          when(
-            () => grandPrixBetMapper.mapFromDto(grandPrixBetDtos.last),
-          ).thenReturn(expectedGrandPrixBets.last);
-
-          final Stream<List<GrandPrixBet>?> grandPrixBets$ =
-              repositoryImpl.getAllGrandPrixBetsForPlayer(playerId: playerId);
-
-          expect(await grandPrixBets$.first, expectedGrandPrixBets);
-          expect(
-            await repositoryImpl.repositoryState$.first,
-            expectedGrandPrixBets,
-          );
-          verify(
-            () => dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId),
-          ).called(1);
-        },
-      );
-    },
-  );
-
   test(
     'getGrandPrixBetsForPlayersAndGrandPrixes, '
     'should emit bets which already exists in repo state and should fetch bets '

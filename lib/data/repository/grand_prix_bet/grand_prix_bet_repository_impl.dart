@@ -25,16 +25,6 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   );
 
   @override
-  Stream<List<GrandPrixBet>?> getAllGrandPrixBetsForPlayer({
-    required String playerId,
-  }) async* {
-    if (isRepositoryStateEmpty) await _fetchAllGrandPrixBetsFromDb(playerId);
-    await for (final grandPrixBets in repositoryState$) {
-      yield grandPrixBets;
-    }
-  }
-
-  @override
   Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayersAndGrandPrixes({
     required List<String> idsOfPlayers,
     required List<String> idsOfGrandPrixes,
@@ -162,14 +152,6 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
           _grandPrixBetMapper.mapFromDto(updatedGrandPrixBetDto);
       updateEntity(updatedGrandPrixBet);
     }
-  }
-
-  Future<void> _fetchAllGrandPrixBetsFromDb(String playerId) async {
-    final List<GrandPrixBetDto> grandPrixBetDtos =
-        await _dbGrandPrixBetService.fetchAllGrandPrixBets(userId: playerId);
-    final List<GrandPrixBet> grandPrixBets =
-        grandPrixBetDtos.map(_grandPrixBetMapper.mapFromDto).toList();
-    setEntities(grandPrixBets);
   }
 
   Future<List<GrandPrixBet>> _fetchManyGrandPrixBetsFromDb(

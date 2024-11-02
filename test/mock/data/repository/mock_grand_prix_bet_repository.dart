@@ -4,16 +4,6 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRepository extends Mock
     implements GrandPrixBetRepository {
-  void mockGetAllGrandPrixBetsForPlayer({
-    List<GrandPrixBet>? grandPrixBets,
-  }) {
-    when(
-      () => getAllGrandPrixBetsForPlayer(
-        playerId: any(named: 'playerId'),
-      ),
-    ).thenAnswer((_) => Stream.value(grandPrixBets));
-  }
-
   void mockGetGrandPrixBetsForPlayersAndGrandPrixes({
     required List<GrandPrixBet> grandPrixBets,
   }) {

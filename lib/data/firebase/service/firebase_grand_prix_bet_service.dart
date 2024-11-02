@@ -10,13 +10,6 @@ class FirebaseGrandPrixBetService {
 
   const FirebaseGrandPrixBetService(this._firebaseCollections);
 
-  Future<List<GrandPrixBetDto>> fetchAllGrandPrixBets({
-    required String userId,
-  }) async {
-    final snapshot = await _firebaseCollections.grandPrixesBets(userId).get();
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  }
-
   Future<GrandPrixBetDto?> fetchGrandPrixBetByGrandPrixId({
     required String playerId,
     required String grandPrixId,
