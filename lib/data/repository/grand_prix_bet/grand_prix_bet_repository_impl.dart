@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_bet.dart';
 import '../../../ui/extensions/stream_extensions.dart';
@@ -16,6 +17,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     implements GrandPrixBetRepository {
   final FirebaseGrandPrixBetService _dbGrandPrixBetService;
   final GrandPrixBetMapper _grandPrixBetMapper;
+  final _getGrandPrixBetForPlayerAndGrandprixMutex = Mutex();
 
   GrandPrixBetRepositoryImpl(
     this._dbGrandPrixBetService,
@@ -74,6 +76,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     required String playerId,
     required String grandPrixId,
   }) async* {
+    await _getGrandPrixBetForPlayerAndGrandprixMutex.acquire();
     await for (final grandPrixBets in repositoryState$) {
       GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
         (GrandPrixBet grandPrixBet) =>
@@ -84,6 +87,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
         playerId: playerId,
         grandPrixId: grandPrixId,
       ));
+      if (_getGrandPrixBetForPlayerAndGrandprixMutex.isLocked) {
+        _getGrandPrixBetForPlayerAndGrandprixMutex.release();
+      }
       yield grandPrixBet;
     }
   }
