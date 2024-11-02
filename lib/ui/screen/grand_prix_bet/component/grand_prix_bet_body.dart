@@ -22,20 +22,15 @@ class GrandPrixBetBody extends StatelessWidget {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SingleChildScrollView(
+        : const SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(vertical: 24),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const GapVertical16(),
-                  const _TotalPoints(),
-                  const GapVertical16(),
-                  _Label(label: context.str.qualifications),
-                  const GrandPrixBetQualifications(),
-                  _Label(label: context.str.race),
-                  const GrandPrixBetRace(),
-                  const GapVertical32(),
+                  _TotalPoints(),
+                  GapVertical24(),
+                  GrandPrixBetQualifications(),
+                  GrandPrixBetRace(),
                 ],
               ),
             ),
@@ -69,20 +64,4 @@ class _TotalPoints extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Label extends StatelessWidget {
-  final String label;
-
-  const _Label({required this.label});
-
-  @override
-  Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.only(bottom: 8, left: 16, top: 16),
-        child: HeadlineMedium(
-          label,
-          fontWeight: FontWeight.bold,
-        ),
-      );
 }

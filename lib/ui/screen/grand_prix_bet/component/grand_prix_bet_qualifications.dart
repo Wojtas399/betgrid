@@ -3,28 +3,53 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
+import '../../../component/padding/padding_components.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
 import '../cubit/grand_prix_bet_state.dart';
 import 'grand_prix_bet_item.dart';
+import 'grand_prix_bet_section_title.dart';
 import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetQualifications extends StatelessWidget {
   const GrandPrixBetQualifications({super.key});
 
   @override
-  Widget build(BuildContext context) => const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _Positions(),
-          _Summary(),
-        ],
-      );
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: _Title(),
+      children: [
+        const Padding16(
+          child: Column(
+            children: [
+              _Bets(),
+              _PointsSummary(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _Positions extends StatelessWidget {
-  const _Positions();
+class _Title extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final double? qualiPoints = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.qualiBetPoints?.totalPoints,
+    );
+
+    return GrandPrixBetSectionTitle(
+      title: context.str.qualifications,
+      points: qualiPoints,
+    );
+  }
+}
+
+class _Bets extends StatelessWidget {
+  const _Bets();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +62,7 @@ class _Positions extends StatelessWidget {
         ? Column(
             children: [
               ...List.generate(
-                qualiStandingsBets.length,
+                15,
                 (int positionIndex) {
                   final bet = qualiStandingsBets[positionIndex];
 
@@ -62,8 +87,8 @@ class _Positions extends StatelessWidget {
   }
 }
 
-class _Summary extends StatelessWidget {
-  const _Summary();
+class _PointsSummary extends StatelessWidget {
+  const _PointsSummary();
 
   @override
   Widget build(BuildContext context) {

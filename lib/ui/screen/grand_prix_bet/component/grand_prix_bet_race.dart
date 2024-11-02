@@ -5,6 +5,7 @@ import '../../../../model/driver.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
+import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
@@ -12,26 +13,64 @@ import '../cubit/grand_prix_bet_cubit.dart';
 import '../cubit/grand_prix_bet_state.dart';
 import 'grand_prix_bet_item.dart';
 import 'grand_prix_bet_no_data_field.dart';
+import 'grand_prix_bet_section_title.dart';
 import 'grand_prix_points_summary.dart';
 
 class GrandPrixBetRace extends StatelessWidget {
   const GrandPrixBetRace({super.key});
 
   @override
-  Widget build(BuildContext context) => const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _P1(),
-          _P2(),
-          _P3(),
-          _P10(),
-          _FastestLap(),
-          _DnfDrivers(),
-          _SafetyCar(),
-          _RedFlag(),
-          _PointsSummary(),
-        ],
-      );
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: _Title(),
+      children: [
+        const Padding16(
+          child: Column(
+            children: [
+              _Bets(),
+              _PointsSummary(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final double? racePoints = context.select(
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.grandPrixBetPoints?.raceBetPoints?.totalPoints,
+    );
+
+    return GrandPrixBetSectionTitle(
+      title: context.str.race,
+      points: racePoints,
+    );
+  }
+}
+
+class _Bets extends StatelessWidget {
+  const _Bets();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _P1(),
+        _P2(),
+        _P3(),
+        _P10(),
+        _FastestLap(),
+        _DnfDrivers(),
+        _SafetyCar(),
+        _RedFlag(),
+      ],
+    );
+  }
 }
 
 class _P1 extends StatelessWidget {
