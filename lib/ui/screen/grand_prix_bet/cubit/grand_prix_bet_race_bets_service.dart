@@ -232,7 +232,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<GrandPrixBet?> _getBets() {
     return _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
-      playerId: _grandPrixId,
+      playerId: _playerId,
       grandPrixId: _grandPrixId,
     );
   }

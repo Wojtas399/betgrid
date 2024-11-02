@@ -36,6 +36,27 @@ void main() {
     grandPrixId,
   );
 
+  tearDown(() {
+    verify(
+      () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      ),
+    ).called(1);
+    verify(
+      () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrix(
+        grandPrixId: grandPrixId,
+      ),
+    ).called(1);
+    verify(
+      () => grandPrixBetPointsRepository
+          .getGrandPrixBetPointsForPlayerAndGrandPrix(
+        playerId: playerId,
+        grandPrixId: grandPrixId,
+      ),
+    ).called(1);
+  });
+
   test(
     'getPodiumBets, '
     'should emit list of 3 SingleDriverBet elements with data corresponding '
@@ -105,6 +126,7 @@ void main() {
       final Stream<List<SingleDriverBet>> podiumBets$ = service.getPodiumBets();
 
       expect(await podiumBets$.first, expectedBets);
+      verify(driverRepository.getAllDrivers).called(6);
     },
   );
 
@@ -152,6 +174,7 @@ void main() {
       final Stream<SingleDriverBet> p10Bet$ = service.getP10Bet();
 
       expect(await p10Bet$.first, expectedBet);
+      verify(driverRepository.getAllDrivers).called(2);
     },
   );
 
@@ -199,6 +222,7 @@ void main() {
       final Stream<SingleDriverBet> fastestLapBet$ = service.getFastestLapBet();
 
       expect(await fastestLapBet$.first, expectedBet);
+      verify(driverRepository.getAllDrivers).called(2);
     },
   );
 
@@ -249,6 +273,7 @@ void main() {
           service.getDnfDriversBet();
 
       expect(await dnfDriversBet$.first, expectedBet);
+      verify(driverRepository.getAllDrivers).called(5);
     },
   );
 
