@@ -1,4 +1,5 @@
 import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_quali_bets_service.dart';
@@ -10,9 +11,11 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_creator.dart';
+import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
@@ -23,6 +26,7 @@ void main() {
   final authRepository = MockAuthRepository();
   final grandPrixRepository = MockGrandPrixRepository();
   final playerRepository = MockPlayerRepository();
+  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final dateService = MockDateService();
   final qualiBetsService = MockGrandPrixBetQualiBetsService();
   final raceBetsService = MockGrandPrixBetRaceBetsService();
@@ -33,6 +37,7 @@ void main() {
         authRepository,
         grandPrixRepository,
         playerRepository,
+        grandPrixBetPointsRepository,
         dateService,
         playerId,
         grandPrixId,
@@ -51,6 +56,7 @@ void main() {
     reset(authRepository);
     reset(grandPrixRepository);
     reset(playerRepository);
+    reset(grandPrixBetPointsRepository);
     reset(dateService);
     reset(qualiBetsService);
     reset(raceBetsService);
@@ -59,7 +65,8 @@ void main() {
   group(
     'initialize, '
     'should initialize canEdit, playerUsername, grandPrixId, grandPrixName, '
-    'isPlayerIdSameAsLoggedUserId, quali and race bets',
+    'isPlayerIdSameAsLoggedUserId, quali and race bets and grand prix bet '
+    'points',
     () {
       final Player player = const PlayerCreator(
         username: 'username',
@@ -121,6 +128,9 @@ void main() {
         resultValue: true,
         points: 0,
       );
+      final GrandPrixBetPoints gpBetPoints = const GrandPrixBetPointsCreator(
+        id: 'gpb1',
+      ).createEntity();
       final DateTime now = DateTime(2024, 2, 2);
       const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(
@@ -136,6 +146,7 @@ void main() {
         raceDnfDriversBet: raceDnfDriversBet,
         raceSafetyCarBet: raceSafetyCarBet,
         raceRedFlagBet: raceRedFlagBet,
+        grandPrixBetPoints: gpBetPoints,
       );
 
       setUp(() {
@@ -160,6 +171,10 @@ void main() {
         raceBetsService.mockGetRedFlagBet(
           expectedRedFlagBet: raceRedFlagBet,
         );
+        grandPrixBetPointsRepository
+            .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          grandPrixBetPoints: gpBetPoints,
+        );
       });
 
       tearDown(() {
@@ -182,6 +197,13 @@ void main() {
         verify(raceBetsService.getDnfDriversBet).called(1);
         verify(raceBetsService.getSafetyCarBet).called(1);
         verify(raceBetsService.getRedFlagBet).called(1);
+        verify(
+          () => grandPrixBetPointsRepository
+              .getGrandPrixBetPointsForPlayerAndGrandPrix(
+            playerId: playerId,
+            grandPrixId: grandPrixId,
+          ),
+        ).called(1);
       });
 
       blocTest(
