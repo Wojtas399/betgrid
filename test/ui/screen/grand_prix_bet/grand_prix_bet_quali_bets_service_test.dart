@@ -254,6 +254,25 @@ void main() {
       final Stream<List<SingleDriverBet>> bets$ = service.getQualiBets();
 
       expect(await bets$.first, expectedBets);
+      verify(
+        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        ),
+      ).called(1);
+      verify(
+        () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrix(
+          grandPrixId: grandPrixId,
+        ),
+      ).called(1);
+      verify(driverRepository.getAllDrivers).called(1);
+      verify(
+        () => grandPrixBetPointsRepository
+            .getGrandPrixBetPointsForPlayerAndGrandPrix(
+          playerId: playerId,
+          grandPrixId: grandPrixId,
+        ),
+      ).called(1);
     },
   );
 }
