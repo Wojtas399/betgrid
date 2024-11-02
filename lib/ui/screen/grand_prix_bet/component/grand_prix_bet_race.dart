@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../model/driver.dart';
 import '../../../../model/grand_prix_bet_points.dart';
+import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
-import 'grand_prix_bet_driver_description.dart';
+import '../cubit/grand_prix_bet_state.dart';
 import 'grand_prix_bet_item.dart';
 import 'grand_prix_bet_no_data_field.dart';
 import 'grand_prix_points_summary.dart';
@@ -37,28 +39,16 @@ class _P1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? betDriverId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.p1DriverId,
-    );
-    final String? resultsDriverId = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.p1DriverId,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.p1Points,
+    final SingleDriverBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?.first,
     );
 
     return GrandPrixBetItem(
       label: 'P1',
       labelColor: context.customColors?.p1,
-      betChild: GrandPrixBetDriverDescription(
-        driverId: betDriverId,
-      ),
-      resultsChild: GrandPrixBetDriverDescription(
-        driverId: resultsDriverId,
-      ),
-      points: points,
+      betChild: DriverDescription(driver: bet?.betDriver),
+      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      points: bet?.points,
     );
   }
 }
@@ -68,28 +58,16 @@ class _P2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? betDriverId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.p2DriverId,
-    );
-    final String? resultsDriverId = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.p2DriverId,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.p2Points,
+    final SingleDriverBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?[1],
     );
 
     return GrandPrixBetItem(
       label: 'P2',
       labelColor: context.customColors?.p2,
-      betChild: GrandPrixBetDriverDescription(
-        driverId: betDriverId,
-      ),
-      resultsChild: GrandPrixBetDriverDescription(
-        driverId: resultsDriverId,
-      ),
-      points: points,
+      betChild: DriverDescription(driver: bet?.betDriver),
+      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      points: bet?.points,
     );
   }
 }
@@ -99,28 +77,16 @@ class _P3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? betDriverId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.p3DriverId,
-    );
-    final String? resultsDriverId = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.p3DriverId,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.p3Points,
+    final SingleDriverBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?.last,
     );
 
     return GrandPrixBetItem(
       label: 'P3',
       labelColor: context.customColors?.p3,
-      betChild: GrandPrixBetDriverDescription(
-        driverId: betDriverId,
-      ),
-      resultsChild: GrandPrixBetDriverDescription(
-        driverId: resultsDriverId,
-      ),
-      points: points,
+      betChild: DriverDescription(driver: bet?.betDriver),
+      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      points: bet?.points,
     );
   }
 }
@@ -130,27 +96,15 @@ class _P10 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? betDriverId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.p10DriverId,
-    );
-    final String? resultsDriverId = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.p10DriverId,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.p10Points,
+    final SingleDriverBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.raceP10Bet,
     );
 
     return GrandPrixBetItem(
       label: 'P10',
-      betChild: GrandPrixBetDriverDescription(
-        driverId: betDriverId,
-      ),
-      resultsChild: GrandPrixBetDriverDescription(
-        driverId: resultsDriverId,
-      ),
-      points: points,
+      betChild: DriverDescription(driver: bet?.betDriver),
+      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      points: bet?.points,
     );
   }
 }
@@ -160,27 +114,15 @@ class _FastestLap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? betDriverId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.fastestLapDriverId,
-    );
-    final String? resultsDriverId = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.fastestLapDriverId,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.fastestLapPoints,
+    final SingleDriverBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.raceFastestLapBet,
     );
 
     return GrandPrixBetItem(
       label: context.str.fastestLap,
-      betChild: GrandPrixBetDriverDescription(
-        driverId: betDriverId,
-      ),
-      resultsChild: GrandPrixBetDriverDescription(
-        driverId: resultsDriverId,
-      ),
-      points: points,
+      betChild: DriverDescription(driver: bet?.betDriver),
+      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      points: bet?.points,
     );
   }
 }
@@ -190,29 +132,19 @@ class _DnfDrivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String>? betDnfDriverIds = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.dnfDriverIds,
+    final MultipleDriversBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.raceDnfDriversBet,
     );
-    final List<String>? resultsDnfDriverIds = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.dnfDriverIds,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.dnfPoints,
-    );
+    final List<Driver?>? betDnfDrivers = bet?.betDrivers;
+    final List<Driver?>? resultDnfDrivers = bet?.resultDrivers;
 
     return GrandPrixBetItem(
       label: 'DNF',
       betChild: Column(
         children: [
-          if (betDnfDriverIds != null)
-            ...betDnfDriverIds
-                .map(
-                  (driverId) => GrandPrixBetDriverDescription(
-                    driverId: driverId,
-                  ),
-                )
+          if (betDnfDrivers != null)
+            ...betDnfDrivers
+                .map((driver) => DriverDescription(driver: driver))
                 .separated(const GapVertical8())
           else
             const GrandPrixBetNoDataField(),
@@ -220,19 +152,15 @@ class _DnfDrivers extends StatelessWidget {
       ),
       resultsChild: Column(
         children: [
-          if (resultsDnfDriverIds?.isNotEmpty == true)
-            ...?resultsDnfDriverIds
-                ?.map(
-                  (driverId) => GrandPrixBetDriverDescription(
-                    driverId: driverId,
-                  ),
-                )
+          if (resultDnfDrivers?.isNotEmpty == true)
+            ...?resultDnfDrivers
+                ?.map((driver) => DriverDescription(driver: driver))
                 .separated(const GapVertical8())
           else
             const GrandPrixBetNoDataField(),
         ],
       ),
-      points: points,
+      points: bet?.points,
     );
   }
 }
@@ -242,21 +170,11 @@ class _SafetyCar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool? betWhetherWillBeSafetyCar = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.willBeSafetyCar,
+    final BooleanBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.raceSafetyCarBet,
     );
-    final bool? resultsWhetherWasSafetyCar = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.wasThereSafetyCar,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.safetyCarPoints,
-    );
-    final String? betSafetyCarStr =
-        betWhetherWillBeSafetyCar?.toI8nString(context);
-    final String? resultsSafetyCarStr =
-        resultsWhetherWasSafetyCar?.toI8nString(context);
+    final String? betSafetyCarStr = bet?.betValue?.toI8nString(context);
+    final String? resultsSafetyCarStr = bet?.resultValue?.toI8nString(context);
 
     return GrandPrixBetItem(
       label: context.str.safetyCar,
@@ -266,7 +184,7 @@ class _SafetyCar extends StatelessWidget {
       resultsChild: resultsSafetyCarStr != null
           ? Text(resultsSafetyCarStr)
           : const GrandPrixBetNoDataField(),
-      points: points,
+      points: bet?.points,
     );
   }
 }
@@ -276,20 +194,11 @@ class _RedFlag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool? betWhetherWillBeRedFlag = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBet?.willBeRedFlag,
+    final BooleanBet? bet = context.select(
+      (GrandPrixBetCubit cubit) => cubit.state.raceRedFlagBet,
     );
-    final bool? resultsWhetherWasRedFlag = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixResults?.raceResults?.wasThereRedFlag,
-    );
-    final double? points = context.select(
-      (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.redFlagPoints,
-    );
-    final String? betRedFlagStr = betWhetherWillBeRedFlag?.toI8nString(context);
-    final String? resultsRedFlagStr =
-        resultsWhetherWasRedFlag?.toI8nString(context);
+    final String? betRedFlagStr = bet?.betValue?.toI8nString(context);
+    final String? resultsRedFlagStr = bet?.resultValue?.toI8nString(context);
 
     return GrandPrixBetItem(
       label: context.str.redFlag,
@@ -299,7 +208,7 @@ class _RedFlag extends StatelessWidget {
       resultsChild: resultsRedFlagStr != null
           ? Text(resultsRedFlagStr)
           : const GrandPrixBetNoDataField(),
-      points: points,
+      points: bet?.points,
     );
   }
 }
