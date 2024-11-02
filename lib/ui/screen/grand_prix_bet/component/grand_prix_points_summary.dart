@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 
@@ -20,8 +19,10 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TitleLarge(context.str.grandPrixBetPointsDetails),
-            const GapVertical8(),
+            TitleMedium(
+              context.str.grandPrixBetPointsDetails,
+              fontWeight: FontWeight.bold,
+            ),
             ...details.map(
               (detail) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +41,6 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
                 TitleMedium(context.str.grandPrixBetTotal),
                 TitleMedium(
                   totalPoints?.toString() ?? context.str.doubleDash,
-                  fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
                 ),
               ],

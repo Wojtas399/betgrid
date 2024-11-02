@@ -17,14 +17,10 @@ class GrandPrixBetSectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TitleLarge(
-          title,
-          // fontWeight: FontWeight.bold,
-        ),
+        TitleLarge(title),
         if (points != null)
           TitleLarge(
             ' ($points pkt.)',
-            fontWeight: FontWeight.w300,
             color: context.colorScheme.primary.withOpacity(0.6),
           ),
       ],

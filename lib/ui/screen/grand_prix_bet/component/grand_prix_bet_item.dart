@@ -62,7 +62,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          LabelLarge(
+          TitleMedium(
             label,
             fontWeight: FontWeight.bold,
             color: labelColor,
@@ -105,14 +105,14 @@ class _Body extends StatelessWidget {
               children: [
                 LabelMedium(
                   context.str.grandPrixBetChoice,
-                  fontWeight: FontWeight.w300,
+                  color: context.colorScheme.outline,
                 ),
                 const GapVertical4(),
                 betChild,
                 const GapVertical8(),
                 LabelMedium(
                   context.str.grandPrixBetResult,
-                  fontWeight: FontWeight.w300,
+                  color: context.colorScheme.outline,
                 ),
                 const GapVertical4(),
                 resultsChild,
@@ -140,9 +140,8 @@ class _Points extends StatelessWidget {
         children: [
           LabelLarge(
             context.str.points,
-            fontWeight: FontWeight.w300,
+            color: context.colorScheme.outline,
           ),
-          const GapVertical4(),
           TitleMedium(points?.toString() ?? '--'),
         ],
       );

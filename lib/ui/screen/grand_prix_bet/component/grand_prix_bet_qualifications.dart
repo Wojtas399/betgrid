@@ -62,7 +62,7 @@ class _Bets extends StatelessWidget {
         ? Column(
             children: [
               ...List.generate(
-                15,
+                qualiStandingsBets.length,
                 (int positionIndex) {
                   final bet = qualiStandingsBets[positionIndex];
 
