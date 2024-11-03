@@ -1,3 +1,4 @@
+import 'package:betgrid/data/firebase/model/season_driver_dto.dart';
 import 'package:betgrid/data/repository/season_driver/season_driver_repository_impl.dart';
 import 'package:betgrid/model/season_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,6 +26,7 @@ void main() {
   });
 
   test(
+    'getAllSeasonDriversFromSeason, '
     'should fetch all SeasonDrivers from given season, should add new or '
     'update existing ones in repo state and should emit all SeasonDrivers with '
     'matching season from repo state',
@@ -63,7 +65,7 @@ void main() {
         fetchedSeasonDrivers[1],
         fetchedSeasonDrivers.last,
       ];
-      firebaseSeasonDriverService.mockFetchAllDriversFromSeason(
+      firebaseSeasonDriverService.mockFetchAllSeasonDriversFromSeason(
         expectedSeasonDriverDtos: fetchedSeasonDriverDtos,
       );
       when(
@@ -78,13 +80,102 @@ void main() {
       repositoryImpl.addEntities(existingSeasonDrivers);
 
       final Stream<List<SeasonDriver>> seasonDrivers$ =
-          repositoryImpl.getAllDriversFromSeason(season);
+          repositoryImpl.getAllSeasonDriversFromSeason(season);
 
       expect(await seasonDrivers$.first, expectedSeasonDrivers);
       expect(await repositoryImpl.repositoryState$.first, expectedRepoState);
       verify(
-        () => firebaseSeasonDriverService.fetchAllDriversFromSeason(season),
+        () => firebaseSeasonDriverService.fetchAllSeasonDriversFromSeason(
+          season,
+        ),
       ).called(1);
+    },
+  );
+
+  group(
+    'getSeasonDriverByDriverIdAndSeason, ',
+    () {
+      const String driverId = 'd1';
+      const int season = 2024;
+      const SeasonDriverCreator seasonDriverCreator = SeasonDriverCreator(
+        id: 'sd1',
+        driverId: driverId,
+        season: season,
+      );
+      final List<SeasonDriver> existingSeasonDrivers = [
+        const SeasonDriverCreator(
+          id: 'sd2',
+          driverId: driverId,
+          season: 2023,
+        ).createEntity(),
+        const SeasonDriverCreator(
+          id: 'sd3',
+          driverId: 'd2',
+          season: season,
+        ).createEntity(),
+        const SeasonDriverCreator(
+          id: 'sd4',
+          driverId: 'd2',
+          season: 2023,
+        ).createEntity(),
+      ];
+
+      test(
+        'should fetch season driver from db, add it to repo state and emit it '
+        'if matching season driver does not exist in repo state',
+        () async {
+          final SeasonDriverDto expectedSeasonDriverDto =
+              seasonDriverCreator.createDto();
+          final SeasonDriver expectedSeasonDriver =
+              seasonDriverCreator.createEntity();
+          firebaseSeasonDriverService.mockFetchSeasonDriverByDriverIdAndSeason(
+            expectedSeasonDriverDto: expectedSeasonDriverDto,
+          );
+          seasonDriverMapper.mockMapFromDto(
+            expectedSeasonDriver: expectedSeasonDriver,
+          );
+          repositoryImpl.addEntities(existingSeasonDrivers);
+
+          final Stream<SeasonDriver?> seasonDriver$ =
+              repositoryImpl.getSeasonDriverByDriverIdAndSeason(
+            driverId: driverId,
+            season: season,
+          );
+
+          expect(await seasonDriver$.first, expectedSeasonDriver);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingSeasonDrivers, expectedSeasonDriver],
+          );
+          verify(
+            () => firebaseSeasonDriverService
+                .fetchSeasonDriverByDriverIdAndSeason(
+              driverId: driverId,
+              season: season,
+            ),
+          ).called(1);
+        },
+      );
+
+      test(
+        'should only emit season driver if season driver with matching '
+        'driverId and season already exists in repo state',
+        () async {
+          final SeasonDriver expectedSeasonDriver =
+              seasonDriverCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingSeasonDrivers, expectedSeasonDriver],
+          );
+
+          final Stream<SeasonDriver?> seasonDriver$ =
+              repositoryImpl.getSeasonDriverByDriverIdAndSeason(
+            driverId: driverId,
+            season: season,
+          );
+
+          expect(await seasonDriver$.first, expectedSeasonDriver);
+        },
+      );
     },
   );
 }

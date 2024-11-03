@@ -4,11 +4,22 @@ import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseSeasonDriverService extends Mock
     implements FirebaseSeasonDriverService {
-  void mockFetchAllDriversFromSeason({
+  void mockFetchAllSeasonDriversFromSeason({
     required Iterable<SeasonDriverDto> expectedSeasonDriverDtos,
   }) {
     when(
-      () => fetchAllDriversFromSeason(any()),
+      () => fetchAllSeasonDriversFromSeason(any()),
     ).thenAnswer((_) => Future.value(expectedSeasonDriverDtos));
+  }
+
+  void mockFetchSeasonDriverByDriverIdAndSeason({
+    SeasonDriverDto? expectedSeasonDriverDto,
+  }) {
+    when(
+      () => fetchSeasonDriverByDriverIdAndSeason(
+        driverId: any(named: 'driverId'),
+        season: any(named: 'season'),
+      ),
+    ).thenAnswer((_) => Future.value(expectedSeasonDriverDto));
   }
 }

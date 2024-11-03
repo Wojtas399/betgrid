@@ -9,7 +9,7 @@ class FirebaseSeasonDriverService {
 
   const FirebaseSeasonDriverService(this._firebaseCollections);
 
-  Future<Iterable<SeasonDriverDto>> fetchAllDriversFromSeason(
+  Future<Iterable<SeasonDriverDto>> fetchAllSeasonDriversFromSeason(
     int season,
   ) async {
     final snapshot = await _firebaseCollections
@@ -17,5 +17,17 @@ class FirebaseSeasonDriverService {
         .where('season', isEqualTo: season)
         .get();
     return snapshot.docs.map((doc) => doc.data());
+  }
+
+  Future<SeasonDriverDto?> fetchSeasonDriverByDriverIdAndSeason({
+    required String driverId,
+    required int season,
+  }) async {
+    final snapshot = await _firebaseCollections
+        .seasonDrivers()
+        .where('driverId', isEqualTo: driverId)
+        .where('season', isEqualTo: season)
+        .get();
+    return snapshot.docs.isNotEmpty ? snapshot.docs.first.data() : null;
   }
 }
