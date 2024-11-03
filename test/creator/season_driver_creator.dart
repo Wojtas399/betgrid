@@ -1,4 +1,5 @@
 import 'package:betgrid/data/firebase/model/season_driver_dto.dart';
+import 'package:betgrid/model/season_driver.dart';
 
 class SeasonDriverCreator {
   final String id;
@@ -15,18 +16,32 @@ class SeasonDriverCreator {
     this.teamId = '',
   });
 
-  SeasonDriverDto createDto() => SeasonDriverDto(
-        id: id,
-        seasonNumber: seasonNumber,
-        driverId: driverId,
-        driverNumber: driverNumber,
-        teamId: teamId,
-      );
+  SeasonDriver createEntity() {
+    return SeasonDriver(
+      id: id,
+      seasonNumber: seasonNumber,
+      driverId: driverId,
+      driverNumber: driverNumber,
+      teamId: teamId,
+    );
+  }
 
-  Map<String, Object?> createJson() => {
-        'seasonNumber': seasonNumber,
-        'driverId': driverId,
-        'driverNumber': driverNumber,
-        'teamId': teamId,
-      };
+  SeasonDriverDto createDto() {
+    return SeasonDriverDto(
+      id: id,
+      seasonNumber: seasonNumber,
+      driverId: driverId,
+      driverNumber: driverNumber,
+      teamId: teamId,
+    );
+  }
+
+  Map<String, Object?> createJson() {
+    return {
+      'seasonNumber': seasonNumber,
+      'driverId': driverId,
+      'driverNumber': driverNumber,
+      'teamId': teamId,
+    };
+  }
 }
