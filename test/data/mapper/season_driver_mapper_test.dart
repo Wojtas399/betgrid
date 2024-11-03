@@ -12,13 +12,13 @@ void main() {
     'should map SeasonDriverDto model to SeasonDriver model',
     () {
       const String id = 'sd1';
-      const int seasonNumber = 2024;
+      const int season = 2024;
       const String driverId = 'd1';
       const int driverNumber = 11;
       const String teamId = 't1';
       const seasonDriverCreator = SeasonDriverCreator(
         id: id,
-        seasonNumber: seasonNumber,
+        season: season,
         driverId: driverId,
         driverNumber: driverNumber,
         teamId: teamId,

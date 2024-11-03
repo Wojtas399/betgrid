@@ -14,7 +14,7 @@ class FirebaseSeasonDriverService {
   ) async {
     final snapshot = await _firebaseCollections
         .seasonDrivers()
-        .where('seasonNumber', isEqualTo: season)
+        .where('season', isEqualTo: season)
         .get();
     return snapshot.docs.map((doc) => doc.data());
   }

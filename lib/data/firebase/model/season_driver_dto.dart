@@ -9,7 +9,7 @@ class SeasonDriverDto with _$SeasonDriverDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
-    required int seasonNumber,
+    required int season,
     required String driverId,
     required int driverNumber,
     required String teamId,

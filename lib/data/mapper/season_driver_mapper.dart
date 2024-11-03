@@ -8,7 +8,7 @@ class SeasonDriverMapper {
   SeasonDriver mapFromDto(SeasonDriverDto seasonDriverDto) {
     return SeasonDriver(
       id: seasonDriverDto.id,
-      seasonNumber: seasonDriverDto.seasonNumber,
+      season: seasonDriverDto.season,
       driverId: seasonDriverDto.driverId,
       driverNumber: seasonDriverDto.driverNumber,
       teamId: seasonDriverDto.teamId,

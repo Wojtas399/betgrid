@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../creator/season_driver_creator.dart';
 
 void main() {
-  const int seasonNumber = 2024;
+  const int season = 2024;
   const String driverId = 'd1';
   const int driverNumber = 1;
   const String teamId = 't1';
@@ -14,7 +14,7 @@ void main() {
     'should map json model to class model ignoring id',
     () {
       const seasonDriverCreator = SeasonDriverCreator(
-        seasonNumber: seasonNumber,
+        season: season,
         driverId: driverId,
         driverNumber: driverNumber,
         teamId: teamId,
@@ -35,7 +35,7 @@ void main() {
       const String id = 'd1';
       const seasonDriverCreator = SeasonDriverCreator(
         id: id,
-        seasonNumber: seasonNumber,
+        season: season,
         driverId: driverId,
         driverNumber: driverNumber,
         teamId: teamId,
@@ -58,7 +58,7 @@ void main() {
     () {
       const seasonDriverCreator = SeasonDriverCreator(
         id: 'd1',
-        seasonNumber: seasonNumber,
+        season: season,
         driverId: driverId,
         driverNumber: driverNumber,
         teamId: teamId,
