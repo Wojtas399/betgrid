@@ -1,4 +1,5 @@
 import 'package:betgrid/data/firebase/model/team_dto.dart';
+import 'package:betgrid/model/team.dart';
 
 class TeamCreator {
   final String id;
@@ -10,6 +11,14 @@ class TeamCreator {
     this.name = '',
     this.hexColor = '',
   });
+
+  Team createEntity() {
+    return Team(
+      id: id,
+      name: name,
+      hexColor: hexColor,
+    );
+  }
 
   TeamDto createDto() {
     return TeamDto(
