@@ -6,6 +6,7 @@ import 'model/grand_prix_bet_dto.dart';
 import 'model/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_dto.dart';
 import 'model/grand_prix_results_dto.dart';
+import 'model/season_driver_dto.dart';
 import 'model/user_dto.dart';
 
 @injectable
@@ -106,4 +107,20 @@ class FirebaseCollections {
             },
             toFirestore: (GrandPrixBetPointsDto dto, _) => dto.toJson(),
           );
+
+  CollectionReference<SeasonDriverDto> seasonDrivers() {
+    return FirebaseFirestore.instance
+        .collection('SeasonDriver')
+        .withConverter<SeasonDriverDto>(
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data();
+            if (data == null) throw 'Season driver document is null';
+            return SeasonDriverDto.fromFirebase(
+              id: snapshot.id,
+              json: data,
+            );
+          },
+          toFirestore: (dto, _) => dto.toJson(),
+        );
+  }
 }
