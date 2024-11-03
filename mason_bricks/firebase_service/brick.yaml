@@ -1,0 +1,14 @@
+name: firebase_service
+description: A new brick created with the Mason CLI.
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.60 <0.1.0"
+
+vars:
+  name:
+    type: string
+    description: Your firebase service name
+    default: Dash
+    prompt: 'Enter your firebase service name:'
