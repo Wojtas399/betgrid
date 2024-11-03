@@ -127,7 +127,12 @@ class _DnfDrivers extends StatelessWidget {
           if (dnfDrivers.isNotEmpty) ...[
             ...dnfDrivers
                 .map(
-                  (Driver driver) => DriverDescription(driver: driver),
+                  (Driver driver) => DriverDescription(
+                    name: driver.name,
+                    surname: driver.surname,
+                    number: driver.number,
+                    teamColor: driver.team.hexColor,
+                  ),
                 )
                 .separated(const GapVertical16()),
             const GapVertical16(),

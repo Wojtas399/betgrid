@@ -1,43 +1,45 @@
 import 'package:flutter/material.dart';
 
-import '../../model/driver.dart';
-import '../extensions/build_context_extensions.dart';
 import 'gap/gap_horizontal.dart';
 import 'text_component.dart';
 
 class DriverDescription extends StatelessWidget {
-  final Driver? driver;
+  final String name;
+  final String surname;
+  final int number;
+  final int teamColor;
 
   const DriverDescription({
     super.key,
-    required this.driver,
+    required this.name,
+    required this.surname,
+    required this.number,
+    required this.teamColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return driver != null
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 4,
-                height: 20,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: Color(driver!.team.hexColor),
-                ),
-              ),
-              const GapHorizontal8(),
-              BodyMedium('${driver!.number}'),
-              const GapHorizontal16(),
-              BodyMedium(driver!.name),
-              const GapHorizontal4(),
-              BodyMedium(
-                driver!.surname,
-                fontWeight: FontWeight.bold,
-              ),
-            ],
-          )
-        : BodyMedium(context.str.doubleDash);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 4,
+          height: 20,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Color(teamColor),
+          ),
+        ),
+        const GapHorizontal8(),
+        BodyMedium('$number'),
+        const GapHorizontal16(),
+        BodyMedium(name),
+        const GapHorizontal4(),
+        BodyMedium(
+          surname,
+          fontWeight: FontWeight.bold,
+        ),
+      ],
+    );
   }
 }

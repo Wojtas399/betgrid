@@ -5,6 +5,7 @@ import '../../../../model/driver.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
+import '../../../component/no_text_component.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -86,8 +87,22 @@ class _P1 extends StatelessWidget {
       label: 'P1',
       labelColor: context.customColors?.p1,
       betStatus: bet?.status,
-      betChild: DriverDescription(driver: bet?.betDriver),
-      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      betChild: bet?.betDriver != null
+          ? DriverDescription(
+              name: bet!.betDriver!.name,
+              surname: bet.betDriver!.surname,
+              number: bet.betDriver!.number,
+              teamColor: bet.betDriver!.team.hexColor,
+            )
+          : const NoText(),
+      resultsChild: bet?.resultDriver != null
+          ? DriverDescription(
+              name: bet!.resultDriver!.name,
+              surname: bet.resultDriver!.surname,
+              number: bet.resultDriver!.number,
+              teamColor: bet.resultDriver!.team.hexColor,
+            )
+          : const NoText(),
       points: bet?.points,
     );
   }
@@ -106,8 +121,22 @@ class _P2 extends StatelessWidget {
       label: 'P2',
       labelColor: context.customColors?.p2,
       betStatus: bet?.status,
-      betChild: DriverDescription(driver: bet?.betDriver),
-      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      betChild: bet?.betDriver != null
+          ? DriverDescription(
+              name: bet!.betDriver!.name,
+              surname: bet.betDriver!.surname,
+              number: bet.betDriver!.number,
+              teamColor: bet.betDriver!.team.hexColor,
+            )
+          : const NoText(),
+      resultsChild: bet?.resultDriver != null
+          ? DriverDescription(
+              name: bet!.resultDriver!.name,
+              surname: bet.resultDriver!.surname,
+              number: bet.resultDriver!.number,
+              teamColor: bet.resultDriver!.team.hexColor,
+            )
+          : const NoText(),
       points: bet?.points,
     );
   }
@@ -126,8 +155,22 @@ class _P3 extends StatelessWidget {
       label: 'P3',
       labelColor: context.customColors?.p3,
       betStatus: bet?.status,
-      betChild: DriverDescription(driver: bet?.betDriver),
-      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      betChild: bet?.betDriver != null
+          ? DriverDescription(
+              name: bet!.betDriver!.name,
+              surname: bet.betDriver!.surname,
+              number: bet.betDriver!.number,
+              teamColor: bet.betDriver!.team.hexColor,
+            )
+          : const NoText(),
+      resultsChild: bet?.resultDriver != null
+          ? DriverDescription(
+              name: bet!.resultDriver!.name,
+              surname: bet.resultDriver!.surname,
+              number: bet.resultDriver!.number,
+              teamColor: bet.resultDriver!.team.hexColor,
+            )
+          : const NoText(),
       points: bet?.points,
     );
   }
@@ -145,8 +188,22 @@ class _P10 extends StatelessWidget {
     return GrandPrixBetItem(
       label: 'P10',
       betStatus: bet?.status,
-      betChild: DriverDescription(driver: bet?.betDriver),
-      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      betChild: bet?.betDriver != null
+          ? DriverDescription(
+              name: bet!.betDriver!.name,
+              surname: bet.betDriver!.surname,
+              number: bet.betDriver!.number,
+              teamColor: bet.betDriver!.team.hexColor,
+            )
+          : const NoText(),
+      resultsChild: bet?.resultDriver != null
+          ? DriverDescription(
+              name: bet!.resultDriver!.name,
+              surname: bet.resultDriver!.surname,
+              number: bet.resultDriver!.number,
+              teamColor: bet.resultDriver!.team.hexColor,
+            )
+          : const NoText(),
       points: bet?.points,
     );
   }
@@ -164,8 +221,22 @@ class _FastestLap extends StatelessWidget {
     return GrandPrixBetItem(
       label: context.str.fastestLap,
       betStatus: bet?.status,
-      betChild: DriverDescription(driver: bet?.betDriver),
-      resultsChild: DriverDescription(driver: bet?.resultDriver),
+      betChild: bet?.betDriver != null
+          ? DriverDescription(
+              name: bet!.betDriver!.name,
+              surname: bet.betDriver!.surname,
+              number: bet.betDriver!.number,
+              teamColor: bet.betDriver!.team.hexColor,
+            )
+          : const NoText(),
+      resultsChild: bet?.resultDriver != null
+          ? DriverDescription(
+              name: bet!.resultDriver!.name,
+              surname: bet.resultDriver!.surname,
+              number: bet.resultDriver!.number,
+              teamColor: bet.resultDriver!.team.hexColor,
+            )
+          : const NoText(),
       points: bet?.points,
     );
   }
@@ -189,7 +260,16 @@ class _DnfDrivers extends StatelessWidget {
         children: [
           if (betDnfDrivers != null)
             ...betDnfDrivers
-                .map((driver) => DriverDescription(driver: driver))
+                .map(
+                  (driver) => driver != null
+                      ? DriverDescription(
+                          name: driver.name,
+                          surname: driver.surname,
+                          number: driver.number,
+                          teamColor: driver.team.hexColor,
+                        )
+                      : const NoText(),
+                )
                 .separated(const GapVertical8())
           else
             const GrandPrixBetNoDataField(),
@@ -199,7 +279,16 @@ class _DnfDrivers extends StatelessWidget {
         children: [
           if (resultDnfDrivers?.isNotEmpty == true)
             ...?resultDnfDrivers
-                ?.map((driver) => DriverDescription(driver: driver))
+                ?.map(
+                  (driver) => driver != null
+                      ? DriverDescription(
+                          name: driver.name,
+                          surname: driver.surname,
+                          number: driver.number,
+                          teamColor: driver.team.hexColor,
+                        )
+                      : const NoText(),
+                )
                 .separated(const GapVertical8())
           else
             const GrandPrixBetNoDataField(),

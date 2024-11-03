@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
+import '../../../component/no_text_component.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -75,8 +76,22 @@ class _Bets extends StatelessWidget {
                       _ => null,
                     },
                     betStatus: bet.status,
-                    betChild: DriverDescription(driver: bet.betDriver),
-                    resultsChild: DriverDescription(driver: bet.resultDriver),
+                    betChild: bet.betDriver != null
+                        ? DriverDescription(
+                            name: bet.betDriver!.name,
+                            surname: bet.betDriver!.surname,
+                            number: bet.betDriver!.number,
+                            teamColor: bet.betDriver!.team.hexColor,
+                          )
+                        : const NoText(),
+                    resultsChild: bet.resultDriver != null
+                        ? DriverDescription(
+                            name: bet.resultDriver!.name,
+                            surname: bet.resultDriver!.surname,
+                            number: bet.resultDriver!.number,
+                            teamColor: bet.resultDriver!.team.hexColor,
+                          )
+                        : const NoText(),
                     points: bet.points,
                   );
                 },

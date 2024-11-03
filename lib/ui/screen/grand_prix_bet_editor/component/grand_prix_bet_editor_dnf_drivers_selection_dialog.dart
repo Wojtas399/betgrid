@@ -71,7 +71,12 @@ class _SelectedDrivers extends StatelessWidget {
               (Driver driver) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DriverDescription(driver: driver),
+                  DriverDescription(
+                    name: driver.name,
+                    surname: driver.surname,
+                    number: driver.number,
+                    teamColor: driver.team.hexColor,
+                  ),
                   SizedBox(
                     height: 24,
                     width: 24,
@@ -156,7 +161,12 @@ class _DriverItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.all(16),
-          child: DriverDescription(driver: driver),
+          child: DriverDescription(
+            name: driver.name,
+            surname: driver.surname,
+            number: driver.number,
+            teamColor: driver.team.hexColor,
+          ),
         ),
       );
 }

@@ -86,7 +86,12 @@ class _DriverSelectionFormField extends StatelessWidget {
         ...?allDrivers?.map(
           (driver) => DropdownMenuItem(
             value: driver.id,
-            child: DriverDescription(driver: driver),
+            child: DriverDescription(
+              name: driver.name,
+              surname: driver.surname,
+              number: driver.number,
+              teamColor: driver.team.hexColor,
+            ),
           ),
         ),
       ],
