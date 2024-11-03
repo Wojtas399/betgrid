@@ -10,3 +10,5 @@ bricks:
     path: mason_bricks/screen_cubit
   firebase_service:
     path: mason_bricks/firebase_service
+  repository:
+    path: mason_bricks/repository

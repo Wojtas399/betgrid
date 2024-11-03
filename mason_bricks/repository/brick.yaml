@@ -1,4 +1,4 @@
-name: firebase_service
+name: repository
 description: A new brick created with the Mason CLI.
 
 version: 0.1.0+1
@@ -7,7 +7,7 @@ environment:
   mason: ">=0.1.0-dev.60 <0.1.0"
 
 vars:
-  name:
+  model_name:
     type: string
-    description: Your firebase service name
-    prompt: 'Enter your firebase service name:'
+    description: Your model name
+    prompt: 'Enter the name of the model you want to create repo for:'
