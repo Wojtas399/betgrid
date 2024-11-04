@@ -23,14 +23,16 @@ class DriverPersonalDataRepositoryImpl extends Repository<DriverPersonalData>
 
   @override
   Stream<DriverPersonalData?> getDriverPersonalDataById(String id) async* {
+    bool didRelease = false;
     await _getDriverPersonalDataByIdMutex.acquire();
     await for (final driversPersonalData in repositoryState$) {
       DriverPersonalData? matchingDriver = driversPersonalData.firstWhereOrNull(
         (driverPersonalData) => driverPersonalData.id == id,
       );
       matchingDriver ??= await _fetchDriverPersonalDataById(id);
-      if (_getDriverPersonalDataByIdMutex.isLocked) {
+      if (_getDriverPersonalDataByIdMutex.isLocked && !didRelease) {
         _getDriverPersonalDataByIdMutex.release();
+        didRelease = true;
       }
       yield matchingDriver;
     }

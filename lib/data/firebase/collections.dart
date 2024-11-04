@@ -114,12 +114,13 @@ class FirebaseCollections {
 
   CollectionReference<SeasonDriverDto> seasonDrivers() {
     return FirebaseFirestore.instance
-        .collection('SeasonDriver')
+        .collection('SeasonDrivers')
         .withConverter<SeasonDriverDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
-            if (data == null)
+            if (data == null) {
               throw 'Season driver_personal_data document is null';
+            }
             return SeasonDriverDto.fromFirebase(
               id: snapshot.id,
               json: data,

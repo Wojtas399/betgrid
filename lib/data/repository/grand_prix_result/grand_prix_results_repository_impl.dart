@@ -26,14 +26,16 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
   Stream<GrandPrixResults?> getGrandPrixResultsForGrandPrix({
     required String grandPrixId,
   }) async* {
+    bool didRelease = false;
     await _getGrandPrixResultsForGrandPrixMutex.acquire();
     await for (final grandPrixesResults in repositoryState$) {
       GrandPrixResults? matchingGpResults = grandPrixesResults.firstWhereOrNull(
         (gpResults) => gpResults.grandPrixId == grandPrixId,
       );
       matchingGpResults ??= await _fetchResultsForGrandPrixFromDb(grandPrixId);
-      if (_getGrandPrixResultsForGrandPrixMutex.isLocked) {
+      if (_getGrandPrixResultsForGrandPrixMutex.isLocked && !didRelease) {
         _getGrandPrixResultsForGrandPrixMutex.release();
+        didRelease = true;
       }
       yield matchingGpResults;
     }

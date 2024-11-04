@@ -21,12 +21,14 @@ class TeamRepositoryImpl extends Repository<Team> implements TeamRepository {
 
   @override
   Stream<Team?> getTeamById(String id) async* {
+    bool didRelease = false;
     await _getTeamByIdMutex.acquire();
     await for (final allTeams in repositoryState$) {
       Team? matchingTeam = allTeams.firstWhereOrNull((team) => team.id == id);
       matchingTeam ??= await _fetchTeamById(id);
-      if (_getTeamByIdMutex.isLocked) {
+      if (_getTeamByIdMutex.isLocked && !didRelease) {
         _getTeamByIdMutex.release();
+        didRelease = true;
       }
       yield matchingTeam;
     }

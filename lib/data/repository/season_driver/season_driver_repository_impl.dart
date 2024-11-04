@@ -23,11 +23,13 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
 
   @override
   Stream<List<SeasonDriver>> getAllSeasonDriversFromSeason(int season) async* {
+    bool didRelease = false;
     await _getAllSeasonDriversMutex.acquire();
     await _fetchAllSeasonDriversFromSeason(season);
     await for (final allSeasonDrivers in repositoryState$) {
-      if (_getAllSeasonDriversMutex.isLocked) {
+      if (_getAllSeasonDriversMutex.isLocked && !didRelease) {
         _getAllSeasonDriversMutex.release();
+        didRelease = true;
       }
       yield allSeasonDrivers
           .where((seasonDriver) => seasonDriver.season == season)
@@ -37,14 +39,16 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
 
   @override
   Stream<SeasonDriver?> getSeasonDriverById(String id) async* {
+    bool didRelease = false;
     await _getSeasonDriverByDriverIdAndSeasonMutex.acquire();
     await for (final allSeasonDrivers in repositoryState$) {
       SeasonDriver? matchingSeasonDriver = allSeasonDrivers.firstWhereOrNull(
         (seasonDriver) => seasonDriver.id == id,
       );
       matchingSeasonDriver ??= await _fetchSeasonDriverById(id);
-      if (_getSeasonDriverByDriverIdAndSeasonMutex.isLocked) {
+      if (_getSeasonDriverByDriverIdAndSeasonMutex.isLocked && !didRelease) {
         _getSeasonDriverByDriverIdAndSeasonMutex.release();
+        didRelease = true;
       }
       yield matchingSeasonDriver;
     }

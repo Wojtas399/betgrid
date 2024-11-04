@@ -66,6 +66,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     required String playerId,
     required String grandPrixId,
   }) async* {
+    bool didRelease = false;
     await _getGrandPrixBetForPlayerAndGrandprixMutex.acquire();
     await for (final grandPrixBets in repositoryState$) {
       GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
@@ -77,8 +78,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
         playerId: playerId,
         grandPrixId: grandPrixId,
       ));
-      if (_getGrandPrixBetForPlayerAndGrandprixMutex.isLocked) {
+      if (_getGrandPrixBetForPlayerAndGrandprixMutex.isLocked && !didRelease) {
         _getGrandPrixBetForPlayerAndGrandprixMutex.release();
+        didRelease = true;
       }
       yield grandPrixBet;
     }

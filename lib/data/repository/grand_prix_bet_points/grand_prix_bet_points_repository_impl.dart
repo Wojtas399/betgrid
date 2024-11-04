@@ -30,6 +30,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     required List<String> idsOfPlayers,
     required List<String> idsOfGrandPrixes,
   }) async* {
+    bool didRelease = false;
     await _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.acquire();
     final stream$ = repositoryState$.asyncMap(
       (List<GrandPrixBetPoints> existingBetPointsForGps) async {
@@ -60,8 +61,10 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
           );
           betPointsForGps.addAll(missingGpBetPoints);
         }
-        if (_getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.isLocked) {
+        if (_getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.isLocked &&
+            !didRelease) {
           _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.release();
+          didRelease = true;
         }
         return betPointsForGps;
       },
