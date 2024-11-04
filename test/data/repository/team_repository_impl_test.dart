@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../creator/team_creator.dart';
-import '../../mock/data/mapper/mock_new_team_mapper.dart';
+import '../../mock/data/mapper/mock_team_mapper.dart';
 import '../../mock/firebase/mock_firebase_team_service.dart';
 
 void main() {

@@ -36,18 +36,13 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
   }
 
   @override
-  Stream<SeasonDriver?> getSeasonDriverByDriverIdAndSeason({
-    required String driverId,
-    required int season,
-  }) async* {
+  Stream<SeasonDriver?> getSeasonDriverById(String id) async* {
     await _getSeasonDriverByDriverIdAndSeasonMutex.acquire();
     await for (final allSeasonDrivers in repositoryState$) {
       SeasonDriver? matchingSeasonDriver = allSeasonDrivers.firstWhereOrNull(
-        (seasonDriver) =>
-            seasonDriver.driverId == driverId && seasonDriver.season == season,
+        (seasonDriver) => seasonDriver.id == id,
       );
-      matchingSeasonDriver ??=
-          await _fetchSeasonDriverByDriverIdAndSeason(driverId, season);
+      matchingSeasonDriver ??= await _fetchSeasonDriverById(id);
       if (_getSeasonDriverByDriverIdAndSeasonMutex.isLocked) {
         _getSeasonDriverByDriverIdAndSeasonMutex.release();
       }
@@ -65,15 +60,9 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     }
   }
 
-  Future<SeasonDriver?> _fetchSeasonDriverByDriverIdAndSeason(
-    String driverId,
-    int season,
-  ) async {
+  Future<SeasonDriver?> _fetchSeasonDriverById(String id) async {
     final seasonDriverDto =
-        await _firebaseSeasonDriverService.fetchSeasonDriverByDriverIdAndSeason(
-      driverId: driverId,
-      season: season,
-    );
+        await _firebaseSeasonDriverService.fetchSeasonDriverById(id);
     if (seasonDriverDto == null) return null;
     final seasonDriver = _seasonDriverMapper.mapFromDto(seasonDriverDto);
     addEntity(seasonDriver);

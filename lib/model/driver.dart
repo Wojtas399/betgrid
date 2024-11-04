@@ -1,38 +1,29 @@
-import 'entity.dart';
+import 'package:equatable/equatable.dart';
 
-class Driver extends Entity {
+class Driver extends Equatable {
+  final String seasonDriverId;
   final String name;
   final String surname;
   final int number;
-  final Team team;
+  final String teamName;
+  final String teamHexColor;
 
   const Driver({
-    required super.id,
+    required this.seasonDriverId,
     required this.name,
     required this.surname,
     required this.number,
-    required this.team,
+    required this.teamName,
+    required this.teamHexColor,
   });
 
   @override
-  List<Object?> get props => [id, name, surname, number, team];
-}
-
-//TODO: Colors should not be defined here because it makes Driver entity
-//TODO: dependent of UI.
-enum Team {
-  mercedes(0xFF86d1c0),
-  alpine(0xFF4891cc),
-  haasF1Team(0xFFb7babd),
-  redBullRacing(0xFF4570c0),
-  mcLaren(0xFFe6853b),
-  astonMartin(0xFF4e8a76),
-  rb(0xFF698ea7),
-  ferrari(0xFFe53740),
-  kickSauber(0xFF69e444),
-  williams(0xFF62bbd9);
-
-  final int hexColor;
-
-  const Team(this.hexColor);
+  List<Object?> get props => [
+        seasonDriverId,
+        name,
+        surname,
+        number,
+        teamName,
+        teamHexColor,
+      ];
 }

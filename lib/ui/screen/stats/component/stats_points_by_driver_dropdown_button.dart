@@ -5,6 +5,7 @@ import '../../../../model/driver.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/string_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
 
@@ -60,11 +61,11 @@ class _DriverDescription extends DropdownMenuItem<String> {
 
   _DriverDescription(this.driver)
       : super(
-          value: driver.id,
+          value: driver.seasonDriverId,
           child: Row(
             children: [
               Container(
-                color: Color(driver.team.hexColor),
+                color: driver.teamHexColor.toColor(),
                 width: 6,
                 height: 20,
               ),

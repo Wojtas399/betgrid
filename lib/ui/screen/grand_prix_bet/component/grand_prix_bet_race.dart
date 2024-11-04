@@ -9,6 +9,7 @@ import '../../../component/no_text_component.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/string_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
 import '../cubit/grand_prix_bet_state.dart';
@@ -92,7 +93,7 @@ class _P1 extends StatelessWidget {
               name: bet!.betDriver!.name,
               surname: bet.betDriver!.surname,
               number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.team.hexColor,
+              teamColor: bet.betDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       resultsChild: bet?.resultDriver != null
@@ -100,7 +101,7 @@ class _P1 extends StatelessWidget {
               name: bet!.resultDriver!.name,
               surname: bet.resultDriver!.surname,
               number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.team.hexColor,
+              teamColor: bet.resultDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       points: bet?.points,
@@ -126,7 +127,7 @@ class _P2 extends StatelessWidget {
               name: bet!.betDriver!.name,
               surname: bet.betDriver!.surname,
               number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.team.hexColor,
+              teamColor: bet.betDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       resultsChild: bet?.resultDriver != null
@@ -134,7 +135,7 @@ class _P2 extends StatelessWidget {
               name: bet!.resultDriver!.name,
               surname: bet.resultDriver!.surname,
               number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.team.hexColor,
+              teamColor: bet.resultDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       points: bet?.points,
@@ -160,7 +161,7 @@ class _P3 extends StatelessWidget {
               name: bet!.betDriver!.name,
               surname: bet.betDriver!.surname,
               number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.team.hexColor,
+              teamColor: bet.betDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       resultsChild: bet?.resultDriver != null
@@ -168,7 +169,7 @@ class _P3 extends StatelessWidget {
               name: bet!.resultDriver!.name,
               surname: bet.resultDriver!.surname,
               number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.team.hexColor,
+              teamColor: bet.resultDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       points: bet?.points,
@@ -193,7 +194,7 @@ class _P10 extends StatelessWidget {
               name: bet!.betDriver!.name,
               surname: bet.betDriver!.surname,
               number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.team.hexColor,
+              teamColor: bet.betDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       resultsChild: bet?.resultDriver != null
@@ -201,7 +202,7 @@ class _P10 extends StatelessWidget {
               name: bet!.resultDriver!.name,
               surname: bet.resultDriver!.surname,
               number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.team.hexColor,
+              teamColor: bet.resultDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       points: bet?.points,
@@ -226,7 +227,7 @@ class _FastestLap extends StatelessWidget {
               name: bet!.betDriver!.name,
               surname: bet.betDriver!.surname,
               number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.team.hexColor,
+              teamColor: bet.betDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       resultsChild: bet?.resultDriver != null
@@ -234,7 +235,7 @@ class _FastestLap extends StatelessWidget {
               name: bet!.resultDriver!.name,
               surname: bet.resultDriver!.surname,
               number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.team.hexColor,
+              teamColor: bet.resultDriver!.teamHexColor.toColor(),
             )
           : const NoText(),
       points: bet?.points,
@@ -266,7 +267,7 @@ class _DnfDrivers extends StatelessWidget {
                           name: driver.name,
                           surname: driver.surname,
                           number: driver.number,
-                          teamColor: driver.team.hexColor,
+                          teamColor: driver.teamHexColor.toColor(),
                         )
                       : const NoText(),
                 )
@@ -285,7 +286,7 @@ class _DnfDrivers extends StatelessWidget {
                           name: driver.name,
                           surname: driver.surname,
                           number: driver.number,
-                          teamColor: driver.team.hexColor,
+                          teamColor: driver.teamHexColor.toColor(),
                         )
                       : const NoText(),
                 )

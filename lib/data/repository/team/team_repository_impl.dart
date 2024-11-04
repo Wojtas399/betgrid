@@ -11,7 +11,7 @@ import 'team_repository.dart';
 @LazySingleton(as: TeamRepository)
 class TeamRepositoryImpl extends Repository<Team> implements TeamRepository {
   final FirebaseTeamService _firebaseTeamService;
-  final NewTeamMapper _teamMapper;
+  final TeamMapper _teamMapper;
   final _getTeamByIdMutex = Mutex();
 
   TeamRepositoryImpl(

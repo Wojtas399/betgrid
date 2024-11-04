@@ -4,14 +4,19 @@ import 'package:mocktail/mocktail.dart';
 
 class MockSeasonDriverRepository extends Mock
     implements SeasonDriverRepository {
-  void mockGetSeasonDriverByDriverIdAndSeason({
+  void mockGetAllSeasonDriversFromSeason({
+    required List<SeasonDriver> expectedSeasonDrivers,
+  }) {
+    when(
+      () => getAllSeasonDriversFromSeason(any()),
+    ).thenAnswer((_) => Stream.value(expectedSeasonDrivers));
+  }
+
+  void mockGetSeasonDriverById({
     SeasonDriver? expectedSeasonDriver,
   }) {
     when(
-      () => getSeasonDriverByDriverIdAndSeason(
-        driverId: any(named: 'driverId'),
-        season: any(named: 'season'),
-      ),
+      () => getSeasonDriverById(any()),
     ).thenAnswer((_) => Stream.value(expectedSeasonDriver));
   }
 }

@@ -5,6 +5,7 @@ import '../../../../model/driver.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/string_extensions.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
 
 class GrandPrixBetEditorDriverField extends StatelessWidget {
@@ -85,12 +86,12 @@ class _DriverSelectionFormField extends StatelessWidget {
       items: [
         ...?allDrivers?.map(
           (driver) => DropdownMenuItem(
-            value: driver.id,
+            value: driver.seasonDriverId,
             child: DriverDescription(
               name: driver.name,
               surname: driver.surname,
               number: driver.number,
-              teamColor: driver.team.hexColor,
+              teamColor: driver.teamHexColor.toColor(),
             ),
           ),
         ),

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/driver/driver_repository.dart';
 import '../../../../model/driver.dart';
+import '../../../../use_case/get_all_drivers_from_season_use_case.dart';
+import '../../../extensions/drivers_list_extensions.dart';
 import '../stats_creator/create_players_podium_stats.dart';
 import '../stats_creator/create_points_for_driver_stats.dart';
 import '../stats_creator/create_points_history_stats.dart';
@@ -16,13 +17,13 @@ import 'stats_state.dart';
 
 @injectable
 class StatsCubit extends Cubit<StatsState> {
-  final DriverRepository _driverRepository;
+  final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
   final CreatePlayersPodiumStats _createPlayersPodiumStats;
   final CreatePointsHistoryStats _createPointsHistoryStats;
   final CreatePointsForDriverStats _createPointsForDriverStats;
 
   StatsCubit(
-    this._driverRepository,
+    this._getAllDriversFromSeasonUseCase,
     this._createPlayersPodiumStats,
     this._createPointsHistoryStats,
     this._createPointsForDriverStats,
@@ -32,7 +33,7 @@ class StatsCubit extends Cubit<StatsState> {
     final listenedParams$ = Rx.combineLatest3(
       _createPlayersPodiumStats(),
       _createPointsHistoryStats(),
-      _driverRepository.getAllDrivers(),
+      _getAllDriversFromSeasonUseCase(2024),
       (
         PlayersPodium? playersPodium,
         PointsHistory? pointsHistory,
@@ -51,7 +52,7 @@ class StatsCubit extends Cubit<StatsState> {
         ));
       } else {
         final sortedDrivers = [...params.allDrivers];
-        sortedDrivers.sort(_sortDriversByTeam);
+        sortedDrivers.sortByTeamAndSurname();
         emit(state.copyWith(
           status: StatsStateStatus.completed,
           playersPodium: params.playersPodium,
@@ -75,9 +76,6 @@ class StatsCubit extends Cubit<StatsState> {
       ));
     }
   }
-
-  int _sortDriversByTeam(Driver d1, Driver d2) =>
-      d1.team.toString().compareTo(d2.team.toString());
 }
 
 class _ListenedParams extends Equatable {

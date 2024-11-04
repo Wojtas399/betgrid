@@ -1,11 +1,14 @@
-import 'package:betgrid/data/firebase/model/driver_dto.dart';
-import 'package:betgrid/data/mapper/team_mapper.dart';
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/data/mapper/new_team_mapper.dart';
+import 'package:betgrid/model/team.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockTeamMapper extends Mock implements TeamMapper {
-  MockTeamMapper() {
-    registerFallbackValue(TeamDto.mercedes);
+import '../../../creator/team_creator.dart';
+
+class MockNewTeamMapper extends Mock implements TeamMapper {
+  MockNewTeamMapper() {
+    registerFallbackValue(
+      const TeamCreator().createDto(),
+    );
   }
 
   void mockMapFromDto({

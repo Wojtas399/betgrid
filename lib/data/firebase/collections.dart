@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
-import 'model/driver_dto.dart';
+import 'model/driver_personal_data_dto.dart';
 import 'model/grand_prix_bet_dto.dart';
 import 'model/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_dto.dart';
 import 'model/grand_prix_results_dto.dart';
 import 'model/season_driver_dto.dart';
-import 'model/team_dto.dart' as teamDto;
+import 'model/team_dto.dart';
 import 'model/user_dto.dart';
 
 @injectable
@@ -28,18 +28,21 @@ class FirebaseCollections {
         toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
       );
 
-  CollectionReference<DriverDto> drivers() =>
-      FirebaseFirestore.instance.collection('Drivers').withConverter<DriverDto>(
-            fromFirestore: (snapshot, _) {
-              final data = snapshot.data();
-              if (data == null) throw 'Driver document data was null';
-              return DriverDto.fromFirebase(
-                id: snapshot.id,
-                json: data,
-              );
-            },
-            toFirestore: (DriverDto dto, _) => dto.toJson(),
-          );
+  CollectionReference<DriverPersonalDataDto> driversPersonalData() {
+    return FirebaseFirestore.instance
+        .collection('DriversPersonalData')
+        .withConverter<DriverPersonalDataDto>(
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data();
+            if (data == null) throw 'DriverPersonalData document data is null';
+            return DriverPersonalDataDto.fromFirebase(
+              id: snapshot.id,
+              json: data,
+            );
+          },
+          toFirestore: (DriverPersonalDataDto dto, _) => dto.toJson(),
+        );
+  }
 
   CollectionReference<GrandPrixResultsDto> grandPrixesResults() =>
       FirebaseFirestore.instance
@@ -115,7 +118,8 @@ class FirebaseCollections {
         .withConverter<SeasonDriverDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
-            if (data == null) throw 'Season driver document is null';
+            if (data == null)
+              throw 'Season driver_personal_data document is null';
             return SeasonDriverDto.fromFirebase(
               id: snapshot.id,
               json: data,
@@ -125,14 +129,14 @@ class FirebaseCollections {
         );
   }
 
-  CollectionReference<teamDto.TeamDto> teams() {
+  CollectionReference<TeamDto> teams() {
     return FirebaseFirestore.instance
         .collection('Teams')
-        .withConverter<teamDto.TeamDto>(
+        .withConverter<TeamDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
             if (data == null) throw 'Team document is null';
-            return teamDto.TeamDto.fromFirebase(
+            return TeamDto.fromFirebase(
               id: snapshot.id,
               json: data,
             );

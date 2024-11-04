@@ -88,7 +88,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
     final Iterable<String> originalDnfDriverIds =
         originalGrandPrixBet!.dnfDriverIds.whereNotNull();
     final Iterable<String> newDnfDriverIds = raceForm.dnfDrivers.map(
-      (Driver driver) => driver.id,
+      (Driver driver) => driver.seasonDriverId,
     );
     if (originalDnfDriverIds.length != newDnfDriverIds.length) return true;
     for (final driverId in newDnfDriverIds) {

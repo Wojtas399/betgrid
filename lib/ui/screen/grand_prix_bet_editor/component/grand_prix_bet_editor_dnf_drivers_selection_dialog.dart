@@ -7,6 +7,7 @@ import '../../../component/empty_content_info_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
+import '../../../extensions/string_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../cubit/grand_prix_bet_editor_cubit.dart';
 
@@ -75,7 +76,7 @@ class _SelectedDrivers extends StatelessWidget {
                     name: driver.name,
                     surname: driver.surname,
                     number: driver.number,
-                    teamColor: driver.team.hexColor,
+                    teamColor: driver.teamHexColor.toColor(),
                   ),
                   SizedBox(
                     height: 24,
@@ -83,7 +84,7 @@ class _SelectedDrivers extends StatelessWidget {
                     child: IconButton(
                       onPressed: () => context
                           .read<GrandPrixBetEditorCubit>()
-                          .onDnfDriverRemoved(driver.id),
+                          .onDnfDriverRemoved(driver.seasonDriverId),
                       iconSize: 16,
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.close),
@@ -129,7 +130,7 @@ class _ListOfDriversToSelect extends StatelessWidget {
                       isDisabled: dnfDrivers.length == 3,
                       onTap: () => context
                           .read<GrandPrixBetEditorCubit>()
-                          .onDnfDriverSelected(driver.id),
+                          .onDnfDriverSelected(driver.seasonDriverId),
                     ),
                   )
                   .separated(const SizedBox(height: 16)),
@@ -165,7 +166,7 @@ class _DriverItem extends StatelessWidget {
             name: driver.name,
             surname: driver.surname,
             number: driver.number,
-            teamColor: driver.team.hexColor,
+            teamColor: driver.teamHexColor.toColor(),
           ),
         ),
       );

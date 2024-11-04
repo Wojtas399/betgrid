@@ -1,15 +1,15 @@
-import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/driver/driver_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../../data/repository/season_driver/season_driver_repository.dart';
 import '../../../../model/driver.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
+import '../../../../use_case/get_driver_based_on_season_driver_use_case.dart';
 import 'grand_prix_bet_state.dart';
 import 'grand_prix_bet_status_service.dart';
 
@@ -17,7 +17,9 @@ import 'grand_prix_bet_status_service.dart';
 class GrandPrixBetRaceBetsService {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
-  final DriverRepository _driverRepository;
+  final SeasonDriverRepository _seasonDriverRepository;
+  final GetDriverBasedOnSeasonDriverUseCase
+      _getDriverBasedOnSeasonDriverUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
   final String _playerId;
@@ -26,7 +28,8 @@ class GrandPrixBetRaceBetsService {
   GrandPrixBetRaceBetsService(
     this._grandPrixBetRepository,
     this._grandPrixResultsRepository,
-    this._driverRepository,
+    this._seasonDriverRepository,
+    this._getDriverBasedOnSeasonDriverUseCase,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
     @factoryParam this._playerId,
@@ -260,10 +263,12 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<Driver?> _getCorrespondingDriver(String? driverId) {
-    return _driverRepository.getAllDrivers().map(
-          (allDrivers) => allDrivers.firstWhereOrNull(
-            (driver) => driver.id == driverId,
-          ),
-        );
+    return driverId != null
+        ? _seasonDriverRepository.getSeasonDriverById(driverId).switchMap(
+              (seasonDriver) => seasonDriver != null
+                  ? _getDriverBasedOnSeasonDriverUseCase(seasonDriver)
+                  : Stream.value(null),
+            )
+        : Stream.value(null);
   }
 }

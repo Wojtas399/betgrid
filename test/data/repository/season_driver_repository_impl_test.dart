@@ -93,31 +93,15 @@ void main() {
   );
 
   group(
-    'getSeasonDriverByDriverIdAndSeason, ',
+    'getSeasonDriverById, ',
     () {
-      const String driverId = 'd1';
-      const int season = 2024;
-      const SeasonDriverCreator seasonDriverCreator = SeasonDriverCreator(
-        id: 'sd1',
-        driverId: driverId,
-        season: season,
-      );
+      const String id = 'sd1';
+      const SeasonDriverCreator seasonDriverCreator =
+          SeasonDriverCreator(id: id);
       final List<SeasonDriver> existingSeasonDrivers = [
-        const SeasonDriverCreator(
-          id: 'sd2',
-          driverId: driverId,
-          season: 2023,
-        ).createEntity(),
-        const SeasonDriverCreator(
-          id: 'sd3',
-          driverId: 'd2',
-          season: season,
-        ).createEntity(),
-        const SeasonDriverCreator(
-          id: 'sd4',
-          driverId: 'd2',
-          season: 2023,
-        ).createEntity(),
+        const SeasonDriverCreator(id: 'sd2').createEntity(),
+        const SeasonDriverCreator(id: 'sd3').createEntity(),
+        const SeasonDriverCreator(id: 'sd4').createEntity(),
       ];
 
       test(
@@ -128,7 +112,7 @@ void main() {
               seasonDriverCreator.createDto();
           final SeasonDriver expectedSeasonDriver =
               seasonDriverCreator.createEntity();
-          firebaseSeasonDriverService.mockFetchSeasonDriverByDriverIdAndSeason(
+          firebaseSeasonDriverService.mockFetchSeasonDriverById(
             expectedSeasonDriverDto: expectedSeasonDriverDto,
           );
           seasonDriverMapper.mockMapFromDto(
@@ -137,10 +121,7 @@ void main() {
           repositoryImpl.addEntities(existingSeasonDrivers);
 
           final Stream<SeasonDriver?> seasonDriver$ =
-              repositoryImpl.getSeasonDriverByDriverIdAndSeason(
-            driverId: driverId,
-            season: season,
-          );
+              repositoryImpl.getSeasonDriverById(id);
 
           expect(await seasonDriver$.first, expectedSeasonDriver);
           expect(
@@ -148,18 +129,14 @@ void main() {
             [...existingSeasonDrivers, expectedSeasonDriver],
           );
           verify(
-            () => firebaseSeasonDriverService
-                .fetchSeasonDriverByDriverIdAndSeason(
-              driverId: driverId,
-              season: season,
-            ),
+            () => firebaseSeasonDriverService.fetchSeasonDriverById(id),
           ).called(1);
         },
       );
 
       test(
-        'should only emit season driver if season driver with matching '
-        'driverId and season already exists in repo state',
+        'should only emit season driver if season driver with matching id '
+        'already exists in repo state',
         () async {
           final SeasonDriver expectedSeasonDriver =
               seasonDriverCreator.createEntity();
@@ -168,10 +145,7 @@ void main() {
           );
 
           final Stream<SeasonDriver?> seasonDriver$ =
-              repositoryImpl.getSeasonDriverByDriverIdAndSeason(
-            driverId: driverId,
-            season: season,
-          );
+              repositoryImpl.getSeasonDriverById(id);
 
           expect(await seasonDriver$.first, expectedSeasonDriver);
         },

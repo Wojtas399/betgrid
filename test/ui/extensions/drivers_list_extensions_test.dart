@@ -12,13 +12,13 @@ void main() {
         'should sort drivers alphabetically by team',
         () {
           final Driver driver1 = const DriverCreator(
-            id: 'd1',
-            team: DriverCreatorTeam.mercedes,
-          ).createEntity();
+            seasonDriverId: 'sd1',
+            teamName: 'Mercedes',
+          ).create();
           final Driver driver2 = const DriverCreator(
-            id: 'd2',
-            team: DriverCreatorTeam.alpine,
-          ).createEntity();
+            seasonDriverId: 'sd2',
+            teamName: 'Alpine',
+          ).create();
           final List<Driver> originalList = [driver1, driver2];
           final List<Driver> expectedSortedList = [driver2, driver1];
 
@@ -34,15 +34,15 @@ void main() {
         'to the same team',
         () {
           final Driver driver1 = const DriverCreator(
-            id: 'd1',
-            team: DriverCreatorTeam.mercedes,
+            seasonDriverId: 'sd1',
+            teamName: 'Mercedes',
             surname: 'Russel',
-          ).createEntity();
+          ).create();
           final Driver driver2 = const DriverCreator(
-            id: 'd2',
-            team: DriverCreatorTeam.mercedes,
+            seasonDriverId: 'sd2',
+            teamName: 'Mercedes',
             surname: 'Hamilton',
-          ).createEntity();
+          ).create();
           final List<Driver> originalList = [driver1, driver2];
           final List<Driver> expectedSortedList = [driver2, driver1];
 

@@ -7,7 +7,7 @@ class DriverDescription extends StatelessWidget {
   final String name;
   final String surname;
   final int number;
-  final int teamColor;
+  final Color teamColor;
 
   const DriverDescription({
     super.key,
@@ -27,7 +27,7 @@ class DriverDescription extends StatelessWidget {
           height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Color(teamColor),
+            color: teamColor,
           ),
         ),
         const GapHorizontal8(),

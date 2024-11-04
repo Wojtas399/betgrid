@@ -94,7 +94,7 @@ void main() {
   );
 
   test(
-    'for each player should sum points received for driver in every grand prix',
+    'for each player should sum points received for driver_personal_data in every grand prix',
     () async {
       const String driverId = 'd1';
       final List<Player> players = [

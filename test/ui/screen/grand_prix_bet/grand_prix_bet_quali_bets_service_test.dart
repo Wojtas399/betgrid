@@ -9,16 +9,16 @@ import '../../../creator/driver_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
-import '../../../mock/data/repository/mock_driver_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
+import '../../../mock/use_case/mock_get_all_drivers_from_season_use_case.dart';
 
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
-  final driverRepository = MockDriverRepository();
+  final getAllDriversFromSeasonUseCase = MockGetAllDriversFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
@@ -26,7 +26,7 @@ void main() {
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
-    driverRepository,
+    getAllDriversFromSeasonUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
@@ -37,11 +37,12 @@ void main() {
     'should create list with 20 SingleDriverBet elements where each element '
     'has data corresponding to its position',
     () async {
+      const int season = 2024;
       final List<Driver> allDrivers = List.generate(
         20,
         (int driverIndex) => DriverCreator(
-          id: 'd${driverIndex + 1}',
-        ).createEntity(),
+          seasonDriverId: 'd${driverIndex + 1}',
+        ).create(),
       );
       final List<String?> betQualiStandingsByDriverIds = List.generate(
         20,
@@ -231,7 +232,7 @@ void main() {
           results: GrandPrixResultsCreator(
         qualiStandingsByDriverIds: resultQualiStandingsByDriverIds,
       ).createEntity());
-      driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+      getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: GrandPrixBetPoints(
@@ -265,7 +266,7 @@ void main() {
           grandPrixId: grandPrixId,
         ),
       ).called(1);
-      verify(driverRepository.getAllDrivers).called(1);
+      verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(

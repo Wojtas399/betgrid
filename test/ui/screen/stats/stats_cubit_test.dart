@@ -10,26 +10,26 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_creator.dart';
 import '../../../creator/player_creator.dart';
-import '../../../mock/data/repository/mock_driver_repository.dart';
 import '../../../mock/ui/mock_create_players_podium_stats.dart';
 import '../../../mock/ui/mock_create_points_for_driver_stats.dart';
 import '../../../mock/ui/mock_create_points_history_stats.dart';
+import '../../../mock/use_case/mock_get_all_drivers_from_season_use_case.dart';
 
 void main() {
-  final driverRepository = MockDriverRepository();
+  final getAllDriversFromSeasonUseCase = MockGetAllDriversFromSeasonUseCase();
   final createPlayersPodiumStats = MockCreatePlayersPodiumStats();
   final createPointsHistoryStats = MockCreatePointsHistoryStats();
   final createPointsForDriverStats = MockCreatePointsForDriverStats();
 
   StatsCubit createCubit() => StatsCubit(
-        driverRepository,
+        getAllDriversFromSeasonUseCase,
         createPlayersPodiumStats,
         createPointsHistoryStats,
         createPointsForDriverStats,
       );
 
   tearDown(() {
-    reset(driverRepository);
+    reset(getAllDriversFromSeasonUseCase);
     reset(createPlayersPodiumStats);
     reset(createPointsHistoryStats);
     reset(createPointsForDriverStats);
@@ -38,6 +38,7 @@ void main() {
   group(
     'initialize, ',
     () {
+      const int season = 2024;
       final PlayersPodium playersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
           player: const PlayerCreator(id: 'p3').createEntity(),
@@ -50,23 +51,23 @@ void main() {
       );
       final List<Driver> allDrivers = [
         const DriverCreator(
-          id: 'd1',
-          team: DriverCreatorTeam.ferrari,
-        ).createEntity(),
+          seasonDriverId: 'd1',
+          teamName: 'Ferrari',
+        ).create(),
         const DriverCreator(
-          id: 'd2',
-          team: DriverCreatorTeam.redBullRacing,
-        ).createEntity(),
+          seasonDriverId: 'd2',
+          teamName: 'Red Bull Racing',
+        ).create(),
         const DriverCreator(
-          id: 'd3',
-          team: DriverCreatorTeam.alpine,
-        ).createEntity(),
+          seasonDriverId: 'd3',
+          teamName: 'Alpine',
+        ).create(),
       ];
 
       tearDown(() {
         verify(createPlayersPodiumStats.call).called(1);
         verify(createPointsHistoryStats.call).called(1);
-        verify(driverRepository.getAllDrivers).called(1);
+        verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
       });
 
       blocTest(
@@ -76,7 +77,7 @@ void main() {
         setUp: () {
           createPlayersPodiumStats.mock();
           createPointsHistoryStats.mock();
-          driverRepository.mockGetAllDrivers(allDrivers: []);
+          getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: []);
         },
         act: (cubit) async => await cubit.initialize(),
         expect: () => const [
@@ -97,7 +98,7 @@ void main() {
           createPointsHistoryStats.mock(
             pointsHistory: pointsHistory,
           );
-          driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+          getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
         },
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
@@ -127,7 +128,7 @@ void main() {
       );
 
       blocTest(
-        'should emit state with points for driver chart data',
+        'should emit state with points for driver_personal_data chart data',
         build: () => createCubit(),
         setUp: () => createPointsForDriverStats.mock(
           playersPointsForDriver: [playerPointsForDriver],

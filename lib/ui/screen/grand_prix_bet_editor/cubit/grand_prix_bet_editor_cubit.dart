@@ -6,10 +6,10 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
-import '../../../../data/repository/driver/driver_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/driver.dart';
 import '../../../../model/grand_prix_bet.dart';
+import '../../../../use_case/get_all_drivers_from_season_use_case.dart';
 import '../../../extensions/drivers_list_extensions.dart';
 import 'grand_prix_bet_editor_state.dart';
 
@@ -17,30 +17,34 @@ import 'grand_prix_bet_editor_state.dart';
 class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
-  final DriverRepository _driverRepository;
-  StreamSubscription<GrandPrixBet?>? _grandPrixBetListener;
+  final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
+  StreamSubscription<_ListenedParams?>? _listener;
   String? _grandPrixId;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
     this._grandPrixBetRepository,
-    this._driverRepository,
+    this._getAllDriversFromSeasonUseCase,
   ) : super(const GrandPrixBetEditorState());
 
   @override
   Future<void> close() {
-    _grandPrixBetListener?.cancel();
+    _listener?.cancel();
     return super.close();
   }
 
   Future<void> initialize({
-    required String grandPrixId,
+    required String grandPrixId, //TODO: Change it to factoryParam
   }) async {
     _grandPrixId = grandPrixId;
-    final List<Driver> sortedAllDrivers = await _loadAllDriversAndSort();
-    _grandPrixBetListener = _getBetForGrandPrix(grandPrixId).listen(
-      (GrandPrixBet? bet) => _manageGrandPrixBetUpdate(bet, sortedAllDrivers),
-    );
+    _listener = Rx.combineLatest2(
+      _getAllSortedDrivers(),
+      _getBetForGrandPrix(grandPrixId),
+      (List<Driver> allDrivers, GrandPrixBet? gpBet) => (
+        allDrivers: allDrivers,
+        gpBet: gpBet,
+      ),
+    ).listen(_manageListenedParams);
   }
 
   void onQualiStandingsChanged({
@@ -109,7 +113,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onDnfDriverSelected(String driverId) {
     if (state.allDrivers == null) return;
     final Driver? selectedDriver = state.allDrivers!.firstWhereOrNull(
-      (Driver driver) => driver.id == driverId,
+      (Driver driver) => driver.seasonDriverId == driverId,
     );
     if (selectedDriver == null ||
         state.raceForm.dnfDrivers.contains(selectedDriver)) {
@@ -127,7 +131,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onDnfDriverRemoved(String driverId) {
     if (state.allDrivers == null) return;
     final int indexOfDriverToRemove = state.raceForm.dnfDrivers.indexWhere(
-      (Driver driver) => driver.id == driverId,
+      (Driver driver) => driver.seasonDriverId == driverId,
     );
     if (indexOfDriverToRemove == -1) return;
     final List<Driver> updatedDnfDrivers = [...state.raceForm.dnfDrivers];
@@ -174,12 +178,14 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  Future<List<Driver>> _loadAllDriversAndSort() async {
-    final List<Driver> allDrivers =
-        await _driverRepository.getAllDrivers().first;
-    final List<Driver> sortedAllDrivers = [...allDrivers];
-    sortedAllDrivers.sortByTeamAndSurname();
-    return sortedAllDrivers;
+  Stream<List<Driver>> _getAllSortedDrivers() {
+    return _getAllDriversFromSeasonUseCase(2024).map(
+      (List<Driver> allDriversFromSeason) {
+        final sortedAllDriversFromSeason = [...allDriversFromSeason];
+        sortedAllDriversFromSeason.sortByTeamAndSurname();
+        return sortedAllDriversFromSeason;
+      },
+    );
   }
 
   Stream<GrandPrixBet?> _getBetForGrandPrix(String grandPrixId) =>
@@ -191,35 +197,37 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
             ),
           );
 
-  void _manageGrandPrixBetUpdate(GrandPrixBet? bet, List<Driver> allDrivers) {
+  void _manageListenedParams(_ListenedParams listenedParams) {
+    final GrandPrixBet? gpBet = listenedParams.gpBet;
+    final List<Driver> allDrivers = listenedParams.allDrivers;
     GrandPrixBetEditorState newState = state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       allDrivers: allDrivers,
     );
-    if (bet == null) {
+    if (gpBet == null) {
       emit(newState);
       return;
     }
-    final List<Driver> dnfDrivers = bet.dnfDriverIds
+    final List<Driver> dnfDrivers = gpBet.dnfDriverIds
         .whereNotNull()
         .map(
           (String driverId) => allDrivers.firstWhere(
-            (Driver driver) => driver.id == driverId,
+            (Driver driver) => driver.seasonDriverId == driverId,
           ),
         )
         .toList();
     emit(newState.copyWith(
-      originalGrandPrixBet: bet,
-      qualiStandingsByDriverIds: bet.qualiStandingsByDriverIds,
+      originalGrandPrixBet: gpBet,
+      qualiStandingsByDriverIds: gpBet.qualiStandingsByDriverIds,
       raceForm: state.raceForm.copyWith(
-        p1DriverId: bet.p1DriverId,
-        p2DriverId: bet.p2DriverId,
-        p3DriverId: bet.p3DriverId,
-        p10DriverId: bet.p10DriverId,
-        fastestLapDriverId: bet.fastestLapDriverId,
+        p1DriverId: gpBet.p1DriverId,
+        p2DriverId: gpBet.p2DriverId,
+        p3DriverId: gpBet.p3DriverId,
+        p10DriverId: gpBet.p10DriverId,
+        fastestLapDriverId: gpBet.fastestLapDriverId,
         dnfDrivers: dnfDrivers,
-        willBeSafetyCar: bet.willBeSafetyCar,
-        willBeRedFlag: bet.willBeRedFlag,
+        willBeSafetyCar: gpBet.willBeSafetyCar,
+        willBeRedFlag: gpBet.willBeRedFlag,
       ),
     ));
   }
@@ -234,8 +242,9 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       p3DriverId: state.raceForm.p3DriverId,
       p10DriverId: state.raceForm.p10DriverId,
       fastestLapDriverId: state.raceForm.fastestLapDriverId,
-      dnfDriverIds:
-          state.raceForm.dnfDrivers.map((Driver driver) => driver.id).toList(),
+      dnfDriverIds: state.raceForm.dnfDrivers
+          .map((Driver driver) => driver.seasonDriverId)
+          .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,
       willBeRedFlag: state.raceForm.willBeRedFlag,
     );
@@ -251,10 +260,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       p3DriverId: state.raceForm.p3DriverId,
       p10DriverId: state.raceForm.p10DriverId,
       fastestLapDriverId: state.raceForm.fastestLapDriverId,
-      dnfDriverIds:
-          state.raceForm.dnfDrivers.map((Driver driver) => driver.id).toList(),
+      dnfDriverIds: state.raceForm.dnfDrivers
+          .map((Driver driver) => driver.seasonDriverId)
+          .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,
       willBeRedFlag: state.raceForm.willBeRedFlag,
     );
   }
 }
+
+typedef _ListenedParams = ({List<Driver> allDrivers, GrandPrixBet? gpBet});

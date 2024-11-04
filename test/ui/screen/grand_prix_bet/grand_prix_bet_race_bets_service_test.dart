@@ -2,6 +2,7 @@ import 'package:betgrid/model/driver.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
+import 'package:betgrid/model/season_driver.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_race_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,24 +13,30 @@ import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/race_bet_points_creator.dart';
-import '../../../mock/data/repository/mock_driver_repository.dart';
+import '../../../creator/season_driver_creator.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
+import '../../../mock/data/repository/mock_season_driver_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
+import '../../../mock/use_case/mock_get_driver_based_on_season_driver_use_case.dart';
 
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
-  final driverRepository = MockDriverRepository();
+  final seasonDriverRepository = MockSeasonDriverRepository();
+  final getDriverBasedOnSeasonDriverUseCase =
+      MockGetDriverBasedOnSeasonDriverUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
   const String grandPrixId = 'gp1';
+  const int season = 2024;
   final service = GrandPrixBetRaceBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
-    driverRepository,
+    seasonDriverRepository,
+    getDriverBasedOnSeasonDriverUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
@@ -55,6 +62,12 @@ void main() {
         grandPrixId: grandPrixId,
       ),
     ).called(1);
+    reset(grandPrixBetRepository);
+    reset(grandPrixResultsRepository);
+    reset(seasonDriverRepository);
+    reset(getDriverBasedOnSeasonDriverUseCase);
+    reset(grandPrixBetPointsRepository);
+    reset(grandPrixBetStatusService);
   });
 
   test(
@@ -79,29 +92,35 @@ void main() {
           p3Points: 0,
         ),
       ).createEntity();
-      final List<Driver> allDrivers = [
-        const DriverCreator(id: 'd1').createEntity(),
-        const DriverCreator(id: 'd2').createEntity(),
-        const DriverCreator(id: 'd3').createEntity(),
-        const DriverCreator(id: 'd4').createEntity(),
+      final List<SeasonDriver> seasonDrivers = [
+        const SeasonDriverCreator(id: 'd1').createEntity(),
+        const SeasonDriverCreator(id: 'd2').createEntity(),
+        const SeasonDriverCreator(id: 'd3').createEntity(),
+        const SeasonDriverCreator(id: 'd4').createEntity(),
+      ];
+      final List<Driver> drivers = [
+        const DriverCreator(seasonDriverId: 'd1').create(),
+        const DriverCreator(seasonDriverId: 'd2').create(),
+        const DriverCreator(seasonDriverId: 'd3').create(),
+        const DriverCreator(seasonDriverId: 'd4').create(),
       ];
       final List<SingleDriverBet> expectedBets = [
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: allDrivers.first,
-          resultDriver: allDrivers.first,
+          betDriver: drivers.first,
+          resultDriver: drivers.first,
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: allDrivers[1],
-          resultDriver: allDrivers[1],
+          betDriver: drivers[1],
+          resultDriver: drivers[1],
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
-          betDriver: allDrivers[2],
-          resultDriver: allDrivers.last,
+          betDriver: drivers[2],
+          resultDriver: drivers.last,
           points: 0,
         ),
       ];
@@ -115,7 +134,30 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: points,
       );
-      driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d1'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers.first));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d2'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers[1]));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d3'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers[2]));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d4'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers.last));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers.first),
+      ).thenAnswer((_) => Stream.value(drivers.first));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers[1]),
+      ).thenAnswer((_) => Stream.value(drivers[1]));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers[2]),
+      ).thenAnswer((_) => Stream.value(drivers[2]));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers.last),
+      ).thenAnswer((_) => Stream.value(drivers.last));
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: BetStatus.win,
       );
@@ -126,7 +168,6 @@ void main() {
       final Stream<List<SingleDriverBet>> podiumBets$ = service.getPodiumBets();
 
       expect(await podiumBets$.first, expectedBets);
-      verify(driverRepository.getAllDrivers).called(6);
     },
   );
 
@@ -145,15 +186,14 @@ void main() {
           p10Points: 2,
         ),
       ).createEntity();
-      final List<Driver> allDrivers = [
-        const DriverCreator(id: 'd1').createEntity(),
-        const DriverCreator(id: 'd10').createEntity(),
-      ];
+      final SeasonDriver seasonDriver =
+          const SeasonDriverCreator(id: 'd10').createEntity();
+      final Driver driver = const DriverCreator(seasonDriverId: 'd10').create();
       const BetStatus betStatus = BetStatus.win;
       final SingleDriverBet expectedBet = SingleDriverBet(
         status: betStatus,
-        betDriver: allDrivers.last,
-        resultDriver: allDrivers.last,
+        betDriver: driver,
+        resultDriver: driver,
         points: points.raceBetPoints?.p10Points,
       );
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
@@ -166,7 +206,12 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: points,
       );
-      driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+      seasonDriverRepository.mockGetSeasonDriverById(
+        expectedSeasonDriver: seasonDriver,
+      );
+      getDriverBasedOnSeasonDriverUseCase.mock(
+        expectedDriver: driver,
+      );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
       );
@@ -174,7 +219,6 @@ void main() {
       final Stream<SingleDriverBet> p10Bet$ = service.getP10Bet();
 
       expect(await p10Bet$.first, expectedBet);
-      verify(driverRepository.getAllDrivers).called(2);
     },
   );
 
@@ -193,15 +237,14 @@ void main() {
           fastestLapPoints: 2,
         ),
       ).createEntity();
-      final List<Driver> allDrivers = [
-        const DriverCreator(id: 'd1').createEntity(),
-        const DriverCreator(id: 'd10').createEntity(),
-      ];
+      final SeasonDriver seasonDriver =
+          const SeasonDriverCreator(id: 'd1').createEntity();
+      final Driver driver = const DriverCreator(seasonDriverId: 'd1').create();
       const BetStatus betStatus = BetStatus.win;
       final SingleDriverBet expectedBet = SingleDriverBet(
         status: betStatus,
-        betDriver: allDrivers.first,
-        resultDriver: allDrivers.first,
+        betDriver: driver,
+        resultDriver: driver,
         points: points.raceBetPoints?.fastestLapPoints,
       );
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
@@ -214,7 +257,12 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: points,
       );
-      driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+      seasonDriverRepository.mockGetSeasonDriverById(
+        expectedSeasonDriver: seasonDriver,
+      );
+      getDriverBasedOnSeasonDriverUseCase.mock(
+        expectedDriver: driver,
+      );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
       );
@@ -222,7 +270,6 @@ void main() {
       final Stream<SingleDriverBet> fastestLapBet$ = service.getFastestLapBet();
 
       expect(await fastestLapBet$.first, expectedBet);
-      verify(driverRepository.getAllDrivers).called(2);
     },
   );
 
@@ -241,17 +288,23 @@ void main() {
           dnfPoints: 2,
         ),
       ).createEntity();
-      final List<Driver> allDrivers = [
-        const DriverCreator(id: 'd1').createEntity(),
-        const DriverCreator(id: 'd2').createEntity(),
-        const DriverCreator(id: 'd3').createEntity(),
-        const DriverCreator(id: 'd5').createEntity(),
+      final List<SeasonDriver> seasonDrivers = [
+        const SeasonDriverCreator(id: 'd1').createEntity(),
+        const SeasonDriverCreator(id: 'd2').createEntity(),
+        const SeasonDriverCreator(id: 'd3').createEntity(),
+        const SeasonDriverCreator(id: 'd5').createEntity(),
+      ];
+      final List<Driver> drivers = [
+        const DriverCreator(seasonDriverId: 'd1').create(),
+        const DriverCreator(seasonDriverId: 'd2').create(),
+        const DriverCreator(seasonDriverId: 'd3').create(),
+        const DriverCreator(seasonDriverId: 'd5').create(),
       ];
       const BetStatus betStatus = BetStatus.win;
       final MultipleDriversBet expectedBet = MultipleDriversBet(
         status: betStatus,
-        betDrivers: [allDrivers.first, allDrivers[1]],
-        resultDrivers: [allDrivers.first, allDrivers[2], allDrivers.last],
+        betDrivers: [drivers.first, drivers[1]],
+        resultDrivers: [drivers.first, drivers[2], drivers.last],
         points: points.raceBetPoints?.dnfPoints,
       );
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
@@ -264,7 +317,30 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
         grandPrixBetPoints: points,
       );
-      driverRepository.mockGetAllDrivers(allDrivers: allDrivers);
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d1'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers.first));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d2'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers[1]));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d3'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers[2]));
+      when(
+        () => seasonDriverRepository.getSeasonDriverById('d5'),
+      ).thenAnswer((_) => Stream.value(seasonDrivers.last));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers.first),
+      ).thenAnswer((_) => Stream.value(drivers.first));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers[1]),
+      ).thenAnswer((_) => Stream.value(drivers[1]));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers[2]),
+      ).thenAnswer((_) => Stream.value(drivers[2]));
+      when(
+        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers.last),
+      ).thenAnswer((_) => Stream.value(drivers.last));
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
       );
@@ -273,7 +349,6 @@ void main() {
           service.getDnfDriversBet();
 
       expect(await dnfDriversBet$.first, expectedBet);
-      verify(driverRepository.getAllDrivers).called(5);
     },
   );
 

@@ -12,14 +12,11 @@ class MockFirebaseSeasonDriverService extends Mock
     ).thenAnswer((_) => Future.value(expectedSeasonDriverDtos));
   }
 
-  void mockFetchSeasonDriverByDriverIdAndSeason({
+  void mockFetchSeasonDriverById({
     SeasonDriverDto? expectedSeasonDriverDto,
   }) {
     when(
-      () => fetchSeasonDriverByDriverIdAndSeason(
-        driverId: any(named: 'driverId'),
-        season: any(named: 'season'),
-      ),
+      () => fetchSeasonDriverById(any()),
     ).thenAnswer((_) => Future.value(expectedSeasonDriverDto));
   }
 }
