@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,6 +17,7 @@ class PlayersCubit extends Cubit<PlayersState> {
   final PlayerRepository _playerRepository;
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final DateService _dateService;
+  StreamSubscription<List<PlayerWithPoints>?>? _playersWithPointsListener;
 
   PlayersCubit(
     this._authRepository,
@@ -23,68 +26,67 @@ class PlayersCubit extends Cubit<PlayersState> {
     this._dateService,
   ) : super(const PlayersState());
 
-  Future<void> initialize() async {
-    final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
-    await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId != null) {
-        await _initializePlayersWithTheirPoints(loggedUserId);
-      }
-    }
+  @override
+  Future<void> close() {
+    _playersWithPointsListener?.cancel();
+    return super.close();
   }
 
-  Future<void> _initializePlayersWithTheirPoints(String loggedUserId) async {
-    final Stream<List<PlayerWithPoints>?> playersWithTheirPoints$ =
-        _getPlayersWithTheirPoints(loggedUserId);
-    await for (final playersWithTheirPoints in playersWithTheirPoints$) {
-      emit(state.copyWith(
-        status: PlayersStateStatus.completed,
-        playersWithTheirPoints: playersWithTheirPoints,
-      ));
-    }
+  void initialize() {
+    _playersWithPointsListener ??= _authRepository.loggedUserId$
+        .whereNotNull()
+        .switchMap(_getPlayersWithTheirPoints)
+        .listen(
+      (List<PlayerWithPoints>? playersWithPoints) {
+        emit(state.copyWith(
+          status: PlayersStateStatus.completed,
+          playersWithTheirPoints: playersWithPoints,
+        ));
+      },
+    );
   }
 
   Stream<List<PlayerWithPoints>?> _getPlayersWithTheirPoints(
     String loggedUserId,
-  ) =>
-      _playerRepository
-          .getAllPlayers()
-          .map(
-            (List<Player>? allPlayers) =>
-                _getOnlyOtherPlayers(allPlayers, loggedUserId),
-          )
-          .map(
-            (Iterable<Player>? otherPlayers) =>
-                otherPlayers?.map(_getPointsForPlayer),
-          )
-          .switchMap(
-            (Iterable<Stream<PlayerWithPoints>>? streams) =>
-                streams?.isNotEmpty == true
-                    ? Rx.combineLatest(
-                        streams!,
-                        (List<PlayerWithPoints> values) => values,
-                      )
-                    : Stream.value(null),
-          );
+  ) {
+    return _playerRepository
+        .getAllPlayers()
+        .map(
+          (List<Player>? allPlayers) =>
+              _getOnlyOtherPlayers(allPlayers, loggedUserId),
+        )
+        .map(
+          (Iterable<Player>? otherPlayers) =>
+              otherPlayers?.map(_getPointsForPlayer),
+        )
+        .switchMap(
+          (Iterable<Stream<PlayerWithPoints>>? streams) =>
+              streams?.isNotEmpty == true
+                  ? Rx.combineLatest(
+                      streams!,
+                      (List<PlayerWithPoints> values) => values,
+                    )
+                  : Stream.value(null),
+        );
+  }
 
   Iterable<Player>? _getOnlyOtherPlayers(
     List<Player>? allPlayers,
     String loggedUserId,
-  ) =>
-      allPlayers?.where((Player player) => player.id != loggedUserId);
+  ) {
+    return allPlayers?.where((Player player) => player.id != loggedUserId);
+  }
 
-  Stream<PlayerWithPoints> _getPointsForPlayer(Player player) async* {
+  Stream<PlayerWithPoints> _getPointsForPlayer(Player player) {
     final int currentYear = _dateService.getNow().year;
-    final Stream<double?> points$ = _getPlayerPointsUseCase(
+    return _getPlayerPointsUseCase(
       playerId: player.id,
       season: currentYear,
-    );
-    await for (final points in points$) {
-      if (points != null) {
-        yield PlayerWithPoints(
-          player: player,
-          totalPoints: points,
+    ).whereNotNull().map(
+          (double totalPoints) => PlayerWithPoints(
+            player: player,
+            totalPoints: totalPoints,
+          ),
         );
-      }
-    }
   }
 }

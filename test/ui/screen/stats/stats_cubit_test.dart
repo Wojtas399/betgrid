@@ -79,7 +79,7 @@ void main() {
           createPointsHistoryStats.mock();
           getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: []);
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => const [
           StatsState(
             status: StatsStateStatus.noData,
@@ -100,7 +100,7 @@ void main() {
           );
           getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           StatsState(
             status: StatsStateStatus.completed,

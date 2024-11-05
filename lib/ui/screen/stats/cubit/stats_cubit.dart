@@ -21,6 +21,7 @@ class StatsCubit extends Cubit<StatsState> {
   final CreatePlayersPodiumStats _createPlayersPodiumStats;
   final CreatePointsHistoryStats _createPointsHistoryStats;
   final CreatePointsForDriverStats _createPointsForDriverStats;
+  StreamSubscription<_ListenedParams>? _listener;
 
   StatsCubit(
     this._getAllDriversFromSeasonUseCase,
@@ -29,8 +30,31 @@ class StatsCubit extends Cubit<StatsState> {
     this._createPointsForDriverStats,
   ) : super(const StatsState());
 
-  Future<void> initialize() async {
-    final listenedParams$ = Rx.combineLatest3(
+  @override
+  Future<void> close() {
+    _listener?.cancel();
+    return super.close();
+  }
+
+  void initialize() {
+    _listener ??= _getListenedParams().listen(_manageListenedParams);
+  }
+
+  Future<void> onDriverChanged(String driverId) async {
+    emit(state.copyWith(
+      status: StatsStateStatus.pointsForDriverLoading,
+    ));
+    final pointsByDriverData$ = _createPointsForDriverStats(driverId: driverId);
+    await for (final pointsByDriverData in pointsByDriverData$) {
+      emit(state.copyWith(
+        status: StatsStateStatus.completed,
+        pointsByDriver: pointsByDriverData,
+      ));
+    }
+  }
+
+  Stream<_ListenedParams> _getListenedParams() {
+    return Rx.combineLatest3(
       _createPlayersPodiumStats(),
       _createPointsHistoryStats(),
       _getAllDriversFromSeasonUseCase(2024),
@@ -45,34 +69,22 @@ class StatsCubit extends Cubit<StatsState> {
         allDrivers: allDrivers,
       ),
     );
-    await for (final params in listenedParams$) {
-      if (params.noData) {
-        emit(state.copyWith(
-          status: StatsStateStatus.noData,
-        ));
-      } else {
-        final sortedDrivers = [...params.allDrivers];
-        sortedDrivers.sortByTeamAndSurname();
-        emit(state.copyWith(
-          status: StatsStateStatus.completed,
-          playersPodium: params.playersPodium,
-          pointsHistory: params.pointsHistory,
-          pointsByDriver: [],
-          allDrivers: sortedDrivers,
-        ));
-      }
-    }
   }
 
-  Future<void> onDriverChanged(String driverId) async {
-    emit(state.copyWith(
-      status: StatsStateStatus.pointsForDriverLoading,
-    ));
-    final pointsByDriverData$ = _createPointsForDriverStats(driverId: driverId);
-    await for (final pointsByDriverData in pointsByDriverData$) {
+  void _manageListenedParams(_ListenedParams params) {
+    if (params.noData) {
+      emit(state.copyWith(
+        status: StatsStateStatus.noData,
+      ));
+    } else {
+      final sortedDrivers = [...params.allDrivers];
+      sortedDrivers.sortByTeamAndSurname();
       emit(state.copyWith(
         status: StatsStateStatus.completed,
-        pointsByDriver: pointsByDriverData,
+        playersPodium: params.playersPodium,
+        pointsHistory: params.pointsHistory,
+        pointsByDriver: [],
+        allDrivers: sortedDrivers,
       ));
     }
   }

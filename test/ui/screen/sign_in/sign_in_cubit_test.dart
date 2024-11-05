@@ -30,7 +30,7 @@ void main() {
         setUp: () => authRepository.mockGetAuthState(
           authState: const AuthStateUserIsSignedIn(),
         ),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const SignInStateUserIsAlreadySignedIn(),
         ],
@@ -43,7 +43,7 @@ void main() {
         setUp: () => authRepository.mockGetAuthState(
           authState: const AuthStateUserIsSignedOut(),
         ),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const SignInStateCompleted(),
         ],

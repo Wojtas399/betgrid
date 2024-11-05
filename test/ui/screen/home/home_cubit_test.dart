@@ -42,7 +42,7 @@ void main() {
         'id is null',
         setUp: () => authRepository.mockGetLoggedUserId(null),
         build: () => createCubit(),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const HomeState(
             status: HomeStateStatus.loggedUserDoesNotExist,
@@ -58,7 +58,7 @@ void main() {
           userRepository.mockGetUserById(user: null);
         },
         build: () => createCubit(),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const HomeState(
             status: HomeStateStatus.loggedUserDataNotCompleted,
@@ -77,7 +77,7 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetUserById(user: loggedUser);
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           HomeState(
             status: HomeStateStatus.completed,

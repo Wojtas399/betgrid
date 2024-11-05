@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -45,9 +44,9 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     return super.close();
   }
 
-  Future<void> initialize() async {
-    _listenedParamsListener ??= _getListenedParams().listen(
-      (listenedParams) {
+  void initialize() {
+    _listenedParamsListener ??= _getListenedParams().distinct().listen(
+      (_ListenedParams listenedParams) {
         final DateTime now = _dateService.getNow();
         final DateTime? gpStartDate =
             listenedParams.gpListenedParams?.startDate;
@@ -96,7 +95,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         _RaceListenedParams raceListenedParams,
         GrandPrixBetPoints? gpBetPoints,
       ) =>
-          _ListenedParams(
+          (
         playerUsername: playerUsername,
         loggedUserId: loggedUserId,
         gpListenedParams: gpListenedParams,
@@ -116,7 +115,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   Stream<_GrandPrixListenedParams?> _getGrandPrixListenedParams() {
     return _grandPrixRepository.getGrandPrixById(grandPrixId: _grandPrixId).map(
           (GrandPrix? grandPrix) => grandPrix != null
-              ? _GrandPrixListenedParams(
+              ? (
                   name: grandPrix.name,
                   startDate: grandPrix.startDate,
                 )
@@ -144,7 +143,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         BooleanBet safetyCarBet,
         BooleanBet redFlagBet,
       ) =>
-          _RaceListenedParams(
+          (
         podiumBets: podiumBets,
         p10Bet: p10Bet,
         fastestLapBet: fastestLapBet,
@@ -164,71 +163,25 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 }
 
-class _ListenedParams extends Equatable {
-  final String? playerUsername;
-  final String? loggedUserId;
-  final _GrandPrixListenedParams? gpListenedParams;
-  final List<SingleDriverBet> qualiBets;
-  final _RaceListenedParams raceListenedParams;
-  final GrandPrixBetPoints? gpBetPoints;
+typedef _ListenedParams = ({
+  String? playerUsername,
+  String? loggedUserId,
+  _GrandPrixListenedParams? gpListenedParams,
+  List<SingleDriverBet> qualiBets,
+  _RaceListenedParams raceListenedParams,
+  GrandPrixBetPoints? gpBetPoints,
+});
 
-  const _ListenedParams({
-    required this.playerUsername,
-    required this.loggedUserId,
-    required this.gpListenedParams,
-    required this.qualiBets,
-    required this.raceListenedParams,
-    required this.gpBetPoints,
-  });
+typedef _RaceListenedParams = ({
+  List<SingleDriverBet> podiumBets,
+  SingleDriverBet p10Bet,
+  SingleDriverBet fastestLapBet,
+  MultipleDriversBet dnfDriversBet,
+  BooleanBet safetyCarBet,
+  BooleanBet redFlagBet,
+});
 
-  @override
-  List<Object?> get props => [
-        playerUsername,
-        loggedUserId,
-        gpListenedParams,
-        qualiBets,
-        raceListenedParams,
-        gpBetPoints,
-      ];
-}
-
-class _RaceListenedParams extends Equatable {
-  final List<SingleDriverBet> podiumBets;
-  final SingleDriverBet p10Bet;
-  final SingleDriverBet fastestLapBet;
-  final MultipleDriversBet dnfDriversBet;
-  final BooleanBet safetyCarBet;
-  final BooleanBet redFlagBet;
-
-  const _RaceListenedParams({
-    required this.podiumBets,
-    required this.p10Bet,
-    required this.fastestLapBet,
-    required this.dnfDriversBet,
-    required this.safetyCarBet,
-    required this.redFlagBet,
-  });
-
-  @override
-  List<Object?> get props => [
-        podiumBets,
-        p10Bet,
-        fastestLapBet,
-        dnfDriversBet,
-        safetyCarBet,
-        redFlagBet,
-      ];
-}
-
-class _GrandPrixListenedParams extends Equatable {
-  final String name;
-  final DateTime startDate;
-
-  const _GrandPrixListenedParams({
-    required this.name,
-    required this.startDate,
-  });
-
-  @override
-  List<Object?> get props => [name, startDate];
-}
+typedef _GrandPrixListenedParams = ({
+  String name,
+  DateTime startDate,
+});

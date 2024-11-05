@@ -1,4 +1,5 @@
-import 'package:equatable/equatable.dart';
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,6 +17,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
   final DateService _dateService;
+  StreamSubscription<_ListenedParams>? _listener;
 
   PlayerProfileCubit(
     this._playerRepository,
@@ -24,19 +26,25 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     this._dateService,
   ) : super(const PlayerProfileState());
 
-  Future<void> initialize({
-    required String playerId,
-  }) async {
-    final Stream<_ListenedParams> listenedParams$ =
-        _getListenedParams(playerId);
-    await for (final listenedParams in listenedParams$) {
-      emit(state.copyWith(
-        status: PlayerProfileStateStatus.completed,
-        player: listenedParams.player,
-        totalPoints: listenedParams.totalPoints,
-        grandPrixesWithPoints: listenedParams.grandPrixWithPoints,
-      ));
-    }
+  @override
+  Future<void> close() {
+    _listener?.cancel();
+    return super.close();
+  }
+
+  void initialize({
+    required String playerId, //TODO: Made it factoryParam
+  }) {
+    _listener ??= _getListenedParams(playerId).listen(
+      (_ListenedParams listenedParams) {
+        emit(state.copyWith(
+          status: PlayerProfileStateStatus.completed,
+          player: listenedParams.player,
+          totalPoints: listenedParams.totalPoints,
+          grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
+        ));
+      },
+    );
   }
 
   Stream<_ListenedParams> _getListenedParams(String playerId) {
@@ -56,26 +64,17 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
         double? totalPoints,
         List<GrandPrixWithPoints> grandPrixesWithPoints,
       ) =>
-          _ListenedParams(
+          (
         player: player,
         totalPoints: totalPoints,
-        grandPrixWithPoints: grandPrixesWithPoints,
+        grandPrixesWithPoints: grandPrixesWithPoints,
       ),
     );
   }
 }
 
-class _ListenedParams extends Equatable {
-  final Player? player;
-  final double? totalPoints;
-  final List<GrandPrixWithPoints> grandPrixWithPoints;
-
-  const _ListenedParams({
-    this.player,
-    this.totalPoints,
-    this.grandPrixWithPoints = const [],
-  });
-
-  @override
-  List<Object?> get props => [player, totalPoints, grandPrixWithPoints];
-}
+typedef _ListenedParams = ({
+  Player? player,
+  double? totalPoints,
+  List<GrandPrixWithPoints> grandPrixesWithPoints,
+});

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -15,6 +17,7 @@ class BetsCubit extends Cubit<BetsState> {
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
   final DateService _dateService;
+  StreamSubscription<String?>? _loggedUserIdListener;
 
   BetsCubit(
     this._authRepository,
@@ -23,16 +26,24 @@ class BetsCubit extends Cubit<BetsState> {
     this._dateService,
   ) : super(const BetsState());
 
-  Future<void> initialize() async {
-    final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
-    await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId == null) {
-        emit(state.copyWith(
-          status: BetsStateStatus.loggedUserDoesNotExist,
-        ));
-      } else {
-        await _initializeListenedParams(loggedUserId);
-      }
+  @override
+  Future<void> close() {
+    _loggedUserIdListener?.cancel();
+    return super.close();
+  }
+
+  void initialize() {
+    _loggedUserIdListener ??=
+        _authRepository.loggedUserId$.distinct().listen(_manageLoggedUserId);
+  }
+
+  Future<void> _manageLoggedUserId(String? loggedUserId) async {
+    if (loggedUserId == null) {
+      emit(state.copyWith(
+        status: BetsStateStatus.loggedUserDoesNotExist,
+      ));
+    } else {
+      await _initializeListenedParams(loggedUserId);
     }
   }
 

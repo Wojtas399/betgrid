@@ -44,7 +44,7 @@ void main() {
         'should do nothing if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [],
       );
 
@@ -55,7 +55,7 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetUserById(user: loggedUser);
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           ProfileState(
             status: ProfileStateStatus.completed,

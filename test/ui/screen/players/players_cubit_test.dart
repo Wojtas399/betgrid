@@ -50,7 +50,7 @@ void main() {
         'should do nothing if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [],
       );
 
@@ -63,7 +63,7 @@ void main() {
             players: [players.first],
           );
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const PlayersState(
             status: PlayersStateStatus.completed,
@@ -92,7 +92,7 @@ void main() {
             ),
           ).thenAnswer((_) => Stream.value(22.2));
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           PlayersState(
             status: PlayersStateStatus.completed,

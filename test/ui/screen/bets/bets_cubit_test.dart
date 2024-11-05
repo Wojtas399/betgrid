@@ -74,7 +74,7 @@ void main() {
           dateService.mockGetNow(now: now);
           getGrandPrixesWithPointsUseCase.mock(grandPrixesWithPoints: []);
         },
-        act: (cubit) async => await cubit.initialize(),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           const BetsState(
             status: BetsStateStatus.noBets,

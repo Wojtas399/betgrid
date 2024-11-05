@@ -54,7 +54,7 @@ void main() {
             grandPrixesWithPoints: grandPrixesWithPoints,
           );
         },
-        act: (cubit) async => await cubit.initialize(playerId: playerId),
+        act: (cubit) => cubit.initialize(playerId: playerId),
         expect: () => [
           PlayerProfileState(
             status: PlayerProfileStateStatus.completed,

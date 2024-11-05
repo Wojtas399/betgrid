@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/exception/user_repository_exception.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
@@ -11,19 +14,34 @@ import 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
+  StreamSubscription<User?>? _loggedUserDataListener;
 
   ProfileCubit(
     this._authRepository,
     this._userRepository,
   ) : super(const ProfileState());
 
-  Future<void> initialize() async {
-    final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
-    await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId != null) {
-        await _initializeLoggedUserData(loggedUserId);
-      }
-    }
+  @override
+  Future<void> close() {
+    _loggedUserDataListener?.cancel();
+    return super.close();
+  }
+
+  void initialize() {
+    _loggedUserDataListener ??= _authRepository.loggedUserId$
+        .whereNotNull()
+        .switchMap(_getLoggedUserById)
+        .listen(
+      (User? loggedUser) {
+        emit(state.copyWith(
+          status: ProfileStateStatus.completed,
+          username: loggedUser?.username,
+          avatarUrl: loggedUser?.avatarUrl,
+          themeMode: loggedUser?.themeMode,
+          themePrimaryColor: loggedUser?.themePrimaryColor,
+        ));
+      },
+    );
   }
 
   Future<void> updateAvatar(String? newAvatarImgPath) async {
@@ -64,18 +82,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> _initializeLoggedUserData(String loggedUserId) async {
-    final Stream<User?> loggedUser$ = _userRepository.getUserById(
-      userId: loggedUserId,
-    );
-    await for (final loggedUser in loggedUser$) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.completed,
-        username: loggedUser?.username,
-        avatarUrl: loggedUser?.avatarUrl,
-        themeMode: loggedUser?.themeMode,
-        themePrimaryColor: loggedUser?.themePrimaryColor,
-      ));
-    }
+  Stream<User?> _getLoggedUserById(String loggedUserId) {
+    return _userRepository.getUserById(userId: loggedUserId);
   }
 }

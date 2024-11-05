@@ -33,9 +33,9 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     return super.close();
   }
 
-  Future<void> initialize({
+  void initialize({
     required String grandPrixId, //TODO: Change it to factoryParam
-  }) async {
+  }) {
     _grandPrixId = grandPrixId;
     _listener = Rx.combineLatest2(
       _getAllSortedDrivers(),
