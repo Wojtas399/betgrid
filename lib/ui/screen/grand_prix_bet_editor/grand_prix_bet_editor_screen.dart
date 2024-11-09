@@ -20,10 +20,8 @@ class GrandPrixBetEditorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<GrandPrixBetEditorCubit>()
-          ..initialize(
-            grandPrixId: grandPrixId,
-          ),
+        create: (_) =>
+            getIt<GrandPrixBetEditorCubit>(param1: grandPrixId)..initialize(),
         child: const _CubitStatusListener(
           child: GrandPrixBetEditorContent(),
         ),

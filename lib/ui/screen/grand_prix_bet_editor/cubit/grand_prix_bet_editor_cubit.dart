@@ -18,13 +18,14 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
+  final String _grandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
-  String? _grandPrixId;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
     this._grandPrixBetRepository,
     this._getAllDriversFromSeasonUseCase,
+    @factoryParam this._grandPrixId,
   ) : super(const GrandPrixBetEditorState());
 
   @override
@@ -33,13 +34,10 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     return super.close();
   }
 
-  void initialize({
-    required String grandPrixId, //TODO: Change it to factoryParam
-  }) {
-    _grandPrixId = grandPrixId;
+  void initialize() {
     _listener = Rx.combineLatest2(
       _getAllSortedDrivers(),
-      _getBetForGrandPrix(grandPrixId),
+      _getBetForGrandPrix(),
       (List<Driver> allDrivers, GrandPrixBet? gpBet) => (
         allDrivers: allDrivers,
         gpBet: gpBet,
@@ -162,7 +160,6 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   }
 
   Future<void> submit() async {
-    if (_grandPrixId == null) return;
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
     emit(state.copyWith(
@@ -188,14 +185,15 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     );
   }
 
-  Stream<GrandPrixBet?> _getBetForGrandPrix(String grandPrixId) =>
-      _authRepository.loggedUserId$.whereNotNull().switchMap(
-            (String loggedUserId) =>
-                _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
-              playerId: loggedUserId,
-              grandPrixId: grandPrixId,
-            ),
-          );
+  Stream<GrandPrixBet?> _getBetForGrandPrix() {
+    return _authRepository.loggedUserId$.whereNotNull().switchMap(
+          (String loggedUserId) =>
+              _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+            playerId: loggedUserId,
+            grandPrixId: _grandPrixId,
+          ),
+        );
+  }
 
   void _manageListenedParams(_ListenedParams listenedParams) {
     final GrandPrixBet? gpBet = listenedParams.gpBet;
@@ -235,7 +233,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> _addGrandPrixBet(String loggedUserId) async {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
-      grandPrixId: _grandPrixId!,
+      grandPrixId: _grandPrixId,
       qualiStandingsByDriverIds: state.qualiStandingsByDriverIds,
       p1DriverId: state.raceForm.p1DriverId,
       p2DriverId: state.raceForm.p2DriverId,
