@@ -37,13 +37,13 @@ class FirebaseGrandPrixBetService {
   }) async {
     final grandPrixBetDto = GrandPrixBetDto(
       grandPrixId: grandPrixId,
-      qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-      p1DriverId: p1DriverId,
-      p2DriverId: p2DriverId,
-      p3DriverId: p3DriverId,
-      p10DriverId: p10DriverId,
-      fastestLapDriverId: fastestLapDriverId,
-      dnfDriverIds: dnfDriverIds,
+      qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+      p1SeasonDriverId: p1DriverId,
+      p2SeasonDriverId: p2DriverId,
+      p3SeasonDriverId: p3DriverId,
+      p10SeasonDriverId: p10DriverId,
+      fastestLapSeasonDriverId: fastestLapDriverId,
+      dnfSeasonDriverIds: dnfDriverIds,
       willBeSafetyCar: willBeSafetyCar,
       willBeRedFlag: willBeRedFlag,
     );
@@ -75,18 +75,18 @@ class FirebaseGrandPrixBetService {
     }
     if (qualiStandingsByDriverIds != null) {
       data = data.copyWith(
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
       );
     }
     if (dnfDriverIds != null) {
-      data = data.copyWith(dnfDriverIds: dnfDriverIds);
+      data = data.copyWith(dnfSeasonDriverIds: dnfDriverIds);
     }
     data = data.copyWith(
-      p1DriverId: p1DriverId,
-      p2DriverId: p2DriverId,
-      p3DriverId: p3DriverId,
-      p10DriverId: p10DriverId,
-      fastestLapDriverId: fastestLapDriverId,
+      p1SeasonDriverId: p1DriverId,
+      p2SeasonDriverId: p2DriverId,
+      p3SeasonDriverId: p3DriverId,
+      p10SeasonDriverId: p10DriverId,
+      fastestLapSeasonDriverId: fastestLapDriverId,
       willBeSafetyCar: willBeSafetyCar,
       willBeRedFlag: willBeRedFlag,
     );

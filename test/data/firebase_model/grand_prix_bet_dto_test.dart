@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const String grandPrixId = 'gp1';
-  const List<String> qualiStandingsByDriverIds = ['d1', 'd3', 'd2'];
-  const String p1DriverId = 'd1';
-  const String p2DriverId = 'd2';
-  const String p3DriverId = 'd3';
-  const String p10DriverId = 'd4';
-  const String fastestLapDriverId = 'd1';
-  const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
+  const List<String> qualiStandingsBySeasonDriverIds = ['d1', 'd3', 'd2'];
+  const String p1SeasonDriverId = 'd1';
+  const String p2SeasonDriverId = 'd2';
+  const String p3SeasonDriverId = 'd3';
+  const String p10SeasonDriverId = 'd4';
+  const String fastestLapSeasonDriverId = 'd1';
+  const List<String> dnfSeasonDriverIds = ['d10', 'd11', 'd12'];
   const bool willBeSafetyCar = true;
   const bool willBeRedFlag = false;
 
@@ -19,25 +19,25 @@ void main() {
     () {
       final Map<String, Object?> json = {
         'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
+        'qualiStandingsByDriverIds': qualiStandingsBySeasonDriverIds,
+        'p1DriverId': p1SeasonDriverId,
+        'p2DriverId': p2SeasonDriverId,
+        'p3DriverId': p3SeasonDriverId,
+        'p10DriverId': p10SeasonDriverId,
+        'fastestLapDriverId': fastestLapSeasonDriverId,
+        'dnfDriverIds': dnfSeasonDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };
       const GrandPrixBetDto expectedModel = GrandPrixBetDto(
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
@@ -56,13 +56,13 @@ void main() {
       const String playerId = 'p1';
       final Map<String, Object?> json = {
         'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
+        'qualiStandingsByDriverIds': qualiStandingsBySeasonDriverIds,
+        'p1DriverId': p1SeasonDriverId,
+        'p2DriverId': p2SeasonDriverId,
+        'p3DriverId': p3SeasonDriverId,
+        'p10DriverId': p10SeasonDriverId,
+        'fastestLapDriverId': fastestLapSeasonDriverId,
+        'dnfDriverIds': dnfSeasonDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };
@@ -70,13 +70,13 @@ void main() {
         id: id,
         playerId: playerId,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
@@ -98,25 +98,25 @@ void main() {
       const GrandPrixBetDto model = GrandPrixBetDto(
         id: 'gpb1',
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         willBeRedFlag: willBeRedFlag,
         willBeSafetyCar: willBeSafetyCar,
       );
       final Map<String, Object?> expectedJson = {
         'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
+        'qualiStandingsByDriverIds': qualiStandingsBySeasonDriverIds,
+        'p1DriverId': p1SeasonDriverId,
+        'p2DriverId': p2SeasonDriverId,
+        'p3DriverId': p3SeasonDriverId,
+        'p10DriverId': p10SeasonDriverId,
+        'fastestLapDriverId': fastestLapSeasonDriverId,
+        'dnfDriverIds': dnfSeasonDriverIds,
         'willBeSafetyCar': willBeSafetyCar,
         'willBeRedFlag': willBeRedFlag
       };
