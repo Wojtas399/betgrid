@@ -5,13 +5,13 @@ class GrandPrixBetCreator {
   final String id;
   final String playerId;
   final String grandPrixId;
-  late final List<String?> qualiStandingsByDriverIds;
-  final String? p1DriverId;
-  final String? p2DriverId;
-  final String? p3DriverId;
-  final String? p10DriverId;
-  final String? fastestLapDriverId;
-  final List<String> dnfDriverIds;
+  late final List<String?> qualiStandingsBySeasonDriverIds;
+  final String? p1SeasonDriverId;
+  final String? p2SeasonDriverId;
+  final String? p3SeasonDriverId;
+  final String? p10SeasonDriverId;
+  final String? fastestLapSeasonDriverId;
+  final List<String> dnfSeasonDriverIds;
   final bool? willBeSafetyCar;
   final bool? willBeRedFlag;
 
@@ -20,16 +20,16 @@ class GrandPrixBetCreator {
     this.playerId = '',
     this.grandPrixId = '',
     List<String?>? qualiStandingsByDriverIds,
-    this.p1DriverId,
-    this.p2DriverId,
-    this.p3DriverId,
-    this.p10DriverId,
-    this.fastestLapDriverId,
-    this.dnfDriverIds = const [],
+    this.p1SeasonDriverId,
+    this.p2SeasonDriverId,
+    this.p3SeasonDriverId,
+    this.p10SeasonDriverId,
+    this.fastestLapSeasonDriverId,
+    this.dnfSeasonDriverIds = const [],
     this.willBeSafetyCar,
     this.willBeRedFlag,
   }) {
-    this.qualiStandingsByDriverIds =
+    this.qualiStandingsBySeasonDriverIds =
         qualiStandingsByDriverIds ?? List.generate(20, (index) => null);
   }
 
@@ -37,13 +37,13 @@ class GrandPrixBetCreator {
         id: id,
         playerId: playerId,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );
@@ -52,13 +52,13 @@ class GrandPrixBetCreator {
         id: id,
         playerId: playerId,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+        p1DriverId: p1SeasonDriverId,
+        p2DriverId: p2SeasonDriverId,
+        p3DriverId: p3SeasonDriverId,
+        p10DriverId: p10SeasonDriverId,
+        fastestLapDriverId: fastestLapSeasonDriverId,
+        dnfDriverIds: dnfSeasonDriverIds,
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );

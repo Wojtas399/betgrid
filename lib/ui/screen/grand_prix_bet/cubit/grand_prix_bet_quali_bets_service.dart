@@ -33,7 +33,7 @@ class GrandPrixBetQualiBetsService {
 
   Stream<List<SingleDriverBet>> getQualiBets() {
     return Rx.combineLatest4(
-      _getBetQualiStandingsByDriverIds(),
+      _getBetQualiStandingsBySeasonDriverIds(),
       _getResultQualiStandingsByDriverIds(),
       _getAllDriversFromSeasonUseCase(2024),
       _getQualiBetPoints(),
@@ -41,13 +41,13 @@ class GrandPrixBetQualiBetsService {
     );
   }
 
-  Stream<List<String?>?> _getBetQualiStandingsByDriverIds() {
+  Stream<List<String?>?> _getBetQualiStandingsBySeasonDriverIds() {
     return _grandPrixBetRepository
         .getGrandPrixBetForPlayerAndGrandPrix(
           playerId: _playerId,
           grandPrixId: _grandPrixId,
         )
-        .map((grandPrixBet) => grandPrixBet?.qualiStandingsByDriverIds);
+        .map((grandPrixBet) => grandPrixBet?.qualiStandingsBySeasonDriverIds);
   }
 
   Stream<List<String?>?> _getResultQualiStandingsByDriverIds() {

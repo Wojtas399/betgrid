@@ -241,7 +241,7 @@ void main() {
     () {
       const String playerId = 'p1';
       const String grandPrixId = 'gp1';
-      final List<String?> qualiStandingsByDriverIds = List.generate(
+      final List<String?> qualiStandingsBySeasonDriverIds = List.generate(
         20,
         (int driverIndex) => switch (driverIndex) {
           0 => 'd1',
@@ -249,10 +249,10 @@ void main() {
           _ => null,
         },
       );
-      const String p1DriverId = 'd1';
-      const String p2DriverId = 'd2';
-      const String p3DriverId = 'd3';
-      const String p10DriverId = 'p10';
+      const String p1SeasonDriverId = 'd1';
+      const String p2SeasonDriverId = 'd2';
+      const String p3SeasonDriverId = 'd3';
+      const String p10SeasonDriverId = 'p10';
       const String fastestLapDriverId = 'd1';
       const List<String> dnfDriverIds = ['d20'];
       const bool willBeSafetyCar = false;
@@ -271,11 +271,11 @@ void main() {
           () => dbGrandPrixBetService.addGrandPrixBet(
             userId: playerId,
             grandPrixId: grandPrixId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
+            qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+            p1DriverId: p1SeasonDriverId,
+            p2DriverId: p2SeasonDriverId,
+            p3DriverId: p3SeasonDriverId,
+            p10DriverId: p10SeasonDriverId,
             fastestLapDriverId: fastestLapDriverId,
             dnfDriverIds: dnfDriverIds,
             willBeSafetyCar: willBeSafetyCar,
@@ -293,11 +293,11 @@ void main() {
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
             grandPrixId: grandPrixId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
+            qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+            p1DriverId: p1SeasonDriverId,
+            p2DriverId: p2SeasonDriverId,
+            p3DriverId: p3SeasonDriverId,
+            p10DriverId: p10SeasonDriverId,
             fastestLapDriverId: fastestLapDriverId,
             dnfDriverIds: dnfDriverIds,
             willBeSafetyCar: willBeSafetyCar,
@@ -320,13 +320,13 @@ void main() {
             id: addedGrandPrixBetId,
             playerId: playerId,
             grandPrixId: grandPrixId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
-            dnfDriverIds: dnfDriverIds,
+            qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+            p1SeasonDriverId: p1SeasonDriverId,
+            p2SeasonDriverId: p2SeasonDriverId,
+            p3SeasonDriverId: p3SeasonDriverId,
+            p10SeasonDriverId: p10SeasonDriverId,
+            fastestLapSeasonDriverId: fastestLapDriverId,
+            dnfSeasonDriverIds: dnfDriverIds,
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
           );
@@ -344,11 +344,11 @@ void main() {
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
             grandPrixId: grandPrixId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
+            qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+            p1DriverId: p1SeasonDriverId,
+            p2DriverId: p2SeasonDriverId,
+            p3DriverId: p3SeasonDriverId,
+            p10DriverId: p10SeasonDriverId,
             fastestLapDriverId: fastestLapDriverId,
             dnfDriverIds: dnfDriverIds,
             willBeSafetyCar: willBeSafetyCar,
@@ -451,12 +451,12 @@ void main() {
             playerId: playerId,
             grandPrixId: 'gp1',
             qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
-            dnfDriverIds: dnfDriverIds,
+            p1SeasonDriverId: p1DriverId,
+            p2SeasonDriverId: p2DriverId,
+            p3SeasonDriverId: p3DriverId,
+            p10SeasonDriverId: p10DriverId,
+            fastestLapSeasonDriverId: fastestLapDriverId,
+            dnfSeasonDriverIds: dnfDriverIds,
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
           );

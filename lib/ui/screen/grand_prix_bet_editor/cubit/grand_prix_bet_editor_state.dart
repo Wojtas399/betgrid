@@ -67,18 +67,19 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
       return isAtLeastOnePositionPredicted;
     } else {
       return !const ListEquality().equals(
-        originalGrandPrixBet!.qualiStandingsByDriverIds,
+        originalGrandPrixBet!.qualiStandingsBySeasonDriverIds,
         qualiStandingsByDriverIds,
       );
     }
   }
 
   bool get _haveRaceBetsBeenChanged =>
-      raceForm.p1DriverId != originalGrandPrixBet?.p1DriverId ||
-      raceForm.p2DriverId != originalGrandPrixBet?.p2DriverId ||
-      raceForm.p3DriverId != originalGrandPrixBet?.p3DriverId ||
-      raceForm.p10DriverId != originalGrandPrixBet?.p10DriverId ||
-      raceForm.fastestLapDriverId != originalGrandPrixBet?.fastestLapDriverId ||
+      raceForm.p1DriverId != originalGrandPrixBet?.p1SeasonDriverId ||
+      raceForm.p2DriverId != originalGrandPrixBet?.p2SeasonDriverId ||
+      raceForm.p3DriverId != originalGrandPrixBet?.p3SeasonDriverId ||
+      raceForm.p10DriverId != originalGrandPrixBet?.p10SeasonDriverId ||
+      raceForm.fastestLapDriverId !=
+          originalGrandPrixBet?.fastestLapSeasonDriverId ||
       _haveDnfDriverIdsBeenChanged ||
       raceForm.willBeSafetyCar != originalGrandPrixBet?.willBeSafetyCar ||
       raceForm.willBeRedFlag != originalGrandPrixBet?.willBeRedFlag;
@@ -86,7 +87,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
   bool get _haveDnfDriverIdsBeenChanged {
     if (originalGrandPrixBet == null) return raceForm.dnfDrivers.isNotEmpty;
     final Iterable<String> originalDnfDriverIds =
-        originalGrandPrixBet!.dnfDriverIds.whereNotNull();
+        originalGrandPrixBet!.dnfSeasonDriverIds.whereNotNull();
     final Iterable<String> newDnfDriverIds = raceForm.dnfDrivers.map(
       (Driver driver) => driver.seasonDriverId,
     );

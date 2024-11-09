@@ -59,12 +59,12 @@ void main() {
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
         ),
-        p1DriverId: 'd1',
-        p2DriverId: 'd2',
-        p3DriverId: 'd3',
-        p10DriverId: 'd10',
-        fastestLapDriverId: 'd1',
-        dnfDriverIds: ['d1'],
+        p1SeasonDriverId: 'd1',
+        p2SeasonDriverId: 'd2',
+        p3SeasonDriverId: 'd3',
+        p10SeasonDriverId: 'd10',
+        fastestLapSeasonDriverId: 'd1',
+        dnfSeasonDriverIds: ['d1'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).createEntity();
@@ -73,12 +73,12 @@ void main() {
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
         ),
-        p1DriverId: 'd1',
-        p2DriverId: 'd2',
-        p3DriverId: 'd3',
-        p10DriverId: 'd10',
-        fastestLapDriverId: 'd1',
-        dnfDriverIds: ['d1', 'd2'],
+        p1SeasonDriverId: 'd1',
+        p2SeasonDriverId: 'd2',
+        p3SeasonDriverId: 'd3',
+        p10SeasonDriverId: 'd10',
+        fastestLapSeasonDriverId: 'd1',
+        dnfSeasonDriverIds: ['d1', 'd2'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).createEntity();
@@ -112,13 +112,13 @@ void main() {
               allDrivers.first,
             ],
             originalGrandPrixBet: bet,
-            qualiStandingsByDriverIds: bet.qualiStandingsByDriverIds,
+            qualiStandingsByDriverIds: bet.qualiStandingsBySeasonDriverIds,
             raceForm: GrandPrixBetEditorRaceForm(
-              p1DriverId: bet.p1DriverId,
-              p2DriverId: bet.p2DriverId,
-              p3DriverId: bet.p3DriverId,
-              p10DriverId: bet.p10DriverId,
-              fastestLapDriverId: bet.fastestLapDriverId,
+              p1DriverId: bet.p1SeasonDriverId,
+              p2DriverId: bet.p2SeasonDriverId,
+              p3DriverId: bet.p3SeasonDriverId,
+              p10DriverId: bet.p10SeasonDriverId,
+              fastestLapDriverId: bet.fastestLapSeasonDriverId,
               dnfDrivers: [
                 allDrivers.first,
               ],
@@ -313,7 +313,7 @@ void main() {
         seed: () => GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: [driverId, 'd2'],
+            dnfSeasonDriverIds: [driverId, 'd2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: allDrivers,
@@ -330,7 +330,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2'],
+            dnfSeasonDriverIds: ['d2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
@@ -375,7 +375,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2'],
+            dnfSeasonDriverIds: ['d2'],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
@@ -392,7 +392,7 @@ void main() {
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
-            dnfDriverIds: ['d2', driverId],
+            dnfSeasonDriverIds: ['d2', driverId],
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last, allDrivers.first],

@@ -3,13 +3,13 @@ import 'entity.dart';
 class GrandPrixBet extends Entity {
   final String playerId;
   final String grandPrixId;
-  final List<String?> qualiStandingsByDriverIds;
-  final String? p1DriverId;
-  final String? p2DriverId;
-  final String? p3DriverId;
-  final String? p10DriverId;
-  final String? fastestLapDriverId;
-  final List<String> dnfDriverIds;
+  final List<String?> qualiStandingsBySeasonDriverIds;
+  final String? p1SeasonDriverId;
+  final String? p2SeasonDriverId;
+  final String? p3SeasonDriverId;
+  final String? p10SeasonDriverId;
+  final String? fastestLapSeasonDriverId;
+  final List<String> dnfSeasonDriverIds;
   final bool? willBeSafetyCar;
   final bool? willBeRedFlag;
 
@@ -17,29 +17,29 @@ class GrandPrixBet extends Entity {
     required super.id,
     required this.playerId,
     required this.grandPrixId,
-    required this.qualiStandingsByDriverIds,
-    this.p1DriverId,
-    this.p2DriverId,
-    this.p3DriverId,
-    this.p10DriverId,
-    this.fastestLapDriverId,
-    required this.dnfDriverIds,
+    required this.qualiStandingsBySeasonDriverIds,
+    this.p1SeasonDriverId,
+    this.p2SeasonDriverId,
+    this.p3SeasonDriverId,
+    this.p10SeasonDriverId,
+    this.fastestLapSeasonDriverId,
+    required this.dnfSeasonDriverIds,
     this.willBeSafetyCar,
     this.willBeRedFlag,
-  }) : assert(qualiStandingsByDriverIds.length == 20);
+  }) : assert(qualiStandingsBySeasonDriverIds.length == 20);
 
   @override
   List<Object?> get props => [
         id,
         playerId,
         grandPrixId,
-        qualiStandingsByDriverIds,
-        p1DriverId,
-        p2DriverId,
-        p3DriverId,
-        p10DriverId,
-        fastestLapDriverId,
-        dnfDriverIds,
+        qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId,
+        p2SeasonDriverId,
+        p3SeasonDriverId,
+        p10SeasonDriverId,
+        fastestLapSeasonDriverId,
+        dnfSeasonDriverIds,
         willBeSafetyCar,
         willBeRedFlag,
       ];

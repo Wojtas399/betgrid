@@ -122,7 +122,7 @@ class CreatePointsForDriverStats {
               driverId,
               gpBetPoints?.raceBetPoints,
               gpResults?.raceResults,
-              gpBet.dnfDriverIds,
+              gpBet.dnfSeasonDriverIds,
             );
             return qualiPoints + racePoints;
           },

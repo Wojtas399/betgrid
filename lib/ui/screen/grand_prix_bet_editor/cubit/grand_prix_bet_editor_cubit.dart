@@ -206,7 +206,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       emit(newState);
       return;
     }
-    final List<Driver> dnfDrivers = gpBet.dnfDriverIds
+    final List<Driver> dnfDrivers = gpBet.dnfSeasonDriverIds
         .whereNotNull()
         .map(
           (String driverId) => allDrivers.firstWhere(
@@ -216,13 +216,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
         .toList();
     emit(newState.copyWith(
       originalGrandPrixBet: gpBet,
-      qualiStandingsByDriverIds: gpBet.qualiStandingsByDriverIds,
+      qualiStandingsByDriverIds: gpBet.qualiStandingsBySeasonDriverIds,
       raceForm: state.raceForm.copyWith(
-        p1DriverId: gpBet.p1DriverId,
-        p2DriverId: gpBet.p2DriverId,
-        p3DriverId: gpBet.p3DriverId,
-        p10DriverId: gpBet.p10DriverId,
-        fastestLapDriverId: gpBet.fastestLapDriverId,
+        p1DriverId: gpBet.p1SeasonDriverId,
+        p2DriverId: gpBet.p2SeasonDriverId,
+        p3DriverId: gpBet.p3SeasonDriverId,
+        p10DriverId: gpBet.p10SeasonDriverId,
+        fastestLapDriverId: gpBet.fastestLapSeasonDriverId,
         dnfDrivers: dnfDrivers,
         willBeSafetyCar: gpBet.willBeSafetyCar,
         willBeRedFlag: gpBet.willBeRedFlag,

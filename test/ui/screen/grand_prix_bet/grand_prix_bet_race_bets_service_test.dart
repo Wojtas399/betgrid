@@ -76,9 +76,9 @@ void main() {
     'to their positions',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        p1DriverId: 'd1',
-        p2DriverId: 'd2',
-        p3DriverId: 'd3',
+        p1SeasonDriverId: 'd1',
+        p2SeasonDriverId: 'd2',
+        p3SeasonDriverId: 'd3',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         p1DriverId: 'd1',
@@ -176,7 +176,7 @@ void main() {
     'should emit SingleDriverBet element with p10 data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        p10DriverId: 'd10',
+        p10SeasonDriverId: 'd10',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         p10DriverId: 'd10',
@@ -227,7 +227,7 @@ void main() {
     'should emit SingleDriverBet element with fastest lap data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        fastestLapDriverId: 'd1',
+        fastestLapSeasonDriverId: 'd1',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         fastestLapDriverId: 'd1',
@@ -278,7 +278,7 @@ void main() {
     'should emit MultipleDriversBet element with dnf drivers data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        dnfDriverIds: ['d1', 'd2'],
+        dnfSeasonDriverIds: ['d1', 'd2'],
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         dnfDriverIds: ['d1', 'd3', 'd5'],
