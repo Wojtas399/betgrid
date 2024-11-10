@@ -1,4 +1,4 @@
-import 'package:betgrid/data/grand_prix_basic_info_mapper.dart';
+import 'package:betgrid/data/mapper/grand_prix_basic_info_mapper.dart';
 import 'package:betgrid/model/grand_prix_basic_info.dart';
 import 'package:flutter_test/flutter_test.dart';
 
