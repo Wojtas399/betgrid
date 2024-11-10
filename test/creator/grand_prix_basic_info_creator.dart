@@ -1,4 +1,5 @@
 import 'package:betgrid/data/firebase/model/grand_prix_basic_info_dto.dart';
+import 'package:betgrid/model/grand_prix_basic_info.dart';
 
 class GrandPrixBasicInfoCreator {
   final String id;
@@ -10,6 +11,14 @@ class GrandPrixBasicInfoCreator {
     this.name = '',
     this.countryAlpha2Code = '',
   });
+
+  GrandPrixBasicInfo createEntity() {
+    return GrandPrixBasicInfo(
+      id: id,
+      name: name,
+      countryAlpha2Code: countryAlpha2Code,
+    );
+  }
 
   GrandPrixBasicInfoDto createDto() {
     return GrandPrixBasicInfoDto(
