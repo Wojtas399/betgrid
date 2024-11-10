@@ -44,7 +44,7 @@ void main() {
           seasonDriverId: 'd${driverIndex + 1}',
         ).create(),
       );
-      final List<String?> betQualiStandingsByDriverIds = List.generate(
+      final List<String?> betQualiStandingsBySeasonDriverIds = List.generate(
         20,
         (int positionIndex) => switch (positionIndex) {
           0 => 'd1',
@@ -57,7 +57,7 @@ void main() {
           _ => null,
         },
       );
-      final List<String> resultQualiStandingsByDriverIds = [
+      final List<String> resultQualiStandingsBySeasonDriverIds = [
         'd1',
         'd3',
         'd4',
@@ -225,12 +225,12 @@ void main() {
       ];
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: GrandPrixBetCreator(
-          qualiStandingsBySeasonDriverIds: betQualiStandingsByDriverIds,
+          qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).createEntity(),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
           results: GrandPrixResultsCreator(
-        qualiStandingsBySeasonDriverIds: resultQualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: resultQualiStandingsBySeasonDriverIds,
       ).createEntity());
       getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
       grandPrixBetPointsRepository

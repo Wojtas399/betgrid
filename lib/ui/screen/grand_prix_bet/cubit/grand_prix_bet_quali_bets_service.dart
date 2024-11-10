@@ -34,7 +34,7 @@ class GrandPrixBetQualiBetsService {
   Stream<List<SingleDriverBet>> getQualiBets() {
     return Rx.combineLatest4(
       _getBetQualiStandingsBySeasonDriverIds(),
-      _getResultQualiStandingsByDriverIds(),
+      _getResultQualiStandingsBySeasonDriverIds(),
       _getAllDriversFromSeasonUseCase(2024),
       _getQualiBetPoints(),
       _prepareQualiBets,
@@ -50,7 +50,7 @@ class GrandPrixBetQualiBetsService {
         .map((grandPrixBet) => grandPrixBet?.qualiStandingsBySeasonDriverIds);
   }
 
-  Stream<List<String?>?> _getResultQualiStandingsByDriverIds() {
+  Stream<List<String?>?> _getResultQualiStandingsBySeasonDriverIds() {
     return _grandPrixResultsRepository
         .getGrandPrixResultsForGrandPrix(grandPrixId: _grandPrixId)
         .map(
@@ -69,8 +69,8 @@ class GrandPrixBetQualiBetsService {
   }
 
   List<SingleDriverBet> _prepareQualiBets(
-    List<String?>? betQualiStandingsByDriverIds,
-    List<String?>? resultQualiStandingsByDriverIds,
+    List<String?>? betQualiStandingsBySeasonDriverIds,
+    List<String?>? resultQualiStandingsBySeasonDriverIds,
     List<Driver> allDriversFromSeason,
     QualiBetPoints? qualiBetPoints,
   ) {
@@ -99,15 +99,16 @@ class GrandPrixBetQualiBetsService {
     return List.generate(
       20,
       (int betIndex) {
-        final String? betDriverId = betQualiStandingsByDriverIds?[betIndex];
-        final String? resultDriverId =
-            resultQualiStandingsByDriverIds?[betIndex];
+        final String? betSeasonDriverId =
+            betQualiStandingsBySeasonDriverIds?[betIndex];
+        final String? resultSeasonDriverId =
+            resultQualiStandingsBySeasonDriverIds?[betIndex];
         final double? points = qualiPoints[betIndex];
         final betDriver = allDriversFromSeason.firstWhereOrNull(
-          (driver) => driver.seasonDriverId == betDriverId,
+          (driver) => driver.seasonDriverId == betSeasonDriverId,
         );
         final resultDriver = allDriversFromSeason.firstWhereOrNull(
-          (driver) => driver.seasonDriverId == resultDriverId,
+          (driver) => driver.seasonDriverId == resultSeasonDriverId,
         );
         return SingleDriverBet(
           status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
