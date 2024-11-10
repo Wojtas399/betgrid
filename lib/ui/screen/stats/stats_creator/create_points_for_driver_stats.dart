@@ -116,7 +116,7 @@ class CreatePointsForDriverStats {
             final qualiPoints = _calculatePointsForQuali(
               driverId,
               gpBetPoints?.qualiBetPoints,
-              gpResults?.qualiStandingsByDriverIds,
+              gpResults?.qualiStandingsBySeasonDriverIds,
             );
             final racePoints = _calculatePointsForRace(
               driverId,
@@ -183,19 +183,19 @@ class CreatePointsForDriverStats {
   ) {
     if (raceResults == null || raceBetPoints == null) return 0.0;
     double points = 0.0;
-    if (raceResults.p1DriverId == driverId) {
+    if (raceResults.p1SeasonDriverId == driverId) {
       points += raceBetPoints.p1Points;
-    } else if (raceResults.p2DriverId == driverId) {
+    } else if (raceResults.p2SeasonDriverId == driverId) {
       points += raceBetPoints.p2Points;
-    } else if (raceResults.p3DriverId == driverId) {
+    } else if (raceResults.p3SeasonDriverId == driverId) {
       points += raceBetPoints.p3Points;
-    } else if (raceResults.p10DriverId == driverId) {
+    } else if (raceResults.p10SeasonDriverId == driverId) {
       points += raceBetPoints.p10Points;
     }
-    if (raceResults.fastestLapDriverId == driverId) {
+    if (raceResults.fastestLapSeasonDriverId == driverId) {
       points += raceBetPoints.fastestLapPoints;
     }
-    if (raceResults.dnfDriverIds.contains(driverId) &&
+    if (raceResults.dnfSeasonDriverIds.contains(driverId) &&
         betDnfDriverIds?.contains(driverId) == true) {
       final int dnfIndex = betDnfDriverIds!.indexWhere(
         (String? betDriverId) => betDriverId == driverId,

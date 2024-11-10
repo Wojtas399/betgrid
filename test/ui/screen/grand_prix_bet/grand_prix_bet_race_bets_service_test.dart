@@ -31,7 +31,6 @@ void main() {
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
   const String grandPrixId = 'gp1';
-  const int season = 2024;
   final service = GrandPrixBetRaceBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,

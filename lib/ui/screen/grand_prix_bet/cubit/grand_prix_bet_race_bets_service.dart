@@ -171,9 +171,9 @@ class GrandPrixBetRaceBetsService {
     return _getResults()
         .map(
           (RaceResults? raceResults) => [
-            raceResults?.p1DriverId,
-            raceResults?.p2DriverId,
-            raceResults?.p3DriverId,
+            raceResults?.p1SeasonDriverId,
+            raceResults?.p2SeasonDriverId,
+            raceResults?.p3SeasonDriverId,
           ],
         )
         .switchMap(_getCorrespondingDriversList);
@@ -197,7 +197,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<Driver?> _getResultP10Driver() {
     return _getResults()
-        .map((raceResults) => raceResults?.p10DriverId)
+        .map((raceResults) => raceResults?.p10SeasonDriverId)
         .switchMap(_getCorrespondingDriver);
   }
 
@@ -209,7 +209,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<Driver?> _getResultFastestLapDriver() {
     return _getResults()
-        .map((raceResults) => raceResults?.fastestLapDriverId)
+        .map((raceResults) => raceResults?.fastestLapSeasonDriverId)
         .switchMap(_getCorrespondingDriver);
   }
 
@@ -225,7 +225,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<List<Driver?>?> _getResultDnfDrivers() {
     return _getResults()
-        .map((raceResults) => raceResults?.dnfDriverIds)
+        .map((raceResults) => raceResults?.dnfSeasonDriverIds)
         .switchMap(
           (dnfDriverIds) => dnfDriverIds != null
               ? _getCorrespondingDriversList(dnfDriverIds)

@@ -40,14 +40,14 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: const RaceResults(
-          p1DriverId: p1DriverId,
-          p2DriverId: p2DriverId,
-          p3DriverId: p3DriverId,
-          p10DriverId: p10DriverId,
-          fastestLapDriverId: fastestLapDriverId,
-          dnfDriverIds: dnfDriverIds,
+          p1SeasonDriverId: p1DriverId,
+          p2SeasonDriverId: p2DriverId,
+          p3SeasonDriverId: p3DriverId,
+          p10SeasonDriverId: p10DriverId,
+          fastestLapSeasonDriverId: fastestLapDriverId,
+          dnfSeasonDriverIds: dnfDriverIds,
           wasThereSafetyCar: wasThereSafetyCar,
           wasThereRedFlag: wasThereRedFlag,
         ),
@@ -82,7 +82,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -115,7 +115,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -148,7 +148,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -181,7 +181,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -214,7 +214,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -247,7 +247,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -280,7 +280,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 
@@ -313,7 +313,7 @@ void main() {
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
         raceResults: null,
       );
 

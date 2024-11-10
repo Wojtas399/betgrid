@@ -1,6 +1,6 @@
-import 'package:betgrid/data/firebase/collections.dart';
 import 'package:injectable/injectable.dart';
 
+import '../collections.dart';
 import '../model/season_driver_dto.dart';
 
 @injectable

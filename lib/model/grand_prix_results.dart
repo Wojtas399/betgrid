@@ -4,13 +4,13 @@ import 'entity.dart';
 
 class GrandPrixResults extends Entity {
   final String grandPrixId;
-  final List<String?>? qualiStandingsByDriverIds;
+  final List<String?>? qualiStandingsBySeasonDriverIds;
   final RaceResults? raceResults;
 
   const GrandPrixResults({
     required super.id,
     required this.grandPrixId,
-    this.qualiStandingsByDriverIds,
+    this.qualiStandingsBySeasonDriverIds,
     this.raceResults,
   });
 
@@ -18,40 +18,40 @@ class GrandPrixResults extends Entity {
   List<Object?> get props => [
         id,
         grandPrixId,
-        qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds,
         raceResults,
       ];
 }
 
 class RaceResults extends Equatable {
-  final String p1DriverId;
-  final String p2DriverId;
-  final String p3DriverId;
-  final String p10DriverId;
-  final String fastestLapDriverId;
-  final List<String> dnfDriverIds;
+  final String p1SeasonDriverId;
+  final String p2SeasonDriverId;
+  final String p3SeasonDriverId;
+  final String p10SeasonDriverId;
+  final String fastestLapSeasonDriverId;
+  final List<String> dnfSeasonDriverIds;
   final bool wasThereSafetyCar;
   final bool wasThereRedFlag;
 
   const RaceResults({
-    required this.p1DriverId,
-    required this.p2DriverId,
-    required this.p3DriverId,
-    required this.p10DriverId,
-    required this.fastestLapDriverId,
-    required this.dnfDriverIds,
+    required this.p1SeasonDriverId,
+    required this.p2SeasonDriverId,
+    required this.p3SeasonDriverId,
+    required this.p10SeasonDriverId,
+    required this.fastestLapSeasonDriverId,
+    required this.dnfSeasonDriverIds,
     required this.wasThereSafetyCar,
     required this.wasThereRedFlag,
   });
 
   @override
   List<Object?> get props => [
-        p1DriverId,
-        p2DriverId,
-        p3DriverId,
-        p10DriverId,
-        fastestLapDriverId,
-        dnfDriverIds,
+        p1SeasonDriverId,
+        p2SeasonDriverId,
+        p3SeasonDriverId,
+        p10SeasonDriverId,
+        fastestLapSeasonDriverId,
+        dnfSeasonDriverIds,
         wasThereSafetyCar,
         wasThereRedFlag,
       ];

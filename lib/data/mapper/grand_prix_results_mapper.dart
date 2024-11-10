@@ -11,12 +11,12 @@ class GrandPrixResultsMapper {
     RaceResults? raceResults;
     if (_areThereAllRaceResults(grandPrixResultsDto)) {
       raceResults = RaceResults(
-        p1DriverId: grandPrixResultsDto.p1DriverId!,
-        p2DriverId: grandPrixResultsDto.p2DriverId!,
-        p3DriverId: grandPrixResultsDto.p3DriverId!,
-        p10DriverId: grandPrixResultsDto.p10DriverId!,
-        fastestLapDriverId: grandPrixResultsDto.fastestLapDriverId!,
-        dnfDriverIds: grandPrixResultsDto.dnfDriverIds!,
+        p1SeasonDriverId: grandPrixResultsDto.p1DriverId!,
+        p2SeasonDriverId: grandPrixResultsDto.p2DriverId!,
+        p3SeasonDriverId: grandPrixResultsDto.p3DriverId!,
+        p10SeasonDriverId: grandPrixResultsDto.p10DriverId!,
+        fastestLapSeasonDriverId: grandPrixResultsDto.fastestLapDriverId!,
+        dnfSeasonDriverIds: grandPrixResultsDto.dnfDriverIds!,
         wasThereSafetyCar: grandPrixResultsDto.wasThereSafetyCar!,
         wasThereRedFlag: grandPrixResultsDto.wasThereRedFlag!,
       );
@@ -24,7 +24,8 @@ class GrandPrixResultsMapper {
     return GrandPrixResults(
       id: grandPrixResultsDto.id,
       grandPrixId: grandPrixResultsDto.grandPrixId,
-      qualiStandingsByDriverIds: grandPrixResultsDto.qualiStandingsByDriverIds,
+      qualiStandingsBySeasonDriverIds:
+          grandPrixResultsDto.qualiStandingsByDriverIds,
       raceResults: raceResults,
     );
   }
@@ -53,12 +54,12 @@ GrandPrixResults mapGrandPrixResultsFromDto(
       grandPrixResultsDto.wasThereSafetyCar != null &&
       grandPrixResultsDto.wasThereRedFlag != null) {
     raceResults = RaceResults(
-      p1DriverId: grandPrixResultsDto.p1DriverId!,
-      p2DriverId: grandPrixResultsDto.p2DriverId!,
-      p3DriverId: grandPrixResultsDto.p3DriverId!,
-      p10DriverId: grandPrixResultsDto.p10DriverId!,
-      fastestLapDriverId: grandPrixResultsDto.fastestLapDriverId!,
-      dnfDriverIds: grandPrixResultsDto.dnfDriverIds!,
+      p1SeasonDriverId: grandPrixResultsDto.p1DriverId!,
+      p2SeasonDriverId: grandPrixResultsDto.p2DriverId!,
+      p3SeasonDriverId: grandPrixResultsDto.p3DriverId!,
+      p10SeasonDriverId: grandPrixResultsDto.p10DriverId!,
+      fastestLapSeasonDriverId: grandPrixResultsDto.fastestLapDriverId!,
+      dnfSeasonDriverIds: grandPrixResultsDto.dnfDriverIds!,
       wasThereSafetyCar: grandPrixResultsDto.wasThereSafetyCar!,
       wasThereRedFlag: grandPrixResultsDto.wasThereRedFlag!,
     );
@@ -66,7 +67,8 @@ GrandPrixResults mapGrandPrixResultsFromDto(
   return GrandPrixResults(
     id: grandPrixResultsDto.id,
     grandPrixId: grandPrixResultsDto.grandPrixId,
-    qualiStandingsByDriverIds: grandPrixResultsDto.qualiStandingsByDriverIds,
+    qualiStandingsBySeasonDriverIds:
+        grandPrixResultsDto.qualiStandingsByDriverIds,
     raceResults: raceResults,
   );
 }

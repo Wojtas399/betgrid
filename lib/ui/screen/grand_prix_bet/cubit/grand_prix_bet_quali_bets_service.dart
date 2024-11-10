@@ -53,7 +53,10 @@ class GrandPrixBetQualiBetsService {
   Stream<List<String?>?> _getResultQualiStandingsByDriverIds() {
     return _grandPrixResultsRepository
         .getGrandPrixResultsForGrandPrix(grandPrixId: _grandPrixId)
-        .map((grandPrixResults) => grandPrixResults?.qualiStandingsByDriverIds);
+        .map(
+          (grandPrixResults) =>
+              grandPrixResults?.qualiStandingsBySeasonDriverIds,
+        );
   }
 
   Stream<QualiBetPoints?> _getQualiBetPoints() {
