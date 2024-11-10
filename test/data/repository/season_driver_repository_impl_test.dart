@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../creator/season_driver_creator.dart';
+import '../../mock/data/firebase/mock_firebase_season_driver_service.dart';
 import '../../mock/data/mapper/mock_season_driver_mapper.dart';
-import '../../mock/firebase/mock_firebase_season_driver_service.dart';
 
 void main() {
   final firebaseSeasonDriverService = MockFirebaseSeasonDriverService();
