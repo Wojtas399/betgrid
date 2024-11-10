@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import 'model/driver_personal_data_dto.dart';
+import 'model/grand_prix_basic_info_dto.dart';
 import 'model/grand_prix_bet_dto.dart';
 import 'model/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_dto.dart';
@@ -27,6 +28,24 @@ class FirebaseCollections {
         },
         toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
       );
+
+  CollectionReference<GrandPrixBasicInfoDto> grandPrixesBasicInfo() {
+    return FirebaseFirestore.instance
+        .collection('GrandPrixesBasicInfo')
+        .withConverter<GrandPrixBasicInfoDto>(
+          fromFirestore: (snapshot, _) {
+            final data = snapshot.data();
+            if (data == null) {
+              throw 'There is not data of GrandPrixBasicInfo document';
+            }
+            return GrandPrixBasicInfoDto.fromFirebase(
+              id: snapshot.id,
+              json: data,
+            );
+          },
+          toFirestore: (GrandPrixBasicInfoDto dto, _) => dto.toJson(),
+        );
+  }
 
   CollectionReference<DriverPersonalDataDto> driversPersonalData() {
     return FirebaseFirestore.instance
