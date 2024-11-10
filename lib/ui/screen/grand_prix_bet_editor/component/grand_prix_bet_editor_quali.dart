@@ -23,8 +23,9 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String?> qualiStandingsByDriverIds = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.qualiStandingsByDriverIds,
+    final List<String?> qualiStandingsBySeasonDriverIds = context.select(
+      (GrandPrixBetEditorCubit cubit) =>
+          cubit.state.qualiStandingsBySeasonDriverIds,
     );
     final CustomColors? customColors = context.customColors;
 
@@ -41,7 +42,7 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
               2 => customColors?.p3,
               _ => null,
             },
-            selectedDriverId: qualiStandingsByDriverIds[positionIndex],
+            selectedDriverId: qualiStandingsBySeasonDriverIds[positionIndex],
             onDriverSelected: (String selectedDriverId) => _onDriverSelected(
               positionIndex,
               selectedDriverId,

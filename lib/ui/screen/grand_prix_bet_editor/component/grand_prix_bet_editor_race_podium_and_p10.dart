@@ -25,14 +25,14 @@ class _P1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? driverId = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p1DriverId,
+    final String? p1SeasonDriverId = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p1SeasonDriverId,
     );
 
     return GrandPrixBetEditorDriverField(
       label: 'P1',
       labelColor: context.customColors?.p1,
-      selectedDriverId: driverId,
+      selectedDriverId: p1SeasonDriverId,
       onDriverSelected:
           context.read<GrandPrixBetEditorCubit>().onRaceP1DriverChanged,
     );
@@ -44,14 +44,14 @@ class _P2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? driverId = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p2DriverId,
+    final String? p2SeasonDriverId = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p2SeasonDriverId,
     );
 
     return GrandPrixBetEditorDriverField(
       label: 'P2',
       labelColor: context.customColors?.p2,
-      selectedDriverId: driverId,
+      selectedDriverId: p2SeasonDriverId,
       onDriverSelected:
           context.read<GrandPrixBetEditorCubit>().onRaceP2DriverChanged,
     );
@@ -63,14 +63,14 @@ class _P3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? driverId = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p3DriverId,
+    final String? p3SeasonDriverId = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p3SeasonDriverId,
     );
 
     return GrandPrixBetEditorDriverField(
       label: 'P3',
       labelColor: context.customColors?.p3,
-      selectedDriverId: driverId,
+      selectedDriverId: p3SeasonDriverId,
       onDriverSelected:
           context.read<GrandPrixBetEditorCubit>().onRaceP3DriverChanged,
     );
@@ -82,13 +82,13 @@ class _P10 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? driverId = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p10DriverId,
+    final String? p10SeasonDriverId = context.select(
+      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.p10SeasonDriverId,
     );
 
     return GrandPrixBetEditorDriverField(
       label: 'P10',
-      selectedDriverId: driverId,
+      selectedDriverId: p10SeasonDriverId,
       onDriverSelected:
           context.read<GrandPrixBetEditorCubit>().onRaceP10DriverChanged,
     );

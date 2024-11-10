@@ -50,7 +50,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     required String driverId,
   }) {
     final List<String?> updatedQualiStandings = [
-      ...state.qualiStandingsByDriverIds,
+      ...state.qualiStandingsBySeasonDriverIds,
     ];
     final int matchingValueIndex = updatedQualiStandings.indexOf(driverId);
     if (matchingValueIndex >= 0) {
@@ -59,7 +59,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     updatedQualiStandings[standing - 1] = driverId;
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      qualiStandingsByDriverIds: updatedQualiStandings,
+      qualiStandingsBySeasonDriverIds: updatedQualiStandings,
     ));
   }
 
@@ -67,7 +67,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        p1DriverId: driverId,
+        p1SeasonDriverId: driverId,
       ),
     ));
   }
@@ -76,7 +76,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        p2DriverId: driverId,
+        p2SeasonDriverId: driverId,
       ),
     ));
   }
@@ -85,7 +85,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        p3DriverId: driverId,
+        p3SeasonDriverId: driverId,
       ),
     ));
   }
@@ -94,7 +94,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        p10DriverId: driverId,
+        p10SeasonDriverId: driverId,
       ),
     ));
   }
@@ -103,7 +103,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       raceForm: state.raceForm.copyWith(
-        fastestLapDriverId: driverId,
+        fastestLapSeasonDriverId: driverId,
       ),
     ));
   }
@@ -216,13 +216,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
         .toList();
     emit(newState.copyWith(
       originalGrandPrixBet: gpBet,
-      qualiStandingsByDriverIds: gpBet.qualiStandingsBySeasonDriverIds,
+      qualiStandingsBySeasonDriverIds: gpBet.qualiStandingsBySeasonDriverIds,
       raceForm: state.raceForm.copyWith(
-        p1DriverId: gpBet.p1SeasonDriverId,
-        p2DriverId: gpBet.p2SeasonDriverId,
-        p3DriverId: gpBet.p3SeasonDriverId,
-        p10DriverId: gpBet.p10SeasonDriverId,
-        fastestLapDriverId: gpBet.fastestLapSeasonDriverId,
+        p1SeasonDriverId: gpBet.p1SeasonDriverId,
+        p2SeasonDriverId: gpBet.p2SeasonDriverId,
+        p3SeasonDriverId: gpBet.p3SeasonDriverId,
+        p10SeasonDriverId: gpBet.p10SeasonDriverId,
+        fastestLapSeasonDriverId: gpBet.fastestLapSeasonDriverId,
         dnfDrivers: dnfDrivers,
         willBeSafetyCar: gpBet.willBeSafetyCar,
         willBeRedFlag: gpBet.willBeRedFlag,
@@ -234,12 +234,12 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
       grandPrixId: _grandPrixId,
-      qualiStandingsBySeasonDriverIds: state.qualiStandingsByDriverIds,
-      p1SeasonDriverId: state.raceForm.p1DriverId,
-      p2SeasonDriverId: state.raceForm.p2DriverId,
-      p3SeasonDriverId: state.raceForm.p3DriverId,
-      p10SeasonDriverId: state.raceForm.p10DriverId,
-      fastestLapSeasonDriverId: state.raceForm.fastestLapDriverId,
+      qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
+      p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
+      p2SeasonDriverId: state.raceForm.p2SeasonDriverId,
+      p3SeasonDriverId: state.raceForm.p3SeasonDriverId,
+      p10SeasonDriverId: state.raceForm.p10SeasonDriverId,
+      fastestLapSeasonDriverId: state.raceForm.fastestLapSeasonDriverId,
       dnfSeasonDriverIds: state.raceForm.dnfDrivers
           .map((Driver driver) => driver.seasonDriverId)
           .toList(),
@@ -252,12 +252,12 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     await _grandPrixBetRepository.updateGrandPrixBet(
       playerId: loggedUserId,
       grandPrixBetId: state.originalGrandPrixBet!.id,
-      qualiStandingsBySeasonDriverIds: state.qualiStandingsByDriverIds,
-      p1SeasonDriverId: state.raceForm.p1DriverId,
-      p2SeasonDriverId: state.raceForm.p2DriverId,
-      p3SeasonDriverId: state.raceForm.p3DriverId,
-      p10SeasonDriverId: state.raceForm.p10DriverId,
-      fastestLapSeasonDriverId: state.raceForm.fastestLapDriverId,
+      qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
+      p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
+      p2SeasonDriverId: state.raceForm.p2SeasonDriverId,
+      p3SeasonDriverId: state.raceForm.p3SeasonDriverId,
+      p10SeasonDriverId: state.raceForm.p10SeasonDriverId,
+      fastestLapSeasonDriverId: state.raceForm.fastestLapSeasonDriverId,
       dnfSeasonDriverIds: state.raceForm.dnfDrivers
           .map((Driver driver) => driver.seasonDriverId)
           .toList(),

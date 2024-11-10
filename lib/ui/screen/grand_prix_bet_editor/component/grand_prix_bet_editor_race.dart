@@ -20,45 +20,47 @@ class GrandPrixBetEditorRace extends StatelessWidget {
   const GrandPrixBetEditorRace({super.key});
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _SectionHeader(
-            title: context.str.grandPrixBetEditorPodiumAndP10Title,
-            subtitle: context.str.grandPrixBetEditorPodiumAndP10Subtitle,
-          ),
-          const GapVertical16(),
-          const GrandPrixBetEditorRacePodiumAndP10(),
-          const Divider(height: 32),
-          _SectionHeader(
-            title: context.str.fastestLap,
-            subtitle: context.str.grandPrixBetEditorFastestLapSubtitle,
-          ),
-          const GapVertical16(),
-          const _FastestLap(),
-          const Divider(height: 32),
-          _SectionHeader(
-            title: context.str.grandPrixBetEditorDnfTitle,
-            subtitle: context.str.grandPrixBetEditorDnfSubtitle,
-          ),
-          const GapVertical16(),
-          const _DnfDrivers(),
-          const Divider(height: 32),
-          _SectionHeader(
-            title: context.str.safetyCar,
-            subtitle: context.str.grandPrixBetEditorSafetyCarSubtitle,
-          ),
-          const GapVertical16(),
-          const _SafetyCar(),
-          const Divider(height: 32),
-          _SectionHeader(
-            title: context.str.redFlag,
-            subtitle: context.str.grandPrixBetEditorRedFlagSubtitle,
-          ),
-          const GapVertical16(),
-          const _RedFlag(),
-        ],
-      );
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _SectionHeader(
+          title: context.str.grandPrixBetEditorPodiumAndP10Title,
+          subtitle: context.str.grandPrixBetEditorPodiumAndP10Subtitle,
+        ),
+        const GapVertical16(),
+        const GrandPrixBetEditorRacePodiumAndP10(),
+        const Divider(height: 32),
+        _SectionHeader(
+          title: context.str.fastestLap,
+          subtitle: context.str.grandPrixBetEditorFastestLapSubtitle,
+        ),
+        const GapVertical16(),
+        const _FastestLap(),
+        const Divider(height: 32),
+        _SectionHeader(
+          title: context.str.grandPrixBetEditorDnfTitle,
+          subtitle: context.str.grandPrixBetEditorDnfSubtitle,
+        ),
+        const GapVertical16(),
+        const _DnfDrivers(),
+        const Divider(height: 32),
+        _SectionHeader(
+          title: context.str.safetyCar,
+          subtitle: context.str.grandPrixBetEditorSafetyCarSubtitle,
+        ),
+        const GapVertical16(),
+        const _SafetyCar(),
+        const Divider(height: 32),
+        _SectionHeader(
+          title: context.str.redFlag,
+          subtitle: context.str.grandPrixBetEditorRedFlagSubtitle,
+        ),
+        const GapVertical16(),
+        const _RedFlag(),
+      ],
+    );
+  }
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -71,35 +73,40 @@ class _SectionHeader extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TitleMedium(
-              title,
-              fontWeight: FontWeight.bold,
-            ),
-            const GapVertical4(),
-            BodyMedium(subtitle)
-          ],
-        ),
-      );
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleMedium(
+            title,
+            fontWeight: FontWeight.bold,
+          ),
+          const GapVertical4(),
+          BodyMedium(subtitle)
+        ],
+      ),
+    );
+  }
 }
 
 class _FastestLap extends StatelessWidget {
   const _FastestLap();
 
   @override
-  Widget build(BuildContext context) => GrandPrixBetEditorDriverField(
-        selectedDriverId: context.select(
-          (GrandPrixBetEditorCubit cubit) =>
-              cubit.state.raceForm.fastestLapDriverId,
-        ),
-        onDriverSelected: context
-            .read<GrandPrixBetEditorCubit>()
-            .onRaceFastestLapDriverChanged,
-      );
+  Widget build(BuildContext context) {
+    final String? fastestLapSeasonDriverId = context.select(
+      (GrandPrixBetEditorCubit cubit) =>
+          cubit.state.raceForm.fastestLapSeasonDriverId,
+    );
+
+    return GrandPrixBetEditorDriverField(
+      selectedDriverId: fastestLapSeasonDriverId,
+      onDriverSelected:
+          context.read<GrandPrixBetEditorCubit>().onRaceFastestLapDriverChanged,
+    );
+  }
 }
 
 class _DnfDrivers extends StatelessWidget {

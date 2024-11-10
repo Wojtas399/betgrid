@@ -112,13 +112,14 @@ void main() {
               allDrivers.first,
             ],
             originalGrandPrixBet: bet,
-            qualiStandingsByDriverIds: bet.qualiStandingsBySeasonDriverIds,
+            qualiStandingsBySeasonDriverIds:
+                bet.qualiStandingsBySeasonDriverIds,
             raceForm: GrandPrixBetEditorRaceForm(
-              p1DriverId: bet.p1SeasonDriverId,
-              p2DriverId: bet.p2SeasonDriverId,
-              p3DriverId: bet.p3SeasonDriverId,
-              p10DriverId: bet.p10SeasonDriverId,
-              fastestLapDriverId: bet.fastestLapSeasonDriverId,
+              p1SeasonDriverId: bet.p1SeasonDriverId,
+              p2SeasonDriverId: bet.p2SeasonDriverId,
+              p3SeasonDriverId: bet.p3SeasonDriverId,
+              p10SeasonDriverId: bet.p10SeasonDriverId,
+              fastestLapSeasonDriverId: bet.fastestLapSeasonDriverId,
               dnfDrivers: [
                 allDrivers.first,
               ],
@@ -157,7 +158,7 @@ void main() {
 
       blocTest(
         'should set driverId at standing - 1 position in '
-        'qualiStandingsByDriverIds',
+        'qualiStandingsBySeasonDriverIds',
         build: () => createCubit(),
         act: (cubit) => cubit.onQualiStandingsChanged(
           standing: 10,
@@ -166,7 +167,7 @@ void main() {
         expect: () => [
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            qualiStandingsByDriverIds: List.generate(
+            qualiStandingsBySeasonDriverIds: List.generate(
               20,
               (int standingIndex) => standingIndex == 9 ? driverId : null,
             ),
@@ -179,7 +180,7 @@ void main() {
         'then should set driverId at standing - 1 position',
         build: () => createCubit(),
         seed: () => GrandPrixBetEditorState(
-          qualiStandingsByDriverIds: List.generate(
+          qualiStandingsBySeasonDriverIds: List.generate(
             20,
             (int standingIndex) => standingIndex == 3 ? driverId : null,
           ),
@@ -189,7 +190,7 @@ void main() {
         expect: () => [
           GrandPrixBetEditorState(
             status: GrandPrixBetEditorStateStatus.completed,
-            qualiStandingsByDriverIds: List.generate(
+            qualiStandingsBySeasonDriverIds: List.generate(
               20,
               (int standingIndex) => standingIndex == 7 ? driverId : null,
             ),
@@ -201,14 +202,14 @@ void main() {
 
   blocTest(
     'onRaceP1DriverChanged, '
-    'should assign passed driverId to p1DriverId in raceForm',
+    'should assign passed driverId to p1SeasonDriverId in raceForm',
     build: () => createCubit(),
     act: (cubit) => cubit.onRaceP1DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
         raceForm: GrandPrixBetEditorRaceForm(
-          p1DriverId: 'd1',
+          p1SeasonDriverId: 'd1',
         ),
       ),
     ],
@@ -216,14 +217,14 @@ void main() {
 
   blocTest(
     'onRaceP2DriverChanged, '
-    'should assign passed driverId to p2DriverId in raceForm',
+    'should assign passed driverId to p2SeasonDriverId in raceForm',
     build: () => createCubit(),
     act: (cubit) => cubit.onRaceP2DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
         raceForm: GrandPrixBetEditorRaceForm(
-          p2DriverId: 'd1',
+          p2SeasonDriverId: 'd1',
         ),
       ),
     ],
@@ -231,14 +232,14 @@ void main() {
 
   blocTest(
     'onRaceP3DriverChanged, '
-    'should assign passed driverId to p3DriverId in raceForm',
+    'should assign passed driverId to p3SeasonDriverId in raceForm',
     build: () => createCubit(),
     act: (cubit) => cubit.onRaceP3DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
         raceForm: GrandPrixBetEditorRaceForm(
-          p3DriverId: 'd1',
+          p3SeasonDriverId: 'd1',
         ),
       ),
     ],
@@ -246,14 +247,14 @@ void main() {
 
   blocTest(
     'onRaceP10DriverChanged, '
-    'should assign passed driverId to p10DriverId in raceForm',
+    'should assign passed driverId to p10SeasonDriverId in raceForm',
     build: () => createCubit(),
     act: (cubit) => cubit.onRaceP10DriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
         raceForm: GrandPrixBetEditorRaceForm(
-          p10DriverId: 'd1',
+          p10SeasonDriverId: 'd1',
         ),
       ),
     ],
@@ -261,14 +262,14 @@ void main() {
 
   blocTest(
     'onRaceFastestLapDriverChanged, '
-    'should assign passed driverId to fastestLapDriverId in raceForm',
+    'should assign passed driverId to fastestLapSeasonDriverId in raceForm',
     build: () => createCubit(),
     act: (cubit) => cubit.onRaceFastestLapDriverChanged('d1'),
     expect: () => [
       const GrandPrixBetEditorState(
         status: GrandPrixBetEditorStateStatus.completed,
         raceForm: GrandPrixBetEditorRaceForm(
-          fastestLapDriverId: 'd1',
+          fastestLapSeasonDriverId: 'd1',
         ),
       ),
     ],
@@ -487,13 +488,13 @@ void main() {
           grandPrixBetRepository.mockAddGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
-          qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+          qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
           raceForm: GrandPrixBetEditorRaceForm(
-            p1DriverId: p1SeasonDriverId,
-            p2DriverId: p2SeasonDriverId,
-            p3DriverId: p3SeasonDriverId,
-            p10DriverId: p10SeasonDriverId,
-            fastestLapDriverId: fastestLapSeasonDriverId,
+            p1SeasonDriverId: p1SeasonDriverId,
+            p2SeasonDriverId: p2SeasonDriverId,
+            p3SeasonDriverId: p3SeasonDriverId,
+            p10SeasonDriverId: p10SeasonDriverId,
+            fastestLapSeasonDriverId: fastestLapSeasonDriverId,
             dnfDrivers: [allDrivers.first, allDrivers[1]],
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
@@ -535,16 +536,16 @@ void main() {
           grandPrixBetRepository.mockUpdateGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
-          qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
+          qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
           originalGrandPrixBet: GrandPrixBetCreator(
             id: grandPrixBetId,
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
-            p1DriverId: p1SeasonDriverId,
-            p2DriverId: p2SeasonDriverId,
-            p3DriverId: p3SeasonDriverId,
-            p10DriverId: p10SeasonDriverId,
-            fastestLapDriverId: fastestLapSeasonDriverId,
+            p1SeasonDriverId: p1SeasonDriverId,
+            p2SeasonDriverId: p2SeasonDriverId,
+            p3SeasonDriverId: p3SeasonDriverId,
+            p10SeasonDriverId: p10SeasonDriverId,
+            fastestLapSeasonDriverId: fastestLapSeasonDriverId,
             dnfDrivers: [allDrivers.first, allDrivers[1]],
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
