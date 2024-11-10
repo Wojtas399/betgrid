@@ -4,57 +4,76 @@ import 'package:betgrid/model/grand_prix_results.dart';
 class GrandPrixResultsCreator {
   final String id;
   final String grandPrixId;
-  final List<String>? qualiStandingsByDriverIds;
-  final String p1DriverId;
-  final String p2DriverId;
-  final String p3DriverId;
-  final String p10DriverId;
-  final String fastestLapDriverId;
-  final List<String> dnfDriverIds;
+  final List<String>? qualiStandingsBySeasonDriverIds;
+  final String p1SeasonDriverId;
+  final String p2SeasonDriverId;
+  final String p3SeasonDriverId;
+  final String p10SeasonDriverId;
+  final String fastestLapSeasonDriverId;
+  final List<String> dnfSeasonDriverIds;
   final bool wasThereSafetyCar;
   final bool wasThereRedFlag;
 
   const GrandPrixResultsCreator({
     this.id = '',
     this.grandPrixId = '',
-    this.qualiStandingsByDriverIds,
-    this.p1DriverId = '',
-    this.p2DriverId = '',
-    this.p3DriverId = '',
-    this.p10DriverId = '',
-    this.fastestLapDriverId = '',
-    this.dnfDriverIds = const [],
+    this.qualiStandingsBySeasonDriverIds,
+    this.p1SeasonDriverId = '',
+    this.p2SeasonDriverId = '',
+    this.p3SeasonDriverId = '',
+    this.p10SeasonDriverId = '',
+    this.fastestLapSeasonDriverId = '',
+    this.dnfSeasonDriverIds = const [],
     this.wasThereSafetyCar = false,
     this.wasThereRedFlag = false,
   });
 
-  GrandPrixResults createEntity() => GrandPrixResults(
-        id: id,
-        grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
-        raceResults: RaceResults(
-          p1SeasonDriverId: p1DriverId,
-          p2SeasonDriverId: p2DriverId,
-          p3SeasonDriverId: p3DriverId,
-          p10SeasonDriverId: p10DriverId,
-          fastestLapSeasonDriverId: fastestLapDriverId,
-          dnfSeasonDriverIds: dnfDriverIds,
-          wasThereSafetyCar: wasThereSafetyCar,
-          wasThereRedFlag: wasThereRedFlag,
-        ),
-      );
-
-  GrandPrixResultsDto createDto() => GrandPrixResultsDto(
-        id: id,
-        grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+  GrandPrixResults createEntity() {
+    return GrandPrixResults(
+      id: id,
+      grandPrixId: grandPrixId,
+      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+      raceResults: RaceResults(
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
-      );
+      ),
+    );
+  }
+
+  GrandPrixResultsDto createDto() {
+    return GrandPrixResultsDto(
+      id: id,
+      grandPrixId: grandPrixId,
+      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+      p1SeasonDriverId: p1SeasonDriverId,
+      p2SeasonDriverId: p2SeasonDriverId,
+      p3SeasonDriverId: p3SeasonDriverId,
+      p10SeasonDriverId: p10SeasonDriverId,
+      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+      dnfSeasonDriverIds: dnfSeasonDriverIds,
+      wasThereSafetyCar: wasThereSafetyCar,
+      wasThereRedFlag: wasThereRedFlag,
+    );
+  }
+
+  Map<String, Object?> createJson() {
+    return {
+      'grandPrixId': grandPrixId,
+      'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
+      'p1SeasonDriverId': p1SeasonDriverId,
+      'p2SeasonDriverId': p2SeasonDriverId,
+      'p3SeasonDriverId': p3SeasonDriverId,
+      'p10SeasonDriverId': p10SeasonDriverId,
+      'fastestLapSeasonDriverId': fastestLapSeasonDriverId,
+      'dnfSeasonDriverIds': dnfSeasonDriverIds,
+      'wasThereSafetyCar': wasThereSafetyCar,
+      'wasThereRedFlag': wasThereRedFlag,
+    };
+  }
 }

@@ -230,7 +230,7 @@ void main() {
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
           results: GrandPrixResultsCreator(
-        qualiStandingsByDriverIds: resultQualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: resultQualiStandingsByDriverIds,
       ).createEntity());
       getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
       grandPrixBetPointsRepository

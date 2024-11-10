@@ -1,15 +1,17 @@
 import 'package:betgrid/data/firebase/model/grand_prix_results_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../creator/grand_prix_results_creator.dart';
+
 void main() {
   const String grandPrixId = 'gp1';
-  const List<String> qualiStandingsByDriverIds = ['d1', 'd3', 'd2'];
-  const String p1DriverId = 'd1';
-  const String p2DriverId = 'd2';
-  const String p3DriverId = 'd3';
-  const String p10DriverId = 'd4';
-  const String fastestLapDriverId = 'd1';
-  const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
+  const List<String> qualiStandingsBySeasonDriverIds = ['d1', 'd3', 'd2'];
+  const String p1SeasonDriverId = 'd1';
+  const String p2SeasonDriverId = 'd2';
+  const String p3SeasonDriverId = 'd3';
+  const String p10SeasonDriverId = 'd4';
+  const String fastestLapSeasonDriverId = 'd1';
+  const List<String> dnfSeasonDriverIds = ['d10', 'd11', 'd12'];
   const bool wasThereSafetyCar = true;
   const bool wasThereRedFlag = false;
 
@@ -17,30 +19,20 @@ void main() {
     'fromJson, '
     'should map json model to class model ignoring id',
     () {
-      final Map<String, Object?> json = {
-        'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
-        'wasThereSafetyCar': wasThereSafetyCar,
-        'wasThereRedFlag': wasThereRedFlag
-      };
-      const GrandPrixResultsDto expectedModel = GrandPrixResultsDto(
+      const creator = GrandPrixResultsCreator(
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
-        wasThereRedFlag: wasThereRedFlag,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
       );
+      final Map<String, Object?> json = creator.createJson();
+      final GrandPrixResultsDto expectedModel = creator.createDto();
 
       final GrandPrixResultsDto model = GrandPrixResultsDto.fromJson(json);
 
@@ -53,32 +45,21 @@ void main() {
     'should map json model to class model with given id',
     () {
       const String id = 'd1';
-      final Map<String, Object?> json = {
-        'id': id,
-        'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
-        'wasThereSafetyCar': wasThereSafetyCar,
-        'wasThereRedFlag': wasThereRedFlag
-      };
-      const GrandPrixResultsDto expectedModel = GrandPrixResultsDto(
+      const creator = GrandPrixResultsCreator(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
-        wasThereRedFlag: wasThereRedFlag,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
       );
+      final Map<String, Object?> json = creator.createJson();
+      final GrandPrixResultsDto expectedModel = creator.createDto();
 
       final GrandPrixResultsDto model = GrandPrixResultsDto.fromFirebase(
         id: id,
@@ -93,31 +74,21 @@ void main() {
     'toJson, '
     'should map class model to json model ignoring id',
     () {
-      const GrandPrixResultsDto model = GrandPrixResultsDto(
+      const creator = GrandPrixResultsCreator(
         id: 'gpb1',
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
-        wasThereRedFlag: wasThereRedFlag,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
+        wasThereRedFlag: wasThereRedFlag,
       );
-      final Map<String, Object?> expectedJson = {
-        'grandPrixId': grandPrixId,
-        'qualiStandingsByDriverIds': qualiStandingsByDriverIds,
-        'p1DriverId': p1DriverId,
-        'p2DriverId': p2DriverId,
-        'p3DriverId': p3DriverId,
-        'p10DriverId': p10DriverId,
-        'fastestLapDriverId': fastestLapDriverId,
-        'dnfDriverIds': dnfDriverIds,
-        'wasThereSafetyCar': wasThereSafetyCar,
-        'wasThereRedFlag': wasThereRedFlag
-      };
+      final GrandPrixResultsDto model = creator.createDto();
+      final Map<String, Object?> expectedJson = creator.createJson();
 
       final Map<String, Object?> json = model.toJson();
 

@@ -80,9 +80,9 @@ void main() {
         p3SeasonDriverId: 'd3',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        p1DriverId: 'd1',
-        p2DriverId: 'd2',
-        p3DriverId: 'd4',
+        p1SeasonDriverId: 'd1',
+        p2SeasonDriverId: 'd2',
+        p3SeasonDriverId: 'd4',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -178,7 +178,7 @@ void main() {
         p10SeasonDriverId: 'd10',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        p10DriverId: 'd10',
+        p10SeasonDriverId: 'd10',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -229,7 +229,7 @@ void main() {
         fastestLapSeasonDriverId: 'd1',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        fastestLapDriverId: 'd1',
+        fastestLapSeasonDriverId: 'd1',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -280,7 +280,7 @@ void main() {
         dnfSeasonDriverIds: ['d1', 'd2'],
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        dnfDriverIds: ['d1', 'd3', 'd5'],
+        dnfSeasonDriverIds: ['d1', 'd3', 'd5'],
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(

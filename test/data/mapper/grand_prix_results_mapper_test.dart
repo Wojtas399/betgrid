@@ -3,19 +3,21 @@ import 'package:betgrid/data/mapper/grand_prix_results_mapper.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../creator/grand_prix_results_creator.dart';
+
 void main() {
   const String id = 'gpb1';
   const String grandPrixId = 'gp1';
-  final List<String> qualiStandingsByDriverIds = List.generate(
+  final List<String> qualiStandingsBySeasonDriverIds = List.generate(
     20,
     (index) => 'd$index',
   );
-  const String p1DriverId = 'd1';
-  const String p2DriverId = 'd2';
-  const String p3DriverId = 'd3';
-  const String p10DriverId = 'd4';
-  const String fastestLapDriverId = 'd1';
-  const List<String> dnfDriverIds = ['d10', 'd11', 'd12'];
+  const String p1SeasonDriverId = 'd1';
+  const String p2SeasonDriverId = 'd2';
+  const String p3SeasonDriverId = 'd3';
+  const String p10SeasonDriverId = 'd4';
+  const String fastestLapSeasonDriverId = 'd1';
+  const List<String> dnfSeasonDriverIds = ['d10', 'd11', 'd12'];
   const bool wasThereSafetyCar = true;
   const bool wasThereRedFlag = false;
   final mapper = GrandPrixResultsMapper();
@@ -24,34 +26,21 @@ void main() {
     'mapFromDto, '
     'should map GrandPrixResultsDto model to GrandPrixResults model',
     () {
-      final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
+      final creator = GrandPrixResultsCreator(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
-      final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
-        id: id,
-        grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
-        raceResults: const RaceResults(
-          p1SeasonDriverId: p1DriverId,
-          p2SeasonDriverId: p2DriverId,
-          p3SeasonDriverId: p3DriverId,
-          p10SeasonDriverId: p10DriverId,
-          fastestLapSeasonDriverId: fastestLapDriverId,
-          dnfSeasonDriverIds: dnfDriverIds,
-          wasThereSafetyCar: wasThereSafetyCar,
-          wasThereRedFlag: wasThereRedFlag,
-        ),
-      );
+      final GrandPrixResultsDto grandPrixResultsDto = creator.createDto();
+      final GrandPrixResults expectedGrandPrixResults = creator.createEntity();
 
       final GrandPrixResults grandPrixResults = mapper.mapFromDto(
         grandPrixResultsDto,
@@ -63,26 +52,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'p1DriverId is null, '
-    'should set race results as null',
+    'should set raceResults as null if p1SeasonDriverId is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: null,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: null,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -96,26 +84,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'p2DriverId is null, '
-    'should set race results as null',
+    'should set raceResults as null if p2SeasonDriverId is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: null,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: null,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -129,26 +116,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'p3DriverId is null, '
-    'should set race results as null',
+    'should set raceResults as null if p3SeasonDriverId is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: null,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: null,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -162,26 +148,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'p10DriverId is null, '
-    'should set race results as null',
+    'should set raceResults as null if p10SeasonDriverId is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: null,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: null,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -195,26 +180,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'fastestLapDriverId is null, '
-    'should set race results as null',
+    'should set raceResults as null if fastestLapSeasonDriverId is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: null,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: null,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -228,26 +212,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'dnfDriverIds param is null, '
-    'should set race results as null',
+    'should set raceResults as null if dnfSeasonDriverIds param is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: null,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: null,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -261,26 +244,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'wasThereSafetyCar is null, '
-    'should set race results as null',
+    'should set raceResults as null if wasThereSafetyCar is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: null,
         wasThereRedFlag: wasThereRedFlag,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
@@ -294,26 +276,25 @@ void main() {
 
   test(
     'mapFromDto, '
-    'wasThereRedFlag is null, '
-    'should set race results as null',
+    'should set raceResults as null if wasThereRedFlag is null',
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-        p1DriverId: p1DriverId,
-        p2DriverId: p2DriverId,
-        p3DriverId: p3DriverId,
-        p10DriverId: p10DriverId,
-        fastestLapDriverId: fastestLapDriverId,
-        dnfDriverIds: dnfDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: p1SeasonDriverId,
+        p2SeasonDriverId: p2SeasonDriverId,
+        p3SeasonDriverId: p3SeasonDriverId,
+        p10SeasonDriverId: p10SeasonDriverId,
+        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dnfSeasonDriverIds,
         wasThereSafetyCar: wasThereSafetyCar,
         wasThereRedFlag: null,
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
         grandPrixId: grandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
 
