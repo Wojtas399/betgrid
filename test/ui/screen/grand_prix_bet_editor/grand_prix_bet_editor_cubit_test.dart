@@ -55,7 +55,7 @@ void main() {
         ).create(),
       ];
       final bet = GrandPrixBetCreator(
-        qualiStandingsByDriverIds: List.generate(
+        qualiStandingsBySeasonDriverIds: List.generate(
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
         ),
@@ -69,7 +69,7 @@ void main() {
         willBeRedFlag: false,
       ).createEntity();
       final updatedBet = GrandPrixBetCreator(
-        qualiStandingsByDriverIds: List.generate(
+        qualiStandingsBySeasonDriverIds: List.generate(
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
         ),
@@ -445,7 +445,7 @@ void main() {
     () {
       const String loggedUserId = 'u1';
       const String grandPrixBetId = 'gpb1';
-      final List<String?> qualiStandingsByDriverIds = List.generate(
+      final List<String?> qualiStandingsBySeasonDriverIds = List.generate(
         20,
         (int index) => switch (index) {
           0 => 'd1',
@@ -453,12 +453,12 @@ void main() {
           _ => null,
         },
       );
-      const String p1DriverId = 'd1';
-      const String p2DriverId = 'd2';
-      const String p3DriverId = 'd3';
-      const String p10DriverId = 'd10';
-      const String fastestLapDriverId = 'd1';
-      const List<String> dnfDriverIds = ['d1', 'd2'];
+      const String p1SeasonDriverId = 'd1';
+      const String p2SeasonDriverId = 'd2';
+      const String p3SeasonDriverId = 'd3';
+      const String p10SeasonDriverId = 'd10';
+      const String fastestLapSeasonDriverId = 'd1';
+      const List<String> dnfSeasonDriverIds = ['d1', 'd2'];
       const bool willBeSafetyCar = false;
       const bool willBeRedFlag = true;
       final List<Driver> allDrivers = [
@@ -487,13 +487,13 @@ void main() {
           grandPrixBetRepository.mockAddGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
-          qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+          qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
           raceForm: GrandPrixBetEditorRaceForm(
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
+            p1DriverId: p1SeasonDriverId,
+            p2DriverId: p2SeasonDriverId,
+            p3DriverId: p3SeasonDriverId,
+            p10DriverId: p10SeasonDriverId,
+            fastestLapDriverId: fastestLapSeasonDriverId,
             dnfDrivers: [allDrivers.first, allDrivers[1]],
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
@@ -512,13 +512,13 @@ void main() {
           () => grandPrixBetRepository.addGrandPrixBet(
             playerId: loggedUserId,
             grandPrixId: grandPrixId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
-            dnfDriverIds: dnfDriverIds,
+            qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+            p1SeasonDriverId: p1SeasonDriverId,
+            p2SeasonDriverId: p2SeasonDriverId,
+            p3SeasonDriverId: p3SeasonDriverId,
+            p10SeasonDriverId: p10SeasonDriverId,
+            fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+            dnfSeasonDriverIds: dnfSeasonDriverIds,
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
           ),
@@ -535,16 +535,16 @@ void main() {
           grandPrixBetRepository.mockUpdateGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
-          qualiStandingsByDriverIds: qualiStandingsByDriverIds,
+          qualiStandingsByDriverIds: qualiStandingsBySeasonDriverIds,
           originalGrandPrixBet: GrandPrixBetCreator(
             id: grandPrixBetId,
           ).createEntity(),
           raceForm: GrandPrixBetEditorRaceForm(
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
+            p1DriverId: p1SeasonDriverId,
+            p2DriverId: p2SeasonDriverId,
+            p3DriverId: p3SeasonDriverId,
+            p10DriverId: p10SeasonDriverId,
+            fastestLapDriverId: fastestLapSeasonDriverId,
             dnfDrivers: [allDrivers.first, allDrivers[1]],
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
@@ -563,13 +563,13 @@ void main() {
           () => grandPrixBetRepository.updateGrandPrixBet(
             playerId: loggedUserId,
             grandPrixBetId: grandPrixBetId,
-            qualiStandingsByDriverIds: qualiStandingsByDriverIds,
-            p1DriverId: p1DriverId,
-            p2DriverId: p2DriverId,
-            p3DriverId: p3DriverId,
-            p10DriverId: p10DriverId,
-            fastestLapDriverId: fastestLapDriverId,
-            dnfDriverIds: dnfDriverIds,
+            qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+            p1SeasonDriverId: p1SeasonDriverId,
+            p2SeasonDriverId: p2SeasonDriverId,
+            p3SeasonDriverId: p3SeasonDriverId,
+            p10SeasonDriverId: p10SeasonDriverId,
+            fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+            dnfSeasonDriverIds: dnfSeasonDriverIds,
             willBeSafetyCar: willBeSafetyCar,
             willBeRedFlag: willBeRedFlag,
           ),

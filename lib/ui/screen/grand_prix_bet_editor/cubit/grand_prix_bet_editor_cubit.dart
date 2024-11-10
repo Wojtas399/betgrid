@@ -234,13 +234,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
       grandPrixId: _grandPrixId,
-      qualiStandingsByDriverIds: state.qualiStandingsByDriverIds,
-      p1DriverId: state.raceForm.p1DriverId,
-      p2DriverId: state.raceForm.p2DriverId,
-      p3DriverId: state.raceForm.p3DriverId,
-      p10DriverId: state.raceForm.p10DriverId,
-      fastestLapDriverId: state.raceForm.fastestLapDriverId,
-      dnfDriverIds: state.raceForm.dnfDrivers
+      qualiStandingsBySeasonDriverIds: state.qualiStandingsByDriverIds,
+      p1SeasonDriverId: state.raceForm.p1DriverId,
+      p2SeasonDriverId: state.raceForm.p2DriverId,
+      p3SeasonDriverId: state.raceForm.p3DriverId,
+      p10SeasonDriverId: state.raceForm.p10DriverId,
+      fastestLapSeasonDriverId: state.raceForm.fastestLapDriverId,
+      dnfSeasonDriverIds: state.raceForm.dnfDrivers
           .map((Driver driver) => driver.seasonDriverId)
           .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,
@@ -252,13 +252,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     await _grandPrixBetRepository.updateGrandPrixBet(
       playerId: loggedUserId,
       grandPrixBetId: state.originalGrandPrixBet!.id,
-      qualiStandingsByDriverIds: state.qualiStandingsByDriverIds,
-      p1DriverId: state.raceForm.p1DriverId,
-      p2DriverId: state.raceForm.p2DriverId,
-      p3DriverId: state.raceForm.p3DriverId,
-      p10DriverId: state.raceForm.p10DriverId,
-      fastestLapDriverId: state.raceForm.fastestLapDriverId,
-      dnfDriverIds: state.raceForm.dnfDrivers
+      qualiStandingsBySeasonDriverIds: state.qualiStandingsByDriverIds,
+      p1SeasonDriverId: state.raceForm.p1DriverId,
+      p2SeasonDriverId: state.raceForm.p2DriverId,
+      p3SeasonDriverId: state.raceForm.p3DriverId,
+      p10SeasonDriverId: state.raceForm.p10DriverId,
+      fastestLapSeasonDriverId: state.raceForm.fastestLapDriverId,
+      dnfSeasonDriverIds: state.raceForm.dnfDrivers
           .map((Driver driver) => driver.seasonDriverId)
           .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,

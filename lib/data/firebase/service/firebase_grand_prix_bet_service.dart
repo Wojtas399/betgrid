@@ -25,25 +25,25 @@ class FirebaseGrandPrixBetService {
   Future<GrandPrixBetDto?> addGrandPrixBet({
     required String userId,
     required String grandPrixId,
-    List<String?> qualiStandingsByDriverIds = const [],
-    String? p1DriverId,
-    String? p2DriverId,
-    String? p3DriverId,
-    String? p10DriverId,
-    String? fastestLapDriverId,
-    List<String> dnfDriverIds = const [],
+    List<String?> qualiStandingsBySeasonDriverIds = const [],
+    String? p1SeasonDriverId,
+    String? p2SeasonDriverId,
+    String? p3SeasonDriverId,
+    String? p10SeasonDriverId,
+    String? fastestLapSeasonDriverId,
+    List<String> dnfSeasonDriverIds = const [],
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {
     final grandPrixBetDto = GrandPrixBetDto(
       grandPrixId: grandPrixId,
-      qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
-      p1SeasonDriverId: p1DriverId,
-      p2SeasonDriverId: p2DriverId,
-      p3SeasonDriverId: p3DriverId,
-      p10SeasonDriverId: p10DriverId,
-      fastestLapSeasonDriverId: fastestLapDriverId,
-      dnfSeasonDriverIds: dnfDriverIds,
+      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+      p1SeasonDriverId: p1SeasonDriverId,
+      p2SeasonDriverId: p2SeasonDriverId,
+      p3SeasonDriverId: p3SeasonDriverId,
+      p10SeasonDriverId: p10SeasonDriverId,
+      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+      dnfSeasonDriverIds: dnfSeasonDriverIds,
       willBeSafetyCar: willBeSafetyCar,
       willBeRedFlag: willBeRedFlag,
     );
@@ -56,13 +56,13 @@ class FirebaseGrandPrixBetService {
   Future<GrandPrixBetDto?> updateGrandPrixBet({
     required String userId,
     required String grandPrixBetId,
-    List<String?>? qualiStandingsByDriverIds,
-    String? p1DriverId,
-    String? p2DriverId,
-    String? p3DriverId,
-    String? p10DriverId,
-    String? fastestLapDriverId,
-    List<String>? dnfDriverIds,
+    List<String?>? qualiStandingsBySeasonDriverIds,
+    String? p1SeasonDriverId,
+    String? p2SeasonDriverId,
+    String? p3SeasonDriverId,
+    String? p10SeasonDriverId,
+    String? fastestLapSeasonDriverId,
+    List<String>? dnfSeasonDriverIds,
     bool? willBeSafetyCar,
     bool? willBeRedFlag,
   }) async {
@@ -73,20 +73,20 @@ class FirebaseGrandPrixBetService {
     if (data == null) {
       throw '[FirebaseGrandPrixBetService] Cannot find doc data';
     }
-    if (qualiStandingsByDriverIds != null) {
+    if (qualiStandingsBySeasonDriverIds != null) {
       data = data.copyWith(
-        qualiStandingsBySeasonDriverIds: qualiStandingsByDriverIds,
+        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       );
     }
-    if (dnfDriverIds != null) {
-      data = data.copyWith(dnfSeasonDriverIds: dnfDriverIds);
+    if (dnfSeasonDriverIds != null) {
+      data = data.copyWith(dnfSeasonDriverIds: dnfSeasonDriverIds);
     }
     data = data.copyWith(
-      p1SeasonDriverId: p1DriverId,
-      p2SeasonDriverId: p2DriverId,
-      p3SeasonDriverId: p3DriverId,
-      p10SeasonDriverId: p10DriverId,
-      fastestLapSeasonDriverId: fastestLapDriverId,
+      p1SeasonDriverId: p1SeasonDriverId,
+      p2SeasonDriverId: p2SeasonDriverId,
+      p3SeasonDriverId: p3SeasonDriverId,
+      p10SeasonDriverId: p10SeasonDriverId,
+      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
       willBeSafetyCar: willBeSafetyCar,
       willBeRedFlag: willBeRedFlag,
     );

@@ -225,7 +225,7 @@ void main() {
       ];
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
         grandPrixBet: GrandPrixBetCreator(
-          qualiStandingsByDriverIds: betQualiStandingsByDriverIds,
+          qualiStandingsBySeasonDriverIds: betQualiStandingsByDriverIds,
         ).createEntity(),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(

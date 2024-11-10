@@ -19,7 +19,7 @@ class GrandPrixBetCreator {
     this.id = '',
     this.playerId = '',
     this.grandPrixId = '',
-    List<String?>? qualiStandingsByDriverIds,
+    List<String?>? qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId,
     this.p2SeasonDriverId,
     this.p3SeasonDriverId,
@@ -30,7 +30,7 @@ class GrandPrixBetCreator {
     this.willBeRedFlag,
   }) {
     this.qualiStandingsBySeasonDriverIds =
-        qualiStandingsByDriverIds ?? List.generate(20, (index) => null);
+        qualiStandingsBySeasonDriverIds ?? List.generate(20, (index) => null);
   }
 
   GrandPrixBet createEntity() => GrandPrixBet(
@@ -62,4 +62,19 @@ class GrandPrixBetCreator {
         willBeSafetyCar: willBeSafetyCar,
         willBeRedFlag: willBeRedFlag,
       );
+
+  Map<String, Object?> createJson() {
+    return {
+      'grandPrixId': grandPrixId,
+      'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
+      'p1SeasonDriverId': p1SeasonDriverId,
+      'p2SeasonDriverId': p2SeasonDriverId,
+      'p3SeasonDriverId': p3SeasonDriverId,
+      'p10SeasonDriverId': p10SeasonDriverId,
+      'fastestLapSeasonDriverId': fastestLapSeasonDriverId,
+      'dnfSeasonDriverIds': dnfSeasonDriverIds,
+      'willBeSafetyCar': willBeSafetyCar,
+      'willBeRedFlag': willBeRedFlag,
+    };
+  }
 }
