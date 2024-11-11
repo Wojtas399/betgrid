@@ -105,7 +105,7 @@ void main() {
         finishedGrandPrixes: finishedGrandPrixes,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
+          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -116,9 +116,10 @@ void main() {
       verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
+          idsOfSeasonGrandPrixes:
+              finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
@@ -169,7 +170,7 @@ void main() {
         finishedGrandPrixes: finishedGrandPrixes,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
+          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -180,9 +181,10 @@ void main() {
       verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
+          idsOfSeasonGrandPrixes:
+              finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
@@ -255,7 +257,7 @@ void main() {
         finishedGrandPrixes: finishedGrandPrixes,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
+          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
@@ -266,9 +268,10 @@ void main() {
       verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfGrandPrixes: finishedGrandPrixes.map((gp) => gp.id).toList(),
+          idsOfSeasonGrandPrixes:
+              finishedGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },

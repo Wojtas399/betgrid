@@ -26,36 +26,36 @@ void main() {
   });
 
   test(
-    'getGrandPrixBetPointsForPlayersAndGrandPrixes, '
+    'getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes, '
     'should emit bet points which already exists in repo state and should fetch '
     'bet points which do not exist in repo state',
     () async {
       const String player1Id = 'p1';
       const String player2Id = 'p2';
-      const String gp1Id = 'gp1';
-      const String gp2Id = 'gp2';
+      const String seasonGrandPrix1Id = 'gp1';
+      const String seasonGrandPrix2Id = 'gp2';
       const List<GrandPrixBetPointsCreator> player1GpBetPointsCreators = [
         GrandPrixBetPointsCreator(
-          id: '$player1Id$gp1Id',
+          id: '$player1Id$seasonGrandPrix1Id',
           playerId: player1Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
         GrandPrixBetPointsCreator(
-          id: '$player1Id$gp2Id',
+          id: '$player1Id$seasonGrandPrix2Id',
           playerId: player1Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ];
       const List<GrandPrixBetPointsCreator> player2GpBetPointsCreators = [
         GrandPrixBetPointsCreator(
-          id: '$player2Id$gp1Id',
+          id: '$player2Id$seasonGrandPrix1Id',
           playerId: player2Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
         GrandPrixBetPointsCreator(
-          id: '$player2Id$gp2Id',
+          id: '$player2Id$seasonGrandPrix2Id',
           playerId: player2Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ];
       final List<GrandPrixBetPointsDto> player1GpBetPointsDtos =
@@ -88,28 +88,28 @@ void main() {
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.first));
       when(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.last));
       when(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.first));
       when(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.last));
       when(
@@ -126,14 +126,14 @@ void main() {
       ).thenReturn(player2GpBetPoints.last);
 
       final Stream<List<GrandPrixBetPoints>> gpBetPoints1$ =
-          repositoryImpl.getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          repositoryImpl.getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [gp1Id],
+        idsOfSeasonGrandPrixes: [seasonGrandPrix1Id],
       );
       final Stream<List<GrandPrixBetPoints>> gpBetPoints2$ =
-          repositoryImpl.getGrandPrixBetPointsForPlayersAndGrandPrixes(
+          repositoryImpl.getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [gp1Id, gp2Id],
+        idsOfSeasonGrandPrixes: [seasonGrandPrix1Id, seasonGrandPrix2Id],
       );
 
       expect(await gpBetPoints1$.first, expectedGpBetPoints1);
@@ -143,35 +143,35 @@ void main() {
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
       verify(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          seasonGrandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
         () => dbBetPointsService
             .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          seasonGrandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
     },
   );
 
   group(
-    'getGrandPrixBetPointsForPlayerAndGrandPrix, ',
+    'getGrandPrixBetPointsForPlayerAndSeasonGrandPrix, ',
     () {
       const String playerId = 'p1';
       const String grandPrixId = 'gp2';
@@ -204,9 +204,9 @@ void main() {
           );
 
           final Stream<GrandPrixBetPoints?> points$ =
-              repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
+              repositoryImpl.getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            seasonGrandPrixId: grandPrixId,
           );
 
           expect(await points$.first, existingGrandPrixBetPoints);
@@ -231,9 +231,9 @@ void main() {
           repositoryImpl.addEntities(existingEntities);
 
           final Stream<GrandPrixBetPoints?> points$ =
-              repositoryImpl.getGrandPrixBetPointsForPlayerAndGrandPrix(
+              repositoryImpl.getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            seasonGrandPrixId: grandPrixId,
           );
 
           expect(await points$.first, expectedGrandPrixBetPoints);

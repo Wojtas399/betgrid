@@ -24,9 +24,9 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
 
   @override
   Stream<List<GrandPrixBetPoints>>
-      getGrandPrixBetPointsForPlayersAndGrandPrixes({
+      getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
     required List<String> idsOfPlayers,
-    required List<String> idsOfGrandPrixes,
+    required List<String> idsOfSeasonGrandPrixes,
   }) async* {
     bool didRelease = false;
     await _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.acquire();
@@ -36,7 +36,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
         final List<_GrandPrixBetPointsFetchData> dataOfMissingBetPointsForGps =
             [];
         for (final playerId in idsOfPlayers) {
-          for (final gpId in idsOfGrandPrixes) {
+          for (final gpId in idsOfSeasonGrandPrixes) {
             final GrandPrixBetPoints? existingGpBetPoints =
                 existingBetPointsForGps.firstWhereOrNull(
               (GrandPrixBetPoints gpBetPoints) =>
@@ -73,19 +73,19 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   }
 
   @override
-  Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndGrandPrix({
+  Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndSeasonGrandPrix({
     required String playerId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
   }) async* {
     await for (final entities in repositoryState$) {
       GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId &&
-            entity.seasonGrandPrixId == grandPrixId,
+            entity.seasonGrandPrixId == seasonGrandPrixId,
       );
       points ??= await _fetchGrandPrixBetPointsFromDb((
         playerId: playerId,
-        seasonGrandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
       ));
       yield points;
     }

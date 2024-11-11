@@ -336,7 +336,7 @@ void main() {
         grandPrixesResults: grandPrixesResults,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
+          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
       grandPrixBetRepository.mockGetGrandPrixBetsForPlayersAndSeasonGrandPrixes(
@@ -358,9 +358,9 @@ void main() {
       ).called(1);
       verify(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
+            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: playersIds,
-          idsOfGrandPrixes: finishedGrandPrixesIds,
+          idsOfSeasonGrandPrixes: finishedGrandPrixesIds,
         ),
       ).called(1);
       verify(

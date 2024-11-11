@@ -173,7 +173,7 @@ void main() {
           expectedRedFlagBet: raceRedFlagBet,
         );
         grandPrixBetPointsRepository
-            .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+            .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           grandPrixBetPoints: gpBetPoints,
         );
       });
@@ -200,9 +200,9 @@ void main() {
         verify(raceBetsService.getRedFlagBet).called(1);
         verify(
           () => grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayerAndGrandPrix(
+              .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            seasonGrandPrixId: grandPrixId,
           ),
         ).called(1);
       });

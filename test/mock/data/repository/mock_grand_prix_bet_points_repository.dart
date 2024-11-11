@@ -4,24 +4,24 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetPointsRepository extends Mock
     implements GrandPrixBetPointsRepository {
-  void mockGetGrandPrixBetPointsForPlayersAndGrandPrixes({
+  void mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
     required List<GrandPrixBetPoints> grandPrixesBetPoints,
   }) {
     when(
-      () => getGrandPrixBetPointsForPlayersAndGrandPrixes(
+      () => getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
         idsOfPlayers: any(named: 'idsOfPlayers'),
-        idsOfGrandPrixes: any(named: 'idsOfGrandPrixes'),
+        idsOfSeasonGrandPrixes: any(named: 'idsOfSeasonGrandPrixes'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixesBetPoints));
   }
 
-  void mockGetGrandPrixBetPointsForPlayerAndGrandPrix({
+  void mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix({
     GrandPrixBetPoints? grandPrixBetPoints,
   }) {
     when(
-      () => getGrandPrixBetPointsForPlayerAndGrandPrix(
+      () => getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         playerId: any(named: 'playerId'),
-        grandPrixId: any(named: 'grandPrixId'),
+        seasonGrandPrixId: any(named: 'seasonGrandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBetPoints));
   }

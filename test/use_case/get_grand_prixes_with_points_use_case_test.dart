@@ -88,9 +88,9 @@ void main() {
       );
       when(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
+            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          grandPrixId: allGrandPrixes.first.id,
+          seasonGrandPrixId: allGrandPrixes.first.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -101,9 +101,9 @@ void main() {
       );
       when(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
+            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          grandPrixId: allGrandPrixes[1].id,
+          seasonGrandPrixId: allGrandPrixes[1].id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -114,9 +114,9 @@ void main() {
       );
       when(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
+            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          grandPrixId: allGrandPrixes.last.id,
+          seasonGrandPrixId: allGrandPrixes.last.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(

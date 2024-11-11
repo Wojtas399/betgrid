@@ -2,13 +2,13 @@ import '../../../model/grand_prix_bet_points.dart';
 
 abstract interface class GrandPrixBetPointsRepository {
   Stream<List<GrandPrixBetPoints>>
-      getGrandPrixBetPointsForPlayersAndGrandPrixes({
+      getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
     required List<String> idsOfPlayers,
-    required List<String> idsOfGrandPrixes,
+    required List<String> idsOfSeasonGrandPrixes,
   });
 
-  Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndGrandPrix({
+  Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndSeasonGrandPrix({
     required String playerId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
   });
 }

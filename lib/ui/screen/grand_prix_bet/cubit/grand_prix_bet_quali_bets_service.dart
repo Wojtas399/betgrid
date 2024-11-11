@@ -61,9 +61,9 @@ class GrandPrixBetQualiBetsService {
 
   Stream<QualiBetPoints?> _getQualiBetPoints() {
     return _grandPrixBetPointsRepository
-        .getGrandPrixBetPointsForPlayerAndGrandPrix(
+        .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: _playerId,
-          grandPrixId: _seasonGrandPrixId,
+          seasonGrandPrixId: _seasonGrandPrixId,
         )
         .map((grandPrixBetPoints) => grandPrixBetPoints?.qualiBetPoints);
   }

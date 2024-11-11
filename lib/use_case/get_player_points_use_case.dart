@@ -43,9 +43,9 @@ class GetPlayerPointsUseCase {
     for (final grandPrix in allGrandPrixes) {
       final Stream<GrandPrixBetPoints?> gpPoints$ =
           _grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayerAndGrandPrix(
+              .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         playerId: playerId,
-        grandPrixId: grandPrix.id,
+        seasonGrandPrixId: grandPrix.id,
       );
       betPointsForGrandPrixes.add(gpPoints$);
     }

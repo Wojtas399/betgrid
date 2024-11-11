@@ -56,9 +56,9 @@ void main() {
     ).called(1);
     verify(
       () => grandPrixBetPointsRepository
-          .getGrandPrixBetPointsForPlayerAndGrandPrix(
+          .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         playerId: playerId,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
       ),
     ).called(1);
     reset(grandPrixBetRepository);
@@ -130,7 +130,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       when(
@@ -202,7 +202,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       seasonDriverRepository.mockGetSeasonDriverById(
@@ -253,7 +253,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       seasonDriverRepository.mockGetSeasonDriverById(
@@ -313,7 +313,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       when(
@@ -380,7 +380,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
@@ -422,7 +422,7 @@ void main() {
         results: results,
       );
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(

@@ -234,7 +234,7 @@ void main() {
       ).createEntity());
       getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
       grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndGrandPrix(
+          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: GrandPrixBetPoints(
           id: '',
           playerId: playerId,
@@ -269,9 +269,9 @@ void main() {
       verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
       verify(
         () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndGrandPrix(
+            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          grandPrixId: seasonGrandPrixId,
+          seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
     },
