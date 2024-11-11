@@ -38,7 +38,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
               final GrandPrixBet? existingGpBet =
                   existingGpBets.firstWhereOrNull(
                 (GrandPrixBet gpBet) =>
-                    gpBet.grandPrixId == grandPrixId &&
+                    gpBet.seasonGrandPrixId == grandPrixId &&
                     gpBet.playerId == playerId,
               );
               if (existingGpBet != null) {
@@ -72,7 +72,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
         (GrandPrixBet grandPrixBet) =>
             grandPrixBet.playerId == playerId &&
-            grandPrixBet.grandPrixId == grandPrixId,
+            grandPrixBet.seasonGrandPrixId == grandPrixId,
       );
       grandPrixBet ??= await _fetchGrandPrixBetFromDb((
         playerId: playerId,

@@ -110,7 +110,7 @@ class CreatePointsForDriverStats {
             );
             final gpBet = grandPrixBets.firstWhere(
               (gpBet) =>
-                  gpBet.grandPrixId == grandPrixId &&
+                  gpBet.seasonGrandPrixId == grandPrixId &&
                   gpBet.playerId == player.id,
             );
             final qualiPoints = _calculatePointsForQuali(

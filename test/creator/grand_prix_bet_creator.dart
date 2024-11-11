@@ -36,7 +36,7 @@ class GrandPrixBetCreator {
   GrandPrixBet createEntity() => GrandPrixBet(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: grandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,

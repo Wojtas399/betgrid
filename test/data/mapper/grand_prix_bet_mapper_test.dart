@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const String id = 'gpb1';
   const String playerId = 'p1';
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'gp1';
   final List<String?> qualiStandingsBySeasonDriverIds = List.generate(
     20,
     (index) => switch (index) {
@@ -33,7 +33,7 @@ void main() {
       final GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -47,7 +47,7 @@ void main() {
       final GrandPrixBet expectedGrandPrixBet = GrandPrixBet(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -72,7 +72,7 @@ void main() {
       final GrandPrixBet grandPrixBet = GrandPrixBet(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -86,7 +86,7 @@ void main() {
       final GrandPrixBetDto expectedDto = GrandPrixBetDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
