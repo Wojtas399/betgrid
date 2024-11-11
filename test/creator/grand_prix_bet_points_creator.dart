@@ -7,7 +7,7 @@ import 'race_bet_points_creator.dart';
 class GrandPrixBetPointsCreator {
   final String id;
   final String playerId;
-  final String grandPrixId;
+  final String seasonGrandPrixId;
   final double totalPoints;
   final QualiBetPointsCreator? qualiBetPointsCreator;
   final RaceBetPointsCreator? raceBetPointsCreator;
@@ -15,7 +15,7 @@ class GrandPrixBetPointsCreator {
   const GrandPrixBetPointsCreator({
     this.id = '',
     this.playerId = '',
-    this.grandPrixId = '',
+    this.seasonGrandPrixId = '',
     this.totalPoints = 0.0,
     this.qualiBetPointsCreator,
     this.raceBetPointsCreator,
@@ -24,7 +24,7 @@ class GrandPrixBetPointsCreator {
   GrandPrixBetPoints createEntity() => GrandPrixBetPoints(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPoints: qualiBetPointsCreator?.createEntity(),
         raceBetPoints: raceBetPointsCreator?.createEntity(),
@@ -33,7 +33,7 @@ class GrandPrixBetPointsCreator {
   GrandPrixBetPointsDto createDto() => GrandPrixBetPointsDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
         raceBetPointsDto: raceBetPointsCreator?.createDto(),

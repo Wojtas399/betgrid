@@ -91,42 +91,42 @@ void main() {
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          grandPrixId: finishedGrandPrixes.first.id,
+          seasonGrandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 20,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          grandPrixId: finishedGrandPrixes[1].id,
+          seasonGrandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 12.2,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          grandPrixId: finishedGrandPrixes.last.id,
+          seasonGrandPrixId: finishedGrandPrixes.last.id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          grandPrixId: finishedGrandPrixes.first.id,
+          seasonGrandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 5.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          grandPrixId: finishedGrandPrixes[1].id,
+          seasonGrandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          grandPrixId: finishedGrandPrixes.last.id,
+          seasonGrandPrixId: finishedGrandPrixes.last.id,
           totalPoints: 9,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
-          grandPrixId: finishedGrandPrixes.first.id,
+          seasonGrandPrixId: finishedGrandPrixes.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
-          grandPrixId: finishedGrandPrixes[1].id,
+          seasonGrandPrixId: finishedGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
       ];

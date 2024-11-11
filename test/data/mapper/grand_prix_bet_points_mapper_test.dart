@@ -63,7 +63,7 @@ void main() {
       final GrandPrixBetPoints expectedGrandPrixBetPoints = GrandPrixBetPoints(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: grandPrixId,
         totalPoints: totalPoints,
         qualiBetPoints: qualiBetPoints,
         raceBetPoints: raceBetPoints,

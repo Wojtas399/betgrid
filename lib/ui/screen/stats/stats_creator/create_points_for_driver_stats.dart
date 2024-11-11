@@ -106,7 +106,7 @@ class CreatePointsForDriverStats {
             );
             final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
               (gpBetPoints) =>
-                  gpBetPoints.grandPrixId == grandPrixId &&
+                  gpBetPoints.seasonGrandPrixId == grandPrixId &&
                   gpBetPoints.playerId == player.id,
             );
             final gpBet = grandPrixBets.firstWhere(

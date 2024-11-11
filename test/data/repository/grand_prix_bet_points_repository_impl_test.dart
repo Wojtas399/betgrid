@@ -38,24 +38,24 @@ void main() {
         GrandPrixBetPointsCreator(
           id: '$player1Id$gp1Id',
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
         GrandPrixBetPointsCreator(
           id: '$player1Id$gp2Id',
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ];
       const List<GrandPrixBetPointsCreator> player2GpBetPointsCreators = [
         GrandPrixBetPointsCreator(
           id: '$player2Id$gp1Id',
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
         GrandPrixBetPointsCreator(
           id: '$player2Id$gp2Id',
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ];
       final List<GrandPrixBetPointsDto> player1GpBetPointsDtos =
@@ -179,18 +179,18 @@ void main() {
           GrandPrixBetPointsCreator(
         id: '$playerId$grandPrixId',
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: grandPrixId,
       );
       final List<GrandPrixBetPoints> existingEntities = [
         const GrandPrixBetPointsCreator(
           id: '${playerId}gp1',
           playerId: playerId,
-          grandPrixId: 'gp1',
+          seasonGrandPrixId: 'gp1',
         ).createEntity(),
         const GrandPrixBetPointsCreator(
           id: 'p2$grandPrixId',
           playerId: 'p2',
-          grandPrixId: grandPrixId,
+          seasonGrandPrixId: grandPrixId,
         ).createEntity(),
       ];
 

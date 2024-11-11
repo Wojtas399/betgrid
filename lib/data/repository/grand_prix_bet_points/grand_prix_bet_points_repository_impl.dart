@@ -10,8 +10,6 @@ import '../../mapper/grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_points_repository.dart';
 
-typedef _GrandPrixBetPointsFetchData = ({String playerId, String grandPrixId});
-
 @LazySingleton(as: GrandPrixBetPointsRepository)
 class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     implements GrandPrixBetPointsRepository {
@@ -42,7 +40,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
             final GrandPrixBetPoints? existingGpBetPoints =
                 existingBetPointsForGps.firstWhereOrNull(
               (GrandPrixBetPoints gpBetPoints) =>
-                  gpBetPoints.grandPrixId == gpId &&
+                  gpBetPoints.seasonGrandPrixId == gpId &&
                   gpBetPoints.playerId == playerId,
             );
             if (existingGpBetPoints != null) {
@@ -50,7 +48,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
             } else {
               dataOfMissingBetPointsForGps.add((
                 playerId: playerId,
-                grandPrixId: gpId,
+                seasonGrandPrixId: gpId,
               ));
             }
           }
@@ -82,11 +80,12 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     await for (final entities in repositoryState$) {
       GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
-            entity.playerId == playerId && entity.grandPrixId == grandPrixId,
+            entity.playerId == playerId &&
+            entity.seasonGrandPrixId == grandPrixId,
       );
       points ??= await _fetchGrandPrixBetPointsFromDb((
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: grandPrixId,
       ));
       yield points;
     }
@@ -100,7 +99,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
       final GrandPrixBetPointsDto? gpBetPointsDto = await _dbBetPointsService
           .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
         playerId: gpBetPointsData.playerId,
-        seasonGrandPrixId: gpBetPointsData.grandPrixId,
+        seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
       );
       if (gpBetPointsDto != null) {
         final GrandPrixBetPoints gpBetPoints =
@@ -118,7 +117,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     final GrandPrixBetPointsDto? dto = await _dbBetPointsService
         .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
       playerId: gpBetPointsData.playerId,
-      seasonGrandPrixId: gpBetPointsData.grandPrixId,
+      seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
     );
     if (dto == null) return null;
     final GrandPrixBetPoints entity = _grandPrixBetPointsMapper.mapFromDto(dto);
@@ -126,3 +125,8 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     return entity;
   }
 }
+
+typedef _GrandPrixBetPointsFetchData = ({
+  String playerId,
+  String seasonGrandPrixId,
+});

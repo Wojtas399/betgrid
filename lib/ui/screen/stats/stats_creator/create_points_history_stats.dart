@@ -73,7 +73,7 @@ class CreatePointsHistoryStats {
           final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
             (GrandPrixBetPoints? gpBetPoints) =>
                 gpBetPoints?.playerId == player.id &&
-                gpBetPoints?.grandPrixId == gp.id,
+                gpBetPoints?.seasonGrandPrixId == gp.id,
           );
           final double pointsFromPreviousGrandPrixes =
               chartGrandPrixes.isNotEmpty
