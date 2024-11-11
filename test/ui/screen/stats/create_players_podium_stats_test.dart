@@ -1,5 +1,5 @@
-import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/grand_prix_v2.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_players_podium_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
@@ -40,8 +40,8 @@ void main() {
       playerRepository.mockGetAllPlayers(players: []);
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
         finishedGrandPrixes: [
-          GrandPrixCreator(id: 'gp1').createEntity(),
-          GrandPrixCreator(id: 'gp2').createEntity(),
+          GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
+          GrandPrixV2Creator(seasonGrandPrixId: 'gp2').create(),
         ],
       );
 
@@ -80,9 +80,9 @@ void main() {
       final List<Player> players = [
         const PlayerCreator(id: 'p1').createEntity(),
       ];
-      final List<GrandPrix> finishedGrandPrixes = [
-        GrandPrixCreator(id: 'gp1').createEntity(),
-        GrandPrixCreator(id: 'gp2').createEntity(),
+      final List<GrandPrixV2> finishedGrandPrixes = [
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
@@ -119,7 +119,7 @@ void main() {
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
-              finishedGrandPrixes.map((gp) => gp.id).toList(),
+              finishedGrandPrixes.map((gp) => gp.seasonGrandPrixId).toList(),
         ),
       ).called(1);
     },
@@ -133,9 +133,9 @@ void main() {
         const PlayerCreator(id: 'p1').createEntity(),
         const PlayerCreator(id: 'p2').createEntity(),
       ];
-      final List<GrandPrix> finishedGrandPrixes = [
-        GrandPrixCreator(id: 'gp1').createEntity(),
-        GrandPrixCreator(id: 'gp2').createEntity(),
+      final List<GrandPrixV2> finishedGrandPrixes = [
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
@@ -184,7 +184,7 @@ void main() {
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
-              finishedGrandPrixes.map((gp) => gp.id).toList(),
+              finishedGrandPrixes.map((gp) => gp.seasonGrandPrixId).toList(),
         ),
       ).called(1);
     },
@@ -200,9 +200,9 @@ void main() {
         const PlayerCreator(id: 'p3').createEntity(),
         const PlayerCreator(id: 'p4').createEntity(),
       ];
-      final List<GrandPrix> finishedGrandPrixes = [
-        GrandPrixCreator(id: 'gp1').createEntity(),
-        GrandPrixCreator(id: 'gp2').createEntity(),
+      final List<GrandPrixV2> finishedGrandPrixes = [
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
+        GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
@@ -271,7 +271,7 @@ void main() {
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
-              finishedGrandPrixes.map((gp) => gp.id).toList(),
+              finishedGrandPrixes.map((gp) => gp.seasonGrandPrixId).toList(),
         ),
       ).called(1);
     },

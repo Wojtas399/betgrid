@@ -4,8 +4,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
-import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/grand_prix_v2.dart';
 import '../../../../model/player.dart';
 import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import '../stats_model/points_history.dart';
@@ -28,28 +28,32 @@ class CreatePointsHistoryStats {
         _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
         (
           List<Player> allPlayers,
-          List<GrandPrix> finishedGrandPrixes,
+          List<GrandPrixV2> finishedGrandPrixes,
         ) =>
-            (allPlayers: allPlayers, finishedGrandPrixes: finishedGrandPrixes),
+            (
+          allPlayers: allPlayers,
+          finishedGrandPrixes: finishedGrandPrixes,
+        ),
       ).switchMap(
         (data) {
           if (data.allPlayers.isEmpty || data.finishedGrandPrixes.isEmpty) {
             return Stream.value(null);
           }
           final playersIds = data.allPlayers.map((p) => p.id).toList();
-          final grandPrixesIds =
-              data.finishedGrandPrixes.map((gp) => gp.id).toList();
+          final finishedGrandPrixesIds = data.finishedGrandPrixes
+              .map((grandPrix) => grandPrix.seasonGrandPrixId)
+              .toList();
           return Rx.combineLatest3(
             Stream.value(data.allPlayers),
             Stream.value(data.finishedGrandPrixes),
             _grandPrixBetPointsRepository
                 .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
               idsOfPlayers: playersIds,
-              idsOfSeasonGrandPrixes: grandPrixesIds,
+              idsOfSeasonGrandPrixes: finishedGrandPrixesIds,
             ),
             (
               List<Player> players,
-              List<GrandPrix> grandPrixes,
+              List<GrandPrixV2> grandPrixes,
               List<GrandPrixBetPoints> grandPrixesBetPoints,
             ) =>
                 _createStats(players, grandPrixes, grandPrixesBetPoints),
@@ -59,10 +63,10 @@ class CreatePointsHistoryStats {
 
   PointsHistory _createStats(
     Iterable<Player> players,
-    Iterable<GrandPrix> grandPrixes,
+    Iterable<GrandPrixV2> grandPrixes,
     Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
   ) {
-    final List<GrandPrix> sortedFinishedGrandPrixes = [...grandPrixes];
+    final List<GrandPrixV2> sortedFinishedGrandPrixes = [...grandPrixes];
     sortedFinishedGrandPrixes.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
@@ -73,7 +77,7 @@ class CreatePointsHistoryStats {
           final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
             (GrandPrixBetPoints? gpBetPoints) =>
                 gpBetPoints?.playerId == player.id &&
-                gpBetPoints?.seasonGrandPrixId == gp.id,
+                gpBetPoints?.seasonGrandPrixId == gp.seasonGrandPrixId,
           );
           final double pointsFromPreviousGrandPrixes =
               chartGrandPrixes.isNotEmpty
