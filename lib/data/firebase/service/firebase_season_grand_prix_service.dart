@@ -18,4 +18,10 @@ class FirebaseSeasonGrandPrixService {
         .get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<SeasonGrandPrixDto?> fetchSeasonGrandPrixById(String id) async {
+    final snapshot =
+        await _firebaseCollections.seasonGrandPrixes().doc(id).get();
+    return snapshot.data();
+  }
 }

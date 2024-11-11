@@ -11,4 +11,12 @@ class MockFirebaseSeasonGrandPrixService extends Mock
       () => fetchAllSeasonGrandPrixesFromSeason(any()),
     ).thenAnswer((_) => Future.value(expectedSeasonGrandPrixDtos));
   }
+
+  void mockFetchSeasonGrandPrixById({
+    SeasonGrandPrixDto? expectedSeasonGrandPrixDto,
+  }) {
+    when(
+      () => fetchSeasonGrandPrixById(any()),
+    ).thenAnswer((_) => Future.value(expectedSeasonGrandPrixDto));
+  }
 }

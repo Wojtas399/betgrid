@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../model/season_grand_prix.dart';
@@ -29,6 +30,18 @@ class SeasonGrandPrixRepositoryImpl extends Repository<SeasonGrandPrix>
     }
   }
 
+  @override
+  Stream<SeasonGrandPrix?> getSeasonGrandPrixById(String id) async* {
+    await for (final allSeasonGrandPrixes in repositoryState$) {
+      SeasonGrandPrix? matchingSeasonGrandPrix =
+          allSeasonGrandPrixes.firstWhereOrNull(
+        (seasonGrandPrix) => seasonGrandPrix.id == id,
+      );
+      matchingSeasonGrandPrix ??= await _fetchSeasonGrandPrixById(id);
+      yield matchingSeasonGrandPrix;
+    }
+  }
+
   Future<void> _fetchAllSeasonGrandPrixesFromSeason(int season) async {
     final seasonGrandPrixDtos = await _firebaseSeasonGrandPrixService
         .fetchAllSeasonGrandPrixesFromSeason(season);
@@ -37,5 +50,15 @@ class SeasonGrandPrixRepositoryImpl extends Repository<SeasonGrandPrix>
           seasonGrandPrixDtos.map(_seasonGrandPrixMapper.mapFromDto);
       addOrUpdateEntities(seasonGrandPrixes);
     }
+  }
+
+  Future<SeasonGrandPrix?> _fetchSeasonGrandPrixById(String id) async {
+    final seasonGrandPrixDto =
+        await _firebaseSeasonGrandPrixService.fetchSeasonGrandPrixById(id);
+    if (seasonGrandPrixDto == null) return null;
+    final seasonGrandPrix =
+        _seasonGrandPrixMapper.mapFromDto(seasonGrandPrixDto);
+    addEntity(seasonGrandPrix);
+    return seasonGrandPrix;
   }
 }

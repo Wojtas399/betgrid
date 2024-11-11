@@ -1,3 +1,4 @@
+import 'package:betgrid/data/firebase/model/season_grand_prix_dto.dart';
 import 'package:betgrid/data/repository/season_grand_prix/season_grand_prix_repository_impl.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -89,6 +90,67 @@ void main() {
         () => firebaseSeasonGrandPrixService
             .fetchAllSeasonGrandPrixesFromSeason(season),
       ).called(1);
+    },
+  );
+
+  group(
+    'getSeasonGrandPrixById, ',
+    () {
+      const String id = 'sgp1';
+      final SeasonGrandPrixCreator seasonGrandPrixCreator =
+          SeasonGrandPrixCreator(id: id);
+      final List<SeasonGrandPrix> existingSeasonGrandPrixes = [
+        SeasonGrandPrixCreator(id: 'sgp2').createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp3').createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp4').createEntity(),
+      ];
+
+      test(
+        'should fetch season grand prix from db, add it to repo state and emit '
+        'it if matching season grand prix does not exist in repo state',
+        () async {
+          final SeasonGrandPrixDto expectedSeasonGrandPrixDto =
+              seasonGrandPrixCreator.createDto();
+          final SeasonGrandPrix expectedSeasonGrandPrix =
+              seasonGrandPrixCreator.createEntity();
+          firebaseSeasonGrandPrixService.mockFetchSeasonGrandPrixById(
+            expectedSeasonGrandPrixDto: expectedSeasonGrandPrixDto,
+          );
+          seasonGrandPrixMapper.mockMapFromDto(
+            expectedSeasonGrandPrix: expectedSeasonGrandPrix,
+          );
+          repositoryImpl.addEntities(existingSeasonGrandPrixes);
+
+          final Stream<SeasonGrandPrix?> seasonGrandPrix$ =
+              repositoryImpl.getSeasonGrandPrixById(id);
+
+          expect(await seasonGrandPrix$.first, expectedSeasonGrandPrix);
+          expect(
+            await repositoryImpl.repositoryState$.first,
+            [...existingSeasonGrandPrixes, expectedSeasonGrandPrix],
+          );
+          verify(
+            () => firebaseSeasonGrandPrixService.fetchSeasonGrandPrixById(id),
+          ).called(1);
+        },
+      );
+
+      test(
+        'should only emit season grand prix if season grand prix with matching '
+        'id already exists in repo state',
+        () async {
+          final SeasonGrandPrix expectedSeasonGrandPrix =
+              seasonGrandPrixCreator.createEntity();
+          repositoryImpl.addEntities(
+            [...existingSeasonGrandPrixes, expectedSeasonGrandPrix],
+          );
+
+          final Stream<SeasonGrandPrix?> seasonGrandPrix$ =
+              repositoryImpl.getSeasonGrandPrixById(id);
+
+          expect(await seasonGrandPrix$.first, expectedSeasonGrandPrix);
+        },
+      );
     },
   );
 }
