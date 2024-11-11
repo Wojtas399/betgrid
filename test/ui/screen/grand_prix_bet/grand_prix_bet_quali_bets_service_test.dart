@@ -22,7 +22,7 @@ void main() {
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'gp1';
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
@@ -30,7 +30,7 @@ void main() {
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
-    grandPrixId,
+    seasonGrandPrixId,
   );
 
   test(
@@ -238,7 +238,7 @@ void main() {
         grandPrixBetPoints: GrandPrixBetPoints(
           id: '',
           playerId: playerId,
-          grandPrixId: grandPrixId,
+          grandPrixId: seasonGrandPrixId,
           totalPoints: 0.0,
           qualiBetPoints: qualiBetPoints,
         ),
@@ -258,12 +258,12 @@ void main() {
       verify(
         () => grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          seasonGrandPrixId: grandPrixId,
+          seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
       verify(
         () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrix(
-          grandPrixId: grandPrixId,
+          grandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
       verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
@@ -271,7 +271,7 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: playerId,
-          grandPrixId: grandPrixId,
+          grandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
     },
