@@ -33,7 +33,7 @@ class GrandPrixBetPointsCreator {
   GrandPrixBetPointsDto createDto() => GrandPrixBetPointsDto(
         id: id,
         playerId: playerId,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
         raceBetPointsDto: raceBetPointsCreator?.createDto(),

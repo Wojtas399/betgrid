@@ -30,7 +30,7 @@ void main() {
     () {
       const String id = 'gpbp1';
       const String playerId = 'p1';
-      const String grandPrixId = 'gp1';
+      const String seasonGrandPrixId = 'gp1';
       const double totalPoints = 10.0;
       const QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator(
         totalPoints: 4.0,
@@ -55,7 +55,7 @@ void main() {
       final GrandPrixBetPointsDto grandPrixBetPointsDto = GrandPrixBetPointsDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsDto,
         raceBetPointsDto: raceBetPointsDto,
@@ -63,7 +63,7 @@ void main() {
       final GrandPrixBetPoints expectedGrandPrixBetPoints = GrandPrixBetPoints(
         id: id,
         playerId: playerId,
-        seasonGrandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPoints: qualiBetPoints,
         raceBetPoints: raceBetPoints,

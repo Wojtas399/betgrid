@@ -15,7 +15,7 @@ class GrandPrixBetPointsDto with _$GrandPrixBetPointsDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String playerId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
     required double totalPoints,
     @JsonKey(
       name: 'qualiBetPoints',

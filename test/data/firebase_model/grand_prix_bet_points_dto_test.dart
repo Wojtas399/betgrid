@@ -5,7 +5,7 @@ import '../../creator/quali_bet_points_creator.dart';
 import '../../creator/race_bet_points_creator.dart';
 
 void main() {
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'gp1';
   const double totalPoints = 10.2;
   const QualiBetPointsCreator qualiBetPointsCreator = QualiBetPointsCreator();
   const RaceBetPointsCreator raceBetPointsCreator = RaceBetPointsCreator();
@@ -15,13 +15,13 @@ void main() {
     'should map json model to class model ignoring id and playerId',
     () {
       final Map<String, Object?> json = {
-        'grandPrixId': grandPrixId,
+        'seasonGrandPrixId': seasonGrandPrixId,
         'totalPoints': totalPoints,
         'qualiBetPoints': qualiBetPointsCreator.createJson(),
         'raceBetPoints': raceBetPointsCreator.createJson(),
       };
       final GrandPrixBetPointsDto expectedModel = GrandPrixBetPointsDto(
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsCreator.createDto(),
         raceBetPointsDto: raceBetPointsCreator.createDto(),
@@ -40,7 +40,7 @@ void main() {
       const String id = 'gpbp1';
       const String playerId = 'p1';
       final Map<String, Object?> json = {
-        'grandPrixId': grandPrixId,
+        'seasonGrandPrixId': seasonGrandPrixId,
         'totalPoints': totalPoints,
         'qualiBetPoints': qualiBetPointsCreator.createJson(),
         'raceBetPoints': raceBetPointsCreator.createJson(),
@@ -48,7 +48,7 @@ void main() {
       final GrandPrixBetPointsDto expectedModel = GrandPrixBetPointsDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsCreator.createDto(),
         raceBetPointsDto: raceBetPointsCreator.createDto(),
@@ -71,13 +71,13 @@ void main() {
       final GrandPrixBetPointsDto model = GrandPrixBetPointsDto(
         id: 'gpbp1',
         playerId: 'p1',
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
         qualiBetPointsDto: qualiBetPointsCreator.createDto(),
         raceBetPointsDto: raceBetPointsCreator.createDto(),
       );
       final Map<String, Object?> expectedJson = {
-        'grandPrixId': grandPrixId,
+        'seasonGrandPrixId': seasonGrandPrixId,
         'totalPoints': totalPoints,
         'qualiBetPoints': qualiBetPointsCreator.createJson(),
         'raceBetPoints': raceBetPointsCreator.createJson(),

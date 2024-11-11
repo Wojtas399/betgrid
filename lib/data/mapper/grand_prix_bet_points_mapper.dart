@@ -21,7 +21,7 @@ class GrandPrixBetPointsMapper {
       GrandPrixBetPoints(
         id: grandPrixBetPointsDto.id,
         playerId: grandPrixBetPointsDto.playerId,
-        seasonGrandPrixId: grandPrixBetPointsDto.grandPrixId,
+        seasonGrandPrixId: grandPrixBetPointsDto.seasonGrandPrixId,
         totalPoints: grandPrixBetPointsDto.totalPoints,
         qualiBetPoints: grandPrixBetPointsDto.qualiBetPointsDto != null
             ? _qualiBetPointsMapper.mapFromDto(
