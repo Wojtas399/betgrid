@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../creator/grand_prix_results_creator.dart';
 
 void main() {
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'gp1';
   const List<String> qualiStandingsBySeasonDriverIds = ['d1', 'd3', 'd2'];
   const String p1SeasonDriverId = 'd1';
   const String p2SeasonDriverId = 'd2';
@@ -20,7 +20,7 @@ void main() {
     'should map json model to class model ignoring id',
     () {
       const creator = GrandPrixResultsCreator(
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -47,7 +47,7 @@ void main() {
       const String id = 'd1';
       const creator = GrandPrixResultsCreator(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -76,7 +76,7 @@ void main() {
     () {
       const creator = GrandPrixResultsCreator(
         id: 'gpb1',
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,

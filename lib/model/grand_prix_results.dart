@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'entity.dart';
 
 class GrandPrixResults extends Entity {
-  final String grandPrixId;
+  final String seasonGrandPrixId;
   final List<String?>? qualiStandingsBySeasonDriverIds;
   final RaceResults? raceResults;
 
   const GrandPrixResults({
     required super.id,
-    required this.grandPrixId,
+    required this.seasonGrandPrixId,
     this.qualiStandingsBySeasonDriverIds,
     this.raceResults,
   });
@@ -17,7 +17,7 @@ class GrandPrixResults extends Entity {
   @override
   List<Object?> get props => [
         id,
-        grandPrixId,
+        seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds,
         raceResults,
       ];

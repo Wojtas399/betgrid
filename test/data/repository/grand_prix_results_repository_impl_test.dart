@@ -32,16 +32,16 @@ void main() {
       const GrandPrixResultsCreator grandPrixResultsCreator =
           GrandPrixResultsCreator(
         id: 'r1',
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: grandPrixId,
       );
       final List<GrandPrixResults> existingGrandPrixesResults = [
         const GrandPrixResultsCreator(
           id: 'r2',
-          grandPrixId: 'gp2',
+          seasonGrandPrixId: 'gp2',
         ).createEntity(),
         const GrandPrixResultsCreator(
           id: 'r3',
-          grandPrixId: 'gp3',
+          seasonGrandPrixId: 'gp3',
         ).createEntity(),
       ];
 
@@ -108,15 +108,15 @@ void main() {
       const List<GrandPrixResultsCreator> gpResultsCreators = [
         GrandPrixResultsCreator(
           id: 'gpr1',
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
         GrandPrixResultsCreator(
           id: 'gpr2',
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
         GrandPrixResultsCreator(
           id: 'gpr3',
-          grandPrixId: gp3Id,
+          seasonGrandPrixId: gp3Id,
         ),
       ];
       final List<GrandPrixResultsDto> gpResultsDtos =

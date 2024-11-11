@@ -7,7 +7,7 @@ import '../../creator/grand_prix_results_creator.dart';
 
 void main() {
   const String id = 'gpb1';
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'gp1';
   final List<String> qualiStandingsBySeasonDriverIds = List.generate(
     20,
     (index) => 'd$index',
@@ -28,7 +28,7 @@ void main() {
     () {
       final creator = GrandPrixResultsCreator(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -56,7 +56,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: null,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -69,7 +69,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -88,7 +88,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: null,
@@ -101,7 +101,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -120,7 +120,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -133,7 +133,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -152,7 +152,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -165,7 +165,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -184,7 +184,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -197,7 +197,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -216,7 +216,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -229,7 +229,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -248,7 +248,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -261,7 +261,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );
@@ -280,7 +280,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: grandPrixId,
+        grandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -293,7 +293,7 @@ void main() {
       );
       final GrandPrixResults expectedGrandPrixResults = GrandPrixResults(
         id: id,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         raceResults: null,
       );

@@ -30,7 +30,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     await _getGrandPrixResultsForGrandPrixMutex.acquire();
     await for (final grandPrixesResults in repositoryState$) {
       GrandPrixResults? matchingGpResults = grandPrixesResults.firstWhereOrNull(
-        (gpResults) => gpResults.grandPrixId == grandPrixId,
+        (gpResults) => gpResults.seasonGrandPrixId == grandPrixId,
       );
       matchingGpResults ??= await _fetchResultsForGrandPrixFromDb(grandPrixId);
       if (_getGrandPrixResultsForGrandPrixMutex.isLocked && !didRelease) {
@@ -50,12 +50,12 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
           final List<GrandPrixResults> existingGpResults = [
             ...grandPrixResults.where(
               (GrandPrixResults gpResults) => idsOfGrandPrixes.contains(
-                gpResults.grandPrixId,
+                gpResults.seasonGrandPrixId,
               ),
             ),
           ];
           final idsOfGpsWithExistingResults = existingGpResults.map(
-            (GrandPrixResults gpResults) => gpResults.grandPrixId,
+            (GrandPrixResults gpResults) => gpResults.seasonGrandPrixId,
           );
           final idsOfGpsWithMissingResults = idsOfGrandPrixes.where(
             (String gpId) => !idsOfGpsWithExistingResults.contains(gpId),

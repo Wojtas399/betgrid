@@ -3,7 +3,7 @@ import 'package:betgrid/model/grand_prix_results.dart';
 
 class GrandPrixResultsCreator {
   final String id;
-  final String grandPrixId;
+  final String seasonGrandPrixId;
   final List<String>? qualiStandingsBySeasonDriverIds;
   final String p1SeasonDriverId;
   final String p2SeasonDriverId;
@@ -16,7 +16,7 @@ class GrandPrixResultsCreator {
 
   const GrandPrixResultsCreator({
     this.id = '',
-    this.grandPrixId = '',
+    this.seasonGrandPrixId = '',
     this.qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId = '',
     this.p2SeasonDriverId = '',
@@ -31,7 +31,7 @@ class GrandPrixResultsCreator {
   GrandPrixResults createEntity() {
     return GrandPrixResults(
       id: id,
-      grandPrixId: grandPrixId,
+      seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       raceResults: RaceResults(
         p1SeasonDriverId: p1SeasonDriverId,
@@ -49,7 +49,7 @@ class GrandPrixResultsCreator {
   GrandPrixResultsDto createDto() {
     return GrandPrixResultsDto(
       id: id,
-      grandPrixId: grandPrixId,
+      grandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,
@@ -64,7 +64,7 @@ class GrandPrixResultsCreator {
 
   Map<String, Object?> createJson() {
     return {
-      'grandPrixId': grandPrixId,
+      'grandPrixId': seasonGrandPrixId,
       'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
       'p1SeasonDriverId': p1SeasonDriverId,
       'p2SeasonDriverId': p2SeasonDriverId,

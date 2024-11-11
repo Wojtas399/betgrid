@@ -102,7 +102,7 @@ class CreatePointsForDriverStats {
         final pointsForDriverInEachGp = grandPrixesIds.map(
           (String grandPrixId) {
             final gpResults = grandPrixesResults.firstWhereOrNull(
-              (gpResults) => gpResults.grandPrixId == grandPrixId,
+              (gpResults) => gpResults.seasonGrandPrixId == grandPrixId,
             );
             final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
               (gpBetPoints) =>

@@ -113,7 +113,7 @@ void main() {
           finishedGrandPrixes.map((gp) => gp.id).toList();
       final List<GrandPrixResults> grandPrixesResults = [
         GrandPrixResultsCreator(
-          grandPrixId: finishedGrandPrixes.first.id,
+          seasonGrandPrixId: finishedGrandPrixes.first.id,
           qualiStandingsBySeasonDriverIds: [
             driverId,
             'd2',
@@ -144,7 +144,7 @@ void main() {
           dnfSeasonDriverIds: ['d18', 'd19', 'd20'],
         ).createEntity(),
         GrandPrixResultsCreator(
-          grandPrixId: finishedGrandPrixes[1].id,
+          seasonGrandPrixId: finishedGrandPrixes[1].id,
           qualiStandingsBySeasonDriverIds: [
             'd20',
             'd19',
@@ -175,7 +175,7 @@ void main() {
           dnfSeasonDriverIds: [driverId, 'd2'],
         ).createEntity(),
         GrandPrixResultsCreator(
-          grandPrixId: finishedGrandPrixes.last.id,
+          seasonGrandPrixId: finishedGrandPrixes.last.id,
           qualiStandingsBySeasonDriverIds: [
             'd20',
             'd11',
