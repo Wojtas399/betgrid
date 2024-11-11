@@ -98,9 +98,9 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     final List<GrandPrixBetPoints> fetchedBetPoints = [];
     for (final gpBetPointsData in dataOfPointsForGpBets) {
       final GrandPrixBetPointsDto? gpBetPointsDto = await _dbBetPointsService
-          .fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+          .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
         playerId: gpBetPointsData.playerId,
-        grandPrixId: gpBetPointsData.grandPrixId,
+        seasonGrandPrixId: gpBetPointsData.grandPrixId,
       );
       if (gpBetPointsDto != null) {
         final GrandPrixBetPoints gpBetPoints =
@@ -116,9 +116,9 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     _GrandPrixBetPointsFetchData gpBetPointsData,
   ) async {
     final GrandPrixBetPointsDto? dto = await _dbBetPointsService
-        .fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
       playerId: gpBetPointsData.playerId,
-      grandPrixId: gpBetPointsData.grandPrixId,
+      seasonGrandPrixId: gpBetPointsData.grandPrixId,
     );
     if (dto == null) return null;
     final GrandPrixBetPoints entity = _grandPrixBetPointsMapper.mapFromDto(dto);

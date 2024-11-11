@@ -85,31 +85,31 @@ void main() {
         player2GpBetPoints.last,
       ];
       when(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.first));
       when(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetPointsDtos.last));
       when(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.first));
       when(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetPointsDtos.last));
       when(
@@ -140,31 +140,31 @@ void main() {
       expect(await gpBetPoints2$.first, expectedGpBetPoints2);
       expect(await repositoryImpl.repositoryState$.first, expectedGpBetPoints2);
       verify(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
       ).called(1);
       verify(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ).called(1);
       verify(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: gp1Id,
         ),
       ).called(1);
       verify(
-        () =>
-            dbBetPointsService.fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+        () => dbBetPointsService
+            .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: gp2Id,
         ),
       ).called(1);
     },
@@ -222,7 +222,7 @@ void main() {
           final GrandPrixBetPoints expectedGrandPrixBetPoints =
               grandPrixBetPointsCreator.createEntity();
           dbBetPointsService
-              .mockFetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+              .mockFetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
             grandPrixBetPointsDto: grandPrixBetPointsDto,
           );
           grandPrixBetPointsMapper.mockMapFromDto(
@@ -243,9 +243,9 @@ void main() {
           );
           verify(
             () => dbBetPointsService
-                .fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId(
+                .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
               playerId: playerId,
-              grandPrixId: grandPrixId,
+              seasonGrandPrixId: grandPrixId,
             ),
           ).called(1);
         },

@@ -10,13 +10,13 @@ class FirebaseGrandPrixBetPointsService {
   const FirebaseGrandPrixBetPointsService(this._firebaseCollections);
 
   Future<GrandPrixBetPointsDto?>
-      fetchGrandPrixBetPointsByPlayerIdAndGrandPrixId({
+      fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId({
     required String playerId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
   }) async {
     final snapshot = await _firebaseCollections
         .grandPrixesBetPoints(playerId)
-        .where('grandPrixId', isEqualTo: grandPrixId)
+        .where('seasonGrandPrixId', isEqualTo: seasonGrandPrixId)
         .limit(1)
         .get();
     return snapshot.docs.isEmpty ? null : snapshot.docs.first.data();
