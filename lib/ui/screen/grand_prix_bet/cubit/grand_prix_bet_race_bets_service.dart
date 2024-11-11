@@ -23,7 +23,7 @@ class GrandPrixBetRaceBetsService {
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
   final String _playerId;
-  final String _grandPrixId;
+  final String _seasonGrandPrix;
 
   GrandPrixBetRaceBetsService(
     this._grandPrixBetRepository,
@@ -33,7 +33,7 @@ class GrandPrixBetRaceBetsService {
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
     @factoryParam this._playerId,
-    @factoryParam this._grandPrixId,
+    @factoryParam this._seasonGrandPrix,
   );
 
   Stream<List<SingleDriverBet>> getPodiumBets() {
@@ -236,13 +236,13 @@ class GrandPrixBetRaceBetsService {
   Stream<GrandPrixBet?> _getBets() {
     return _grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
       playerId: _playerId,
-      seasonGrandPrixId: _grandPrixId,
+      seasonGrandPrixId: _seasonGrandPrix,
     );
   }
 
   Stream<RaceResults?> _getResults() {
     return _grandPrixResultsRepository
-        .getGrandPrixResultsForGrandPrix(grandPrixId: _grandPrixId)
+        .getGrandPrixResultsForGrandPrix(grandPrixId: _seasonGrandPrix)
         .map((grandPrixResults) => grandPrixResults?.raceResults);
   }
 
@@ -250,7 +250,7 @@ class GrandPrixBetRaceBetsService {
     return _grandPrixBetPointsRepository
         .getGrandPrixBetPointsForPlayerAndGrandPrix(
           playerId: _playerId,
-          grandPrixId: _grandPrixId,
+          grandPrixId: _seasonGrandPrix,
         )
         .map((grandPrixBetPoints) => grandPrixBetPoints?.raceBetPoints);
   }
