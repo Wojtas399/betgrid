@@ -26,22 +26,22 @@ void main() {
   });
 
   group(
-    'getResultsForGrandPrix, ',
+    'getResultsForSeasonGrandPrix, ',
     () {
-      const String grandPrixId = 'gp1';
+      const String seasonGrandPrixId = 'sgp1';
       const GrandPrixResultsCreator grandPrixResultsCreator =
           GrandPrixResultsCreator(
         id: 'r1',
-        seasonGrandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
       );
       final List<GrandPrixResults> existingGrandPrixesResults = [
         const GrandPrixResultsCreator(
           id: 'r2',
-          seasonGrandPrixId: 'gp2',
+          seasonGrandPrixId: 'sgp2',
         ).createEntity(),
         const GrandPrixResultsCreator(
           id: 'r3',
-          seasonGrandPrixId: 'gp3',
+          seasonGrandPrixId: 'sgp3',
         ).createEntity(),
       ];
 
@@ -55,8 +55,8 @@ void main() {
           );
 
           final Stream<GrandPrixResults?> results$ =
-              repositoryImpl.getGrandPrixResultsForGrandPrix(
-            grandPrixId: grandPrixId,
+              repositoryImpl.getGrandPrixResultsForSeasonGrandPrix(
+            seasonGrandPrixId: seasonGrandPrixId,
           );
 
           expect(await results$.first, existingGrandPrixResults);
@@ -78,8 +78,8 @@ void main() {
           repositoryImpl.addEntities(existingGrandPrixesResults);
 
           final Stream<GrandPrixResults?> results$ =
-              repositoryImpl.getGrandPrixResultsForGrandPrix(
-            grandPrixId: grandPrixId,
+              repositoryImpl.getGrandPrixResultsForSeasonGrandPrix(
+            seasonGrandPrixId: seasonGrandPrixId,
           );
 
           expect(await results$.first, expectedGpResults);
@@ -89,7 +89,7 @@ void main() {
           );
           verify(
             () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
-              seasonGrandPrixId: grandPrixId,
+              seasonGrandPrixId: seasonGrandPrixId,
             ),
           ).called(1);
         },
@@ -98,13 +98,13 @@ void main() {
   );
 
   test(
-    'getResultsForGrandPrixes, '
+    'getResultsForSeasonGrandPrixes, '
     'should emit gp results which already exists in repo state and should '
     'fetch gp results which do not exist in repo state',
     () async {
-      const String gp1Id = 'gp1';
-      const String gp2Id = 'gp2';
-      const String gp3Id = 'gp3';
+      const String gp1Id = 'sgp1';
+      const String gp2Id = 'sgp2';
+      const String gp3Id = 'sgp3';
       const List<GrandPrixResultsCreator> gpResultsCreators = [
         GrandPrixResultsCreator(
           id: 'gpr1',
@@ -154,12 +154,12 @@ void main() {
       ).thenReturn(gpResults.last);
 
       final Stream<List<GrandPrixResults>> gpResults1$ =
-          repositoryImpl.getGrandPrixResultsForGrandPrixes(
-        idsOfGrandPrixes: [gp1Id, gp2Id],
+          repositoryImpl.getGrandPrixResultsForSeasonGrandPrixes(
+        idsOfSeasonGrandPrixes: [gp1Id, gp2Id],
       );
       final Stream<List<GrandPrixResults>> gpResults2$ =
-          repositoryImpl.getGrandPrixResultsForGrandPrixes(
-        idsOfGrandPrixes: [gp1Id, gp2Id, gp3Id],
+          repositoryImpl.getGrandPrixResultsForSeasonGrandPrixes(
+        idsOfSeasonGrandPrixes: [gp1Id, gp2Id, gp3Id],
       );
 
       expect(await gpResults1$.first, expectedGpResults1);

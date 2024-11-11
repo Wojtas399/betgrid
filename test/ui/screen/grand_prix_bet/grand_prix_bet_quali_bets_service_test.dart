@@ -228,10 +228,12 @@ void main() {
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).createEntity(),
       );
-      grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrix(
-          results: GrandPrixResultsCreator(
-        qualiStandingsBySeasonDriverIds: resultQualiStandingsBySeasonDriverIds,
-      ).createEntity());
+      grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
+        results: GrandPrixResultsCreator(
+          qualiStandingsBySeasonDriverIds:
+              resultQualiStandingsBySeasonDriverIds,
+        ).createEntity(),
+      );
       getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
@@ -262,8 +264,8 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrix(
-          grandPrixId: seasonGrandPrixId,
+        () => grandPrixResultsRepository.getGrandPrixResultsForSeasonGrandPrix(
+          seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
       verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);

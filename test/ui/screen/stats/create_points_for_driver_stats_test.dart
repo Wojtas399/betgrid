@@ -332,7 +332,7 @@ void main() {
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
         finishedGrandPrixes: finishedGrandPrixes,
       );
-      grandPrixResultsRepository.mockGetGrandPrixResultsForGrandPrixes(
+      grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrixes(
         grandPrixesResults: grandPrixesResults,
       );
       grandPrixBetPointsRepository
@@ -352,8 +352,9 @@ void main() {
       verify(playerRepository.getAllPlayers).called(1);
       verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
-        () => grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
-          idsOfGrandPrixes: finishedGrandPrixesIds,
+        () =>
+            grandPrixResultsRepository.getGrandPrixResultsForSeasonGrandPrixes(
+          idsOfSeasonGrandPrixes: finishedGrandPrixesIds,
         ),
       ).called(1);
       verify(

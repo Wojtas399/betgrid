@@ -242,7 +242,9 @@ class GrandPrixBetRaceBetsService {
 
   Stream<RaceResults?> _getResults() {
     return _grandPrixResultsRepository
-        .getGrandPrixResultsForGrandPrix(grandPrixId: _seasonGrandPrix)
+        .getGrandPrixResultsForSeasonGrandPrix(
+          seasonGrandPrixId: _seasonGrandPrix,
+        )
         .map((grandPrixResults) => grandPrixResults?.raceResults);
   }
 

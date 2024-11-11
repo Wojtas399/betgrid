@@ -57,8 +57,8 @@ class CreatePointsForDriverStats {
           return Rx.combineLatest5(
             Stream.value(data.allPlayers),
             Stream.value(finishedGrandPrixesIds),
-            _grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
-              idsOfGrandPrixes: finishedGrandPrixesIds,
+            _grandPrixResultsRepository.getGrandPrixResultsForSeasonGrandPrixes(
+              idsOfSeasonGrandPrixes: finishedGrandPrixesIds,
             ),
             _grandPrixBetPointsRepository
                 .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
