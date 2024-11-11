@@ -74,7 +74,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     String grandPrixId,
   ) async {
     final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService
-        .fetchResultsForGrandPrix(grandPrixId: grandPrixId);
+        .fetchResultsForSeasonGrandPrix(seasonGrandPrixId: grandPrixId);
     if (gpResultsDto == null) return null;
     final GrandPrixResults gpResults =
         _grandPrixResultsMapper.mapFromDto(gpResultsDto);
@@ -88,7 +88,7 @@ class GrandPrixResultsRepositoryImpl extends Repository<GrandPrixResults>
     final List<GrandPrixResults> fetchedGpResults = [];
     for (final String gpId in idsOfGrandPrixes) {
       final GrandPrixResultsDto? gpResultsDto = await _dbGrandPrixResultsService
-          .fetchResultsForGrandPrix(grandPrixId: gpId);
+          .fetchResultsForSeasonGrandPrix(seasonGrandPrixId: gpId);
       if (gpResultsDto != null) {
         final GrandPrixResults gpResults =
             _grandPrixResultsMapper.mapFromDto(gpResultsDto);

@@ -9,12 +9,12 @@ class FirebaseGrandPrixResultsService {
 
   const FirebaseGrandPrixResultsService(this._firebaseCollections);
 
-  Future<GrandPrixResultsDto?> fetchResultsForGrandPrix({
-    required String grandPrixId,
+  Future<GrandPrixResultsDto?> fetchResultsForSeasonGrandPrix({
+    required String seasonGrandPrixId,
   }) async {
     final snapshot = await _firebaseCollections
         .grandPrixesResults()
-        .where('grandPrixId', isEqualTo: grandPrixId)
+        .where('seasonGrandPrixId', isEqualTo: seasonGrandPrixId)
         .limit(1)
         .get();
     if (snapshot.docs.isEmpty) return null;

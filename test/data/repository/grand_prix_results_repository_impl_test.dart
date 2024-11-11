@@ -69,7 +69,7 @@ void main() {
         () async {
           final GrandPrixResults expectedGpResults =
               grandPrixResultsCreator.createEntity();
-          dbGrandPrixResultsService.mockFetchResultsForGrandPrix(
+          dbGrandPrixResultsService.mockFetchResultsForSeasonGrandPrix(
             grandPrixResultDto: grandPrixResultsCreator.createDto(),
           );
           grandPrixResultsMapper.mockMapFromDto(
@@ -88,8 +88,8 @@ void main() {
             [...existingGrandPrixesResults, expectedGpResults],
           );
           verify(
-            () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-              grandPrixId: grandPrixId,
+            () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+              seasonGrandPrixId: grandPrixId,
             ),
           ).called(1);
         },
@@ -129,18 +129,18 @@ void main() {
       ];
       final List<GrandPrixResults> expectedGpResults2 = gpResults;
       when(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp1Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp1Id,
         ),
       ).thenAnswer((_) => Future.value(gpResultsDtos.first));
       when(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp2Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp2Id,
         ),
       ).thenAnswer((_) => Future.value(gpResultsDtos[1]));
       when(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp3Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp3Id,
         ),
       ).thenAnswer((_) => Future.value(gpResultsDtos.last));
       when(
@@ -166,18 +166,18 @@ void main() {
       expect(await gpResults2$.first, expectedGpResults2);
       expect(await repositoryImpl.repositoryState$.first, expectedGpResults2);
       verify(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp1Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp1Id,
         ),
       ).called(1);
       verify(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp2Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp2Id,
         ),
       ).called(1);
       verify(
-        () => dbGrandPrixResultsService.fetchResultsForGrandPrix(
-          grandPrixId: gp3Id,
+        () => dbGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+          seasonGrandPrixId: gp3Id,
         ),
       ).called(1);
     },
