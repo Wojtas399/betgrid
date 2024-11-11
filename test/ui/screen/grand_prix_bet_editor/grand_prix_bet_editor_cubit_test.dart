@@ -93,9 +93,10 @@ void main() {
           getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
           authRepository.mockGetLoggedUserId(loggedUserId);
           when(
-            () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+            () => grandPrixBetRepository
+                .getGrandPrixBetForPlayerAndSeasonGrandPrix(
               playerId: loggedUserId,
-              grandPrixId: grandPrixId,
+              seasonGrandPrixId: grandPrixId,
             ),
           ).thenAnswer((_) => bet$.stream);
         },
@@ -141,9 +142,10 @@ void main() {
           verify(() => getAllDriversFromSeasonUseCase.call(2024)).called(1);
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+            () => grandPrixBetRepository
+                .getGrandPrixBetForPlayerAndSeasonGrandPrix(
               playerId: loggedUserId,
-              grandPrixId: grandPrixId,
+              seasonGrandPrixId: grandPrixId,
             ),
           ).called(1);
         },
@@ -484,7 +486,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix();
+          grandPrixBetRepository
+              .mockGetGrandPrixBetForPlayerAndSeasonGrandPrix();
           grandPrixBetRepository.mockAddGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
@@ -512,7 +515,7 @@ void main() {
         verify: (_) => verify(
           () => grandPrixBetRepository.addGrandPrixBet(
             playerId: loggedUserId,
-            grandPrixId: grandPrixId,
+            seasonGrandPrixId: grandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -532,7 +535,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix();
+          grandPrixBetRepository
+              .mockGetGrandPrixBetForPlayerAndSeasonGrandPrix();
           grandPrixBetRepository.mockUpdateGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(

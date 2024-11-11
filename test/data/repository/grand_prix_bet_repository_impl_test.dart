@@ -27,7 +27,7 @@ void main() {
   });
 
   test(
-    'getGrandPrixBetsForPlayersAndGrandPrixes, '
+    'getGrandPrixBetsForPlayersAndSeasonGrandPrixes, '
     'should emit bets which already exists in repo state and should fetch bets '
     'which do not exist in repo state',
     () async {
@@ -117,14 +117,14 @@ void main() {
       ).thenReturn(player2GpBets.last);
 
       final Stream<List<GrandPrixBet>> gpBets1$ =
-          repositoryImpl.getGrandPrixBetsForPlayersAndGrandPrixes(
+          repositoryImpl.getGrandPrixBetsForPlayersAndSeasonGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [seasonGrandPrix1Id],
+        idsOfSeasonGrandPrixes: [seasonGrandPrix1Id],
       );
       final Stream<List<GrandPrixBet>> gpBets2$ =
-          repositoryImpl.getGrandPrixBetsForPlayersAndGrandPrixes(
+          repositoryImpl.getGrandPrixBetsForPlayersAndSeasonGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [seasonGrandPrix1Id, seasonGrandPrix2Id],
+        idsOfSeasonGrandPrixes: [seasonGrandPrix1Id, seasonGrandPrix2Id],
       );
 
       expect(await gpBets1$.first, expectedGpBets1);
@@ -158,7 +158,7 @@ void main() {
   );
 
   group(
-    'getGrandPrixBetForPlayerAndGrandPrix, ',
+    'getGrandPrixBetForPlayerAndSeasonGrandPrix, ',
     () {
       const String seasonGrandPrixId = 'gp1';
       final GrandPrixBetCreator grandPrixBetCreator = GrandPrixBetCreator(
@@ -190,9 +190,9 @@ void main() {
           );
 
           final Stream<GrandPrixBet?> grandPrixBet$ =
-              repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
+              repositoryImpl.getGrandPrixBetForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            grandPrixId: seasonGrandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
           );
 
           expect(await grandPrixBet$.first, existingGrandPrixBet);
@@ -215,9 +215,9 @@ void main() {
           repositoryImpl.addEntities(existingEntities);
 
           final Stream<GrandPrixBet?> grandPrixBet$ =
-              repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
+              repositoryImpl.getGrandPrixBetForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            grandPrixId: seasonGrandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
           );
 
           expect(await grandPrixBet$.first, expectedGrandPrixBet);
@@ -292,7 +292,7 @@ void main() {
 
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
-            grandPrixId: seasonGrandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -343,7 +343,7 @@ void main() {
 
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
-            grandPrixId: seasonGrandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,

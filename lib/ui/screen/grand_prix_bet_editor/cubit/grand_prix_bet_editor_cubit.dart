@@ -187,10 +187,10 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
 
   Stream<GrandPrixBet?> _getBetForGrandPrix() {
     return _authRepository.loggedUserId$.whereNotNull().switchMap(
-          (String loggedUserId) =>
-              _grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+          (String loggedUserId) => _grandPrixBetRepository
+              .getGrandPrixBetForPlayerAndSeasonGrandPrix(
             playerId: loggedUserId,
-            grandPrixId: _grandPrixId,
+            seasonGrandPrixId: _grandPrixId,
           ),
         );
   }
@@ -233,7 +233,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> _addGrandPrixBet(String loggedUserId) async {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
-      grandPrixId: _grandPrixId,
+      seasonGrandPrixId: _grandPrixId,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
       p2SeasonDriverId: state.raceForm.p2SeasonDriverId,

@@ -223,7 +223,7 @@ void main() {
           points: 0,
         ),
       ];
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
         grandPrixBet: GrandPrixBetCreator(
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).createEntity(),
@@ -256,9 +256,9 @@ void main() {
 
       expect(await bets$.first, expectedBets);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndGrandPrix(
+        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          grandPrixId: grandPrixId,
+          seasonGrandPrixId: grandPrixId,
         ),
       ).called(1);
       verify(

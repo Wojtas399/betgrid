@@ -65,9 +65,10 @@ class CreatePointsForDriverStats {
               idsOfPlayers: allPlayersIds,
               idsOfGrandPrixes: finishedGrandPrixesIds,
             ),
-            _grandPrixBetRepository.getGrandPrixBetsForPlayersAndGrandPrixes(
+            _grandPrixBetRepository
+                .getGrandPrixBetsForPlayersAndSeasonGrandPrixes(
               idsOfPlayers: allPlayersIds,
-              idsOfGrandPrixes: finishedGrandPrixesIds,
+              idsOfSeasonGrandPrixes: finishedGrandPrixesIds,
             ),
             (
               List<Player> allPlayers,
