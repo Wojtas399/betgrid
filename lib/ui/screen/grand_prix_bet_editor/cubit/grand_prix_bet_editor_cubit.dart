@@ -18,14 +18,14 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
-  final String _grandPrixId;
+  final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
     this._grandPrixBetRepository,
     this._getAllDriversFromSeasonUseCase,
-    @factoryParam this._grandPrixId,
+    @factoryParam this._seasonGrandPrixId,
   ) : super(const GrandPrixBetEditorState());
 
   @override
@@ -190,7 +190,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
           (String loggedUserId) => _grandPrixBetRepository
               .getGrandPrixBetForPlayerAndSeasonGrandPrix(
             playerId: loggedUserId,
-            seasonGrandPrixId: _grandPrixId,
+            seasonGrandPrixId: _seasonGrandPrixId,
           ),
         );
   }
@@ -233,7 +233,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> _addGrandPrixBet(String loggedUserId) async {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
-      seasonGrandPrixId: _grandPrixId,
+      seasonGrandPrixId: _seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
       p2SeasonDriverId: state.raceForm.p2SeasonDriverId,
