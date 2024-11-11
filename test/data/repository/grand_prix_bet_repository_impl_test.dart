@@ -80,27 +80,27 @@ void main() {
         player2GpBets.last,
       ];
       when(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: seasonGrandPrix1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetDtos.first));
       when(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: seasonGrandPrix2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetDtos.last));
       when(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: seasonGrandPrix1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetDtos.first));
       when(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: seasonGrandPrix2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetDtos.last));
       when(
@@ -131,27 +131,27 @@ void main() {
       expect(await gpBets2$.first, expectedGpBets2);
       expect(await repositoryImpl.repositoryState$.first, expectedGpBets2);
       verify(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: seasonGrandPrix1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player1Id,
-          grandPrixId: seasonGrandPrix2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
       verify(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: seasonGrandPrix1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
-        () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
           playerId: player2Id,
-          grandPrixId: seasonGrandPrix2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
     },
@@ -226,9 +226,9 @@ void main() {
             [...existingEntities, expectedGrandPrixBet],
           );
           verify(
-            () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+            () => dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
               playerId: playerId,
-              grandPrixId: seasonGrandPrixId,
+              seasonGrandPrixId: seasonGrandPrixId,
             ),
           ).called(1);
         },
@@ -270,7 +270,7 @@ void main() {
         verify(
           () => dbGrandPrixBetService.addGrandPrixBet(
             userId: playerId,
-            grandPrixId: seasonGrandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,

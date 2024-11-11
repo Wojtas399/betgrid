@@ -103,7 +103,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final GrandPrixBetDto? addedGrandPrixBetDto =
         await _dbGrandPrixBetService.addGrandPrixBet(
       userId: playerId,
-      grandPrixId: grandPrixId,
+      seasonGrandPrixId: grandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,
@@ -162,9 +162,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final List<GrandPrixBet> fetchedGpBets = [];
     for (final _GrandPrixBetFetchData gpBetData in gpBetsData) {
       final GrandPrixBetDto? gpBetDto =
-          await _dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+          await _dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
         playerId: gpBetData.playerId,
-        grandPrixId: gpBetData.grandPrixId,
+        seasonGrandPrixId: gpBetData.grandPrixId,
       );
       if (gpBetDto != null) {
         final GrandPrixBet gpBet = _grandPrixBetMapper.mapFromDto(gpBetDto);
@@ -179,9 +179,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     _GrandPrixBetFetchData gpBetData,
   ) async {
     final GrandPrixBetDto? betDto =
-        await _dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
+        await _dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
       playerId: gpBetData.playerId,
-      grandPrixId: gpBetData.grandPrixId,
+      seasonGrandPrixId: gpBetData.grandPrixId,
     );
     if (betDto == null) return null;
     final GrandPrixBet bet = _grandPrixBetMapper.mapFromDto(betDto);

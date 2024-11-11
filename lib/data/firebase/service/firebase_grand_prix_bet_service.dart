@@ -10,13 +10,13 @@ class FirebaseGrandPrixBetService {
 
   const FirebaseGrandPrixBetService(this._firebaseCollections);
 
-  Future<GrandPrixBetDto?> fetchGrandPrixBetByGrandPrixId({
+  Future<GrandPrixBetDto?> fetchGrandPrixBetBySeasonGrandPrixId({
     required String playerId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
   }) async {
     final snapshot = await _firebaseCollections
         .grandPrixesBets(playerId)
-        .where('seasonGrandPrixId', isEqualTo: grandPrixId)
+        .where('seasonGrandPrixId', isEqualTo: seasonGrandPrixId)
         .get();
     if (snapshot.docs.isEmpty) return null;
     return snapshot.docs.first.data();
@@ -24,7 +24,7 @@ class FirebaseGrandPrixBetService {
 
   Future<GrandPrixBetDto?> addGrandPrixBet({
     required String userId,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
     List<String?> qualiStandingsBySeasonDriverIds = const [],
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
@@ -36,7 +36,7 @@ class FirebaseGrandPrixBetService {
     bool? willBeRedFlag,
   }) async {
     final grandPrixBetDto = GrandPrixBetDto(
-      seasonGrandPrixId: grandPrixId,
+      seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,
