@@ -33,30 +33,30 @@ void main() {
     () async {
       const String player1Id = 'p1';
       const String player2Id = 'p2';
-      const String gp1Id = 'gp1';
-      const String gp2Id = 'gp2';
+      const String seasonGrandPrix1Id = 'gp1';
+      const String seasonGrandPrix2Id = 'gp2';
       final List<GrandPrixBetCreator> player1GpBetCreators = [
         GrandPrixBetCreator(
-          id: '$player1Id$gp1Id',
+          id: '$player1Id$seasonGrandPrix1Id',
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
         GrandPrixBetCreator(
-          id: '$player1Id$gp2Id',
+          id: '$player1Id$seasonGrandPrix2Id',
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ];
       final List<GrandPrixBetCreator> player2GpBetCreators = [
         GrandPrixBetCreator(
-          id: '$player2Id$gp1Id',
+          id: '$player2Id$seasonGrandPrix1Id',
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          seasonGrandPrixId: seasonGrandPrix1Id,
         ),
         GrandPrixBetCreator(
-          id: '$player2Id$gp2Id',
+          id: '$player2Id$seasonGrandPrix2Id',
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          seasonGrandPrixId: seasonGrandPrix2Id,
         ),
       ];
       final List<GrandPrixBetDto> player1GpBetDtos =
@@ -82,25 +82,25 @@ void main() {
       when(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          grandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetDtos.first));
       when(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          grandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player1GpBetDtos.last));
       when(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          grandPrixId: seasonGrandPrix1Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetDtos.first));
       when(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          grandPrixId: seasonGrandPrix2Id,
         ),
       ).thenAnswer((_) => Future.value(player2GpBetDtos.last));
       when(
@@ -119,12 +119,12 @@ void main() {
       final Stream<List<GrandPrixBet>> gpBets1$ =
           repositoryImpl.getGrandPrixBetsForPlayersAndGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [gp1Id],
+        idsOfGrandPrixes: [seasonGrandPrix1Id],
       );
       final Stream<List<GrandPrixBet>> gpBets2$ =
           repositoryImpl.getGrandPrixBetsForPlayersAndGrandPrixes(
         idsOfPlayers: [player1Id, player2Id],
-        idsOfGrandPrixes: [gp1Id, gp2Id],
+        idsOfGrandPrixes: [seasonGrandPrix1Id, seasonGrandPrix2Id],
       );
 
       expect(await gpBets1$.first, expectedGpBets1);
@@ -133,25 +133,25 @@ void main() {
       verify(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp1Id,
+          grandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player1Id,
-          grandPrixId: gp2Id,
+          grandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
       verify(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp1Id,
+          grandPrixId: seasonGrandPrix1Id,
         ),
       ).called(1);
       verify(
         () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
           playerId: player2Id,
-          grandPrixId: gp2Id,
+          grandPrixId: seasonGrandPrix2Id,
         ),
       ).called(1);
     },
@@ -160,22 +160,22 @@ void main() {
   group(
     'getGrandPrixBetForPlayerAndGrandPrix, ',
     () {
-      const String grandPrixId = 'gp1';
+      const String seasonGrandPrixId = 'gp1';
       final GrandPrixBetCreator grandPrixBetCreator = GrandPrixBetCreator(
         id: 'gpb1',
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
       );
       final List<GrandPrixBet> existingEntities = [
         GrandPrixBetCreator(
           id: 'gpb2',
           playerId: 'p2',
-          grandPrixId: grandPrixId,
+          seasonGrandPrixId: seasonGrandPrixId,
         ).createEntity(),
         GrandPrixBetCreator(
           id: 'gpb3',
           playerId: playerId,
-          grandPrixId: 'gp2',
+          seasonGrandPrixId: 'gp2',
         ).createEntity(),
       ];
 
@@ -192,7 +192,7 @@ void main() {
           final Stream<GrandPrixBet?> grandPrixBet$ =
               repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            grandPrixId: seasonGrandPrixId,
           );
 
           expect(await grandPrixBet$.first, existingGrandPrixBet);
@@ -217,7 +217,7 @@ void main() {
           final Stream<GrandPrixBet?> grandPrixBet$ =
               repositoryImpl.getGrandPrixBetForPlayerAndGrandPrix(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            grandPrixId: seasonGrandPrixId,
           );
 
           expect(await grandPrixBet$.first, expectedGrandPrixBet);
@@ -228,7 +228,7 @@ void main() {
           verify(
             () => dbGrandPrixBetService.fetchGrandPrixBetByGrandPrixId(
               playerId: playerId,
-              grandPrixId: grandPrixId,
+              grandPrixId: seasonGrandPrixId,
             ),
           ).called(1);
         },
@@ -240,7 +240,7 @@ void main() {
     'addGrandPrixBet',
     () {
       const String playerId = 'p1';
-      const String grandPrixId = 'gp1';
+      const String seasonGrandPrixId = 'gp1';
       final List<String?> qualiStandingsBySeasonDriverIds = List.generate(
         20,
         (int driverIndex) => switch (driverIndex) {
@@ -270,7 +270,7 @@ void main() {
         verify(
           () => dbGrandPrixBetService.addGrandPrixBet(
             userId: playerId,
-            grandPrixId: grandPrixId,
+            grandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -292,7 +292,7 @@ void main() {
 
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            grandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -319,7 +319,7 @@ void main() {
           final addedGrandPrixBetCreator = GrandPrixBetCreator(
             id: addedGrandPrixBetId,
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -343,7 +343,7 @@ void main() {
 
           await repositoryImpl.addGrandPrixBet(
             playerId: playerId,
-            grandPrixId: grandPrixId,
+            grandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,
@@ -449,7 +449,7 @@ void main() {
           final updatedGrandPrixBetCreator = GrandPrixBetCreator(
             id: grandPrixBetId,
             playerId: playerId,
-            grandPrixId: 'gp1',
+            seasonGrandPrixId: 'gp1',
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,

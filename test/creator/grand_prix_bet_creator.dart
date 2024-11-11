@@ -4,7 +4,7 @@ import 'package:betgrid/model/grand_prix_bet.dart';
 class GrandPrixBetCreator {
   final String id;
   final String playerId;
-  final String grandPrixId;
+  final String seasonGrandPrixId;
   late final List<String?> qualiStandingsBySeasonDriverIds;
   final String? p1SeasonDriverId;
   final String? p2SeasonDriverId;
@@ -18,7 +18,7 @@ class GrandPrixBetCreator {
   GrandPrixBetCreator({
     this.id = '',
     this.playerId = '',
-    this.grandPrixId = '',
+    this.seasonGrandPrixId = '',
     List<String?>? qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId,
     this.p2SeasonDriverId,
@@ -36,7 +36,7 @@ class GrandPrixBetCreator {
   GrandPrixBet createEntity() => GrandPrixBet(
         id: id,
         playerId: playerId,
-        seasonGrandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -51,7 +51,7 @@ class GrandPrixBetCreator {
   GrandPrixBetDto createDto() => GrandPrixBetDto(
         id: id,
         playerId: playerId,
-        grandPrixId: grandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -65,7 +65,7 @@ class GrandPrixBetCreator {
 
   Map<String, Object?> createJson() {
     return {
-      'grandPrixId': grandPrixId,
+      'seasonGrandPrixId': seasonGrandPrixId,
       'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
       'p1SeasonDriverId': p1SeasonDriverId,
       'p2SeasonDriverId': p2SeasonDriverId,

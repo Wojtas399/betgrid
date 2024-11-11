@@ -16,7 +16,7 @@ class FirebaseGrandPrixBetService {
   }) async {
     final snapshot = await _firebaseCollections
         .grandPrixesBets(playerId)
-        .where('grandPrixId', isEqualTo: grandPrixId)
+        .where('seasonGrandPrixId', isEqualTo: grandPrixId)
         .get();
     if (snapshot.docs.isEmpty) return null;
     return snapshot.docs.first.data();
@@ -36,7 +36,7 @@ class FirebaseGrandPrixBetService {
     bool? willBeRedFlag,
   }) async {
     final grandPrixBetDto = GrandPrixBetDto(
-      grandPrixId: grandPrixId,
+      seasonGrandPrixId: grandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,

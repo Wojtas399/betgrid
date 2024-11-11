@@ -8,7 +8,7 @@ class GrandPrixBetMapper {
   GrandPrixBet mapFromDto(GrandPrixBetDto grandPrixBetDto) => GrandPrixBet(
         id: grandPrixBetDto.id,
         playerId: grandPrixBetDto.playerId,
-        seasonGrandPrixId: grandPrixBetDto.grandPrixId,
+        seasonGrandPrixId: grandPrixBetDto.seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds:
             grandPrixBetDto.qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: grandPrixBetDto.p1SeasonDriverId,
@@ -24,7 +24,7 @@ class GrandPrixBetMapper {
   GrandPrixBetDto mapToDto(GrandPrixBet grandPrixBet) => GrandPrixBetDto(
         id: grandPrixBet.id,
         playerId: grandPrixBet.playerId,
-        grandPrixId: grandPrixBet.seasonGrandPrixId,
+        seasonGrandPrixId: grandPrixBet.seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds:
             grandPrixBet.qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: grandPrixBet.p1SeasonDriverId,

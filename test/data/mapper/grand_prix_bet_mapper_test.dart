@@ -33,7 +33,7 @@ void main() {
       final GrandPrixBetDto grandPrixBetDto = GrandPrixBetDto(
         id: id,
         playerId: playerId,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -86,7 +86,7 @@ void main() {
       final GrandPrixBetDto expectedDto = GrandPrixBetDto(
         id: id,
         playerId: playerId,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
