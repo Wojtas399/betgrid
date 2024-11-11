@@ -49,7 +49,7 @@ class GrandPrixResultsCreator {
   GrandPrixResultsDto createDto() {
     return GrandPrixResultsDto(
       id: id,
-      grandPrixId: seasonGrandPrixId,
+      seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,
@@ -64,7 +64,7 @@ class GrandPrixResultsCreator {
 
   Map<String, Object?> createJson() {
     return {
-      'grandPrixId': seasonGrandPrixId,
+      'seasonGrandPrixId': seasonGrandPrixId,
       'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
       'p1SeasonDriverId': p1SeasonDriverId,
       'p2SeasonDriverId': p2SeasonDriverId,

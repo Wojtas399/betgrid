@@ -9,7 +9,7 @@ class GrandPrixResultsDto with _$GrandPrixResultsDto {
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default('')
     String id,
-    required String grandPrixId,
+    required String seasonGrandPrixId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,

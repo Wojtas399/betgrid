@@ -23,7 +23,7 @@ class GrandPrixResultsMapper {
     }
     return GrandPrixResults(
       id: grandPrixResultsDto.id,
-      seasonGrandPrixId: grandPrixResultsDto.grandPrixId,
+      seasonGrandPrixId: grandPrixResultsDto.seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds:
           grandPrixResultsDto.qualiStandingsBySeasonDriverIds,
       raceResults: raceResults,

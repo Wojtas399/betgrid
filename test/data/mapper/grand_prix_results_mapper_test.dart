@@ -56,7 +56,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: null,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -88,7 +88,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: null,
@@ -120,7 +120,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -152,7 +152,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -184,7 +184,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -216,7 +216,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -248,7 +248,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
@@ -280,7 +280,7 @@ void main() {
     () {
       final GrandPrixResultsDto grandPrixResultsDto = GrandPrixResultsDto(
         id: id,
-        grandPrixId: seasonGrandPrixId,
+        seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,
         p2SeasonDriverId: p2SeasonDriverId,
