@@ -1,6 +1,7 @@
-import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/grand_prix_basic_info.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
+import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_quali_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_race_bets_service.dart';
@@ -11,36 +12,40 @@ import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_creator.dart';
+import '../../../creator/grand_prix_basic_info_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_creator.dart';
 import '../../../creator/player_creator.dart';
+import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/data/repository/mock_grand_prix_basic_info_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/data/repository/mock_season_grand_prix_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_quali_bets_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_race_bets_service.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
-  final grandPrixRepository = MockGrandPrixRepository();
+  final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
+  final grandPrixBasicInfoRepository = MockGrandPrixBasicInfoRepository();
   final playerRepository = MockPlayerRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final dateService = MockDateService();
   final qualiBetsService = MockGrandPrixBetQualiBetsService();
   final raceBetsService = MockGrandPrixBetRaceBetsService();
   const String playerId = 'p1';
-  const String grandPrixId = 'gp1';
+  const String seasonGrandPrixId = 'sgp1';
 
   GrandPrixBetCubit createCubit() => GrandPrixBetCubit(
         authRepository,
-        grandPrixRepository,
+        seasonGrandPrixRepository,
+        grandPrixBasicInfoRepository,
         playerRepository,
         grandPrixBetPointsRepository,
         dateService,
         playerId,
-        grandPrixId,
+        seasonGrandPrixId,
       );
 
   setUpAll(() {
@@ -54,7 +59,8 @@ void main() {
 
   tearDown(() {
     reset(authRepository);
-    reset(grandPrixRepository);
+    reset(seasonGrandPrixRepository);
+    reset(grandPrixBasicInfoRepository);
     reset(playerRepository);
     reset(grandPrixBetPointsRepository);
     reset(dateService);
@@ -71,9 +77,14 @@ void main() {
       final Player player = const PlayerCreator(
         username: 'username',
       ).createEntity();
-      final GrandPrix grandPrix = GrandPrixCreator(
-        name: 'grand prix',
+      final SeasonGrandPrix seasonGrandPrix = SeasonGrandPrixCreator(
+        id: seasonGrandPrixId,
+        grandPrixId: 'gp1',
         startDate: DateTime(2024, 3, 3),
+      ).createEntity();
+      final GrandPrixBasicInfo grandPrixBasicInfo = GrandPrixBasicInfoCreator(
+        id: seasonGrandPrix.grandPrixId,
+        name: 'grand prix',
       ).createEntity();
       final List<SingleDriverBet> qualiBets = List.generate(
         20,
@@ -138,8 +149,8 @@ void main() {
         status: GrandPrixBetStateStatus.completed,
         canEdit: canEdit,
         playerUsername: player.username,
-        grandPrixId: grandPrixId,
-        grandPrixName: grandPrix.name,
+        seasonGrandPrixId: seasonGrandPrixId,
+        grandPrixName: grandPrixBasicInfo.name,
         qualiBets: qualiBets,
         racePodiumBets: racePodiumBets,
         raceP10Bet: raceP10Bet,
@@ -152,8 +163,11 @@ void main() {
 
       setUp(() {
         playerRepository.mockGetPlayerById(player: player);
-        grandPrixRepository.mockGetGrandPrixById(
-          expectedGrandPrix: grandPrix,
+        seasonGrandPrixRepository.mockGetSeasonGrandPrixById(
+          expectedSeasonGrandPrix: seasonGrandPrix,
+        );
+        grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById(
+          expectedGrandPrixBasicInfo: grandPrixBasicInfo,
         );
         dateService.mockGetNow(now: now);
         dateService.mockIsDateABeforeDateB(expected: canEdit);
@@ -184,12 +198,17 @@ void main() {
           () => playerRepository.getPlayerById(playerId: playerId),
         ).called(1);
         verify(
-          () => grandPrixRepository.getGrandPrixById(
-            grandPrixId: grandPrixId,
+          () => seasonGrandPrixRepository.getSeasonGrandPrixById(
+            seasonGrandPrixId,
           ),
         ).called(1);
         verify(
-          () => dateService.isDateABeforeDateB(now, grandPrix.startDate),
+          () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
+            seasonGrandPrix.grandPrixId,
+          ),
+        ).called(1);
+        verify(
+          () => dateService.isDateABeforeDateB(now, seasonGrandPrix.startDate),
         ).called(1);
         verify(qualiBetsService.getQualiBets).called(1);
         verify(raceBetsService.getPodiumBets).called(1);
@@ -202,7 +221,7 @@ void main() {
           () => grandPrixBetPointsRepository
               .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
             playerId: playerId,
-            seasonGrandPrixId: grandPrixId,
+            seasonGrandPrixId: seasonGrandPrixId,
           ),
         ).called(1);
       });

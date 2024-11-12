@@ -5,13 +5,15 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
-import '../../../../data/repository/grand_prix/grand_prix_repository.dart';
+import '../../../../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
+import '../../../../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../../../../dependency_injection.dart';
-import '../../../../model/grand_prix.dart';
+import '../../../../model/grand_prix_basic_info.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
+import '../../../../model/season_grand_prix.dart';
 import '../../../service/date_service.dart';
 import 'grand_prix_bet_quali_bets_service.dart';
 import 'grand_prix_bet_race_bets_service.dart';
@@ -20,22 +22,24 @@ import 'grand_prix_bet_state.dart';
 @injectable
 class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final AuthRepository _authRepository;
-  final GrandPrixRepository _grandPrixRepository;
+  final SeasonGrandPrixRepository _seasonGrandPrixRepository;
+  final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
   final PlayerRepository _playerRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final DateService _dateService;
   final String _playerId;
-  final String _grandPrixId;
+  final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
 
   GrandPrixBetCubit(
     this._authRepository,
-    this._grandPrixRepository,
+    this._seasonGrandPrixRepository,
+    this._grandPrixBasicInfoRepository,
     this._playerRepository,
     this._grandPrixBetPointsRepository,
     this._dateService,
     @factoryParam this._playerId,
-    @factoryParam this._grandPrixId,
+    @factoryParam this._seasonGrandPrixId,
   ) : super(const GrandPrixBetState());
 
   @override
@@ -58,7 +62,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           status: GrandPrixBetStateStatus.completed,
           canEdit: canEdit,
           playerUsername: listenedParams.playerUsername,
-          grandPrixId: _grandPrixId,
+          seasonGrandPrixId: _seasonGrandPrixId,
           grandPrixName: listenedParams.gpListenedParams?.name,
           isPlayerIdSameAsLoggedUserId:
               listenedParams.loggedUserId == _playerId,
@@ -78,7 +82,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   Stream<_ListenedParams> _getListenedParams() {
     final qualiBetsService = getIt<GrandPrixBetQualiBetsService>(
       param1: _playerId,
-      param2: _grandPrixId,
+      param2: _seasonGrandPrixId,
     );
     return Rx.combineLatest6(
       _getPlayerUsername(),
@@ -113,20 +117,21 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   Stream<_GrandPrixListenedParams?> _getGrandPrixListenedParams() {
-    return _grandPrixRepository.getGrandPrixById(grandPrixId: _grandPrixId).map(
-          (GrandPrix? grandPrix) => grandPrix != null
-              ? (
-                  name: grandPrix.name,
-                  startDate: grandPrix.startDate,
+    return _seasonGrandPrixRepository
+        .getSeasonGrandPrixById(_seasonGrandPrixId)
+        .switchMap(
+          (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
+              ? _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
+                  seasonGrandPrix,
                 )
-              : null,
+              : Stream.value(null),
         );
   }
 
   Stream<_RaceListenedParams> _getRaceListenedParams() {
     final raceBetsService = getIt<GrandPrixBetRaceBetsService>(
       param1: _playerId,
-      param2: _grandPrixId,
+      param2: _seasonGrandPrixId,
     );
     return Rx.combineLatest6(
       raceBetsService.getPodiumBets(),
@@ -158,8 +163,24 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     return _grandPrixBetPointsRepository
         .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
       playerId: _playerId,
-      seasonGrandPrixId: _grandPrixId,
+      seasonGrandPrixId: _seasonGrandPrixId,
     );
+  }
+
+  Stream<_GrandPrixListenedParams?>
+      _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
+    SeasonGrandPrix seasonGrandPrix,
+  ) {
+    return _grandPrixBasicInfoRepository
+        .getGrandPrixBasicInfoById(seasonGrandPrix.grandPrixId)
+        .map(
+          (GrandPrixBasicInfo? grandPrixBasicInfo) => grandPrixBasicInfo != null
+              ? (
+                  name: grandPrixBasicInfo.name,
+                  startDate: seasonGrandPrix.startDate,
+                )
+              : null,
+        );
   }
 }
 

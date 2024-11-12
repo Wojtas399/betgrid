@@ -11,4 +11,12 @@ class MockSeasonGrandPrixRepository extends Mock
       () => getAllSeasonGrandPrixesFromSeason(any()),
     ).thenAnswer((_) => Stream.value(expectedSeasonGrandPrixes));
   }
+
+  void mockGetSeasonGrandPrixById({
+    SeasonGrandPrix? expectedSeasonGrandPrix,
+  }) {
+    when(
+      () => getSeasonGrandPrixById(any()),
+    ).thenAnswer((_) => Stream.value((expectedSeasonGrandPrix)));
+  }
 }

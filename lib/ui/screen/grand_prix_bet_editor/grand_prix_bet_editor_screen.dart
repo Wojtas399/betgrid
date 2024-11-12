@@ -11,17 +11,18 @@ import 'cubit/grand_prix_bet_editor_state.dart';
 
 @RoutePage()
 class GrandPrixBetEditorScreen extends StatelessWidget {
-  final String grandPrixId;
+  final String seasonGrandPrixId;
 
   const GrandPrixBetEditorScreen({
     super.key,
-    required this.grandPrixId,
+    required this.seasonGrandPrixId,
   });
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) =>
-            getIt<GrandPrixBetEditorCubit>(param1: grandPrixId)..initialize(),
+        create: (_) => getIt<GrandPrixBetEditorCubit>(
+          param1: seasonGrandPrixId,
+        )..initialize(),
         child: const _CubitStatusListener(
           child: GrandPrixBetEditorContent(),
         ),
