@@ -1,6 +1,7 @@
 import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../creator/grand_prix_bet_points_creator.dart';
 import '../../creator/quali_bet_points_creator.dart';
 import '../../creator/race_bet_points_creator.dart';
 
@@ -14,18 +15,14 @@ void main() {
     'fromJson, '
     'should map json model to class model ignoring id and playerId',
     () {
-      final Map<String, Object?> json = {
-        'seasonGrandPrixId': seasonGrandPrixId,
-        'totalPoints': totalPoints,
-        'qualiBetPoints': qualiBetPointsCreator.createJson(),
-        'raceBetPoints': raceBetPointsCreator.createJson(),
-      };
-      final GrandPrixBetPointsDto expectedModel = GrandPrixBetPointsDto(
+      const creator = GrandPrixBetPointsCreator(
         seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
-        qualiBetPointsDto: qualiBetPointsCreator.createDto(),
-        raceBetPointsDto: raceBetPointsCreator.createDto(),
+        qualiBetPointsCreator: qualiBetPointsCreator,
+        raceBetPointsCreator: raceBetPointsCreator,
       );
+      final Map<String, Object?> json = creator.createJson();
+      final GrandPrixBetPointsDto expectedModel = creator.createDto();
 
       final GrandPrixBetPointsDto model = GrandPrixBetPointsDto.fromJson(json);
 
@@ -39,20 +36,16 @@ void main() {
     () {
       const String id = 'gpbp1';
       const String playerId = 'p1';
-      final Map<String, Object?> json = {
-        'seasonGrandPrixId': seasonGrandPrixId,
-        'totalPoints': totalPoints,
-        'qualiBetPoints': qualiBetPointsCreator.createJson(),
-        'raceBetPoints': raceBetPointsCreator.createJson(),
-      };
-      final GrandPrixBetPointsDto expectedModel = GrandPrixBetPointsDto(
+      const creator = GrandPrixBetPointsCreator(
         id: id,
         playerId: playerId,
         seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
-        qualiBetPointsDto: qualiBetPointsCreator.createDto(),
-        raceBetPointsDto: raceBetPointsCreator.createDto(),
+        qualiBetPointsCreator: qualiBetPointsCreator,
+        raceBetPointsCreator: raceBetPointsCreator,
       );
+      final Map<String, Object?> json = creator.createJson();
+      final GrandPrixBetPointsDto expectedModel = creator.createDto();
 
       final GrandPrixBetPointsDto model = GrandPrixBetPointsDto.fromFirebase(
         id: id,
@@ -68,20 +61,16 @@ void main() {
     'toJson, '
     'should map class model to json model ignoring id and playerId',
     () {
-      final GrandPrixBetPointsDto model = GrandPrixBetPointsDto(
-        id: 'gpbp1',
+      const creator = GrandPrixBetPointsCreator(
+        id: 'gpb1',
         playerId: 'p1',
         seasonGrandPrixId: seasonGrandPrixId,
         totalPoints: totalPoints,
-        qualiBetPointsDto: qualiBetPointsCreator.createDto(),
-        raceBetPointsDto: raceBetPointsCreator.createDto(),
+        qualiBetPointsCreator: qualiBetPointsCreator,
+        raceBetPointsCreator: raceBetPointsCreator,
       );
-      final Map<String, Object?> expectedJson = {
-        'seasonGrandPrixId': seasonGrandPrixId,
-        'totalPoints': totalPoints,
-        'qualiBetPoints': qualiBetPointsCreator.createJson(),
-        'raceBetPoints': raceBetPointsCreator.createJson(),
-      };
+      final GrandPrixBetPointsDto model = creator.createDto();
+      final Map<String, Object?> expectedJson = creator.createJson();
 
       final Map<String, Object?> json = model.toJson();
 

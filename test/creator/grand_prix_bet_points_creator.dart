@@ -21,21 +21,34 @@ class GrandPrixBetPointsCreator {
     this.raceBetPointsCreator,
   });
 
-  GrandPrixBetPoints createEntity() => GrandPrixBetPoints(
-        id: id,
-        playerId: playerId,
-        seasonGrandPrixId: seasonGrandPrixId,
-        totalPoints: totalPoints,
-        qualiBetPoints: qualiBetPointsCreator?.createEntity(),
-        raceBetPoints: raceBetPointsCreator?.createEntity(),
-      );
+  GrandPrixBetPoints createEntity() {
+    return GrandPrixBetPoints(
+      id: id,
+      playerId: playerId,
+      seasonGrandPrixId: seasonGrandPrixId,
+      totalPoints: totalPoints,
+      qualiBetPoints: qualiBetPointsCreator?.createEntity(),
+      raceBetPoints: raceBetPointsCreator?.createEntity(),
+    );
+  }
 
-  GrandPrixBetPointsDto createDto() => GrandPrixBetPointsDto(
-        id: id,
-        playerId: playerId,
-        seasonGrandPrixId: seasonGrandPrixId,
-        totalPoints: totalPoints,
-        qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
-        raceBetPointsDto: raceBetPointsCreator?.createDto(),
-      );
+  GrandPrixBetPointsDto createDto() {
+    return GrandPrixBetPointsDto(
+      id: id,
+      playerId: playerId,
+      seasonGrandPrixId: seasonGrandPrixId,
+      totalPoints: totalPoints,
+      qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
+      raceBetPointsDto: raceBetPointsCreator?.createDto(),
+    );
+  }
+
+  Map<String, Object?> createJson() {
+    return {
+      'seasonGrandPrixId': seasonGrandPrixId,
+      'totalPoints': totalPoints,
+      'qualiBetPoints': qualiBetPointsCreator?.createJson(),
+      'raceBetPoints': raceBetPointsCreator?.createJson(),
+    };
+  }
 }
