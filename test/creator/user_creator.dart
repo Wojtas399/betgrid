@@ -16,20 +16,32 @@ class UserCreator {
     this.themePrimaryColor = UserCreatorThemePrimaryColor.red,
   });
 
-  User createEntity() => User(
-        id: id,
-        username: username,
-        avatarUrl: avatarUrl,
-        themeMode: _entityThemeMode,
-        themePrimaryColor: _entityThemePrimaryColor,
-      );
+  User createEntity() {
+    return User(
+      id: id,
+      username: username,
+      avatarUrl: avatarUrl,
+      themeMode: _entityThemeMode,
+      themePrimaryColor: _entityThemePrimaryColor,
+    );
+  }
 
-  UserDto createDto() => UserDto(
-        id: id,
-        username: username,
-        themeMode: _dtoThemeMode,
-        themePrimaryColor: _dtoThemePrimaryColor,
-      );
+  UserDto createDto() {
+    return UserDto(
+      id: id,
+      username: username,
+      themeMode: _dtoThemeMode,
+      themePrimaryColor: _dtoThemePrimaryColor,
+    );
+  }
+
+  Map<String, Object?> createJson() {
+    return {
+      'username': username,
+      'themeMode': themeMode.name,
+      'themePrimaryColor': themePrimaryColor.name,
+    };
+  }
 
   ThemeMode get _entityThemeMode => switch (themeMode) {
         UserCreatorThemeMode.light => ThemeMode.light,
