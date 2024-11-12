@@ -78,18 +78,14 @@ void main() {
         'should finish method call if logged user id is null',
         build: () => createCubit(),
         setUp: () => authRepository.mockGetLoggedUserId(null),
-        act: (cubit) async {
-          cubit.updateUsername(username);
-          await cubit.submit(
-            themeMode: themeMode,
-            themePrimaryColor: themePrimaryColor,
-          );
-        },
-        expect: () => [
-          state = const RequiredDataCompletionState(
-            username: username,
-          ),
-        ],
+        seed: () => const RequiredDataCompletionState(
+          username: username,
+        ),
+        act: (cubit) async => await cubit.submit(
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        ),
+        expect: () => [],
         verify: (_) => verify(() => authRepository.loggedUserId$).called(1),
       );
 
@@ -100,21 +96,15 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockAddUser();
         },
-        act: (cubit) async {
-          cubit.updateUsername(username);
-          cubit.updateAvatar(avatarPath);
-          await cubit.submit(
-            themeMode: themeMode,
-            themePrimaryColor: themePrimaryColor,
-          );
-        },
+        seed: () => state = const RequiredDataCompletionState(
+          username: username,
+          avatarImgPath: avatarPath,
+        ),
+        act: (cubit) async => await cubit.submit(
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        ),
         expect: () => [
-          state = const RequiredDataCompletionState(
-            username: username,
-          ),
-          state = state?.copyWith(
-            avatarImgPath: avatarPath,
-          ),
           state = state?.copyWith(
             status: RequiredDataCompletionStateStatus.loading,
           ),
@@ -147,17 +137,14 @@ void main() {
             throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
           );
         },
-        act: (cubit) async {
-          cubit.updateUsername(username);
-          await cubit.submit(
-            themeMode: themeMode,
-            themePrimaryColor: themePrimaryColor,
-          );
-        },
+        seed: () => state = const RequiredDataCompletionState(
+          username: username,
+        ),
+        act: (cubit) async => await cubit.submit(
+          themeMode: themeMode,
+          themePrimaryColor: themePrimaryColor,
+        ),
         expect: () => [
-          state = const RequiredDataCompletionState(
-            username: username,
-          ),
           state = state?.copyWith(
             status: RequiredDataCompletionStateStatus.loading,
           ),
