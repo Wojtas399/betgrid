@@ -1,15 +1,15 @@
-import 'package:betgrid/model/grand_prix.dart';
+import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/use_case/get_player_points_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../creator/grand_prix_bet_points_creator.dart';
-import '../creator/grand_prix_creator.dart';
+import '../creator/season_grand_prix_creator.dart';
 import '../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../mock/data/repository/mock_grand_prix_repository.dart';
+import '../mock/data/repository/mock_season_grand_prix_repository.dart';
 
 void main() {
-  final grandPrixRepository = MockGrandPrixRepository();
+  final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   late GetPlayerPointsUseCase useCase;
   const String playerId = 'p1';
@@ -17,35 +17,21 @@ void main() {
 
   setUp(() {
     useCase = GetPlayerPointsUseCase(
-      grandPrixRepository,
+      seasonGrandPrixRepository,
       grandPrixBetPointsRepository,
     );
   });
 
   tearDown(() {
-    reset(grandPrixRepository);
+    reset(seasonGrandPrixRepository);
     reset(grandPrixBetPointsRepository);
   });
 
   test(
-    'should return null if list of all grand prixes does not exist',
+    'should return null if list of all season grand prixes is null',
     () {
-      grandPrixRepository.mockGetAllGrandPrixesFromSeason();
-
-      final Stream<double?> playerPoints$ = useCase(
-        playerId: playerId,
-        season: season,
-      );
-
-      expect(playerPoints$, emits(null));
-    },
-  );
-
-  test(
-    'should return null if list of all grand prixes is empty',
-    () {
-      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
-        expectedGrandPrixes: [],
+      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+        expectedSeasonGrandPrixes: [],
       );
 
       final Stream<double?> playerPoints$ = useCase(
@@ -53,35 +39,38 @@ void main() {
         season: season,
       );
 
-      expect(playerPoints$, emits(null));
+      expect(
+        playerPoints$,
+        emits(null),
+      );
     },
   );
 
   test(
     'should sum points of each grand prix',
     () async {
-      const double gp1Points = 10.0;
-      const double gp2Points = 7.5;
-      const double gp3Points = 12.25;
-      const double expectedPoints = gp1Points + gp2Points + gp3Points;
-      final List<GrandPrix> grandPrixes = [
-        GrandPrixCreator(id: 'gp1').createEntity(),
-        GrandPrixCreator(id: 'gp2').createEntity(),
-        GrandPrixCreator(id: 'gp3').createEntity(),
+      const double sgp1Points = 10.0;
+      const double sgp2Points = 7.5;
+      const double sgp3Points = 12.25;
+      const double expectedPoints = sgp1Points + sgp2Points + sgp3Points;
+      final List<SeasonGrandPrix> seasonGrandPrixes = [
+        SeasonGrandPrixCreator(id: 'sgp1').createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp2').createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp3').createEntity(),
       ];
-      grandPrixRepository.mockGetAllGrandPrixesFromSeason(
-        expectedGrandPrixes: grandPrixes,
+      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+        expectedSeasonGrandPrixes: seasonGrandPrixes,
       );
       when(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          seasonGrandPrixId: grandPrixes.first.id,
+          seasonGrandPrixId: seasonGrandPrixes.first.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
-            totalPoints: gp1Points,
+            totalPoints: sgp1Points,
           ).createEntity(),
         ),
       );
@@ -89,12 +78,12 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          seasonGrandPrixId: grandPrixes[1].id,
+          seasonGrandPrixId: seasonGrandPrixes[1].id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
-            totalPoints: gp2Points,
+            totalPoints: sgp2Points,
           ).createEntity(),
         ),
       );
@@ -102,12 +91,12 @@ void main() {
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
           playerId: playerId,
-          seasonGrandPrixId: grandPrixes.last.id,
+          seasonGrandPrixId: seasonGrandPrixes.last.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
-            totalPoints: gp3Points,
+            totalPoints: sgp3Points,
           ).createEntity(),
         ),
       );

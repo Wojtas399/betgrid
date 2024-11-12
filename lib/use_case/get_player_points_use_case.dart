@@ -1,18 +1,18 @@
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../data/repository/grand_prix/grand_prix_repository.dart';
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import '../model/grand_prix.dart';
+import '../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../model/grand_prix_bet_points.dart';
+import '../model/season_grand_prix.dart';
 
 @injectable
 class GetPlayerPointsUseCase {
-  final GrandPrixRepository _grandPrixRepository;
+  final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
   const GetPlayerPointsUseCase(
-    this._grandPrixRepository,
+    this._seasonGrandPrixRepository,
     this._grandPrixBetPointsRepository,
   );
 
@@ -20,12 +20,17 @@ class GetPlayerPointsUseCase {
     required String playerId,
     required int season,
   }) async* {
-    final Stream<List<GrandPrix>?> allGrandPrixes$ =
-        _grandPrixRepository.getAllGrandPrixesFromSeason(season);
-    await for (final allGrandPrixes in allGrandPrixes$) {
-      if (allGrandPrixes?.isNotEmpty == true) {
-        final Stream<double?> totalPoints$ =
-            _calculateTotalPoints(playerId, allGrandPrixes!);
+    final Stream<List<SeasonGrandPrix>> allSeasonGrandPrixes$ =
+        _seasonGrandPrixRepository.getAllSeasonGrandPrixesFromSeason(season);
+    await for (final allSeasonGrandPrixes in allSeasonGrandPrixes$) {
+      if (allSeasonGrandPrixes.isNotEmpty) {
+        final idsOfAllSeasonGrandPrixes = allSeasonGrandPrixes.map(
+          (seasonGrandPrix) => seasonGrandPrix.id,
+        );
+        final Stream<double?> totalPoints$ = _calculateTotalPoints(
+          playerId,
+          idsOfAllSeasonGrandPrixes,
+        );
         await for (final totalPoints in totalPoints$) {
           yield totalPoints;
         }
@@ -37,15 +42,15 @@ class GetPlayerPointsUseCase {
 
   Stream<double?> _calculateTotalPoints(
     String playerId,
-    List<GrandPrix> allGrandPrixes,
+    Iterable<String> idsOfAllSeasonGrandPrixes,
   ) {
     final List<Stream<GrandPrixBetPoints?>> betPointsForGrandPrixes = [];
-    for (final grandPrix in allGrandPrixes) {
+    for (final seasonGrandPrixId in idsOfAllSeasonGrandPrixes) {
       final Stream<GrandPrixBetPoints?> gpPoints$ =
           _grandPrixBetPointsRepository
               .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         playerId: playerId,
-        seasonGrandPrixId: grandPrix.id,
+        seasonGrandPrixId: seasonGrandPrixId,
       );
       betPointsForGrandPrixes.add(gpPoints$);
     }
