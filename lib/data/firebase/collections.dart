@@ -5,7 +5,6 @@ import 'model/driver_personal_data_dto.dart';
 import 'model/grand_prix_basic_info_dto.dart';
 import 'model/grand_prix_bet_dto.dart';
 import 'model/grand_prix_bet_points_dto.dart';
-import 'model/grand_prix_dto.dart';
 import 'model/grand_prix_results_dto.dart';
 import 'model/season_driver_dto.dart';
 import 'model/season_grand_prix_dto.dart';
@@ -15,20 +14,6 @@ import 'model/user_dto.dart';
 @injectable
 class FirebaseCollections {
   const FirebaseCollections();
-
-  CollectionReference<GrandPrixDto> grandPrixes() => FirebaseFirestore.instance
-      .collection('GrandPrixes')
-      .withConverter<GrandPrixDto>(
-        fromFirestore: (snapshot, _) {
-          final data = snapshot.data();
-          if (data == null) throw 'Grand prix document data was null';
-          return GrandPrixDto.fromFirebase(
-            id: snapshot.id,
-            json: data,
-          );
-        },
-        toFirestore: (GrandPrixDto dto, _) => dto.toJson(),
-      );
 
   CollectionReference<GrandPrixBasicInfoDto> grandPrixesBasicInfo() {
     return FirebaseFirestore.instance
