@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_basic_info.dart';
 import '../../firebase/model/grand_prix_basic_info_dto.dart';
@@ -13,6 +14,7 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
     implements GrandPrixBasicInfoRepository {
   final FirebaseGrandPrixBasicInfoService _firebaseGrandPrixBasicInfoService;
   final GrandPrixBasicInfoMapper _grandPrixBasicInfoMapper;
+  final _getGrandPrixBasicInfoByIdMutex = Mutex();
 
   GrandPrixBasicInfoRepositoryImpl(
     this._firebaseGrandPrixBasicInfoService,
@@ -21,12 +23,18 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
 
   @override
   Stream<GrandPrixBasicInfo?> getGrandPrixBasicInfoById(String id) async* {
+    bool didReleaseMutex = false;
+    await _getGrandPrixBasicInfoByIdMutex.acquire();
     await for (final grandPrixesBasicInfo in repositoryState$) {
       GrandPrixBasicInfo? matchingGrandPrixBasicInfo =
           grandPrixesBasicInfo.firstWhereOrNull(
         (GrandPrixBasicInfo grandPrixBasicInfo) => grandPrixBasicInfo.id == id,
       );
       matchingGrandPrixBasicInfo ??= await _fetchGrandPrixBasicInfoById(id);
+      if (_getGrandPrixBasicInfoByIdMutex.isLocked && !didReleaseMutex) {
+        _getGrandPrixBasicInfoByIdMutex.release();
+        didReleaseMutex = true;
+      }
       yield matchingGrandPrixBasicInfo;
     }
   }
