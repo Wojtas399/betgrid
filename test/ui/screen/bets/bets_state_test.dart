@@ -2,7 +2,7 @@ import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
 import 'package:betgrid/use_case/get_grand_prixes_with_points_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/grand_prix_v2_creator.dart';
 
 void main() {
   test(
@@ -234,7 +234,7 @@ void main() {
         () {
           final List<GrandPrixWithPoints> newValue = [
             GrandPrixWithPoints(
-              grandPrix: GrandPrixCreator().createEntity(),
+              grandPrix: GrandPrixV2Creator().create(),
             ),
           ];
 

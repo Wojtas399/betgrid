@@ -6,7 +6,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
@@ -35,10 +35,10 @@ void main() {
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
-          grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
+          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp1').create(),
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
+          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp2').create(),
         ),
       ];
 

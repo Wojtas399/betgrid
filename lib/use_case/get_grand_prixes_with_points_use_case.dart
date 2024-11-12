@@ -1,34 +1,40 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../data/repository/grand_prix/grand_prix_repository.dart';
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import '../model/grand_prix.dart';
+import '../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../model/grand_prix_bet_points.dart';
+import '../model/grand_prix_v2.dart';
+import '../model/season_grand_prix.dart';
+import 'get_grand_prix_based_on_season_grand_prix_use_case.dart';
 
 @injectable
 class GetGrandPrixesWithPointsUseCase {
-  final GrandPrixRepository _grandPrixRepository;
+  final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final GetGrandPrixBasedOnSeasonGrandPrixUseCase
+      _getGrandPrixBasedOnSeasonGrandPrixUseCase;
 
   const GetGrandPrixesWithPointsUseCase(
-    this._grandPrixRepository,
+    this._seasonGrandPrixRepository,
     this._grandPrixBetPointsRepository,
+    this._getGrandPrixBasedOnSeasonGrandPrixUseCase,
   );
 
   Stream<List<GrandPrixWithPoints>> call({
     required String playerId,
     required int season,
   }) async* {
-    final Stream<List<GrandPrix>?> allGrandPrixes$ =
-        _grandPrixRepository.getAllGrandPrixesFromSeason(season);
-    await for (final allGrandPrixes in allGrandPrixes$) {
-      if (allGrandPrixes == null || allGrandPrixes.isEmpty) {
+    final Stream<List<SeasonGrandPrix>> allSeasonGrandPrixes$ =
+        _seasonGrandPrixRepository.getAllSeasonGrandPrixesFromSeason(season);
+    await for (final allSeasonGrandPrixes in allSeasonGrandPrixes$) {
+      if (allSeasonGrandPrixes.isEmpty) {
         yield [];
       } else {
         final Stream<List<GrandPrixWithPoints>> grandPrixesWithPoints$ =
-            _getPointsForEachGrandPrix(playerId, allGrandPrixes);
+            _getPointsForEachGrandPrix(playerId, allSeasonGrandPrixes);
         await for (final grandPrixesWithPoints in grandPrixesWithPoints$) {
           yield grandPrixesWithPoints;
         }
@@ -38,38 +44,53 @@ class GetGrandPrixesWithPointsUseCase {
 
   Stream<List<GrandPrixWithPoints>> _getPointsForEachGrandPrix(
     String playerId,
-    List<GrandPrix> allGrandPrixes,
+    List<SeasonGrandPrix> allSeasonGrandPrixes,
   ) {
-    final List<GrandPrix> sortedGrandPrixes = [...allGrandPrixes];
-    sortedGrandPrixes.sort(
+    final List<SeasonGrandPrix> sortedSeasonGrandPrixes = [
+      ...allSeasonGrandPrixes,
+    ];
+    sortedSeasonGrandPrixes.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
-    final List<Stream<GrandPrixWithPoints>> grandPrixesWithPoints = [];
-    for (final gp in [...sortedGrandPrixes]) {
-      final Stream<GrandPrixWithPoints> gpWithPoints$ = Rx.combineLatest2(
-        Stream.value(gp),
-        _grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
-          playerId: playerId,
-          seasonGrandPrixId: gp.id,
-        ),
-        (
-          GrandPrix grandPrix,
-          GrandPrixBetPoints? grandPrixPoints,
-        ) =>
-            GrandPrixWithPoints(
-          grandPrix: grandPrix,
-          points: grandPrixPoints?.totalPoints,
-        ),
-      );
+    final List<Stream<GrandPrixWithPoints?>> grandPrixesWithPoints = [];
+    for (final seasonGrandPrix in [...sortedSeasonGrandPrixes]) {
+      final Stream<GrandPrixWithPoints?> gpWithPoints$ =
+          _getPointsForSingleSeasonGrandPrix(seasonGrandPrix, playerId);
       grandPrixesWithPoints.add(gpWithPoints$);
     }
-    return Rx.combineLatest(grandPrixesWithPoints, (values) => values);
+    return Rx.combineLatest(
+      grandPrixesWithPoints,
+      (values) => values.whereNotNull().toList(),
+    );
+  }
+
+  Stream<GrandPrixWithPoints?> _getPointsForSingleSeasonGrandPrix(
+    SeasonGrandPrix seasonGrandPrix,
+    String playerId,
+  ) {
+    return Rx.combineLatest2(
+      _getGrandPrixBasedOnSeasonGrandPrixUseCase(seasonGrandPrix),
+      _grandPrixBetPointsRepository
+          .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        playerId: playerId,
+        seasonGrandPrixId: seasonGrandPrix.id,
+      ),
+      (
+        GrandPrixV2? grandPrix,
+        GrandPrixBetPoints? grandPrixPoints,
+      ) =>
+          grandPrix != null
+              ? GrandPrixWithPoints(
+                  grandPrix: grandPrix,
+                  points: grandPrixPoints?.totalPoints,
+                )
+              : null,
+    );
   }
 }
 
 class GrandPrixWithPoints extends Equatable {
-  final GrandPrix grandPrix;
+  final GrandPrixV2 grandPrix;
   final double? points;
 
   const GrandPrixWithPoints({

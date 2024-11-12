@@ -5,7 +5,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
@@ -38,11 +38,11 @@ void main() {
       final DateTime now = DateTime(2024);
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
-          grandPrix: GrandPrixCreator(id: 'gp1').createEntity(),
+          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp1').create(),
           points: 20.0,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixCreator(id: 'gp2').createEntity(),
+          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp2').create(),
           points: 10.0,
         ),
       ];

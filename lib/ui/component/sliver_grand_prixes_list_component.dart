@@ -33,7 +33,9 @@ class SliverGrandPrixesList extends SliverPadding {
                           betPoints: item.points,
                           grandPrix: item.grandPrix,
                           onPressed: () {
-                            onGrandPrixPressed(item.grandPrix.id);
+                            onGrandPrixPressed(
+                              item.grandPrix.seasonGrandPrixId,
+                            );
                           },
                         ),
                       );
