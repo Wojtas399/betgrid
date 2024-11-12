@@ -6,10 +6,10 @@ import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dar
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
+import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
-import '../../../../model/grand_prix_v2.dart';
 import '../../../../model/player.dart';
 import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import '../stats_model/points_by_driver.dart';
@@ -39,7 +39,7 @@ class CreatePointsForDriverStats {
         _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
         (
           List<Player> allPlayers,
-          List<GrandPrixV2> finishedGrandPrixes,
+          List<GrandPrix> finishedGrandPrixes,
         ) =>
             (
           allPlayers: allPlayers,

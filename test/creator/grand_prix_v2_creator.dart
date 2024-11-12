@@ -1,4 +1,4 @@
-import 'package:betgrid/model/grand_prix_v2.dart';
+import 'package:betgrid/model/grand_prix.dart';
 
 class GrandPrixV2Creator {
   final String seasonGrandPrixId;
@@ -20,8 +20,8 @@ class GrandPrixV2Creator {
     this.endDate = endDate ?? DateTime(2024, 1, 2);
   }
 
-  GrandPrixV2 create() {
-    return GrandPrixV2(
+  GrandPrix create() {
+    return GrandPrix(
       seasonGrandPrixId: seasonGrandPrixId,
       name: name,
       countryAlpha2Code: countryAlpha2Code,

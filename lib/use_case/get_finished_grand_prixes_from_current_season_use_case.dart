@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../data/repository/season_grand_prix/season_grand_prix_repository.dart';
-import '../model/grand_prix_v2.dart';
+import '../model/grand_prix.dart';
 import '../model/season_grand_prix.dart';
 import '../ui/service/date_service.dart';
 import 'get_grand_prix_based_on_season_grand_prix_use_case.dart';
@@ -21,7 +21,7 @@ class GetFinishedGrandPrixesFromCurrentSeasonUseCase {
     this._dateService,
   );
 
-  Stream<List<GrandPrixV2>> call() {
+  Stream<List<GrandPrix>> call() {
     final DateTime now = _dateService.getNow();
     final int currentYear = now.year;
     return _seasonGrandPrixRepository
@@ -34,13 +34,13 @@ class GetFinishedGrandPrixesFromCurrentSeasonUseCase {
               .map(_getGrandPrixBasedOnSeasonGrandPrixUseCase.call),
         )
         .switchMap(
-          (Iterable<Stream<GrandPrixV2?>> grandPrixStreams) =>
+          (Iterable<Stream<GrandPrix?>> grandPrixStreams) =>
               grandPrixStreams.isNotEmpty
                   ? Rx.combineLatest(
                       grandPrixStreams,
-                      (List<GrandPrixV2?> grandPrixes) => grandPrixes,
+                      (List<GrandPrix?> grandPrixes) => grandPrixes,
                     )
-                  : Stream.value(<GrandPrixV2>[]),
+                  : Stream.value(<GrandPrix>[]),
         )
         .map((grandPrixes) => grandPrixes.whereNotNull().toList());
   }

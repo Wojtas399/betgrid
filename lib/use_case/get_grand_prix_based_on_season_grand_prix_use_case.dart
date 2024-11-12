@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
 import '../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
+import '../model/grand_prix.dart';
 import '../model/grand_prix_basic_info.dart';
-import '../model/grand_prix_v2.dart';
 import '../model/season_grand_prix.dart';
 
 @injectable
@@ -13,12 +13,12 @@ class GetGrandPrixBasedOnSeasonGrandPrixUseCase {
     this._grandPrixBasicInfoRepository,
   );
 
-  Stream<GrandPrixV2?> call(SeasonGrandPrix seasonGrandPrix) {
+  Stream<GrandPrix?> call(SeasonGrandPrix seasonGrandPrix) {
     return _grandPrixBasicInfoRepository
         .getGrandPrixBasicInfoById(seasonGrandPrix.grandPrixId)
         .map(
           (GrandPrixBasicInfo? grandPrixBasicInfo) => grandPrixBasicInfo != null
-              ? GrandPrixV2(
+              ? GrandPrix(
                   seasonGrandPrixId: seasonGrandPrix.id,
                   name: grandPrixBasicInfo.name,
                   countryAlpha2Code: grandPrixBasicInfo.countryAlpha2Code,

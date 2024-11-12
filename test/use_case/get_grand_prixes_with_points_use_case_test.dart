@@ -1,4 +1,4 @@
-import 'package:betgrid/model/grand_prix_v2.dart';
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/use_case/get_grand_prixes_with_points_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,7 +59,7 @@ void main() {
         SeasonGrandPrixCreator(id: 'sgp2', roundNumber: 1).createEntity(),
         SeasonGrandPrixCreator(id: 'sgp3', roundNumber: 2).createEntity(),
       ];
-      final List<GrandPrixV2> allGrandPrixes = [
+      final List<GrandPrix> allGrandPrixes = [
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];

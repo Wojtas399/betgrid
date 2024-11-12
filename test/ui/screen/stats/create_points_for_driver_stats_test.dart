@@ -1,7 +1,7 @@
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
-import 'package:betgrid/model/grand_prix_v2.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
@@ -102,7 +102,7 @@ void main() {
         const PlayerCreator(id: 'p2').createEntity(),
         const PlayerCreator(id: 'p3').createEntity(),
       ];
-      final List<GrandPrixV2> finishedGrandPrixes = [
+      final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp3').create(),

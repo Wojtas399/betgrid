@@ -1,7 +1,7 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/grand_prix_v2.dart';
+import '../../model/grand_prix.dart';
 import '../extensions/build_context_extensions.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
@@ -9,7 +9,7 @@ import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
   final double? betPoints;
-  final GrandPrixV2 grandPrix;
+  final GrandPrix grandPrix;
   final VoidCallback onPressed;
 
   const GrandPrixItem({

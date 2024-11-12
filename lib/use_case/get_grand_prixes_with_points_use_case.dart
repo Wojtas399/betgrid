@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../data/repository/season_grand_prix/season_grand_prix_repository.dart';
+import '../model/grand_prix.dart';
 import '../model/grand_prix_bet_points.dart';
-import '../model/grand_prix_v2.dart';
 import '../model/season_grand_prix.dart';
 import 'get_grand_prix_based_on_season_grand_prix_use_case.dart';
 
@@ -76,7 +76,7 @@ class GetGrandPrixesWithPointsUseCase {
         seasonGrandPrixId: seasonGrandPrix.id,
       ),
       (
-        GrandPrixV2? grandPrix,
+        GrandPrix? grandPrix,
         GrandPrixBetPoints? grandPrixPoints,
       ) =>
           grandPrix != null
@@ -90,7 +90,7 @@ class GetGrandPrixesWithPointsUseCase {
 }
 
 class GrandPrixWithPoints extends Equatable {
-  final GrandPrixV2 grandPrix;
+  final GrandPrix grandPrix;
   final double? points;
 
   const GrandPrixWithPoints({

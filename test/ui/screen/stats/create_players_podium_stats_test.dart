@@ -1,5 +1,5 @@
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
-import 'package:betgrid/model/grand_prix_v2.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_players_podium_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
@@ -80,7 +80,7 @@ void main() {
       final List<Player> players = [
         const PlayerCreator(id: 'p1').createEntity(),
       ];
-      final List<GrandPrixV2> finishedGrandPrixes = [
+      final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];
@@ -133,7 +133,7 @@ void main() {
         const PlayerCreator(id: 'p1').createEntity(),
         const PlayerCreator(id: 'p2').createEntity(),
       ];
-      final List<GrandPrixV2> finishedGrandPrixes = [
+      final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];
@@ -200,7 +200,7 @@ void main() {
         const PlayerCreator(id: 'p3').createEntity(),
         const PlayerCreator(id: 'p4').createEntity(),
       ];
-      final List<GrandPrixV2> finishedGrandPrixes = [
+      final List<GrandPrix> finishedGrandPrixes = [
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
         GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
       ];

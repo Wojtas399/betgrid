@@ -1,5 +1,5 @@
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_basic_info.dart';
-import 'package:betgrid/model/grand_prix_v2.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/use_case/get_grand_prix_based_on_season_grand_prix_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,7 +26,7 @@ void main() {
     name: 'Africa grand prix',
     countryAlpha2Code: 'AF',
   );
-  final GrandPrixV2 expectedGrandPrix = GrandPrixV2(
+  final GrandPrix expectedGrandPrix = GrandPrix(
     seasonGrandPrixId: seasonGrandPrix.id,
     name: grandPrixBasicInfo.name,
     countryAlpha2Code: grandPrixBasicInfo.countryAlpha2Code,
@@ -50,7 +50,7 @@ void main() {
     () async {
       grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById();
 
-      final Stream<GrandPrixV2?> grandPrix$ = useCase(seasonGrandPrix);
+      final Stream<GrandPrix?> grandPrix$ = useCase(seasonGrandPrix);
 
       expect(await grandPrix$.first, null);
     },
@@ -64,7 +64,7 @@ void main() {
         expectedGrandPrixBasicInfo: grandPrixBasicInfo,
       );
 
-      final Stream<GrandPrixV2?> grandPrix$ = useCase(seasonGrandPrix);
+      final Stream<GrandPrix?> grandPrix$ = useCase(seasonGrandPrix);
 
       expect(await grandPrix$.first, expectedGrandPrix);
     },

@@ -4,8 +4,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
+import '../../../../model/grand_prix.dart';
 import '../../../../model/grand_prix_bet_points.dart';
-import '../../../../model/grand_prix_v2.dart';
 import '../../../../model/player.dart';
 import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import '../stats_model/points_history.dart';
@@ -28,7 +28,7 @@ class CreatePointsHistoryStats {
         _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
         (
           List<Player> allPlayers,
-          List<GrandPrixV2> finishedGrandPrixes,
+          List<GrandPrix> finishedGrandPrixes,
         ) =>
             (
           allPlayers: allPlayers,
@@ -53,7 +53,7 @@ class CreatePointsHistoryStats {
             ),
             (
               List<Player> players,
-              List<GrandPrixV2> grandPrixes,
+              List<GrandPrix> grandPrixes,
               List<GrandPrixBetPoints> grandPrixesBetPoints,
             ) =>
                 _createStats(players, grandPrixes, grandPrixesBetPoints),
@@ -63,10 +63,10 @@ class CreatePointsHistoryStats {
 
   PointsHistory _createStats(
     Iterable<Player> players,
-    Iterable<GrandPrixV2> grandPrixes,
+    Iterable<GrandPrix> grandPrixes,
     Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
   ) {
-    final List<GrandPrixV2> sortedFinishedGrandPrixes = [...grandPrixes];
+    final List<GrandPrix> sortedFinishedGrandPrixes = [...grandPrixes];
     sortedFinishedGrandPrixes.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );

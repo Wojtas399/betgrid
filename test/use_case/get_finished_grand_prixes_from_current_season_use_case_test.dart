@@ -1,4 +1,4 @@
-import 'package:betgrid/model/grand_prix_v2.dart';
+import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,7 +45,7 @@ void main() {
         expectedSeasonGrandPrixes: [],
       );
 
-      final Stream<List<GrandPrixV2>> finishedGrandPrixes$ = useCase();
+      final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 
       expect(finishedGrandPrixes$, emits([]));
     },
@@ -69,7 +69,7 @@ void main() {
         expectedSeasonGrandPrixes: allSeasonGrandPrixes,
       );
 
-      final Stream<List<GrandPrixV2>> finishedGrandPrixes$ = useCase();
+      final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 
       expect(finishedGrandPrixes$, emits([]));
     },
@@ -105,7 +105,7 @@ void main() {
           endDate: DateTime(2024, 07, 12),
         ).createEntity(),
       ];
-      final List<GrandPrixV2> expectedGrandPrixes = [
+      final List<GrandPrix> expectedGrandPrixes = [
         GrandPrixV2Creator(
           seasonGrandPrixId: allSeasonGrandPrixes.first.id,
           startDate: allSeasonGrandPrixes.first.startDate,
@@ -141,7 +141,7 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(expectedGrandPrixes.last));
 
-      final Stream<List<GrandPrixV2>> finishedGrandPrixes$ = useCase();
+      final Stream<List<GrandPrix>> finishedGrandPrixes$ = useCase();
 
       expect(finishedGrandPrixes$, emits(expectedGrandPrixes));
     },

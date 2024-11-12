@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class GrandPrixV2 extends Equatable {
+class GrandPrix extends Equatable {
   final String seasonGrandPrixId;
   final String name;
   final String countryAlpha2Code;
@@ -8,7 +8,7 @@ class GrandPrixV2 extends Equatable {
   final DateTime startDate;
   final DateTime endDate;
 
-  const GrandPrixV2({
+  const GrandPrix({
     required this.seasonGrandPrixId,
     required this.name,
     required this.countryAlpha2Code,
