@@ -8,7 +8,7 @@ import 'model/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_results_dto.dart';
 import 'model/season_driver_dto.dart';
 import 'model/season_grand_prix_dto.dart';
-import 'model/team_dto.dart';
+import 'model/team_basic_info_dto.dart';
 import 'model/user_dto.dart';
 
 @injectable
@@ -153,14 +153,14 @@ class FirebaseCollections {
         );
   }
 
-  CollectionReference<TeamDto> teams() {
+  CollectionReference<TeamBasicInfoDto> teamsBasicInfo() {
     return FirebaseFirestore.instance
-        .collection('Teams')
-        .withConverter<TeamDto>(
+        .collection('TeamsBasicInfo')
+        .withConverter<TeamBasicInfoDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
-            if (data == null) throw 'Team document is null';
-            return TeamDto.fromFirebase(
+            if (data == null) throw 'TeamBasicInfo document is null';
+            return TeamBasicInfoDto.fromFirebase(
               id: snapshot.id,
               json: data,
             );

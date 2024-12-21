@@ -1,22 +1,22 @@
 import 'package:betgrid/model/driver.dart';
 import 'package:betgrid/model/driver_personal_data.dart';
 import 'package:betgrid/model/season_driver.dart';
-import 'package:betgrid/model/team.dart';
+import 'package:betgrid/model/team_basic_info.dart';
 import 'package:betgrid/use_case/get_driver_based_on_season_driver_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../creator/season_driver_creator.dart';
-import '../creator/team_creator.dart';
+import '../creator/team_basic_info_creator.dart';
 import '../mock/data/repository/mock_driver_personal_data_repository.dart';
-import '../mock/data/repository/mock_team_repository.dart';
+import '../mock/data/repository/mock_team_basic_info_repository.dart';
 
 void main() {
   final driverPersonalDataRepository = MockDriverPersonalDataRepository();
-  final teamRepository = MockTeamRepository();
+  final teamBasicInfoRepository = MockTeamBasicInfoRepository();
   final useCase = GetDriverBasedOnSeasonDriverUseCase(
     driverPersonalDataRepository,
-    teamRepository,
+    teamBasicInfoRepository,
   );
   final SeasonDriver seasonDriver = const SeasonDriverCreator(
     id: 'sd1',
@@ -28,7 +28,7 @@ void main() {
     name: 'Max',
     surname: 'Verstappen',
   );
-  final Team team = const TeamCreator(
+  final TeamBasicInfo teamBasicInfo = const TeamBasicInfoCreator(
     name: 'Red Bull Racing',
     hexColor: '#FFFFFF',
   ).createEntity();
@@ -37,8 +37,8 @@ void main() {
     name: driverPersonalData.name,
     surname: driverPersonalData.surname,
     number: seasonDriver.driverNumber,
-    teamName: team.name,
-    teamHexColor: team.hexColor,
+    teamName: teamBasicInfo.name,
+    teamHexColor: teamBasicInfo.hexColor,
   );
 
   tearDown(() {
@@ -48,10 +48,10 @@ void main() {
       ),
     ).called(1);
     verify(
-      () => teamRepository.getTeamById(seasonDriver.teamId),
+      () => teamBasicInfoRepository.getTeamBasicInfoById(seasonDriver.teamId),
     ).called(1);
     reset(driverPersonalDataRepository);
-    reset(teamRepository);
+    reset(teamBasicInfoRepository);
   });
 
   test(
@@ -59,7 +59,7 @@ void main() {
     'DriverPersonalDataRepository',
     () async {
       driverPersonalDataRepository.mockGetDriverPersonalDataById();
-      teamRepository.mockGetTeamById(expectedTeam: team);
+      teamBasicInfoRepository.mockGetTeamBasicInfoById();
 
       final Stream<Driver?> driver$ = useCase(seasonDriver);
 
@@ -74,7 +74,7 @@ void main() {
       driverPersonalDataRepository.mockGetDriverPersonalDataById(
         expectedDriverPersonalData: driverPersonalData,
       );
-      teamRepository.mockGetTeamById();
+      teamBasicInfoRepository.mockGetTeamBasicInfoById();
 
       final Stream<Driver?> driver$ = useCase(seasonDriver);
 
@@ -89,7 +89,9 @@ void main() {
       driverPersonalDataRepository.mockGetDriverPersonalDataById(
         expectedDriverPersonalData: driverPersonalData,
       );
-      teamRepository.mockGetTeamById(expectedTeam: team);
+      teamBasicInfoRepository.mockGetTeamBasicInfoById(
+        expectedTeamBasicInfo: teamBasicInfo,
+      );
 
       final Stream<Driver?> driver$ = useCase(seasonDriver);
 

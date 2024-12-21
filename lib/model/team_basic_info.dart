@@ -1,10 +1,10 @@
 import 'entity.dart';
 
-class Team extends Entity {
+class TeamBasicInfo extends Entity {
   final String name;
   final String hexColor;
 
-  const Team({
+  const TeamBasicInfo({
     required super.id,
     required this.name,
     required this.hexColor,

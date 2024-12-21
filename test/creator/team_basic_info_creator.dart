@@ -1,27 +1,27 @@
-import 'package:betgrid/data/firebase/model/team_dto.dart';
-import 'package:betgrid/model/team.dart';
+import 'package:betgrid/data/firebase/model/team_basic_info_dto.dart';
+import 'package:betgrid/model/team_basic_info.dart';
 
-class TeamCreator {
+class TeamBasicInfoCreator {
   final String id;
   final String name;
   final String hexColor;
 
-  const TeamCreator({
+  const TeamBasicInfoCreator({
     this.id = '',
     this.name = '',
     this.hexColor = '',
   });
 
-  Team createEntity() {
-    return Team(
+  TeamBasicInfo createEntity() {
+    return TeamBasicInfo(
       id: id,
       name: name,
       hexColor: hexColor,
     );
   }
 
-  TeamDto createDto() {
-    return TeamDto(
+  TeamBasicInfoDto createDto() {
+    return TeamBasicInfoDto(
       id: id,
       name: name,
       hexColor: hexColor,
