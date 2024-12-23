@@ -8,7 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 import '../../../../use_case/get_player_points_use_case.dart';
-import '../../../service/date_service.dart';
 import 'bets_state.dart';
 
 @injectable
@@ -16,14 +15,12 @@ class BetsCubit extends Cubit<BetsState> {
   final AuthRepository _authRepository;
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
-  final DateService _dateService;
   StreamSubscription<String?>? _loggedUserIdListener;
 
   BetsCubit(
     this._authRepository,
     this._getPlayerPointsUseCase,
     this._getGrandPrixesWithPointsUseCase,
-    this._dateService,
   ) : super(const BetsState());
 
   @override
@@ -48,7 +45,7 @@ class BetsCubit extends Cubit<BetsState> {
   }
 
   Future<void> _initializeListenedParams(String loggedUserId) async {
-    final int currentYear = _dateService.getNow().year;
+    const int currentYear = 2025;
     final Stream<_ListenedParams> listenedParams$ = Rx.combineLatest2(
       _getPlayerPointsUseCase(
         playerId: loggedUserId,

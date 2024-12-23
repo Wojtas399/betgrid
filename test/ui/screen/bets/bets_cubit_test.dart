@@ -7,7 +7,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
@@ -15,27 +14,23 @@ void main() {
   final authRepository = MockAuthRepository();
   final getGrandPrixesWithPointsUseCase = MockGetGrandPrixesWithPointsUseCase();
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
-  final dateService = MockDateService();
 
   BetsCubit createCubit() => BetsCubit(
         authRepository,
         getPlayerPointsUseCase,
         getGrandPrixesWithPointsUseCase,
-        dateService,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(getGrandPrixesWithPointsUseCase);
     reset(getPlayerPointsUseCase);
-    reset(dateService);
   });
 
   group(
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
-      final DateTime now = DateTime(2024);
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
           grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp1').create(),
@@ -71,7 +66,6 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           getPlayerPointsUseCase.mock();
-          dateService.mockGetNow(now: now);
           getGrandPrixesWithPointsUseCase.mock(grandPrixesWithPoints: []);
         },
         act: (cubit) => cubit.initialize(),
@@ -85,13 +79,13 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: now.year,
+              season: 2025,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: now.year,
+              season: 2025,
             ),
           ).called(1);
         },
@@ -103,7 +97,6 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           getPlayerPointsUseCase.mock(points: 30);
-          dateService.mockGetNow(now: now);
           getGrandPrixesWithPointsUseCase.mock(
             grandPrixesWithPoints: grandPrixesWithPoints,
           );
@@ -121,13 +114,13 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: now.year,
+              season: 2025,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: now.year,
+              season: 2025,
             ),
           ).called(1);
         },
