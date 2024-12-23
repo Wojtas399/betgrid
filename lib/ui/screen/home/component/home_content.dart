@@ -31,8 +31,8 @@ class HomeContent extends StatelessWidget {
         listener: (_, HomeState state) => _onCubitStatusChanged(state.status),
         child: AutoTabsRouter.tabBar(
           routes: const [
-            StatsRoute(),
             BetsRoute(),
+            StatsRoute(),
             PlayersRoute(),
           ],
           builder: (context, child, _) {
@@ -50,12 +50,12 @@ class HomeContent extends StatelessWidget {
                 selectedItemColor: context.colorScheme.primary,
                 items: [
                   BottomNavigationBarItem(
-                    label: context.str.statsScreenTitle,
-                    icon: const Icon(Icons.bar_chart),
-                  ),
-                  BottomNavigationBarItem(
                     label: context.str.betsScreenTitle,
                     icon: const Icon(Icons.list),
+                  ),
+                  BottomNavigationBarItem(
+                    label: context.str.statsScreenTitle,
+                    icon: const Icon(Icons.bar_chart),
                   ),
                   BottomNavigationBarItem(
                     label: context.str.playersScreenTitle,
