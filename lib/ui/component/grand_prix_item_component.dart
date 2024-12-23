@@ -5,6 +5,7 @@ import '../../model/grand_prix.dart';
 import '../extensions/build_context_extensions.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
+import 'padding/padding_components.dart';
 import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
@@ -20,33 +21,56 @@ class GrandPrixItem extends StatelessWidget {
   });
 
   @override
+  Widget build(BuildContext context) => _Card(
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            _CountryFlag(
+              countryAlpha2Code: grandPrix.countryAlpha2Code,
+            ),
+            const GapHorizontal16(),
+            Expanded(
+              child: _GrandPrixDescription(
+                roundNumber: grandPrix.roundNumber,
+                gpName: grandPrix.name,
+                startDate: grandPrix.startDate,
+                endDate: grandPrix.endDate,
+              ),
+            ),
+            _BetPoints(points: betPoints),
+            const GapHorizontal4(),
+          ],
+        ),
+      );
+}
+
+class _Card extends StatelessWidget {
+  final Widget child;
+  final VoidCallback onPressed;
+
+  const _Card({
+    required this.child,
+    required this.onPressed,
+  });
+
+  @override
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         child: Card(
-          color: context.colorScheme.primary,
+          color: context.colorScheme.primaryContainer,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: context.colorScheme.outline.withValues(
+                alpha: 0.5,
+              ),
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
           clipBehavior: Clip.hardEdge,
           child: InkWell(
             onTap: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  _CountryFlag(
-                    countryAlpha2Code: grandPrix.countryAlpha2Code,
-                  ),
-                  const GapHorizontal16(),
-                  Expanded(
-                    child: _GrandPrixDescription(
-                      roundNumber: grandPrix.roundNumber,
-                      gpName: grandPrix.name,
-                      startDate: grandPrix.startDate,
-                      endDate: grandPrix.endDate,
-                    ),
-                  ),
-                  _BetPoints(points: betPoints),
-                  const GapHorizontal4(),
-                ],
-              ),
+            child: Padding16(
+              child: child,
             ),
           ),
         ),
@@ -63,14 +87,16 @@ class _CountryFlag extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(
-          color: context.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: context.colorScheme.outline.withValues(
+              alpha: 0.5,
+            ),
+          ),
         ),
-        padding: const EdgeInsets.all(8),
-        child: CountryFlag.fromCountryCode(
-          countryAlpha2Code,
-          height: 48,
-          width: 62,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(9),
+          child: CountryFlag.fromCountryCode(countryAlpha2Code),
         ),
       );
 }
@@ -93,18 +119,12 @@ class _GrandPrixDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BodyMedium(
-            'Runda $roundNumber',
-            color: context.colorScheme.outlineVariant,
-            fontWeight: FontWeight.bold,
+            '${context.str.round} $roundNumber',
+            fontWeight: FontWeight.w300,
           ),
-          TitleMedium(
-            gpName,
-            color: Theme.of(context).canvasColor,
-            fontWeight: FontWeight.bold,
-          ),
+          TitleMedium(gpName),
           BodyMedium(
             '${startDate.toDayAndMonthName()} - ${endDate.toDayAndMonthName()}',
-            color: context.colorScheme.outlineVariant,
           ),
         ],
       );
@@ -121,14 +141,10 @@ class _BetPoints extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           LabelLarge(
-            'Punkty',
-            color: context.colorScheme.outlineVariant,
+            context.str.points,
+            fontWeight: FontWeight.w300,
           ),
-          TitleMedium(
-            '${points ?? '--'}',
-            color: Theme.of(context).canvasColor,
-            fontWeight: FontWeight.bold,
-          ),
+          TitleMedium('${points ?? '--'}'),
         ],
       );
 }
