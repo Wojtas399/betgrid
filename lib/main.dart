@@ -19,6 +19,7 @@ void main() async {
   configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'betgrid-dev',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Intl.defaultLocale = 'pl';

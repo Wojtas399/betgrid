@@ -38,9 +38,7 @@ class HomeContent extends StatelessWidget {
           builder: (context, child, _) {
             final tabsRouter = AutoTabsRouter.of(context);
             return Scaffold(
-              appBar: HomeAppBar(
-                title: tabsRouter.current.title(context),
-              ),
+              appBar: const HomeAppBar(),
               body: SafeArea(
                 child: child,
               ),

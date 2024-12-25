@@ -3,28 +3,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/gap/gap_horizontal.dart';
+import '../../../component/text_component.dart';
 import '../../../config/router/app_router.dart';
+import '../../../extensions/build_context_extensions.dart';
 import '../cubit/home_cubit.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-
-  const HomeAppBar({
-    super.key,
-    required this.title,
-  });
+  const HomeAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        title: Text(title),
-        actions: const [
-          _Avatar(),
-          GapHorizontal8(),
-        ],
-      );
+  Widget build(BuildContext context) {
+    return AppBar(
+      centerTitle: false,
+      title: const _Logo(),
+      actions: const [
+        _Points(),
+        GapHorizontal16(),
+        _Avatar(),
+        GapHorizontal8(),
+      ],
+    );
+  }
+}
+
+class _Logo extends StatelessWidget {
+  const _Logo();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        TitleLarge(
+          'Bet',
+          fontWeight: FontWeight.bold,
+        ),
+        TitleLarge(
+          'Grid',
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ],
+    );
+  }
+}
+
+class _Points extends StatelessWidget {
+  const _Points();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      spacing: 6,
+      children: [
+        Icon(
+          Icons.star_outline_rounded,
+          color: context.colorScheme.primary,
+        ),
+        TitleLarge(
+          '122.4',
+          color: context.colorScheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
+      ],
+    );
+  }
 }
 
 class _Avatar extends StatelessWidget {

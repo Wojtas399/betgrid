@@ -57,12 +57,10 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         child: Card(
-          color: context.colorScheme.primaryContainer,
+          color: context.colorScheme.surfaceContainer,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: context.colorScheme.outline.withValues(
-                alpha: 0.5,
-              ),
+              color: context.colorScheme.surfaceContainerHighest,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
