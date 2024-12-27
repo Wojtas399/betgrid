@@ -1,7 +1,6 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/grand_prix.dart';
 import '../extensions/build_context_extensions.dart';
 import '../service/formatter_service.dart';
 import 'gap/gap_horizontal.dart';
@@ -9,14 +8,22 @@ import 'padding/padding_components.dart';
 import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
+  final String name;
+  final String countryAlpha2Code;
+  final int roundNumber;
+  final DateTime startDate;
+  final DateTime endDate;
   final double? betPoints;
-  final GrandPrix grandPrix;
   final VoidCallback onPressed;
 
   const GrandPrixItem({
     super.key,
+    required this.name,
+    required this.countryAlpha2Code,
+    required this.roundNumber,
+    required this.startDate,
+    required this.endDate,
     this.betPoints,
-    required this.grandPrix,
     required this.onPressed,
   });
 
@@ -26,15 +33,15 @@ class GrandPrixItem extends StatelessWidget {
         child: Row(
           children: [
             _CountryFlag(
-              countryAlpha2Code: grandPrix.countryAlpha2Code,
+              countryAlpha2Code: countryAlpha2Code,
             ),
             const GapHorizontal16(),
             Expanded(
               child: _GrandPrixDescription(
-                roundNumber: grandPrix.roundNumber,
-                gpName: grandPrix.name,
-                startDate: grandPrix.startDate,
-                endDate: grandPrix.endDate,
+                roundNumber: roundNumber,
+                gpName: name,
+                startDate: startDate,
+                endDate: endDate,
               ),
             ),
             _BetPoints(points: betPoints),

@@ -100,7 +100,11 @@ class _Item extends StatelessWidget {
                   durationToEnd: gpStatus.durationToStart,
                 ),
               GrandPrixItem(
-                grandPrix: gpParams.grandPrix,
+                name: gpParams.grandPrix.name,
+                countryAlpha2Code: gpParams.grandPrix.countryAlpha2Code,
+                roundNumber: gpParams.grandPrix.roundNumber,
+                startDate: gpParams.grandPrix.startDate,
+                endDate: gpParams.grandPrix.endDate,
                 betPoints: gpParams.betPoints,
                 onPressed: onPressed,
               ),
