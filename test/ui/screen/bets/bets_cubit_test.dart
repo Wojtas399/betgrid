@@ -183,24 +183,52 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
                   durationToStart: Duration(days: 1, minutes: 34),
                 ),
-                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusOngoing(),
-                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
+                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],
@@ -284,24 +312,52 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
                   durationToStart: Duration(hours: 2, minutes: 34),
                 ),
-                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
+                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],
@@ -406,22 +462,50 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusOngoing(),
-                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
+                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                seasonGrandPrixId:
+                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
+                countryAlpha2Code:
+                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
+                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
+                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],

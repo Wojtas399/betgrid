@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/grand_prix.dart';
-
 part 'bets_state.freezed.dart';
 
 enum BetsStateStatus {
@@ -29,20 +27,35 @@ class BetsState with _$BetsState {
 }
 
 class GrandPrixItemParams extends Equatable {
+  final String seasonGrandPrixId;
   final GrandPrixStatus status;
-  final GrandPrix grandPrix;
+  final String grandPrixName;
+  final String countryAlpha2Code;
+  final int roundNumber;
+  final DateTime startDate;
+  final DateTime endDate;
   final double? betPoints;
 
   const GrandPrixItemParams({
+    required this.seasonGrandPrixId,
     required this.status,
-    required this.grandPrix,
+    required this.grandPrixName,
+    required this.countryAlpha2Code,
+    required this.roundNumber,
+    required this.startDate,
+    required this.endDate,
     this.betPoints,
   });
 
   @override
   List<Object?> get props => [
+        seasonGrandPrixId,
         status,
-        grandPrix,
+        grandPrixName,
+        countryAlpha2Code,
+        roundNumber,
+        startDate,
+        endDate,
         betPoints,
       ];
 }

@@ -117,27 +117,37 @@ class BetsCubit extends Cubit<BetsState> {
                 gpEndDateTime: gp.grandPrix.endDate,
                 now: now,
               ),
-              grandPrix: gp.grandPrix,
+              seasonGrandPrixId: gp.grandPrix.seasonGrandPrixId,
+              grandPrixName: gp.grandPrix.name,
+              countryAlpha2Code: gp.grandPrix.countryAlpha2Code,
+              roundNumber: gp.grandPrix.roundNumber,
+              startDate: gp.grandPrix.startDate,
+              endDate: gp.grandPrix.endDate,
               betPoints: gp.points,
             ))
         .toList();
     final int? ongoingGpRoundNumber = grandPrixesWithStatus
         .firstWhereOrNull((gp) => gp.status is GrandPrixStatusOngoing)
-        ?.grandPrix
-        .roundNumber;
+        ?.roundNumber;
     final int nextGpRoundNumber = (ongoingGpRoundNumber ?? 0) + 1;
     final int nextGpIndex = grandPrixesWithStatus.indexWhere(
-      (gp) => gp.grandPrix.roundNumber == nextGpRoundNumber,
+      (gp) => gp.roundNumber == nextGpRoundNumber,
     );
     if (nextGpIndex > -1) {
+      final nextGp = grandPrixesWithStatus[nextGpIndex];
       grandPrixesWithStatus[nextGpIndex] = GrandPrixItemParams(
         status: GrandPrixStatusNext(
           durationToStart: _dateService.getDurationToDateFromNow(
-            grandPrixesWithStatus[nextGpIndex].grandPrix.startDate,
+            nextGp.startDate,
           ),
         ),
-        grandPrix: grandPrixesWithStatus[nextGpIndex].grandPrix,
-        betPoints: grandPrixesWithStatus[nextGpIndex].betPoints,
+        seasonGrandPrixId: nextGp.seasonGrandPrixId,
+        grandPrixName: nextGp.grandPrixName,
+        countryAlpha2Code: nextGp.countryAlpha2Code,
+        roundNumber: nextGp.roundNumber,
+        startDate: nextGp.startDate,
+        endDate: nextGp.endDate,
+        betPoints: nextGp.betPoints,
       );
     }
     return grandPrixesWithStatus;

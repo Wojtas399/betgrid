@@ -46,7 +46,7 @@ class BetsListOfBets extends StatelessWidget {
                 child: _Item(
                   gpParams: gpParams,
                   onPressed: () => _onGrandPrixPressed(
-                    gpParams.grandPrix.seasonGrandPrixId,
+                    gpParams.seasonGrandPrixId,
                     context,
                   ),
                 ),
@@ -100,11 +100,11 @@ class _Item extends StatelessWidget {
                   durationToEnd: gpStatus.durationToStart,
                 ),
               GrandPrixItem(
-                name: gpParams.grandPrix.name,
-                countryAlpha2Code: gpParams.grandPrix.countryAlpha2Code,
-                roundNumber: gpParams.grandPrix.roundNumber,
-                startDate: gpParams.grandPrix.startDate,
-                endDate: gpParams.grandPrix.endDate,
+                name: gpParams.grandPrixName,
+                countryAlpha2Code: gpParams.countryAlpha2Code,
+                roundNumber: gpParams.roundNumber,
+                startDate: gpParams.startDate,
+                endDate: gpParams.endDate,
                 betPoints: gpParams.betPoints,
                 onPressed: onPressed,
               ),

@@ -231,9 +231,15 @@ void main() {
       test(
         'should set new value if passed value is not null',
         () {
+          final grandPrix = GrandPrixV2Creator().create();
           final List<GrandPrixItemParams> newValue = [
             GrandPrixItemParams(
-              grandPrix: GrandPrixV2Creator().create(),
+              seasonGrandPrixId: grandPrix.seasonGrandPrixId,
+              grandPrixName: grandPrix.name,
+              countryAlpha2Code: grandPrix.countryAlpha2Code,
+              roundNumber: grandPrix.roundNumber,
+              startDate: grandPrix.startDate,
+              endDate: grandPrix.endDate,
               status: const GrandPrixStatusOngoing(),
             ),
           ];
