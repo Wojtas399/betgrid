@@ -7,6 +7,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/screen/mock_bets_gp_status_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
@@ -14,30 +16,61 @@ void main() {
   final authRepository = MockAuthRepository();
   final getGrandPrixesWithPointsUseCase = MockGetGrandPrixesWithPointsUseCase();
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
+  final betsGpStatusService = MockBetsGpStatusService();
+  final dateService = MockDateService();
 
   BetsCubit createCubit() => BetsCubit(
         authRepository,
         getPlayerPointsUseCase,
         getGrandPrixesWithPointsUseCase,
+        betsGpStatusService,
+        dateService,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(getGrandPrixesWithPointsUseCase);
     reset(getPlayerPointsUseCase);
+    reset(betsGpStatusService);
+    reset(dateService);
   });
 
   group(
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
+      final DateTime now = DateTime(2025, 1, 1);
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp1').create(),
+          grandPrix: GrandPrixV2Creator(
+            seasonGrandPrixId: 'gp4',
+            roundNumber: 4,
+          ).create(),
+          points: 10.0,
+        ),
+        GrandPrixWithPoints(
+          grandPrix: GrandPrixV2Creator(
+            seasonGrandPrixId: 'gp1',
+            roundNumber: 1,
+            startDate: DateTime(2025, 1, 1),
+            endDate: DateTime(2025, 1, 2),
+          ).create(),
           points: 20.0,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp2').create(),
+          grandPrix: GrandPrixV2Creator(
+            seasonGrandPrixId: 'gp3',
+            roundNumber: 3,
+            startDate: DateTime(2025, 2, 1),
+            endDate: DateTime(2025, 2, 2),
+          ).create(),
+          points: 30.0,
+        ),
+        GrandPrixWithPoints(
+          grandPrix: GrandPrixV2Creator(
+            seasonGrandPrixId: 'gp2',
+            roundNumber: 2,
+          ).create(),
           points: 10.0,
         ),
       ];
@@ -67,6 +100,7 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           getPlayerPointsUseCase.mock();
           getGrandPrixesWithPointsUseCase.mock(grandPrixesWithPoints: []);
+          dateService.mockGetNowStream(expectedNow: now);
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
@@ -88,17 +122,48 @@ void main() {
               season: 2025,
             ),
           ).called(1);
+          verify(dateService.getNowStream).called(1);
         },
       );
 
       blocTest(
-        "should emit player's total points and grand prixes with points",
+        'should define status for each grand prix and should find first gp '
+        'after ongoing gp and should set GrandPrixStatusNext for it with '
+        'calculated duration to start',
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           getPlayerPointsUseCase.mock(points: 30);
           getGrandPrixesWithPointsUseCase.mock(
             grandPrixesWithPoints: grandPrixesWithPoints,
+          );
+          dateService.mockGetNowStream(expectedNow: now);
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[0].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusUpcoming());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[1].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusFinished());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[2].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusUpcoming());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints.last.grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusOngoing());
+          dateService.mockGetDurationToDateFromNow(
+            duration: const Duration(days: 1, minutes: 34),
           );
         },
         act: (cubit) => cubit.initialize(),
@@ -107,7 +172,30 @@ void main() {
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
             totalPoints: 30,
-            grandPrixesWithPoints: grandPrixesWithPoints,
+            grandPrixItems: [
+              GrandPrixItemParams(
+                status: const GrandPrixStatusUpcoming(),
+                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                betPoints: grandPrixesWithPoints[0].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusFinished(),
+                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                betPoints: grandPrixesWithPoints[1].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusNext(
+                  durationToStart: Duration(days: 1, minutes: 34),
+                ),
+                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                betPoints: grandPrixesWithPoints[2].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusOngoing(),
+                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                betPoints: grandPrixesWithPoints.last.points,
+              ),
+            ],
           )
         ],
         verify: (_) {
@@ -121,6 +209,240 @@ void main() {
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
               season: 2025,
+            ),
+          ).called(1);
+          verify(dateService.getNowStream).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[0].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[1].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[2].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints.last.grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => dateService.getDurationToDateFromNow(
+              grandPrixesWithPoints[2].grandPrix.startDate,
+            ),
+          ).called(1);
+        },
+      );
+
+      blocTest(
+        'should define status for each grand prix and should set '
+        'GrandPrixStatusNext for gp with roundNumber equal to 1 if there is no '
+        'gp with ongoing status',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          getPlayerPointsUseCase.mock(points: 30);
+          getGrandPrixesWithPointsUseCase.mock(
+            grandPrixesWithPoints: grandPrixesWithPoints,
+          );
+          dateService.mockGetNowStream(expectedNow: now);
+          betsGpStatusService.mockDefineStatusForGp(
+            expectedGpStatus: const GrandPrixStatusUpcoming(),
+          );
+          dateService.mockGetDurationToDateFromNow(
+            duration: const Duration(hours: 2, minutes: 34),
+          );
+        },
+        act: (cubit) => cubit.initialize(),
+        expect: () => [
+          BetsState(
+            status: BetsStateStatus.completed,
+            loggedUserId: loggedUserId,
+            totalPoints: 30,
+            grandPrixItems: [
+              GrandPrixItemParams(
+                status: const GrandPrixStatusUpcoming(),
+                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                betPoints: grandPrixesWithPoints[0].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusNext(
+                  durationToStart: Duration(hours: 2, minutes: 34),
+                ),
+                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                betPoints: grandPrixesWithPoints[1].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusUpcoming(),
+                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                betPoints: grandPrixesWithPoints[2].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusUpcoming(),
+                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                betPoints: grandPrixesWithPoints.last.points,
+              ),
+            ],
+          )
+        ],
+        verify: (_) {
+          verify(
+            () => getPlayerPointsUseCase.call(
+              playerId: loggedUserId,
+              season: 2025,
+            ),
+          ).called(1);
+          verify(
+            () => getGrandPrixesWithPointsUseCase.call(
+              playerId: loggedUserId,
+              season: 2025,
+            ),
+          ).called(1);
+          verify(dateService.getNowStream).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[0].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[1].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[2].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints.last.grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => dateService.getDurationToDateFromNow(
+              grandPrixesWithPoints[1].grandPrix.startDate,
+            ),
+          ).called(1);
+        },
+      );
+
+      blocTest(
+        'should define status for each grand prix and should do nothing more '
+        'if there is no gp after ongoing gp',
+        build: () => createCubit(),
+        setUp: () {
+          authRepository.mockGetLoggedUserId(loggedUserId);
+          getPlayerPointsUseCase.mock(points: 30);
+          getGrandPrixesWithPointsUseCase.mock(
+            grandPrixesWithPoints: grandPrixesWithPoints,
+          );
+          dateService.mockGetNowStream(expectedNow: now);
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[0].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusOngoing());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[1].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusFinished());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[2].grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusFinished());
+          when(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints.last.grandPrix,
+              now: now,
+            ),
+          ).thenReturn(const GrandPrixStatusFinished());
+        },
+        act: (cubit) => cubit.initialize(),
+        expect: () => [
+          BetsState(
+            status: BetsStateStatus.completed,
+            loggedUserId: loggedUserId,
+            totalPoints: 30,
+            grandPrixItems: [
+              GrandPrixItemParams(
+                status: const GrandPrixStatusOngoing(),
+                grandPrix: grandPrixesWithPoints[0].grandPrix,
+                betPoints: grandPrixesWithPoints[0].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusFinished(),
+                grandPrix: grandPrixesWithPoints[1].grandPrix,
+                betPoints: grandPrixesWithPoints[1].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusFinished(),
+                grandPrix: grandPrixesWithPoints[2].grandPrix,
+                betPoints: grandPrixesWithPoints[2].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusFinished(),
+                grandPrix: grandPrixesWithPoints.last.grandPrix,
+                betPoints: grandPrixesWithPoints.last.points,
+              ),
+            ],
+          )
+        ],
+        verify: (_) {
+          verify(
+            () => getPlayerPointsUseCase.call(
+              playerId: loggedUserId,
+              season: 2025,
+            ),
+          ).called(1);
+          verify(
+            () => getGrandPrixesWithPointsUseCase.call(
+              playerId: loggedUserId,
+              season: 2025,
+            ),
+          ).called(1);
+          verify(dateService.getNowStream).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[0].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[1].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints[2].grandPrix,
+              now: now,
+            ),
+          ).called(1);
+          verify(
+            () => betsGpStatusService.defineStatusForGp(
+              gp: grandPrixesWithPoints.last.grandPrix,
+              now: now,
             ),
           ).called(1);
         },

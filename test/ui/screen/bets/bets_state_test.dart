@@ -1,5 +1,4 @@
 import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
-import 'package:betgrid/use_case/get_grand_prixes_with_points_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../creator/grand_prix_v2_creator.dart';
@@ -12,7 +11,7 @@ void main() {
         status: BetsStateStatus.loading,
         loggedUserId: null,
         totalPoints: null,
-        grandPrixesWithPoints: null,
+        grandPrixItems: null,
       );
 
       const BetsState defaultState = BetsState();
@@ -225,43 +224,125 @@ void main() {
   );
 
   group(
-    'copyWith grandPrixesWithPoints',
+    'copyWith grandPrixItems',
     () {
       BetsState state = const BetsState();
 
       test(
         'should set new value if passed value is not null',
         () {
-          final List<GrandPrixWithPoints> newValue = [
-            GrandPrixWithPoints(
+          final List<GrandPrixItemParams> newValue = [
+            GrandPrixItemParams(
               grandPrix: GrandPrixV2Creator().create(),
+              status: const GrandPrixStatusOngoing(),
             ),
           ];
 
-          state = state.copyWith(grandPrixesWithPoints: newValue);
+          state = state.copyWith(grandPrixItems: newValue);
 
-          expect(state.grandPrixesWithPoints, newValue);
+          expect(state.grandPrixItems, newValue);
         },
       );
 
       test(
         'should not change current value if passed value is not specified',
         () {
-          final List<GrandPrixWithPoints>? currentValue =
-              state.grandPrixesWithPoints;
+          final List<GrandPrixItemParams>? currentValue = state.grandPrixItems;
 
           state = state.copyWith();
 
-          expect(state.grandPrixesWithPoints, currentValue);
+          expect(state.grandPrixItems, currentValue);
         },
       );
 
       test(
         'should set null if passed value is null',
         () {
-          state = state.copyWith(grandPrixesWithPoints: null);
+          state = state.copyWith(grandPrixItems: null);
 
-          expect(state.grandPrixesWithPoints, null);
+          expect(state.grandPrixItems, null);
+        },
+      );
+    },
+  );
+
+  group(
+    'GrandPrixStatus isOngoing',
+    () {
+      test(
+        'should return true if status is set as GrandPrixStatusOngoing',
+        () {
+          const status = GrandPrixStatusOngoing();
+
+          expect(status.isOngoing, true);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusFinished',
+        () {
+          const status = GrandPrixStatusFinished();
+
+          expect(status.isOngoing, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusNext',
+        () {
+          const status = GrandPrixStatusNext(durationToStart: Duration.zero);
+
+          expect(status.isOngoing, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusUpcoming',
+        () {
+          const status = GrandPrixStatusUpcoming();
+
+          expect(status.isOngoing, false);
+        },
+      );
+    },
+  );
+
+  group(
+    'GrandPrixStatus isNext',
+    () {
+      test(
+        'should return true if status is set as GrandPrixStatusNext',
+        () {
+          const status = GrandPrixStatusNext(durationToStart: Duration.zero);
+
+          expect(status.isNext, true);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusOngoing',
+        () {
+          const status = GrandPrixStatusOngoing();
+
+          expect(status.isNext, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusFinished',
+        () {
+          const status = GrandPrixStatusFinished();
+
+          expect(status.isNext, false);
+        },
+      );
+
+      test(
+        'should return false if status is set as GrandPrixStatusUpcoming',
+        () {
+          const status = GrandPrixStatusUpcoming();
+
+          expect(status.isNext, false);
         },
       );
     },
