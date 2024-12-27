@@ -2,8 +2,6 @@ import 'package:betgrid/ui/screen/bets/cubit/bets_gp_status_service.dart';
 import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../creator/grand_prix_v2_creator.dart';
-
 void main() {
   const service = BetsGpStatusService();
 
@@ -15,12 +13,12 @@ void main() {
         'date',
         () {
           final now = DateTime(2025, 2, 1, 14, 30);
-          final gp = GrandPrixV2Creator(
-            startDate: DateTime(2025, 2, 1, 16, 30),
-          ).create();
+          final gpStartDateTime = DateTime(2025, 2, 1, 16, 30);
+          final gpEndDateTime = DateTime(2025, 2, 1, 18, 30);
 
           final status = service.defineStatusForGp(
-            gp: gp,
+            gpStartDateTime: gpStartDateTime,
+            gpEndDateTime: gpEndDateTime,
             now: now,
           );
 
@@ -33,12 +31,12 @@ void main() {
         'date',
         () {
           final now = DateTime(2025, 2, 1, 14, 30);
-          final gp = GrandPrixV2Creator(
-            endDate: DateTime(2025, 2, 1, 11, 30),
-          ).create();
+          final gpStartDateTime = DateTime(2025, 2, 1, 16, 30);
+          final gpEndDateTime = DateTime(2025, 2, 1, 18, 30);
 
           final status = service.defineStatusForGp(
-            gp: gp,
+            gpStartDateTime: gpStartDateTime,
+            gpEndDateTime: gpEndDateTime,
             now: now,
           );
 
@@ -51,13 +49,12 @@ void main() {
         'date and before gp end date',
         () {
           final now = DateTime(2025, 2, 2);
-          final gp = GrandPrixV2Creator(
-            startDate: DateTime(2025, 2, 1),
-            endDate: DateTime(2025, 2, 3),
-          ).create();
+          final gpStartDateTime = DateTime(2025, 2, 1);
+          final gpEndDateTime = DateTime(2025, 2, 3);
 
           final status = service.defineStatusForGp(
-            gp: gp,
+            gpStartDateTime: gpStartDateTime,
+            gpEndDateTime: gpEndDateTime,
             now: now,
           );
 
@@ -69,13 +66,12 @@ void main() {
         'should return GrandPrixStatusFinished if now date is after gp end date',
         () {
           final now = DateTime(2025, 2, 4);
-          final gp = GrandPrixV2Creator(
-            startDate: DateTime(2025, 2, 1),
-            endDate: DateTime(2025, 2, 3),
-          ).create();
+          final gpStartDateTime = DateTime(2025, 2, 1);
+          final gpEndDateTime = DateTime(2025, 2, 3);
 
           final status = service.defineStatusForGp(
-            gp: gp,
+            gpStartDateTime: gpStartDateTime,
+            gpEndDateTime: gpEndDateTime,
             now: now,
           );
 
@@ -88,13 +84,12 @@ void main() {
         'date',
         () {
           final now = DateTime(2025, 2, 1);
-          final gp = GrandPrixV2Creator(
-            startDate: DateTime(2025, 2, 3),
-            endDate: DateTime(2025, 2, 4),
-          ).create();
+          final gpStartDateTime = DateTime(2025, 2, 3);
+          final gpEndDateTime = DateTime(2025, 2, 4);
 
           final status = service.defineStatusForGp(
-            gp: gp,
+            gpStartDateTime: gpStartDateTime,
+            gpEndDateTime: gpEndDateTime,
             now: now,
           );
 

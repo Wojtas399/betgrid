@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../model/grand_prix.dart';
 import 'bets_state.dart';
 
 @injectable
@@ -8,7 +7,8 @@ class BetsGpStatusService {
   const BetsGpStatusService();
 
   GrandPrixStatus defineStatusForGp({
-    required GrandPrix gp,
+    required DateTime gpStartDateTime,
+    required DateTime gpEndDateTime,
     required DateTime now,
   }) {
     final DateTime nowDate = DateTime(
@@ -17,14 +17,14 @@ class BetsGpStatusService {
       now.day,
     );
     final DateTime gpStartDate = DateTime(
-      gp.startDate.year,
-      gp.startDate.month,
-      gp.startDate.day,
+      gpStartDateTime.year,
+      gpStartDateTime.month,
+      gpStartDateTime.day,
     );
     final DateTime gpEndDate = DateTime(
-      gp.endDate.year,
-      gp.endDate.month,
-      gp.endDate.day,
+      gpEndDateTime.year,
+      gpEndDateTime.month,
+      gpEndDateTime.day,
     );
     if (nowDate.isAtSameMomentAs(gpStartDate) ||
         nowDate.isAtSameMomentAs(gpEndDate) ||

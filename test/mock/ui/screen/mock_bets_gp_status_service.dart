@@ -22,7 +22,8 @@ class MockBetsGpStatusService extends Mock implements BetsGpStatusService {
   }) {
     when(
       () => defineStatusForGp(
-        gp: any(named: 'gp'),
+        gpStartDateTime: any(named: 'gpStartDateTime'),
+        gpEndDateTime: any(named: 'gpEndDateTime'),
         now: any(named: 'now'),
       ),
     ).thenReturn(expectedGpStatus);
