@@ -1,14 +1,14 @@
-import 'package:betgrid/model/grand_prix.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
+import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_history_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../creator/player_creator.dart';
+import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
 import '../../../mock/use_case/mock_get_finished_grand_prixes_from_current_season_use_case.dart';
@@ -39,9 +39,9 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(players: []);
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedGrandPrixes: [
-          GrandPrixV2Creator(seasonGrandPrixId: 'sgp1').create(),
-          GrandPrixV2Creator(seasonGrandPrixId: 'sgp2').create(),
+        finishedSeasonGrandPrixes: [
+          SeasonGrandPrixCreator(id: 'sgp1').createEntity(),
+          SeasonGrandPrixCreator(id: 'sgp2').createEntity(),
         ],
       );
 
@@ -63,7 +63,7 @@ void main() {
         ],
       );
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedGrandPrixes: [],
+        finishedSeasonGrandPrixes: [],
       );
 
       final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
@@ -83,50 +83,50 @@ void main() {
         const PlayerCreator(id: 'p2').createEntity(),
         const PlayerCreator(id: 'p3').createEntity(),
       ];
-      final List<GrandPrix> finishedGrandPrixes = [
-        GrandPrixV2Creator(seasonGrandPrixId: 'sgp1', roundNumber: 2).create(),
-        GrandPrixV2Creator(seasonGrandPrixId: 'sgp2', roundNumber: 3).create(),
-        GrandPrixV2Creator(seasonGrandPrixId: 'sgp3', roundNumber: 1).create(),
+      final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
+        SeasonGrandPrixCreator(id: 'sgp1', roundNumber: 2).createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp2', roundNumber: 3).createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp3', roundNumber: 1).createEntity(),
       ];
       final List<GrandPrixBetPoints> grandPrixesBetPoints = [
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          seasonGrandPrixId: finishedGrandPrixes.first.seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
           totalPoints: 20,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          seasonGrandPrixId: finishedGrandPrixes[1].seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
           totalPoints: 12.2,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.first.id,
-          seasonGrandPrixId: finishedGrandPrixes.last.seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          seasonGrandPrixId: finishedGrandPrixes.first.seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
           totalPoints: 5.5,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          seasonGrandPrixId: finishedGrandPrixes[1].seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players[1].id,
-          seasonGrandPrixId: finishedGrandPrixes.last.seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
           totalPoints: 9,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
-          seasonGrandPrixId: finishedGrandPrixes.first.seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
           totalPoints: 15,
         ).createEntity(),
         GrandPrixBetPointsCreator(
           playerId: players.last.id,
-          seasonGrandPrixId: finishedGrandPrixes[1].seasonGrandPrixId,
+          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
           totalPoints: 17,
         ).createEntity(),
       ];
@@ -188,7 +188,7 @@ void main() {
       );
       playerRepository.mockGetAllPlayers(players: players);
       getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedGrandPrixes: finishedGrandPrixes,
+        finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
@@ -205,7 +205,7 @@ void main() {
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
-              finishedGrandPrixes.map((gp) => gp.seasonGrandPrixId).toList(),
+              finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
         ),
       ).called(1);
     },
