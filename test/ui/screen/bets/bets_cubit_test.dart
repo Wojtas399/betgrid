@@ -5,7 +5,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/ui/screen/mock_bets_gp_status_service.dart';
@@ -42,39 +41,39 @@ void main() {
       final DateTime now = DateTime(2025, 1, 1);
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(
-            seasonGrandPrixId: 'gp4',
-            roundNumber: 4,
-            startDate: DateTime(2025, 4, 1),
-            endDate: DateTime(2025, 4, 2),
-          ).create(),
+          seasonGrandPrixId: 'gp4',
+          name: 'gp4',
+          countryAlpha2Code: 'FR',
+          roundNumber: 4,
+          startDate: DateTime(2025, 4, 1),
+          endDate: DateTime(2025, 4, 2),
           points: 10.0,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(
-            seasonGrandPrixId: 'gp1',
-            roundNumber: 1,
-            startDate: DateTime(2025, 1, 1),
-            endDate: DateTime(2025, 1, 2),
-          ).create(),
+          seasonGrandPrixId: 'gp1',
+          name: 'gp1',
+          countryAlpha2Code: 'FR',
+          roundNumber: 1,
+          startDate: DateTime(2025, 1, 1),
+          endDate: DateTime(2025, 1, 2),
           points: 20.0,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(
-            seasonGrandPrixId: 'gp3',
-            roundNumber: 3,
-            startDate: DateTime(2025, 3, 1),
-            endDate: DateTime(2025, 3, 2),
-          ).create(),
+          seasonGrandPrixId: 'gp3',
+          name: 'gp3',
+          countryAlpha2Code: 'FR',
+          roundNumber: 3,
+          startDate: DateTime(2025, 3, 1),
+          endDate: DateTime(2025, 3, 2),
           points: 30.0,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(
-            seasonGrandPrixId: 'gp2',
-            roundNumber: 2,
-            startDate: DateTime(2025, 2, 1),
-            endDate: DateTime(2025, 2, 2),
-          ).create(),
+          seasonGrandPrixId: 'gp2',
+          name: 'gp2',
+          countryAlpha2Code: 'FR',
+          roundNumber: 2,
+          startDate: DateTime(2025, 2, 1),
+          endDate: DateTime(2025, 2, 2),
           points: 10.0,
         ),
       ];
@@ -144,29 +143,29 @@ void main() {
           dateService.mockGetNowStream(expectedNow: now);
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[0].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[0].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[0].startDate,
+              gpEndDateTime: grandPrixesWithPoints[0].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusUpcoming());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[1].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[1].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[1].startDate,
+              gpEndDateTime: grandPrixesWithPoints[1].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusFinished());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[2].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[2].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[2].startDate,
+              gpEndDateTime: grandPrixesWithPoints[2].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusUpcoming());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints.last.grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints.last.grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints.last.startDate,
+              gpEndDateTime: grandPrixesWithPoints.last.endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusOngoing());
@@ -183,52 +182,44 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].name,
+                countryAlpha2Code: grandPrixesWithPoints[1].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].roundNumber,
+                startDate: grandPrixesWithPoints[1].startDate,
+                endDate: grandPrixesWithPoints[1].endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
                   durationToStart: Duration(days: 1, minutes: 34),
                 ),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[2].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].name,
+                countryAlpha2Code: grandPrixesWithPoints[2].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].roundNumber,
+                startDate: grandPrixesWithPoints[2].startDate,
+                endDate: grandPrixesWithPoints[2].endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusOngoing(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
-                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.name,
+                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.roundNumber,
+                startDate: grandPrixesWithPoints.last.startDate,
+                endDate: grandPrixesWithPoints.last.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],
@@ -250,35 +241,35 @@ void main() {
           verify(dateService.getNowStream).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[0].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[0].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[0].startDate,
+              gpEndDateTime: grandPrixesWithPoints[0].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[1].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[1].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[1].startDate,
+              gpEndDateTime: grandPrixesWithPoints[1].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[2].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[2].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[2].startDate,
+              gpEndDateTime: grandPrixesWithPoints[2].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints.last.grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints.last.grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints.last.startDate,
+              gpEndDateTime: grandPrixesWithPoints.last.endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => dateService.getDurationToDateFromNow(
-              grandPrixesWithPoints[2].grandPrix.startDate,
+              grandPrixesWithPoints[2].startDate,
             ),
           ).called(1);
         },
@@ -312,52 +303,44 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
                   durationToStart: Duration(hours: 2, minutes: 34),
                 ),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].name,
+                countryAlpha2Code: grandPrixesWithPoints[1].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].roundNumber,
+                startDate: grandPrixesWithPoints[1].startDate,
+                endDate: grandPrixesWithPoints[1].endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[2].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].name,
+                countryAlpha2Code: grandPrixesWithPoints[2].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].roundNumber,
+                startDate: grandPrixesWithPoints[2].startDate,
+                endDate: grandPrixesWithPoints[2].endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
-                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.name,
+                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.roundNumber,
+                startDate: grandPrixesWithPoints.last.startDate,
+                endDate: grandPrixesWithPoints.last.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],
@@ -379,35 +362,35 @@ void main() {
           verify(dateService.getNowStream).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[0].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[0].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[0].startDate,
+              gpEndDateTime: grandPrixesWithPoints[0].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[1].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[1].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[1].startDate,
+              gpEndDateTime: grandPrixesWithPoints[1].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[2].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[2].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[2].startDate,
+              gpEndDateTime: grandPrixesWithPoints[2].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints.last.grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints.last.grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints.last.startDate,
+              gpEndDateTime: grandPrixesWithPoints.last.endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => dateService.getDurationToDateFromNow(
-              grandPrixesWithPoints[1].grandPrix.startDate,
+              grandPrixesWithPoints[1].startDate,
             ),
           ).called(1);
         },
@@ -426,29 +409,29 @@ void main() {
           dateService.mockGetNowStream(expectedNow: now);
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[0].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[0].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[0].startDate,
+              gpEndDateTime: grandPrixesWithPoints[0].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusOngoing());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[1].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[1].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[1].startDate,
+              gpEndDateTime: grandPrixesWithPoints[1].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusFinished());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[2].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[2].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[2].startDate,
+              gpEndDateTime: grandPrixesWithPoints[2].endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusFinished());
           when(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints.last.grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints.last.grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints.last.startDate,
+              gpEndDateTime: grandPrixesWithPoints.last.endDate,
               now: now,
             ),
           ).thenReturn(const GrandPrixStatusFinished());
@@ -462,50 +445,42 @@ void main() {
             grandPrixItems: [
               GrandPrixItemParams(
                 status: const GrandPrixStatusOngoing(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[0].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[0].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[0].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[0].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
                 betPoints: grandPrixesWithPoints[0].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[1].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[1].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[1].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[1].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[1].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[1].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[1].name,
+                countryAlpha2Code: grandPrixesWithPoints[1].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[1].roundNumber,
+                startDate: grandPrixesWithPoints[1].startDate,
+                endDate: grandPrixesWithPoints[1].endDate,
                 betPoints: grandPrixesWithPoints[1].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints[2].grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[2].grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints[2].grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[2].grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints[2].grandPrix.startDate,
-                endDate: grandPrixesWithPoints[2].grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints[2].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[2].name,
+                countryAlpha2Code: grandPrixesWithPoints[2].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[2].roundNumber,
+                startDate: grandPrixesWithPoints[2].startDate,
+                endDate: grandPrixesWithPoints[2].endDate,
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
-                seasonGrandPrixId:
-                    grandPrixesWithPoints.last.grandPrix.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.grandPrix.name,
-                countryAlpha2Code:
-                    grandPrixesWithPoints.last.grandPrix.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.grandPrix.roundNumber,
-                startDate: grandPrixesWithPoints.last.grandPrix.startDate,
-                endDate: grandPrixesWithPoints.last.grandPrix.endDate,
+                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints.last.name,
+                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints.last.roundNumber,
+                startDate: grandPrixesWithPoints.last.startDate,
+                endDate: grandPrixesWithPoints.last.endDate,
                 betPoints: grandPrixesWithPoints.last.points,
               ),
             ],
@@ -527,29 +502,29 @@ void main() {
           verify(dateService.getNowStream).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[0].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[0].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[0].startDate,
+              gpEndDateTime: grandPrixesWithPoints[0].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[1].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[1].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[1].startDate,
+              gpEndDateTime: grandPrixesWithPoints[1].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints[2].grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints[2].grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints[2].startDate,
+              gpEndDateTime: grandPrixesWithPoints[2].endDate,
               now: now,
             ),
           ).called(1);
           verify(
             () => betsGpStatusService.defineStatusForGp(
-              gpStartDateTime: grandPrixesWithPoints.last.grandPrix.startDate,
-              gpEndDateTime: grandPrixesWithPoints.last.grandPrix.endDate,
+              gpStartDateTime: grandPrixesWithPoints.last.startDate,
+              gpEndDateTime: grandPrixesWithPoints.last.endDate,
               now: now,
             ),
           ).called(1);

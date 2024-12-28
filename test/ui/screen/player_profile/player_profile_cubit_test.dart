@@ -6,7 +6,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_v2_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/data/repository/mock_player_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
@@ -35,10 +34,22 @@ void main() {
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp1').create(),
+          seasonGrandPrixId: 'gp1',
+          name: 'gp1',
+          countryAlpha2Code: 'FR',
+          roundNumber: 1,
+          startDate: DateTime(2024, 1, 1),
+          endDate: DateTime(2024, 1, 1),
+          points: 10.2,
         ),
         GrandPrixWithPoints(
-          grandPrix: GrandPrixV2Creator(seasonGrandPrixId: 'gp2').create(),
+          seasonGrandPrixId: 'gp2',
+          name: 'gp2',
+          countryAlpha2Code: 'FR',
+          roundNumber: 2,
+          startDate: DateTime(2024, 1, 1),
+          endDate: DateTime(2024, 1, 1),
+          points: 10.2,
         ),
       ];
 

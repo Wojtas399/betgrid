@@ -31,16 +31,14 @@ class SliverGrandPrixesList extends SliverPadding {
                       return ScrollAnimatedItem(
                         child: GrandPrixItem(
                           betPoints: item.points,
-                          name: item.grandPrix.name,
-                          countryAlpha2Code: item.grandPrix.countryAlpha2Code,
-                          roundNumber: item.grandPrix.roundNumber,
-                          startDate: item.grandPrix.startDate,
-                          endDate: item.grandPrix.endDate,
-                          onPressed: () {
-                            onGrandPrixPressed(
-                              item.grandPrix.seasonGrandPrixId,
-                            );
-                          },
+                          name: item.name,
+                          countryAlpha2Code: item.countryAlpha2Code,
+                          roundNumber: item.roundNumber,
+                          startDate: item.startDate,
+                          endDate: item.endDate,
+                          onPressed: () => onGrandPrixPressed(
+                            item.seasonGrandPrixId,
+                          ),
                         ),
                       );
                     },

@@ -113,16 +113,16 @@ class BetsCubit extends Cubit<BetsState> {
     final grandPrixesWithStatus = grandPrixesWithPoints
         .map((gp) => GrandPrixItemParams(
               status: _gpStatusService.defineStatusForGp(
-                gpStartDateTime: gp.grandPrix.startDate,
-                gpEndDateTime: gp.grandPrix.endDate,
+                gpStartDateTime: gp.startDate,
+                gpEndDateTime: gp.endDate,
                 now: now,
               ),
-              seasonGrandPrixId: gp.grandPrix.seasonGrandPrixId,
-              grandPrixName: gp.grandPrix.name,
-              countryAlpha2Code: gp.grandPrix.countryAlpha2Code,
-              roundNumber: gp.grandPrix.roundNumber,
-              startDate: gp.grandPrix.startDate,
-              endDate: gp.grandPrix.endDate,
+              seasonGrandPrixId: gp.seasonGrandPrixId,
+              grandPrixName: gp.name,
+              countryAlpha2Code: gp.countryAlpha2Code,
+              roundNumber: gp.roundNumber,
+              startDate: gp.startDate,
+              endDate: gp.endDate,
               betPoints: gp.points,
             ))
         .toList();
