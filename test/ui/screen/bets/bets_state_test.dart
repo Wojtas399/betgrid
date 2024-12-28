@@ -1,8 +1,6 @@
 import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../creator/grand_prix_v2_creator.dart';
-
 void main() {
   test(
     'default state',
@@ -231,15 +229,14 @@ void main() {
       test(
         'should set new value if passed value is not null',
         () {
-          final grandPrix = GrandPrixV2Creator().create();
           final List<GrandPrixItemParams> newValue = [
             GrandPrixItemParams(
-              seasonGrandPrixId: grandPrix.seasonGrandPrixId,
-              grandPrixName: grandPrix.name,
-              countryAlpha2Code: grandPrix.countryAlpha2Code,
-              roundNumber: grandPrix.roundNumber,
-              startDate: grandPrix.startDate,
-              endDate: grandPrix.endDate,
+              seasonGrandPrixId: 'sgp1',
+              grandPrixName: 'Grand Prix 1',
+              countryAlpha2Code: 'US',
+              roundNumber: 1,
+              startDate: DateTime(2025, 1, 1),
+              endDate: DateTime(2025, 1, 2),
               status: const GrandPrixStatusOngoing(),
             ),
           ];
