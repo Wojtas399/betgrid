@@ -1,11 +1,11 @@
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_quali_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/driver_creator.dart';
+import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
@@ -13,12 +13,13 @@ import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
-import '../../../mock/use_case/mock_get_all_drivers_from_season_use_case.dart';
+import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
-  final getAllDriversFromSeasonUseCase = MockGetAllDriversFromSeasonUseCase();
+  final getDetailsForAllDriversFromSeasonUseCase =
+      MockGetDetailsForAllDriversFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
@@ -26,7 +27,7 @@ void main() {
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
-    getAllDriversFromSeasonUseCase,
+    getDetailsForAllDriversFromSeasonUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
@@ -38,9 +39,9 @@ void main() {
     'has data corresponding to its position',
     () async {
       const int season = 2024;
-      final List<Driver> allDrivers = List.generate(
+      final List<DriverDetails> allDriverDetails = List.generate(
         20,
-        (int driverIndex) => DriverCreator(
+        (int driverIndex) => DriverDetailsCreator(
           seasonDriverId: 'd${driverIndex + 1}',
         ).create(),
       );
@@ -104,122 +105,122 @@ void main() {
       final List<SingleDriverBet> expectedBets = [
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: allDrivers.first,
-          resultDriver: allDrivers.first,
+          betDriver: allDriverDetails.first,
+          resultDriver: allDriverDetails.first,
           points: 1,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[2],
+          resultDriver: allDriverDetails[2],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[3],
+          resultDriver: allDriverDetails[3],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[18],
+          resultDriver: allDriverDetails[18],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: allDrivers[4],
-          resultDriver: allDrivers[4],
+          betDriver: allDriverDetails[4],
+          resultDriver: allDriverDetails[4],
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: allDrivers[5],
-          resultDriver: allDrivers[5],
-          points: 2,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDrivers[6],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDrivers[7],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDrivers[8],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: allDrivers[8],
-          resultDriver: allDrivers[1],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDrivers[9],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDrivers[10],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: allDrivers[12],
-          resultDriver: allDrivers[12],
+          betDriver: allDriverDetails[5],
+          resultDriver: allDriverDetails[5],
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[11],
+          resultDriver: allDriverDetails[6],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[14],
+          resultDriver: allDriverDetails[7],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[13],
+          resultDriver: allDriverDetails[8],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: allDriverDetails[8],
+          resultDriver: allDriverDetails[1],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[17],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: allDrivers[17],
-          resultDriver: allDrivers[15],
+          resultDriver: allDriverDetails[9],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
           betDriver: null,
-          resultDriver: allDrivers[16],
+          resultDriver: allDriverDetails[10],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.win,
+          betDriver: allDriverDetails[12],
+          resultDriver: allDriverDetails[12],
+          points: 2,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: null,
+          resultDriver: allDriverDetails[11],
           points: 0,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
-          betDriver: allDrivers[7],
-          resultDriver: allDrivers[19],
+          betDriver: null,
+          resultDriver: allDriverDetails[14],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: null,
+          resultDriver: allDriverDetails[13],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: null,
+          resultDriver: allDriverDetails[17],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: allDriverDetails[17],
+          resultDriver: allDriverDetails[15],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: null,
+          resultDriver: allDriverDetails[16],
+          points: 0,
+        ),
+        SingleDriverBet(
+          status: BetStatus.loss,
+          betDriver: allDriverDetails[7],
+          resultDriver: allDriverDetails[19],
           points: 0,
         ),
       ];
@@ -234,7 +235,9 @@ void main() {
               resultQualiStandingsBySeasonDriverIds,
         ).createEntity(),
       );
-      getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
+      getDetailsForAllDriversFromSeasonUseCase.mock(
+        expectedDetailsOfAllDriversFromSeason: allDriverDetails,
+      );
       grandPrixBetPointsRepository
           .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: GrandPrixBetPoints(
@@ -268,7 +271,9 @@ void main() {
           seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);
-      verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
+      verify(
+        () => getDetailsForAllDriversFromSeasonUseCase.call(season),
+      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(

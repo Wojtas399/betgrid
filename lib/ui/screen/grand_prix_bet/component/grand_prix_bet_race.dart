@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
@@ -251,8 +251,8 @@ class _DnfDrivers extends StatelessWidget {
     final MultipleDriversBet? bet = context.select(
       (GrandPrixBetCubit cubit) => cubit.state.raceDnfDriversBet,
     );
-    final List<Driver?>? betDnfDrivers = bet?.betDrivers;
-    final List<Driver?>? resultDnfDrivers = bet?.resultDrivers;
+    final List<DriverDetails?>? betDnfDrivers = bet?.betDrivers;
+    final List<DriverDetails?>? resultDnfDrivers = bet?.resultDrivers;
 
     return GrandPrixBetItem(
       label: 'DNF',

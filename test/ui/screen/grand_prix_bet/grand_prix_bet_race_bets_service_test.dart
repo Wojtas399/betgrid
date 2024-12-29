@@ -1,4 +1,4 @@
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
@@ -8,7 +8,7 @@ import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/driver_creator.dart';
+import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
@@ -19,14 +19,14 @@ import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/data/repository/mock_season_driver_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
-import '../../../mock/use_case/mock_get_driver_based_on_season_driver_use_case.dart';
+import '../../../mock/use_case/mock_get_details_for_season_driver_use_case.dart';
 
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final seasonDriverRepository = MockSeasonDriverRepository();
-  final getDriverBasedOnSeasonDriverUseCase =
-      MockGetDriverBasedOnSeasonDriverUseCase();
+  final getDetailsForSeasonDriverUseCase =
+      MockGetDetailsForSeasonDriverUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
@@ -35,7 +35,7 @@ void main() {
     grandPrixBetRepository,
     grandPrixResultsRepository,
     seasonDriverRepository,
-    getDriverBasedOnSeasonDriverUseCase,
+    getDetailsForSeasonDriverUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
@@ -64,7 +64,7 @@ void main() {
     reset(grandPrixBetRepository);
     reset(grandPrixResultsRepository);
     reset(seasonDriverRepository);
-    reset(getDriverBasedOnSeasonDriverUseCase);
+    reset(getDetailsForSeasonDriverUseCase);
     reset(grandPrixBetPointsRepository);
     reset(grandPrixBetStatusService);
   });
@@ -75,14 +75,14 @@ void main() {
     'to their positions',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        p1SeasonDriverId: 'd1',
-        p2SeasonDriverId: 'd2',
-        p3SeasonDriverId: 'd3',
+        p1SeasonDriverId: 'sd1',
+        p2SeasonDriverId: 'sd2',
+        p3SeasonDriverId: 'sd3',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        p1SeasonDriverId: 'd1',
-        p2SeasonDriverId: 'd2',
-        p3SeasonDriverId: 'd4',
+        p1SeasonDriverId: 'sd1',
+        p2SeasonDriverId: 'sd2',
+        p3SeasonDriverId: 'sd4',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -92,34 +92,34 @@ void main() {
         ),
       ).createEntity();
       final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'd1').createEntity(),
-        const SeasonDriverCreator(id: 'd2').createEntity(),
-        const SeasonDriverCreator(id: 'd3').createEntity(),
-        const SeasonDriverCreator(id: 'd4').createEntity(),
+        const SeasonDriverCreator(id: 'sd1').createEntity(),
+        const SeasonDriverCreator(id: 'sd2').createEntity(),
+        const SeasonDriverCreator(id: 'sd3').createEntity(),
+        const SeasonDriverCreator(id: 'sd4').createEntity(),
       ];
-      final List<Driver> drivers = [
-        const DriverCreator(seasonDriverId: 'd1').create(),
-        const DriverCreator(seasonDriverId: 'd2').create(),
-        const DriverCreator(seasonDriverId: 'd3').create(),
-        const DriverCreator(seasonDriverId: 'd4').create(),
+      final List<DriverDetails> driversDetails = [
+        const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd2').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd3').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd4').create(),
       ];
       final List<SingleDriverBet> expectedBets = [
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: drivers.first,
-          resultDriver: drivers.first,
+          betDriver: driversDetails.first,
+          resultDriver: driversDetails.first,
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.win,
-          betDriver: drivers[1],
-          resultDriver: drivers[1],
+          betDriver: driversDetails[1],
+          resultDriver: driversDetails[1],
           points: 2,
         ),
         SingleDriverBet(
           status: BetStatus.loss,
-          betDriver: drivers[2],
-          resultDriver: drivers.last,
+          betDriver: driversDetails[2],
+          resultDriver: driversDetails.last,
           points: 0,
         ),
       ];
@@ -133,30 +133,14 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d1'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers.first));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d2'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers[1]));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d3'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers[2]));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d4'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers.last));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers.first),
-      ).thenAnswer((_) => Stream.value(drivers.first));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers[1]),
-      ).thenAnswer((_) => Stream.value(drivers[1]));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers[2]),
-      ).thenAnswer((_) => Stream.value(drivers[2]));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase(seasonDrivers.last),
-      ).thenAnswer((_) => Stream.value(drivers.last));
+      for (int i = 0; i < 4; i++) {
+        when(
+          () => seasonDriverRepository.getSeasonDriverById(seasonDrivers[i].id),
+        ).thenAnswer((_) => Stream.value(seasonDrivers[i]));
+        when(
+          () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),
+        ).thenAnswer((_) => Stream.value(driversDetails[i]));
+      }
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: BetStatus.win,
       );
@@ -175,10 +159,10 @@ void main() {
     'should emit SingleDriverBet element with p10 data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        p10SeasonDriverId: 'd10',
+        p10SeasonDriverId: 'sd10',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        p10SeasonDriverId: 'd10',
+        p10SeasonDriverId: 'sd10',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -186,8 +170,10 @@ void main() {
         ),
       ).createEntity();
       final SeasonDriver seasonDriver =
-          const SeasonDriverCreator(id: 'd10').createEntity();
-      final Driver driver = const DriverCreator(seasonDriverId: 'd10').create();
+          const SeasonDriverCreator(id: 'sd10').createEntity();
+      final DriverDetails driver = const DriverDetailsCreator(
+        seasonDriverId: 'sd10',
+      ).create();
       const BetStatus betStatus = BetStatus.win;
       final SingleDriverBet expectedBet = SingleDriverBet(
         status: betStatus,
@@ -208,8 +194,8 @@ void main() {
       seasonDriverRepository.mockGetSeasonDriverById(
         expectedSeasonDriver: seasonDriver,
       );
-      getDriverBasedOnSeasonDriverUseCase.mock(
-        expectedDriver: driver,
+      getDetailsForSeasonDriverUseCase.mock(
+        expectedDriverDetails: driver,
       );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
@@ -226,10 +212,10 @@ void main() {
     'should emit SingleDriverBet element with fastest lap data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        fastestLapSeasonDriverId: 'd1',
+        fastestLapSeasonDriverId: 'sd1',
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        fastestLapSeasonDriverId: 'd1',
+        fastestLapSeasonDriverId: 'sd1',
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -237,8 +223,10 @@ void main() {
         ),
       ).createEntity();
       final SeasonDriver seasonDriver =
-          const SeasonDriverCreator(id: 'd1').createEntity();
-      final Driver driver = const DriverCreator(seasonDriverId: 'd1').create();
+          const SeasonDriverCreator(id: 'sd1').createEntity();
+      final DriverDetails driver = const DriverDetailsCreator(
+        seasonDriverId: 'sd1',
+      ).create();
       const BetStatus betStatus = BetStatus.win;
       final SingleDriverBet expectedBet = SingleDriverBet(
         status: betStatus,
@@ -259,8 +247,8 @@ void main() {
       seasonDriverRepository.mockGetSeasonDriverById(
         expectedSeasonDriver: seasonDriver,
       );
-      getDriverBasedOnSeasonDriverUseCase.mock(
-        expectedDriver: driver,
+      getDetailsForSeasonDriverUseCase.mock(
+        expectedDriverDetails: driver,
       );
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
@@ -277,10 +265,10 @@ void main() {
     'should emit MultipleDriversBet element with dnf drivers data',
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
-        dnfSeasonDriverIds: ['d1', 'd2'],
+        dnfSeasonDriverIds: ['sd1', 'sd2'],
       ).createEntity();
       final GrandPrixResults results = const GrandPrixResultsCreator(
-        dnfSeasonDriverIds: ['d1', 'd3', 'd5'],
+        dnfSeasonDriverIds: ['sd1', 'sd3', 'sd5'],
       ).createEntity();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
@@ -288,16 +276,16 @@ void main() {
         ),
       ).createEntity();
       final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'd1').createEntity(),
-        const SeasonDriverCreator(id: 'd2').createEntity(),
-        const SeasonDriverCreator(id: 'd3').createEntity(),
-        const SeasonDriverCreator(id: 'd5').createEntity(),
+        const SeasonDriverCreator(id: 'sd1').createEntity(),
+        const SeasonDriverCreator(id: 'sd2').createEntity(),
+        const SeasonDriverCreator(id: 'sd3').createEntity(),
+        const SeasonDriverCreator(id: 'sd5').createEntity(),
       ];
-      final List<Driver> drivers = [
-        const DriverCreator(seasonDriverId: 'd1').create(),
-        const DriverCreator(seasonDriverId: 'd2').create(),
-        const DriverCreator(seasonDriverId: 'd3').create(),
-        const DriverCreator(seasonDriverId: 'd5').create(),
+      final List<DriverDetails> drivers = [
+        const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd2').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd3').create(),
+        const DriverDetailsCreator(seasonDriverId: 'sd5').create(),
       ];
       const BetStatus betStatus = BetStatus.win;
       final MultipleDriversBet expectedBet = MultipleDriversBet(
@@ -316,30 +304,14 @@ void main() {
           .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
         grandPrixBetPoints: points,
       );
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d1'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers.first));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d2'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers[1]));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d3'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers[2]));
-      when(
-        () => seasonDriverRepository.getSeasonDriverById('d5'),
-      ).thenAnswer((_) => Stream.value(seasonDrivers.last));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers.first),
-      ).thenAnswer((_) => Stream.value(drivers.first));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers[1]),
-      ).thenAnswer((_) => Stream.value(drivers[1]));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers[2]),
-      ).thenAnswer((_) => Stream.value(drivers[2]));
-      when(
-        () => getDriverBasedOnSeasonDriverUseCase.call(seasonDrivers.last),
-      ).thenAnswer((_) => Stream.value(drivers.last));
+      for (int i = 0; i < 4; i++) {
+        when(
+          () => seasonDriverRepository.getSeasonDriverById(seasonDrivers[i].id),
+        ).thenAnswer((_) => Stream.value(seasonDrivers[i]));
+        when(
+          () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),
+        ).thenAnswer((_) => Stream.value(drivers[i]));
+      }
       grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
         expectedStatus: betStatus,
       );

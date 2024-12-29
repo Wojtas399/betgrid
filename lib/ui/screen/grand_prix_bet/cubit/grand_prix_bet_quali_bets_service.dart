@@ -5,9 +5,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet_points.dart';
-import '../../../../use_case/get_all_drivers_from_season_use_case.dart';
+import '../../../../use_case/get_details_for_all_drivers_from_season_use_case.dart';
 import 'grand_prix_bet_state.dart';
 import 'grand_prix_bet_status_service.dart';
 
@@ -15,7 +15,8 @@ import 'grand_prix_bet_status_service.dart';
 class GrandPrixBetQualiBetsService {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
-  final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
+  final GetDetailsForAllDriversFromSeasonUseCase
+      _getDetailsForAllDriversFromSeasonUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
   final String _playerId;
@@ -24,7 +25,7 @@ class GrandPrixBetQualiBetsService {
   GrandPrixBetQualiBetsService(
     this._grandPrixBetRepository,
     this._grandPrixResultsRepository,
-    this._getAllDriversFromSeasonUseCase,
+    this._getDetailsForAllDriversFromSeasonUseCase,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
     @factoryParam this._playerId,
@@ -35,7 +36,7 @@ class GrandPrixBetQualiBetsService {
     return Rx.combineLatest4(
       _getBetQualiStandingsBySeasonDriverIds(),
       _getResultQualiStandingsBySeasonDriverIds(),
-      _getAllDriversFromSeasonUseCase(2024),
+      _getDetailsForAllDriversFromSeasonUseCase(2024),
       _getQualiBetPoints(),
       _prepareQualiBets,
     );
@@ -73,7 +74,7 @@ class GrandPrixBetQualiBetsService {
   List<SingleDriverBet> _prepareQualiBets(
     List<String?>? betQualiStandingsBySeasonDriverIds,
     List<String?>? resultQualiStandingsBySeasonDriverIds,
-    List<Driver> allDriversFromSeason,
+    List<DriverDetails> detailsOfAllDriversFromSeason,
     QualiBetPoints? qualiBetPoints,
   ) {
     final List<double?> qualiPoints = [
@@ -106,10 +107,10 @@ class GrandPrixBetQualiBetsService {
         final String? resultSeasonDriverId =
             resultQualiStandingsBySeasonDriverIds?[betIndex];
         final double? points = qualiPoints[betIndex];
-        final betDriver = allDriversFromSeason.firstWhereOrNull(
+        final betDriver = detailsOfAllDriversFromSeason.firstWhereOrNull(
           (driver) => driver.seasonDriverId == betSeasonDriverId,
         );
-        final resultDriver = allDriversFromSeason.firstWhereOrNull(
+        final resultDriver = detailsOfAllDriversFromSeason.firstWhereOrNull(
           (driver) => driver.seasonDriverId == resultSeasonDriverId,
         );
         return SingleDriverBet(

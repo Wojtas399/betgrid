@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 
 part 'grand_prix_bet_state.freezed.dart';
@@ -51,8 +51,8 @@ abstract class Bet extends Equatable {
 }
 
 class SingleDriverBet extends Bet {
-  final Driver? betDriver;
-  final Driver? resultDriver;
+  final DriverDetails? betDriver;
+  final DriverDetails? resultDriver;
   final double? points;
 
   const SingleDriverBet({
@@ -72,8 +72,8 @@ class SingleDriverBet extends Bet {
 }
 
 class MultipleDriversBet extends Bet {
-  final List<Driver?>? betDrivers;
-  final List<Driver?>? resultDrivers;
+  final List<DriverDetails?>? betDrivers;
+  final List<DriverDetails?>? resultDrivers;
   final double? points;
 
   const MultipleDriversBet({

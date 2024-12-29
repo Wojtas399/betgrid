@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/driver_creator.dart';
+import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_basic_info_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
@@ -90,9 +90,12 @@ void main() {
         20,
         (int itemIndex) => SingleDriverBet(
           status: BetStatus.loss,
-          betDriver: DriverCreator(seasonDriverId: 'd$itemIndex').create(),
-          resultDriver:
-              DriverCreator(seasonDriverId: 'd${itemIndex + 1}').create(),
+          betDriver: DriverDetailsCreator(
+            seasonDriverId: 'd$itemIndex',
+          ).create(),
+          resultDriver: DriverDetailsCreator(
+            seasonDriverId: 'd${itemIndex + 1}',
+          ).create(),
           points: 0,
         ),
       );
@@ -100,31 +103,43 @@ void main() {
         3,
         (int itemIndex) => SingleDriverBet(
           status: BetStatus.win,
-          betDriver: DriverCreator(seasonDriverId: 'd$itemIndex').create(),
-          resultDriver: DriverCreator(seasonDriverId: 'd$itemIndex').create(),
+          betDriver: DriverDetailsCreator(
+            seasonDriverId: 'd$itemIndex',
+          ).create(),
+          resultDriver: DriverDetailsCreator(
+            seasonDriverId: 'd$itemIndex',
+          ).create(),
           points: 2,
         ),
       );
       final SingleDriverBet raceP10Bet = SingleDriverBet(
         status: BetStatus.loss,
-        betDriver: const DriverCreator(seasonDriverId: 'd10').create(),
-        resultDriver: const DriverCreator(seasonDriverId: 'd11').create(),
+        betDriver: const DriverDetailsCreator(
+          seasonDriverId: 'd10',
+        ).create(),
+        resultDriver: const DriverDetailsCreator(
+          seasonDriverId: 'd11',
+        ).create(),
         points: 0,
       );
       final SingleDriverBet raceFastestLapBet = SingleDriverBet(
         status: BetStatus.win,
-        betDriver: const DriverCreator(seasonDriverId: 'd1').create(),
-        resultDriver: const DriverCreator(seasonDriverId: 'd1').create(),
+        betDriver: const DriverDetailsCreator(
+          seasonDriverId: 'd1',
+        ).create(),
+        resultDriver: const DriverDetailsCreator(
+          seasonDriverId: 'd1',
+        ).create(),
         points: 2,
       );
       final MultipleDriversBet raceDnfDriversBet = MultipleDriversBet(
         status: BetStatus.loss,
         betDrivers: [
-          const DriverCreator(seasonDriverId: 'd19').create(),
-          const DriverCreator(seasonDriverId: 'd20').create(),
+          const DriverDetailsCreator(seasonDriverId: 'd19').create(),
+          const DriverDetailsCreator(seasonDriverId: 'd20').create(),
         ],
         resultDrivers: [
-          const DriverCreator(seasonDriverId: 'd18').create(),
+          const DriverDetailsCreator(seasonDriverId: 'd18').create(),
         ],
         points: 0,
       );
