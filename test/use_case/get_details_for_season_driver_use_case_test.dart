@@ -83,8 +83,8 @@ void main() {
   );
 
   test(
-    'should emit Driver model which contains data from SeasonDriver, '
-    'DriverPersonalData and Team',
+    'should emit DriverDetails model which contains data from SeasonDriver, '
+    'DriverPersonalData and TeamBasicInfo',
     () async {
       driverPersonalDataRepository.mockGetDriverPersonalDataById(
         expectedDriverPersonalData: driverPersonalData,
