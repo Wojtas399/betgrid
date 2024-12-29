@@ -7,11 +7,11 @@ import '../model/season_driver.dart';
 import 'get_details_for_season_driver_use_case.dart';
 
 @injectable
-class GetDetailsForAllDriversFromSeasonUseCase {
+class GetDetailsOfAllDriversFromSeasonUseCase {
   final SeasonDriverRepository _seasonDriverRepository;
   final GetDetailsForSeasonDriverUseCase _getDetailsForSeasonDriverUseCase;
 
-  const GetDetailsForAllDriversFromSeasonUseCase(
+  const GetDetailsOfAllDriversFromSeasonUseCase(
     this._seasonDriverRepository,
     this._getDetailsForSeasonDriverUseCase,
   );

@@ -9,7 +9,7 @@ import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet.dart';
-import '../../../../use_case/get_details_for_all_drivers_from_season_use_case.dart';
+import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
 import '../../../extensions/list_of_driver_details_extensions.dart';
 import 'grand_prix_bet_editor_state.dart';
 
@@ -17,15 +17,15 @@ import 'grand_prix_bet_editor_state.dart';
 class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final GrandPrixBetRepository _grandPrixBetRepository;
-  final GetDetailsForAllDriversFromSeasonUseCase
-      _getDetailsForAllDriversFromSeasonUseCase;
+  final GetDetailsOfAllDriversFromSeasonUseCase
+      _getDetailsOfAllDriversFromSeasonUseCase;
   final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
 
   GrandPrixBetEditorCubit(
     this._authRepository,
     this._grandPrixBetRepository,
-    this._getDetailsForAllDriversFromSeasonUseCase,
+    this._getDetailsOfAllDriversFromSeasonUseCase,
     @factoryParam this._seasonGrandPrixId,
   ) : super(const GrandPrixBetEditorState());
 
@@ -185,7 +185,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   }
 
   Stream<List<DriverDetails>> _getAllSortedDrivers() {
-    return _getDetailsForAllDriversFromSeasonUseCase(2024).map(
+    return _getDetailsOfAllDriversFromSeasonUseCase(2024).map(
       (List<DriverDetails> detailsOfAllDriversFromSeason) {
         final sortedDetailsOfAllDriversFromSeason = [
           ...detailsOfAllDriversFromSeason

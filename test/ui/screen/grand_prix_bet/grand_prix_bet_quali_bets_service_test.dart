@@ -18,8 +18,8 @@ import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_
 void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
-  final getDetailsForAllDriversFromSeasonUseCase =
-      MockGetDetailsForAllDriversFromSeasonUseCase();
+  final getDetailsOfAllDriversFromSeasonUseCase =
+      MockGetDetailsOfAllDriversFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
@@ -27,7 +27,7 @@ void main() {
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
     grandPrixResultsRepository,
-    getDetailsForAllDriversFromSeasonUseCase,
+    getDetailsOfAllDriversFromSeasonUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
     playerId,
@@ -235,7 +235,7 @@ void main() {
               resultQualiStandingsBySeasonDriverIds,
         ).createEntity(),
       );
-      getDetailsForAllDriversFromSeasonUseCase.mock(
+      getDetailsOfAllDriversFromSeasonUseCase.mock(
         expectedDetailsOfAllDriversFromSeason: allDriverDetails,
       );
       grandPrixBetPointsRepository
@@ -272,7 +272,7 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => getDetailsForAllDriversFromSeasonUseCase.call(season),
+        () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
       ).called(1);
       verify(
         () => grandPrixBetPointsRepository

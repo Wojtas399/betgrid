@@ -7,7 +7,7 @@ import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet_points.dart';
-import '../../../../use_case/get_details_for_all_drivers_from_season_use_case.dart';
+import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
 import 'grand_prix_bet_state.dart';
 import 'grand_prix_bet_status_service.dart';
 
@@ -15,8 +15,8 @@ import 'grand_prix_bet_status_service.dart';
 class GrandPrixBetQualiBetsService {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
-  final GetDetailsForAllDriversFromSeasonUseCase
-      _getDetailsForAllDriversFromSeasonUseCase;
+  final GetDetailsOfAllDriversFromSeasonUseCase
+      _getDetailsOfAllDriversFromSeasonUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
   final String _playerId;
@@ -25,7 +25,7 @@ class GrandPrixBetQualiBetsService {
   GrandPrixBetQualiBetsService(
     this._grandPrixBetRepository,
     this._grandPrixResultsRepository,
-    this._getDetailsForAllDriversFromSeasonUseCase,
+    this._getDetailsOfAllDriversFromSeasonUseCase,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
     @factoryParam this._playerId,
@@ -36,7 +36,7 @@ class GrandPrixBetQualiBetsService {
     return Rx.combineLatest4(
       _getBetQualiStandingsBySeasonDriverIds(),
       _getResultQualiStandingsBySeasonDriverIds(),
-      _getDetailsForAllDriversFromSeasonUseCase(2024),
+      _getDetailsOfAllDriversFromSeasonUseCase(2024),
       _getQualiBetPoints(),
       _prepareQualiBets,
     );

@@ -18,21 +18,21 @@ import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_
 void main() {
   final authRepository = MockAuthRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
-  final getDetailsForAllDriversFromSeasonUseCase =
-      MockGetDetailsForAllDriversFromSeasonUseCase();
+  final getDetailsOfAllDriversFromSeasonUseCase =
+      MockGetDetailsOfAllDriversFromSeasonUseCase();
   const String seasonGrandPrixId = 'gp1';
 
   GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
         authRepository,
         grandPrixBetRepository,
-        getDetailsForAllDriversFromSeasonUseCase,
+        getDetailsOfAllDriversFromSeasonUseCase,
         seasonGrandPrixId,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(grandPrixBetRepository);
-    reset(getDetailsForAllDriversFromSeasonUseCase);
+    reset(getDetailsOfAllDriversFromSeasonUseCase);
   });
 
   group(
@@ -92,7 +92,7 @@ void main() {
         'surname',
         build: () => createCubit(),
         setUp: () {
-          getDetailsForAllDriversFromSeasonUseCase.mock(
+          getDetailsOfAllDriversFromSeasonUseCase.mock(
             expectedDetailsOfAllDriversFromSeason: allDrivers,
           );
           authRepository.mockGetLoggedUserId(loggedUserId);
@@ -144,7 +144,7 @@ void main() {
         ],
         verify: (_) {
           verify(
-            () => getDetailsForAllDriversFromSeasonUseCase.call(2024),
+            () => getDetailsOfAllDriversFromSeasonUseCase.call(2024),
           ).called(1);
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
