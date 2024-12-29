@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
@@ -9,46 +9,47 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/driver_creator.dart';
+import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../mock/data/repository/mock_auth_repository.dart';
 import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/use_case/mock_get_all_drivers_from_season_use_case.dart';
+import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final grandPrixBetRepository = MockGrandPrixBetRepository();
-  final getAllDriversFromSeasonUseCase = MockGetAllDriversFromSeasonUseCase();
+  final getDetailsForAllDriversFromSeasonUseCase =
+      MockGetDetailsForAllDriversFromSeasonUseCase();
   const String seasonGrandPrixId = 'gp1';
 
   GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
         authRepository,
         grandPrixBetRepository,
-        getAllDriversFromSeasonUseCase,
+        getDetailsForAllDriversFromSeasonUseCase,
         seasonGrandPrixId,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(grandPrixBetRepository);
-    reset(getAllDriversFromSeasonUseCase);
+    reset(getDetailsForAllDriversFromSeasonUseCase);
   });
 
   group(
     'initialize',
     () {
       const String loggedUserId = 'u1';
-      final List<Driver> allDrivers = [
-        const DriverCreator(
+      final List<DriverDetails> allDrivers = [
+        const DriverDetailsCreator(
           seasonDriverId: 'd1',
           teamName: 'Mercedes',
           surname: 'Russel',
         ).create(),
-        const DriverCreator(
+        const DriverDetailsCreator(
           seasonDriverId: 'd2',
           teamName: 'Alpine',
         ).create(),
-        const DriverCreator(
+        const DriverDetailsCreator(
           seasonDriverId: 'd3',
           teamName: 'Mercedes',
           surname: 'Hamilton',
@@ -86,11 +87,14 @@ void main() {
       GrandPrixBetEditorState? state;
 
       blocTest(
-        'should load all drivers, should listen to grand prix bet and should '
-        'emit existing bets and all drivers sorted by team and surname',
+        'should load details of all drivers, should listen to grand prix bet '
+        'and should emit existing bets and all drivers sorted by team and '
+        'surname',
         build: () => createCubit(),
         setUp: () {
-          getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
+          getDetailsForAllDriversFromSeasonUseCase.mock(
+            expectedDetailsOfAllDriversFromSeason: allDrivers,
+          );
           authRepository.mockGetLoggedUserId(loggedUserId);
           when(
             () => grandPrixBetRepository
@@ -139,7 +143,9 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => getAllDriversFromSeasonUseCase.call(2024)).called(1);
+          verify(
+            () => getDetailsForAllDriversFromSeasonUseCase.call(2024),
+          ).called(1);
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
             () => grandPrixBetRepository
@@ -281,9 +287,9 @@ void main() {
     'onDnfDriverSelected',
     () {
       const String driverId = 'd1';
-      final List<Driver> allDrivers = [
-        const DriverCreator(seasonDriverId: driverId).create(),
-        const DriverCreator(seasonDriverId: 'd2').create(),
+      final List<DriverDetails> allDrivers = [
+        const DriverDetailsCreator(seasonDriverId: driverId).create(),
+        const DriverDetailsCreator(seasonDriverId: 'd2').create(),
       ];
       GrandPrixBetEditorState? state;
 
@@ -355,9 +361,9 @@ void main() {
     'onDnfDriverRemoved',
     () {
       const String driverId = 'd1';
-      final List<Driver> allDrivers = [
-        const DriverCreator(seasonDriverId: driverId).create(),
-        const DriverCreator(seasonDriverId: 'd2').create(),
+      final List<DriverDetails> allDrivers = [
+        const DriverDetailsCreator(seasonDriverId: driverId).create(),
+        const DriverDetailsCreator(seasonDriverId: 'd2').create(),
       ];
       GrandPrixBetEditorState? state;
 
@@ -464,11 +470,11 @@ void main() {
       const List<String> dnfSeasonDriverIds = ['d1', 'd2'];
       const bool willBeSafetyCar = false;
       const bool willBeRedFlag = true;
-      final List<Driver> allDrivers = [
-        const DriverCreator(seasonDriverId: 'd1').create(),
-        const DriverCreator(seasonDriverId: 'd2').create(),
-        const DriverCreator(seasonDriverId: 'd3').create(),
-        const DriverCreator(seasonDriverId: 'd10').create(),
+      final List<DriverDetails> allDrivers = [
+        const DriverDetailsCreator(seasonDriverId: 'd1').create(),
+        const DriverDetailsCreator(seasonDriverId: 'd2').create(),
+        const DriverDetailsCreator(seasonDriverId: 'd3').create(),
+        const DriverDetailsCreator(seasonDriverId: 'd10').create(),
       ];
       GrandPrixBetEditorState? state;
 

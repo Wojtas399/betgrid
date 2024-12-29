@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/empty_content_info_component.dart';
 import '../../../component/gap/gap_vertical.dart';
@@ -16,7 +16,7 @@ class GrandPrixBetEditorDnfDriversSelectionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Driver>? allDrivers = context.select(
+    final List<DriverDetails>? allDrivers = context.select(
       (GrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
     );
 
@@ -60,7 +60,7 @@ class _SelectedDrivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Driver> dnfDrivers = context.select(
+    final List<DriverDetails> dnfDrivers = context.select(
       (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
 
@@ -69,7 +69,7 @@ class _SelectedDrivers extends StatelessWidget {
         if (dnfDrivers.isNotEmpty) const GapVertical16(),
         ...dnfDrivers
             .map(
-              (Driver driver) => Row(
+              (DriverDetails driver) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   DriverDescription(
@@ -100,7 +100,7 @@ class _SelectedDrivers extends StatelessWidget {
 }
 
 class _ListOfDriversToSelect extends StatelessWidget {
-  final List<Driver> drivers;
+  final List<DriverDetails> drivers;
 
   const _ListOfDriversToSelect({
     required this.drivers,
@@ -108,7 +108,7 @@ class _ListOfDriversToSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Driver> dnfDrivers = context.select(
+    final List<DriverDetails> dnfDrivers = context.select(
       (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
     final bool canSelectNextDnfDriver = context.select(
@@ -123,9 +123,9 @@ class _ListOfDriversToSelect extends StatelessWidget {
           child: Column(
             children: [
               ...drivers
-                  .where((Driver driver) => !dnfDrivers.contains(driver))
+                  .where((DriverDetails driver) => !dnfDrivers.contains(driver))
                   .map(
-                    (Driver driver) => _DriverItem(
+                    (DriverDetails driver) => _DriverItem(
                       driver: driver,
                       isDisabled: dnfDrivers.length == 3,
                       onTap: () => context
@@ -143,7 +143,7 @@ class _ListOfDriversToSelect extends StatelessWidget {
 }
 
 class _DriverItem extends StatelessWidget {
-  final Driver driver;
+  final DriverDetails driver;
   final bool isDisabled;
   final VoidCallback onTap;
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
@@ -123,7 +123,7 @@ class _DnfDrivers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Driver> dnfDrivers = context.select(
+    final List<DriverDetails> dnfDrivers = context.select(
       (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
 
@@ -135,11 +135,11 @@ class _DnfDrivers extends StatelessWidget {
           if (dnfDrivers.isNotEmpty) ...[
             ...dnfDrivers
                 .map(
-                  (Driver driver) => DriverDescription(
-                    name: driver.name,
-                    surname: driver.surname,
-                    number: driver.number,
-                    teamColor: driver.teamHexColor.toColor(),
+                  (DriverDetails driverDetails) => DriverDescription(
+                    name: driverDetails.name,
+                    surname: driverDetails.surname,
+                    number: driverDetails.number,
+                    teamColor: driverDetails.teamHexColor.toColor(),
                   ),
                 )
                 .separated(const GapVertical16()),

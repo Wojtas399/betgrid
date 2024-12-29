@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -66,7 +66,7 @@ class _DriverSelectionFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Driver>? allDrivers = context.select(
+    final List<DriverDetails>? allDrivers = context.select(
       (GrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
     );
 

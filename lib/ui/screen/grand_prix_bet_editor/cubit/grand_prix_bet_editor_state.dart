@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../../model/grand_prix_bet.dart';
 import 'grand_prix_bet_editor_race_form.dart';
 
@@ -25,7 +25,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
     @Default(GrandPrixBetEditorStateStatus.initializing)
     GrandPrixBetEditorStateStatus status,
     GrandPrixBet? originalGrandPrixBet,
-    List<Driver>? allDrivers,
+    List<DriverDetails>? allDrivers,
     @Default([
       null,
       null,
@@ -88,9 +88,9 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
   bool get _haveDnfSeasonDriverIdsBeenChanged {
     if (originalGrandPrixBet == null) return raceForm.dnfDrivers.isNotEmpty;
     final Iterable<String> originalDnfSeasonDriverIds =
-        originalGrandPrixBet!.dnfSeasonDriverIds.whereNotNull();
+        originalGrandPrixBet!.dnfSeasonDriverIds.whereType<String>();
     final Iterable<String> newDnfSeasonDriverIds = raceForm.dnfDrivers.map(
-      (Driver driver) => driver.seasonDriverId,
+      (DriverDetails driver) => driver.seasonDriverId,
     );
     if (originalDnfSeasonDriverIds.length != newDnfSeasonDriverIds.length) {
       return true;

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 
 part 'grand_prix_bet_editor_race_form.freezed.dart';
 
@@ -12,7 +12,7 @@ class GrandPrixBetEditorRaceForm with _$GrandPrixBetEditorRaceForm {
     String? p3SeasonDriverId,
     String? p10SeasonDriverId,
     String? fastestLapSeasonDriverId,
-    @Default([]) List<Driver> dnfDrivers,
+    @Default([]) List<DriverDetails> dnfDrivers,
     bool? willBeRedFlag,
     bool? willBeSafetyCar,
   }) = _GrandPrixBetEditorRaceForm;
