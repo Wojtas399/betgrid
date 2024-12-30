@@ -80,11 +80,15 @@ class BetsCubit extends Cubit<BetsState> {
         loggedUserId: data.loggedUserId,
       ));
     } else {
+      final sortedGrandPrixItems = [...data.grandPrixItems];
+      sortedGrandPrixItems.sort(
+        (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
+      );
       emit(state.copyWith(
         status: BetsStateStatus.completed,
         loggedUserId: data.loggedUserId,
         totalPoints: data.totalPoints,
-        grandPrixItems: data.grandPrixItems,
+        grandPrixItems: sortedGrandPrixItems,
       ));
     }
   }

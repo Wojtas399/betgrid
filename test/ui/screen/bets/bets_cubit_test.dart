@@ -132,7 +132,8 @@ void main() {
       blocTest(
         'should define status for each grand prix and should find first gp '
         'after ongoing gp and should set GrandPrixStatusNext for it with '
-        'calculated duration to start',
+        'calculated duration to start (grand prixes should be sorted by round '
+        'number)',
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
@@ -181,16 +182,6 @@ void main() {
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
-                status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].name,
-                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].roundNumber,
-                startDate: grandPrixesWithPoints[0].startDate,
-                endDate: grandPrixesWithPoints[0].endDate,
-                betPoints: grandPrixesWithPoints[0].points,
-              ),
-              GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
                 seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
                 grandPrixName: grandPrixesWithPoints[1].name,
@@ -199,6 +190,16 @@ void main() {
                 startDate: grandPrixesWithPoints[1].startDate,
                 endDate: grandPrixesWithPoints[1].endDate,
                 betPoints: grandPrixesWithPoints[1].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusOngoing(),
+                seasonGrandPrixId: grandPrixesWithPoints[3].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[3].name,
+                countryAlpha2Code: grandPrixesWithPoints[3].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[3].roundNumber,
+                startDate: grandPrixesWithPoints[3].startDate,
+                endDate: grandPrixesWithPoints[3].endDate,
+                betPoints: grandPrixesWithPoints[3].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
@@ -213,14 +214,14 @@ void main() {
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
-                status: const GrandPrixStatusOngoing(),
-                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.name,
-                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.roundNumber,
-                startDate: grandPrixesWithPoints.last.startDate,
-                endDate: grandPrixesWithPoints.last.endDate,
-                betPoints: grandPrixesWithPoints.last.points,
+                status: const GrandPrixStatusUpcoming(),
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
+                betPoints: grandPrixesWithPoints[0].points,
               ),
             ],
           )
@@ -278,7 +279,8 @@ void main() {
       blocTest(
         'should define status for each grand prix and should set '
         'GrandPrixStatusNext for gp with roundNumber equal to 1 if there is no '
-        'gp with ongoing status',
+        'gp with ongoing status (grand prixes should be sorted by round '
+        'number)',
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
@@ -302,16 +304,6 @@ void main() {
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
-                status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].name,
-                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].roundNumber,
-                startDate: grandPrixesWithPoints[0].startDate,
-                endDate: grandPrixesWithPoints[0].endDate,
-                betPoints: grandPrixesWithPoints[0].points,
-              ),
-              GrandPrixItemParams(
                 status: const GrandPrixStatusNext(
                   durationToStart: Duration(hours: 2, minutes: 34),
                 ),
@@ -325,6 +317,16 @@ void main() {
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
+                seasonGrandPrixId: grandPrixesWithPoints[3].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[3].name,
+                countryAlpha2Code: grandPrixesWithPoints[3].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[3].roundNumber,
+                startDate: grandPrixesWithPoints[3].startDate,
+                endDate: grandPrixesWithPoints[3].endDate,
+                betPoints: grandPrixesWithPoints[3].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusUpcoming(),
                 seasonGrandPrixId: grandPrixesWithPoints[2].seasonGrandPrixId,
                 grandPrixName: grandPrixesWithPoints[2].name,
                 countryAlpha2Code: grandPrixesWithPoints[2].countryAlpha2Code,
@@ -335,13 +337,13 @@ void main() {
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusUpcoming(),
-                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.name,
-                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.roundNumber,
-                startDate: grandPrixesWithPoints.last.startDate,
-                endDate: grandPrixesWithPoints.last.endDate,
-                betPoints: grandPrixesWithPoints.last.points,
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
+                betPoints: grandPrixesWithPoints[0].points,
               ),
             ],
           )
@@ -444,16 +446,6 @@ void main() {
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
-                status: const GrandPrixStatusOngoing(),
-                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints[0].name,
-                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints[0].roundNumber,
-                startDate: grandPrixesWithPoints[0].startDate,
-                endDate: grandPrixesWithPoints[0].endDate,
-                betPoints: grandPrixesWithPoints[0].points,
-              ),
-              GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
                 seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
                 grandPrixName: grandPrixesWithPoints[1].name,
@@ -462,6 +454,16 @@ void main() {
                 startDate: grandPrixesWithPoints[1].startDate,
                 endDate: grandPrixesWithPoints[1].endDate,
                 betPoints: grandPrixesWithPoints[1].points,
+              ),
+              GrandPrixItemParams(
+                status: const GrandPrixStatusFinished(),
+                seasonGrandPrixId: grandPrixesWithPoints[3].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[3].name,
+                countryAlpha2Code: grandPrixesWithPoints[3].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[3].roundNumber,
+                startDate: grandPrixesWithPoints[3].startDate,
+                endDate: grandPrixesWithPoints[3].endDate,
+                betPoints: grandPrixesWithPoints[3].points,
               ),
               GrandPrixItemParams(
                 status: const GrandPrixStatusFinished(),
@@ -474,14 +476,14 @@ void main() {
                 betPoints: grandPrixesWithPoints[2].points,
               ),
               GrandPrixItemParams(
-                status: const GrandPrixStatusFinished(),
-                seasonGrandPrixId: grandPrixesWithPoints.last.seasonGrandPrixId,
-                grandPrixName: grandPrixesWithPoints.last.name,
-                countryAlpha2Code: grandPrixesWithPoints.last.countryAlpha2Code,
-                roundNumber: grandPrixesWithPoints.last.roundNumber,
-                startDate: grandPrixesWithPoints.last.startDate,
-                endDate: grandPrixesWithPoints.last.endDate,
-                betPoints: grandPrixesWithPoints.last.points,
+                status: const GrandPrixStatusOngoing(),
+                seasonGrandPrixId: grandPrixesWithPoints[0].seasonGrandPrixId,
+                grandPrixName: grandPrixesWithPoints[0].name,
+                countryAlpha2Code: grandPrixesWithPoints[0].countryAlpha2Code,
+                roundNumber: grandPrixesWithPoints[0].roundNumber,
+                startDate: grandPrixesWithPoints[0].startDate,
+                endDate: grandPrixesWithPoints[0].endDate,
+                betPoints: grandPrixesWithPoints[0].points,
               ),
             ],
           )
