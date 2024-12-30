@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../model/driver.dart';
-import '../../../../use_case/get_all_drivers_from_season_use_case.dart';
-import '../../../extensions/drivers_list_extensions.dart';
+import '../../../../model/driver_details.dart';
+import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
+import '../../../extensions/list_of_driver_details_extensions.dart';
 import '../stats_creator/create_players_podium_stats.dart';
 import '../stats_creator/create_points_for_driver_stats.dart';
 import '../stats_creator/create_points_history_stats.dart';
@@ -17,14 +17,15 @@ import 'stats_state.dart';
 
 @injectable
 class StatsCubit extends Cubit<StatsState> {
-  final GetAllDriversFromSeasonUseCase _getAllDriversFromSeasonUseCase;
+  final GetDetailsOfAllDriversFromSeasonUseCase
+      _getDetailsOfAllDriversFromSeasonUseCase;
   final CreatePlayersPodiumStats _createPlayersPodiumStats;
   final CreatePointsHistoryStats _createPointsHistoryStats;
   final CreatePointsForDriverStats _createPointsForDriverStats;
   StreamSubscription<_ListenedParams>? _listener;
 
   StatsCubit(
-    this._getAllDriversFromSeasonUseCase,
+    this._getDetailsOfAllDriversFromSeasonUseCase,
     this._createPlayersPodiumStats,
     this._createPointsHistoryStats,
     this._createPointsForDriverStats,
@@ -57,16 +58,16 @@ class StatsCubit extends Cubit<StatsState> {
     return Rx.combineLatest3(
       _createPlayersPodiumStats(),
       _createPointsHistoryStats(),
-      _getAllDriversFromSeasonUseCase(2024),
+      _getDetailsOfAllDriversFromSeasonUseCase(2024),
       (
         PlayersPodium? playersPodium,
         PointsHistory? pointsHistory,
-        List<Driver> allDrivers,
+        List<DriverDetails> detailsOfDriversFromSeason,
       ) =>
           _ListenedParams(
         playersPodium: playersPodium,
         pointsHistory: pointsHistory,
-        allDrivers: allDrivers,
+        detailsOfDriversFromSeason: detailsOfDriversFromSeason,
       ),
     );
   }
@@ -77,14 +78,16 @@ class StatsCubit extends Cubit<StatsState> {
         status: StatsStateStatus.noData,
       ));
     } else {
-      final sortedDrivers = [...params.allDrivers];
-      sortedDrivers.sortByTeamAndSurname();
+      final sortedDetailsOfDriversFromSeason = [
+        ...params.detailsOfDriversFromSeason,
+      ];
+      sortedDetailsOfDriversFromSeason.sortByTeamAndSurname();
       emit(state.copyWith(
         status: StatsStateStatus.completed,
         playersPodium: params.playersPodium,
         pointsHistory: params.pointsHistory,
         pointsByDriver: [],
-        allDrivers: sortedDrivers,
+        detailsOfDriversFromSeason: sortedDetailsOfDriversFromSeason,
       ));
     }
   }
@@ -93,21 +96,23 @@ class StatsCubit extends Cubit<StatsState> {
 class _ListenedParams extends Equatable {
   final PlayersPodium? playersPodium;
   final PointsHistory? pointsHistory;
-  final Iterable<Driver> allDrivers;
+  final Iterable<DriverDetails> detailsOfDriversFromSeason;
 
   const _ListenedParams({
     required this.playersPodium,
     required this.pointsHistory,
-    required this.allDrivers,
+    required this.detailsOfDriversFromSeason,
   });
 
   @override
   List<Object?> get props => [
         playersPodium,
         pointsHistory,
-        allDrivers,
+        detailsOfDriversFromSeason,
       ];
 
   bool get noData =>
-      playersPodium == null && pointsHistory == null && allDrivers.isEmpty;
+      playersPodium == null &&
+      pointsHistory == null &&
+      detailsOfDriversFromSeason.isEmpty;
 }

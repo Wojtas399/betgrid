@@ -1,4 +1,4 @@
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_cubit.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
@@ -8,28 +8,29 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/driver_creator.dart';
+import '../../../creator/driver_details_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/ui/mock_create_players_podium_stats.dart';
 import '../../../mock/ui/mock_create_points_for_driver_stats.dart';
 import '../../../mock/ui/mock_create_points_history_stats.dart';
-import '../../../mock/use_case/mock_get_all_drivers_from_season_use_case.dart';
+import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
-  final getAllDriversFromSeasonUseCase = MockGetAllDriversFromSeasonUseCase();
+  final getDetailsOfAllDriversFromSeasonUseCase =
+      MockGetDetailsOfAllDriversFromSeasonUseCase();
   final createPlayersPodiumStats = MockCreatePlayersPodiumStats();
   final createPointsHistoryStats = MockCreatePointsHistoryStats();
   final createPointsForDriverStats = MockCreatePointsForDriverStats();
 
   StatsCubit createCubit() => StatsCubit(
-        getAllDriversFromSeasonUseCase,
+        getDetailsOfAllDriversFromSeasonUseCase,
         createPlayersPodiumStats,
         createPointsHistoryStats,
         createPointsForDriverStats,
       );
 
   tearDown(() {
-    reset(getAllDriversFromSeasonUseCase);
+    reset(getDetailsOfAllDriversFromSeasonUseCase);
     reset(createPlayersPodiumStats);
     reset(createPointsHistoryStats);
     reset(createPointsForDriverStats);
@@ -49,16 +50,16 @@ void main() {
         players: [],
         grandPrixes: [],
       );
-      final List<Driver> allDrivers = [
-        const DriverCreator(
+      final List<DriverDetails> allDrivers = [
+        const DriverDetailsCreator(
           seasonDriverId: 'd1',
           teamName: 'Ferrari',
         ).create(),
-        const DriverCreator(
+        const DriverDetailsCreator(
           seasonDriverId: 'd2',
           teamName: 'Red Bull Racing',
         ).create(),
-        const DriverCreator(
+        const DriverDetailsCreator(
           seasonDriverId: 'd3',
           teamName: 'Alpine',
         ).create(),
@@ -67,7 +68,9 @@ void main() {
       tearDown(() {
         verify(createPlayersPodiumStats.call).called(1);
         verify(createPointsHistoryStats.call).called(1);
-        verify(() => getAllDriversFromSeasonUseCase.call(season)).called(1);
+        verify(
+          () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
+        ).called(1);
       });
 
       blocTest(
@@ -77,7 +80,9 @@ void main() {
         setUp: () {
           createPlayersPodiumStats.mock();
           createPointsHistoryStats.mock();
-          getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: []);
+          getDetailsOfAllDriversFromSeasonUseCase.mock(
+            expectedDetailsOfAllDriversFromSeason: [],
+          );
         },
         act: (cubit) => cubit.initialize(),
         expect: () => const [
@@ -98,7 +103,9 @@ void main() {
           createPointsHistoryStats.mock(
             pointsHistory: pointsHistory,
           );
-          getAllDriversFromSeasonUseCase.mock(expectedAllDrivers: allDrivers);
+          getDetailsOfAllDriversFromSeasonUseCase.mock(
+            expectedDetailsOfAllDriversFromSeason: allDrivers,
+          );
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
@@ -107,7 +114,7 @@ void main() {
             playersPodium: playersPodium,
             pointsHistory: pointsHistory,
             pointsByDriver: [],
-            allDrivers: [
+            detailsOfDriversFromSeason: [
               allDrivers.last,
               allDrivers.first,
               allDrivers[1],

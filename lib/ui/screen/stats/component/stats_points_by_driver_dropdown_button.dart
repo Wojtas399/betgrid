@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -33,8 +33,8 @@ class _State extends State<StatsPointsByDriverDropdownButton> {
     final bool isCubitLoading = context.select(
       (StatsCubit cubit) => cubit.state.status.isLoading,
     );
-    final Iterable<Driver>? allDrivers = context.select(
-      (StatsCubit cubit) => cubit.state.allDrivers,
+    final Iterable<DriverDetails>? allDrivers = context.select(
+      (StatsCubit cubit) => cubit.state.detailsOfDriversFromSeason,
     );
 
     return isCubitLoading
@@ -48,7 +48,7 @@ class _State extends State<StatsPointsByDriverDropdownButton> {
               value: _selectedDriverId,
               hint: Text(context.str.statsSelectDriver),
               items: allDrivers
-                  ?.map((Driver driver) => _DriverDescription(driver))
+                  ?.map((DriverDetails driver) => _DriverDescription(driver))
                   .toList(),
               onChanged: (String? driverId) => _onDriverChanged(driverId),
             ),
@@ -57,7 +57,7 @@ class _State extends State<StatsPointsByDriverDropdownButton> {
 }
 
 class _DriverDescription extends DropdownMenuItem<String> {
-  final Driver driver;
+  final DriverDetails driver;
 
   _DriverDescription(this.driver)
       : super(

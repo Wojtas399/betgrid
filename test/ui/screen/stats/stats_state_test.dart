@@ -1,4 +1,4 @@
-import 'package:betgrid/model/driver.dart';
+import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
@@ -15,7 +15,7 @@ void main() {
         status: StatsStateStatus.loading,
         playersPodium: null,
         pointsHistory: null,
-        allDrivers: null,
+        detailsOfDriversFromSeason: null,
         pointsByDriver: null,
       );
 
@@ -319,38 +319,39 @@ void main() {
   );
 
   group(
-    'copyWith allDrivers',
+    'copyWith detailsOfDriversFromSeason',
     () {
       StatsState state = const StatsState();
 
       test(
         'should set new value if passed value is not null',
         () {
-          final List<Driver> newValue = [];
+          final List<DriverDetails> newValue = [];
 
-          state = state.copyWith(allDrivers: newValue);
+          state = state.copyWith(detailsOfDriversFromSeason: newValue);
 
-          expect(state.allDrivers, newValue);
+          expect(state.detailsOfDriversFromSeason, newValue);
         },
       );
 
       test(
         'should not change current value if passed value is not specified',
         () {
-          final List<Driver>? currentValue = state.allDrivers;
+          final List<DriverDetails>? currentValue =
+              state.detailsOfDriversFromSeason;
 
           state = state.copyWith();
 
-          expect(state.allDrivers, currentValue);
+          expect(state.detailsOfDriversFromSeason, currentValue);
         },
       );
 
       test(
         'should set null if passed value is null',
         () {
-          state = state.copyWith(allDrivers: null);
+          state = state.copyWith(detailsOfDriversFromSeason: null);
 
-          expect(state.allDrivers, null);
+          expect(state.detailsOfDriversFromSeason, null);
         },
       );
     },

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver.dart';
+import '../../../../model/driver_details.dart';
 import '../stats_model/players_podium.dart';
 import '../stats_model/points_by_driver.dart';
 import '../stats_model/points_history.dart';
@@ -32,7 +32,7 @@ class StatsState with _$StatsState {
     @Default(StatsStateStatus.loading) StatsStateStatus status,
     PlayersPodium? playersPodium,
     PointsHistory? pointsHistory,
-    List<Driver>? allDrivers,
+    List<DriverDetails>? detailsOfDriversFromSeason,
     List<PointsByDriverPlayerPoints>? pointsByDriver,
   }) = _StatsState;
 }
