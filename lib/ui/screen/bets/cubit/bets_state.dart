@@ -23,6 +23,7 @@ class BetsState with _$BetsState {
     String? loggedUserId,
     double? totalPoints,
     List<GrandPrixItemParams>? grandPrixItems,
+    Duration? durationToStartNextGp,
   }) = _BetsState;
 }
 
@@ -76,12 +77,7 @@ class GrandPrixStatusFinished extends GrandPrixStatus {
 }
 
 class GrandPrixStatusNext extends GrandPrixStatus {
-  final Duration durationToStart;
-
-  const GrandPrixStatusNext({required this.durationToStart});
-
-  @override
-  List<Object?> get props => [durationToStart];
+  const GrandPrixStatusNext();
 }
 
 class GrandPrixStatusUpcoming extends GrandPrixStatus {

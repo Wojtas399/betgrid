@@ -77,6 +77,11 @@ void main() {
           points: 10.0,
         ),
       ];
+      BetsState? state;
+
+      setUp(() {
+        dateService.mockGetNow(now: now);
+      });
 
       tearDown(() {
         verify(() => authRepository.loggedUserId$).called(1);
@@ -103,7 +108,6 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           getPlayerPointsUseCase.mock();
           getGrandPrixesWithPointsUseCase.mock(grandPrixesWithPoints: []);
-          dateService.mockGetNowStream(expectedNow: now);
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
@@ -116,16 +120,15 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
-          verify(dateService.getNowStream).called(1);
         },
       );
 
@@ -176,7 +179,7 @@ void main() {
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
-          BetsState(
+          state = BetsState(
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
             totalPoints: 30,
@@ -202,9 +205,7 @@ void main() {
                 betPoints: grandPrixesWithPoints[3].points,
               ),
               GrandPrixItemParams(
-                status: const GrandPrixStatusNext(
-                  durationToStart: Duration(days: 1, minutes: 34),
-                ),
+                status: const GrandPrixStatusNext(),
                 seasonGrandPrixId: grandPrixesWithPoints[2].seasonGrandPrixId,
                 grandPrixName: grandPrixesWithPoints[2].name,
                 countryAlpha2Code: grandPrixesWithPoints[2].countryAlpha2Code,
@@ -224,19 +225,22 @@ void main() {
                 betPoints: grandPrixesWithPoints[0].points,
               ),
             ],
-          )
+          ),
+          state = state!.copyWith(
+            durationToStartNextGp: const Duration(days: 1, minutes: 34),
+          ),
         ],
         verify: (_) {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(dateService.getNowStream).called(1);
@@ -298,15 +302,13 @@ void main() {
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
-          BetsState(
+          state = BetsState(
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
-                status: const GrandPrixStatusNext(
-                  durationToStart: Duration(hours: 2, minutes: 34),
-                ),
+                status: const GrandPrixStatusNext(),
                 seasonGrandPrixId: grandPrixesWithPoints[1].seasonGrandPrixId,
                 grandPrixName: grandPrixesWithPoints[1].name,
                 countryAlpha2Code: grandPrixesWithPoints[1].countryAlpha2Code,
@@ -346,19 +348,22 @@ void main() {
                 betPoints: grandPrixesWithPoints[0].points,
               ),
             ],
-          )
+          ),
+          state = state!.copyWith(
+            durationToStartNextGp: const Duration(hours: 2, minutes: 34),
+          ),
         ],
         verify: (_) {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(dateService.getNowStream).called(1);
@@ -492,13 +497,13 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: loggedUserId,
-              season: 2025,
+              season: now.year,
             ),
           ).called(1);
           verify(dateService.getNowStream).called(1);

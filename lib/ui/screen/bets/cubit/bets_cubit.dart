@@ -21,6 +21,7 @@ class BetsCubit extends Cubit<BetsState> {
   final BetsGpStatusService _gpStatusService;
   final DateService _dateService;
   StreamSubscription<_ListenedData?>? _listener;
+  StreamSubscription<Duration?>? _durationToStartNextGpListener;
 
   BetsCubit(
     this._authRepository,
@@ -33,6 +34,7 @@ class BetsCubit extends Cubit<BetsState> {
   @override
   Future<void> close() {
     _listener?.cancel();
+    _durationToStartNextGpListener?.cancel();
     return super.close();
   }
 
@@ -54,13 +56,16 @@ class BetsCubit extends Cubit<BetsState> {
   }
 
   Stream<_ListenedData> _getListenedData(String loggedUserId) {
-    const int currentYear = 2025;
+    final int currentSeason = _dateService.getNow().year;
     return Rx.combineLatest2(
       _getPlayerPointsUseCase(
         playerId: loggedUserId,
-        season: currentYear,
+        season: currentSeason,
       ),
-      _getGrandPrixItems(loggedUserId, currentYear),
+      _getGrandPrixesWithPointsUseCase(
+        playerId: loggedUserId,
+        season: currentSeason,
+      ).map(_addStatusForEachGp),
       (
         double? totalPoints,
         List<GrandPrixItemParams> grandPrixItems,
@@ -80,71 +85,49 @@ class BetsCubit extends Cubit<BetsState> {
         loggedUserId: data.loggedUserId,
       ));
     } else {
-      final sortedGrandPrixItems = [...data.grandPrixItems];
-      sortedGrandPrixItems.sort(
-        (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
-      );
       emit(state.copyWith(
         status: BetsStateStatus.completed,
         loggedUserId: data.loggedUserId,
         totalPoints: data.totalPoints,
-        grandPrixItems: sortedGrandPrixItems,
+        grandPrixItems: data.grandPrixItems,
       ));
+      _listenToDurationToStartNextGp();
     }
-  }
-
-  Stream<List<GrandPrixItemParams>> _getGrandPrixItems(
-    String playerId,
-    int season,
-  ) {
-    return Rx.combineLatest2(
-      _getGrandPrixesWithPointsUseCase(
-        playerId: playerId,
-        season: season,
-      ),
-      _dateService.getNowStream(),
-      (grandPrixesWithPoints, now) => (
-        grandPrixesWithPoints: grandPrixesWithPoints,
-        now: now,
-      ),
-    ).map((data) => _addStatusForEachGp(data.grandPrixesWithPoints, data.now));
   }
 
   List<GrandPrixItemParams> _addStatusForEachGp(
     List<GrandPrixWithPoints> grandPrixesWithPoints,
-    DateTime now,
   ) {
+    final now = _dateService.getNow();
     final grandPrixesWithStatus = grandPrixesWithPoints
-        .map((gp) => GrandPrixItemParams(
-              status: _gpStatusService.defineStatusForGp(
-                gpStartDateTime: gp.startDate,
-                gpEndDateTime: gp.endDate,
-                now: now,
-              ),
-              seasonGrandPrixId: gp.seasonGrandPrixId,
-              grandPrixName: gp.name,
-              countryAlpha2Code: gp.countryAlpha2Code,
-              roundNumber: gp.roundNumber,
-              startDate: gp.startDate,
-              endDate: gp.endDate,
-              betPoints: gp.points,
-            ))
-        .toList();
-    final int? ongoingGpRoundNumber = grandPrixesWithStatus
-        .firstWhereOrNull((gp) => gp.status is GrandPrixStatusOngoing)
-        ?.roundNumber;
-    final int nextGpRoundNumber = (ongoingGpRoundNumber ?? 0) + 1;
-    final int nextGpIndex = grandPrixesWithStatus.indexWhere(
-      (gp) => gp.roundNumber == nextGpRoundNumber,
-    );
-    if (nextGpIndex > -1) {
-      final nextGp = grandPrixesWithStatus[nextGpIndex];
-      grandPrixesWithStatus[nextGpIndex] = GrandPrixItemParams(
-        status: GrandPrixStatusNext(
-          durationToStart: _dateService.getDurationToDateFromNow(
-            nextGp.startDate,
+        .map(
+          (gp) => GrandPrixItemParams(
+            status: _gpStatusService.defineStatusForGp(
+              gpStartDateTime: gp.startDate,
+              gpEndDateTime: gp.endDate,
+              now: now,
+            ),
+            seasonGrandPrixId: gp.seasonGrandPrixId,
+            grandPrixName: gp.name,
+            countryAlpha2Code: gp.countryAlpha2Code,
+            roundNumber: gp.roundNumber,
+            startDate: gp.startDate,
+            endDate: gp.endDate,
+            betPoints: gp.points,
           ),
-        ),
+        )
+        .toList();
+    final sortedGrandPrixesWithStatus = [...grandPrixesWithStatus];
+    sortedGrandPrixesWithStatus.sort(
+      (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
+    );
+    final nextGp = sortedGrandPrixesWithStatus.firstWhereOrNull(
+      (gp) => gp.status is GrandPrixStatusUpcoming,
+    );
+    if (nextGp != null) {
+      final nextGpIndex = sortedGrandPrixesWithStatus.indexOf(nextGp);
+      sortedGrandPrixesWithStatus[nextGpIndex] = GrandPrixItemParams(
+        status: const GrandPrixStatusNext(),
         seasonGrandPrixId: nextGp.seasonGrandPrixId,
         grandPrixName: nextGp.grandPrixName,
         countryAlpha2Code: nextGp.countryAlpha2Code,
@@ -154,7 +137,27 @@ class BetsCubit extends Cubit<BetsState> {
         betPoints: nextGp.betPoints,
       );
     }
-    return grandPrixesWithStatus;
+    return sortedGrandPrixesWithStatus;
+  }
+
+  void _listenToDurationToStartNextGp() {
+    _durationToStartNextGpListener?.cancel();
+    _durationToStartNextGpListener = _dateService.getNowStream().map(
+      (DateTime now) {
+        final nextGp = state.grandPrixItems?.firstWhereOrNull(
+          (gp) => gp.status is GrandPrixStatusNext,
+        );
+        return nextGp != null
+            ? _dateService.getDurationToDateFromNow(nextGp.startDate)
+            : null;
+      },
+    ).listen(
+      (duration) {
+        emit(state.copyWith(
+          durationToStartNextGp: duration,
+        ));
+      },
+    );
   }
 }
 

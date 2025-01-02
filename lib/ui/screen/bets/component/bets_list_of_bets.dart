@@ -95,10 +95,7 @@ class _Item extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (gpStatus is GrandPrixStatusNext)
-                _EndBettingTime(
-                  durationToEnd: gpStatus.durationToStart,
-                ),
+              if (gpStatus is GrandPrixStatusNext) const _EndBettingTime(),
               GrandPrixItem(
                 name: gpParams.grandPrixName,
                 countryAlpha2Code: gpParams.countryAlpha2Code,
@@ -131,23 +128,28 @@ class _Item extends StatelessWidget {
 }
 
 class _EndBettingTime extends StatelessWidget {
-  final Duration durationToEnd;
-
-  const _EndBettingTime({
-    required this.durationToEnd,
-  });
+  const _EndBettingTime();
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            const BodyMedium('Koniec typowania za '),
+  Widget build(BuildContext context) {
+    final Duration? durationToEnd = context.select(
+      (BetsCubit cubit) => cubit.state.durationToStartNextGp,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          const BodyMedium('Koniec typowania za '),
+          if (durationToEnd != null)
             BodyMedium(
               durationToEnd.toDaysHoursMinutes(),
               fontWeight: FontWeight.bold,
-            ),
-          ],
-        ),
-      );
+            )
+          else
+            const CircularProgressIndicator(),
+        ],
+      ),
+    );
+  }
 }

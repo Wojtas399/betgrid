@@ -18,6 +18,6 @@ class DateService {
 
   Duration getDurationToDateFromNow(DateTime dateTime) {
     final date = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    return date.difference(DateTime.now());
+    return date.difference(getNow());
   }
 }

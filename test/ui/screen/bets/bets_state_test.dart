@@ -293,7 +293,7 @@ void main() {
       test(
         'should return false if status is set as GrandPrixStatusNext',
         () {
-          const status = GrandPrixStatusNext(durationToStart: Duration.zero);
+          const status = GrandPrixStatusNext();
 
           expect(status.isOngoing, false);
         },
@@ -316,7 +316,7 @@ void main() {
       test(
         'should return true if status is set as GrandPrixStatusNext',
         () {
-          const status = GrandPrixStatusNext(durationToStart: Duration.zero);
+          const status = GrandPrixStatusNext();
 
           expect(status.isNext, true);
         },
