@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/player_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
@@ -37,9 +37,9 @@ void main() {
       const String loggedUserId = 'u1';
       final DateTime now = DateTime(2024);
       final List<Player> players = [
-        const PlayerCreator(id: loggedUserId).createEntity(),
-        const PlayerCreator(id: 'u2').createEntity(),
-        const PlayerCreator(id: 'u3').createEntity(),
+        const PlayerCreator(id: loggedUserId).create(),
+        const PlayerCreator(id: 'u2').create(),
+        const PlayerCreator(id: 'u3').create(),
       ];
 
       tearDown(() {

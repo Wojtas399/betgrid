@@ -5,7 +5,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mock/data/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/ui/screen/mock_bets_gp_status_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';

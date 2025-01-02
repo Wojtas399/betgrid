@@ -14,10 +14,10 @@ import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/race_bet_points_creator.dart';
 import '../../../creator/season_driver_creator.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
-import '../../../mock/data/repository/mock_season_driver_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/repository/mock_grand_prix_results_repository.dart';
+import '../../../mock/repository/mock_season_driver_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
 import '../../../mock/use_case/mock_get_details_for_season_driver_use_case.dart';
 
@@ -78,24 +78,24 @@ void main() {
         p1SeasonDriverId: 'sd1',
         p2SeasonDriverId: 'sd2',
         p3SeasonDriverId: 'sd3',
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         p1SeasonDriverId: 'sd1',
         p2SeasonDriverId: 'sd2',
         p3SeasonDriverId: 'sd4',
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           p1Points: 2,
           p2Points: 2,
           p3Points: 0,
         ),
-      ).createEntity();
+      ).create();
       final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'sd1').createEntity(),
-        const SeasonDriverCreator(id: 'sd2').createEntity(),
-        const SeasonDriverCreator(id: 'sd3').createEntity(),
-        const SeasonDriverCreator(id: 'sd4').createEntity(),
+        const SeasonDriverCreator(id: 'sd1').create(),
+        const SeasonDriverCreator(id: 'sd2').create(),
+        const SeasonDriverCreator(id: 'sd3').create(),
+        const SeasonDriverCreator(id: 'sd4').create(),
       ];
       final List<DriverDetails> driversDetails = [
         const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
@@ -160,17 +160,17 @@ void main() {
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
         p10SeasonDriverId: 'sd10',
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         p10SeasonDriverId: 'sd10',
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           p10Points: 2,
         ),
-      ).createEntity();
+      ).create();
       final SeasonDriver seasonDriver =
-          const SeasonDriverCreator(id: 'sd10').createEntity();
+          const SeasonDriverCreator(id: 'sd10').create();
       final DriverDetails driver = const DriverDetailsCreator(
         seasonDriverId: 'sd10',
       ).create();
@@ -213,17 +213,17 @@ void main() {
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
         fastestLapSeasonDriverId: 'sd1',
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         fastestLapSeasonDriverId: 'sd1',
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           fastestLapPoints: 2,
         ),
-      ).createEntity();
+      ).create();
       final SeasonDriver seasonDriver =
-          const SeasonDriverCreator(id: 'sd1').createEntity();
+          const SeasonDriverCreator(id: 'sd1').create();
       final DriverDetails driver = const DriverDetailsCreator(
         seasonDriverId: 'sd1',
       ).create();
@@ -266,20 +266,20 @@ void main() {
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
         dnfSeasonDriverIds: ['sd1', 'sd2'],
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         dnfSeasonDriverIds: ['sd1', 'sd3', 'sd5'],
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           dnfPoints: 2,
         ),
-      ).createEntity();
+      ).create();
       final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'sd1').createEntity(),
-        const SeasonDriverCreator(id: 'sd2').createEntity(),
-        const SeasonDriverCreator(id: 'sd3').createEntity(),
-        const SeasonDriverCreator(id: 'sd5').createEntity(),
+        const SeasonDriverCreator(id: 'sd1').create(),
+        const SeasonDriverCreator(id: 'sd2').create(),
+        const SeasonDriverCreator(id: 'sd3').create(),
+        const SeasonDriverCreator(id: 'sd5').create(),
       ];
       final List<DriverDetails> drivers = [
         const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
@@ -329,15 +329,15 @@ void main() {
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
         willBeSafetyCar: false,
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         wasThereSafetyCar: true,
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           safetyCarPoints: 0,
         ),
-      ).createEntity();
+      ).create();
       const BetStatus betStatus = BetStatus.loss;
       final BooleanBet expectedBet = BooleanBet(
         status: betStatus,
@@ -371,15 +371,15 @@ void main() {
     () async {
       final GrandPrixBet bet = GrandPrixBetCreator(
         willBeRedFlag: true,
-      ).createEntity();
+      ).create();
       final GrandPrixResults results = const GrandPrixResultsCreator(
         wasThereRedFlag: true,
-      ).createEntity();
+      ).create();
       final GrandPrixBetPoints points = const GrandPrixBetPointsCreator(
         raceBetPointsCreator: RaceBetPointsCreator(
           redFlagPoints: 2,
         ),
-      ).createEntity();
+      ).create();
       const BetStatus betStatus = BetStatus.win;
       final BooleanBet expectedBet = BooleanBet(
         status: betStatus,

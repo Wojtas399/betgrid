@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/user_dto.dart';
 import 'package:betgrid/model/user.dart';
 
 class UserCreator {
@@ -16,7 +15,7 @@ class UserCreator {
     this.themePrimaryColor = UserCreatorThemePrimaryColor.red,
   });
 
-  User createEntity() {
+  User create() {
     return User(
       id: id,
       username: username,
@@ -24,23 +23,6 @@ class UserCreator {
       themeMode: _entityThemeMode,
       themePrimaryColor: _entityThemePrimaryColor,
     );
-  }
-
-  UserDto createDto() {
-    return UserDto(
-      id: id,
-      username: username,
-      themeMode: _dtoThemeMode,
-      themePrimaryColor: _dtoThemePrimaryColor,
-    );
-  }
-
-  Map<String, Object?> createJson() {
-    return {
-      'username': username,
-      'themeMode': themeMode.name,
-      'themePrimaryColor': themePrimaryColor.name,
-    };
   }
 
   ThemeMode get _entityThemeMode => switch (themeMode) {
@@ -58,23 +40,6 @@ class UserCreator {
         UserCreatorThemePrimaryColor.yellow => ThemePrimaryColor.yellow,
         UserCreatorThemePrimaryColor.green => ThemePrimaryColor.green,
         UserCreatorThemePrimaryColor.blue => ThemePrimaryColor.blue,
-      };
-
-  ThemeModeDto get _dtoThemeMode => switch (themeMode) {
-        UserCreatorThemeMode.light => ThemeModeDto.light,
-        UserCreatorThemeMode.dark => ThemeModeDto.dark,
-        UserCreatorThemeMode.system => ThemeModeDto.system,
-      };
-
-  ThemePrimaryColorDto get _dtoThemePrimaryColor => switch (themePrimaryColor) {
-        UserCreatorThemePrimaryColor.red => ThemePrimaryColorDto.defaultRed,
-        UserCreatorThemePrimaryColor.pink => ThemePrimaryColorDto.pink,
-        UserCreatorThemePrimaryColor.purple => ThemePrimaryColorDto.purple,
-        UserCreatorThemePrimaryColor.brown => ThemePrimaryColorDto.brown,
-        UserCreatorThemePrimaryColor.orange => ThemePrimaryColorDto.orange,
-        UserCreatorThemePrimaryColor.yellow => ThemePrimaryColorDto.yellow,
-        UserCreatorThemePrimaryColor.green => ThemePrimaryColorDto.green,
-        UserCreatorThemePrimaryColor.blue => ThemePrimaryColorDto.blue,
       };
 }
 

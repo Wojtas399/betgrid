@@ -42,7 +42,7 @@ void main() {
       const int season = 2024;
       final PlayersPodium playersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
-          player: const PlayerCreator(id: 'p3').createEntity(),
+          player: const PlayerCreator(id: 'p3').create(),
           points: 33,
         ),
       );
@@ -130,7 +130,7 @@ void main() {
     () {
       final PointsByDriverPlayerPoints playerPointsForDriver =
           PointsByDriverPlayerPoints(
-        player: const PlayerCreator(id: 'p1').createEntity(),
+        player: const PlayerCreator(id: 'p1').create(),
         points: 22.22,
       );
 

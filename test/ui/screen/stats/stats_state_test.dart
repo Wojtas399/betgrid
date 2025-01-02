@@ -244,7 +244,7 @@ void main() {
         () {
           final PlayersPodium newValue = PlayersPodium(
             p1Player: PlayersPodiumPlayer(
-              player: const PlayerCreator(id: 'p1').createEntity(),
+              player: const PlayerCreator(id: 'p1').create(),
               points: 22.2,
             ),
           );

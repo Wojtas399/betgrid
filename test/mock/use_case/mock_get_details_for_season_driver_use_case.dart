@@ -8,7 +8,7 @@ class MockGetDetailsForSeasonDriverUseCase extends Mock
     implements GetDetailsForSeasonDriverUseCase {
   MockGetDetailsForSeasonDriverUseCase() {
     registerFallbackValue(
-      const SeasonDriverCreator().createEntity(),
+      const SeasonDriverCreator().create(),
     );
   }
 

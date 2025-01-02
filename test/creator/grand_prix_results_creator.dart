@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/grand_prix_results_dto.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 
 class GrandPrixResultsCreator {
@@ -28,7 +27,7 @@ class GrandPrixResultsCreator {
     this.wasThereRedFlag = false,
   });
 
-  GrandPrixResults createEntity() {
+  GrandPrixResults create() {
     return GrandPrixResults(
       id: id,
       seasonGrandPrixId: seasonGrandPrixId,
@@ -44,36 +43,5 @@ class GrandPrixResultsCreator {
         wasThereRedFlag: wasThereRedFlag,
       ),
     );
-  }
-
-  GrandPrixResultsDto createDto() {
-    return GrandPrixResultsDto(
-      id: id,
-      seasonGrandPrixId: seasonGrandPrixId,
-      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
-      p1SeasonDriverId: p1SeasonDriverId,
-      p2SeasonDriverId: p2SeasonDriverId,
-      p3SeasonDriverId: p3SeasonDriverId,
-      p10SeasonDriverId: p10SeasonDriverId,
-      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
-      dnfSeasonDriverIds: dnfSeasonDriverIds,
-      wasThereSafetyCar: wasThereSafetyCar,
-      wasThereRedFlag: wasThereRedFlag,
-    );
-  }
-
-  Map<String, Object?> createJson() {
-    return {
-      'seasonGrandPrixId': seasonGrandPrixId,
-      'qualiStandingsBySeasonDriverIds': qualiStandingsBySeasonDriverIds,
-      'p1SeasonDriverId': p1SeasonDriverId,
-      'p2SeasonDriverId': p2SeasonDriverId,
-      'p3SeasonDriverId': p3SeasonDriverId,
-      'p10SeasonDriverId': p10SeasonDriverId,
-      'fastestLapSeasonDriverId': fastestLapSeasonDriverId,
-      'dnfSeasonDriverIds': dnfSeasonDriverIds,
-      'wasThereSafetyCar': wasThereSafetyCar,
-      'wasThereRedFlag': wasThereRedFlag,
-    };
   }
 }

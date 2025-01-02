@@ -11,8 +11,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
@@ -68,7 +68,7 @@ void main() {
         dnfSeasonDriverIds: ['d1'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
-      ).createEntity();
+      ).create();
       final updatedBet = GrandPrixBetCreator(
         qualiStandingsBySeasonDriverIds: List.generate(
           20,
@@ -82,7 +82,7 @@ void main() {
         dnfSeasonDriverIds: ['d1', 'd2'],
         willBeSafetyCar: true,
         willBeRedFlag: false,
-      ).createEntity();
+      ).create();
       final bet$ = StreamController<GrandPrixBet>()..add(bet);
       GrandPrixBetEditorState? state;
 
@@ -323,7 +323,7 @@ void main() {
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
             dnfSeasonDriverIds: [driverId, 'd2'],
-          ).createEntity(),
+          ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: allDrivers,
           ),
@@ -340,7 +340,7 @@ void main() {
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2'],
-          ).createEntity(),
+          ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
           ),
@@ -385,7 +385,7 @@ void main() {
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2'],
-          ).createEntity(),
+          ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last],
           ),
@@ -402,7 +402,7 @@ void main() {
           allDrivers: allDrivers,
           originalGrandPrixBet: GrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2', driverId],
-          ).createEntity(),
+          ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
             dnfDrivers: [allDrivers.last, allDrivers.first],
           ),
@@ -549,7 +549,7 @@ void main() {
           qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
           originalGrandPrixBet: GrandPrixBetCreator(
             id: grandPrixBetId,
-          ).createEntity(),
+          ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,

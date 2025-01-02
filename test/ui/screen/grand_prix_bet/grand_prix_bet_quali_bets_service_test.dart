@@ -9,9 +9,9 @@ import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_results_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
@@ -101,7 +101,7 @@ void main() {
         q1P18Points: 0,
         q1P19Points: 0,
         q1P20Points: 0,
-      ).createEntity();
+      ).create();
       final List<SingleDriverBet> expectedBets = [
         SingleDriverBet(
           status: BetStatus.win,
@@ -227,13 +227,13 @@ void main() {
       grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
         grandPrixBet: GrandPrixBetCreator(
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
-        ).createEntity(),
+        ).create(),
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
         results: GrandPrixResultsCreator(
           qualiStandingsBySeasonDriverIds:
               resultQualiStandingsBySeasonDriverIds,
-        ).createEntity(),
+        ).create(),
       );
       getDetailsOfAllDriversFromSeasonUseCase.mock(
         expectedDetailsOfAllDriversFromSeason: allDriverDetails,

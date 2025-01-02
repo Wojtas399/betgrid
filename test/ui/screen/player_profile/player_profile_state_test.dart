@@ -87,7 +87,7 @@ void main() {
       test(
         'should set new value if passed value is not null',
         () {
-          final Player newValue = const PlayerCreator(id: 'p1').createEntity();
+          final Player newValue = const PlayerCreator(id: 'p1').create();
 
           state = state.copyWith(player: newValue);
 

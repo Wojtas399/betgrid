@@ -8,8 +8,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../creator/season_driver_creator.dart';
 import '../creator/team_basic_info_creator.dart';
-import '../mock/data/repository/mock_driver_personal_data_repository.dart';
-import '../mock/data/repository/mock_team_basic_info_repository.dart';
+import '../mock/repository/mock_driver_personal_data_repository.dart';
+import '../mock/repository/mock_team_basic_info_repository.dart';
 
 void main() {
   final driverPersonalDataRepository = MockDriverPersonalDataRepository();
@@ -22,7 +22,7 @@ void main() {
     id: 'sd1',
     driverId: 'd1',
     driverNumber: 1,
-  ).createEntity();
+  ).create();
   final DriverPersonalData driverPersonalData = DriverPersonalData(
     id: seasonDriver.driverId,
     name: 'Max',
@@ -31,7 +31,7 @@ void main() {
   final TeamBasicInfo teamBasicInfo = const TeamBasicInfoCreator(
     name: 'Red Bull Racing',
     hexColor: '#FFFFFF',
-  ).createEntity();
+  ).create();
   final DriverDetails expectedDriver = DriverDetails(
     seasonDriverId: seasonDriver.id,
     name: driverPersonalData.name,

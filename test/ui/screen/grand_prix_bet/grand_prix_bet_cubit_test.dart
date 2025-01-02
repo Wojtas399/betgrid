@@ -16,11 +16,11 @@ import '../../../creator/grand_prix_basic_info_creator.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_basic_info_repository.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/data/repository/mock_player_repository.dart';
-import '../../../mock/data/repository/mock_season_grand_prix_repository.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_grand_prix_basic_info_repository.dart';
+import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_player_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_quali_bets_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_race_bets_service.dart';
@@ -76,16 +76,16 @@ void main() {
     () {
       final Player player = const PlayerCreator(
         username: 'username',
-      ).createEntity();
+      ).create();
       final SeasonGrandPrix seasonGrandPrix = SeasonGrandPrixCreator(
         id: seasonGrandPrixId,
         grandPrixId: 'gp1',
         startDate: DateTime(2024, 3, 3),
-      ).createEntity();
+      ).create();
       final GrandPrixBasicInfo grandPrixBasicInfo = GrandPrixBasicInfoCreator(
         id: seasonGrandPrix.grandPrixId,
         name: 'grand prix',
-      ).createEntity();
+      ).create();
       final List<SingleDriverBet> qualiBets = List.generate(
         20,
         (int itemIndex) => SingleDriverBet(
@@ -157,7 +157,7 @@ void main() {
       );
       final GrandPrixBetPoints gpBetPoints = const GrandPrixBetPointsCreator(
         id: 'gpb1',
-      ).createEntity();
+      ).create();
       final DateTime now = DateTime(2024, 2, 2);
       const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(

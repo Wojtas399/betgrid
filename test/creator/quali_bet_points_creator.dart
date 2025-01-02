@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/quali_bet_points_dto.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 
 class QualiBetPointsCreator {
@@ -62,7 +61,7 @@ class QualiBetPointsCreator {
     this.multiplier,
   });
 
-  QualiBetPoints createEntity() => QualiBetPoints(
+  QualiBetPoints create() => QualiBetPoints(
         totalPoints: totalPoints,
         q3P1Points: q3P1Points,
         q3P2Points: q3P2Points,
@@ -92,66 +91,4 @@ class QualiBetPointsCreator {
         q3Multiplier: q3Multiplier,
         multiplier: multiplier,
       );
-
-  QualiBetPointsDto createDto() => QualiBetPointsDto(
-        totalPoints: totalPoints,
-        q3P1Points: q3P1Points,
-        q3P2Points: q3P2Points,
-        q3P3Points: q3P3Points,
-        q3P4Points: q3P4Points,
-        q3P5Points: q3P5Points,
-        q3P6Points: q3P6Points,
-        q3P7Points: q3P7Points,
-        q3P8Points: q3P8Points,
-        q3P9Points: q3P9Points,
-        q3P10Points: q3P10Points,
-        q2P11Points: q2P11Points,
-        q2P12Points: q2P12Points,
-        q2P13Points: q2P13Points,
-        q2P14Points: q2P14Points,
-        q2P15Points: q2P15Points,
-        q1P16Points: q1P16Points,
-        q1P17Points: q1P17Points,
-        q1P18Points: q1P18Points,
-        q1P19Points: q1P19Points,
-        q1P20Points: q1P20Points,
-        q1Points: q1Points,
-        q2Points: q2Points,
-        q3Points: q3Points,
-        q1Multiplier: q1Multiplier,
-        q2Multiplier: q2Multiplier,
-        q3Multiplier: q3Multiplier,
-        multiplier: multiplier,
-      );
-
-  Map<String, Object?> createJson() => {
-        'totalPoints': totalPoints,
-        'q3P1Points': q3P1Points,
-        'q3P2Points': q3P2Points,
-        'q3P3Points': q3P3Points,
-        'q3P4Points': q3P4Points,
-        'q3P5Points': q3P5Points,
-        'q3P6Points': q3P6Points,
-        'q3P7Points': q3P7Points,
-        'q3P8Points': q3P8Points,
-        'q3P9Points': q3P9Points,
-        'q3P10Points': q3P10Points,
-        'q2P11Points': q2P11Points,
-        'q2P12Points': q2P12Points,
-        'q2P13Points': q2P13Points,
-        'q2P14Points': q2P14Points,
-        'q2P15Points': q2P15Points,
-        'q1P16Points': q1P16Points,
-        'q1P17Points': q1P17Points,
-        'q1P18Points': q1P18Points,
-        'q1P19Points': q1P19Points,
-        'q1P20Points': q1P20Points,
-        'q1Points': q1Points,
-        'q2Points': q2Points,
-        'q3Points': q3Points,
-        'q1Multiplier': q1Multiplier,
-        'q2Multiplier': q2Multiplier,
-        'q3Multiplier': q3Multiplier,
-        'multiplier': multiplier,
-      };
 }

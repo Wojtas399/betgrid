@@ -11,7 +11,7 @@ class PlayerCreator {
     this.avatarUrl,
   });
 
-  Player createEntity() => Player(
+  Player create() => Player(
         id: id,
         username: username,
         avatarUrl: avatarUrl,

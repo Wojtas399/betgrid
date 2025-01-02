@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/grand_prix_bet_points_dto.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 
 import 'quali_bet_points_creator.dart';
@@ -21,34 +20,14 @@ class GrandPrixBetPointsCreator {
     this.raceBetPointsCreator,
   });
 
-  GrandPrixBetPoints createEntity() {
+  GrandPrixBetPoints create() {
     return GrandPrixBetPoints(
       id: id,
       playerId: playerId,
       seasonGrandPrixId: seasonGrandPrixId,
       totalPoints: totalPoints,
-      qualiBetPoints: qualiBetPointsCreator?.createEntity(),
-      raceBetPoints: raceBetPointsCreator?.createEntity(),
+      qualiBetPoints: qualiBetPointsCreator?.create(),
+      raceBetPoints: raceBetPointsCreator?.create(),
     );
-  }
-
-  GrandPrixBetPointsDto createDto() {
-    return GrandPrixBetPointsDto(
-      id: id,
-      playerId: playerId,
-      seasonGrandPrixId: seasonGrandPrixId,
-      totalPoints: totalPoints,
-      qualiBetPointsDto: qualiBetPointsCreator?.createDto(),
-      raceBetPointsDto: raceBetPointsCreator?.createDto(),
-    );
-  }
-
-  Map<String, Object?> createJson() {
-    return {
-      'seasonGrandPrixId': seasonGrandPrixId,
-      'totalPoints': totalPoints,
-      'qualiBetPoints': qualiBetPointsCreator?.createJson(),
-      'raceBetPoints': raceBetPointsCreator?.createJson(),
-    };
   }
 }

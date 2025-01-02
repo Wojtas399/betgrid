@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../creator/season_grand_prix_creator.dart';
-import '../mock/data/repository/mock_season_grand_prix_repository.dart';
+import '../mock/repository/mock_season_grand_prix_repository.dart';
 import '../mock/ui/mock_date_service.dart';
 
 void main() {
@@ -50,13 +50,13 @@ void main() {
       final List<SeasonGrandPrix> grandPrixesFromSeason = [
         SeasonGrandPrixCreator(
           startDate: DateTime(2024, 5, 30),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           startDate: DateTime(2024, 5, 28, 14, 30),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           startDate: DateTime(2024, 5, 28, 14, 31),
-        ).createEntity(),
+        ).create(),
       ];
       seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
@@ -76,27 +76,27 @@ void main() {
           id: 'sgp1',
           startDate: DateTime(2024, 05, 27),
           endDate: DateTime(2024, 05, 29),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp2',
           startDate: DateTime(2024, 05, 20),
           endDate: DateTime(2024, 05, 22),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp3',
           startDate: DateTime(2024, 06, 02),
           endDate: DateTime(2024, 06, 04),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp4',
           startDate: DateTime(2024, 05, 28),
           endDate: DateTime(2024, 05, 30),
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp5',
           startDate: DateTime(2024, 07, 10),
           endDate: DateTime(2024, 07, 12),
-        ).createEntity(),
+        ).create(),
       ];
       final List<SeasonGrandPrix> expectedFinishedGrandPrixes = [
         grandPrixesFromSeason.first,

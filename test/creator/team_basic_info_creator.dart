@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/team_basic_info_dto.dart';
 import 'package:betgrid/model/team_basic_info.dart';
 
 class TeamBasicInfoCreator {
@@ -12,26 +11,11 @@ class TeamBasicInfoCreator {
     this.hexColor = '',
   });
 
-  TeamBasicInfo createEntity() {
+  TeamBasicInfo create() {
     return TeamBasicInfo(
       id: id,
       name: name,
       hexColor: hexColor,
     );
-  }
-
-  TeamBasicInfoDto createDto() {
-    return TeamBasicInfoDto(
-      id: id,
-      name: name,
-      hexColor: hexColor,
-    );
-  }
-
-  Map<String, Object?> createJson() {
-    return {
-      'name': name,
-      'hexColor': hexColor,
-    };
   }
 }

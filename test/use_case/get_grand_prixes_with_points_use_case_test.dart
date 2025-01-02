@@ -7,9 +7,9 @@ import 'package:mocktail/mocktail.dart';
 import '../creator/grand_prix_basic_info_creator.dart';
 import '../creator/grand_prix_bet_points_creator.dart';
 import '../creator/season_grand_prix_creator.dart';
-import '../mock/data/repository/mock_grand_prix_basic_info_repository.dart';
-import '../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../mock/data/repository/mock_season_grand_prix_repository.dart';
+import '../mock/repository/mock_grand_prix_basic_info_repository.dart';
+import '../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../mock/repository/mock_season_grand_prix_repository.dart';
 
 void main() {
   final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
@@ -59,27 +59,27 @@ void main() {
           id: 'sgp1',
           roundNumber: 3,
           grandPrixId: 'gp1',
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp2',
           roundNumber: 1,
           grandPrixId: 'gp2',
-        ).createEntity(),
+        ).create(),
         SeasonGrandPrixCreator(
           id: 'sgp3',
           roundNumber: 2,
           grandPrixId: 'gp3',
-        ).createEntity(),
+        ).create(),
       ];
       final List<GrandPrixBasicInfo> allGrandPrixes = [
         const GrandPrixBasicInfoCreator(
           name: 'gp1',
           countryAlpha2Code: 'FR',
-        ).createEntity(),
+        ).create(),
         const GrandPrixBasicInfoCreator(
           name: 'gp2',
           countryAlpha2Code: 'FR',
-        ).createEntity(),
+        ).create(),
       ];
       const double sgp1TotalPoints = 10.2;
       const double sgp2TotalPoints = 6.5;
@@ -132,7 +132,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp1TotalPoints,
-          ).createEntity(),
+          ).create(),
         ),
       );
       when(
@@ -145,7 +145,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp2TotalPoints,
-          ).createEntity(),
+          ).create(),
         ),
       );
       when(
@@ -158,7 +158,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp3TotalPoints,
-          ).createEntity(),
+          ).create(),
         ),
       );
 

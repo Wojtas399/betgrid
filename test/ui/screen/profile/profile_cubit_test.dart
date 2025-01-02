@@ -7,8 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/user_creator.dart';
-import '../../../mock/data/repository/mock_auth_repository.dart';
-import '../../../mock/data/repository/mock_user_repository.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_user_repository.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
@@ -34,7 +34,7 @@ void main() {
         avatarUrl: 'avatar/url',
         themeMode: UserCreatorThemeMode.dark,
         themePrimaryColor: UserCreatorThemePrimaryColor.brown,
-      ).createEntity();
+      ).create();
 
       tearDown(() {
         verify(() => authRepository.loggedUserId$).called(1);

@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../creator/driver_details_creator.dart';
 import '../creator/season_driver_creator.dart';
-import '../mock/data/repository/mock_season_driver_repository.dart';
+import '../mock/repository/mock_season_driver_repository.dart';
 import '../mock/use_case/mock_get_details_for_season_driver_use_case.dart';
 
 void main() {
@@ -30,9 +30,9 @@ void main() {
     () async {
       const int season = 2024;
       final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'sd1').createEntity(),
-        const SeasonDriverCreator(id: 'sd2').createEntity(),
-        const SeasonDriverCreator(id: 'sd3').createEntity(),
+        const SeasonDriverCreator(id: 'sd1').create(),
+        const SeasonDriverCreator(id: 'sd2').create(),
+        const SeasonDriverCreator(id: 'sd3').create(),
       ];
       final List<DriverDetails> expectedDrivers = [
         const DriverDetailsCreator(seasonDriverId: 'sd1').create(),

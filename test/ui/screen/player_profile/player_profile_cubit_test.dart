@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/player_creator.dart';
-import '../../../mock/data/repository/mock_player_repository.dart';
+import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
@@ -30,7 +30,7 @@ void main() {
     () {
       const String playerId = 'p1';
       final DateTime now = DateTime(2024);
-      final Player player = const PlayerCreator(id: playerId).createEntity();
+      final Player player = const PlayerCreator(id: playerId).create();
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
         GrandPrixWithPoints(

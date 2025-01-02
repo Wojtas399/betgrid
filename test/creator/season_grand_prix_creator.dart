@@ -1,4 +1,3 @@
-import 'package:betgrid/data/firebase/model/season_grand_prix_dto.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 
 class SeasonGrandPrixCreator {
@@ -21,7 +20,7 @@ class SeasonGrandPrixCreator {
     this.endDate = endDate ?? DateTime(2024);
   }
 
-  SeasonGrandPrix createEntity() {
+  SeasonGrandPrix create() {
     return SeasonGrandPrix(
       id: id,
       season: season,
@@ -30,26 +29,5 @@ class SeasonGrandPrixCreator {
       startDate: startDate,
       endDate: endDate,
     );
-  }
-
-  SeasonGrandPrixDto createDto() {
-    return SeasonGrandPrixDto(
-      id: id,
-      season: season,
-      grandPrixId: grandPrixId,
-      roundNumber: roundNumber,
-      startDate: startDate,
-      endDate: endDate,
-    );
-  }
-
-  Map<String, Object?> createJson() {
-    return {
-      'season': season,
-      'grandPrixId': grandPrixId,
-      'roundNumber': roundNumber,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate.toIso8601String(),
-    };
   }
 }

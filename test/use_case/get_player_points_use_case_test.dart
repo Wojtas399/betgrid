@@ -5,8 +5,8 @@ import 'package:mocktail/mocktail.dart';
 
 import '../creator/grand_prix_bet_points_creator.dart';
 import '../creator/season_grand_prix_creator.dart';
-import '../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../mock/data/repository/mock_season_grand_prix_repository.dart';
+import '../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../mock/repository/mock_season_grand_prix_repository.dart';
 
 void main() {
   final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
@@ -54,9 +54,9 @@ void main() {
       const double sgp3Points = 12.25;
       const double expectedPoints = sgp1Points + sgp2Points + sgp3Points;
       final List<SeasonGrandPrix> seasonGrandPrixes = [
-        SeasonGrandPrixCreator(id: 'sgp1').createEntity(),
-        SeasonGrandPrixCreator(id: 'sgp2').createEntity(),
-        SeasonGrandPrixCreator(id: 'sgp3').createEntity(),
+        SeasonGrandPrixCreator(id: 'sgp1').create(),
+        SeasonGrandPrixCreator(id: 'sgp2').create(),
+        SeasonGrandPrixCreator(id: 'sgp3').create(),
       ];
       seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
         expectedSeasonGrandPrixes: seasonGrandPrixes,
@@ -71,7 +71,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp1Points,
-          ).createEntity(),
+          ).create(),
         ),
       );
       when(
@@ -84,7 +84,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp2Points,
-          ).createEntity(),
+          ).create(),
         ),
       );
       when(
@@ -97,7 +97,7 @@ void main() {
         (_) => Stream.value(
           const GrandPrixBetPointsCreator(
             totalPoints: sgp3Points,
-          ).createEntity(),
+          ).create(),
         ),
       );
 
