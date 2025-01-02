@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/grand_prix_item_component.dart';
 import '../../../component/scroll_animated_item_component.dart';
 import '../../../component/text_component.dart';
@@ -146,8 +147,16 @@ class _EndBettingTime extends StatelessWidget {
               durationToEnd.toDaysHoursMinutes(),
               fontWeight: FontWeight.bold,
             )
-          else
-            const CircularProgressIndicator(),
+          else ...[
+            const GapHorizontal8(),
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            ),
+          ],
         ],
       ),
     );
