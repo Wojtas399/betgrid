@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../component/custom_card_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
-import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/grand_prix_bet_state.dart';
@@ -26,23 +26,21 @@ class GrandPrixBetItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Card(
-        child: Padding16(
-          child: Column(
-            children: [
-              _Header(
-                label: label,
-                labelColor: labelColor,
-                betStatus: betStatus,
-              ),
-              const Divider(height: 24),
-              _Body(
-                betChild: betChild,
-                resultsChild: resultsChild,
-                points: points,
-              ),
-            ],
-          ),
+  Widget build(BuildContext context) => CustomCard(
+        child: Column(
+          children: [
+            _Header(
+              label: label,
+              labelColor: labelColor,
+              betStatus: betStatus,
+            ),
+            const Divider(height: 24),
+            _Body(
+              betChild: betChild,
+              resultsChild: resultsChild,
+              points: points,
+            ),
+          ],
         ),
       );
 }
