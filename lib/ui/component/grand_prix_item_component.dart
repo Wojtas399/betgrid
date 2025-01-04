@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../extensions/build_context_extensions.dart';
 import '../service/formatter_service.dart';
+import 'custom_card_component.dart';
 import 'gap/gap_horizontal.dart';
-import 'padding/padding_components.dart';
 import 'text_component.dart';
 
 class GrandPrixItem extends StatelessWidget {
@@ -28,7 +28,7 @@ class GrandPrixItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => _Card(
+  Widget build(BuildContext context) => CustomCard(
         onPressed: onPressed,
         child: Row(
           children: [
@@ -47,37 +47,6 @@ class GrandPrixItem extends StatelessWidget {
             _BetPoints(points: betPoints),
             const GapHorizontal4(),
           ],
-        ),
-      );
-}
-
-class _Card extends StatelessWidget {
-  final Widget child;
-  final VoidCallback onPressed;
-
-  const _Card({
-    required this.child,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        width: double.infinity,
-        child: Card(
-          color: context.colorScheme.surfaceContainer,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: context.colorScheme.surfaceContainerHighest,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: onPressed,
-            child: Padding16(
-              child: child,
-            ),
-          ),
         ),
       );
 }
