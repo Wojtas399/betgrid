@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../component/custom_card_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
@@ -52,12 +53,7 @@ class _Section extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          color: context.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(16),
+  Widget build(BuildContext context) => CustomCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
