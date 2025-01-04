@@ -82,6 +82,7 @@ class _Item extends StatelessWidget {
                   top: 8,
                   left: 4,
                   right: 4,
+                  bottom: 8,
                 )
               : null,
           decoration: gpParams.status.isOngoing || gpParams.status.isNext
