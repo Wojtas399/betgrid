@@ -117,7 +117,9 @@ class _Item extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               color: context.colorScheme.surface,
               child: TitleMedium(
-                gpStatus.isOngoing ? 'Trwa' : 'Następne',
+                gpStatus.isOngoing
+                    ? context.str.betsOngoingStatus
+                    : context.str.betsNextStatus,
                 color: context.colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -141,7 +143,7 @@ class _EndBettingTime extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          const BodyMedium('Koniec typowania za '),
+          BodyMedium('${context.str.betsEndBettingTime} '),
           if (durationToEnd != null)
             BodyMedium(
               durationToEnd.toDaysHoursMinutes(),
