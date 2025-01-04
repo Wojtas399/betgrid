@@ -38,7 +38,7 @@ class BetsListOfBets extends StatelessWidget {
             child: CircularProgressIndicator(),
           )
         : ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             itemCount: grandPrixItems.length,
             itemBuilder: (_, int itemIndex) {
               final gpParams = grandPrixItems[itemIndex];
