@@ -49,15 +49,15 @@ class HomeContent extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     label: context.str.betsScreenTitle,
-                    icon: const Icon(Icons.list),
+                    icon: const Icon(Icons.menu_rounded),
                   ),
                   BottomNavigationBarItem(
                     label: context.str.statsScreenTitle,
-                    icon: const Icon(Icons.bar_chart),
+                    icon: const Icon(Icons.bar_chart_rounded),
                   ),
                   BottomNavigationBarItem(
                     label: context.str.playersScreenTitle,
-                    icon: const Icon(Icons.people),
+                    icon: const Icon(Icons.people_rounded),
                   ),
                 ],
               ),
