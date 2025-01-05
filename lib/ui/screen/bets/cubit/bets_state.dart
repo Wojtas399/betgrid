@@ -18,6 +18,8 @@ extension BetsStateStatusExtensions on BetsStateStatus {
 
 @freezed
 class BetsState with _$BetsState {
+  const BetsState._();
+
   const factory BetsState({
     @Default(BetsStateStatus.loading) BetsStateStatus status,
     String? loggedUserId,
@@ -25,6 +27,9 @@ class BetsState with _$BetsState {
     List<GrandPrixItemParams>? grandPrixItems,
     Duration? durationToStartNextGp,
   }) = _BetsState;
+
+  bool get doesOngoingGpExist =>
+      grandPrixItems?.any((gp) => gp.status.isOngoing) ?? false;
 }
 
 class GrandPrixItemParams extends Equatable {

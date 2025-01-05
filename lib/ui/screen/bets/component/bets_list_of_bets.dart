@@ -32,6 +32,9 @@ class BetsListOfBets extends StatelessWidget {
     final List<GrandPrixItemParams>? grandPrixItems = context.select(
       (BetsCubit cubit) => cubit.state.grandPrixItems,
     );
+    final bool doesOngoingGpExist = context.select(
+      (BetsCubit cubit) => cubit.state.doesOngoingGpExist,
+    );
 
     return grandPrixItems == null
         ? const Center(
@@ -46,6 +49,7 @@ class BetsListOfBets extends StatelessWidget {
               return ScrollAnimatedItem(
                 child: _Item(
                   gpParams: gpParams,
+                  doesOngoingGpExist: doesOngoingGpExist,
                   onPressed: () => _onGrandPrixPressed(
                     gpParams.seasonGrandPrixId,
                     context,
@@ -60,24 +64,30 @@ class BetsListOfBets extends StatelessWidget {
 class _Item extends StatelessWidget {
   final GrandPrixItemParams gpParams;
   final VoidCallback onPressed;
+  final bool doesOngoingGpExist;
 
   const _Item({
     required this.gpParams,
     required this.onPressed,
+    required this.doesOngoingGpExist,
   });
 
   @override
   Widget build(BuildContext context) {
     final gpStatus = gpParams.status;
+    bool isMarked = false;
+    if (doesOngoingGpExist) {
+      isMarked = gpStatus.isOngoing;
+    } else {
+      isMarked = gpStatus.isNext;
+    }
 
     return Stack(
       children: [
         Container(
           width: double.infinity,
-          padding: gpStatus.isOngoing || gpStatus.isNext
-              ? const EdgeInsets.all(8)
-              : null,
-          margin: gpStatus.isOngoing || gpStatus.isNext
+          padding: isMarked ? const EdgeInsets.all(8) : null,
+          margin: isMarked
               ? const EdgeInsets.only(
                   top: 8,
                   left: 4,
@@ -85,7 +95,7 @@ class _Item extends StatelessWidget {
                   bottom: 8,
                 )
               : null,
-          decoration: gpParams.status.isOngoing || gpParams.status.isNext
+          decoration: isMarked
               ? BoxDecoration(
                   border: Border.all(
                     color: context.colorScheme.primary,
@@ -97,7 +107,7 @@ class _Item extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (gpStatus is GrandPrixStatusNext) const _EndBettingTime(),
+              if (isMarked && gpStatus.isNext) const _EndBettingTime(),
               GrandPrixItem(
                 name: gpParams.grandPrixName,
                 countryAlpha2Code: gpParams.countryAlpha2Code,
@@ -110,7 +120,7 @@ class _Item extends StatelessWidget {
             ],
           ),
         ),
-        if (gpStatus.isOngoing || gpStatus.isNext)
+        if (isMarked)
           Positioned(
             left: 24,
             top: -4,
