@@ -1,21 +1,21 @@
-import 'package:betgrid/model/user_stats.dart';
+import 'package:betgrid/model/player_stats.dart';
 
 class PlayerStatsCreator {
   final String id;
-  final String userId;
+  final String playerId;
   final int season;
-  late final UserStatsPointsForGp bestGpPoints;
-  late final UserStatsPointsForGp bestQualiPoints;
-  late final UserStatsPointsForGp bestRacePoints;
-  final List<UserStatsPointsForDriver> pointsForDrivers;
+  late final PlayerStatsPointsForGp bestGpPoints;
+  late final PlayerStatsPointsForGp bestQualiPoints;
+  late final PlayerStatsPointsForGp bestRacePoints;
+  final List<PlayerStatsPointsForDriver> pointsForDrivers;
 
   PlayerStatsCreator({
     this.id = '',
-    this.userId = '',
+    this.playerId = '',
     this.season = 0,
-    UserStatsPointsForGp? bestGpPoints,
-    UserStatsPointsForGp? bestQualiPoints,
-    UserStatsPointsForGp? bestRacePoints,
+    PlayerStatsPointsForGp? bestGpPoints,
+    PlayerStatsPointsForGp? bestQualiPoints,
+    PlayerStatsPointsForGp? bestRacePoints,
     this.pointsForDrivers = const [],
   }) {
     this.bestGpPoints =
@@ -26,10 +26,10 @@ class PlayerStatsCreator {
         bestRacePoints ?? const PlayerStatsPointsForGpCreator().create();
   }
 
-  UserStats create() {
-    return UserStats(
+  PlayerStats create() {
+    return PlayerStats(
       id: id,
-      userId: userId,
+      playerId: playerId,
       season: season,
       bestGpPoints: bestGpPoints,
       bestQualiPoints: bestQualiPoints,
@@ -48,8 +48,8 @@ class PlayerStatsPointsForGpCreator {
     this.points = 0,
   });
 
-  UserStatsPointsForGp create() {
-    return UserStatsPointsForGp(
+  PlayerStatsPointsForGp create() {
+    return PlayerStatsPointsForGp(
       seasonGrandPrixId: seasonGrandPrixId,
       points: points,
     );

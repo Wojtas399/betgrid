@@ -2,17 +2,17 @@ import 'package:equatable/equatable.dart';
 
 import 'entity.dart';
 
-class UserStats extends Entity {
-  final String userId;
+class PlayerStats extends Entity {
+  final String playerId;
   final int season;
-  final UserStatsPointsForGp bestGpPoints;
-  final UserStatsPointsForGp bestQualiPoints;
-  final UserStatsPointsForGp bestRacePoints;
-  final List<UserStatsPointsForDriver> pointsForDrivers;
+  final PlayerStatsPointsForGp bestGpPoints;
+  final PlayerStatsPointsForGp bestQualiPoints;
+  final PlayerStatsPointsForGp bestRacePoints;
+  final List<PlayerStatsPointsForDriver> pointsForDrivers;
 
-  const UserStats({
+  const PlayerStats({
     required super.id,
-    required this.userId,
+    required this.playerId,
     required this.season,
     required this.bestGpPoints,
     required this.bestQualiPoints,
@@ -20,7 +20,7 @@ class UserStats extends Entity {
     required this.pointsForDrivers,
   });
 
-  UserStatsPointsForDriver get bestDriverPoints {
+  PlayerStatsPointsForDriver get bestDriverPoints {
     final sortedPointsForDrivers = [...pointsForDrivers];
     sortedPointsForDrivers.sort((d1, d2) => d2.points.compareTo(d1.points));
     return sortedPointsForDrivers.first;
@@ -29,7 +29,7 @@ class UserStats extends Entity {
   @override
   List<Object?> get props => [
         id,
-        userId,
+        playerId,
         season,
         bestGpPoints,
         bestQualiPoints,
@@ -38,18 +38,18 @@ class UserStats extends Entity {
       ];
 }
 
-abstract class UserStatsPoints extends Equatable {
+abstract class PlayerStatsPoints extends Equatable {
   final double points;
 
-  const UserStatsPoints({
+  const PlayerStatsPoints({
     required this.points,
   });
 }
 
-class UserStatsPointsForGp extends UserStatsPoints {
+class PlayerStatsPointsForGp extends PlayerStatsPoints {
   final String seasonGrandPrixId;
 
-  const UserStatsPointsForGp({
+  const PlayerStatsPointsForGp({
     required this.seasonGrandPrixId,
     required super.points,
   });
@@ -61,10 +61,10 @@ class UserStatsPointsForGp extends UserStatsPoints {
       ];
 }
 
-class UserStatsPointsForDriver extends UserStatsPoints {
+class PlayerStatsPointsForDriver extends PlayerStatsPoints {
   final String seasonDriverId;
 
-  const UserStatsPointsForDriver({
+  const PlayerStatsPointsForDriver({
     required this.seasonDriverId,
     required super.points,
   });

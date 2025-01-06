@@ -11,7 +11,7 @@ import 'model/season_driver_dto.dart';
 import 'model/season_grand_prix_dto.dart';
 import 'model/team_basic_info_dto.dart';
 import 'model/user_dto.dart';
-import 'model/user_stats_dto.dart';
+import 'model/player_stats_dto.dart';
 
 @injectable
 class FirebaseCollectionRefs {
@@ -174,21 +174,21 @@ class FirebaseCollectionRefs {
         );
   }
 
-  DocumentReference<UserStatsDto> userStats({
-    required String userId,
+  DocumentReference<PlayerStatsDto> playerStats({
+    required String playerId,
     required int season,
   }) =>
       FirebaseFirestore.instance
           .collection(_firebaseCollections.users.main)
-          .doc(userId)
+          .doc(playerId)
           .collection(_firebaseCollections.users.stats)
           .doc(season.toString())
-          .withConverter<UserStatsDto>(
+          .withConverter<PlayerStatsDto>(
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
-              if (data == null) throw 'UserStats document is null';
-              return UserStatsDto.fromFirebase(
-                userId: userId,
+              if (data == null) throw 'PlayerStats document is null';
+              return PlayerStatsDto.fromFirebase(
+                playerId: playerId,
                 season: int.parse(snapshot.id),
                 json: data,
               );

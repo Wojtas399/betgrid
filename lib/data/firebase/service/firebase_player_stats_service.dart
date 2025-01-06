@@ -1,21 +1,21 @@
 import 'package:injectable/injectable.dart';
 
 import '../firebase_collection_refs.dart';
-import '../model/user_stats_dto.dart';
+import '../model/player_stats_dto.dart';
 
 @injectable
-class FirebaseUserStatsService {
+class FirebasePlayerStatsService {
   final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseUserStatsService(this._firebaseCollectionRefs);
+  const FirebasePlayerStatsService(this._firebaseCollectionRefs);
 
-  Future<UserStatsDto?> fetchUserStatsByUserIdAndSeason({
-    required String userId,
+  Future<PlayerStatsDto?> fetchPlayerStatsByPlayerIdAndSeason({
+    required String playerId,
     required int season,
   }) async {
     final snapshot = await _firebaseCollectionRefs
-        .userStats(
-          userId: userId,
+        .playerStats(
+          playerId: playerId,
           season: season,
         )
         .get();

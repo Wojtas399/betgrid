@@ -1,5 +1,5 @@
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/model/user_stats.dart';
+import 'package:betgrid/model/player_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,23 +8,23 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/player_stats_creator.dart';
 import '../../../mock/repository/mock_player_repository.dart';
-import '../../../mock/repository/mock_user_stats_repository.dart';
+import '../../../mock/repository/mock_player_stats_repository.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
-  final userStatsRepository = MockUserStatsRepository();
+  final playerStatsRepository = MockPlayerStatsRepository();
   late CreatePointsForDriverStats createPointsForDriverStats;
 
   setUp(() {
     createPointsForDriverStats = CreatePointsForDriverStats(
       playerRepository,
-      userStatsRepository,
+      playerStatsRepository,
     );
   });
 
   tearDown(() {
     reset(playerRepository);
-    reset(userStatsRepository);
+    reset(playerStatsRepository);
   });
 
   test(
@@ -67,52 +67,52 @@ void main() {
         const PlayerCreator(id: 'p2').create(),
         const PlayerCreator(id: 'p3').create(),
       ];
-      final UserStats player1Stats = PlayerStatsCreator(
-        userId: 'p1',
+      final PlayerStats player1Stats = PlayerStatsCreator(
+        playerId: 'p1',
         pointsForDrivers: const [
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: seasonDriverId,
             points: 11.1,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd2',
             points: 22.2,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd3',
             points: 33.3,
           ),
         ],
       ).create();
-      final UserStats player2Stats = PlayerStatsCreator(
-        userId: 'p2',
+      final PlayerStats player2Stats = PlayerStatsCreator(
+        playerId: 'p2',
         pointsForDrivers: const [
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd3',
             points: 11.1,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd2',
             points: 22.2,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: seasonDriverId,
             points: 33.3,
           ),
         ],
       ).create();
-      final UserStats player3Stats = PlayerStatsCreator(
-        userId: 'p3',
+      final PlayerStats player3Stats = PlayerStatsCreator(
+        playerId: 'p3',
         pointsForDrivers: const [
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd2',
             points: 99.9,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: seasonDriverId,
             points: 88.8,
           ),
-          UserStatsPointsForDriver(
+          PlayerStatsPointsForDriver(
             seasonDriverId: 'sd3',
             points: 77.7,
           ),
@@ -134,20 +134,20 @@ void main() {
       ];
       playerRepository.mockGetAllPlayers(players: allPlayers);
       when(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers.first.id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers.first.id,
           season: 2025,
         ),
       ).thenAnswer((_) => Stream.value(player1Stats));
       when(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers[1].id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers[1].id,
           season: 2025,
         ),
       ).thenAnswer((_) => Stream.value(player2Stats));
       when(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers.last.id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers.last.id,
           season: 2025,
         ),
       ).thenAnswer((_) => Stream.value(player3Stats));
@@ -160,20 +160,20 @@ void main() {
       expect(await pointsForDriver$.first, expectedPoints);
       verify(playerRepository.getAllPlayers).called(1);
       verify(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers.first.id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers.first.id,
           season: 2025,
         ),
       ).called(1);
       verify(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers[1].id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers[1].id,
           season: 2025,
         ),
       ).called(1);
       verify(
-        () => userStatsRepository.getStatsByUserIdAndSeason(
-          userId: allPlayers.last.id,
+        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+          playerId: allPlayers.last.id,
           season: 2025,
         ),
       ).called(1);
