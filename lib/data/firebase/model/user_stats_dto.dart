@@ -8,10 +8,13 @@ part 'user_stats_dto.g.dart';
 
 @freezed
 class UserStatsDto with _$UserStatsDto {
+  const UserStatsDto._();
+
   const factory UserStatsDto({
+    required String userId,
     @JsonKey(includeFromJson: false, includeToJson: false)
-    @Default('')
-    String id,
+    @Default(0)
+    int season,
     required UserStatsPointsForGpDto bestGpPoints,
     required UserStatsPointsForGpDto bestQualiPoints,
     required UserStatsPointsForGpDto bestRacePoints,
@@ -22,8 +25,14 @@ class UserStatsDto with _$UserStatsDto {
       _$UserStatsDtoFromJson(json);
 
   factory UserStatsDto.fromFirebase({
-    required String id,
+    required String userId,
+    required int season,
     required Map<String, Object?> json,
   }) =>
-      UserStatsDto.fromJson(json).copyWith(id: id);
+      UserStatsDto.fromJson(json).copyWith(
+        userId: userId,
+        season: season,
+      );
+
+  String get id => '$userId-$season';
 }

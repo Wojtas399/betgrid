@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'entity.dart';
 
 class UserStats extends Entity {
+  final String userId;
+  final int season;
   final UserStatsPointsForGp bestGpPoints;
   final UserStatsPointsForGp bestQualiPoints;
   final UserStatsPointsForGp bestRacePoints;
@@ -10,6 +12,8 @@ class UserStats extends Entity {
 
   const UserStats({
     required super.id,
+    required this.userId,
+    required this.season,
     required this.bestGpPoints,
     required this.bestQualiPoints,
     required this.bestRacePoints,
@@ -25,6 +29,8 @@ class UserStats extends Entity {
   @override
   List<Object?> get props => [
         id,
+        userId,
+        season,
         bestGpPoints,
         bestQualiPoints,
         bestRacePoints,

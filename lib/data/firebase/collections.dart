@@ -10,6 +10,7 @@ import 'model/season_driver_dto.dart';
 import 'model/season_grand_prix_dto.dart';
 import 'model/team_basic_info_dto.dart';
 import 'model/user_dto.dart';
+import 'model/user_stats_dto.dart';
 
 @injectable
 class FirebaseCollections {
@@ -168,4 +169,26 @@ class FirebaseCollections {
           toFirestore: (dto, _) => dto.toJson(),
         );
   }
+
+  DocumentReference<UserStatsDto> userStats({
+    required String userId,
+    required int season,
+  }) =>
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection('Stats')
+          .doc(season.toString())
+          .withConverter<UserStatsDto>(
+            fromFirestore: (snapshot, _) {
+              final data = snapshot.data();
+              if (data == null) throw 'UserStats document is null';
+              return UserStatsDto.fromFirebase(
+                userId: userId,
+                season: int.parse(snapshot.id),
+                json: data,
+              );
+            },
+            toFirestore: (dto, _) => dto.toJson(),
+          );
 }
