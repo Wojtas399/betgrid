@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
-import '../collections.dart';
+import '../firebase_collection_refs.dart';
 import '../model/user_dto.dart';
 
 @injectable
 class FirebaseUserService {
-  final FirebaseCollections _firebaseCollections;
+  final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseUserService(this._firebaseCollections);
+  const FirebaseUserService(this._firebaseCollectionRefs);
 
   Future<UserDto?> fetchUserById({required String userId}) async {
-    final snapshot = await _firebaseCollections.users().doc(userId).get();
+    final snapshot = await _firebaseCollectionRefs.users().doc(userId).get();
     return snapshot.data();
   }
 
   Future<List<UserDto>> fetchAllUsers() async {
-    final snapshot = await _firebaseCollections.users().get();
+    final snapshot = await _firebaseCollectionRefs.users().get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
@@ -26,7 +26,7 @@ class FirebaseUserService {
     required ThemeModeDto themeMode,
     required ThemePrimaryColorDto themePrimaryColor,
   }) async {
-    final docRef = _firebaseCollections.users().doc(userId);
+    final docRef = _firebaseCollectionRefs.users().doc(userId);
     await docRef.set(
       UserDto(
         username: username,
@@ -39,7 +39,7 @@ class FirebaseUserService {
   }
 
   Future<bool> isUsernameAlreadyTaken({required String username}) async {
-    final snapshot = await _firebaseCollections
+    final snapshot = await _firebaseCollectionRefs
         .users()
         .where('username', isEqualTo: username)
         .limit(1)
@@ -53,7 +53,7 @@ class FirebaseUserService {
     ThemeModeDto? themeMode,
     ThemePrimaryColorDto? themePrimaryColor,
   }) async {
-    final docRef = _firebaseCollections.users().doc(userId);
+    final docRef = _firebaseCollectionRefs.users().doc(userId);
     DocumentSnapshot<UserDto> doc = await docRef.get();
     UserDto? data = doc.data();
     if (data == null) {

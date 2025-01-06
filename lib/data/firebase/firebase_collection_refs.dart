@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
+import 'firebase_collections.dart';
 import 'model/driver_personal_data_dto.dart';
 import 'model/grand_prix_basic_info_dto.dart';
 import 'model/grand_prix_bet_dto.dart';
@@ -13,12 +14,14 @@ import 'model/user_dto.dart';
 import 'model/user_stats_dto.dart';
 
 @injectable
-class FirebaseCollections {
-  const FirebaseCollections();
+class FirebaseCollectionRefs {
+  final FirebaseCollections _firebaseCollections;
+
+  const FirebaseCollectionRefs(this._firebaseCollections);
 
   CollectionReference<GrandPrixBasicInfoDto> grandPrixesBasicInfo() {
     return FirebaseFirestore.instance
-        .collection('GrandPrixesBasicInfo')
+        .collection(_firebaseCollections.grandPrixesBasicInfo)
         .withConverter<GrandPrixBasicInfoDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
@@ -36,7 +39,7 @@ class FirebaseCollections {
 
   CollectionReference<SeasonGrandPrixDto> seasonGrandPrixes() {
     return FirebaseFirestore.instance
-        .collection('SeasonGrandPrixes')
+        .collection(_firebaseCollections.seasonGrandPrixes)
         .withConverter<SeasonGrandPrixDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
@@ -54,7 +57,7 @@ class FirebaseCollections {
 
   CollectionReference<DriverPersonalDataDto> driversPersonalData() {
     return FirebaseFirestore.instance
-        .collection('DriversPersonalData')
+        .collection(_firebaseCollections.driversPersonalData)
         .withConverter<DriverPersonalDataDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
@@ -70,7 +73,7 @@ class FirebaseCollections {
 
   CollectionReference<GrandPrixResultsDto> grandPrixesResults() =>
       FirebaseFirestore.instance
-          .collection('GrandPrixResults')
+          .collection(_firebaseCollections.grandPrixesResults)
           .withConverter<GrandPrixResultsDto>(
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
@@ -85,24 +88,25 @@ class FirebaseCollections {
             toFirestore: (GrandPrixResultsDto dto, _) => dto.toJson(),
           );
 
-  CollectionReference<UserDto> users() =>
-      FirebaseFirestore.instance.collection('Users').withConverter<UserDto>(
-            fromFirestore: (snapshot, _) {
-              final data = snapshot.data();
-              if (data == null) throw 'User document data was null';
-              return UserDto.fromFirebase(
-                id: snapshot.id,
-                json: data,
-              );
-            },
-            toFirestore: (UserDto dto, _) => dto.toJson(),
+  CollectionReference<UserDto> users() => FirebaseFirestore.instance
+      .collection(_firebaseCollections.users.main)
+      .withConverter<UserDto>(
+        fromFirestore: (snapshot, _) {
+          final data = snapshot.data();
+          if (data == null) throw 'User document data was null';
+          return UserDto.fromFirebase(
+            id: snapshot.id,
+            json: data,
           );
+        },
+        toFirestore: (UserDto dto, _) => dto.toJson(),
+      );
 
   CollectionReference<GrandPrixBetDto> grandPrixesBets(String userId) =>
       FirebaseFirestore.instance
-          .collection('Users')
+          .collection(_firebaseCollections.users.main)
           .doc(userId)
-          .collection('GrandPrixBets')
+          .collection(_firebaseCollections.users.grandPrixesBets)
           .withConverter<GrandPrixBetDto>(
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
@@ -120,9 +124,9 @@ class FirebaseCollections {
     String userId,
   ) =>
       FirebaseFirestore.instance
-          .collection('Users')
+          .collection(_firebaseCollections.users.main)
           .doc(userId)
-          .collection('GrandPrixBetPoints')
+          .collection(_firebaseCollections.users.grandPrixesBetPoints)
           .withConverter<GrandPrixBetPointsDto>(
             fromFirestore: (snapshot, _) {
               final data = snapshot.data();
@@ -138,7 +142,7 @@ class FirebaseCollections {
 
   CollectionReference<SeasonDriverDto> seasonDrivers() {
     return FirebaseFirestore.instance
-        .collection('SeasonDrivers')
+        .collection(_firebaseCollections.seasonDrivers)
         .withConverter<SeasonDriverDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
@@ -156,7 +160,7 @@ class FirebaseCollections {
 
   CollectionReference<TeamBasicInfoDto> teamsBasicInfo() {
     return FirebaseFirestore.instance
-        .collection('TeamsBasicInfo')
+        .collection(_firebaseCollections.teamsBasicInfo)
         .withConverter<TeamBasicInfoDto>(
           fromFirestore: (snapshot, _) {
             final data = snapshot.data();
@@ -175,9 +179,9 @@ class FirebaseCollections {
     required int season,
   }) =>
       FirebaseFirestore.instance
-          .collection('Users')
+          .collection(_firebaseCollections.users.main)
           .doc(userId)
-          .collection('Stats')
+          .collection(_firebaseCollections.users.stats)
           .doc(season.toString())
           .withConverter<UserStatsDto>(
             fromFirestore: (snapshot, _) {

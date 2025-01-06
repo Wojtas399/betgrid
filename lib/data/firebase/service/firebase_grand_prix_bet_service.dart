@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
-import '../collections.dart';
+import '../firebase_collection_refs.dart';
 import '../model/grand_prix_bet_dto.dart';
 
 @injectable
 class FirebaseGrandPrixBetService {
-  final FirebaseCollections _firebaseCollections;
+  final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseGrandPrixBetService(this._firebaseCollections);
+  const FirebaseGrandPrixBetService(this._firebaseCollectionRefs);
 
   Future<GrandPrixBetDto?> fetchGrandPrixBetBySeasonGrandPrixId({
     required String playerId,
     required String seasonGrandPrixId,
   }) async {
-    final snapshot = await _firebaseCollections
+    final snapshot = await _firebaseCollectionRefs
         .grandPrixesBets(playerId)
         .where('seasonGrandPrixId', isEqualTo: seasonGrandPrixId)
         .get();
@@ -47,8 +47,9 @@ class FirebaseGrandPrixBetService {
       willBeSafetyCar: willBeSafetyCar,
       willBeRedFlag: willBeRedFlag,
     );
-    final docRef =
-        await _firebaseCollections.grandPrixesBets(userId).add(grandPrixBetDto);
+    final docRef = await _firebaseCollectionRefs
+        .grandPrixesBets(userId)
+        .add(grandPrixBetDto);
     final snapshot = await docRef.get();
     return snapshot.data();
   }
@@ -67,7 +68,7 @@ class FirebaseGrandPrixBetService {
     bool? willBeRedFlag,
   }) async {
     final docRef =
-        _firebaseCollections.grandPrixesBets(userId).doc(grandPrixBetId);
+        _firebaseCollectionRefs.grandPrixesBets(userId).doc(grandPrixBetId);
     DocumentSnapshot<GrandPrixBetDto> doc = await docRef.get();
     GrandPrixBetDto? data = doc.data();
     if (data == null) {

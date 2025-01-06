@@ -1,17 +1,17 @@
 import 'package:injectable/injectable.dart';
 
-import '../collections.dart';
+import '../firebase_collection_refs.dart';
 import '../model/grand_prix_basic_info_dto.dart';
 
 @injectable
 class FirebaseGrandPrixBasicInfoService {
-  final FirebaseCollections _firebaseCollections;
+  final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseGrandPrixBasicInfoService(this._firebaseCollections);
+  const FirebaseGrandPrixBasicInfoService(this._firebaseCollectionRefs);
 
   Future<GrandPrixBasicInfoDto?> fetchGrandPrixBasicInfoById(String id) async {
     final snapshot =
-        await _firebaseCollections.grandPrixesBasicInfo().doc(id).get();
+        await _firebaseCollectionRefs.grandPrixesBasicInfo().doc(id).get();
     return snapshot.data();
   }
 }

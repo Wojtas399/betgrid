@@ -1,18 +1,18 @@
 import 'package:injectable/injectable.dart';
 
-import '../collections.dart';
+import '../firebase_collection_refs.dart';
 import '../model/season_driver_dto.dart';
 
 @injectable
 class FirebaseSeasonDriverService {
-  final FirebaseCollections _firebaseCollections;
+  final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseSeasonDriverService(this._firebaseCollections);
+  const FirebaseSeasonDriverService(this._firebaseCollectionRefs);
 
   Future<Iterable<SeasonDriverDto>> fetchAllSeasonDriversFromSeason(
     int season,
   ) async {
-    final snapshot = await _firebaseCollections
+    final snapshot = await _firebaseCollectionRefs
         .seasonDrivers()
         .where('season', isEqualTo: season)
         .get();
@@ -20,7 +20,8 @@ class FirebaseSeasonDriverService {
   }
 
   Future<SeasonDriverDto?> fetchSeasonDriverById(String id) async {
-    final snapshot = await _firebaseCollections.seasonDrivers().doc(id).get();
+    final snapshot =
+        await _firebaseCollectionRefs.seasonDrivers().doc(id).get();
     return snapshot.data();
   }
 }

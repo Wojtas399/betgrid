@@ -1,18 +1,18 @@
 import 'package:injectable/injectable.dart';
 
-import '../collections.dart';
+import '../firebase_collection_refs.dart';
 import '../model/grand_prix_results_dto.dart';
 
 @injectable
 class FirebaseGrandPrixResultsService {
-  final FirebaseCollections _firebaseCollections;
+  final FirebaseCollectionRefs _firebaseCollectionRefs;
 
-  const FirebaseGrandPrixResultsService(this._firebaseCollections);
+  const FirebaseGrandPrixResultsService(this._firebaseCollectionRefs);
 
   Future<GrandPrixResultsDto?> fetchResultsForSeasonGrandPrix({
     required String seasonGrandPrixId,
   }) async {
-    final snapshot = await _firebaseCollections
+    final snapshot = await _firebaseCollectionRefs
         .grandPrixesResults()
         .where('seasonGrandPrixId', isEqualTo: seasonGrandPrixId)
         .limit(1)
