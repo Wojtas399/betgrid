@@ -9,7 +9,7 @@ class MockCreatePointsForDriverStats extends Mock
   }) {
     when(
       () => call(
-        driverId: any(named: 'driverId'),
+        seasonDriverId: any(named: 'seasonDriverId'),
       ),
     ).thenAnswer((_) => Stream.value(playersPointsForDriver));
   }

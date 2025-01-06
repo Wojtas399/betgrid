@@ -1,375 +1,180 @@
-import 'package:betgrid/model/grand_prix_bet.dart';
-import 'package:betgrid/model/grand_prix_bet_points.dart';
-import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:betgrid/model/player.dart';
-import 'package:betgrid/model/season_grand_prix.dart';
+import 'package:betgrid/model/user_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_creator.dart';
-import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/player_creator.dart';
-import '../../../creator/quali_bet_points_creator.dart';
-import '../../../creator/race_bet_points_creator.dart';
-import '../../../creator/season_grand_prix_creator.dart';
-import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
-import '../../../mock/repository/mock_grand_prix_results_repository.dart';
+import '../../../creator/player_stats_creator.dart';
 import '../../../mock/repository/mock_player_repository.dart';
-import '../../../mock/use_case/mock_get_finished_grand_prixes_from_current_season_use_case.dart';
+import '../../../mock/repository/mock_user_stats_repository.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
-  final getFinishedGrandPrixesFromCurrentSeasonUseCase =
-      MockGetFinishedGrandPrixesFromCurrentSeasonUseCase();
-  final grandPrixResultsRepository = MockGrandPrixResultsRepository();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
-  final grandPrixBetRepository = MockGrandPrixBetRepository();
+  final userStatsRepository = MockUserStatsRepository();
   late CreatePointsForDriverStats createPointsForDriverStats;
 
   setUp(() {
     createPointsForDriverStats = CreatePointsForDriverStats(
       playerRepository,
-      getFinishedGrandPrixesFromCurrentSeasonUseCase,
-      grandPrixResultsRepository,
-      grandPrixBetPointsRepository,
-      grandPrixBetRepository,
+      userStatsRepository,
     );
   });
 
   tearDown(() {
     reset(playerRepository);
-    reset(getFinishedGrandPrixesFromCurrentSeasonUseCase);
-    reset(grandPrixResultsRepository);
-    reset(grandPrixBetPointsRepository);
-    reset(grandPrixBetRepository);
+    reset(userStatsRepository);
   });
+
+  test(
+    'should emit null if list of all players is null',
+    () async {
+      playerRepository.mockGetAllPlayers();
+
+      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+          createPointsForDriverStats(
+        seasonDriverId: 'd1',
+      );
+
+      expect(await pointsForDriver$.first, null);
+      verify(playerRepository.getAllPlayers).called(1);
+    },
+  );
 
   test(
     'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: [
-          SeasonGrandPrixCreator(id: 'sgp1').create(),
-          SeasonGrandPrixCreator(id: 'sgp2').create(),
-        ],
-      );
 
       final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
-        driverId: 'd1',
+        seasonDriverId: 'd1',
       );
 
       expect(await pointsForDriver$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
     },
   );
 
   test(
-    'should return null if list of ids of finished grand prixes is empty',
+    'should get stats for each player and should emit list of points for given '
+    'driver received by each player',
     () async {
-      playerRepository.mockGetAllPlayers(
-        players: [
-          const PlayerCreator(id: 'p1').create(),
-          const PlayerCreator(id: 'p2').create(),
-        ],
-      );
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: [],
-      );
-
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
-          createPointsForDriverStats(
-        driverId: 'd1',
-      );
-
-      expect(await pointsForDriver$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
-    },
-  );
-
-  test(
-    'for each player should sum points received for driver_personal_data in every grand prix',
-    () async {
-      const String driverId = 'd1';
-      final List<Player> players = [
+      const String seasonDriverId = 'sd1';
+      final List<Player> allPlayers = [
         const PlayerCreator(id: 'p1').create(),
         const PlayerCreator(id: 'p2').create(),
         const PlayerCreator(id: 'p3').create(),
       ];
-      final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
-        SeasonGrandPrixCreator(id: 'sgp1').create(),
-        SeasonGrandPrixCreator(id: 'sgp2').create(),
-        SeasonGrandPrixCreator(id: 'sgp3').create(),
-      ];
-      final List<String> playersIds =
-          players.map((player) => player.id).toList();
-      final List<String> finishedSeasonGrandPrixesIds =
-          finishedSeasonGrandPrixes.map((gp) => gp.id).toList();
-      final List<GrandPrixResults> grandPrixesResults = [
-        GrandPrixResultsCreator(
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          qualiStandingsBySeasonDriverIds: [
-            driverId,
-            'd2',
-            'd3',
-            'd4',
-            'd5',
-            'd6',
-            'd7',
-            'd8',
-            'd9',
-            'd10',
-            'd11',
-            'd12',
-            'd13',
-            'd14',
-            'd15',
-            'd16',
-            'd17',
-            'd18',
-            'd19',
-            'd20',
-          ],
-          p1SeasonDriverId: driverId,
-          p2SeasonDriverId: 'd2',
-          p3SeasonDriverId: 'd3',
-          p10SeasonDriverId: 'd10',
-          fastestLapSeasonDriverId: driverId,
-          dnfSeasonDriverIds: ['d18', 'd19', 'd20'],
-        ).create(),
-        GrandPrixResultsCreator(
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          qualiStandingsBySeasonDriverIds: [
-            'd20',
-            'd19',
-            'd18',
-            'd17',
-            'd16',
-            'd15',
-            'd14',
-            'd13',
-            'd12',
-            'd11',
-            'd10',
-            driverId,
-            'd8',
-            'd7',
-            'd6',
-            'd5',
-            'd4',
-            'd3',
-            'd2',
-            'd9',
-          ],
-          p1SeasonDriverId: 'd20',
-          p2SeasonDriverId: 'd19',
-          p3SeasonDriverId: 'd18',
-          p10SeasonDriverId: 'd11',
-          fastestLapSeasonDriverId: 'd20',
-          dnfSeasonDriverIds: [driverId, 'd2'],
-        ).create(),
-        GrandPrixResultsCreator(
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          qualiStandingsBySeasonDriverIds: [
-            'd20',
-            'd11',
-            'd2',
-            'd12',
-            'd3',
-            'd13',
-            'd4',
-            'd14',
-            'd5',
-            'd15',
-            'd6',
-            'd16',
-            'd7',
-            'd17',
-            'd8',
-            'd18',
-            'd9',
-            'd19',
-            'd10',
-            driverId,
-          ],
-          p1SeasonDriverId: 'd3',
-          p2SeasonDriverId: 'd2',
-          p3SeasonDriverId: driverId,
-          p10SeasonDriverId: 'd4',
-          fastestLapSeasonDriverId: 'd3',
-          dnfSeasonDriverIds: [driverId],
-        ).create(),
-      ];
-      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        GrandPrixBetPointsCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: const RaceBetPointsCreator(
-            p1Points: 2,
-            fastestLapPoints: 2,
+      final UserStats player1Stats = PlayerStatsCreator(
+        userId: 'p1',
+        pointsForDrivers: const [
+          UserStatsPointsForDriver(
+            seasonDriverId: seasonDriverId,
+            points: 11.1,
           ),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q1P20Points: 1),
-          raceBetPointsCreator: const RaceBetPointsCreator(dnfDriver1Points: 2),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: const RaceBetPointsCreator(p3Points: 2),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P4Points: 2),
-          raceBetPointsCreator: const RaceBetPointsCreator(
-            p2Points: 2,
-            p10Points: 2,
-            fastestLapPoints: 2,
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd2',
+            points: 22.2,
           ),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q2P12Points: 2),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P1Points: 1),
-          raceBetPointsCreator: const RaceBetPointsCreator(p3Points: 2),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P10Points: 1),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q1P18Points: 1),
-        ).create(),
-        GrandPrixBetPointsCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          qualiBetPointsCreator: const QualiBetPointsCreator(q3P5Points: 2),
-          raceBetPointsCreator: const RaceBetPointsCreator(
-            p2Points: 2,
-            dnfDriver1Points: 2,
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd3',
+            points: 33.3,
           ),
-        ).create(),
-      ];
-      final List<GrandPrixBet> grandPrixBets = [
-        GrandPrixBetCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          dnfSeasonDriverIds: [driverId, 'd2', 'd3'],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          dnfSeasonDriverIds: [driverId],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players.first.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          dnfSeasonDriverIds: [driverId, 'd2'],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-          dnfSeasonDriverIds: [driverId, 'd2', 'd20'],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-          dnfSeasonDriverIds: [],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players[1].id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          dnfSeasonDriverIds: ['d14', 'd15'],
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
-        ).create(),
-        GrandPrixBetCreator(
-          playerId: players.last.id,
-          seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
-          dnfSeasonDriverIds: [driverId, 'd15', 'd18'],
-        ).create(),
-      ];
-      final expectedPointsForDriver = [
+        ],
+      ).create();
+      final UserStats player2Stats = PlayerStatsCreator(
+        userId: 'p2',
+        pointsForDrivers: const [
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd3',
+            points: 11.1,
+          ),
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd2',
+            points: 22.2,
+          ),
+          UserStatsPointsForDriver(
+            seasonDriverId: seasonDriverId,
+            points: 33.3,
+          ),
+        ],
+      ).create();
+      final UserStats player3Stats = PlayerStatsCreator(
+        userId: 'p3',
+        pointsForDrivers: const [
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd2',
+            points: 99.9,
+          ),
+          UserStatsPointsForDriver(
+            seasonDriverId: seasonDriverId,
+            points: 88.8,
+          ),
+          UserStatsPointsForDriver(
+            seasonDriverId: 'sd3',
+            points: 77.7,
+          ),
+        ],
+      ).create();
+      final List<PointsByDriverPlayerPoints> expectedPoints = [
         PointsByDriverPlayerPoints(
-          player: players.first,
-          points: 9,
+          player: allPlayers.first,
+          points: player1Stats.pointsForDrivers.first.points,
         ),
         PointsByDriverPlayerPoints(
-          player: players[1],
-          points: 6,
+          player: allPlayers[1],
+          points: player2Stats.pointsForDrivers.last.points,
         ),
         PointsByDriverPlayerPoints(
-          player: players.last,
-          points: 2,
+          player: allPlayers.last,
+          points: player3Stats.pointsForDrivers[1].points,
         ),
       ];
-      playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
-      );
-      grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrixes(
-        grandPrixesResults: grandPrixesResults,
-      );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        grandPrixesBetPoints: grandPrixesBetPoints,
-      );
-      grandPrixBetRepository.mockGetGrandPrixBetsForPlayersAndSeasonGrandPrixes(
-        grandPrixBets: grandPrixBets,
-      );
+      playerRepository.mockGetAllPlayers(players: allPlayers);
+      when(
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers.first.id,
+          season: 2025,
+        ),
+      ).thenAnswer((_) => Stream.value(player1Stats));
+      when(
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers[1].id,
+          season: 2025,
+        ),
+      ).thenAnswer((_) => Stream.value(player2Stats));
+      when(
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers.last.id,
+          season: 2025,
+        ),
+      ).thenAnswer((_) => Stream.value(player3Stats));
 
       final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
-        driverId: 'd1',
+        seasonDriverId: seasonDriverId,
       );
 
-      expect(await pointsForDriver$.first, expectedPointsForDriver);
+      expect(await pointsForDriver$.first, expectedPoints);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
       verify(
-        () =>
-            grandPrixResultsRepository.getGrandPrixResultsForSeasonGrandPrixes(
-          idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers.first.id,
+          season: 2025,
         ),
       ).called(1);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-          idsOfPlayers: playersIds,
-          idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers[1].id,
+          season: 2025,
         ),
       ).called(1);
       verify(
-        () => grandPrixBetRepository
-            .getGrandPrixBetsForPlayersAndSeasonGrandPrixes(
-          idsOfPlayers: playersIds,
-          idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+        () => userStatsRepository.getStatsByUserIdAndSeason(
+          userId: allPlayers.last.id,
+          season: 2025,
         ),
       ).called(1);
     },

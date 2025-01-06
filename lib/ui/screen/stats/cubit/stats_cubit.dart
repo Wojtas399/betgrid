@@ -47,11 +47,13 @@ class StatsCubit extends Cubit<StatsState> {
     ));
   }
 
-  Future<void> onDriverChanged(String driverId) async {
+  Future<void> onDriverChanged(String seasonDriverId) async {
     emit(state.copyWith(
       status: StatsStateStatus.pointsForDriverLoading,
     ));
-    final pointsByDriverData$ = _createPointsForDriverStats(driverId: driverId);
+    final pointsByDriverData$ = _createPointsForDriverStats(
+      seasonDriverId: seasonDriverId,
+    );
     await for (final pointsByDriverData in pointsByDriverData$) {
       emit(state.copyWith(
         status: StatsStateStatus.completed,

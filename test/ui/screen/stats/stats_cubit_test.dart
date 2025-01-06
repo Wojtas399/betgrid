@@ -151,7 +151,7 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => createPointsForDriverStats.call(driverId: 'd1'),
+          () => createPointsForDriverStats.call(seasonDriverId: 'd1'),
         ).called(1),
       );
     },
