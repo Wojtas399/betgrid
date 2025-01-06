@@ -41,6 +41,12 @@ class StatsCubit extends Cubit<StatsState> {
     _listener ??= _getListenedParams().listen(_manageListenedParams);
   }
 
+  void onStatsTypeChanged(StatsType type) {
+    emit(state.copyWith(
+      type: type,
+    ));
+  }
+
   Future<void> onDriverChanged(String driverId) async {
     emit(state.copyWith(
       status: StatsStateStatus.pointsForDriverLoading,

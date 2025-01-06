@@ -7,6 +7,11 @@ import '../stats_model/points_history.dart';
 
 part 'stats_state.freezed.dart';
 
+enum StatsType {
+  grouped,
+  individual,
+}
+
 enum StatsStateStatus {
   loading,
   pointsForDriverLoading,
@@ -26,9 +31,8 @@ extension StatsStateStatusExtensions on StatsStateStatus {
 
 @freezed
 class StatsState with _$StatsState {
-  const StatsState._();
-
   const factory StatsState({
+    @Default(StatsType.grouped) StatsType type,
     @Default(StatsStateStatus.loading) StatsStateStatus status,
     PlayersPodium? playersPodium,
     PointsHistory? pointsHistory,

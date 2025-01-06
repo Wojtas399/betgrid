@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/build_context_extensions.dart';
-import 'padding/padding_components.dart';
 
 class CustomCard extends StatelessWidget {
   final Widget child;
+  final EdgeInsets padding;
   final VoidCallback? onPressed;
 
   const CustomCard({
     super.key,
     required this.child,
+    this.padding = const EdgeInsets.all(16),
     this.onPressed,
   });
 
@@ -27,7 +28,8 @@ class CustomCard extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: InkWell(
             onTap: onPressed,
-            child: Padding16(
+            child: Padding(
+              padding: padding,
               child: child,
             ),
           ),
