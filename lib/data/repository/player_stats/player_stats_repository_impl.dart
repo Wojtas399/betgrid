@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../firebase/service/firebase_player_stats_service.dart';
 import '../../mapper/player_stats_mapper.dart';
@@ -12,6 +13,7 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
     implements PlayerStatsRepository {
   final FirebasePlayerStatsService _firebasePlayerStatsService;
   final PlayerStatsMapper _playerStatsMapper;
+  final _getPlayerStatsByPlayerIdAndSeasonMutex = Mutex();
 
   PlayerStatsRepositoryImpl(
     this._firebasePlayerStatsService,
@@ -23,6 +25,8 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
     required String playerId,
     required int season,
   }) async* {
+    bool didRelease = false;
+    await _getPlayerStatsByPlayerIdAndSeasonMutex.acquire();
     await for (final allPlayerStats in repositoryState$) {
       PlayerStats? matchingPlayerStats = allPlayerStats.firstWhereOrNull(
         (playerStats) =>
@@ -30,6 +34,10 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
       );
       matchingPlayerStats ??=
           await _fetchPlayerStatsByPlayerIdAndSeason(playerId, season);
+      if (_getPlayerStatsByPlayerIdAndSeasonMutex.isLocked && !didRelease) {
+        _getPlayerStatsByPlayerIdAndSeasonMutex.release();
+        didRelease = true;
+      }
       yield matchingPlayerStats;
     }
   }
