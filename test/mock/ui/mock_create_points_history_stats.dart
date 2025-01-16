@@ -9,6 +9,7 @@ class MockCreatePointsHistoryStats extends Mock
   }) {
     when(
       () => call(
+        statsType: any(named: 'statsType'),
         season: any(named: 'season'),
       ),
     ).thenAnswer((_) => Stream.value(pointsHistory));

@@ -106,6 +106,7 @@ void main() {
         verify(createPlayersPodiumStats.call).called(1);
         verify(
           () => createPointsHistoryStats.call(
+            statsType: StatsType.grouped,
             season: currentSeason,
           ),
         ).called(1);
