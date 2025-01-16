@@ -11,7 +11,9 @@ class PlayerStatsDto with _$PlayerStatsDto {
   const PlayerStatsDto._();
 
   const factory PlayerStatsDto({
-    required String playerId,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default('')
+    String playerId,
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default(0)
     int season,
