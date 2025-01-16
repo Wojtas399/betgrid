@@ -16,14 +16,14 @@ class StatsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StatsType? statsType = context.select(
-      (StatsCubit cubit) => cubit.state.type,
+    final Stats? stats = context.select(
+      (StatsCubit cubit) => cubit.state.stats,
     );
     final StatsStateStatus status = context.select(
       (StatsCubit cubit) => cubit.state.status,
     );
 
-    return statsType == null || status.isInitial
+    return stats == null || status.isInitial
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -43,9 +43,9 @@ class StatsBody extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         ),
                       ] else
-                        switch (statsType) {
-                          StatsType.grouped => const StatsGroupedStats(),
-                          StatsType.individual => const StatsIndividualStats(),
+                        switch (stats) {
+                          GroupedStats() => const StatsGroupedStats(),
+                          IndividualStats() => const StatsIndividualStats(),
                         },
                     ],
                   ),

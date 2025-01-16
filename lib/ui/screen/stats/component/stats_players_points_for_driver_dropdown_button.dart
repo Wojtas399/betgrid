@@ -7,15 +7,16 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
 import '../cubit/stats_cubit.dart';
+import '../cubit/stats_state.dart';
 
-class StatsPointsByDriverDropdownButton extends StatefulWidget {
-  const StatsPointsByDriverDropdownButton({super.key});
+class StatsPlayersPointsForDriverDropdownButton extends StatefulWidget {
+  const StatsPlayersPointsForDriverDropdownButton({super.key});
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<StatsPointsByDriverDropdownButton> {
+class _State extends State<StatsPlayersPointsForDriverDropdownButton> {
   String? _selectedDriverId;
 
   void _onDriverChanged(String? driverId) {
@@ -30,7 +31,8 @@ class _State extends State<StatsPointsByDriverDropdownButton> {
   @override
   Widget build(BuildContext context) {
     final Iterable<DriverDetails>? allDrivers = context.select(
-      (StatsCubit cubit) => cubit.state.detailsOfDriversFromSeason,
+      (StatsCubit cubit) =>
+          (cubit.state.stats as GroupedStats).detailsOfDriversFromSeason,
     );
 
     return SizedBox(

@@ -10,8 +10,8 @@ import 'stats_bet_points_history.dart';
 import 'stats_bet_points_history_preview.dart';
 import 'stats_card.dart';
 import 'stats_players_podium.dart';
-import 'stats_points_by_driver_dropdown_button.dart';
-import 'stats_points_by_driver_players_list.dart';
+import 'stats_players_points_for_driver_dropdown_button.dart';
+import 'stats_players_points_for_driver.dart';
 
 class StatsGroupedStats extends StatelessWidget {
   const StatsGroupedStats({super.key});
@@ -86,8 +86,8 @@ class _PointsByDriver extends StatelessWidget {
         icon: Icons.format_list_numbered_rounded,
         child: const Column(
           children: [
-            StatsPointsByDriverDropdownButton(),
-            StatsPointsByDriverPlayersList(),
+            StatsPlayersPointsForDriverDropdownButton(),
+            StatsPlayersPointsForDriver(),
           ],
         ),
       );

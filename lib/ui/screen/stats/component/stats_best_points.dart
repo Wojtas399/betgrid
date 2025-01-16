@@ -6,7 +6,6 @@ import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
-import '../cubit/stats_state.dart';
 import '../stats_model/best_points.dart';
 import 'stats_no_data_info.dart';
 
@@ -15,11 +14,11 @@ class StatsBestPoints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StatsType statsType = context.select(
-      (StatsCubit cubit) => cubit.state.type,
+    final bool areGroupedStats = context.select(
+      (StatsCubit cubit) => cubit.state.areGroupedStats,
     );
     final BestPoints? bestPoints = context.select(
-      (StatsCubit cubit) => cubit.state.bestPoints,
+      (StatsCubit cubit) => cubit.state.stats?.bestPoints,
     );
 
     return bestPoints != null
@@ -33,7 +32,7 @@ class StatsBestPoints extends StatelessWidget {
                         label: 'Grand Prix',
                         points: bestPoints.bestGpPoints.points,
                         value: bestPoints.bestGpPoints.grandPrixName,
-                        playerName: statsType == StatsType.grouped
+                        playerName: areGroupedStats
                             ? bestPoints.bestGpPoints.playerName
                             : null,
                       ),
@@ -44,7 +43,7 @@ class StatsBestPoints extends StatelessWidget {
                         label: 'Kwalifikacje',
                         points: bestPoints.bestQualiPoints.points,
                         value: bestPoints.bestQualiPoints.grandPrixName,
-                        playerName: statsType == StatsType.grouped
+                        playerName: areGroupedStats
                             ? bestPoints.bestQualiPoints.playerName
                             : null,
                       ),
@@ -61,7 +60,7 @@ class StatsBestPoints extends StatelessWidget {
                         label: 'Wyścig',
                         points: bestPoints.bestRacePoints.points,
                         value: bestPoints.bestRacePoints.grandPrixName,
-                        playerName: statsType == StatsType.grouped
+                        playerName: areGroupedStats
                             ? bestPoints.bestRacePoints.playerName
                             : null,
                       ),
@@ -73,7 +72,7 @@ class StatsBestPoints extends StatelessWidget {
                         points: bestPoints.bestDriverPoints.points,
                         value:
                             '${bestPoints.bestDriverPoints.driverName} ${bestPoints.bestDriverPoints.driverSurname}',
-                        playerName: statsType == StatsType.grouped
+                        playerName: areGroupedStats
                             ? bestPoints.bestDriverPoints.playerName
                             : null,
                       ),

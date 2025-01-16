@@ -21,7 +21,7 @@ class GrandPrixBetSectionTitle extends StatelessWidget {
         if (points != null)
           TitleLarge(
             ' ($points pkt.)',
-            color: context.colorScheme.primary.withOpacity(0.6),
+            color: context.colorScheme.primary.withValues(alpha: 0.6),
           ),
       ],
     );

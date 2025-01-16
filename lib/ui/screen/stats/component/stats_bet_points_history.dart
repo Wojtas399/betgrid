@@ -20,7 +20,7 @@ class StatsBetPointsHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PointsHistory? pointsHistory = context.select(
-      (StatsCubit cubit) => cubit.state.pointsHistory,
+      (StatsCubit cubit) => cubit.state.stats?.pointsHistory,
     );
 
     return pointsHistory != null

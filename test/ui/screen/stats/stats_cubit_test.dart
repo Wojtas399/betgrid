@@ -2,8 +2,8 @@ import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_cubit.dart';
 import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/best_points.dart';
+import 'package:betgrid/ui/screen/stats/stats_model/player_points.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
-import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -126,7 +126,7 @@ void main() {
       });
 
       blocTest(
-        'should emit noData status if all stats not exist',
+        'should emit noData status if all grouped stats do not exist',
         build: () => createCubit(),
         setUp: () {
           createPlayersPodiumStats.mock();
@@ -145,7 +145,8 @@ void main() {
       );
 
       blocTest(
-        'should emit state with all stats data without points for driver',
+        'should emit state with all grouped stats data without points for '
+        'driver',
         build: () => createCubit(),
         setUp: () {
           createPlayersPodiumStats.mock(
@@ -165,15 +166,17 @@ void main() {
         expect: () => [
           StatsState(
             status: StatsStateStatus.completed,
-            playersPodium: playersPodium,
-            pointsHistory: pointsHistory,
-            pointsByDriver: [],
-            detailsOfDriversFromSeason: [
-              allDrivers.last,
-              allDrivers.first,
-              allDrivers[1],
-            ],
-            bestPoints: bestPoints,
+            stats: GroupedStats(
+              playersPodium: playersPodium,
+              pointsHistory: pointsHistory,
+              playersPointsForDriver: [],
+              detailsOfDriversFromSeason: [
+                allDrivers.last,
+                allDrivers.first,
+                allDrivers[1],
+              ],
+              bestPoints: bestPoints,
+            ),
           ),
         ],
       );
@@ -181,9 +184,8 @@ void main() {
   );
 
   group(
-    'onStatsTypeChanged,',
+    'onStatsTypeChanged, ',
     () {
-      const StatsType newStatsType = StatsType.individual;
       const int currentSeason = 2024;
       final DateTime now = DateTime(currentSeason);
       final PlayersPodium playersPodium = PlayersPodium(
@@ -236,7 +238,8 @@ void main() {
       StatsState? state;
 
       blocTest(
-        'should emit new stats type and new stats without points for driver',
+        'should emit new stats type and new grouped stats without players '
+        'points for driver if new stats type is grouped',
         build: () => createCubit(),
         setUp: () {
           dateService.mockGetNow(now: now);
@@ -253,23 +256,53 @@ void main() {
             expectedBestPoints: bestPoints,
           );
         },
-        act: (cubit) => cubit.onStatsTypeChanged(newStatsType),
+        act: (cubit) => cubit.onStatsTypeChanged(StatsType.grouped),
         expect: () => [
-          state = const StatsState(
-            type: newStatsType,
+          state = state!.copyWith(
             status: StatsStateStatus.changingStatsType,
           ),
           state!.copyWith(
             status: StatsStateStatus.completed,
-            playersPodium: playersPodium,
+            stats: GroupedStats(
+              playersPodium: playersPodium,
+              bestPoints: bestPoints,
+              pointsHistory: pointsHistory,
+              detailsOfDriversFromSeason: [
+                allDrivers.last,
+                allDrivers.first,
+                allDrivers[1],
+              ],
+              playersPointsForDriver: [],
+            ),
+          ),
+        ],
+      );
+
+      blocTest(
+        'should emit new stats type and new individual stats if new stats type '
+        'is individual',
+        build: () => createCubit(),
+        setUp: () {
+          dateService.mockGetNow(now: now);
+          createPointsHistoryStats.mock(
             pointsHistory: pointsHistory,
-            pointsByDriver: [],
-            detailsOfDriversFromSeason: [
-              allDrivers.last,
-              allDrivers.first,
-              allDrivers[1],
-            ],
-            bestPoints: bestPoints,
+          );
+          createBestPoints.mock(
+            expectedBestPoints: bestPoints,
+          );
+        },
+        act: (cubit) => cubit.onStatsTypeChanged(StatsType.individual),
+        expect: () => [
+          state = const StatsState(
+            status: StatsStateStatus.changingStatsType,
+          ),
+          state!.copyWith(
+            status: StatsStateStatus.completed,
+            stats: const IndividualStats(
+              bestPoints: bestPoints,
+              pointsHistory: pointsHistory,
+              pointsForDrivers: [],
+            ),
           ),
         ],
       );
@@ -280,29 +313,53 @@ void main() {
     'onDriverChanged, ',
     () {
       const int currentSeason = 2024;
-      final PointsByDriverPlayerPoints playerPointsForDriver =
-          PointsByDriverPlayerPoints(
-        player: const PlayerCreator(id: 'p1').create(),
-        points: 22.22,
+      final List<PlayerPoints> playersPointsForDriver = [
+        PlayerPoints(
+          player: const PlayerCreator(id: 'p1').create(),
+          points: 22.22,
+        ),
+        PlayerPoints(
+          player: const PlayerCreator(id: 'p2').create(),
+          points: 33.33,
+        ),
+      ];
+      StatsState? state;
+
+      blocTest(
+        'should do nothing if stats are individual',
+        build: () => createCubit(),
+        seed: () => const StatsState(
+          stats: IndividualStats(),
+        ),
+        act: (cubit) => cubit.onDriverChanged('d1'),
+        expect: () => [],
       );
 
       blocTest(
-        'should emit state with points for driver_personal_data chart data',
+        'should emit state with with GroupedStats with updated '
+        'playersPointsForDriver',
         build: () => createCubit(),
         setUp: () {
           dateService.mockGetNow(now: DateTime(currentSeason));
           createPointsForDriverStats.mock(
-            playersPointsForDriver: [playerPointsForDriver],
+            playersPoints: playersPointsForDriver,
           );
         },
-        act: (cubit) async => await cubit.onDriverChanged('d1'),
+        seed: () => state = const StatsState(
+          stats: GroupedStats(
+            playersPointsForDriver: [],
+          ),
+        ),
+        act: (cubit) => cubit.onDriverChanged('d1'),
         expect: () => [
-          const StatsState(
+          state = state!.copyWith(
             status: StatsStateStatus.pointsForDriverLoading,
           ),
-          StatsState(
+          state!.copyWith(
             status: StatsStateStatus.completed,
-            pointsByDriver: [playerPointsForDriver],
+            stats: GroupedStats(
+              playersPointsForDriver: playersPointsForDriver,
+            ),
           ),
         ],
         verify: (_) => verify(

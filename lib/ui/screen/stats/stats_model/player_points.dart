@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../model/player.dart';
 
-class PointsByDriverPlayerPoints extends Equatable {
+class PlayerPoints extends Equatable {
   final Player player;
   final double points;
 
-  const PointsByDriverPlayerPoints({
+  const PlayerPoints({
     required this.player,
     required this.points,
   });

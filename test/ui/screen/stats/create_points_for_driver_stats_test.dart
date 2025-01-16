@@ -1,7 +1,7 @@
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/model/player_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart';
-import 'package:betgrid/ui/screen/stats/stats_model/points_by_driver.dart';
+import 'package:betgrid/ui/screen/stats/stats_model/player_points.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -34,7 +34,7 @@ void main() {
     () async {
       playerRepository.mockGetAllPlayers(players: []);
 
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+      final Stream<List<PlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
         season: season,
         seasonDriverId: 'd1',
@@ -106,16 +106,16 @@ void main() {
           ),
         ],
       ).create();
-      final List<PointsByDriverPlayerPoints> expectedPoints = [
-        PointsByDriverPlayerPoints(
+      final List<PlayerPoints> expectedPoints = [
+        PlayerPoints(
           player: allPlayers.first,
           points: player1Stats.pointsForDrivers.first.points,
         ),
-        PointsByDriverPlayerPoints(
+        PlayerPoints(
           player: allPlayers[1],
           points: player2Stats.pointsForDrivers.last.points,
         ),
-        PointsByDriverPlayerPoints(
+        PlayerPoints(
           player: allPlayers.last,
           points: player3Stats.pointsForDrivers[1].points,
         ),
@@ -140,7 +140,7 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(player3Stats));
 
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
+      final Stream<List<PlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
         season: season,
         seasonDriverId: seasonDriverId,

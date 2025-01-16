@@ -9,23 +9,24 @@ import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
 
-class StatsPointsByDriverPlayersList extends StatelessWidget {
-  const StatsPointsByDriverPlayersList({super.key});
+class StatsPlayersPointsForDriver extends StatelessWidget {
+  const StatsPlayersPointsForDriver({super.key});
 
   @override
   Widget build(BuildContext context) {
     final bool isLoading = context.select(
       (StatsCubit cubit) => cubit.state.status.arePointsForDriverLoading,
     );
-    final pointsByDriverData = context.select(
-      (StatsCubit cubit) => cubit.state.pointsByDriver,
+    final playersPointsForDriver = context.select(
+      (StatsCubit cubit) =>
+          (cubit.state.stats as GroupedStats).playersPointsForDriver,
     );
 
     if (isLoading) return const _LoadingContent();
-    if (pointsByDriverData?.isEmpty == true) {
+    if (playersPointsForDriver?.isEmpty == true) {
       return const _NoSelectedDriverInfo();
     }
-    final playersPoints = [...?pointsByDriverData];
+    final playersPoints = [...?playersPointsForDriver];
     playersPoints.sort(
       (p1, p2) => p1.points != p2.points
           ? p2.points.compareTo(p1.points)

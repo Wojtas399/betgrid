@@ -5,7 +5,7 @@ import '../../../../data/repository/player/player_repository.dart';
 import '../../../../data/repository/player_stats/player_stats_repository.dart';
 import '../../../../model/player.dart';
 import '../../../../model/player_stats.dart';
-import '../stats_model/points_by_driver.dart';
+import '../stats_model/player_points.dart';
 
 @injectable
 class CreatePointsForDriverStats {
@@ -17,7 +17,7 @@ class CreatePointsForDriverStats {
     this._playerStatsRepository,
   );
 
-  Stream<List<PointsByDriverPlayerPoints>?> call({
+  Stream<List<PlayerPoints>?> call({
     required int season,
     required String seasonDriverId,
   }) =>
@@ -43,7 +43,7 @@ class CreatePointsForDriverStats {
         },
       );
 
-  List<PointsByDriverPlayerPoints>? _createPointsForDriver(
+  List<PlayerPoints>? _createPointsForDriver(
     String seasonDriverId,
     List<Player> allPlayers,
     List<PlayerStats?> playersStats,
@@ -51,7 +51,7 @@ class CreatePointsForDriverStats {
     return playersStats
         .whereType<PlayerStats>()
         .map(
-          (PlayerStats playerStats) => PointsByDriverPlayerPoints(
+          (PlayerStats playerStats) => PlayerPoints(
             player: allPlayers.firstWhere(
               (player) => player.id == playerStats.playerId,
             ),

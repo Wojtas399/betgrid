@@ -6,23 +6,44 @@ import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
 
-class StatsTypeSelection extends StatelessWidget {
+class StatsTypeSelection extends StatefulWidget {
   const StatsTypeSelection({super.key});
 
+  @override
+  State<StatsTypeSelection> createState() => _StatsTypeSelectionState();
+}
+
+class _StatsTypeSelectionState extends State<StatsTypeSelection> {
+  late StatsType _statsType;
+
+  @override
+  void initState() {
+    super.initState();
+    final Stats stats = context.read<StatsCubit>().state.stats!;
+    _statsType = switch (stats) {
+      GroupedStats() => StatsType.grouped,
+      IndividualStats() => StatsType.individual,
+    };
+  }
+
   void _onGroupedPressed(BuildContext context) {
-    context.read<StatsCubit>().onStatsTypeChanged(StatsType.grouped);
+    const StatsType statsType = StatsType.grouped;
+    setState(() {
+      _statsType = statsType;
+    });
+    context.read<StatsCubit>().onStatsTypeChanged(statsType);
   }
 
   void _onIndividualPressed(BuildContext context) {
-    context.read<StatsCubit>().onStatsTypeChanged(StatsType.individual);
+    const StatsType statsType = StatsType.individual;
+    setState(() {
+      _statsType = statsType;
+    });
+    context.read<StatsCubit>().onStatsTypeChanged(statsType);
   }
 
   @override
   Widget build(BuildContext context) {
-    final StatsType statsType = context.select(
-      (StatsCubit cubit) => cubit.state.type,
-    );
-
     return CustomCard(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -31,14 +52,14 @@ class StatsTypeSelection extends StatelessWidget {
           Expanded(
             child: _Btn(
               label: context.str.statsGrouped,
-              isSelected: statsType == StatsType.grouped,
+              isSelected: _statsType == StatsType.grouped,
               onPressed: () => _onGroupedPressed(context),
             ),
           ),
           Expanded(
             child: _Btn(
               label: context.str.statsIndividual,
-              isSelected: statsType == StatsType.individual,
+              isSelected: _statsType == StatsType.individual,
               onPressed: () => _onIndividualPressed(context),
             ),
           ),

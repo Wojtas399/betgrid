@@ -7,6 +7,7 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
+import '../cubit/stats_state.dart';
 import '../stats_model/players_podium.dart';
 import 'stats_no_data_info.dart';
 
@@ -16,7 +17,7 @@ class StatsPlayersPodium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlayersPodium? playersPodium = context.select(
-      (StatsCubit cubit) => cubit.state.playersPodium,
+      (StatsCubit cubit) => (cubit.state.stats as GroupedStats).playersPodium,
     );
 
     if (playersPodium == null) {
