@@ -7,7 +7,6 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
 import '../cubit/stats_cubit.dart';
-import '../cubit/stats_state.dart';
 
 class StatsPointsByDriverDropdownButton extends StatefulWidget {
   const StatsPointsByDriverDropdownButton({super.key});
@@ -30,29 +29,22 @@ class _State extends State<StatsPointsByDriverDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCubitLoading = context.select(
-      (StatsCubit cubit) => cubit.state.status.isLoading,
-    );
     final Iterable<DriverDetails>? allDrivers = context.select(
       (StatsCubit cubit) => cubit.state.detailsOfDriversFromSeason,
     );
 
-    return isCubitLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : SizedBox(
-            width: double.infinity,
-            child: DropdownButton<String>(
-              isExpanded: true,
-              value: _selectedDriverId,
-              hint: Text(context.str.statsSelectDriver),
-              items: allDrivers
-                  ?.map((DriverDetails driver) => _DriverDescription(driver))
-                  .toList(),
-              onChanged: (String? driverId) => _onDriverChanged(driverId),
-            ),
-          );
+    return SizedBox(
+      width: double.infinity,
+      child: DropdownButton<String>(
+        isExpanded: true,
+        value: _selectedDriverId,
+        hint: Text(context.str.statsSelectDriver),
+        items: allDrivers
+            ?.map((DriverDetails driver) => _DriverDescription(driver))
+            .toList(),
+        onChanged: (String? driverId) => _onDriverChanged(driverId),
+      ),
+    );
   }
 }
 

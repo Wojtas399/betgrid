@@ -3,7 +3,9 @@ import 'package:betgrid/model/player.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPlayerRepository extends Mock implements PlayerRepository {
-  void mockGetAllPlayers({List<Player>? players}) {
+  void mockGetAllPlayers({
+    required List<Player> players,
+  }) {
     when(getAllPlayers).thenAnswer((_) => Stream.value(players));
   }
 

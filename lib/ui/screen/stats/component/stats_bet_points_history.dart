@@ -6,8 +6,8 @@ import '../../../component/avatar_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/text_component.dart';
 import '../cubit/stats_cubit.dart';
-import '../cubit/stats_state.dart';
 import '../stats_model/points_history.dart';
+import 'stats_no_data_info.dart';
 
 class StatsBetPointsHistory extends StatelessWidget {
   final bool showPointsForEachRound;
@@ -19,23 +19,17 @@ class StatsBetPointsHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCubitLoading = context.select(
-      (StatsCubit cubit) => cubit.state.status.isLoading,
-    );
     final PointsHistory? pointsHistory = context.select(
       (StatsCubit cubit) => cubit.state.pointsHistory,
     );
 
-    return isCubitLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : SfCartesianChart(
+    return pointsHistory != null
+        ? SfCartesianChart(
             primaryXAxis: const CategoryAxis(),
             series: <CartesianSeries>[
-              for (final player in [...?pointsHistory?.players])
+              for (final player in [...pointsHistory.players])
                 LineSeries<PointsHistoryGrandPrix, String>(
-                  dataSource: pointsHistory!.grandPrixes.toList(),
+                  dataSource: pointsHistory.grandPrixes.toList(),
                   xValueMapper: (data, _) => '${data.roundNumber}',
                   yValueMapper: (data, _) => data.playersPoints
                       .firstWhere((el) => el.playerId == player.id)
@@ -69,6 +63,7 @@ class StatsBetPointsHistory extends StatelessWidget {
                   ),
                 ),
             ],
-          );
+          )
+        : const StatsNoDataInfo();
   }
 }

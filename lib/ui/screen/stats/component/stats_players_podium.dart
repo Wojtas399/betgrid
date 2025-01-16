@@ -7,40 +7,32 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/stats_cubit.dart';
-import '../cubit/stats_state.dart';
 import '../stats_model/players_podium.dart';
+import 'stats_no_data_info.dart';
 
 class StatsPlayersPodium extends StatelessWidget {
   const StatsPlayersPodium({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool isCubitLoading = context.select(
-      (StatsCubit cubit) => cubit.state.status.isLoading,
-    );
     final PlayersPodium? playersPodium = context.select(
       (StatsCubit cubit) => cubit.state.playersPodium,
     );
 
-    if (isCubitLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+    if (playersPodium == null) {
+      return const StatsNoDataInfo();
     }
 
-    final List<PlayersPodiumPlayer> podiumArray = playersPodium != null
-        ? [
-            if (playersPodium.p2Player != null) playersPodium.p2Player!,
-            playersPodium.p1Player,
-            if (playersPodium.p3Player != null) playersPodium.p3Player!,
-          ]
-        : [];
+    final List<PlayersPodiumPlayer> podiumArray = [
+      if (playersPodium.p2Player != null) playersPodium.p2Player!,
+      playersPodium.p1Player,
+      if (playersPodium.p3Player != null) playersPodium.p3Player!,
+    ];
     return SfCartesianChart(
       primaryXAxis: const CategoryAxis(),
       primaryYAxis: NumericAxis(
         minimum: 0,
-        maximum:
-            playersPodium != null ? playersPodium.p1Player.points * 1.8 : 0,
+        maximum: playersPodium.p1Player.points * 1.8,
         // interval: 5,
       ),
       series: <CartesianSeries<PlayersPodiumPlayer, String>>[

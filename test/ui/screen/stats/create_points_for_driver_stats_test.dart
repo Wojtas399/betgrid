@@ -32,21 +32,6 @@ void main() {
   });
 
   test(
-    'should emit null if list of all players is null',
-    () async {
-      playerRepository.mockGetAllPlayers();
-
-      final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
-          createPointsForDriverStats(
-        seasonDriverId: 'd1',
-      );
-
-      expect(await pointsForDriver$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-    },
-  );
-
-  test(
     'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
