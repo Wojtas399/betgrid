@@ -18,6 +18,8 @@ void main() {
   final getFinishedGrandPrixesFromSeasonUseCase =
       MockGetFinishedGrandPrixesFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  const int season = 2025;
+
   late CreatePlayersPodiumStats createPlayersPodiumStats;
 
   setUp(() {
@@ -29,6 +31,10 @@ void main() {
   });
 
   tearDown(() {
+    verify(playerRepository.getAllPlayers).called(1);
+    verify(
+      () => getFinishedGrandPrixesFromSeasonUseCase.call(season: season),
+    ).called(1);
     reset(playerRepository);
     reset(getFinishedGrandPrixesFromSeasonUseCase);
     reset(grandPrixBetPointsRepository);
@@ -45,13 +51,11 @@ void main() {
         ],
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+        season: season,
+      );
 
       expect(await playersPodium$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(
-        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
-      ).called(1);
     },
   );
 
@@ -68,13 +72,11 @@ void main() {
         finishedSeasonGrandPrixes: [],
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+        season: season,
+      );
 
       expect(await playersPodium$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(
-        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
-      ).called(1);
     },
   );
 
@@ -114,13 +116,11 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+        season: season,
+      );
 
       expect(await playersPodium$.first, expectedPlayersPodium);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(
-        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
-      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
@@ -181,13 +181,11 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+        season: season,
+      );
 
       expect(await playersPodium$.first, expectedPlayersPodium);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(
-        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
-      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
@@ -270,13 +268,11 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats();
+      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+        season: season,
+      );
 
       expect(await playersPodium$.first, expectedPlayersPodium);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(
-        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
-      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(

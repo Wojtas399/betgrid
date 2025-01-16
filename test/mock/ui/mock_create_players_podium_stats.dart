@@ -7,6 +7,10 @@ class MockCreatePlayersPodiumStats extends Mock
   void mock({
     PlayersPodium? playersPodium,
   }) {
-    when(call).thenAnswer((_) => Stream.value(playersPodium));
+    when(
+      () => call(
+        season: any(named: 'season'),
+      ),
+    ).thenAnswer((_) => Stream.value(playersPodium));
   }
 }

@@ -103,7 +103,11 @@ void main() {
       });
 
       tearDown(() {
-        verify(createPlayersPodiumStats.call).called(1);
+        verify(
+          () => createPlayersPodiumStats.call(
+            season: currentSeason,
+          ),
+        ).called(1);
         verify(
           () => createPointsHistoryStats.call(
             statsType: StatsType.grouped,

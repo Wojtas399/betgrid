@@ -75,7 +75,7 @@ class StatsCubit extends Cubit<StatsState> {
   Stream<_ListenedParams> _getListenedParams(StatsType statsType) {
     final currentSeason = _dateService.getNow().year;
     return Rx.combineLatest4(
-      _createPlayersPodiumStats(),
+      _createPlayersPodiumStats(season: currentSeason),
       _createPointsHistoryStats(
         statsType: statsType,
         season: currentSeason,
