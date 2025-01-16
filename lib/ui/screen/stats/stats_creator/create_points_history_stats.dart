@@ -70,12 +70,14 @@ class CreatePointsHistoryStats {
             List<Player> players,
             List<SeasonGrandPrix> seasonGrandPrixes,
             List<GrandPrixBetPoints> grandPrixesBetPoints,
-          ) =>
-              _createStats(
-            players,
-            seasonGrandPrixes,
-            grandPrixesBetPoints,
-          ),
+          ) {
+            final statsData = (
+              players: players,
+              seasonGrandPrixes: seasonGrandPrixes,
+              grandPrixesBetPoints: grandPrixesBetPoints,
+            );
+            return _createStats(statsData);
+          },
         );
       },
     );
@@ -114,33 +116,29 @@ class CreatePointsHistoryStats {
             Player loggedUser,
             List<SeasonGrandPrix> seasonGrandPrixes,
             List<GrandPrixBetPoints> grandPrixesBetPoints,
-          ) =>
-              _createStats(
-            [loggedUser],
-            seasonGrandPrixes,
-            grandPrixesBetPoints,
-          ),
+          ) {
+            final statsData = (
+              players: [loggedUser],
+              seasonGrandPrixes: seasonGrandPrixes,
+              grandPrixesBetPoints: grandPrixesBetPoints,
+            );
+            return _createStats(statsData);
+          },
         );
       },
     );
   }
 
-  PointsHistory _createStats(
-    Iterable<Player> players,
-    Iterable<SeasonGrandPrix> seasonGrandPrixes,
-    Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
-  ) {
+  PointsHistory _createStats(_StatsData data) {
     final List<SeasonGrandPrix> sortedFinishedSeasonGrandPrixes = [
-      ...seasonGrandPrixes,
-    ];
-    sortedFinishedSeasonGrandPrixes.sort(
-      (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
-    );
+      ...data.seasonGrandPrixes,
+    ]..sortByRoundNumber();
     final List<PointsHistoryGrandPrix> chartGrandPrixes = [];
     for (final seasonGp in sortedFinishedSeasonGrandPrixes) {
-      final List<PointsHistoryPlayerPoints> playersPointsForGp = players.map(
+      final List<PointsHistoryPlayerPoints> playersPointsForGp =
+          data.players.map(
         (Player player) {
-          final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
+          final gpBetPoints = data.grandPrixesBetPoints.firstWhereOrNull(
             (GrandPrixBetPoints? gpBetPoints) =>
                 gpBetPoints?.playerId == player.id &&
                 gpBetPoints?.seasonGrandPrixId == seasonGp.id,
@@ -164,7 +162,7 @@ class CreatePointsHistoryStats {
       ));
     }
     return PointsHistory(
-      players: players,
+      players: data.players,
       grandPrixes: chartGrandPrixes,
     );
   }
@@ -174,6 +172,20 @@ class CreatePointsHistoryStats {
       (String? loggedUserId) => loggedUserId == null
           ? Stream.value(null)
           : _playerRepository.getPlayerById(playerId: loggedUserId),
+    );
+  }
+}
+
+typedef _StatsData = ({
+  Iterable<Player> players,
+  Iterable<SeasonGrandPrix> seasonGrandPrixes,
+  Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
+});
+
+extension _SeasonGrandPrixesListX on List<SeasonGrandPrix> {
+  void sortByRoundNumber() {
+    sort(
+      (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
   }
 }
