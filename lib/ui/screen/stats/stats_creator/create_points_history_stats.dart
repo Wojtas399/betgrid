@@ -23,9 +23,12 @@ class CreatePointsHistoryStats {
     this._grandPrixBetPointsRepository,
   );
 
-  Stream<PointsHistory?> call() => Rx.combineLatest2(
+  Stream<PointsHistory?> call({
+    required int season,
+  }) =>
+      Rx.combineLatest2(
         _playerRepository.getAllPlayers().whereNotNull(),
-        _getFinishedGrandPrixesFromSeasonUseCase(season: 2025),
+        _getFinishedGrandPrixesFromSeasonUseCase(season: season),
         (
           List<Player> allPlayers,
           List<SeasonGrandPrix> finishedSeasonGrandPrixes,

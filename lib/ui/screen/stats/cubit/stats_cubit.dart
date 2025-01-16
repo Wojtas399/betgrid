@@ -76,7 +76,7 @@ class StatsCubit extends Cubit<StatsState> {
     final currentSeason = _dateService.getNow().year;
     return Rx.combineLatest4(
       _createPlayersPodiumStats(),
-      _createPointsHistoryStats(),
+      _createPointsHistoryStats(season: currentSeason),
       _getDetailsOfAllDriversFromSeasonUseCase(currentSeason),
       _createBestPoints(statsType: statsType, season: currentSeason),
       (

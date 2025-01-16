@@ -104,7 +104,11 @@ void main() {
 
       tearDown(() {
         verify(createPlayersPodiumStats.call).called(1);
-        verify(createPointsHistoryStats.call).called(1);
+        verify(
+          () => createPointsHistoryStats.call(
+            season: currentSeason,
+          ),
+        ).called(1);
         verify(
           () => getDetailsOfAllDriversFromSeasonUseCase.call(currentSeason),
         ).called(1);

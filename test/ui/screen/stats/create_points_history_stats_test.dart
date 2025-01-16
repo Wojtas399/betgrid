@@ -18,6 +18,8 @@ void main() {
   final getFinishedGrandPrixesFromSeasonUseCase =
       MockGetFinishedGrandPrixesFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  const season = 2025;
+
   late CreatePointsHistoryStats createPointsHistoryStats;
 
   setUp(() {
@@ -45,7 +47,9 @@ void main() {
         ],
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        season: season,
+      );
 
       expect(await pointsHistory$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -68,7 +72,9 @@ void main() {
         finishedSeasonGrandPrixes: [],
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        season: season,
+      );
 
       expect(await pointsHistory$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
@@ -199,7 +205,9 @@ void main() {
         grandPrixesBetPoints: grandPrixesBetPoints,
       );
 
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        season: season,
+      );
 
       expect(await pointsHistory$.first, expectedPointsHistory);
       verify(playerRepository.getAllPlayers).called(1);

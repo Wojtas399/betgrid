@@ -7,6 +7,10 @@ class MockCreatePointsHistoryStats extends Mock
   void mock({
     PointsHistory? pointsHistory,
   }) {
-    when(call).thenAnswer((_) => Stream.value(pointsHistory));
+    when(
+      () => call(
+        season: any(named: 'season'),
+      ),
+    ).thenAnswer((_) => Stream.value(pointsHistory));
   }
 }
