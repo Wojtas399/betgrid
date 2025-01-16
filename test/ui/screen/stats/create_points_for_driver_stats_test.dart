@@ -9,26 +9,24 @@ import '../../../creator/player_creator.dart';
 import '../../../creator/player_stats_creator.dart';
 import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/repository/mock_player_stats_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
   final playerStatsRepository = MockPlayerStatsRepository();
-  final dateService = MockDateService();
+  const int season = 2024;
+
   late CreatePointsForDriverStats createPointsForDriverStats;
 
   setUp(() {
     createPointsForDriverStats = CreatePointsForDriverStats(
       playerRepository,
       playerStatsRepository,
-      dateService,
     );
   });
 
   tearDown(() {
     reset(playerRepository);
     reset(playerStatsRepository);
-    reset(dateService);
   });
 
   test(
@@ -38,6 +36,7 @@ void main() {
 
       final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
+        season: season,
         seasonDriverId: 'd1',
       );
 
@@ -51,7 +50,6 @@ void main() {
     'driver received by each player',
     () async {
       const String seasonDriverId = 'sd1';
-      final DateTime now = DateTime(2025);
       final List<Player> allPlayers = [
         const PlayerCreator(id: 'p1').create(),
         const PlayerCreator(id: 'p2').create(),
@@ -122,29 +120,29 @@ void main() {
           points: player3Stats.pointsForDrivers[1].points,
         ),
       ];
-      dateService.mockGetNow(now: now);
       playerRepository.mockGetAllPlayers(players: allPlayers);
       when(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
-          season: now.year,
+          season: season,
         ),
       ).thenAnswer((_) => Stream.value(player1Stats));
       when(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers[1].id,
-          season: now.year,
+          season: season,
         ),
       ).thenAnswer((_) => Stream.value(player2Stats));
       when(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.last.id,
-          season: now.year,
+          season: season,
         ),
       ).thenAnswer((_) => Stream.value(player3Stats));
 
       final Stream<List<PointsByDriverPlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
+        season: season,
         seasonDriverId: seasonDriverId,
       );
 
@@ -153,19 +151,19 @@ void main() {
       verify(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
-          season: now.year,
+          season: season,
         ),
       ).called(1);
       verify(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers[1].id,
-          season: now.year,
+          season: season,
         ),
       ).called(1);
       verify(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.last.id,
-          season: now.year,
+          season: season,
         ),
       ).called(1);
     },

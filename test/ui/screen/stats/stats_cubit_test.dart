@@ -279,6 +279,7 @@ void main() {
   group(
     'onDriverChanged, ',
     () {
+      const int currentSeason = 2024;
       final PointsByDriverPlayerPoints playerPointsForDriver =
           PointsByDriverPlayerPoints(
         player: const PlayerCreator(id: 'p1').create(),
@@ -288,9 +289,12 @@ void main() {
       blocTest(
         'should emit state with points for driver_personal_data chart data',
         build: () => createCubit(),
-        setUp: () => createPointsForDriverStats.mock(
-          playersPointsForDriver: [playerPointsForDriver],
-        ),
+        setUp: () {
+          dateService.mockGetNow(now: DateTime(currentSeason));
+          createPointsForDriverStats.mock(
+            playersPointsForDriver: [playerPointsForDriver],
+          );
+        },
         act: (cubit) async => await cubit.onDriverChanged('d1'),
         expect: () => [
           const StatsState(
@@ -302,7 +306,10 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => createPointsForDriverStats.call(seasonDriverId: 'd1'),
+          () => createPointsForDriverStats.call(
+            season: currentSeason,
+            seasonDriverId: 'd1',
+          ),
         ).called(1),
       );
     },
