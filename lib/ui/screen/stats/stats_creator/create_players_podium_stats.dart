@@ -6,25 +6,25 @@ import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
-import '../../../../use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
+import '../../../../use_case/get_finished_grand_prixes_from_season_use_case.dart';
 import '../stats_model/players_podium.dart';
 
 @injectable
 class CreatePlayersPodiumStats {
   final PlayerRepository _playerRepository;
-  final GetFinishedGrandPrixesFromCurrentSeasonUseCase
-      _getFinishedGrandPrixesFromCurrentSeasonUseCase;
+  final GetFinishedGrandPrixesFromSeasonUseCase
+      _getFinishedGrandPrixesFromSeasonUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
   const CreatePlayersPodiumStats(
     this._playerRepository,
-    this._getFinishedGrandPrixesFromCurrentSeasonUseCase,
+    this._getFinishedGrandPrixesFromSeasonUseCase,
     this._grandPrixBetPointsRepository,
   );
 
   Stream<PlayersPodium?> call() => Rx.combineLatest2(
         _playerRepository.getAllPlayers().whereNotNull(),
-        _getFinishedGrandPrixesFromCurrentSeasonUseCase(),
+        _getFinishedGrandPrixesFromSeasonUseCase(season: 2025),
         (
           List<Player> allPlayers,
           List<SeasonGrandPrix> finishedSeasonGrandPrixes,

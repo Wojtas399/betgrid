@@ -1,5 +1,5 @@
 import 'package:betgrid/model/season_grand_prix.dart';
-import 'package:betgrid/use_case/get_finished_grand_prixes_from_current_season_use_case.dart';
+import 'package:betgrid/use_case/get_finished_grand_prixes_from_season_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,11 +10,12 @@ import '../mock/ui/mock_date_service.dart';
 void main() {
   final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
   final dateService = MockDateService();
-  late GetFinishedGrandPrixesFromCurrentSeasonUseCase useCase;
+  late GetFinishedGrandPrixesFromSeasonUseCase useCase;
   final DateTime now = DateTime(2024, 05, 28, 14, 30);
+  const season = 2024;
 
   setUp(() {
-    useCase = GetFinishedGrandPrixesFromCurrentSeasonUseCase(
+    useCase = GetFinishedGrandPrixesFromSeasonUseCase(
       seasonGrandPrixRepository,
       dateService,
     );
@@ -38,7 +39,8 @@ void main() {
         expectedSeasonGrandPrixes: [],
       );
 
-      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ = useCase();
+      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ =
+          useCase(season: season);
 
       expect(finishedGrandPrixes$, emits([]));
     },
@@ -62,7 +64,8 @@ void main() {
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
       );
 
-      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ = useCase();
+      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ =
+          useCase(season: season);
 
       expect(finishedGrandPrixes$, emits([]));
     },
@@ -107,7 +110,8 @@ void main() {
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
       );
 
-      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ = useCase();
+      final Stream<List<SeasonGrandPrix>> finishedGrandPrixes$ =
+          useCase(season: season);
 
       expect(finishedGrandPrixes$, emits(expectedFinishedGrandPrixes));
     },

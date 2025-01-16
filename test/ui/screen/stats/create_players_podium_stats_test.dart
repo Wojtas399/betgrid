@@ -11,26 +11,26 @@ import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_player_repository.dart';
-import '../../../mock/use_case/mock_get_finished_grand_prixes_from_current_season_use_case.dart';
+import '../../../mock/use_case/mock_get_finished_grand_prixes_from_season_use_case.dart';
 
 void main() {
   final playerRepository = MockPlayerRepository();
-  final getFinishedGrandPrixesFromCurrentSeasonUseCase =
-      MockGetFinishedGrandPrixesFromCurrentSeasonUseCase();
+  final getFinishedGrandPrixesFromSeasonUseCase =
+      MockGetFinishedGrandPrixesFromSeasonUseCase();
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   late CreatePlayersPodiumStats createPlayersPodiumStats;
 
   setUp(() {
     createPlayersPodiumStats = CreatePlayersPodiumStats(
       playerRepository,
-      getFinishedGrandPrixesFromCurrentSeasonUseCase,
+      getFinishedGrandPrixesFromSeasonUseCase,
       grandPrixBetPointsRepository,
     );
   });
 
   tearDown(() {
     reset(playerRepository);
-    reset(getFinishedGrandPrixesFromCurrentSeasonUseCase);
+    reset(getFinishedGrandPrixesFromSeasonUseCase);
     reset(grandPrixBetPointsRepository);
   });
 
@@ -38,7 +38,7 @@ void main() {
     'should emit null if list of all players is empty',
     () async {
       playerRepository.mockGetAllPlayers(players: []);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: [
           SeasonGrandPrixCreator(id: 'sgp1').create(),
           SeasonGrandPrixCreator(id: 'sgp2').create(),
@@ -49,7 +49,9 @@ void main() {
 
       expect(await playersPodium$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
     },
   );
 
@@ -62,7 +64,7 @@ void main() {
           const PlayerCreator(id: 'p2').create(),
         ],
       );
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: [],
       );
 
@@ -70,7 +72,9 @@ void main() {
 
       expect(await playersPodium$.first, null);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
     },
   );
 
@@ -102,7 +106,7 @@ void main() {
         ),
       );
       playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
       grandPrixBetPointsRepository
@@ -114,7 +118,9 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
@@ -167,7 +173,7 @@ void main() {
         ),
       );
       playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
       grandPrixBetPointsRepository
@@ -179,7 +185,9 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
@@ -254,7 +262,7 @@ void main() {
         ),
       );
       playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesFromCurrentSeasonUseCase.mock(
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
       grandPrixBetPointsRepository
@@ -266,7 +274,9 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesFromCurrentSeasonUseCase.call).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(

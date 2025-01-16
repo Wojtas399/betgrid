@@ -5,20 +5,21 @@ import '../model/season_grand_prix.dart';
 import '../ui/service/date_service.dart';
 
 @injectable
-class GetFinishedGrandPrixesFromCurrentSeasonUseCase {
+class GetFinishedGrandPrixesFromSeasonUseCase {
   final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final DateService _dateService;
 
-  const GetFinishedGrandPrixesFromCurrentSeasonUseCase(
+  const GetFinishedGrandPrixesFromSeasonUseCase(
     this._seasonGrandPrixRepository,
     this._dateService,
   );
 
-  Stream<List<SeasonGrandPrix>> call() {
+  Stream<List<SeasonGrandPrix>> call({
+    required int season,
+  }) {
     final DateTime now = _dateService.getNow();
-    final int currentYear = now.year;
     return _seasonGrandPrixRepository
-        .getAllSeasonGrandPrixesFromSeason(currentYear)
+        .getAllSeasonGrandPrixesFromSeason(season)
         .map(
           (List<SeasonGrandPrix> allSeasonGrandPrixes) => allSeasonGrandPrixes
               .where(
