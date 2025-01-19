@@ -10,6 +10,7 @@ import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dar
 import '../../../extensions/list_of_driver_details_extensions.dart';
 import '../../../service/date_service.dart';
 import '../stats_creator/create_best_points.dart';
+import '../stats_creator/create_logged_user_points_for_drivers_stats.dart';
 import '../stats_creator/create_players_podium_stats.dart';
 import '../stats_creator/create_points_for_driver_stats.dart';
 import '../stats_creator/create_points_history_stats.dart';
@@ -28,6 +29,8 @@ class StatsCubit extends Cubit<StatsState> {
   final CreatePointsHistoryStats _createPointsHistoryStats;
   final CreatePointsForDriverStats _createPointsForDriverStats;
   final CreateBestPoints _createBestPoints;
+  final CreateLoggedUserPointsForDriversStats
+      _createLoggedUserPointsForDriversStats;
   StreamSubscription<_ListenedStatsParams>? _listener;
 
   StatsCubit(
@@ -37,6 +40,7 @@ class StatsCubit extends Cubit<StatsState> {
     this._createPointsHistoryStats,
     this._createPointsForDriverStats,
     this._createBestPoints,
+    this._createLoggedUserPointsForDriversStats,
   ) : super(const StatsState());
 
   @override
@@ -136,7 +140,7 @@ class StatsCubit extends Cubit<StatsState> {
     StatsType statsType,
   ) {
     final currentSeason = _getCurrentSeason();
-    return Rx.combineLatest2(
+    return Rx.combineLatest3(
       _createBestPoints(
         statsType: statsType,
         season: currentSeason,
@@ -145,14 +149,16 @@ class StatsCubit extends Cubit<StatsState> {
         statsType: statsType,
         season: currentSeason,
       ),
+      _createLoggedUserPointsForDriversStats(season: currentSeason),
       (
         BestPoints? bestPoints,
         PointsHistory? pointsHistory,
+        List<PointsForDriver>? pointsForDrivers,
       ) =>
           _ListenedIndividualStatsParams(
         bestPoints: bestPoints,
         pointsHistory: pointsHistory,
-        pointsForDrivers: [], //TODO
+        pointsForDrivers: pointsForDrivers,
       ),
     );
   }

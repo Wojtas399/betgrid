@@ -1,7 +1,7 @@
 import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/player_stats.dart';
 import 'package:betgrid/model/season_driver.dart';
-import 'package:betgrid/ui/screen/stats/stats_creator/create_points_for_drivers_stats.dart';
+import 'package:betgrid/ui/screen/stats/stats_creator/create_logged_user_points_for_drivers_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_for_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

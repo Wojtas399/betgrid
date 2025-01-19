@@ -4,6 +4,7 @@ import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/best_points.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/player_points.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/players_podium.dart';
+import 'package:betgrid/ui/screen/stats/stats_model/points_for_driver.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +13,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/driver_details_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/ui/mock_create_best_points.dart';
+import '../../../mock/ui/mock_create_logged_user_points_for_drivers_stats.dart';
 import '../../../mock/ui/mock_create_players_podium_stats.dart';
 import '../../../mock/ui/mock_create_points_for_driver_stats.dart';
 import '../../../mock/ui/mock_create_points_history_stats.dart';
@@ -26,6 +28,8 @@ void main() {
   final createPointsHistoryStats = MockCreatePointsHistoryStats();
   final createPointsForDriverStats = MockCreatePointsForDriverStats();
   final createBestPoints = MockCreateBestPoints();
+  final createLoggedUserPointsForDriversStats =
+      MockCreateLoggedUserPointsForDriversStats();
 
   StatsCubit createCubit() => StatsCubit(
         dateService,
@@ -34,6 +38,7 @@ void main() {
         createPointsHistoryStats,
         createPointsForDriverStats,
         createBestPoints,
+        createLoggedUserPointsForDriversStats,
       );
 
   tearDown(() {
@@ -43,6 +48,7 @@ void main() {
     reset(createPointsHistoryStats);
     reset(createPointsForDriverStats);
     reset(createBestPoints);
+    reset(createLoggedUserPointsForDriversStats);
   });
 
   group(
@@ -235,6 +241,20 @@ void main() {
           driverSurname: 'surname',
         ),
       );
+      final List<PointsForDriver> pointsForDrivers = [
+        PointsForDriver(
+          driverDetails: allDrivers.first,
+          points: 11,
+        ),
+        PointsForDriver(
+          driverDetails: allDrivers[1],
+          points: 22,
+        ),
+        PointsForDriver(
+          driverDetails: allDrivers.last,
+          points: 33,
+        ),
+      ];
       StatsState? state;
 
       blocTest(
@@ -290,6 +310,9 @@ void main() {
           createBestPoints.mock(
             expectedBestPoints: bestPoints,
           );
+          createLoggedUserPointsForDriversStats.mock(
+            expectedPointsForDrivers: pointsForDrivers,
+          );
         },
         act: (cubit) => cubit.onStatsTypeChanged(StatsType.individual),
         expect: () => [
@@ -298,10 +321,10 @@ void main() {
           ),
           state!.copyWith(
             status: StatsStateStatus.completed,
-            stats: const IndividualStats(
+            stats: IndividualStats(
               bestPoints: bestPoints,
               pointsHistory: pointsHistory,
-              pointsForDrivers: [],
+              pointsForDrivers: pointsForDrivers,
             ),
           ),
         ],
