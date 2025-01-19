@@ -258,7 +258,7 @@ void main() {
         },
         act: (cubit) => cubit.onStatsTypeChanged(StatsType.grouped),
         expect: () => [
-          state = state!.copyWith(
+          state = const StatsState(
             status: StatsStateStatus.changingStatsType,
           ),
           state!.copyWith(
