@@ -219,7 +219,8 @@ void main() {
   );
 
   test(
-    'should emit list of points for drivers with driver details',
+    'should emit list of points for drivers with driver details sorted in '
+    'descending order by points',
     () async {
       const String loggedUserId = 'u1';
       const List<PlayerStatsPointsForDriver> pointsForDrivers = [
@@ -229,11 +230,11 @@ void main() {
         ),
         PlayerStatsPointsForDriver(
           seasonDriverId: 's2',
-          points: 20,
+          points: 30,
         ),
         PlayerStatsPointsForDriver(
           seasonDriverId: 's3',
-          points: 30,
+          points: 20,
         ),
       ];
       final List<SeasonDriver> seasonDrivers = [
@@ -248,16 +249,16 @@ void main() {
       ];
       List<PointsForDriver> expectedPointsForDrivers = [
         PointsForDriver(
-          driverDetails: driverDetails.first,
-          points: pointsForDrivers.first.points,
-        ),
-        PointsForDriver(
           driverDetails: driverDetails[1],
           points: pointsForDrivers[1].points,
         ),
         PointsForDriver(
           driverDetails: driverDetails.last,
           points: pointsForDrivers.last.points,
+        ),
+        PointsForDriver(
+          driverDetails: driverDetails.first,
+          points: pointsForDrivers.first.points,
         ),
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);

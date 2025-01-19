@@ -60,7 +60,7 @@ class CreateLoggedUserPointsForDriversStats {
               pointsForDrivers.whereType<PointsForDriver>().toList(),
         );
       },
-    );
+    ).map(_sortPointsForDriversInDescendingOrder);
   }
 
   Stream<List<PlayerStatsPointsForDriver>?> _getPointsForDriversFromStats(
@@ -82,5 +82,14 @@ class CreateLoggedUserPointsForDriversStats {
           (SeasonDriver? seasonDriver) =>
               _getDetailsForSeasonDriverUseCase(seasonDriver!),
         );
+  }
+
+  List<PointsForDriver>? _sortPointsForDriversInDescendingOrder(
+    List<PointsForDriver>? pointsForDrivers,
+  ) {
+    if (pointsForDrivers == null) return null;
+    return [...pointsForDrivers]..sort(
+        (a, b) => b.points.compareTo(a.points),
+      );
   }
 }
