@@ -8,6 +8,7 @@ class DriverDescription extends StatelessWidget {
   final String surname;
   final int number;
   final Color teamColor;
+  final bool boldedSurname;
 
   const DriverDescription({
     super.key,
@@ -15,6 +16,7 @@ class DriverDescription extends StatelessWidget {
     required this.surname,
     required this.number,
     required this.teamColor,
+    this.boldedSurname = true,
   });
 
   @override
@@ -37,7 +39,7 @@ class DriverDescription extends StatelessWidget {
         const GapHorizontal4(),
         BodyMedium(
           surname,
-          fontWeight: FontWeight.bold,
+          fontWeight: boldedSurname ? FontWeight.bold : FontWeight.normal,
         ),
       ],
     );

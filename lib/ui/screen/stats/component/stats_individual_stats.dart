@@ -9,6 +9,7 @@ import 'stats_best_points.dart';
 import 'stats_bet_points_history.dart';
 import 'stats_bet_points_history_preview.dart';
 import 'stats_card.dart';
+import 'stats_logged_user_points_for_drivers.dart';
 
 class StatsIndividualStats extends StatelessWidget {
   const StatsIndividualStats({super.key});
@@ -66,6 +67,6 @@ class _DriversPoints extends StatelessWidget {
   Widget build(BuildContext context) => const StatsCard(
         title: 'Punkty za kierowców',
         icon: Icons.format_list_numbered_rounded,
-        child: Placeholder(),
+        child: StatsLoggedUserPointsForDrivers(),
       );
 }
