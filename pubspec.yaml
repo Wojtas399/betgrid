@@ -39,6 +39,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   bloc_test: ^9.1.7
   mutex: ^3.1.0
+  cloud_functions: ^5.3.1
 
 dev_dependencies:
   flutter_test:
