@@ -4,14 +4,14 @@ from models.quali_bet_points import QualiBetPoints
 from models.race_bet_points import RaceBetPoints
 
 class GrandPrixPoints(BaseModel):
-    grand_prix_id: str
+    season_grand_prix_id: str
     quali_bet_points: Optional[QualiBetPoints]
     race_bet_points: Optional[RaceBetPoints]
     total_points: float
 
     def to_dict(self):
         return {
-            'grandPrixId': self.grand_prix_id,
+            'seasonGrandPrixId': self.season_grand_prix_id,
             'qualiBetPoints': (
                 self.quali_bet_points.to_dict()
                 if self.quali_bet_points is not None

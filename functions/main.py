@@ -3,40 +3,30 @@ from firebase_admin import initialize_app, firestore, credentials
 import google.cloud.firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import List
+from functions.collections_references import CollectionsReferences
 from models.grand_prix_results import GrandPrixResults
 from models.grand_prix_bets import GrandPrixBets
+from models.grand_prix_points import GrandPrixPoints
 from service.gp_points_service import calculate_points_for_gp
 
 cred = credentials.Certificate("./serviceAccountKey.json")
 app = initialize_app()
+collections_references = CollectionsReferences()
 
-def get_users_collection():
-    firestore_client: google.cloud.firestore.Client = firestore.client()
-    return firestore_client.collection('Users')
-
-def get_gp_points_collection(user_id: str):
-    return (
-        get_users_collection()
-        .document(user_id)
-        .collection('GrandPrixBetPoints')
-    )
 
 def get_all_users_ids() -> List[str]:
-    return [user.id for user in get_users_collection().stream()]
+    return [user.id for user in collections_references.users.stream()]
+
 
 def get_bets_for_user(user_id: str, grand_prix_id: str) -> GrandPrixBets:
-    collection = (
-        get_users_collection()
-        .document(user_id)
-        .collection("GrandPrixBets")
-    )
     query = (
-        collection
+        collections_references.grand_prix_bets(user_id)
         .where(filter=FieldFilter("grandPrixId", "==", grand_prix_id))
         .limit(1)
     )
     doc = next(query.stream())
     return GrandPrixBets.from_dict(doc.to_dict())
+
 
 @firestore_fn.on_document_created(document="GrandPrixResults/{pushId}")
 def calculatepoints(
@@ -53,15 +43,20 @@ def calculatepoints(
 
     all_users_ids: List[str] = get_all_users_ids()
     for user_id in all_users_ids:
-        gp_bets = get_bets_for_user(user_id, gp_results.grand_prix_id)
-        gp_points = calculate_points_for_gp(
-            gp_bets = gp_bets,
-            gp_results = gp_results,
+        gp_bets: GrandPrixBets = get_bets_for_user(
+            user_id,
+            gp_results.grand_prix_id
+        )
+        gp_points: GrandPrixPoints = calculate_points_for_gp(
+            gp_bets=gp_bets,
+            gp_results=gp_results,
         )
         (
-            get_gp_points_collection(user_id)
+            collections_references
+            .grand_prix_bet_points(user_id)
             .add(gp_points.to_dict())
         )
+
 
 @firestore_fn.on_document_updated(document="GrandPrixResults/{docId}")
 def recalculatepoints(
@@ -80,15 +75,15 @@ def recalculatepoints(
     for user_id in all_users_ids:
         gp_bets = get_bets_for_user(user_id, gp_results.grand_prix_id)
         gp_points = calculate_points_for_gp(
-            gp_bets = gp_bets,
-            gp_results = gp_results,
+            gp_bets=gp_bets,
+            gp_results=gp_results,
         )
         results_doc_query = (
-            get_gp_points_collection(user_id)
+            collections_references.grand_prix_bet_points(user_id)
             .where(
                 filter=FieldFilter(
-                    "grandPrixId", 
-                    "==", 
+                    "grandPrixId",
+                    "==",
                     gp_results.grand_prix_id
                 )
             )
@@ -96,7 +91,7 @@ def recalculatepoints(
         )
         results_doc = next(results_doc_query.stream())
         (
-            get_gp_points_collection(user_id)
+            collections_references.grand_prix_bet_points(user_id)
             .document(results_doc.id)
             .set(gp_points.to_dict())
         )
