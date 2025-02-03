@@ -1,8 +1,7 @@
 from firebase_functions import firestore_fn
 from firebase_admin import initialize_app, credentials
-from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import List
-from functions.collections_references import CollectionsReferences
+from functions.service.data.grand_prix_bet_points_data_service import GrandPrixBetPointsDataService
 from functions.service.data.grand_prix_bets_data_service import GrandPrixBetsDataService
 from functions.service.data.users_data_service import UsersDataService
 from models.grand_prix_results import GrandPrixResults
@@ -12,9 +11,9 @@ from service.gp_points_service import calculate_points_for_gp
 
 cred = credentials.Certificate("./serviceAccountKey.json")
 app = initialize_app()
-collections_references = CollectionsReferences()
 users_data_service = UsersDataService()
 grand_prix_bets_data_service = GrandPrixBetsDataService()
+grand_prix_bet_points_data_service = GrandPrixBetPointsDataService()
 
 
 @firestore_fn.on_document_created(document="GrandPrixResults/{pushId}")
@@ -42,10 +41,9 @@ def calculatepoints(
             gp_bets=gp_bets,
             gp_results=gp_results,
         )
-        (
-            collections_references
-            .grand_prix_bet_points(user_id)
-            .add(gp_points.to_dict())
+        grand_prix_bet_points_data_service.add_grand_prix_bet_points(
+            user_id=user_id,
+            grand_prix_bet_points=gp_points,
         )
 
 
@@ -74,20 +72,7 @@ def recalculatepoints(
             gp_bets=gp_bets,
             gp_results=gp_results,
         )
-        results_doc_query = (
-            collections_references.grand_prix_bet_points(user_id)
-            .where(
-                filter=FieldFilter(
-                    "seasonGrandPrixId",
-                    "==",
-                    gp_results.season_grand_prix_id
-                )
-            )
-            .limit(1)
-        )
-        results_doc = next(results_doc_query.stream())
-        (
-            collections_references.grand_prix_bet_points(user_id)
-            .document(results_doc.id)
-            .set(gp_points.to_dict())
+        grand_prix_bet_points_data_service.update_grand_prix_bet_points(
+            user_id=user_id,
+            updated_grand_prix_bet_points=gp_points,
         )
