@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
+
 class GrandPrixBets(BaseModel):
-    grand_prix_id: str
+    season_grand_prix_id: str
     quali_standings_by_driver_ids: Optional[List[str]]
     p1_driver_id: Optional[str]
     p2_driver_id: Optional[str]
@@ -16,21 +17,21 @@ class GrandPrixBets(BaseModel):
     @staticmethod
     def from_dict(source):
         return GrandPrixBets(
-            grand_prix_id = source['grandPrixId'],
-            quali_standings_by_driver_ids = source['qualiStandingsByDriverIds'],
-            p1_driver_id = source['p1DriverId'],
-            p2_driver_id = source['p2DriverId'],
-            p3_driver_id = source['p3DriverId'],
-            p10_driver_id = source['p10DriverId'],
-            fastest_lap_driver_id = source['fastestLapDriverId'],
-            dnf_driver_ids = source['dnfDriverIds'],
-            will_be_safety_car = source['willBeSafetyCar'],
-            will_be_red_flag = source['willBeRedFlag'],
+            season_grand_prix_id=source['seasonGrandPrixId'],
+            quali_standings_by_driver_ids=source['qualiStandingsByDriverIds'],
+            p1_driver_id=source['p1DriverId'],
+            p2_driver_id=source['p2DriverId'],
+            p3_driver_id=source['p3DriverId'],
+            p10_driver_id=source['p10DriverId'],
+            fastest_lap_driver_id=source['fastestLapDriverId'],
+            dnf_driver_ids=source['dnfDriverIds'],
+            will_be_safety_car=source['willBeSafetyCar'],
+            will_be_red_flag=source['willBeRedFlag'],
         )
-    
+
     def to_dict(self):
         return {
-            'grandPrixId': self.grand_prix_id,
+            'seasonGrandPrixId': self.season_grand_prix_id,
             'qualiStandingsByDriverIds': self.quali_standings_by_driver_ids,
             'p1DriverId': self.p1_driver_id,
             'p2DriverId': self.p2_driver_id,
