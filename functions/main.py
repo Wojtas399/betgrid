@@ -1,9 +1,9 @@
 from firebase_functions import firestore_fn
-from firebase_admin import initialize_app, firestore, credentials
-import google.cloud.firestore
+from firebase_admin import initialize_app, credentials
 from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import List
 from functions.collections_references import CollectionsReferences
+from functions.service.data.users_data_service import UsersDataService
 from models.grand_prix_results import GrandPrixResults
 from models.grand_prix_bets import GrandPrixBets
 from models.grand_prix_points import GrandPrixPoints
@@ -12,10 +12,7 @@ from service.gp_points_service import calculate_points_for_gp
 cred = credentials.Certificate("./serviceAccountKey.json")
 app = initialize_app()
 collections_references = CollectionsReferences()
-
-
-def get_all_users_ids() -> List[str]:
-    return [user.id for user in collections_references.users.stream()]
+users_data_service = UsersDataService()
 
 
 def get_bets_for_user(user_id: str, grand_prix_id: str) -> GrandPrixBets:
@@ -41,7 +38,7 @@ def calculatepoints(
     except KeyError:
         return
 
-    all_users_ids: List[str] = get_all_users_ids()
+    all_users_ids: List[str] = users_data_service.load_ids_of_all_users()
     for user_id in all_users_ids:
         gp_bets: GrandPrixBets = get_bets_for_user(
             user_id,
@@ -71,7 +68,7 @@ def recalculatepoints(
     except KeyError:
         return
 
-    all_users_ids: List[str] = get_all_users_ids()
+    all_users_ids: List[str] = users_data_service.load_ids_of_all_users()
     for user_id in all_users_ids:
         gp_bets = get_bets_for_user(user_id, gp_results.grand_prix_id)
         gp_points = calculate_points_for_gp(
