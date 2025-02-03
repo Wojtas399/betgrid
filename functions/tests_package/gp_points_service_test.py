@@ -1,5 +1,5 @@
 import unittest
-from functions.service.gp_points_service import calculate_points_for_gp
+from functions.service.points import calculate_points_for_gp
 from functions.models import (
     GrandPrixBets,
     GrandPrixResults,

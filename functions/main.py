@@ -1,13 +1,17 @@
-from firebase_functions import firestore_fn
-from firebase_admin import initialize_app, credentials
 from typing import List
-from functions.service.data.grand_prix_bet_points_data_service import GrandPrixBetPointsDataService
-from functions.service.data.grand_prix_bets_data_service import GrandPrixBetsDataService
-from functions.service.data.users_data_service import UsersDataService
-from models.grand_prix_results import GrandPrixResults
-from models.grand_prix_bets import GrandPrixBets
-from functions.models.grand_prix_bet_points import GrandPrixBetPoints
-from service.gp_points_service import calculate_points_for_gp
+from firebase_admin import initialize_app, credentials
+from firebase_functions import firestore_fn
+from functions.models import (
+    GrandPrixResults,
+    GrandPrixBets,
+    GrandPrixBetPoints,
+)
+from functions.service.data import (
+    GrandPrixBetPointsDataService,
+    GrandPrixBetsDataService,
+    UsersDataService,
+)
+from functions.service.points import calculate_points_for_gp
 
 cred = credentials.Certificate("./serviceAccountKey.json")
 app = initialize_app()
