@@ -103,7 +103,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
         expected_gp_points = GrandPrixPoints(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,
             total_points=quali_bet_points.total_points + race_bet_points.total_points,
@@ -229,7 +229,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=0,
         )
         expected_gp_points = GrandPrixPoints(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,
             total_points=quali_bet_points.total_points + race_bet_points.total_points,
@@ -304,7 +304,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
         expected_gp_points = GrandPrixPoints(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_bet_points=None,
             race_bet_points=race_bet_points,
             total_points=race_bet_points.total_points,
@@ -412,7 +412,7 @@ class GpPointsServiceTest(unittest.TestCase):
             multiplier=1.75 + 1.5 + 1.25,
         )
         expected_gp_points = GrandPrixPoints(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=None,
             total_points=quali_bet_points.total_points,
@@ -538,7 +538,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
         expected_gp_points = GrandPrixPoints(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,
             total_points=quali_bet_points.total_points + race_bet_points.total_points,

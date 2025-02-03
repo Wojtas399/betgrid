@@ -36,7 +36,7 @@ def calculate_points_for_gp(
         ),
     )
     return GrandPrixPoints(
-        grand_prix_id=gp_results.season_grand_prix_id,
+        season_grand_prix_id=gp_results.season_grand_prix_id,
         quali_bet_points=quali_points,
         race_bet_points=race_points,
         total_points=(
