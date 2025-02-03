@@ -1,9 +1,10 @@
-from pydantic import BaseModel
 from typing import Optional
-from models.quali_bet_points import QualiBetPoints
-from models.race_bet_points import RaceBetPoints
+from pydantic import BaseModel
+from functions.models.quali_bet_points import QualiBetPoints
+from functions.models.race_bet_points import RaceBetPoints
 
-class GrandPrixPoints(BaseModel):
+
+class GrandPrixBetPoints(BaseModel):
     season_grand_prix_id: str
     quali_bet_points: Optional[QualiBetPoints]
     race_bet_points: Optional[RaceBetPoints]

@@ -1,6 +1,6 @@
-from functions.collections_references import CollectionsReferences
-from functions.models.grand_prix_points import GrandPrixPoints
 from google.cloud.firestore_v1.base_query import FieldFilter
+from functions.collections_references import CollectionsReferences
+from functions.models.grand_prix_bet_points import GrandPrixBetPoints
 
 
 class GrandPrixBetPointsDataService:
@@ -10,7 +10,7 @@ class GrandPrixBetPointsDataService:
     def add_grand_prix_bet_points(
         self,
         user_id: str,
-        grand_prix_bet_points: GrandPrixPoints,
+        grand_prix_bet_points: GrandPrixBetPoints,
     ):
         (
             self.collections_references
@@ -21,7 +21,7 @@ class GrandPrixBetPointsDataService:
     def update_grand_prix_bet_points(
         self,
         user_id: str,
-        updated_grand_prix_bet_points: GrandPrixPoints,
+        updated_grand_prix_bet_points: GrandPrixBetPoints,
     ):
         points_doc_query = (
             self.collections_references.grand_prix_bet_points(user_id)

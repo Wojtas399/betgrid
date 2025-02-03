@@ -6,7 +6,7 @@ from functions.service.data.grand_prix_bets_data_service import GrandPrixBetsDat
 from functions.service.data.users_data_service import UsersDataService
 from models.grand_prix_results import GrandPrixResults
 from models.grand_prix_bets import GrandPrixBets
-from models.grand_prix_points import GrandPrixPoints
+from functions.models.grand_prix_bet_points import GrandPrixBetPoints
 from service.gp_points_service import calculate_points_for_gp
 
 cred = credentials.Certificate("./serviceAccountKey.json")
@@ -37,7 +37,7 @@ def calculatepoints(
                 grand_prix_id=gp_results.season_grand_prix_id
             )
         )
-        gp_points: GrandPrixPoints = calculate_points_for_gp(
+        gp_points: GrandPrixBetPoints = calculate_points_for_gp(
             gp_bets=gp_bets,
             gp_results=gp_results,
         )

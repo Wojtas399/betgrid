@@ -1,14 +1,14 @@
-from models.grand_prix_points import GrandPrixPoints
 from models.grand_prix_bets import GrandPrixBets
 from models.grand_prix_results import GrandPrixResults
-from service.quali_points_service import calculate_points_for_quali
-from service.race_points_service import calculate_points_for_race, RaceParams
+from functions.models.grand_prix_bet_points import GrandPrixBetPoints
+from functions.service.quali_points_service import calculate_points_for_quali
+from functions.service.race_points_service import calculate_points_for_race, RaceParams
 
 
 def calculate_points_for_gp(
     gp_bets: GrandPrixBets,
     gp_results: GrandPrixResults,
-) -> GrandPrixPoints:
+) -> GrandPrixBetPoints:
     quali_points = calculate_points_for_quali(
         gp_bets.quali_standings_by_driver_ids,
         gp_results.quali_standings_by_driver_ids
@@ -35,7 +35,7 @@ def calculate_points_for_gp(
             is_red_flag=gp_results.was_there_red_flag,
         ),
     )
-    return GrandPrixPoints(
+    return GrandPrixBetPoints(
         season_grand_prix_id=gp_results.season_grand_prix_id,
         quali_bet_points=quali_points,
         race_bet_points=race_points,

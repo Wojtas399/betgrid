@@ -1,10 +1,12 @@
 import unittest
-from models.grand_prix_bets import GrandPrixBets
-from models.grand_prix_results import GrandPrixResults
-from models.grand_prix_points import GrandPrixPoints
-from models.quali_bet_points import QualiBetPoints
-from models.race_bet_points import RaceBetPoints
-from service.gp_points_service import calculate_points_for_gp
+from functions.service.gp_points_service import calculate_points_for_gp
+from functions.models import (
+    GrandPrixBets,
+    GrandPrixResults,
+    GrandPrixBetPoints,
+    QualiBetPoints,
+    RaceBetPoints,
+)
 
 
 class GpPointsServiceTest(unittest.TestCase):
@@ -15,8 +17,8 @@ class GpPointsServiceTest(unittest.TestCase):
             p1_driver_id='d1',
             p2_driver_id='d2',
             p3_driver_id='d3',
-            p10_driver_id='d10',
             fastest_lap_driver_id='d1',
+            p10_driver_id='d10',
             dnf_driver_ids=['d18', 'd19', 'd20'],
             will_be_safety_car=False,
             will_be_red_flag=False,
@@ -102,7 +104,7 @@ class GpPointsServiceTest(unittest.TestCase):
             safety_car_and_red_flag_points=2,
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
-        expected_gp_points = GrandPrixPoints(
+        expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,
@@ -228,7 +230,7 @@ class GpPointsServiceTest(unittest.TestCase):
             safety_car_and_red_flag_points=0,
             total_points=0,
         )
-        expected_gp_points = GrandPrixPoints(
+        expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,
@@ -303,7 +305,7 @@ class GpPointsServiceTest(unittest.TestCase):
             safety_car_and_red_flag_points=2,
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
-        expected_gp_points = GrandPrixPoints(
+        expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=None,
             race_bet_points=race_bet_points,
@@ -411,7 +413,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=(17 + 10 + 5) * (1.75 + 1.5 + 1.25),
             multiplier=1.75 + 1.5 + 1.25,
         )
-        expected_gp_points = GrandPrixPoints(
+        expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=None,
@@ -537,7 +539,7 @@ class GpPointsServiceTest(unittest.TestCase):
             safety_car_and_red_flag_points=2,
             total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
         )
-        expected_gp_points = GrandPrixPoints(
+        expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
             race_bet_points=race_bet_points,

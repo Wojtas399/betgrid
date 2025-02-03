@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class RaceBetPoints(BaseModel):
     p1_points: float
     p2_points: float
