@@ -35,7 +35,7 @@ def calculatepoints(
         gp_bets: GrandPrixBets = (
             grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
                 user_id=user_id,
-                grand_prix_id=gp_results.grand_prix_id
+                grand_prix_id=gp_results.season_grand_prix_id
             )
         )
         gp_points: GrandPrixPoints = calculate_points_for_gp(
@@ -67,7 +67,7 @@ def recalculatepoints(
         gp_bets = (
             grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
                 user_id=user_id,
-                grand_prix_id=gp_results.grand_prix_id
+                grand_prix_id=gp_results.season_grand_prix_id
             )
         )
         gp_points = calculate_points_for_gp(
@@ -78,9 +78,9 @@ def recalculatepoints(
             collections_references.grand_prix_bet_points(user_id)
             .where(
                 filter=FieldFilter(
-                    "grandPrixId",
+                    "seasonGrandPrixId",
                     "==",
-                    gp_results.grand_prix_id
+                    gp_results.season_grand_prix_id
                 )
             )
             .limit(1)

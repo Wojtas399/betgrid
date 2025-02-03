@@ -22,7 +22,7 @@ class GpPointsServiceTest(unittest.TestCase):
             will_be_red_flag=False,
         )
         gp_results = GrandPrixResults(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_standings_by_driver_ids=[
                 'd1',
                 'd2',
@@ -148,7 +148,7 @@ class GpPointsServiceTest(unittest.TestCase):
             will_be_red_flag=None,
         )
         gp_results = GrandPrixResults(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_standings_by_driver_ids=[
                 'd1',
                 'd2',
@@ -274,7 +274,7 @@ class GpPointsServiceTest(unittest.TestCase):
             will_be_red_flag=False,
         )
         gp_results = GrandPrixResults(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_standings_by_driver_ids=None,
             p1_driver_id='d1',
             p2_driver_id='d2',
@@ -349,7 +349,7 @@ class GpPointsServiceTest(unittest.TestCase):
             will_be_red_flag=False,
         )
         gp_results = GrandPrixResults(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_standings_by_driver_ids=[
                 'd1',
                 'd2',
@@ -457,7 +457,7 @@ class GpPointsServiceTest(unittest.TestCase):
             will_be_red_flag=False,
         )
         gp_results = GrandPrixResults(
-            grand_prix_id='gp1',
+            season_grand_prix_id='gp1',
             quali_standings_by_driver_ids=[
                 'd1',
                 'd2',
