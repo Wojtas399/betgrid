@@ -3,6 +3,7 @@ from firebase_admin import initialize_app, credentials
 from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import List
 from functions.collections_references import CollectionsReferences
+from functions.service.data.grand_prix_bets_data_service import GrandPrixBetsDataService
 from functions.service.data.users_data_service import UsersDataService
 from models.grand_prix_results import GrandPrixResults
 from models.grand_prix_bets import GrandPrixBets
@@ -13,16 +14,7 @@ cred = credentials.Certificate("./serviceAccountKey.json")
 app = initialize_app()
 collections_references = CollectionsReferences()
 users_data_service = UsersDataService()
-
-
-def get_bets_for_user(user_id: str, grand_prix_id: str) -> GrandPrixBets:
-    query = (
-        collections_references.grand_prix_bets(user_id)
-        .where(filter=FieldFilter("grandPrixId", "==", grand_prix_id))
-        .limit(1)
-    )
-    doc = next(query.stream())
-    return GrandPrixBets.from_dict(doc.to_dict())
+grand_prix_bets_data_service = GrandPrixBetsDataService()
 
 
 @firestore_fn.on_document_created(document="GrandPrixResults/{pushId}")
@@ -40,9 +32,11 @@ def calculatepoints(
 
     all_users_ids: List[str] = users_data_service.load_ids_of_all_users()
     for user_id in all_users_ids:
-        gp_bets: GrandPrixBets = get_bets_for_user(
-            user_id,
-            gp_results.grand_prix_id
+        gp_bets: GrandPrixBets = (
+            grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
+                user_id=user_id,
+                grand_prix_id=gp_results.grand_prix_id
+            )
         )
         gp_points: GrandPrixPoints = calculate_points_for_gp(
             gp_bets=gp_bets,
@@ -70,7 +64,12 @@ def recalculatepoints(
 
     all_users_ids: List[str] = users_data_service.load_ids_of_all_users()
     for user_id in all_users_ids:
-        gp_bets = get_bets_for_user(user_id, gp_results.grand_prix_id)
+        gp_bets = (
+            grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
+                user_id=user_id,
+                grand_prix_id=gp_results.grand_prix_id
+            )
+        )
         gp_points = calculate_points_for_gp(
             gp_bets=gp_bets,
             gp_results=gp_results,
