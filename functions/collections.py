@@ -1,6 +1,7 @@
 class UserCollections:
     GRAND_PRIX_BETS = "GrandPrixBets"
     GRAND_PRIX_BETS_POINTS = "GrandPrixBetPoints"
+    STATS = "Stats"
 
 
 class Collections:

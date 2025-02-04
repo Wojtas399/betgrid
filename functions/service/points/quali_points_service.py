@@ -1,96 +1,134 @@
-from typing import List, Optional
+from typing import List
 from models.quali_bet_points import QualiBetPoints
 
-Q1_POINTS = 1
-Q2_POINTS = 2
-Q3_P1_TO_P3_POINTS = 1
-Q3_P4_TO_P10_POINTS = 2
-Q1_MULTIPLIER = 1.25
-Q2_MULTIPLIER = 1.5
-Q3_MULTIPLIER = 1.75
 
-def calculate_points_for_quali(
-    quali_standings_bets: Optional[List[str]], 
-    quali_standings_results: Optional[List[str]]
-) -> Optional[QualiBetPoints]:
-    if (
-        quali_standings_results is None or
-        (
-            quali_standings_bets is not None and
+class QualiPointsService:
+    __Q1_POINTS: float = 1.0
+    __Q2_POINTS: float = 2.0
+    __Q3_P1_TO_P3_POINTS: float = 1.0
+    __Q3_P4_TO_P10_POINTS: float = 2.0
+    __Q1_MULTIPLIER: float = 1.25
+    __Q2_MULTIPLIER: float = 1.5
+    __Q3_MULTIPLIER: float = 1.75
+
+    def __init__(
+        self,
+        quali_standings_bets: List[str] | None,
+        quali_standings_results: List[str] | None
+    ):
+        self.quali_standings_bets = quali_standings_bets
+        self.quali_standings_results = quali_standings_results
+
+    def calculate_points(self) -> QualiBetPoints | None:
+        if self.__are_params_invalid:
+            return None
+
+        [
+            q1_place_points,
+            q2_place_points,
+            q3_place_points
+        ] = self.__points_for_each_place_in_qualis
+
+        q1_total_points: float = sum(q1_place_points)
+        q2_total_points: float = sum(q2_place_points)
+        q3_total_points: float = sum(q3_place_points)
+
+        q1_multiplier: float = (
+            self.__Q1_MULTIPLIER
+            if self.__are_all_points_scored(q1_place_points)
+            else 0
+        )
+        q2_multiplier: float = (
+            self.__Q2_MULTIPLIER
+            if self.__are_all_points_scored(q2_place_points)
+            else 0
+        )
+        q3_multiplier: float = (
+            self.__Q3_MULTIPLIER
+            if self.__are_all_points_scored(q3_place_points)
+            else 0
+        )
+        multiplier: float = q1_multiplier + q2_multiplier + q3_multiplier
+
+        total_points: float = q1_total_points + q2_total_points + q3_total_points
+        if multiplier > 0:
+            total_points *= multiplier
+
+        return QualiBetPoints(
+            q3_p1_points=q3_place_points[0],
+            q3_p2_points=q3_place_points[1],
+            q3_p3_points=q3_place_points[2],
+            q3_p4_points=q3_place_points[3],
+            q3_p5_points=q3_place_points[4],
+            q3_p6_points=q3_place_points[5],
+            q3_p7_points=q3_place_points[6],
+            q3_p8_points=q3_place_points[7],
+            q3_p9_points=q3_place_points[8],
+            q3_p10_points=q3_place_points[9],
+            q2_p11_points=q2_place_points[0],
+            q2_p12_points=q2_place_points[1],
+            q2_p13_points=q2_place_points[2],
+            q2_p14_points=q2_place_points[3],
+            q2_p15_points=q2_place_points[4],
+            q1_p16_points=q1_place_points[0],
+            q1_p17_points=q1_place_points[1],
+            q1_p18_points=q1_place_points[2],
+            q1_p19_points=q1_place_points[3],
+            q1_p20_points=q1_place_points[4],
+            q3_points=q3_total_points,
+            q2_points=q2_total_points,
+            q1_points=q1_total_points,
+            q3_multiplier=None if q3_multiplier == 0 else q3_multiplier,
+            q2_multiplier=None if q2_multiplier == 0 else q2_multiplier,
+            q1_multiplier=None if q1_multiplier == 0 else q1_multiplier,
+            total_points=total_points,
+            multiplier=None if multiplier == 0 else multiplier
+        )
+
+    @property
+    def __are_params_invalid(self) -> bool:
+        return bool(
+            self.quali_standings_results is None or
             (
-                len(quali_standings_bets) is not 20 or
-                len(quali_standings_results) is not 20
+                self.quali_standings_bets is not None and
+                (
+                    len(self.quali_standings_bets) != 20 or
+                    len(self.quali_standings_results) != 20
+                )
             )
         )
-    ):
-        return None
-        
-    points_for_each_place_in_q1: List[int] = [0] * 5
-    points_for_each_place_in_q2: List[int] = [0] * 5
-    points_for_each_place_in_q3: List[int] = [0] * 10
-    if quali_standings_bets is not None:
-        for i in range(5):
-            if quali_standings_bets[15+i] == quali_standings_results[15+i]:
-                points_for_each_place_in_q1[i] = Q1_POINTS
-            if quali_standings_bets[10+i] == quali_standings_results[10+i]:
-                points_for_each_place_in_q2[i] = Q2_POINTS
-        for i in range(10):
-            if quali_standings_bets[i] == quali_standings_results[i]:
-                points_for_each_place_in_q3[i] = (
-                    Q3_P1_TO_P3_POINTS if i < 3 else Q3_P4_TO_P10_POINTS
-                )
-    q1_points = sum(points_for_each_place_in_q1)
-    q2_points = sum(points_for_each_place_in_q2)
-    q3_points = sum(points_for_each_place_in_q3)
 
-    q1_multiplier = (
-        Q1_MULTIPLIER 
-        if all(points > 0 for points in points_for_each_place_in_q1) 
-        else 0
-    )
-    q2_multiplier = (
-        Q2_MULTIPLIER 
-        if all(points > 0 for points in points_for_each_place_in_q2) 
-        else 0
-    )
-    q3_multiplier = (
-        Q3_MULTIPLIER 
-        if all(points > 0 for points in points_for_each_place_in_q3) 
-        else 0
-    )
-    multiplier = q1_multiplier + q2_multiplier + q3_multiplier
+    @property
+    def __points_for_each_place_in_qualis(self) -> List[List[float]]:
+        q1_place_points: List[float] = [0.0] * 5
+        q2_place_points: List[float] = [0.0] * 5
+        q3_place_points: List[float] = [0.0] * 10
+        if self.quali_standings_bets is not None:
+            for i in range(5):
+                bet_q1_place_driver_id: str = self.quali_standings_bets[15+i]
+                bet_q2_place_driver_id: str = self.quali_standings_bets[10+i]
+                result_q1_place_driver_id: str = self.quali_standings_results[15+i]
+                result_q2_place_driver_id: str = self.quali_standings_results[10+i]
 
-    total_points = q1_points + q2_points + q3_points
-    if (multiplier > 0):
-        total_points *= multiplier
-        
-    return QualiBetPoints(
-        q3_p1_points = points_for_each_place_in_q3[0],
-        q3_p2_points = points_for_each_place_in_q3[1],
-        q3_p3_points = points_for_each_place_in_q3[2],
-        q3_p4_points = points_for_each_place_in_q3[3],
-        q3_p5_points = points_for_each_place_in_q3[4],
-        q3_p6_points = points_for_each_place_in_q3[5],
-        q3_p7_points = points_for_each_place_in_q3[6],
-        q3_p8_points = points_for_each_place_in_q3[7],
-        q3_p9_points = points_for_each_place_in_q3[8],
-        q3_p10_points = points_for_each_place_in_q3[9],
-        q2_p11_points = points_for_each_place_in_q2[0],
-        q2_p12_points = points_for_each_place_in_q2[1],
-        q2_p13_points = points_for_each_place_in_q2[2],
-        q2_p14_points = points_for_each_place_in_q2[3],
-        q2_p15_points = points_for_each_place_in_q2[4],
-        q1_p16_points = points_for_each_place_in_q1[0],
-        q1_p17_points = points_for_each_place_in_q1[1],
-        q1_p18_points = points_for_each_place_in_q1[2],
-        q1_p19_points = points_for_each_place_in_q1[3],
-        q1_p20_points = points_for_each_place_in_q1[4],
-        q3_points = q3_points,
-        q2_points = q2_points,
-        q1_points = q1_points,
-        q3_multiplier = None if q3_multiplier == 0 else q3_multiplier,
-        q2_multiplier = None if q2_multiplier == 0 else q2_multiplier,
-        q1_multiplier = None if q1_multiplier == 0 else q1_multiplier,
-        total_points = total_points,
-        multiplier = None if multiplier == 0 else multiplier
-    )
+                if bet_q1_place_driver_id == result_q1_place_driver_id:
+                    q1_place_points[i] = self.__Q1_POINTS
+                if bet_q2_place_driver_id == result_q2_place_driver_id:
+                    q2_place_points[i] = self.__Q2_POINTS
+
+            for i in range(10):
+                bet_q3_place_driver_id: str = self.quali_standings_bets[i]
+                result_q3_place_driver_id: str = self.quali_standings_results[i]
+
+                if bet_q3_place_driver_id == result_q3_place_driver_id:
+                    q3_place_points[i] = (
+                        self.__Q3_P1_TO_P3_POINTS if i < 3 else
+                        self.__Q3_P4_TO_P10_POINTS
+                    )
+
+        return [q1_place_points, q2_place_points, q3_place_points]
+
+    def __are_all_points_scored(
+        self,
+        points: List[float]
+    ) -> bool:
+        return all(points > 0 for points in points)

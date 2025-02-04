@@ -13,15 +13,27 @@ app = initialize_app()
 grand_prix_results_triggers = GrandPrixResultsTriggers()
 
 
-@on_document_created(document=Collections.GRAND_PRIX_RESULTS + "/{pushId}")
+@on_document_created(
+    document=Collections.GRAND_PRIX_RESULTS + "/{season}/Results/{pushId}"
+)
 def onresultsadded(
     event: Event[DocumentSnapshot | None]
 ) -> None:
-    grand_prix_results_triggers.on_results_added(event)
+    if event.data is not None:
+        grand_prix_results_triggers.on_results_added(
+            json_data=event.data.to_dict(),
+            season=event.params["season"]
+        )
 
 
-@on_document_updated(document=Collections.GRAND_PRIX_RESULTS + "/{docId}")
+@on_document_updated(
+    document=Collections.GRAND_PRIX_RESULTS + "/{season}/Results/{docId}"
+)
 def onresultsupdated(
     event: Event[DocumentSnapshot | None]
 ) -> None:
-    grand_prix_results_triggers.on_results_updated(event)
+    if event.data is not None:
+        grand_prix_results_triggers.on_results_updated(
+            json_data=event.data.to_dict(),
+            season=event.params["season"]
+        )

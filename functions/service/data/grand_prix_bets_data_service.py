@@ -1,6 +1,6 @@
-from functions.collections_references import CollectionsReferences
 from google.cloud.firestore_v1.base_query import FieldFilter
 from functions.models.grand_prix_bets import GrandPrixBets
+from functions.collections_references import CollectionsReferences
 
 
 class GrandPrixBetsDataService:
@@ -14,7 +14,7 @@ class GrandPrixBetsDataService:
     ):
         query = (
             self.collections_references.grand_prix_bets(user_id)
-            .where(filter=FieldFilter("grandPrixId", "==", grand_prix_id))
+            .where(filter=FieldFilter("seasonGrandPrixId", "==", grand_prix_id))
             .limit(1)
         )
         doc = query.stream()[0]
