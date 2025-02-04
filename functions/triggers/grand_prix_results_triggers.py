@@ -1,5 +1,7 @@
-from typing import List
-from firebase_functions import firestore_fn
+from firebase_functions.firestore_fn import (
+    Event,
+    DocumentSnapshot
+)
 from functions.models import (
     GrandPrixResults,
     GrandPrixBets,
@@ -21,7 +23,7 @@ class GrandPrixResultsTriggers:
 
     def on_results_added(
         self,
-        event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]
+        event: Event[DocumentSnapshot | None]
     ):
         if event.data is None:
             return
@@ -32,7 +34,7 @@ class GrandPrixResultsTriggers:
         except KeyError:
             return
 
-        all_users_ids: List[str] = self.users_data_service.load_ids_of_all_users()
+        all_users_ids = self.users_data_service.load_ids_of_all_users()
         for user_id in all_users_ids:
             gp_bets: GrandPrixBets = (
                 self.grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
@@ -51,7 +53,7 @@ class GrandPrixResultsTriggers:
 
     def on_results_updated(
         self,
-        event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]
+        event: Event[DocumentSnapshot | None]
     ):
         if event.data is None:
             return
@@ -62,15 +64,15 @@ class GrandPrixResultsTriggers:
         except KeyError:
             return
 
-        all_users_ids: List[str] = self.users_data_service.load_ids_of_all_users()
+        all_users_ids = self.users_data_service.load_ids_of_all_users()
         for user_id in all_users_ids:
-            gp_bets = (
+            gp_bets: GrandPrixBets = (
                 self.grand_prix_bets_data_service.load_bets_for_user_and_grand_prix(
                     user_id=user_id,
                     grand_prix_id=gp_results.season_grand_prix_id
                 )
             )
-            gp_points = calculate_points_for_gp(
+            gp_points: GrandPrixBetPoints = calculate_points_for_gp(
                 gp_bets=gp_bets,
                 gp_results=gp_results,
             )
