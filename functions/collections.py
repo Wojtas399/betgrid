@@ -6,4 +6,5 @@ class UserCollections:
 class Collections:
     USERS = "Users"
     SEASON_DRIVERS = "SeasonDrivers"
+    GRAND_PRIX_RESULTS = "GrandPrixResults"
     USER_COLLECTIONS = UserCollections()
