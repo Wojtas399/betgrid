@@ -1,5 +1,4 @@
 import unittest
-from functions.service.points import calculate_points_for_gp
 from functions.models import (
     GrandPrixBets,
     GrandPrixResults,
@@ -7,9 +6,28 @@ from functions.models import (
     QualiBetPoints,
     RaceBetPoints,
 )
+from functions.service.points import GpPointsService
 
 
 class GpPointsServiceTest(unittest.TestCase):
+    __Q1_POINTS: float = 1.0
+    __Q2_POINTS: float = 2.0
+    __Q3_P1_TO_P3_POINTS: float = 1.0
+    __Q3_P4_TO_P10_POINTS: float = 2.0
+    __Q1_MULTIPLIER: float = 1.25
+    __Q2_MULTIPLIER: float = 1.5
+    __Q3_MULTIPLIER: float = 1.75
+    __P1_POINTS: float = 2.0
+    __P2_POINTS: float = 2.0
+    __P3_POINTS: float = 2.0
+    __P10_POINTS: float = 4.0
+    __FASTEST_LAP_POINTS: float = 2.0
+    __ONE_DNF_POINTS: float = 2.0
+    __SAFETY_CAR_POINTS: float = 1.0
+    __RED_FLAG_POINTS: float = 1.0
+    __PODIUM_P10_MULTIPLIER: float = 1.5
+    __DNF_MULTIPLIER: float = 1.5
+
     def test_none_quali_bets(self):
         gp_bets = GrandPrixBets(
             season_grand_prix_id='gp1',
@@ -86,24 +104,7 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=0,
             multiplier=None,
         )
-        race_bet_points = RaceBetPoints(
-            p1_points=2,
-            p2_points=2,
-            p3_points=2,
-            p10_points=4,
-            fastest_lap_points=2,
-            dnf_driver1_points=1,
-            dnf_driver2_points=1,
-            dnf_driver3_points=1,
-            safety_car_points=1,
-            red_flag_points=1,
-            podium_and_p10_points=10,
-            podium_and_p10_multiplier=1.5,
-            dnf_points=3,
-            dnf_multiplier=1.5,
-            safety_car_and_red_flag_points=2,
-            total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
-        )
+        race_bet_points = self.__race_full_points
         expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
@@ -111,7 +112,10 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=quali_bet_points.total_points + race_bet_points.total_points,
         )
 
-        gp_points = calculate_points_for_gp(gp_bets, gp_results)
+        gp_points = GpPointsService(
+            gp_bets=gp_bets,
+            gp_results=gp_results
+        ).calculate_points()
 
         self.assertEqual(gp_points, expected_gp_points)
 
@@ -182,36 +186,7 @@ class GpPointsServiceTest(unittest.TestCase):
             was_there_safety_car=False,
             was_there_red_flag=False,
         )
-        quali_bet_points = QualiBetPoints(
-            q3_p1_points=1,
-            q3_p2_points=1,
-            q3_p3_points=1,
-            q3_p4_points=2,
-            q3_p5_points=2,
-            q3_p6_points=2,
-            q3_p7_points=2,
-            q3_p8_points=2,
-            q3_p9_points=2,
-            q3_p10_points=2,
-            q2_p11_points=2,
-            q2_p12_points=2,
-            q2_p13_points=2,
-            q2_p14_points=2,
-            q2_p15_points=2,
-            q1_p16_points=1,
-            q1_p17_points=1,
-            q1_p18_points=1,
-            q1_p19_points=1,
-            q1_p20_points=1,
-            q3_points=17,
-            q2_points=10,
-            q1_points=5,
-            q3_multiplier=1.75,
-            q2_multiplier=1.5,
-            q1_multiplier=1.25,
-            total_points=(17 + 10 + 5) * (1.75 + 1.5 + 1.25),
-            multiplier=1.75 + 1.5 + 1.25,
-        )
+        quali_bet_points = self.__quali_full_points
         race_bet_points = RaceBetPoints(
             p1_points=0,
             p2_points=0,
@@ -237,7 +212,10 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=quali_bet_points.total_points + race_bet_points.total_points,
         )
 
-        gp_points = calculate_points_for_gp(gp_bets, gp_results)
+        gp_points = GpPointsService(
+            gp_bets=gp_bets,
+            gp_results=gp_results
+        ).calculate_points()
 
         self.assertEqual(gp_points, expected_gp_points)
 
@@ -287,24 +265,7 @@ class GpPointsServiceTest(unittest.TestCase):
             was_there_safety_car=False,
             was_there_red_flag=False,
         )
-        race_bet_points = RaceBetPoints(
-            p1_points=2,
-            p2_points=2,
-            p3_points=2,
-            p10_points=4,
-            fastest_lap_points=2,
-            dnf_driver1_points=1,
-            dnf_driver2_points=1,
-            dnf_driver3_points=1,
-            safety_car_points=1,
-            red_flag_points=1,
-            podium_and_p10_points=10,
-            podium_and_p10_multiplier=1.5,
-            dnf_points=3,
-            dnf_multiplier=1.5,
-            safety_car_and_red_flag_points=2,
-            total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
-        )
+        race_bet_points = self.__race_full_points
         expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=None,
@@ -312,7 +273,10 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=race_bet_points.total_points,
         )
 
-        gp_points = calculate_points_for_gp(gp_bets, gp_results)
+        gp_points = GpPointsService(
+            gp_bets=gp_bets,
+            gp_results=gp_results
+        ).calculate_points()
 
         self.assertEqual(gp_points, expected_gp_points)
 
@@ -383,36 +347,7 @@ class GpPointsServiceTest(unittest.TestCase):
             was_there_safety_car=None,
             was_there_red_flag=None,
         )
-        quali_bet_points = QualiBetPoints(
-            q3_p1_points=1,
-            q3_p2_points=1,
-            q3_p3_points=1,
-            q3_p4_points=2,
-            q3_p5_points=2,
-            q3_p6_points=2,
-            q3_p7_points=2,
-            q3_p8_points=2,
-            q3_p9_points=2,
-            q3_p10_points=2,
-            q2_p11_points=2,
-            q2_p12_points=2,
-            q2_p13_points=2,
-            q2_p14_points=2,
-            q2_p15_points=2,
-            q1_p16_points=1,
-            q1_p17_points=1,
-            q1_p18_points=1,
-            q1_p19_points=1,
-            q1_p20_points=1,
-            q3_points=17,
-            q2_points=10,
-            q1_points=5,
-            q3_multiplier=1.75,
-            q2_multiplier=1.5,
-            q1_multiplier=1.25,
-            total_points=(17 + 10 + 5) * (1.75 + 1.5 + 1.25),
-            multiplier=1.75 + 1.5 + 1.25,
-        )
+        quali_bet_points = self.__quali_full_points
         expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
@@ -420,7 +355,10 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=quali_bet_points.total_points,
         )
 
-        gp_points = calculate_points_for_gp(gp_bets, gp_results)
+        gp_points = GpPointsService(
+            gp_bets=gp_bets,
+            gp_results=gp_results
+        ).calculate_points()
 
         self.assertEqual(gp_points, expected_gp_points)
 
@@ -491,54 +429,8 @@ class GpPointsServiceTest(unittest.TestCase):
             was_there_safety_car=False,
             was_there_red_flag=False,
         )
-        quali_bet_points = QualiBetPoints(
-            q3_p1_points=1,
-            q3_p2_points=1,
-            q3_p3_points=1,
-            q3_p4_points=2,
-            q3_p5_points=2,
-            q3_p6_points=2,
-            q3_p7_points=2,
-            q3_p8_points=2,
-            q3_p9_points=2,
-            q3_p10_points=2,
-            q2_p11_points=2,
-            q2_p12_points=2,
-            q2_p13_points=2,
-            q2_p14_points=2,
-            q2_p15_points=2,
-            q1_p16_points=1,
-            q1_p17_points=1,
-            q1_p18_points=1,
-            q1_p19_points=1,
-            q1_p20_points=1,
-            q3_points=17,
-            q2_points=10,
-            q1_points=5,
-            q3_multiplier=1.75,
-            q2_multiplier=1.5,
-            q1_multiplier=1.25,
-            total_points=(17 + 10 + 5) * (1.75 + 1.5 + 1.25),
-            multiplier=1.75 + 1.5 + 1.25,
-        )
-        race_bet_points = RaceBetPoints(
-            p1_points=2,
-            p2_points=2,
-            p3_points=2,
-            p10_points=4,
-            fastest_lap_points=2,
-            dnf_driver1_points=1,
-            dnf_driver2_points=1,
-            dnf_driver3_points=1,
-            safety_car_points=1,
-            red_flag_points=1,
-            podium_and_p10_points=10,
-            podium_and_p10_multiplier=1.5,
-            dnf_points=3,
-            dnf_multiplier=1.5,
-            safety_car_and_red_flag_points=2,
-            total_points=(10 * 1.5) + 2 + (3 * 1.5) + 2,
-        )
+        quali_bet_points = self.__quali_full_points
+        race_bet_points = self.__race_full_points
         expected_gp_points = GrandPrixBetPoints(
             season_grand_prix_id='gp1',
             quali_bet_points=quali_bet_points,
@@ -546,6 +438,91 @@ class GpPointsServiceTest(unittest.TestCase):
             total_points=quali_bet_points.total_points + race_bet_points.total_points,
         )
 
-        gp_points = calculate_points_for_gp(gp_bets, gp_results)
+        gp_points = GpPointsService(
+            gp_bets=gp_bets,
+            gp_results=gp_results
+        ).calculate_points()
 
         self.assertEqual(gp_points, expected_gp_points)
+
+    @property
+    def __quali_full_points(self) -> QualiBetPoints:
+        q3_points = (
+            (3 * self.__Q3_P1_TO_P3_POINTS) +
+            (7 * self.__Q3_P4_TO_P10_POINTS)
+        )
+        q2_points = 5 * self.__Q2_POINTS
+        q1_points = 5 * self.__Q1_POINTS
+        total_multiplier = (
+            self.__Q3_MULTIPLIER +
+            self.__Q2_MULTIPLIER +
+            self.__Q1_MULTIPLIER
+        )
+        return QualiBetPoints(
+            q3_p1_points=self.__Q3_P1_TO_P3_POINTS,
+            q3_p2_points=self.__Q3_P1_TO_P3_POINTS,
+            q3_p3_points=self.__Q3_P1_TO_P3_POINTS,
+            q3_p4_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p5_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p6_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p7_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p8_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p9_points=self.__Q3_P4_TO_P10_POINTS,
+            q3_p10_points=self.__Q3_P4_TO_P10_POINTS,
+            q2_p11_points=self.__Q2_POINTS,
+            q2_p12_points=self.__Q2_POINTS,
+            q2_p13_points=self.__Q2_POINTS,
+            q2_p14_points=self.__Q2_POINTS,
+            q2_p15_points=self.__Q2_POINTS,
+            q1_p16_points=self.__Q1_POINTS,
+            q1_p17_points=self.__Q1_POINTS,
+            q1_p18_points=self.__Q1_POINTS,
+            q1_p19_points=self.__Q1_POINTS,
+            q1_p20_points=self.__Q1_POINTS,
+            q3_points=q3_points,
+            q2_points=q2_points,
+            q1_points=q1_points,
+            q3_multiplier=self.__Q3_MULTIPLIER,
+            q2_multiplier=self.__Q2_MULTIPLIER,
+            q1_multiplier=self.__Q1_MULTIPLIER,
+            total_points=(
+                (q3_points + q2_points + q1_points) * total_multiplier
+            ),
+            multiplier=total_multiplier,
+        )
+
+    @property
+    def __race_full_points(self) -> RaceBetPoints:
+        podium_and_p10_points = (
+            self.__P1_POINTS +
+            self.__P2_POINTS +
+            self.__P3_POINTS +
+            self.__P10_POINTS
+        )
+        dnf_points = 3 * self.__ONE_DNF_POINTS
+        return RaceBetPoints(
+            p1_points=self.__P1_POINTS,
+            p2_points=self.__P2_POINTS,
+            p3_points=self.__P3_POINTS,
+            p10_points=self.__P10_POINTS,
+            fastest_lap_points=self.__FASTEST_LAP_POINTS,
+            dnf_driver1_points=self.__ONE_DNF_POINTS,
+            dnf_driver2_points=self.__ONE_DNF_POINTS,
+            dnf_driver3_points=self.__ONE_DNF_POINTS,
+            safety_car_points=self.__SAFETY_CAR_POINTS,
+            red_flag_points=self.__RED_FLAG_POINTS,
+            podium_and_p10_points=podium_and_p10_points,
+            podium_and_p10_multiplier=self.__PODIUM_P10_MULTIPLIER,
+            dnf_points=dnf_points,
+            dnf_multiplier=self.__DNF_MULTIPLIER,
+            safety_car_and_red_flag_points=(
+                self.__SAFETY_CAR_POINTS + self.__RED_FLAG_POINTS
+            ),
+            total_points=(
+                (podium_and_p10_points * self.__PODIUM_P10_MULTIPLIER) +
+                self.__FASTEST_LAP_POINTS +
+                (dnf_points * self.__DNF_MULTIPLIER) +
+                self.__SAFETY_CAR_POINTS +
+                self.__RED_FLAG_POINTS
+            ),
+        )

@@ -1,5 +1,5 @@
 from typing import List
-from models.quali_bet_points import QualiBetPoints
+from functions.models.quali_bet_points import QualiBetPoints
 
 
 class QualiPointsService:

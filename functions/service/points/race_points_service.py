@@ -1,6 +1,6 @@
 from typing import List
-from models.race_bet_points import RaceBetPoints
 from pydantic import BaseModel
+from functions.models.race_bet_points import RaceBetPoints
 
 
 class RaceParams(BaseModel):
