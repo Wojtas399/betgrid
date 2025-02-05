@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
-from functions.models.quali_bet_points import QualiBetPoints
-from functions.models.race_bet_points import RaceBetPoints
+from .quali_bet_points import QualiBetPoints
+from .race_bet_points import RaceBetPoints
 
 
 class GrandPrixBetPoints(BaseModel):

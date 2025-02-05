@@ -1,12 +1,12 @@
 import unittest
-from functions.models import (
+from models import (
     GrandPrixBets,
     GrandPrixResults,
     GrandPrixBetPoints,
     QualiBetPoints,
     RaceBetPoints,
 )
-from functions.service.points import GpPointsService
+from service.points import GpPointsService
 
 
 class GpPointsServiceTest(unittest.TestCase):

@@ -1,11 +1,13 @@
 from google.cloud.firestore_v1.base_query import FieldFilter
-from functions.models.grand_prix_bets import GrandPrixBets
-from functions.collections_references import CollectionsReferences
+from models.grand_prix_bets import GrandPrixBets
+from firebase_collections_references import (
+    FirebaseCollectionsReferences
+)
 
 
 class GrandPrixBetsDataService:
     def __init__(self):
-        self.collections_references = CollectionsReferences()
+        self.collections_references = FirebaseCollectionsReferences()
 
     def load_bets_for_user_and_grand_prix(
         self,

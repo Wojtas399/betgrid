@@ -1,6 +1,6 @@
 import unittest
-from functions.models.quali_bet_points import QualiBetPoints
-from functions.service.points.quali_points_service import QualiPointsService
+from models.quali_bet_points import QualiBetPoints
+from service.points.quali_points_service import QualiPointsService
 
 
 class QualiPointsServiceTest(unittest.TestCase):

@@ -59,6 +59,7 @@ firebase_options_dev.dart
 firebase.json
 serviceAccountKey.json
 google-services.json
+storage.rules
 
 # FVM related
 .fvmrc
@@ -67,3 +68,6 @@ google-services.json
 # Mason related
 bricks.json
 mason-lock.json
+
+# Python related
+.pylintrc

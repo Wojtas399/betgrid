@@ -1,12 +1,12 @@
-from functions.models import (
+from models import (
     QualiBetPoints,
     RaceBetPoints,
     GrandPrixBetPoints,
     GrandPrixBets,
     GrandPrixResults,
 )
-from .race_points_service import RacePointsService, RaceParams
-from .quali_points_service import QualiPointsService
+from service.points.race_points_service import RacePointsService, RaceParams
+from service.points.quali_points_service import QualiPointsService
 
 
 class GpPointsService:

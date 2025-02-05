@@ -1,14 +1,14 @@
-from functions.models import (
+from models import (
     GrandPrixResults,
     GrandPrixBets,
     GrandPrixBetPoints,
 )
-from functions.service.data import (
+from service.data import (
     GrandPrixBetPointsDataService,
     GrandPrixBetsDataService,
     UsersDataService,
 )
-from functions.service.points import GpPointsService
+from service.points import GpPointsService
 
 
 class GrandPrixResultsTriggers:

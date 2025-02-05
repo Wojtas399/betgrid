@@ -1,6 +1,6 @@
 import unittest
-from functions.models.race_bet_points import RaceBetPoints
-from functions.service.points.race_points_service import (
+from models.race_bet_points import RaceBetPoints
+from service.points.race_points_service import (
     RacePointsService,
     RaceParams,
 )

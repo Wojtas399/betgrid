@@ -1,10 +1,12 @@
-from functions.collections_references import CollectionsReferences
-from functions.models.player_stats import PlayerStats
+from firebase_collections_references import (
+    FirebaseCollectionsReferences
+)
+from models.player_stats import PlayerStats
 
 
 class PlayerStatsDataService:
     def __init__(self):
-        self.collections_references = CollectionsReferences()
+        self.collections_references = FirebaseCollectionsReferences()
 
     def load_player_stats(
         self,
