@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import 'firebase_collections.dart';
-import 'model/grand_prix_bet_dto.dart';
 import 'model/grand_prix_bet_points_dto.dart';
 import 'model/grand_prix_results_dto.dart';
 import 'model/season_driver_dto.dart';
@@ -65,24 +64,6 @@ class FirebaseCollectionRefs {
         },
         toFirestore: (UserDto dto, _) => dto.toJson(),
       );
-
-  CollectionReference<GrandPrixBetDto> grandPrixesBets(String userId) =>
-      FirebaseFirestore.instance
-          .collection(_firebaseCollections.users.main)
-          .doc(userId)
-          .collection(_firebaseCollections.users.grandPrixesBets)
-          .withConverter<GrandPrixBetDto>(
-            fromFirestore: (snapshot, _) {
-              final data = snapshot.data();
-              if (data == null) throw 'Grand prix bet document was null';
-              return GrandPrixBetDto.fromFirebase(
-                id: snapshot.id,
-                playerId: userId,
-                json: data,
-              );
-            },
-            toFirestore: (GrandPrixBetDto dto, _) => dto.toJson(),
-          );
 
   CollectionReference<GrandPrixBetPointsDto> grandPrixesBetPoints(
     String userId,

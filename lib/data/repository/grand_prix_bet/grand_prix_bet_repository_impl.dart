@@ -1,11 +1,11 @@
+import 'package:betgrid_shared/firebase/model/grand_prix_bet_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_grand_prix_bet_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_bet.dart';
 import '../../../ui/extensions/stream_extensions.dart';
-import '../../firebase/model/grand_prix_bet_dto.dart';
-import '../../firebase/service/firebase_grand_prix_bet_service.dart';
 import '../../mapper/grand_prix_bet_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_repository.dart';
@@ -13,12 +13,12 @@ import 'grand_prix_bet_repository.dart';
 @LazySingleton(as: GrandPrixBetRepository)
 class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     implements GrandPrixBetRepository {
-  final FirebaseGrandPrixBetService _dbGrandPrixBetService;
+  final FirebaseGrandPrixBetService _fireGrandPrixBetService;
   final GrandPrixBetMapper _grandPrixBetMapper;
   final _getGrandPrixBetForPlayerAndGrandprixMutex = Mutex();
 
   GrandPrixBetRepositoryImpl(
-    this._dbGrandPrixBetService,
+    this._fireGrandPrixBetService,
     this._grandPrixBetMapper,
   );
 
@@ -99,7 +99,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     bool? willBeRedFlag,
   }) async {
     final GrandPrixBetDto? addedGrandPrixBetDto =
-        await _dbGrandPrixBetService.addGrandPrixBet(
+        await _fireGrandPrixBetService.addGrandPrixBet(
       userId: playerId,
       seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
@@ -134,7 +134,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     bool? willBeRedFlag,
   }) async {
     final GrandPrixBetDto? updatedGrandPrixBetDto =
-        await _dbGrandPrixBetService.updateGrandPrixBet(
+        await _fireGrandPrixBetService.updateGrandPrixBet(
       userId: playerId,
       grandPrixBetId: grandPrixBetId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
@@ -160,7 +160,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final List<GrandPrixBet> fetchedGpBets = [];
     for (final _GrandPrixBetFetchData gpBetData in gpBetsData) {
       final GrandPrixBetDto? gpBetDto =
-          await _dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
+          await _fireGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
         playerId: gpBetData.playerId,
         seasonGrandPrixId: gpBetData.seasonGrandPrixId,
       );
@@ -177,7 +177,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     _GrandPrixBetFetchData gpBetData,
   ) async {
     final GrandPrixBetDto? betDto =
-        await _dbGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
+        await _fireGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
       playerId: gpBetData.playerId,
       seasonGrandPrixId: gpBetData.seasonGrandPrixId,
     );
