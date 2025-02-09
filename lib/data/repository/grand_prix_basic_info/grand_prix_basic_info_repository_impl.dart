@@ -1,10 +1,10 @@
+import 'package:betgrid_shared/firebase/model/grand_prix_basic_info_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_grand_prix_basic_info_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_basic_info.dart';
-import '../../firebase/model/grand_prix_basic_info_dto.dart';
-import '../../firebase/service/firebase_grand_prix_basic_info_service.dart';
 import '../../mapper/grand_prix_basic_info_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_basic_info_repository.dart';
@@ -12,12 +12,12 @@ import 'grand_prix_basic_info_repository.dart';
 @LazySingleton(as: GrandPrixBasicInfoRepository)
 class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
     implements GrandPrixBasicInfoRepository {
-  final FirebaseGrandPrixBasicInfoService _firebaseGrandPrixBasicInfoService;
+  final FirebaseGrandPrixBasicInfoService _fireGrandPrixBasicInfoService;
   final GrandPrixBasicInfoMapper _grandPrixBasicInfoMapper;
   final _getGrandPrixBasicInfoByIdMutex = Mutex();
 
   GrandPrixBasicInfoRepositoryImpl(
-    this._firebaseGrandPrixBasicInfoService,
+    this._fireGrandPrixBasicInfoService,
     this._grandPrixBasicInfoMapper,
   );
 
@@ -41,8 +41,7 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
 
   Future<GrandPrixBasicInfo?> _fetchGrandPrixBasicInfoById(String id) async {
     final GrandPrixBasicInfoDto? grandPrixBasicInfoDto =
-        await _firebaseGrandPrixBasicInfoService
-            .fetchGrandPrixBasicInfoById(id);
+        await _fireGrandPrixBasicInfoService.fetchGrandPrixBasicInfoById(id);
     if (grandPrixBasicInfoDto == null) return null;
     final GrandPrixBasicInfo grandPrixBasicInfo =
         _grandPrixBasicInfoMapper.mapFromDto(grandPrixBasicInfoDto);

@@ -1,7 +1,7 @@
+import 'package:betgrid_shared/firebase/model/grand_prix_basic_info_dto.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../model/grand_prix_basic_info.dart';
-import '../firebase/model/grand_prix_basic_info_dto.dart';
 
 @injectable
 class GrandPrixBasicInfoMapper {
