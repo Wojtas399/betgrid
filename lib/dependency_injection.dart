@@ -1,4 +1,5 @@
 import 'package:betgrid_shared/firebase/service/firebase_auth_service.dart';
+import 'package:betgrid_shared/firebase/service/firebase_driver_personal_data_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,5 +14,8 @@ void configureDependencies() {
 
 @module
 abstract class FirebaseModule {
-  FirebaseAuthService get firebaseAuthService => FirebaseAuthService();
+  FirebaseAuthService get fireAuthService => FirebaseAuthService();
+
+  FirebaseDriverPersonalDataService get fireDriverPersonalDataService =>
+      FirebaseDriverPersonalDataService();
 }
