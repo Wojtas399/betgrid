@@ -11,7 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
-import 'firebase_options.dart';
+import 'firebase_options_dev.dart';
 import 'ui/common_cubit/theme_cubit.dart';
 import 'ui/common_cubit/theme_state.dart';
 import 'ui/config/router/app_router.dart';

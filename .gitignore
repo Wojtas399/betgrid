@@ -62,8 +62,6 @@ google-services.json
 storage.rules
 
 # FVM related
-.fvmrc
-.fvm
 
 # Mason related
 bricks.json
@@ -71,3 +69,7 @@ mason-lock.json
 
 # Python related
 .pylintrc
+
+# FVM Version Cache
+.fvm/
+.fvmrc
