@@ -1,29 +1,29 @@
+import 'package:betgrid_shared/firebase/service/firebase_auth_service.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../model/auth_state.dart';
-import '../../firebase/service/firebase_auth_service.dart';
 import 'auth_repository.dart';
 
 @Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuthService _dbAuthService;
+  final FirebaseAuthService _fireAuthService;
 
   AuthRepositoryImpl(
-    this._dbAuthService,
+    this._fireAuthService,
   );
 
   @override
-  Stream<AuthState> get authState$ => _dbAuthService.loggedUserId$.map(
+  Stream<AuthState> get authState$ => _fireAuthService.loggedUserId$.map(
         (String? loggedUserId) => loggedUserId != null
             ? const AuthStateUserIsSignedIn()
             : const AuthStateUserIsSignedOut(),
       );
 
   @override
-  Stream<String?> get loggedUserId$ => _dbAuthService.loggedUserId$;
+  Stream<String?> get loggedUserId$ => _fireAuthService.loggedUserId$;
 
   @override
   Future<void> signInWithGoogle() async {
-    await _dbAuthService.signInWithGoogle();
+    await _fireAuthService.signInWithGoogle();
   }
 }

@@ -40,6 +40,10 @@ dependencies:
   bloc_test: ^9.1.7
   mutex: ^3.1.0
   cloud_functions: ^5.3.1
+  betgrid_shared:
+    git:
+      url: https://github.com/Wojtas399/betgrid_shared.git
+      ref: 22b1def4cc544085be1057cf137b45715d605b33
 
 dev_dependencies:
   flutter_test:
