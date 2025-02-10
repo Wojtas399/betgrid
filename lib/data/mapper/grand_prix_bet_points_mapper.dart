@@ -1,7 +1,7 @@
 import 'package:betgrid_shared/firebase/model/grand_prix_bet_points_dto.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../model/grand_prix_bet_points.dart';
+import '../../model/season_grand_prix_bet_points.dart';
 import 'quali_bet_points_mapper.dart';
 import 'race_bet_points_mapper.dart';
 
@@ -15,10 +15,10 @@ class GrandPrixBetPointsMapper {
     this._raceBetPointsMapper,
   );
 
-  GrandPrixBetPoints mapFromDto(
+  SeasonGrandPrixBetPoints mapFromDto(
     GrandPrixBetPointsDto grandPrixBetPointsDto,
   ) =>
-      GrandPrixBetPoints(
+      SeasonGrandPrixBetPoints(
         id: grandPrixBetPointsDto.id,
         playerId: grandPrixBetPointsDto.playerId,
         season: grandPrixBetPointsDto.season,

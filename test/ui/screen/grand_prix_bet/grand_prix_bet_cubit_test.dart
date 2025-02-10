@@ -1,5 +1,5 @@
 import 'package:betgrid/model/grand_prix_basic_info.dart';
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
@@ -18,7 +18,7 @@ import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/repository/mock_grand_prix_basic_info_repository.dart';
-import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/repository/mock_season_grand_prix_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
@@ -30,7 +30,8 @@ void main() {
   final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
   final grandPrixBasicInfoRepository = MockGrandPrixBasicInfoRepository();
   final playerRepository = MockPlayerRepository();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final seasonGrandPrixBetPointsRepository =
+      MockSeasonGrandPrixBetPointsRepository();
   final dateService = MockDateService();
   final qualiBetsService = MockGrandPrixBetQualiBetsService();
   final raceBetsService = MockGrandPrixBetRaceBetsService();
@@ -43,7 +44,7 @@ void main() {
         seasonGrandPrixRepository,
         grandPrixBasicInfoRepository,
         playerRepository,
-        grandPrixBetPointsRepository,
+        seasonGrandPrixBetPointsRepository,
         dateService,
         const GrandPrixBetCubitParams(
           playerId: playerId,
@@ -66,7 +67,7 @@ void main() {
     reset(seasonGrandPrixRepository);
     reset(grandPrixBasicInfoRepository);
     reset(playerRepository);
-    reset(grandPrixBetPointsRepository);
+    reset(seasonGrandPrixBetPointsRepository);
     reset(dateService);
     reset(qualiBetsService);
     reset(raceBetsService);
@@ -159,9 +160,8 @@ void main() {
         resultValue: true,
         points: 0,
       );
-      final GrandPrixBetPoints gpBetPoints = const GrandPrixBetPointsCreator(
-        id: 'gpb1',
-      ).create();
+      final SeasonGrandPrixBetPoints seasonGpBetPoints =
+          const SeasonGrandPrixBetPointsCreator(id: 'gpb1').create();
       final DateTime now = DateTime(season, 2, 2);
       const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(
@@ -178,7 +178,7 @@ void main() {
         raceDnfDriversBet: raceDnfDriversBet,
         raceSafetyCarBet: raceSafetyCarBet,
         raceRedFlagBet: raceRedFlagBet,
-        grandPrixBetPoints: gpBetPoints,
+        seasonGrandPrixBetPoints: seasonGpBetPoints,
       );
 
       setUp(() {
@@ -206,8 +206,8 @@ void main() {
         raceBetsService.mockGetRedFlagBet(
           expectedRedFlagBet: raceRedFlagBet,
         );
-        grandPrixBetPointsRepository.mockGetGrandPrixBetPoints(
-          grandPrixBetPoints: gpBetPoints,
+        seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
+          seasonGrandPrixBetPoints: seasonGpBetPoints,
         );
       });
 
@@ -237,7 +237,7 @@ void main() {
         verify(raceBetsService.getSafetyCarBet).called(1);
         verify(raceBetsService.getRedFlagBet).called(1);
         verify(
-          () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
+          () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
             playerId: playerId,
             season: season,
             seasonGrandPrixId: seasonGrandPrixId,

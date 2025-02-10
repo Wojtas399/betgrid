@@ -1,58 +1,58 @@
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 
 class RaceBetPointsCreator {
-  final double totalPoints;
-  final double p1Points;
-  final double p2Points;
-  final double p3Points;
-  final double p10Points;
-  final double fastestLapPoints;
-  final double podiumAndP10Points;
+  final double total;
+  final double p1;
+  final double p2;
+  final double p3;
+  final double p10;
+  final double fastestLap;
+  final double podiumAndP10;
   final double? podiumAndP10Multiplier;
-  final double dnfPoints;
-  final double dnfDriver1Points;
-  final double dnfDriver2Points;
-  final double dnfDriver3Points;
+  final double totalDnf;
+  final double dnfDriver1;
+  final double dnfDriver2;
+  final double dnfDriver3;
   final double? dnfMultiplier;
-  final double safetyCarPoints;
-  final double redFlagPoints;
-  final double safetyCarAndRedFlagPoints;
+  final double safetyCar;
+  final double redFlag;
+  final double safetyCarAndRedFlag;
 
   const RaceBetPointsCreator({
-    this.totalPoints = 0,
-    this.p1Points = 0,
-    this.p2Points = 0,
-    this.p3Points = 0,
-    this.p10Points = 0,
-    this.fastestLapPoints = 0,
-    this.podiumAndP10Points = 0,
+    this.total = 0,
+    this.p1 = 0,
+    this.p2 = 0,
+    this.p3 = 0,
+    this.p10 = 0,
+    this.fastestLap = 0,
+    this.podiumAndP10 = 0,
     this.podiumAndP10Multiplier,
-    this.dnfPoints = 0,
-    this.dnfDriver1Points = 0,
-    this.dnfDriver2Points = 0,
-    this.dnfDriver3Points = 0,
+    this.totalDnf = 0,
+    this.dnfDriver1 = 0,
+    this.dnfDriver2 = 0,
+    this.dnfDriver3 = 0,
     this.dnfMultiplier,
-    this.safetyCarPoints = 0,
-    this.redFlagPoints = 0,
-    this.safetyCarAndRedFlagPoints = 0,
+    this.safetyCar = 0,
+    this.redFlag = 0,
+    this.safetyCarAndRedFlag = 0,
   });
 
   RaceBetPoints create() => RaceBetPoints(
-        totalPoints: totalPoints,
-        p1Points: p1Points,
-        p2Points: p2Points,
-        p3Points: p3Points,
-        p10Points: p10Points,
-        fastestLapPoints: fastestLapPoints,
-        podiumAndP10Points: podiumAndP10Points,
+        total: total,
+        p1: p1,
+        p2: p2,
+        p3: p3,
+        p10: p10,
+        fastestLap: fastestLap,
+        podiumAndP10: podiumAndP10,
         podiumAndP10Multiplier: podiumAndP10Multiplier,
-        dnfPoints: dnfPoints,
-        dnfDriver1Points: dnfDriver1Points,
-        dnfDriver2Points: dnfDriver2Points,
-        dnfDriver3Points: dnfDriver3Points,
+        totalDnf: totalDnf,
+        dnfDriver1: dnfDriver1,
+        dnfDriver2: dnfDriver2,
+        dnfDriver3: dnfDriver3,
         dnfMultiplier: dnfMultiplier,
-        safetyCarPoints: safetyCarPoints,
-        redFlagPoints: redFlagPoints,
-        safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
+        safetyCar: safetyCar,
+        redFlag: redFlag,
+        safetyCarAndRedFlag: safetyCarAndRedFlag,
       );
 }

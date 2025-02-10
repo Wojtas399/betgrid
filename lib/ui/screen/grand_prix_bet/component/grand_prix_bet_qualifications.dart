@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/no_text_component.dart';
 import '../../../component/padding/padding_components.dart';
@@ -40,7 +40,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final double? qualiPoints = context.select(
       (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.qualiBetPoints?.totalPoints,
+          cubit.state.seasonGrandPrixBetPoints?.qualiBetPoints?.total,
     );
 
     return GrandPrixBetSectionTitle(
@@ -110,22 +110,22 @@ class _PointsSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final QualiBetPoints? qualiPointsDetails = context.select(
       (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.qualiBetPoints,
+          cubit.state.seasonGrandPrixBetPoints?.qualiBetPoints,
     );
 
     return GrandPrixBetPointsSummary(
       details: [
         GrandPrixPointsSummaryDetail(
           label: 'Q1',
-          value: qualiPointsDetails?.q1Points,
+          value: qualiPointsDetails?.totalQ1,
         ),
         GrandPrixPointsSummaryDetail(
           label: 'Q2',
-          value: qualiPointsDetails?.q2Points,
+          value: qualiPointsDetails?.totalQ2,
         ),
         GrandPrixPointsSummaryDetail(
           label: 'Q3',
-          value: qualiPointsDetails?.q3Points,
+          value: qualiPointsDetails?.totalQ3,
         ),
         GrandPrixPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q1',
@@ -144,7 +144,7 @@ class _PointsSummary extends StatelessWidget {
           value: qualiPointsDetails?.multiplier,
         ),
       ],
-      totalPoints: qualiPointsDetails?.totalPoints,
+      totalPoints: qualiPointsDetails?.total,
     );
   }
 }

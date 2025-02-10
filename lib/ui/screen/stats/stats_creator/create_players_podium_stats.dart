@@ -1,11 +1,11 @@
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
-import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../use_case/get_finished_grand_prixes_from_season_use_case.dart';
 import '../stats_model/players_podium.dart';
 
@@ -14,7 +14,7 @@ class CreatePlayersPodiumStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesFromSeasonUseCase
       _getFinishedGrandPrixesFromSeasonUseCase;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final SeasonGrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
   const CreatePlayersPodiumStats(
     this._playerRepository,
@@ -48,28 +48,28 @@ class CreatePlayersPodiumStats {
               .toList();
           return Rx.combineLatest2(
             _grandPrixBetPointsRepository
-                .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+                .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
               season: season,
               idsOfPlayers: playersIds,
               idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
             ),
             Stream.value(data.allPlayers),
             (
-              List<GrandPrixBetPoints> grandPrixesBetPoints,
+              List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
               List<Player> players,
             ) =>
-                _createStats(players, grandPrixesBetPoints),
+                _createStats(players, seasonGrandPrixesBetPoints),
           );
         },
       );
 
   PlayersPodium _createStats(
     Iterable<Player> players,
-    Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
+    Iterable<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
   ) {
     final List<PlayersPodiumPlayer> podiumData = players.map(
       (Player player) {
-        final Iterable<double> pointsForEachGp = grandPrixesBetPoints
+        final Iterable<double> pointsForEachGp = seasonGrandPrixesBetPoints
             .where((betPoints) => betPoints.playerId == player.id)
             .map((betPoints) => betPoints.totalPoints);
         final double totalPoints = pointsForEachGp.isNotEmpty

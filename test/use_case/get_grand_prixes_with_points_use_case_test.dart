@@ -8,13 +8,14 @@ import '../creator/grand_prix_basic_info_creator.dart';
 import '../creator/grand_prix_bet_points_creator.dart';
 import '../creator/season_grand_prix_creator.dart';
 import '../mock/repository/mock_grand_prix_basic_info_repository.dart';
-import '../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../mock/repository/mock_season_grand_prix_repository.dart';
 
 void main() {
   final seasonGrandPrixRepository = MockSeasonGrandPrixRepository();
   final grandPrixBasicInfoRepository = MockGrandPrixBasicInfoRepository();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final seasonGrandPrixBetPointsRepository =
+      MockSeasonGrandPrixBetPointsRepository();
   late GetGrandPrixesWithPointsUseCase useCase;
   const String playerId = 'p1';
   const int season = 2024;
@@ -23,14 +24,14 @@ void main() {
     useCase = GetGrandPrixesWithPointsUseCase(
       seasonGrandPrixRepository,
       grandPrixBasicInfoRepository,
-      grandPrixBetPointsRepository,
+      seasonGrandPrixBetPointsRepository,
     );
   });
 
   tearDown(() {
     reset(seasonGrandPrixRepository);
     reset(grandPrixBasicInfoRepository);
-    reset(grandPrixBetPointsRepository);
+    reset(seasonGrandPrixBetPointsRepository);
   });
 
   test(
@@ -123,40 +124,40 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(null));
       when(
-        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
+        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: grandPrixesFromSeason.first.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          const GrandPrixBetPointsCreator(
+          const SeasonGrandPrixBetPointsCreator(
             totalPoints: sgp1TotalPoints,
           ).create(),
         ),
       );
       when(
-        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
+        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: grandPrixesFromSeason[1].id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          const GrandPrixBetPointsCreator(
+          const SeasonGrandPrixBetPointsCreator(
             totalPoints: sgp2TotalPoints,
           ).create(),
         ),
       );
       when(
-        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
+        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: grandPrixesFromSeason.last.id,
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          const GrandPrixBetPointsCreator(
+          const SeasonGrandPrixBetPointsCreator(
             totalPoints: sgp3TotalPoints,
           ).create(),
         ),

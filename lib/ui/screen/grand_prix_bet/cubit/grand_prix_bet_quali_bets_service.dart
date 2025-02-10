@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
 import 'grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_state.dart';
@@ -18,7 +18,7 @@ class GrandPrixBetQualiBetsService {
   final GrandPrixResultsRepository _grandPrixResultsRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
       _getDetailsOfAllDriversFromSeasonUseCase;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
   final GrandPrixBetCubitParams _params;
 
@@ -26,7 +26,7 @@ class GrandPrixBetQualiBetsService {
     this._grandPrixBetRepository,
     this._grandPrixResultsRepository,
     this._getDetailsOfAllDriversFromSeasonUseCase,
-    this._grandPrixBetPointsRepository,
+    this._seasonGrandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
     @factoryParam this._params,
   );
@@ -63,8 +63,8 @@ class GrandPrixBetQualiBetsService {
   }
 
   Stream<QualiBetPoints?> _getQualiBetPoints() {
-    return _grandPrixBetPointsRepository
-        .getGrandPrixBetPoints(
+    return _seasonGrandPrixBetPointsRepository
+        .getSeasonGrandPrixBetPoints(
           playerId: _params.playerId,
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
@@ -79,26 +79,26 @@ class GrandPrixBetQualiBetsService {
     QualiBetPoints? qualiBetPoints,
   ) {
     final List<double?> qualiPoints = [
-      qualiBetPoints?.q3P1Points,
-      qualiBetPoints?.q3P2Points,
-      qualiBetPoints?.q3P3Points,
-      qualiBetPoints?.q3P4Points,
-      qualiBetPoints?.q3P5Points,
-      qualiBetPoints?.q3P6Points,
-      qualiBetPoints?.q3P7Points,
-      qualiBetPoints?.q3P8Points,
-      qualiBetPoints?.q3P9Points,
-      qualiBetPoints?.q3P10Points,
-      qualiBetPoints?.q2P11Points,
-      qualiBetPoints?.q2P12Points,
-      qualiBetPoints?.q2P13Points,
-      qualiBetPoints?.q2P14Points,
-      qualiBetPoints?.q2P15Points,
-      qualiBetPoints?.q1P16Points,
-      qualiBetPoints?.q1P17Points,
-      qualiBetPoints?.q1P18Points,
-      qualiBetPoints?.q1P19Points,
-      qualiBetPoints?.q1P20Points,
+      qualiBetPoints?.q3P1,
+      qualiBetPoints?.q3P2,
+      qualiBetPoints?.q3P3,
+      qualiBetPoints?.q3P4,
+      qualiBetPoints?.q3P5,
+      qualiBetPoints?.q3P6,
+      qualiBetPoints?.q3P7,
+      qualiBetPoints?.q3P8,
+      qualiBetPoints?.q3P9,
+      qualiBetPoints?.q3P10,
+      qualiBetPoints?.q2P11,
+      qualiBetPoints?.q2P12,
+      qualiBetPoints?.q2P13,
+      qualiBetPoints?.q2P14,
+      qualiBetPoints?.q2P15,
+      qualiBetPoints?.q1P16,
+      qualiBetPoints?.q1P17,
+      qualiBetPoints?.q1P18,
+      qualiBetPoints?.q1P19,
+      qualiBetPoints?.q1P20,
     ];
     return List.generate(
       20,

@@ -1,5 +1,5 @@
 import 'package:betgrid/model/driver_details.dart';
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_quali_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
@@ -10,7 +10,7 @@ import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
-import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
 import '../../../mock/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
@@ -21,7 +21,8 @@ void main() {
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final seasonGrandPrixBetPointsRepository =
+      MockSeasonGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
   const int season = 2024;
@@ -30,7 +31,7 @@ void main() {
     grandPrixBetRepository,
     grandPrixResultsRepository,
     getDetailsOfAllDriversFromSeasonUseCase,
-    grandPrixBetPointsRepository,
+    seasonGrandPrixBetPointsRepository,
     grandPrixBetStatusService,
     const GrandPrixBetCubitParams(
       playerId: playerId,
@@ -85,26 +86,26 @@ void main() {
         'd20',
       ];
       final QualiBetPoints qualiBetPoints = const QualiBetPointsCreator(
-        q3P1Points: 1,
-        q3P2Points: 0,
-        q3P3Points: 0,
-        q3P4Points: 0,
-        q3P5Points: 2,
-        q3P6Points: 2,
-        q3P7Points: 0,
-        q3P8Points: 0,
-        q3P9Points: 0,
-        q3P10Points: 0,
-        q2P11Points: 0,
-        q2P12Points: 0,
-        q2P13Points: 2,
-        q2P14Points: 0,
-        q2P15Points: 0,
-        q1P16Points: 0,
-        q1P17Points: 0,
-        q1P18Points: 0,
-        q1P19Points: 0,
-        q1P20Points: 0,
+        q3P1: 1,
+        q3P2: 0,
+        q3P3: 0,
+        q3P4: 0,
+        q3P5: 2,
+        q3P6: 2,
+        q3P7: 0,
+        q3P8: 0,
+        q3P9: 0,
+        q3P10: 0,
+        q2P11: 0,
+        q2P12: 0,
+        q2P13: 2,
+        q2P14: 0,
+        q2P15: 0,
+        q1P16: 0,
+        q1P17: 0,
+        q1P18: 0,
+        q1P19: 0,
+        q1P20: 0,
       ).create();
       final List<SingleDriverBet> expectedBets = [
         SingleDriverBet(
@@ -242,8 +243,8 @@ void main() {
       getDetailsOfAllDriversFromSeasonUseCase.mock(
         expectedDetailsOfAllDriversFromSeason: allDriverDetails,
       );
-      grandPrixBetPointsRepository.mockGetGrandPrixBetPoints(
-        grandPrixBetPoints: GrandPrixBetPoints(
+      seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
+        seasonGrandPrixBetPoints: SeasonGrandPrixBetPoints(
           id: '',
           playerId: playerId,
           season: season,
@@ -280,7 +281,7 @@ void main() {
         () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
       ).called(1);
       verify(
-        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
+        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: seasonGrandPrixId,

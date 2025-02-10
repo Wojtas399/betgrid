@@ -3,22 +3,22 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
-import '../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../model/grand_prix_basic_info.dart';
-import '../model/grand_prix_bet_points.dart';
+import '../model/season_grand_prix_bet_points.dart';
 import '../model/season_grand_prix.dart';
 
 @injectable
 class GetGrandPrixesWithPointsUseCase {
   final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
 
   const GetGrandPrixesWithPointsUseCase(
     this._seasonGrandPrixRepository,
     this._grandPrixBasicInfoRepository,
-    this._grandPrixBetPointsRepository,
+    this._seasonGrandPrixBetPointsRepository,
   );
 
   Stream<List<GrandPrixWithPoints>> call({
@@ -66,14 +66,14 @@ class GetGrandPrixesWithPointsUseCase {
       _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
         seasonGrandPrix.grandPrixId,
       ),
-      _grandPrixBetPointsRepository.getGrandPrixBetPoints(
+      _seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
         playerId: playerId,
         season: season,
         seasonGrandPrixId: seasonGrandPrix.id,
       ),
       (
         GrandPrixBasicInfo? grandPrix,
-        GrandPrixBetPoints? grandPrixPoints,
+        SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
       ) =>
           grandPrix != null
               ? GrandPrixWithPoints(
@@ -83,7 +83,7 @@ class GetGrandPrixesWithPointsUseCase {
                   roundNumber: seasonGrandPrix.roundNumber,
                   startDate: seasonGrandPrix.startDate,
                   endDate: seasonGrandPrix.endDate,
-                  points: grandPrixPoints?.totalPoints,
+                  points: seasonGrandPrixBetPoints?.totalPoints,
                 )
               : null,
     );

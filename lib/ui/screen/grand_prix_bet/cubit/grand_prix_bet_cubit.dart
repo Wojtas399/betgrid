@@ -6,12 +6,12 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_basic_info.dart';
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
 import '../../../service/date_service.dart';
@@ -25,7 +25,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
   final PlayerRepository _playerRepository;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
   final DateService _dateService;
   final GrandPrixBetCubitParams _params;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
@@ -35,7 +35,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     this._seasonGrandPrixRepository,
     this._grandPrixBasicInfoRepository,
     this._playerRepository,
-    this._grandPrixBetPointsRepository,
+    this._seasonGrandPrixBetPointsRepository,
     this._dateService,
     @factoryParam this._params,
   ) : super(const GrandPrixBetState());
@@ -72,7 +72,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           raceDnfDriversBet: listenedParams.raceListenedParams.dnfDriversBet,
           raceSafetyCarBet: listenedParams.raceListenedParams.safetyCarBet,
           raceRedFlagBet: listenedParams.raceListenedParams.redFlagBet,
-          grandPrixBetPoints: listenedParams.gpBetPoints,
+          seasonGrandPrixBetPoints: listenedParams.seasonGrandPrixBetPoints,
         ));
       },
     );
@@ -88,14 +88,14 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
       _getGrandPrixListenedParams(),
       qualiBetsService.getQualiBets(),
       _getRaceListenedParams(),
-      _getGpBetPoints(),
+      _getSeasonGrandPrixBetPoints(),
       (
         String? playerUsername,
         String? loggedUserId,
         _GrandPrixListenedParams? gpListenedParams,
         List<SingleDriverBet> qualiBets,
         _RaceListenedParams raceListenedParams,
-        GrandPrixBetPoints? gpBetPoints,
+        SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
       ) =>
           (
         playerUsername: playerUsername,
@@ -103,7 +103,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         gpListenedParams: gpListenedParams,
         qualiBets: qualiBets,
         raceListenedParams: raceListenedParams,
-        gpBetPoints: gpBetPoints,
+        seasonGrandPrixBetPoints: seasonGrandPrixBetPoints,
       ),
     );
   }
@@ -156,8 +156,8 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     );
   }
 
-  Stream<GrandPrixBetPoints?> _getGpBetPoints() {
-    return _grandPrixBetPointsRepository.getGrandPrixBetPoints(
+  Stream<SeasonGrandPrixBetPoints?> _getSeasonGrandPrixBetPoints() {
+    return _seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
       playerId: _params.playerId,
       season: _params.season,
       seasonGrandPrixId: _params.seasonGrandPrixId,
@@ -199,7 +199,7 @@ typedef _ListenedParams = ({
   _GrandPrixListenedParams? gpListenedParams,
   List<SingleDriverBet> qualiBets,
   _RaceListenedParams raceListenedParams,
-  GrandPrixBetPoints? gpBetPoints,
+  SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
 });
 
 typedef _RaceListenedParams = ({

@@ -1,9 +1,9 @@
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 
 import 'quali_bet_points_creator.dart';
 import 'race_bet_points_creator.dart';
 
-class GrandPrixBetPointsCreator {
+class SeasonGrandPrixBetPointsCreator {
   final String id;
   final String playerId;
   final int season;
@@ -12,7 +12,7 @@ class GrandPrixBetPointsCreator {
   final QualiBetPointsCreator? qualiBetPointsCreator;
   final RaceBetPointsCreator? raceBetPointsCreator;
 
-  const GrandPrixBetPointsCreator({
+  const SeasonGrandPrixBetPointsCreator({
     this.id = '',
     this.playerId = '',
     this.season = 0,
@@ -22,8 +22,8 @@ class GrandPrixBetPointsCreator {
     this.raceBetPointsCreator,
   });
 
-  GrandPrixBetPoints create() {
-    return GrandPrixBetPoints(
+  SeasonGrandPrixBetPoints create() {
+    return SeasonGrandPrixBetPoints(
       id: id,
       playerId: playerId,
       season: season,

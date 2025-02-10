@@ -3,9 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
 import '../../../../use_case/get_finished_grand_prixes_from_season_use_case.dart';
@@ -18,13 +18,13 @@ class CreatePointsHistoryStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesFromSeasonUseCase
       _getFinishedGrandPrixesFromSeasonUseCase;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
+  final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
 
   const CreatePointsHistoryStats(
     this._authRepository,
     this._playerRepository,
     this._getFinishedGrandPrixesFromSeasonUseCase,
-    this._grandPrixBetPointsRepository,
+    this._seasonGrandPrixBetPointsRepository,
   );
 
   Stream<PointsHistory?> call({
@@ -61,8 +61,8 @@ class CreatePointsHistoryStats {
         return Rx.combineLatest3(
           Stream.value(data.allPlayers),
           Stream.value(data.finishedSeasonGrandPrixes),
-          _grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          _seasonGrandPrixBetPointsRepository
+              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
             season: season,
             idsOfPlayers: playersIds,
             idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
@@ -70,12 +70,12 @@ class CreatePointsHistoryStats {
           (
             List<Player> players,
             List<SeasonGrandPrix> seasonGrandPrixes,
-            List<GrandPrixBetPoints> grandPrixesBetPoints,
+            List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
           ) {
             final statsData = (
               players: players,
               seasonGrandPrixes: seasonGrandPrixes,
-              grandPrixesBetPoints: grandPrixesBetPoints,
+              seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
             );
             return _createStats(statsData);
           },
@@ -108,8 +108,8 @@ class CreatePointsHistoryStats {
         return Rx.combineLatest3(
           Stream.value(loggedUser),
           Stream.value(data.finishedSeasonGrandPrixes),
-          _grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          _seasonGrandPrixBetPointsRepository
+              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
             season: season,
             idsOfPlayers: [loggedUser.id],
             idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
@@ -117,12 +117,12 @@ class CreatePointsHistoryStats {
           (
             Player loggedUser,
             List<SeasonGrandPrix> seasonGrandPrixes,
-            List<GrandPrixBetPoints> grandPrixesBetPoints,
+            List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
           ) {
             final statsData = (
               players: [loggedUser],
               seasonGrandPrixes: seasonGrandPrixes,
-              grandPrixesBetPoints: grandPrixesBetPoints,
+              seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
             );
             return _createStats(statsData);
           },
@@ -140,8 +140,8 @@ class CreatePointsHistoryStats {
       final List<PointsHistoryPlayerPoints> playersPointsForGp =
           data.players.map(
         (Player player) {
-          final gpBetPoints = data.grandPrixesBetPoints.firstWhereOrNull(
-            (GrandPrixBetPoints? gpBetPoints) =>
+          final gpBetPoints = data.seasonGrandPrixesBetPoints.firstWhereOrNull(
+            (SeasonGrandPrixBetPoints? gpBetPoints) =>
                 gpBetPoints?.playerId == player.id &&
                 gpBetPoints?.seasonGrandPrixId == seasonGp.id,
           );
@@ -181,7 +181,7 @@ class CreatePointsHistoryStats {
 typedef _StatsData = ({
   Iterable<Player> players,
   Iterable<SeasonGrandPrix> seasonGrandPrixes,
-  Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
+  Iterable<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
 });
 
 extension _SeasonGrandPrixesListX on List<SeasonGrandPrix> {

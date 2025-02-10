@@ -4,27 +4,28 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../../model/grand_prix_bet_points.dart';
+import '../../../model/season_grand_prix_bet_points.dart';
 import '../../../ui/extensions/stream_extensions.dart';
 import '../../mapper/grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
-import 'grand_prix_bet_points_repository.dart';
+import 'season_grand_prix_bet_points_repository.dart';
 
-@LazySingleton(as: GrandPrixBetPointsRepository)
-class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
-    implements GrandPrixBetPointsRepository {
-  final FirebaseGrandPrixBetPointsService _dbBetPointsService;
+@LazySingleton(as: SeasonGrandPrixBetPointsRepository)
+class SeasonGrandPrixBetPointsRepositoryImpl
+    extends Repository<SeasonGrandPrixBetPoints>
+    implements SeasonGrandPrixBetPointsRepository {
+  final FirebaseGrandPrixBetPointsService _fireBetPointsService;
   final GrandPrixBetPointsMapper _grandPrixBetPointsMapper;
   final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
 
-  GrandPrixBetPointsRepositoryImpl(
-    this._dbBetPointsService,
+  SeasonGrandPrixBetPointsRepositoryImpl(
+    this._fireBetPointsService,
     this._grandPrixBetPointsMapper,
   );
 
   @override
-  Stream<List<GrandPrixBetPoints>>
-      getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
+  Stream<List<SeasonGrandPrixBetPoints>>
+      getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
     required int season,
     required List<String> idsOfPlayers,
     required List<String> idsOfSeasonGrandPrixes,
@@ -32,15 +33,15 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     bool didRelease = false;
     await _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.acquire();
     final stream$ = repositoryState$.asyncMap(
-      (List<GrandPrixBetPoints> existingBetPointsForGps) async {
-        final List<GrandPrixBetPoints> betPointsForGps = [];
+      (List<SeasonGrandPrixBetPoints> existingBetPointsForGps) async {
+        final List<SeasonGrandPrixBetPoints> betPointsForGps = [];
         final List<_GrandPrixBetPointsFetchData> dataOfMissingBetPointsForGps =
             [];
         for (final playerId in idsOfPlayers) {
           for (final gpId in idsOfSeasonGrandPrixes) {
-            final GrandPrixBetPoints? existingGpBetPoints =
+            final SeasonGrandPrixBetPoints? existingGpBetPoints =
                 existingBetPointsForGps.firstWhereOrNull(
-              (GrandPrixBetPoints gpBetPoints) =>
+              (SeasonGrandPrixBetPoints gpBetPoints) =>
                   gpBetPoints.season == season &&
                   gpBetPoints.seasonGrandPrixId == gpId &&
                   gpBetPoints.playerId == playerId,
@@ -76,13 +77,13 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   }
 
   @override
-  Stream<GrandPrixBetPoints?> getGrandPrixBetPoints({
+  Stream<SeasonGrandPrixBetPoints?> getSeasonGrandPrixBetPoints({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
   }) async* {
     await for (final entities in repositoryState$) {
-      GrandPrixBetPoints? points = entities.firstWhereOrNull(
+      SeasonGrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId &&
             entity.season == season &&
@@ -97,19 +98,19 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     }
   }
 
-  Future<List<GrandPrixBetPoints>> _fetchManyGrandPrixBetPointsFromDb(
+  Future<List<SeasonGrandPrixBetPoints>> _fetchManyGrandPrixBetPointsFromDb(
     Iterable<_GrandPrixBetPointsFetchData> dataOfPointsForGpBets,
   ) async {
-    final List<GrandPrixBetPoints> fetchedBetPoints = [];
+    final List<SeasonGrandPrixBetPoints> fetchedBetPoints = [];
     for (final gpBetPointsData in dataOfPointsForGpBets) {
       final GrandPrixBetPointsDto? gpBetPointsDto =
-          await _dbBetPointsService.fetchGrandPrixBetPoints(
+          await _fireBetPointsService.fetchGrandPrixBetPoints(
         userId: gpBetPointsData.playerId,
         season: gpBetPointsData.season,
         seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
       );
       if (gpBetPointsDto != null) {
-        final GrandPrixBetPoints gpBetPoints =
+        final SeasonGrandPrixBetPoints gpBetPoints =
             _grandPrixBetPointsMapper.mapFromDto(gpBetPointsDto);
         fetchedBetPoints.add(gpBetPoints);
       }
@@ -118,17 +119,18 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
     return fetchedBetPoints;
   }
 
-  Future<GrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
+  Future<SeasonGrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
     _GrandPrixBetPointsFetchData gpBetPointsData,
   ) async {
     final GrandPrixBetPointsDto? dto =
-        await _dbBetPointsService.fetchGrandPrixBetPoints(
+        await _fireBetPointsService.fetchGrandPrixBetPoints(
       userId: gpBetPointsData.playerId,
       season: gpBetPointsData.season,
       seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
     );
     if (dto == null) return null;
-    final GrandPrixBetPoints entity = _grandPrixBetPointsMapper.mapFromDto(dto);
+    final SeasonGrandPrixBetPoints entity =
+        _grandPrixBetPointsMapper.mapFromDto(dto);
     addEntity(entity);
     return entity;
   }

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 
 part 'grand_prix_bet_state.freezed.dart';
 
@@ -37,7 +37,7 @@ class GrandPrixBetState with _$GrandPrixBetState {
     MultipleDriversBet? raceDnfDriversBet,
     BooleanBet? raceSafetyCarBet,
     BooleanBet? raceRedFlagBet,
-    GrandPrixBetPoints? grandPrixBetPoints,
+    SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
   }) = _GrandPrixBetState;
 }
 

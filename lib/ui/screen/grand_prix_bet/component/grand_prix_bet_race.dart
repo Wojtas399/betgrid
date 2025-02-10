@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet_points.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../component/driver_description_component.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/no_text_component.dart';
@@ -44,7 +44,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final double? racePoints = context.select(
       (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints?.totalPoints,
+          cubit.state.seasonGrandPrixBetPoints?.raceBetPoints?.total,
     );
 
     return GrandPrixBetSectionTitle(
@@ -357,14 +357,14 @@ class _PointsSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final RaceBetPoints? racePoints = context.select(
       (GrandPrixBetCubit cubit) =>
-          cubit.state.grandPrixBetPoints?.raceBetPoints,
+          cubit.state.seasonGrandPrixBetPoints?.raceBetPoints,
     );
 
     return GrandPrixBetPointsSummary(
       details: [
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetPositions,
-          value: racePoints?.podiumAndP10Points,
+          value: racePoints?.podiumAndP10,
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetPositionsMultiplier,
@@ -372,11 +372,11 @@ class _PointsSummary extends StatelessWidget {
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetFastestLap,
-          value: racePoints?.fastestLapPoints,
+          value: racePoints?.fastestLap,
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetDNF,
-          value: racePoints?.dnfPoints,
+          value: racePoints?.totalDnf,
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetDNFMultiplier,
@@ -384,12 +384,10 @@ class _PointsSummary extends StatelessWidget {
         ),
         GrandPrixPointsSummaryDetail(
           label: context.str.grandPrixBetOther,
-          value: racePoints != null
-              ? racePoints.safetyCarPoints + racePoints.redFlagPoints
-              : null,
+          value: racePoints?.safetyCarAndRedFlag,
         ),
       ],
-      totalPoints: racePoints?.totalPoints,
+      totalPoints: racePoints?.total,
     );
   }
 }

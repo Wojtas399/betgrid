@@ -44,7 +44,8 @@ class _TotalPoints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double? totalPoints = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixBetPoints?.totalPoints,
+      (GrandPrixBetCubit cubit) =>
+          cubit.state.seasonGrandPrixBetPoints?.totalPoints,
     );
 
     return Center(

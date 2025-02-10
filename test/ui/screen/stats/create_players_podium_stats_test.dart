@@ -1,4 +1,4 @@
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
 import 'package:betgrid/model/season_grand_prix.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_players_podium_stats.dart';
@@ -9,7 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
-import '../../../mock/repository/mock_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/use_case/mock_get_finished_grand_prixes_from_season_use_case.dart';
 
@@ -17,7 +17,8 @@ void main() {
   final playerRepository = MockPlayerRepository();
   final getFinishedGrandPrixesFromSeasonUseCase =
       MockGetFinishedGrandPrixesFromSeasonUseCase();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final seasonGrandPrixBetPointsRepository =
+      MockSeasonGrandPrixBetPointsRepository();
   const int season = 2025;
 
   late CreatePlayersPodiumStats createPlayersPodiumStats;
@@ -26,7 +27,7 @@ void main() {
     createPlayersPodiumStats = CreatePlayersPodiumStats(
       playerRepository,
       getFinishedGrandPrixesFromSeasonUseCase,
-      grandPrixBetPointsRepository,
+      seasonGrandPrixBetPointsRepository,
     );
   });
 
@@ -37,7 +38,7 @@ void main() {
     ).called(1);
     reset(playerRepository);
     reset(getFinishedGrandPrixesFromSeasonUseCase);
-    reset(grandPrixBetPointsRepository);
+    reset(seasonGrandPrixBetPointsRepository);
   });
 
   test(
@@ -91,12 +92,12 @@ void main() {
         SeasonGrandPrixCreator(id: 'sgp1').create(),
         SeasonGrandPrixCreator(id: 'sgp2').create(),
       ];
-      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        GrandPrixBetPointsCreator(
+      final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 15,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 10,
         ).create(),
@@ -111,9 +112,9 @@ void main() {
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        grandPrixesBetPoints: grandPrixesBetPoints,
+      seasonGrandPrixBetPointsRepository
+          .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
       );
 
       final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
@@ -122,8 +123,8 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        () => seasonGrandPrixBetPointsRepository
+            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
@@ -145,20 +146,20 @@ void main() {
         SeasonGrandPrixCreator(id: 'sgp1').create(),
         SeasonGrandPrixCreator(id: 'sgp2').create(),
       ];
-      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        GrandPrixBetPointsCreator(
+      final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 15,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.last.id,
           totalPoints: 12.5,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 10,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.last.id,
           totalPoints: 7.5,
         ).create(),
@@ -177,9 +178,9 @@ void main() {
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        grandPrixesBetPoints: grandPrixesBetPoints,
+      seasonGrandPrixBetPointsRepository
+          .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
       );
 
       final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
@@ -188,8 +189,8 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        () => seasonGrandPrixBetPointsRepository
+            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
@@ -213,36 +214,36 @@ void main() {
         SeasonGrandPrixCreator(id: 'sgp1').create(),
         SeasonGrandPrixCreator(id: 'sgp2').create(),
       ];
-      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        GrandPrixBetPointsCreator(
+      final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 15,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players[1].id,
           totalPoints: 12.5,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players[2].id,
           totalPoints: 22.22,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.last.id,
           totalPoints: 14.99,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.first.id,
           totalPoints: 10,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players[1].id,
           totalPoints: 7.5,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players[2].id,
           totalPoints: 17.22,
         ).create(),
-        GrandPrixBetPointsCreator(
+        SeasonGrandPrixBetPointsCreator(
           playerId: players.last.id,
           totalPoints: 9.99,
         ).create(),
@@ -265,9 +266,9 @@ void main() {
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        grandPrixesBetPoints: grandPrixesBetPoints,
+      seasonGrandPrixBetPointsRepository
+          .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
       );
 
       final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
@@ -276,8 +277,8 @@ void main() {
 
       expect(await playersPodium$.first, expectedPlayersPodium);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        () => seasonGrandPrixBetPointsRepository
+            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
           season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
