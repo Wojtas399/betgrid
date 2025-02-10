@@ -1,11 +1,11 @@
+import 'package:betgrid_shared/firebase/model/season_grand_prix_results_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_results_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/season_grand_prix_results.dart';
 import '../../../ui/extensions/stream_extensions.dart';
-import '../../firebase/model/grand_prix_results_dto.dart';
-import '../../firebase/service/firebase_grand_prix_results_service.dart';
 import '../../mapper/season_grand_prix_results_mapper.dart';
 import '../repository.dart';
 import 'season_grand_prix_results_repository.dart';
@@ -14,12 +14,13 @@ import 'season_grand_prix_results_repository.dart';
 class SeasonGrandPrixResultsRepositoryImpl
     extends Repository<SeasonGrandPrixResults>
     implements SeasonGrandPrixResultsRepository {
-  final FirebaseGrandPrixResultsService _fireGrandPrixResultsService;
+  final FirebaseSeasonGrandPrixResultsService
+      _fireSeasonGrandPrixResultsService;
   final SeasonGrandPrixResultsMapper _seasonGrandPrixResultsMapper;
   final _getResultsForSeasonGrandPrixMutex = Mutex();
 
   SeasonGrandPrixResultsRepositoryImpl(
-    this._fireGrandPrixResultsService,
+    this._fireSeasonGrandPrixResultsService,
     this._seasonGrandPrixResultsMapper,
   );
 
@@ -36,6 +37,7 @@ class SeasonGrandPrixResultsRepositoryImpl
         (gpResults) => gpResults.seasonGrandPrixId == seasonGrandPrixId,
       );
       matchingGpResults ??= await _fetchResultsForSeasonGrandPrixFromDb(
+        season,
         seasonGrandPrixId,
       );
       if (_getResultsForSeasonGrandPrixMutex.isLocked && !didRelease) {
@@ -70,6 +72,7 @@ class SeasonGrandPrixResultsRepositoryImpl
           if (idsOfGpsWithMissingResults.isNotEmpty) {
             final missingGpResults =
                 await _fetchResultsForSeasonGrandPrixesFromDb(
+              season,
               idsOfGpsWithMissingResults,
             );
             existingGpResults.addAll(missingGpResults);
@@ -79,29 +82,37 @@ class SeasonGrandPrixResultsRepositoryImpl
       ).distinctList();
 
   Future<SeasonGrandPrixResults?> _fetchResultsForSeasonGrandPrixFromDb(
+    int season,
     String seasonGrandPrixId,
   ) async {
-    final GrandPrixResultsDto? gpResultsDto = await _fireGrandPrixResultsService
-        .fetchResultsForSeasonGrandPrix(seasonGrandPrixId: seasonGrandPrixId);
-    if (gpResultsDto == null) return null;
-    final SeasonGrandPrixResults gpResults =
-        _seasonGrandPrixResultsMapper.mapFromDto(gpResultsDto);
-    addEntity(gpResults);
-    return gpResults;
+    final SeasonGrandPrixResultsDto? resultsDto =
+        await _fireSeasonGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
+    );
+    if (resultsDto == null) return null;
+    final SeasonGrandPrixResults results =
+        _seasonGrandPrixResultsMapper.mapFromDto(resultsDto);
+    addEntity(results);
+    return results;
   }
 
   Future<List<SeasonGrandPrixResults>> _fetchResultsForSeasonGrandPrixesFromDb(
+    int season,
     Iterable<String> idsOfSeasonGrandPrixes,
   ) async {
     final List<SeasonGrandPrixResults> fetchedGpResults = [];
     for (final String seasonGrandPrixId in idsOfSeasonGrandPrixes) {
-      final GrandPrixResultsDto? gpResultsDto =
-          await _fireGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
-              seasonGrandPrixId: seasonGrandPrixId);
-      if (gpResultsDto != null) {
-        final SeasonGrandPrixResults gpResults =
-            _seasonGrandPrixResultsMapper.mapFromDto(gpResultsDto);
-        fetchedGpResults.add(gpResults);
+      final SeasonGrandPrixResultsDto? resultsDto =
+          await _fireSeasonGrandPrixResultsService
+              .fetchResultsForSeasonGrandPrix(
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+      );
+      if (resultsDto != null) {
+        final SeasonGrandPrixResults results =
+            _seasonGrandPrixResultsMapper.mapFromDto(resultsDto);
+        fetchedGpResults.add(results);
       }
     }
     if (fetchedGpResults.isNotEmpty) addEntities(fetchedGpResults);
