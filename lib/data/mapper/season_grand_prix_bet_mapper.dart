@@ -9,7 +9,7 @@ class SeasonGrandPrixBetMapper {
       SeasonGrandPrixBet(
         id: dto.id,
         season: dto.season,
-        playerId: dto.playerId,
+        playerId: dto.userId,
         seasonGrandPrixId: dto.seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: dto.qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: dto.p1SeasonDriverId,

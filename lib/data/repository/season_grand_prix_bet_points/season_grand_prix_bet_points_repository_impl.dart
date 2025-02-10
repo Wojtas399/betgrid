@@ -1,12 +1,12 @@
-import 'package:betgrid_shared/firebase/model/grand_prix_bet_points_dto.dart';
-import 'package:betgrid_shared/firebase/service/firebase_grand_prix_bet_points_service.dart';
+import 'package:betgrid_shared/firebase/model/season_grand_prix_bet_points_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_bet_points_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/season_grand_prix_bet_points.dart';
 import '../../../ui/extensions/stream_extensions.dart';
-import '../../mapper/grand_prix_bet_points_mapper.dart';
+import '../../mapper/season_grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
 import 'season_grand_prix_bet_points_repository.dart';
 
@@ -14,13 +14,14 @@ import 'season_grand_prix_bet_points_repository.dart';
 class SeasonGrandPrixBetPointsRepositoryImpl
     extends Repository<SeasonGrandPrixBetPoints>
     implements SeasonGrandPrixBetPointsRepository {
-  final FirebaseGrandPrixBetPointsService _fireBetPointsService;
-  final GrandPrixBetPointsMapper _grandPrixBetPointsMapper;
+  final FirebaseSeasonGrandPrixBetPointsService
+      _fireSeasonGrandPrixBetPointsService;
+  final SeasonGrandPrixBetPointsMapper _seasonGrandPrixBetPointsMapper;
   final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
 
   SeasonGrandPrixBetPointsRepositoryImpl(
-    this._fireBetPointsService,
-    this._grandPrixBetPointsMapper,
+    this._fireSeasonGrandPrixBetPointsService,
+    this._seasonGrandPrixBetPointsMapper,
   );
 
   @override
@@ -103,15 +104,15 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   ) async {
     final List<SeasonGrandPrixBetPoints> fetchedBetPoints = [];
     for (final gpBetPointsData in dataOfPointsForGpBets) {
-      final GrandPrixBetPointsDto? gpBetPointsDto =
-          await _fireBetPointsService.fetchGrandPrixBetPoints(
+      final SeasonGrandPrixBetPointsDto? dto =
+          await _fireSeasonGrandPrixBetPointsService.fetchBySeasonGrandPrixId(
         userId: gpBetPointsData.playerId,
         season: gpBetPointsData.season,
         seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
       );
-      if (gpBetPointsDto != null) {
+      if (dto != null) {
         final SeasonGrandPrixBetPoints gpBetPoints =
-            _grandPrixBetPointsMapper.mapFromDto(gpBetPointsDto);
+            _seasonGrandPrixBetPointsMapper.mapFromDto(dto);
         fetchedBetPoints.add(gpBetPoints);
       }
     }
@@ -122,15 +123,15 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   Future<SeasonGrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
     _GrandPrixBetPointsFetchData gpBetPointsData,
   ) async {
-    final GrandPrixBetPointsDto? dto =
-        await _fireBetPointsService.fetchGrandPrixBetPoints(
+    final SeasonGrandPrixBetPointsDto? dto =
+        await _fireSeasonGrandPrixBetPointsService.fetchBySeasonGrandPrixId(
       userId: gpBetPointsData.playerId,
       season: gpBetPointsData.season,
       seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
     );
     if (dto == null) return null;
     final SeasonGrandPrixBetPoints entity =
-        _grandPrixBetPointsMapper.mapFromDto(dto);
+        _seasonGrandPrixBetPointsMapper.mapFromDto(dto);
     addEntity(entity);
     return entity;
   }
