@@ -63,6 +63,7 @@ class CreateBestPoints {
         final bestRace = _selectBestRace(playerWithStats);
         final bestDriver = _selectBestDriver(playerWithStats);
         return _getStatsGpAndDriverDetails(
+          season,
           bestGp.stats.bestGpPoints.seasonGrandPrixId,
           bestQuali.stats.bestQualiPoints.seasonGrandPrixId,
           bestRace.stats.bestRacePoints.seasonGrandPrixId,
@@ -109,6 +110,7 @@ class CreateBestPoints {
         return loggedUserName == null || stats == null
             ? Stream.value(null)
             : _getStatsGpAndDriverDetails(
+                season,
                 stats.bestGpPoints.seasonGrandPrixId,
                 stats.bestQualiPoints.seasonGrandPrixId,
                 stats.bestRacePoints.seasonGrandPrixId,
@@ -197,6 +199,7 @@ class CreateBestPoints {
   }
 
   Stream<_StatsGpAndDriverDetails> _getStatsGpAndDriverDetails(
+    int season,
     String bestSeasonGpId,
     String bestQualiSeasonGpId,
     String bestRaceSeasonGpId,
@@ -206,7 +209,7 @@ class CreateBestPoints {
       _getGpBasicInfo(bestSeasonGpId),
       _getGpBasicInfo(bestQualiSeasonGpId),
       _getGpBasicInfo(bestRaceSeasonGpId),
-      _getDriverPersonalData(bestSeasonDriverId),
+      _getDriverPersonalData(season, bestSeasonDriverId),
       (
         GrandPrixBasicInfo? bestGp,
         GrandPrixBasicInfo? bestQualiGp,
@@ -250,9 +253,15 @@ class CreateBestPoints {
         );
   }
 
-  Stream<DriverPersonalData?> _getDriverPersonalData(String seasonDriverId) {
+  Stream<DriverPersonalData?> _getDriverPersonalData(
+    int season,
+    String seasonDriverId,
+  ) {
     return _seasonDriverRepository
-        .getSeasonDriverById(seasonDriverId)
+        .getById(
+          season: season,
+          seasonDriverId: seasonDriverId,
+        )
         .switchMap(
           (SeasonDriver? seasonDriver) => seasonDriver != null
               ? _driverPersonalDataRepository.getDriverPersonalDataById(

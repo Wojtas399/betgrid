@@ -145,7 +145,10 @@ void main() {
       );
       for (int i = 0; i < 4; i++) {
         when(
-          () => seasonDriverRepository.getSeasonDriverById(seasonDrivers[i].id),
+          () => seasonDriverRepository.getById(
+            season: season,
+            seasonDriverId: seasonDrivers[i].id,
+          ),
         ).thenAnswer((_) => Stream.value(seasonDrivers[i]));
         when(
           () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),
@@ -202,7 +205,7 @@ void main() {
       seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
         seasonGrandPrixBetPoints: points,
       );
-      seasonDriverRepository.mockGetSeasonDriverById(
+      seasonDriverRepository.mockGetById(
         expectedSeasonDriver: seasonDriver,
       );
       getDetailsForSeasonDriverUseCase.mock(
@@ -256,7 +259,7 @@ void main() {
       seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
         seasonGrandPrixBetPoints: points,
       );
-      seasonDriverRepository.mockGetSeasonDriverById(
+      seasonDriverRepository.mockGetById(
         expectedSeasonDriver: seasonDriver,
       );
       getDetailsForSeasonDriverUseCase.mock(
@@ -319,7 +322,10 @@ void main() {
       );
       for (int i = 0; i < 4; i++) {
         when(
-          () => seasonDriverRepository.getSeasonDriverById(seasonDrivers[i].id),
+          () => seasonDriverRepository.getById(
+            season: season,
+            seasonDriverId: seasonDrivers[i].id,
+          ),
         ).thenAnswer((_) => Stream.value(seasonDrivers[i]));
         when(
           () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),

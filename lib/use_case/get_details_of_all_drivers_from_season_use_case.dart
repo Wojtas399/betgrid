@@ -17,9 +17,7 @@ class GetDetailsOfAllDriversFromSeasonUseCase {
   );
 
   Stream<List<DriverDetails>> call(int season) {
-    return _seasonDriverRepository
-        .getAllSeasonDriversFromSeason(season)
-        .switchMap(
+    return _seasonDriverRepository.getAllFromSeason(season).switchMap(
           (List<SeasonDriver> allDriversFromSeason) => Rx.combineLatest(
             allDriversFromSeason.map(_getDetailsForSeasonDriverUseCase.call),
             (List<DriverDetails?> detailsOfDrivers) =>

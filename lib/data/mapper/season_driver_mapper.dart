@@ -1,17 +1,17 @@
+import 'package:betgrid_shared/firebase/model/season_driver_dto.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../model/season_driver.dart';
-import '../firebase/model/season_driver_dto.dart';
 
 @injectable
 class SeasonDriverMapper {
-  SeasonDriver mapFromDto(SeasonDriverDto seasonDriverDto) {
+  SeasonDriver mapFromDto(SeasonDriverDto dto) {
     return SeasonDriver(
-      id: seasonDriverDto.id,
-      season: seasonDriverDto.season,
-      driverId: seasonDriverDto.driverId,
-      driverNumber: seasonDriverDto.driverNumber,
-      teamId: seasonDriverDto.teamId,
+      id: dto.id,
+      season: dto.season,
+      driverId: dto.driverId,
+      driverNumber: dto.driverNumber,
+      teamId: dto.teamId,
     );
   }
 }

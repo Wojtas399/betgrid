@@ -38,7 +38,7 @@ void main() {
         const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
         const DriverDetailsCreator(seasonDriverId: 'sd2').create(),
       ];
-      seasonDriverRepository.mockGetAllSeasonDriversFromSeason(
+      seasonDriverRepository.mockGetAllFromSeason(
         expectedSeasonDrivers: seasonDrivers,
       );
       when(
@@ -55,7 +55,7 @@ void main() {
 
       expect(await drivers$.first, expectedDrivers);
       verify(
-        () => seasonDriverRepository.getAllSeasonDriversFromSeason(season),
+        () => seasonDriverRepository.getAllFromSeason(season),
       ).called(1);
       verify(
         () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.first),

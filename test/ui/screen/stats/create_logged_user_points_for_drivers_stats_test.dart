@@ -116,8 +116,9 @@ void main() {
         ).create(),
       );
       when(
-        () => seasonDriverRepository.getSeasonDriverById(
-          pointsForDrivers.first.seasonDriverId,
+        () => seasonDriverRepository.getById(
+          season: season,
+          seasonDriverId: pointsForDrivers.first.seasonDriverId,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -125,13 +126,15 @@ void main() {
         ),
       );
       when(
-        () => seasonDriverRepository.getSeasonDriverById(
-          pointsForDrivers[1].seasonDriverId,
+        () => seasonDriverRepository.getById(
+          season: season,
+          seasonDriverId: pointsForDrivers[1].seasonDriverId,
         ),
       ).thenAnswer((_) => Stream.value(null));
       when(
-        () => seasonDriverRepository.getSeasonDriverById(
-          pointsForDrivers.last.seasonDriverId,
+        () => seasonDriverRepository.getById(
+          season: season,
+          seasonDriverId: pointsForDrivers.last.seasonDriverId,
         ),
       ).thenAnswer(
         (_) => Stream.value(
@@ -183,7 +186,10 @@ void main() {
       );
       for (final seasonDriver in seasonDrivers) {
         when(
-          () => seasonDriverRepository.getSeasonDriverById(seasonDriver.id),
+          () => seasonDriverRepository.getById(
+            season: season,
+            seasonDriverId: seasonDriver.id,
+          ),
         ).thenAnswer(
           (_) => Stream.value(seasonDriver),
         );
@@ -269,7 +275,10 @@ void main() {
       );
       for (int i = 0; i < 3; i++) {
         when(
-          () => seasonDriverRepository.getSeasonDriverById(seasonDrivers[i].id),
+          () => seasonDriverRepository.getById(
+            season: season,
+            seasonDriverId: seasonDrivers[i].id,
+          ),
         ).thenAnswer(
           (_) => Stream.value(seasonDrivers[i]),
         );

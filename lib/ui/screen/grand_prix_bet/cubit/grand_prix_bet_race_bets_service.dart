@@ -275,7 +275,12 @@ class GrandPrixBetRaceBetsService {
 
   Stream<DriverDetails?> _getDetailsForSeasonDriver(String? seasonDriverId) {
     return seasonDriverId != null
-        ? _seasonDriverRepository.getSeasonDriverById(seasonDriverId).switchMap(
+        ? _seasonDriverRepository
+            .getById(
+              season: _params.season,
+              seasonDriverId: seasonDriverId,
+            )
+            .switchMap(
               (seasonDriver) => seasonDriver != null
                   ? _getDetailsForSeasonDriverUseCase(seasonDriver)
                   : Stream.value(null),

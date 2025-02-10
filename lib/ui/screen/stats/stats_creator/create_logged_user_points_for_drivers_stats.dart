@@ -44,6 +44,7 @@ class CreateLoggedUserPointsForDriversStats {
             pointsWithDriverDetailsStreams = pointsForDriversFromStats.map(
           (PlayerStatsPointsForDriver pointsForSingleDriver) {
             return _getDetailsForSeasonDriver(
+              season,
               pointsForSingleDriver.seasonDriverId,
             ).map(
               (DriverDetails? driverDetails) => PointsForDriver(
@@ -75,9 +76,15 @@ class CreateLoggedUserPointsForDriversStats {
         .map((PlayerStats? stats) => stats?.pointsForDrivers);
   }
 
-  Stream<DriverDetails?> _getDetailsForSeasonDriver(String seasonDriverId) {
+  Stream<DriverDetails?> _getDetailsForSeasonDriver(
+    int season,
+    String seasonDriverId,
+  ) {
     return _seasonDriverRepository
-        .getSeasonDriverById(seasonDriverId)
+        .getById(
+          season: season,
+          seasonDriverId: seasonDriverId,
+        )
         .switchMap(
           (SeasonDriver? seasonDriver) =>
               _getDetailsForSeasonDriverUseCase(seasonDriver!),

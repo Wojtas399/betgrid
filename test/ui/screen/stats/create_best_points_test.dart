@@ -238,7 +238,10 @@ void main() {
         () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp3.id),
       ).thenAnswer((_) => Stream.value(sgp3));
       when(
-        () => seasonDriverRepository.getSeasonDriverById(sd3.id),
+        () => seasonDriverRepository.getById(
+          season: season,
+          seasonDriverId: sd3.id,
+        ),
       ).thenAnswer((_) => Stream.value(sd3));
       when(
         () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(gp1.id),
@@ -371,7 +374,7 @@ void main() {
       when(
         () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp3.id),
       ).thenAnswer((_) => Stream.value(sgp3));
-      seasonDriverRepository.mockGetSeasonDriverById(expectedSeasonDriver: sd1);
+      seasonDriverRepository.mockGetById(expectedSeasonDriver: sd1);
       when(
         () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(gp1.id),
       ).thenAnswer((_) => Stream.value(gp1));
