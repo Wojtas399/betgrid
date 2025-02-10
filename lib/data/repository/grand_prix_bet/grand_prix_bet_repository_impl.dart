@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_bet.dart';
-import '../../../ui/extensions/stream_extensions.dart';
 import '../../mapper/grand_prix_bet_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_repository.dart';
@@ -23,45 +22,9 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   );
 
   @override
-  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayersAndSeasonGrandPrixes({
-    required List<String> idsOfPlayers,
-    required List<String> idsOfSeasonGrandPrixes,
-  }) =>
-      repositoryState$.asyncMap(
-        (List<GrandPrixBet> existingGpBets) async {
-          final List<GrandPrixBet> gpBets = [];
-          final List<_GrandPrixBetFetchData> dataOfMissingGpBets = [];
-          for (final playerId in idsOfPlayers) {
-            for (final seasonGrandPrixId in idsOfSeasonGrandPrixes) {
-              final GrandPrixBet? existingGpBet =
-                  existingGpBets.firstWhereOrNull(
-                (GrandPrixBet gpBet) =>
-                    gpBet.seasonGrandPrixId == seasonGrandPrixId &&
-                    gpBet.playerId == playerId,
-              );
-              if (existingGpBet != null) {
-                gpBets.add(existingGpBet);
-              } else {
-                dataOfMissingGpBets.add((
-                  playerId: playerId,
-                  seasonGrandPrixId: seasonGrandPrixId,
-                ));
-              }
-            }
-          }
-          if (dataOfMissingGpBets.isNotEmpty) {
-            final missingGpBets = await _fetchManyGrandPrixBetsFromDb(
-              dataOfMissingGpBets,
-            );
-            gpBets.addAll(missingGpBets);
-          }
-          return gpBets;
-        },
-      ).distinctList();
-
-  @override
-  Stream<GrandPrixBet?> getGrandPrixBetForPlayerAndSeasonGrandPrix({
+  Stream<GrandPrixBet?> getGrandPrixBet({
     required String playerId,
+    required int season,
     required String seasonGrandPrixId,
   }) async* {
     bool didRelease = false;
@@ -70,10 +33,12 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
         (GrandPrixBet grandPrixBet) =>
             grandPrixBet.playerId == playerId &&
+            grandPrixBet.season == season &&
             grandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
       );
       grandPrixBet ??= await _fetchGrandPrixBetFromDb((
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
       ));
       if (_getGrandPrixBetForPlayerAndGrandprixMutex.isLocked && !didRelease) {
@@ -87,6 +52,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   @override
   Future<void> addGrandPrixBet({
     required String playerId,
+    required int season,
     required String seasonGrandPrixId,
     List<String?> qualiStandingsBySeasonDriverIds = const [],
     String? p1SeasonDriverId,
@@ -101,6 +67,7 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final GrandPrixBetDto? addedGrandPrixBetDto =
         await _fireGrandPrixBetService.addGrandPrixBet(
       userId: playerId,
+      season: season,
       seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
@@ -122,7 +89,8 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   @override
   Future<void> updateGrandPrixBet({
     required String playerId,
-    required String grandPrixBetId,
+    required int season,
+    required String seasonGrandPrixId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
@@ -136,7 +104,8 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     final GrandPrixBetDto? updatedGrandPrixBetDto =
         await _fireGrandPrixBetService.updateGrandPrixBet(
       userId: playerId,
-      grandPrixBetId: grandPrixBetId,
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: p1SeasonDriverId,
       p2SeasonDriverId: p2SeasonDriverId,
@@ -154,31 +123,13 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
     }
   }
 
-  Future<List<GrandPrixBet>> _fetchManyGrandPrixBetsFromDb(
-    List<_GrandPrixBetFetchData> gpBetsData,
-  ) async {
-    final List<GrandPrixBet> fetchedGpBets = [];
-    for (final _GrandPrixBetFetchData gpBetData in gpBetsData) {
-      final GrandPrixBetDto? gpBetDto =
-          await _fireGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
-        playerId: gpBetData.playerId,
-        seasonGrandPrixId: gpBetData.seasonGrandPrixId,
-      );
-      if (gpBetDto != null) {
-        final GrandPrixBet gpBet = _grandPrixBetMapper.mapFromDto(gpBetDto);
-        fetchedGpBets.add(gpBet);
-      }
-    }
-    if (fetchedGpBets.isNotEmpty) addEntities(fetchedGpBets);
-    return fetchedGpBets;
-  }
-
   Future<GrandPrixBet?> _fetchGrandPrixBetFromDb(
     _GrandPrixBetFetchData gpBetData,
   ) async {
     final GrandPrixBetDto? betDto =
         await _fireGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
-      playerId: gpBetData.playerId,
+      userId: gpBetData.playerId,
+      season: gpBetData.season,
       seasonGrandPrixId: gpBetData.seasonGrandPrixId,
     );
     if (betDto == null) return null;
@@ -188,4 +139,8 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
   }
 }
 
-typedef _GrandPrixBetFetchData = ({String playerId, String seasonGrandPrixId});
+typedef _GrandPrixBetFetchData = ({
+  String playerId,
+  int season,
+  String seasonGrandPrixId,
+});

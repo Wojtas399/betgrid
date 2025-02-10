@@ -69,13 +69,15 @@ class _GrandPrixes extends StatelessWidget {
   const _GrandPrixes();
 
   void _onGrandPrixPressed(String grandPrixId, BuildContext context) {
-    final String? playerId =
-        context.read<PlayerProfileCubit>().state.player?.id;
-    if (playerId != null) {
+    final PlayerProfileCubit cubit = context.read<PlayerProfileCubit>();
+    final String? playerId = cubit.state.player?.id;
+    final int? season = cubit.state.season;
+    if (playerId != null && season != null) {
       context.navigateTo(
         GrandPrixBetRoute(
-          grandPrixId: grandPrixId,
           playerId: playerId,
+          season: season,
+          seasonGrandPrixId: grandPrixId,
         ),
       );
     }

@@ -1,18 +1,15 @@
 import '../../../model/grand_prix_bet.dart';
 
 abstract interface class GrandPrixBetRepository {
-  Stream<List<GrandPrixBet>> getGrandPrixBetsForPlayersAndSeasonGrandPrixes({
-    required List<String> idsOfPlayers,
-    required List<String> idsOfSeasonGrandPrixes,
-  });
-
-  Stream<GrandPrixBet?> getGrandPrixBetForPlayerAndSeasonGrandPrix({
+  Stream<GrandPrixBet?> getGrandPrixBet({
     required String playerId,
+    required int season,
     required String seasonGrandPrixId,
   });
 
   Future<void> addGrandPrixBet({
     required String playerId,
+    required int season,
     required String seasonGrandPrixId,
     List<String?> qualiStandingsBySeasonDriverIds = const [],
     String? p1SeasonDriverId,
@@ -27,7 +24,8 @@ abstract interface class GrandPrixBetRepository {
 
   Future<void> updateGrandPrixBet({
     required String playerId,
-    required String grandPrixBetId,
+    required int season,
+    required String seasonGrandPrixId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,

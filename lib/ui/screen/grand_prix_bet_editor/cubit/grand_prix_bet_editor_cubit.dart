@@ -19,6 +19,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final GrandPrixBetRepository _grandPrixBetRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
       _getDetailsOfAllDriversFromSeasonUseCase;
+  final int _season;
   final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
 
@@ -26,6 +27,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     this._authRepository,
     this._grandPrixBetRepository,
     this._getDetailsOfAllDriversFromSeasonUseCase,
+    @factoryParam this._season,
     @factoryParam this._seasonGrandPrixId,
   ) : super(const GrandPrixBetEditorState());
 
@@ -198,9 +200,9 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
 
   Stream<GrandPrixBet?> _getBetForGrandPrix() {
     return _authRepository.loggedUserId$.whereNotNull().switchMap(
-          (String loggedUserId) => _grandPrixBetRepository
-              .getGrandPrixBetForPlayerAndSeasonGrandPrix(
+          (String loggedUserId) => _grandPrixBetRepository.getGrandPrixBet(
             playerId: loggedUserId,
+            season: _season,
             seasonGrandPrixId: _seasonGrandPrixId,
           ),
         );
@@ -245,6 +247,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> _addGrandPrixBet(String loggedUserId) async {
     await _grandPrixBetRepository.addGrandPrixBet(
       playerId: loggedUserId,
+      season: _season,
       seasonGrandPrixId: _seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
@@ -263,7 +266,8 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> _updateGrandPrixBet(String loggedUserId) async {
     await _grandPrixBetRepository.updateGrandPrixBet(
       playerId: loggedUserId,
-      grandPrixBetId: state.originalGrandPrixBet!.id,
+      season: _season,
+      seasonGrandPrixId: state.originalGrandPrixBet!.id,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
       p2SeasonDriverId: state.raceForm.p2SeasonDriverId,

@@ -7,6 +7,7 @@ import '../../model/grand_prix_bet.dart';
 class GrandPrixBetMapper {
   GrandPrixBet mapFromDto(GrandPrixBetDto grandPrixBetDto) => GrandPrixBet(
         id: grandPrixBetDto.id,
+        season: grandPrixBetDto.season,
         playerId: grandPrixBetDto.playerId,
         seasonGrandPrixId: grandPrixBetDto.seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds:
@@ -19,21 +20,5 @@ class GrandPrixBetMapper {
         dnfSeasonDriverIds: grandPrixBetDto.dnfSeasonDriverIds,
         willBeSafetyCar: grandPrixBetDto.willBeSafetyCar,
         willBeRedFlag: grandPrixBetDto.willBeRedFlag,
-      );
-
-  GrandPrixBetDto mapToDto(GrandPrixBet grandPrixBet) => GrandPrixBetDto(
-        id: grandPrixBet.id,
-        playerId: grandPrixBet.playerId,
-        seasonGrandPrixId: grandPrixBet.seasonGrandPrixId,
-        qualiStandingsBySeasonDriverIds:
-            grandPrixBet.qualiStandingsBySeasonDriverIds,
-        p1SeasonDriverId: grandPrixBet.p1SeasonDriverId,
-        p2SeasonDriverId: grandPrixBet.p2SeasonDriverId,
-        p3SeasonDriverId: grandPrixBet.p3SeasonDriverId,
-        p10SeasonDriverId: grandPrixBet.p10SeasonDriverId,
-        fastestLapSeasonDriverId: grandPrixBet.fastestLapSeasonDriverId,
-        dnfSeasonDriverIds: grandPrixBet.dnfSeasonDriverIds,
-        willBeSafetyCar: grandPrixBet.willBeSafetyCar,
-        willBeRedFlag: grandPrixBet.willBeRedFlag,
       );
 }

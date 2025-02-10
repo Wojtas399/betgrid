@@ -21,6 +21,7 @@ class PlayerProfileState with _$PlayerProfileState {
   const factory PlayerProfileState({
     @Default(PlayerProfileStateStatus.loading) PlayerProfileStateStatus status,
     Player? player,
+    int? season,
     double? totalPoints,
     @Default([]) List<GrandPrixWithPoints> grandPrixesWithPoints,
   }) = _PlayerProfileState;

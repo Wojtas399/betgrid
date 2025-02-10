@@ -17,19 +17,21 @@ void main() {
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
   final getGrandPrixesWithPointsUseCase = MockGetGrandPrixesWithPointsUseCase();
   final dateService = MockDateService();
+  const String playerId = 'p1';
 
   PlayerProfileCubit createCubit() => PlayerProfileCubit(
         playerRepository,
         getPlayerPointsUseCase,
         getGrandPrixesWithPointsUseCase,
         dateService,
+        playerId,
       );
 
   group(
     'initialize, ',
     () {
-      const String playerId = 'p1';
-      final DateTime now = DateTime(2024);
+      const int season = 2024;
+      final DateTime now = DateTime(season);
       final Player player = const PlayerCreator(id: playerId).create();
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
@@ -38,8 +40,8 @@ void main() {
           name: 'gp1',
           countryAlpha2Code: 'FR',
           roundNumber: 1,
-          startDate: DateTime(2024, 1, 1),
-          endDate: DateTime(2024, 1, 1),
+          startDate: DateTime(season, 1, 1),
+          endDate: DateTime(season, 1, 1),
           points: 10.2,
         ),
         GrandPrixWithPoints(
@@ -47,8 +49,8 @@ void main() {
           name: 'gp2',
           countryAlpha2Code: 'FR',
           roundNumber: 2,
-          startDate: DateTime(2024, 1, 1),
-          endDate: DateTime(2024, 1, 1),
+          startDate: DateTime(season, 1, 1),
+          endDate: DateTime(season, 1, 1),
           points: 10.2,
         ),
       ];
@@ -65,11 +67,12 @@ void main() {
             grandPrixesWithPoints: grandPrixesWithPoints,
           );
         },
-        act: (cubit) => cubit.initialize(playerId: playerId),
+        act: (cubit) => cubit.initialize(),
         expect: () => [
           PlayerProfileState(
             status: PlayerProfileStateStatus.completed,
             player: player,
+            season: season,
             totalPoints: playerPoints,
             grandPrixesWithPoints: grandPrixesWithPoints,
           ),

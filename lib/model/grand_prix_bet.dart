@@ -2,6 +2,7 @@ import 'entity.dart';
 
 class GrandPrixBet extends Entity {
   final String playerId;
+  final int season;
   final String seasonGrandPrixId;
   final List<String?> qualiStandingsBySeasonDriverIds;
   final String? p1SeasonDriverId;
@@ -16,6 +17,7 @@ class GrandPrixBet extends Entity {
   const GrandPrixBet({
     required super.id,
     required this.playerId,
+    required this.season,
     required this.seasonGrandPrixId,
     required this.qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId,
@@ -32,6 +34,7 @@ class GrandPrixBet extends Entity {
   List<Object?> get props => [
         id,
         playerId,
+        season,
         seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId,

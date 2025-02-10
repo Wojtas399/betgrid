@@ -16,12 +16,15 @@ class BetsListOfBets extends StatelessWidget {
   const BetsListOfBets({super.key});
 
   void _onGrandPrixPressed(String grandPrixId, BuildContext context) {
-    final String? loggedUserId = context.read<BetsCubit>().state.loggedUserId;
-    if (loggedUserId != null) {
+    final BetsCubit cubit = context.read<BetsCubit>();
+    final int? season = cubit.state.season;
+    final String? loggedUserId = cubit.state.loggedUserId;
+    if (loggedUserId != null && season != null) {
       context.navigateTo(
         GrandPrixBetRoute(
-          grandPrixId: grandPrixId,
           playerId: loggedUserId,
+          season: season,
+          seasonGrandPrixId: grandPrixId,
         ),
       );
     }

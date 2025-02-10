@@ -27,8 +27,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final PlayerRepository _playerRepository;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final DateService _dateService;
-  final String _playerId;
-  final String _seasonGrandPrixId;
+  final GrandPrixBetCubitParams _params;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
 
   GrandPrixBetCubit(
@@ -38,8 +37,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     this._playerRepository,
     this._grandPrixBetPointsRepository,
     this._dateService,
-    @factoryParam this._playerId,
-    @factoryParam this._seasonGrandPrixId,
+    @factoryParam this._params,
   ) : super(const GrandPrixBetState());
 
   @override
@@ -62,10 +60,11 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           status: GrandPrixBetStateStatus.completed,
           canEdit: canEdit,
           playerUsername: listenedParams.playerUsername,
-          seasonGrandPrixId: _seasonGrandPrixId,
+          season: _params.season,
+          seasonGrandPrixId: _params.seasonGrandPrixId,
           grandPrixName: listenedParams.gpListenedParams?.name,
           isPlayerIdSameAsLoggedUserId:
-              listenedParams.loggedUserId == _playerId,
+              listenedParams.loggedUserId == _params.playerId,
           qualiBets: listenedParams.qualiBets,
           racePodiumBets: listenedParams.raceListenedParams.podiumBets,
           raceP10Bet: listenedParams.raceListenedParams.p10Bet,
@@ -81,8 +80,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
 
   Stream<_ListenedParams> _getListenedParams() {
     final qualiBetsService = getIt<GrandPrixBetQualiBetsService>(
-      param1: _playerId,
-      param2: _seasonGrandPrixId,
+      param1: _params,
     );
     return Rx.combineLatest6(
       _getPlayerUsername(),
@@ -112,13 +110,13 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
 
   Stream<String?> _getPlayerUsername() {
     return _playerRepository
-        .getPlayerById(playerId: _playerId)
+        .getPlayerById(playerId: _params.playerId)
         .map((Player? player) => player?.username);
   }
 
   Stream<_GrandPrixListenedParams?> _getGrandPrixListenedParams() {
     return _seasonGrandPrixRepository
-        .getSeasonGrandPrixById(_seasonGrandPrixId)
+        .getSeasonGrandPrixById(_params.seasonGrandPrixId)
         .switchMap(
           (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
               ? _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
@@ -130,8 +128,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
 
   Stream<_RaceListenedParams> _getRaceListenedParams() {
     final raceBetsService = getIt<GrandPrixBetRaceBetsService>(
-      param1: _playerId,
-      param2: _seasonGrandPrixId,
+      param1: _params,
     );
     return Rx.combineLatest6(
       raceBetsService.getPodiumBets(),
@@ -162,8 +159,8 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   Stream<GrandPrixBetPoints?> _getGpBetPoints() {
     return _grandPrixBetPointsRepository
         .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
-      playerId: _playerId,
-      seasonGrandPrixId: _seasonGrandPrixId,
+      playerId: _params.playerId,
+      seasonGrandPrixId: _params.seasonGrandPrixId,
     );
   }
 
@@ -182,6 +179,18 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
               : null,
         );
   }
+}
+
+class GrandPrixBetCubitParams {
+  final String playerId;
+  final int season;
+  final String seasonGrandPrixId;
+
+  const GrandPrixBetCubitParams({
+    required this.playerId,
+    required this.season,
+    required this.seasonGrandPrixId,
+  });
 }
 
 typedef _ListenedParams = ({

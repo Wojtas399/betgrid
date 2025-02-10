@@ -39,6 +39,7 @@ class BetsCubit extends Cubit<BetsState> {
   }
 
   void initialize() {
+    final int currentSeason = _dateService.getNow().year;
     _listener ??= _authRepository.loggedUserId$
         .distinct()
         .doOnData(
@@ -51,20 +52,27 @@ class BetsCubit extends Cubit<BetsState> {
           },
         )
         .whereNotNull()
-        .switchMap(_getListenedData)
-        .listen(_manageListenedData);
+        .switchMap(
+          (String loggedUserId) =>
+              _getListenedData(loggedUserId, currentSeason),
+        )
+        .listen(
+          (_ListenedData data) => _manageListenedData(data, currentSeason),
+        );
   }
 
-  Stream<_ListenedData> _getListenedData(String loggedUserId) {
-    final int currentSeason = _dateService.getNow().year;
+  Stream<_ListenedData> _getListenedData(
+    String loggedUserId,
+    int season,
+  ) {
     return Rx.combineLatest2(
       _getPlayerPointsUseCase(
         playerId: loggedUserId,
-        season: currentSeason,
+        season: season,
       ),
       _getGrandPrixesWithPointsUseCase(
         playerId: loggedUserId,
-        season: currentSeason,
+        season: season,
       ).map(_addStatusForEachGp),
       (
         double? totalPoints,
@@ -78,16 +86,18 @@ class BetsCubit extends Cubit<BetsState> {
     );
   }
 
-  Future<void> _manageListenedData(_ListenedData data) async {
+  Future<void> _manageListenedData(_ListenedData data, int season) async {
     if (data.totalPoints == null && data.grandPrixItems.isEmpty) {
       emit(state.copyWith(
         status: BetsStateStatus.noBets,
         loggedUserId: data.loggedUserId,
+        season: season,
       ));
     } else {
       emit(state.copyWith(
         status: BetsStateStatus.completed,
         loggedUserId: data.loggedUserId,
+        season: season,
         totalPoints: data.totalPoints,
         grandPrixItems: data.grandPrixItems,
       ));

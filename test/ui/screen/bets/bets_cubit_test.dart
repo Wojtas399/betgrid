@@ -111,9 +111,10 @@ void main() {
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
-          const BetsState(
+          BetsState(
             status: BetsStateStatus.noBets,
             loggedUserId: loggedUserId,
+            season: now.year,
           ),
         ],
         verify: (_) {
@@ -182,6 +183,7 @@ void main() {
           state = BetsState(
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
+            season: now.year,
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
@@ -305,6 +307,7 @@ void main() {
           state = BetsState(
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
+            season: now.year,
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(
@@ -448,6 +451,7 @@ void main() {
           BetsState(
             status: BetsStateStatus.completed,
             loggedUserId: loggedUserId,
+            season: now.year,
             totalPoints: 30,
             grandPrixItems: [
               GrandPrixItemParams(

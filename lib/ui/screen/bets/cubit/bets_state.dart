@@ -23,6 +23,7 @@ class BetsState with _$BetsState {
   const factory BetsState({
     @Default(BetsStateStatus.loading) BetsStateStatus status,
     String? loggedUserId,
+    int? season,
     double? totalPoints,
     List<GrandPrixItemParams>? grandPrixItems,
     Duration? durationToStartNextGp,

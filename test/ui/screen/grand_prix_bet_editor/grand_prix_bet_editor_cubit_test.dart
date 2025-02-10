@@ -20,12 +20,14 @@ void main() {
   final grandPrixBetRepository = MockGrandPrixBetRepository();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
+  const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
 
   GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
         authRepository,
         grandPrixBetRepository,
         getDetailsOfAllDriversFromSeasonUseCase,
+        season,
         seasonGrandPrixId,
       );
 
@@ -97,9 +99,9 @@ void main() {
           );
           authRepository.mockGetLoggedUserId(loggedUserId);
           when(
-            () => grandPrixBetRepository
-                .getGrandPrixBetForPlayerAndSeasonGrandPrix(
+            () => grandPrixBetRepository.getGrandPrixBet(
               playerId: loggedUserId,
+              season: season,
               seasonGrandPrixId: seasonGrandPrixId,
             ),
           ).thenAnswer((_) => bet$.stream);
@@ -148,9 +150,9 @@ void main() {
           ).called(1);
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => grandPrixBetRepository
-                .getGrandPrixBetForPlayerAndSeasonGrandPrix(
+            () => grandPrixBetRepository.getGrandPrixBet(
               playerId: loggedUserId,
+              season: season,
               seasonGrandPrixId: seasonGrandPrixId,
             ),
           ).called(1);
@@ -492,8 +494,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository
-              .mockGetGrandPrixBetForPlayerAndSeasonGrandPrix();
+          grandPrixBetRepository.mockGetGrandPrixBet();
           grandPrixBetRepository.mockAddGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
@@ -521,6 +522,7 @@ void main() {
         verify: (_) => verify(
           () => grandPrixBetRepository.addGrandPrixBet(
             playerId: loggedUserId,
+            season: season,
             seasonGrandPrixId: seasonGrandPrixId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
@@ -541,8 +543,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository
-              .mockGetGrandPrixBetForPlayerAndSeasonGrandPrix();
+          grandPrixBetRepository.mockGetGrandPrixBet();
           grandPrixBetRepository.mockUpdateGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
@@ -573,7 +574,8 @@ void main() {
         verify: (_) => verify(
           () => grandPrixBetRepository.updateGrandPrixBet(
             playerId: loggedUserId,
-            grandPrixBetId: grandPrixBetId,
+            season: season,
+            seasonGrandPrixId: grandPrixBetId,
             qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
             p1SeasonDriverId: p1SeasonDriverId,
             p2SeasonDriverId: p2SeasonDriverId,

@@ -18,7 +18,7 @@ class PlayerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (_) =>
-            getIt.get<PlayerProfileCubit>()..initialize(playerId: playerId),
+            getIt.get<PlayerProfileCubit>(param1: playerId)..initialize(),
         child: const PlayerProfileContent(),
       );
 }

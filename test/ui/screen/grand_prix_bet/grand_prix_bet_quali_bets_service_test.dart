@@ -1,5 +1,6 @@
 import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_quali_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +24,7 @@ void main() {
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
+  const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
   final service = GrandPrixBetQualiBetsService(
     grandPrixBetRepository,
@@ -30,15 +32,17 @@ void main() {
     getDetailsOfAllDriversFromSeasonUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
-    playerId,
-    seasonGrandPrixId,
+    const GrandPrixBetCubitParams(
+      playerId: playerId,
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
+    ),
   );
 
   test(
     'should create list with 20 SingleDriverBet elements where each element '
     'has data corresponding to its position',
     () async {
-      const int season = 2024;
       final List<DriverDetails> allDriverDetails = List.generate(
         20,
         (int driverIndex) => DriverDetailsCreator(
@@ -224,7 +228,7 @@ void main() {
           points: 0,
         ),
       ];
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: GrandPrixBetCreator(
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).create(),
@@ -261,8 +265,9 @@ void main() {
 
       expect(await bets$.first, expectedBets);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
+        () => grandPrixBetRepository.getGrandPrixBet(
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);

@@ -35,6 +35,7 @@ void main() {
   final qualiBetsService = MockGrandPrixBetQualiBetsService();
   final raceBetsService = MockGrandPrixBetRaceBetsService();
   const String playerId = 'p1';
+  const int season = 2024;
   const String seasonGrandPrixId = 'sgp1';
 
   GrandPrixBetCubit createCubit() => GrandPrixBetCubit(
@@ -44,8 +45,11 @@ void main() {
         playerRepository,
         grandPrixBetPointsRepository,
         dateService,
-        playerId,
-        seasonGrandPrixId,
+        const GrandPrixBetCubitParams(
+          playerId: playerId,
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        ),
       );
 
   setUpAll(() {
@@ -80,7 +84,7 @@ void main() {
       final SeasonGrandPrix seasonGrandPrix = SeasonGrandPrixCreator(
         id: seasonGrandPrixId,
         grandPrixId: 'gp1',
-        startDate: DateTime(2024, 3, 3),
+        startDate: DateTime(season, 3, 3),
       ).create();
       final GrandPrixBasicInfo grandPrixBasicInfo = GrandPrixBasicInfoCreator(
         id: seasonGrandPrix.grandPrixId,
@@ -158,12 +162,13 @@ void main() {
       final GrandPrixBetPoints gpBetPoints = const GrandPrixBetPointsCreator(
         id: 'gpb1',
       ).create();
-      final DateTime now = DateTime(2024, 2, 2);
+      final DateTime now = DateTime(season, 2, 2);
       const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(
         status: GrandPrixBetStateStatus.completed,
         canEdit: canEdit,
         playerUsername: player.username,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
         grandPrixName: grandPrixBasicInfo.name,
         qualiBets: qualiBets,

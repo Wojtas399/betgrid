@@ -10,6 +10,7 @@ import '../../../../model/grand_prix_bet.dart';
 import '../../../../model/grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../use_case/get_details_for_season_driver_use_case.dart';
+import 'grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_state.dart';
 import 'grand_prix_bet_status_service.dart';
 
@@ -21,8 +22,7 @@ class GrandPrixBetRaceBetsService {
   final GetDetailsForSeasonDriverUseCase _getDetailsForSeasonDriverUseCase;
   final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
   final GrandPrixBetStatusService _grandPrixBetStatusService;
-  final String _playerId;
-  final String _seasonGrandPrix;
+  final GrandPrixBetCubitParams _params;
 
   GrandPrixBetRaceBetsService(
     this._grandPrixBetRepository,
@@ -31,8 +31,7 @@ class GrandPrixBetRaceBetsService {
     this._getDetailsForSeasonDriverUseCase,
     this._grandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
-    @factoryParam this._playerId,
-    @factoryParam this._seasonGrandPrix,
+    @factoryParam this._params,
   );
 
   Stream<List<SingleDriverBet>> getPodiumBets() {
@@ -118,7 +117,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<BooleanBet> getSafetyCarBet() {
     return Rx.combineLatest3(
-      _getBets().map((grandPrixBet) => grandPrixBet?.willBeSafetyCar),
+      _getBet().map((grandPrixBet) => grandPrixBet?.willBeSafetyCar),
       _getResults().map((raceResults) => raceResults?.wasThereSafetyCar),
       _getPoints().map((points) => points?.safetyCarPoints),
       (
@@ -137,7 +136,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<BooleanBet> getRedFlagBet() {
     return Rx.combineLatest3(
-      _getBets().map((grandPrixBet) => grandPrixBet?.willBeRedFlag),
+      _getBet().map((grandPrixBet) => grandPrixBet?.willBeRedFlag),
       _getResults().map((raceResults) => raceResults?.wasThereRedFlag),
       _getPoints().map((points) => points?.redFlagPoints),
       (
@@ -155,7 +154,7 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<List<DriverDetails?>> _getBetPodiumDrivers() {
-    return _getBets()
+    return _getBet()
         .map(
           (GrandPrixBet? grandPrixBet) => [
             grandPrixBet?.p1SeasonDriverId,
@@ -189,7 +188,7 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<DriverDetails?> _getBetP10Driver() {
-    return _getBets()
+    return _getBet()
         .map((grandPrixBet) => grandPrixBet?.p10SeasonDriverId)
         .switchMap(_getDetailsForSeasonDriver);
   }
@@ -201,7 +200,7 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<DriverDetails?> _getBetFastestLapDriver() {
-    return _getBets()
+    return _getBet()
         .map((grandPrixBet) => grandPrixBet?.fastestLapSeasonDriverId)
         .switchMap(_getDetailsForSeasonDriver);
   }
@@ -213,7 +212,7 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<List<DriverDetails?>?> _getBetDnfDrivers() {
-    return _getBets()
+    return _getBet()
         .map((grandPrixBet) => grandPrixBet?.dnfSeasonDriverIds)
         .switchMap(
           (dnfSeasonDriverIds) => dnfSeasonDriverIds != null
@@ -232,17 +231,18 @@ class GrandPrixBetRaceBetsService {
         );
   }
 
-  Stream<GrandPrixBet?> _getBets() {
-    return _grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
-      playerId: _playerId,
-      seasonGrandPrixId: _seasonGrandPrix,
+  Stream<GrandPrixBet?> _getBet() {
+    return _grandPrixBetRepository.getGrandPrixBet(
+      playerId: _params.playerId,
+      season: _params.season,
+      seasonGrandPrixId: _params.seasonGrandPrixId,
     );
   }
 
   Stream<RaceResults?> _getResults() {
     return _grandPrixResultsRepository
         .getGrandPrixResultsForSeasonGrandPrix(
-          seasonGrandPrixId: _seasonGrandPrix,
+          seasonGrandPrixId: _params.seasonGrandPrixId,
         )
         .map((grandPrixResults) => grandPrixResults?.raceResults);
   }
@@ -250,8 +250,8 @@ class GrandPrixBetRaceBetsService {
   Stream<RaceBetPoints?> _getPoints() {
     return _grandPrixBetPointsRepository
         .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
-          playerId: _playerId,
-          seasonGrandPrixId: _seasonGrandPrix,
+          playerId: _params.playerId,
+          seasonGrandPrixId: _params.seasonGrandPrixId,
         )
         .map((grandPrixBetPoints) => grandPrixBetPoints?.raceBetPoints);
   }

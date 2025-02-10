@@ -17,6 +17,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
   final DateService _dateService;
+  final String _playerId;
   StreamSubscription<_ListenedParams>? _listener;
 
   PlayerProfileCubit(
@@ -24,6 +25,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     this._getPlayerPointsUseCase,
     this._getGrandPrixesWithPointsUseCase,
     this._dateService,
+    @factoryParam this._playerId,
   ) : super(const PlayerProfileState());
 
   @override
@@ -32,14 +34,14 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     return super.close();
   }
 
-  void initialize({
-    required String playerId, //TODO: Made it factoryParam
-  }) {
-    _listener ??= _getListenedParams(playerId).listen(
+  void initialize() {
+    final int currentYear = _dateService.getNow().year;
+    _listener ??= _getListenedParams(currentYear).listen(
       (_ListenedParams listenedParams) {
         emit(state.copyWith(
           status: PlayerProfileStateStatus.completed,
           player: listenedParams.player,
+          season: currentYear,
           totalPoints: listenedParams.totalPoints,
           grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
         ));
@@ -47,17 +49,16 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     );
   }
 
-  Stream<_ListenedParams> _getListenedParams(String playerId) {
-    final int currentYear = _dateService.getNow().year;
+  Stream<_ListenedParams> _getListenedParams(int season) {
     return Rx.combineLatest3(
-      _playerRepository.getPlayerById(playerId: playerId),
+      _playerRepository.getPlayerById(playerId: _playerId),
       _getPlayerPointsUseCase(
-        playerId: playerId,
-        season: currentYear,
+        playerId: _playerId,
+        season: season,
       ),
       _getGrandPrixesWithPointsUseCase(
-        playerId: playerId,
-        season: currentYear,
+        playerId: _playerId,
+        season: season,
       ),
       (
         Player? player,

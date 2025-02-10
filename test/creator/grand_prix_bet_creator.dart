@@ -2,6 +2,7 @@ import 'package:betgrid/model/grand_prix_bet.dart';
 
 class GrandPrixBetCreator {
   final String id;
+  final int season;
   final String playerId;
   final String seasonGrandPrixId;
   late final List<String?> qualiStandingsBySeasonDriverIds;
@@ -17,6 +18,7 @@ class GrandPrixBetCreator {
   GrandPrixBetCreator({
     this.id = '',
     this.playerId = '',
+    this.season = 0,
     this.seasonGrandPrixId = '',
     List<String?>? qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId,
@@ -35,6 +37,7 @@ class GrandPrixBetCreator {
   GrandPrixBet create() => GrandPrixBet(
         id: id,
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
         qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
         p1SeasonDriverId: p1SeasonDriverId,

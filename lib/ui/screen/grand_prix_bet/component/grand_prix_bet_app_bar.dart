@@ -52,11 +52,13 @@ class _EditButton extends StatelessWidget {
   const _EditButton();
 
   void _onPressed(BuildContext context) {
-    final String? seasonGrandPrixId =
-        context.read<GrandPrixBetCubit>().state.seasonGrandPrixId;
-    if (seasonGrandPrixId != null) {
+    final GrandPrixBetCubit cubit = context.read<GrandPrixBetCubit>();
+    final int? season = cubit.state.season;
+    final String? seasonGrandPrixId = cubit.state.seasonGrandPrixId;
+    if (season != null && seasonGrandPrixId != null) {
       context.pushRoute(
         GrandPrixBetEditorRoute(
+          season: season,
           seasonGrandPrixId: seasonGrandPrixId,
         ),
       );

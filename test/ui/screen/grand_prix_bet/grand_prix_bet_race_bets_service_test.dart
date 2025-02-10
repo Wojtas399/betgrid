@@ -3,6 +3,7 @@ import 'package:betgrid/model/grand_prix_bet.dart';
 import 'package:betgrid/model/grand_prix_bet_points.dart';
 import 'package:betgrid/model/grand_prix_results.dart';
 import 'package:betgrid/model/season_driver.dart';
+import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_race_bets_service.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,6 +31,7 @@ void main() {
   final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
   final grandPrixBetStatusService = MockGrandPrixBetStatusService();
   const String playerId = 'p1';
+  const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
   final service = GrandPrixBetRaceBetsService(
     grandPrixBetRepository,
@@ -38,14 +40,18 @@ void main() {
     getDetailsForSeasonDriverUseCase,
     grandPrixBetPointsRepository,
     grandPrixBetStatusService,
-    playerId,
-    seasonGrandPrixId,
+    const GrandPrixBetCubitParams(
+      playerId: playerId,
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
+    ),
   );
 
   tearDown(() {
     verify(
-      () => grandPrixBetRepository.getGrandPrixBetForPlayerAndSeasonGrandPrix(
+      () => grandPrixBetRepository.getGrandPrixBet(
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
       ),
     ).called(1);
@@ -123,7 +129,7 @@ void main() {
           points: 0,
         ),
       ];
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
@@ -181,7 +187,7 @@ void main() {
         resultDriver: driver,
         points: points.raceBetPoints?.p10Points,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
@@ -234,7 +240,7 @@ void main() {
         resultDriver: driver,
         points: points.raceBetPoints?.fastestLapPoints,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
@@ -294,7 +300,7 @@ void main() {
         resultDrivers: [drivers.first, drivers[2], drivers.last],
         points: points.raceBetPoints?.dnfPoints,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
@@ -345,7 +351,7 @@ void main() {
         resultValue: results.raceResults?.wasThereSafetyCar,
         points: points.raceBetPoints?.safetyCarPoints,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
@@ -387,7 +393,7 @@ void main() {
         resultValue: results.raceResults?.wasThereRedFlag,
         points: points.raceBetPoints?.redFlagPoints,
       );
-      grandPrixBetRepository.mockGetGrandPrixBetForPlayerAndSeasonGrandPrix(
+      grandPrixBetRepository.mockGetGrandPrixBet(
         grandPrixBet: bet,
       );
       grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
