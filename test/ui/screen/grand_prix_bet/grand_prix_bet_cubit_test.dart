@@ -183,7 +183,7 @@ void main() {
 
       setUp(() {
         playerRepository.mockGetPlayerById(player: player);
-        seasonGrandPrixRepository.mockGetSeasonGrandPrixById(
+        seasonGrandPrixRepository.mockGetById(
           expectedSeasonGrandPrix: seasonGrandPrix,
         );
         grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById(
@@ -217,8 +217,9 @@ void main() {
           () => playerRepository.getPlayerById(playerId: playerId),
         ).called(1);
         verify(
-          () => seasonGrandPrixRepository.getSeasonGrandPrixById(
-            seasonGrandPrixId,
+          () => seasonGrandPrixRepository.getById(
+            season: season,
+            seasonGrandPrixId: seasonGrandPrixId,
           ),
         ).called(1);
         verify(

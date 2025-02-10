@@ -25,9 +25,7 @@ class GetGrandPrixesWithPointsUseCase {
     required String playerId,
     required int season,
   }) {
-    return _seasonGrandPrixRepository
-        .getAllSeasonGrandPrixesFromSeason(season)
-        .switchMap(
+    return _seasonGrandPrixRepository.getAllFromSeason(season).switchMap(
           (List<SeasonGrandPrix> grandPrixesFromSeason) =>
               grandPrixesFromSeason.isEmpty
                   ? Stream.value([])

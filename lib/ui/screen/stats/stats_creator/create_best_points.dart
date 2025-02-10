@@ -206,9 +206,9 @@ class CreateBestPoints {
     String bestSeasonDriverId,
   ) {
     return Rx.combineLatest4(
-      _getGpBasicInfo(bestSeasonGpId),
-      _getGpBasicInfo(bestQualiSeasonGpId),
-      _getGpBasicInfo(bestRaceSeasonGpId),
+      _getGpBasicInfo(season, bestSeasonGpId),
+      _getGpBasicInfo(season, bestQualiSeasonGpId),
+      _getGpBasicInfo(season, bestRaceSeasonGpId),
       _getDriverPersonalData(season, bestSeasonDriverId),
       (
         GrandPrixBasicInfo? bestGp,
@@ -241,9 +241,12 @@ class CreateBestPoints {
         );
   }
 
-  Stream<GrandPrixBasicInfo?> _getGpBasicInfo(String seasonGpId) {
+  Stream<GrandPrixBasicInfo?> _getGpBasicInfo(int season, String seasonGpId) {
     return _seasonGrandPrixRepository
-        .getSeasonGrandPrixById(seasonGpId)
+        .getById(
+          season: season,
+          seasonGrandPrixId: seasonGpId,
+        )
         .switchMap(
           (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
               ? _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(

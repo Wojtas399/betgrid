@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 import 'firebase_collections.dart';
-import 'model/season_grand_prix_dto.dart';
 import 'model/team_basic_info_dto.dart';
 import 'model/user_dto.dart';
 
@@ -11,24 +10,6 @@ class FirebaseCollectionRefs {
   final FirebaseCollections _firebaseCollections;
 
   const FirebaseCollectionRefs(this._firebaseCollections);
-
-  CollectionReference<SeasonGrandPrixDto> seasonGrandPrixes() {
-    return FirebaseFirestore.instance
-        .collection(_firebaseCollections.seasonGrandPrixes)
-        .withConverter<SeasonGrandPrixDto>(
-          fromFirestore: (snapshot, _) {
-            final data = snapshot.data();
-            if (data == null) {
-              throw 'There is not data of SeasonGrandPrix document';
-            }
-            return SeasonGrandPrixDto.fromFirebase(
-              id: snapshot.id,
-              json: data,
-            );
-          },
-          toFirestore: (SeasonGrandPrixDto dto, _) => dto.toJson(),
-        );
-  }
 
   CollectionReference<UserDto> users() => FirebaseFirestore.instance
       .collection(_firebaseCollections.users.main)

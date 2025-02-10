@@ -4,19 +4,22 @@ import 'package:mocktail/mocktail.dart';
 
 class MockSeasonGrandPrixRepository extends Mock
     implements SeasonGrandPrixRepository {
-  void mockGetAllSeasonGrandPrixesFromSeason({
+  void mockGetAllFromSeason({
     required List<SeasonGrandPrix> expectedSeasonGrandPrixes,
   }) {
     when(
-      () => getAllSeasonGrandPrixesFromSeason(any()),
+      () => getAllFromSeason(any()),
     ).thenAnswer((_) => Stream.value(expectedSeasonGrandPrixes));
   }
 
-  void mockGetSeasonGrandPrixById({
+  void mockGetById({
     SeasonGrandPrix? expectedSeasonGrandPrix,
   }) {
     when(
-      () => getSeasonGrandPrixById(any()),
+      () => getById(
+        season: any(named: 'season'),
+        seasonGrandPrixId: any(named: 'seasonGrandPrixId'),
+      ),
     ).thenAnswer((_) => Stream.value((expectedSeasonGrandPrix)));
   }
 }

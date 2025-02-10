@@ -24,7 +24,7 @@ void main() {
 
   tearDown(() {
     verify(
-      () => seasonGrandPrixRepository.getAllSeasonGrandPrixesFromSeason(
+      () => seasonGrandPrixRepository.getAllFromSeason(
         now.year,
       ),
     ).called(1);
@@ -35,7 +35,7 @@ void main() {
   test(
     'should return empty list if list of all grand prixes from season is empty',
     () {
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: [],
       );
 
@@ -60,7 +60,7 @@ void main() {
           startDate: DateTime(2024, 5, 28, 14, 31),
         ).create(),
       ];
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
       );
 
@@ -106,7 +106,7 @@ void main() {
         grandPrixesFromSeason[1],
         grandPrixesFromSeason[3],
       ];
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
       );
 

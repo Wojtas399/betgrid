@@ -31,7 +31,7 @@ void main() {
   test(
     'should return null if list of all season grand prixes is null',
     () {
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: [],
       );
 
@@ -59,7 +59,7 @@ void main() {
         SeasonGrandPrixCreator(id: 'sgp2').create(),
         SeasonGrandPrixCreator(id: 'sgp3').create(),
       ];
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: seasonGrandPrixes,
       );
       when(

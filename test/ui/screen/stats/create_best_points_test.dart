@@ -229,13 +229,22 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(allPlayerStats.last));
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp1.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp1.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp1));
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp2.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp2.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp2));
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp3.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp3.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp3));
       when(
         () => seasonDriverRepository.getById(
@@ -366,13 +375,22 @@ void main() {
         expectedPlayerStats: loggedUserStats,
       );
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp1.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp1.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp1));
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp2.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp2.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp2));
       when(
-        () => seasonGrandPrixRepository.getSeasonGrandPrixById(sgp3.id),
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: sgp3.id,
+        ),
       ).thenAnswer((_) => Stream.value(sgp3));
       seasonDriverRepository.mockGetById(expectedSeasonDriver: sd1);
       when(

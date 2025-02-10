@@ -37,7 +37,7 @@ void main() {
   test(
     'should return empty array if list of all season grand prixes is empty',
     () {
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: [],
       );
 
@@ -105,7 +105,7 @@ void main() {
           points: sgp2TotalPoints,
         ),
       ];
-      seasonGrandPrixRepository.mockGetAllSeasonGrandPrixesFromSeason(
+      seasonGrandPrixRepository.mockGetAllFromSeason(
         expectedSeasonGrandPrixes: grandPrixesFromSeason,
       );
       when(

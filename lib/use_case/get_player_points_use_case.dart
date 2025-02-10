@@ -21,7 +21,7 @@ class GetPlayerPointsUseCase {
     required int season,
   }) async* {
     final Stream<List<SeasonGrandPrix>> allSeasonGrandPrixes$ =
-        _seasonGrandPrixRepository.getAllSeasonGrandPrixesFromSeason(season);
+        _seasonGrandPrixRepository.getAllFromSeason(season);
     await for (final allSeasonGrandPrixes in allSeasonGrandPrixes$) {
       if (allSeasonGrandPrixes.isNotEmpty) {
         final idsOfAllSeasonGrandPrixes = allSeasonGrandPrixes.map(

@@ -116,7 +116,10 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
 
   Stream<_GrandPrixListenedParams?> _getGrandPrixListenedParams() {
     return _seasonGrandPrixRepository
-        .getSeasonGrandPrixById(_params.seasonGrandPrixId)
+        .getById(
+          season: _params.season,
+          seasonGrandPrixId: _params.seasonGrandPrixId,
+        )
         .switchMap(
           (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
               ? _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
