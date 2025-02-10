@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
 import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../data/repository/season_driver/season_driver_repository.dart';
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet.dart';
+import '../../../../model/season_grand_prix_bet.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../model/grand_prix_results.dart';
 import '../../../../use_case/get_details_for_season_driver_use_case.dart';
@@ -16,7 +16,7 @@ import 'grand_prix_bet_status_service.dart';
 
 @injectable
 class GrandPrixBetRaceBetsService {
-  final GrandPrixBetRepository _grandPrixBetRepository;
+  final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
   final GrandPrixResultsRepository _grandPrixResultsRepository;
   final SeasonDriverRepository _seasonDriverRepository;
   final GetDetailsForSeasonDriverUseCase _getDetailsForSeasonDriverUseCase;
@@ -25,7 +25,7 @@ class GrandPrixBetRaceBetsService {
   final GrandPrixBetCubitParams _params;
 
   GrandPrixBetRaceBetsService(
-    this._grandPrixBetRepository,
+    this._seasonGrandPrixBetRepository,
     this._grandPrixResultsRepository,
     this._seasonDriverRepository,
     this._getDetailsForSeasonDriverUseCase,
@@ -117,7 +117,9 @@ class GrandPrixBetRaceBetsService {
 
   Stream<BooleanBet> getSafetyCarBet() {
     return Rx.combineLatest3(
-      _getBet().map((grandPrixBet) => grandPrixBet?.willBeSafetyCar),
+      _getSeasonGrandPrixBet().map(
+        (seasonGrandPrixBet) => seasonGrandPrixBet?.willBeSafetyCar,
+      ),
       _getResults().map((raceResults) => raceResults?.wasThereSafetyCar),
       _getPoints().map((points) => points?.safetyCar),
       (
@@ -136,7 +138,9 @@ class GrandPrixBetRaceBetsService {
 
   Stream<BooleanBet> getRedFlagBet() {
     return Rx.combineLatest3(
-      _getBet().map((grandPrixBet) => grandPrixBet?.willBeRedFlag),
+      _getSeasonGrandPrixBet().map(
+        (seasonGrandPrixBet) => seasonGrandPrixBet?.willBeRedFlag,
+      ),
       _getResults().map((raceResults) => raceResults?.wasThereRedFlag),
       _getPoints().map((points) => points?.redFlag),
       (
@@ -154,12 +158,12 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<List<DriverDetails?>> _getBetPodiumDrivers() {
-    return _getBet()
+    return _getSeasonGrandPrixBet()
         .map(
-          (GrandPrixBet? grandPrixBet) => [
-            grandPrixBet?.p1SeasonDriverId,
-            grandPrixBet?.p2SeasonDriverId,
-            grandPrixBet?.p3SeasonDriverId,
+          (SeasonGrandPrixBet? seasonGrandPrixBet) => [
+            seasonGrandPrixBet?.p1SeasonDriverId,
+            seasonGrandPrixBet?.p2SeasonDriverId,
+            seasonGrandPrixBet?.p3SeasonDriverId,
           ],
         )
         .switchMap(_getDetailsForEachSeasonDriver);
@@ -188,8 +192,8 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<DriverDetails?> _getBetP10Driver() {
-    return _getBet()
-        .map((grandPrixBet) => grandPrixBet?.p10SeasonDriverId)
+    return _getSeasonGrandPrixBet()
+        .map((seasonGrandPrixBet) => seasonGrandPrixBet?.p10SeasonDriverId)
         .switchMap(_getDetailsForSeasonDriver);
   }
 
@@ -200,8 +204,10 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<DriverDetails?> _getBetFastestLapDriver() {
-    return _getBet()
-        .map((grandPrixBet) => grandPrixBet?.fastestLapSeasonDriverId)
+    return _getSeasonGrandPrixBet()
+        .map(
+          (seasonGrandPrixBet) => seasonGrandPrixBet?.fastestLapSeasonDriverId,
+        )
         .switchMap(_getDetailsForSeasonDriver);
   }
 
@@ -212,8 +218,8 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<List<DriverDetails?>?> _getBetDnfDrivers() {
-    return _getBet()
-        .map((grandPrixBet) => grandPrixBet?.dnfSeasonDriverIds)
+    return _getSeasonGrandPrixBet()
+        .map((seasonGrandPrixBet) => seasonGrandPrixBet?.dnfSeasonDriverIds)
         .switchMap(
           (dnfSeasonDriverIds) => dnfSeasonDriverIds != null
               ? _getDetailsForEachSeasonDriver(dnfSeasonDriverIds)
@@ -231,8 +237,8 @@ class GrandPrixBetRaceBetsService {
         );
   }
 
-  Stream<GrandPrixBet?> _getBet() {
-    return _grandPrixBetRepository.getGrandPrixBet(
+  Stream<SeasonGrandPrixBet?> _getSeasonGrandPrixBet() {
+    return _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
       playerId: _params.playerId,
       season: _params.season,
       seasonGrandPrixId: _params.seasonGrandPrixId,

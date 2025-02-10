@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:betgrid/model/driver_details.dart';
-import 'package:betgrid/model/grand_prix_bet.dart';
+import 'package:betgrid/model/season_grand_prix_bet.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_cubit.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
 import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_state.dart';
@@ -10,14 +10,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_details_creator.dart';
-import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../creator/season_grand_prix_bet_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';
-import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_repository.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
-  final grandPrixBetRepository = MockGrandPrixBetRepository();
+  final seasonGrandPrixBetRepository = MockSeasonGrandPrixBetRepository();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
   const int season = 2024;
@@ -25,7 +25,7 @@ void main() {
 
   GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
         authRepository,
-        grandPrixBetRepository,
+        seasonGrandPrixBetRepository,
         getDetailsOfAllDriversFromSeasonUseCase,
         season,
         seasonGrandPrixId,
@@ -33,7 +33,7 @@ void main() {
 
   tearDown(() {
     reset(authRepository);
-    reset(grandPrixBetRepository);
+    reset(seasonGrandPrixBetRepository);
     reset(getDetailsOfAllDriversFromSeasonUseCase);
   });
 
@@ -57,7 +57,7 @@ void main() {
           surname: 'Hamilton',
         ).create(),
       ];
-      final bet = GrandPrixBetCreator(
+      final bet = SeasonGrandPrixBetCreator(
         qualiStandingsBySeasonDriverIds: List.generate(
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
@@ -71,7 +71,7 @@ void main() {
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).create();
-      final updatedBet = GrandPrixBetCreator(
+      final updatedBet = SeasonGrandPrixBetCreator(
         qualiStandingsBySeasonDriverIds: List.generate(
           20,
           (int driverIndex) => 'd${driverIndex + 1}',
@@ -85,7 +85,7 @@ void main() {
         willBeSafetyCar: true,
         willBeRedFlag: false,
       ).create();
-      final bet$ = StreamController<GrandPrixBet>()..add(bet);
+      final bet$ = StreamController<SeasonGrandPrixBet>()..add(bet);
       GrandPrixBetEditorState? state;
 
       blocTest(
@@ -99,7 +99,7 @@ void main() {
           );
           authRepository.mockGetLoggedUserId(loggedUserId);
           when(
-            () => grandPrixBetRepository.getGrandPrixBet(
+            () => seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
               playerId: loggedUserId,
               season: season,
               seasonGrandPrixId: seasonGrandPrixId,
@@ -118,7 +118,7 @@ void main() {
               allDrivers.last,
               allDrivers.first,
             ],
-            originalGrandPrixBet: bet,
+            originalSeasonGrandPrixBet: bet,
             qualiStandingsBySeasonDriverIds:
                 bet.qualiStandingsBySeasonDriverIds,
             raceForm: GrandPrixBetEditorRaceForm(
@@ -135,7 +135,7 @@ void main() {
             ),
           ),
           state = state!.copyWith(
-            originalGrandPrixBet: updatedBet,
+            originalSeasonGrandPrixBet: updatedBet,
             raceForm: state!.raceForm.copyWith(
               dnfDrivers: [
                 allDrivers.first,
@@ -150,7 +150,7 @@ void main() {
           ).called(1);
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => grandPrixBetRepository.getGrandPrixBet(
+            () => seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
               playerId: loggedUserId,
               season: season,
               seasonGrandPrixId: seasonGrandPrixId,
@@ -323,7 +323,7 @@ void main() {
         build: () => createCubit(),
         seed: () => GrandPrixBetEditorState(
           allDrivers: allDrivers,
-          originalGrandPrixBet: GrandPrixBetCreator(
+          originalSeasonGrandPrixBet: SeasonGrandPrixBetCreator(
             dnfSeasonDriverIds: [driverId, 'd2'],
           ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
@@ -340,7 +340,7 @@ void main() {
         build: () => createCubit(),
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
-          originalGrandPrixBet: GrandPrixBetCreator(
+          originalSeasonGrandPrixBet: SeasonGrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2'],
           ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
@@ -385,7 +385,7 @@ void main() {
         build: () => createCubit(),
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
-          originalGrandPrixBet: GrandPrixBetCreator(
+          originalSeasonGrandPrixBet: SeasonGrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2'],
           ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
@@ -402,7 +402,7 @@ void main() {
         build: () => createCubit(),
         seed: () => state = GrandPrixBetEditorState(
           allDrivers: allDrivers,
-          originalGrandPrixBet: GrandPrixBetCreator(
+          originalSeasonGrandPrixBet: SeasonGrandPrixBetCreator(
             dnfSeasonDriverIds: ['d2', driverId],
           ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
@@ -494,8 +494,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository.mockGetGrandPrixBet();
-          grandPrixBetRepository.mockAddGrandPrixBet();
+          seasonGrandPrixBetRepository.mockGetSeasonGrandPrixBet();
+          seasonGrandPrixBetRepository.mockAddSeasonGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
           qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
@@ -520,7 +520,7 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => grandPrixBetRepository.addGrandPrixBet(
+          () => seasonGrandPrixBetRepository.addSeasonGrandPrixBet(
             playerId: loggedUserId,
             season: season,
             seasonGrandPrixId: seasonGrandPrixId,
@@ -543,12 +543,12 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          grandPrixBetRepository.mockGetGrandPrixBet();
-          grandPrixBetRepository.mockUpdateGrandPrixBet();
+          seasonGrandPrixBetRepository.mockGetSeasonGrandPrixBet();
+          seasonGrandPrixBetRepository.mockUpdateSeasonGrandPrixBet();
         },
         seed: () => state = GrandPrixBetEditorState(
           qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
-          originalGrandPrixBet: GrandPrixBetCreator(
+          originalSeasonGrandPrixBet: SeasonGrandPrixBetCreator(
             id: grandPrixBetId,
           ).create(),
           raceForm: GrandPrixBetEditorRaceForm(
@@ -572,7 +572,7 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => grandPrixBetRepository.updateGrandPrixBet(
+          () => seasonGrandPrixBetRepository.updateSeasonGrandPrixBet(
             playerId: loggedUserId,
             season: season,
             seasonGrandPrixId: grandPrixBetId,

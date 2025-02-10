@@ -3,7 +3,7 @@ import 'package:betgrid/use_case/get_player_points_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../creator/grand_prix_bet_points_creator.dart';
+import '../creator/season_grand_prix_bet_points_creator.dart';
 import '../creator/season_grand_prix_creator.dart';
 import '../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../mock/repository/mock_season_grand_prix_repository.dart';

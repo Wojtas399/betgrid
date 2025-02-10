@@ -7,7 +7,7 @@ import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../creator/season_grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';

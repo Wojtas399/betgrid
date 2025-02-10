@@ -7,17 +7,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_details_creator.dart';
-import '../../../creator/grand_prix_bet_creator.dart';
+import '../../../creator/season_grand_prix_bet_creator.dart';
 import '../../../creator/grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
 import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
-import '../../../mock/repository/mock_grand_prix_bet_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_repository.dart';
 import '../../../mock/repository/mock_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
-  final grandPrixBetRepository = MockGrandPrixBetRepository();
+  final seasonGrandPrixBetRepository = MockSeasonGrandPrixBetRepository();
   final grandPrixResultsRepository = MockGrandPrixResultsRepository();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
@@ -28,7 +28,7 @@ void main() {
   const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
   final service = GrandPrixBetQualiBetsService(
-    grandPrixBetRepository,
+    seasonGrandPrixBetRepository,
     grandPrixResultsRepository,
     getDetailsOfAllDriversFromSeasonUseCase,
     seasonGrandPrixBetPointsRepository,
@@ -229,8 +229,8 @@ void main() {
           points: 0,
         ),
       ];
-      grandPrixBetRepository.mockGetGrandPrixBet(
-        grandPrixBet: GrandPrixBetCreator(
+      seasonGrandPrixBetRepository.mockGetSeasonGrandPrixBet(
+        seasonGrandPrixBet: SeasonGrandPrixBetCreator(
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).create(),
       );
@@ -266,7 +266,7 @@ void main() {
 
       expect(await bets$.first, expectedBets);
       verify(
-        () => grandPrixBetRepository.getGrandPrixBet(
+        () => seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: seasonGrandPrixId,

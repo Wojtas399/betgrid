@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet.dart';
+import '../../../../model/season_grand_prix_bet.dart';
 import 'grand_prix_bet_editor_race_form.dart';
 
 part 'grand_prix_bet_editor_state.freezed.dart';
@@ -24,7 +24,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
     @Assert('qualiStandingsBySeasonDriverIds.length == 20')
     @Default(GrandPrixBetEditorStateStatus.initializing)
     GrandPrixBetEditorStateStatus status,
-    GrandPrixBet? originalGrandPrixBet,
+    SeasonGrandPrixBet? originalSeasonGrandPrixBet,
     List<DriverDetails>? allDrivers,
     @Default([
       null,
@@ -58,7 +58,7 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
   bool get canSave => _haveQualiBetsBeenChanged || _haveRaceBetsBeenChanged;
 
   bool get _haveQualiBetsBeenChanged {
-    if (originalGrandPrixBet == null) {
+    if (originalSeasonGrandPrixBet == null) {
       final String? firstNotNullSeasonDriverId =
           qualiStandingsBySeasonDriverIds.firstWhereOrNull(
         (String? driverId) => driverId != null,
@@ -68,27 +68,33 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
       return isAtLeastOnePositionPredicted;
     } else {
       return !const ListEquality().equals(
-        originalGrandPrixBet!.qualiStandingsBySeasonDriverIds,
+        originalSeasonGrandPrixBet!.qualiStandingsBySeasonDriverIds,
         qualiStandingsBySeasonDriverIds,
       );
     }
   }
 
   bool get _haveRaceBetsBeenChanged =>
-      raceForm.p1SeasonDriverId != originalGrandPrixBet?.p1SeasonDriverId ||
-      raceForm.p2SeasonDriverId != originalGrandPrixBet?.p2SeasonDriverId ||
-      raceForm.p3SeasonDriverId != originalGrandPrixBet?.p3SeasonDriverId ||
-      raceForm.p10SeasonDriverId != originalGrandPrixBet?.p10SeasonDriverId ||
+      raceForm.p1SeasonDriverId !=
+          originalSeasonGrandPrixBet?.p1SeasonDriverId ||
+      raceForm.p2SeasonDriverId !=
+          originalSeasonGrandPrixBet?.p2SeasonDriverId ||
+      raceForm.p3SeasonDriverId !=
+          originalSeasonGrandPrixBet?.p3SeasonDriverId ||
+      raceForm.p10SeasonDriverId !=
+          originalSeasonGrandPrixBet?.p10SeasonDriverId ||
       raceForm.fastestLapSeasonDriverId !=
-          originalGrandPrixBet?.fastestLapSeasonDriverId ||
+          originalSeasonGrandPrixBet?.fastestLapSeasonDriverId ||
       _haveDnfSeasonDriverIdsBeenChanged ||
-      raceForm.willBeSafetyCar != originalGrandPrixBet?.willBeSafetyCar ||
-      raceForm.willBeRedFlag != originalGrandPrixBet?.willBeRedFlag;
+      raceForm.willBeSafetyCar != originalSeasonGrandPrixBet?.willBeSafetyCar ||
+      raceForm.willBeRedFlag != originalSeasonGrandPrixBet?.willBeRedFlag;
 
   bool get _haveDnfSeasonDriverIdsBeenChanged {
-    if (originalGrandPrixBet == null) return raceForm.dnfDrivers.isNotEmpty;
+    if (originalSeasonGrandPrixBet == null) {
+      return raceForm.dnfDrivers.isNotEmpty;
+    }
     final Iterable<String> originalDnfSeasonDriverIds =
-        originalGrandPrixBet!.dnfSeasonDriverIds.whereType<String>();
+        originalSeasonGrandPrixBet!.dnfSeasonDriverIds.whereType<String>();
     final Iterable<String> newDnfSeasonDriverIds = raceForm.dnfDrivers.map(
       (DriverDetails driver) => driver.seasonDriverId,
     );

@@ -1,24 +1,24 @@
-import 'package:betgrid/data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import 'package:betgrid/model/grand_prix_bet.dart';
+import 'package:betgrid/data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
+import 'package:betgrid/model/season_grand_prix_bet.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockGrandPrixBetRepository extends Mock
-    implements GrandPrixBetRepository {
-  void mockGetGrandPrixBet({
-    GrandPrixBet? grandPrixBet,
+class MockSeasonGrandPrixBetRepository extends Mock
+    implements SeasonGrandPrixBetRepository {
+  void mockGetSeasonGrandPrixBet({
+    SeasonGrandPrixBet? seasonGrandPrixBet,
   }) {
     when(
-      () => getGrandPrixBet(
+      () => getSeasonGrandPrixBet(
         playerId: any(named: 'playerId'),
         season: any(named: 'season'),
         seasonGrandPrixId: any(named: 'seasonGrandPrixId'),
       ),
-    ).thenAnswer((_) => Stream.value(grandPrixBet));
+    ).thenAnswer((_) => Stream.value(seasonGrandPrixBet));
   }
 
-  void mockAddGrandPrixBet() {
+  void mockAddSeasonGrandPrixBet() {
     when(
-      () => addGrandPrixBet(
+      () => addSeasonGrandPrixBet(
         playerId: any(named: 'playerId'),
         season: any(named: 'season'),
         seasonGrandPrixId: any(named: 'seasonGrandPrixId'),
@@ -37,9 +37,9 @@ class MockGrandPrixBetRepository extends Mock
     ).thenAnswer((_) => Future.value());
   }
 
-  void mockUpdateGrandPrixBet() {
+  void mockUpdateSeasonGrandPrixBet() {
     when(
-      () => updateGrandPrixBet(
+      () => updateSeasonGrandPrixBet(
         playerId: any(named: 'playerId'),
         season: any(named: 'season'),
         seasonGrandPrixId: any(named: 'seasonGrandPrixId'),

@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
+import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
 import '../../../../model/driver_details.dart';
-import '../../../../model/grand_prix_bet.dart';
+import '../../../../model/season_grand_prix_bet.dart';
 import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
 import '../../../extensions/list_of_driver_details_extensions.dart';
 import 'grand_prix_bet_editor_state.dart';
@@ -16,7 +16,7 @@ import 'grand_prix_bet_editor_state.dart';
 @injectable
 class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
-  final GrandPrixBetRepository _grandPrixBetRepository;
+  final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
       _getDetailsOfAllDriversFromSeasonUseCase;
   final int _season;
@@ -25,7 +25,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
 
   GrandPrixBetEditorCubit(
     this._authRepository,
-    this._grandPrixBetRepository,
+    this._seasonGrandPrixBetRepository,
     this._getDetailsOfAllDriversFromSeasonUseCase,
     @factoryParam this._season,
     @factoryParam this._seasonGrandPrixId,
@@ -43,11 +43,11 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       _getBetForGrandPrix(),
       (
         List<DriverDetails> detailsOfAllDriversFromSeason,
-        GrandPrixBet? gpBet,
+        SeasonGrandPrixBet? seasonGrandPrixBet,
       ) =>
           (
         detailsOfAllDriversFromSeason: detailsOfAllDriversFromSeason,
-        gpBet: gpBet,
+        seasonGrandPrixBet: seasonGrandPrixBet,
       ),
     ).listen(_manageListenedParams);
   }
@@ -176,10 +176,10 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.saving,
     ));
-    if (state.originalGrandPrixBet == null) {
-      await _addGrandPrixBet(loggedUserId);
+    if (state.originalSeasonGrandPrixBet == null) {
+      await _addSeasonGrandPrixBet(loggedUserId);
     } else {
-      await _updateGrandPrixBet(loggedUserId);
+      await _updateSeasonGrandPrixBet(loggedUserId);
     }
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.successfullySaved,
@@ -198,9 +198,10 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     );
   }
 
-  Stream<GrandPrixBet?> _getBetForGrandPrix() {
+  Stream<SeasonGrandPrixBet?> _getBetForGrandPrix() {
     return _authRepository.loggedUserId$.whereNotNull().switchMap(
-          (String loggedUserId) => _grandPrixBetRepository.getGrandPrixBet(
+          (String loggedUserId) =>
+              _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
             playerId: loggedUserId,
             season: _season,
             seasonGrandPrixId: _seasonGrandPrixId,
@@ -209,18 +210,19 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   }
 
   void _manageListenedParams(_ListenedParams listenedParams) {
-    final GrandPrixBet? gpBet = listenedParams.gpBet;
+    final SeasonGrandPrixBet? seasonGrandPrixBet =
+        listenedParams.seasonGrandPrixBet;
     final List<DriverDetails> detailsOfAllDriversFromSeason =
         listenedParams.detailsOfAllDriversFromSeason;
     GrandPrixBetEditorState newState = state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
       allDrivers: detailsOfAllDriversFromSeason,
     );
-    if (gpBet == null) {
+    if (seasonGrandPrixBet == null) {
       emit(newState);
       return;
     }
-    final List<DriverDetails> dnfDrivers = gpBet.dnfSeasonDriverIds
+    final List<DriverDetails> dnfDrivers = seasonGrandPrixBet.dnfSeasonDriverIds
         .whereType<String>()
         .map(
           (String driverId) => detailsOfAllDriversFromSeason.firstWhere(
@@ -229,23 +231,24 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
         )
         .toList();
     emit(newState.copyWith(
-      originalGrandPrixBet: gpBet,
-      qualiStandingsBySeasonDriverIds: gpBet.qualiStandingsBySeasonDriverIds,
+      originalSeasonGrandPrixBet: seasonGrandPrixBet,
+      qualiStandingsBySeasonDriverIds:
+          seasonGrandPrixBet.qualiStandingsBySeasonDriverIds,
       raceForm: state.raceForm.copyWith(
-        p1SeasonDriverId: gpBet.p1SeasonDriverId,
-        p2SeasonDriverId: gpBet.p2SeasonDriverId,
-        p3SeasonDriverId: gpBet.p3SeasonDriverId,
-        p10SeasonDriverId: gpBet.p10SeasonDriverId,
-        fastestLapSeasonDriverId: gpBet.fastestLapSeasonDriverId,
+        p1SeasonDriverId: seasonGrandPrixBet.p1SeasonDriverId,
+        p2SeasonDriverId: seasonGrandPrixBet.p2SeasonDriverId,
+        p3SeasonDriverId: seasonGrandPrixBet.p3SeasonDriverId,
+        p10SeasonDriverId: seasonGrandPrixBet.p10SeasonDriverId,
+        fastestLapSeasonDriverId: seasonGrandPrixBet.fastestLapSeasonDriverId,
         dnfDrivers: dnfDrivers,
-        willBeSafetyCar: gpBet.willBeSafetyCar,
-        willBeRedFlag: gpBet.willBeRedFlag,
+        willBeSafetyCar: seasonGrandPrixBet.willBeSafetyCar,
+        willBeRedFlag: seasonGrandPrixBet.willBeRedFlag,
       ),
     ));
   }
 
-  Future<void> _addGrandPrixBet(String loggedUserId) async {
-    await _grandPrixBetRepository.addGrandPrixBet(
+  Future<void> _addSeasonGrandPrixBet(String loggedUserId) async {
+    await _seasonGrandPrixBetRepository.addSeasonGrandPrixBet(
       playerId: loggedUserId,
       season: _season,
       seasonGrandPrixId: _seasonGrandPrixId,
@@ -263,11 +266,11 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     );
   }
 
-  Future<void> _updateGrandPrixBet(String loggedUserId) async {
-    await _grandPrixBetRepository.updateGrandPrixBet(
+  Future<void> _updateSeasonGrandPrixBet(String loggedUserId) async {
+    await _seasonGrandPrixBetRepository.updateSeasonGrandPrixBet(
       playerId: loggedUserId,
       season: _season,
-      seasonGrandPrixId: state.originalGrandPrixBet!.id,
+      seasonGrandPrixId: state.originalSeasonGrandPrixBet!.id,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
       p2SeasonDriverId: state.raceForm.p2SeasonDriverId,
@@ -285,5 +288,5 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
 
 typedef _ListenedParams = ({
   List<DriverDetails> detailsOfAllDriversFromSeason,
-  GrandPrixBet? gpBet,
+  SeasonGrandPrixBet? seasonGrandPrixBet,
 });

@@ -13,7 +13,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_details_creator.dart';
 import '../../../creator/grand_prix_basic_info_creator.dart';
-import '../../../creator/grand_prix_bet_points_creator.dart';
+import '../../../creator/season_grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
 import '../../../creator/season_grand_prix_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';

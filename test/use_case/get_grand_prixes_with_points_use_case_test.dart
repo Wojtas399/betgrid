@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../creator/grand_prix_basic_info_creator.dart';
-import '../creator/grand_prix_bet_points_creator.dart';
+import '../creator/season_grand_prix_bet_points_creator.dart';
 import '../creator/season_grand_prix_creator.dart';
 import '../mock/repository/mock_grand_prix_basic_info_repository.dart';
 import '../mock/repository/mock_season_grand_prix_bet_points_repository.dart';

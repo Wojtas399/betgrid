@@ -1,6 +1,6 @@
 import 'entity.dart';
 
-class GrandPrixBet extends Entity {
+class SeasonGrandPrixBet extends Entity {
   final String playerId;
   final int season;
   final String seasonGrandPrixId;
@@ -14,7 +14,7 @@ class GrandPrixBet extends Entity {
   final bool? willBeSafetyCar;
   final bool? willBeRedFlag;
 
-  const GrandPrixBet({
+  const SeasonGrandPrixBet({
     required super.id,
     required this.playerId,
     required this.season,

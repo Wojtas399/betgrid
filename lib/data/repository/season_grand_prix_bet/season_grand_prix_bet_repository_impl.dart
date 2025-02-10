@@ -4,39 +4,40 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../../model/grand_prix_bet.dart';
-import '../../mapper/grand_prix_bet_mapper.dart';
+import '../../../model/season_grand_prix_bet.dart';
+import '../../mapper/season_grand_prix_bet_mapper.dart';
 import '../repository.dart';
-import 'grand_prix_bet_repository.dart';
+import 'season_grand_prix_bet_repository.dart';
 
-@LazySingleton(as: GrandPrixBetRepository)
-class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
-    implements GrandPrixBetRepository {
+@LazySingleton(as: SeasonGrandPrixBetRepository)
+class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
+    implements SeasonGrandPrixBetRepository {
   final FirebaseGrandPrixBetService _fireGrandPrixBetService;
-  final GrandPrixBetMapper _grandPrixBetMapper;
+  final SeasonGrandPrixBetMapper _seasonGrandPrixBetMapper;
   final _getGrandPrixBetForPlayerAndGrandprixMutex = Mutex();
 
-  GrandPrixBetRepositoryImpl(
+  SeasonGrandPrixBetRepositoryImpl(
     this._fireGrandPrixBetService,
-    this._grandPrixBetMapper,
+    this._seasonGrandPrixBetMapper,
   );
 
   @override
-  Stream<GrandPrixBet?> getGrandPrixBet({
+  Stream<SeasonGrandPrixBet?> getSeasonGrandPrixBet({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
   }) async* {
     bool didRelease = false;
     await _getGrandPrixBetForPlayerAndGrandprixMutex.acquire();
-    await for (final grandPrixBets in repositoryState$) {
-      GrandPrixBet? grandPrixBet = grandPrixBets.firstWhereOrNull(
-        (GrandPrixBet grandPrixBet) =>
-            grandPrixBet.playerId == playerId &&
-            grandPrixBet.season == season &&
-            grandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
+    await for (final seasonGrandPrixBets in repositoryState$) {
+      SeasonGrandPrixBet? seasonGrandPrixBet =
+          seasonGrandPrixBets.firstWhereOrNull(
+        (SeasonGrandPrixBet seasonGrandPrixBet) =>
+            seasonGrandPrixBet.playerId == playerId &&
+            seasonGrandPrixBet.season == season &&
+            seasonGrandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
       );
-      grandPrixBet ??= await _fetchGrandPrixBetFromDb((
+      seasonGrandPrixBet ??= await _fetchSeasonGrandPrixBetFromDb((
         playerId: playerId,
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
@@ -45,12 +46,12 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
         _getGrandPrixBetForPlayerAndGrandprixMutex.release();
         didRelease = true;
       }
-      yield grandPrixBet;
+      yield seasonGrandPrixBet;
     }
   }
 
   @override
-  Future<void> addGrandPrixBet({
+  Future<void> addSeasonGrandPrixBet({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -80,14 +81,14 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       willBeRedFlag: willBeRedFlag,
     );
     if (addedGrandPrixBetDto != null) {
-      final GrandPrixBet addedGrandPrixBet =
-          _grandPrixBetMapper.mapFromDto(addedGrandPrixBetDto);
-      addEntity(addedGrandPrixBet);
+      final SeasonGrandPrixBet addedSeasonGrandPrixBet =
+          _seasonGrandPrixBetMapper.mapFromDto(addedGrandPrixBetDto);
+      addEntity(addedSeasonGrandPrixBet);
     }
   }
 
   @override
-  Future<void> updateGrandPrixBet({
+  Future<void> updateSeasonGrandPrixBet({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -117,29 +118,29 @@ class GrandPrixBetRepositoryImpl extends Repository<GrandPrixBet>
       willBeRedFlag: willBeRedFlag,
     );
     if (updatedGrandPrixBetDto != null) {
-      final GrandPrixBet updatedGrandPrixBet =
-          _grandPrixBetMapper.mapFromDto(updatedGrandPrixBetDto);
-      updateEntity(updatedGrandPrixBet);
+      final SeasonGrandPrixBet updatedSeasonGrandPrixBet =
+          _seasonGrandPrixBetMapper.mapFromDto(updatedGrandPrixBetDto);
+      updateEntity(updatedSeasonGrandPrixBet);
     }
   }
 
-  Future<GrandPrixBet?> _fetchGrandPrixBetFromDb(
-    _GrandPrixBetFetchData gpBetData,
+  Future<SeasonGrandPrixBet?> _fetchSeasonGrandPrixBetFromDb(
+    _SeasonGrandPrixBetFetchData seasonGrandPrixBetData,
   ) async {
     final GrandPrixBetDto? betDto =
         await _fireGrandPrixBetService.fetchGrandPrixBetBySeasonGrandPrixId(
-      userId: gpBetData.playerId,
-      season: gpBetData.season,
-      seasonGrandPrixId: gpBetData.seasonGrandPrixId,
+      userId: seasonGrandPrixBetData.playerId,
+      season: seasonGrandPrixBetData.season,
+      seasonGrandPrixId: seasonGrandPrixBetData.seasonGrandPrixId,
     );
     if (betDto == null) return null;
-    final GrandPrixBet bet = _grandPrixBetMapper.mapFromDto(betDto);
+    final SeasonGrandPrixBet bet = _seasonGrandPrixBetMapper.mapFromDto(betDto);
     addEntity(bet);
     return bet;
   }
 }
 
-typedef _GrandPrixBetFetchData = ({
+typedef _SeasonGrandPrixBetFetchData = ({
   String playerId,
   int season,
   String seasonGrandPrixId,
