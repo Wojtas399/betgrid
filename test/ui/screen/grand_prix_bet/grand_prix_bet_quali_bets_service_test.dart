@@ -247,6 +247,7 @@ void main() {
         grandPrixBetPoints: GrandPrixBetPoints(
           id: '',
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixId,
           totalPoints: 0.0,
           qualiBetPoints: qualiBetPoints,
