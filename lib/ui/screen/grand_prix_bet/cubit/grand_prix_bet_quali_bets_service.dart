@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
-import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';

@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
-import '../../../../data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
+import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../../../../dependency_injection.dart';

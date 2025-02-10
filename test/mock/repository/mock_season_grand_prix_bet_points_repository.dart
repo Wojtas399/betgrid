@@ -1,4 +1,4 @@
-import 'package:betgrid/data/repository/seasongrand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
+import 'package:betgrid/data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:mocktail/mocktail.dart';
 
