@@ -1,25 +1,24 @@
-import 'package:betgrid_shared/firebase/model/grand_prix_bet_dto.dart';
+import 'package:betgrid_shared/firebase/model/season_grand_prix_bet_dto.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../model/season_grand_prix_bet.dart';
 
 @injectable
 class SeasonGrandPrixBetMapper {
-  SeasonGrandPrixBet mapFromDto(GrandPrixBetDto grandPrixBetDto) =>
+  SeasonGrandPrixBet mapFromDto(SeasonGrandPrixBetDto dto) =>
       SeasonGrandPrixBet(
-        id: grandPrixBetDto.id,
-        season: grandPrixBetDto.season,
-        playerId: grandPrixBetDto.playerId,
-        seasonGrandPrixId: grandPrixBetDto.seasonGrandPrixId,
-        qualiStandingsBySeasonDriverIds:
-            grandPrixBetDto.qualiStandingsBySeasonDriverIds,
-        p1SeasonDriverId: grandPrixBetDto.p1SeasonDriverId,
-        p2SeasonDriverId: grandPrixBetDto.p2SeasonDriverId,
-        p3SeasonDriverId: grandPrixBetDto.p3SeasonDriverId,
-        p10SeasonDriverId: grandPrixBetDto.p10SeasonDriverId,
-        fastestLapSeasonDriverId: grandPrixBetDto.fastestLapSeasonDriverId,
-        dnfSeasonDriverIds: grandPrixBetDto.dnfSeasonDriverIds,
-        willBeSafetyCar: grandPrixBetDto.willBeSafetyCar,
-        willBeRedFlag: grandPrixBetDto.willBeRedFlag,
+        id: dto.id,
+        season: dto.season,
+        playerId: dto.playerId,
+        seasonGrandPrixId: dto.seasonGrandPrixId,
+        qualiStandingsBySeasonDriverIds: dto.qualiStandingsBySeasonDriverIds,
+        p1SeasonDriverId: dto.p1SeasonDriverId,
+        p2SeasonDriverId: dto.p2SeasonDriverId,
+        p3SeasonDriverId: dto.p3SeasonDriverId,
+        p10SeasonDriverId: dto.p10SeasonDriverId,
+        fastestLapSeasonDriverId: dto.fastestLapSeasonDriverId,
+        dnfSeasonDriverIds: dto.dnfSeasonDriverIds,
+        willBeSafetyCar: dto.willBeSafetyCar,
+        willBeRedFlag: dto.willBeRedFlag,
       );
 }
