@@ -8,17 +8,18 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/driver_details_creator.dart';
 import '../../../creator/season_grand_prix_bet_creator.dart';
-import '../../../creator/grand_prix_results_creator.dart';
+import '../../../creator/season_grand_prix_results_creator.dart';
 import '../../../creator/quali_bet_points_creator.dart';
 import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_season_grand_prix_bet_repository.dart';
-import '../../../mock/repository/mock_grand_prix_results_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_results_repository.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
   final seasonGrandPrixBetRepository = MockSeasonGrandPrixBetRepository();
-  final grandPrixResultsRepository = MockGrandPrixResultsRepository();
+  final seasonGrandPrixResultsRepository =
+      MockSeasonGrandPrixResultsRepository();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
   final seasonGrandPrixBetPointsRepository =
@@ -29,7 +30,7 @@ void main() {
   const String seasonGrandPrixId = 'gp1';
   final service = GrandPrixBetQualiBetsService(
     seasonGrandPrixBetRepository,
-    grandPrixResultsRepository,
+    seasonGrandPrixResultsRepository,
     getDetailsOfAllDriversFromSeasonUseCase,
     seasonGrandPrixBetPointsRepository,
     grandPrixBetStatusService,
@@ -234,8 +235,8 @@ void main() {
           qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
         ).create(),
       );
-      grandPrixResultsRepository.mockGetGrandPrixResultsForSeasonGrandPrix(
-        results: GrandPrixResultsCreator(
+      seasonGrandPrixResultsRepository.mockGetResultsForSeasonGrandPrix(
+        results: SeasonGrandPrixResultsCreator(
           qualiStandingsBySeasonDriverIds:
               resultQualiStandingsBySeasonDriverIds,
         ).create(),
@@ -273,7 +274,8 @@ void main() {
         ),
       ).called(1);
       verify(
-        () => grandPrixResultsRepository.getGrandPrixResultsForSeasonGrandPrix(
+        () => seasonGrandPrixResultsRepository.getResultsForSeasonGrandPrix(
+          season: season,
           seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);

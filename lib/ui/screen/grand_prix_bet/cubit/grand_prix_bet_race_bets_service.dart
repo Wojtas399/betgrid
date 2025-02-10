@@ -3,12 +3,12 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
 import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
-import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../../data/repository/season_grand_prix_result/season_grand_prix_results_repository.dart';
 import '../../../../data/repository/season_driver/season_driver_repository.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
-import '../../../../model/grand_prix_results.dart';
+import '../../../../model/season_grand_prix_results.dart';
 import '../../../../use_case/get_details_for_season_driver_use_case.dart';
 import 'grand_prix_bet_cubit.dart';
 import 'grand_prix_bet_state.dart';
@@ -17,7 +17,7 @@ import 'grand_prix_bet_status_service.dart';
 @injectable
 class GrandPrixBetRaceBetsService {
   final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
-  final GrandPrixResultsRepository _grandPrixResultsRepository;
+  final SeasonGrandPrixResultsRepository _seasonGrandPrixResultsRepository;
   final SeasonDriverRepository _seasonDriverRepository;
   final GetDetailsForSeasonDriverUseCase _getDetailsForSeasonDriverUseCase;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
@@ -26,7 +26,7 @@ class GrandPrixBetRaceBetsService {
 
   GrandPrixBetRaceBetsService(
     this._seasonGrandPrixBetRepository,
-    this._grandPrixResultsRepository,
+    this._seasonGrandPrixResultsRepository,
     this._seasonDriverRepository,
     this._getDetailsForSeasonDriverUseCase,
     this._seasonGrandPrixBetPointsRepository,
@@ -246,11 +246,12 @@ class GrandPrixBetRaceBetsService {
   }
 
   Stream<RaceResults?> _getResults() {
-    return _grandPrixResultsRepository
-        .getGrandPrixResultsForSeasonGrandPrix(
+    return _seasonGrandPrixResultsRepository
+        .getResultsForSeasonGrandPrix(
+          season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )
-        .map((grandPrixResults) => grandPrixResults?.raceResults);
+        .map((seasonGrandPrixResults) => seasonGrandPrixResults?.raceResults);
   }
 
   Stream<RaceBetPoints?> _getPoints() {

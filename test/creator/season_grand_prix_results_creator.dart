@@ -1,7 +1,8 @@
-import 'package:betgrid/model/grand_prix_results.dart';
+import 'package:betgrid/model/season_grand_prix_results.dart';
 
-class GrandPrixResultsCreator {
+class SeasonGrandPrixResultsCreator {
   final String id;
+  final int season;
   final String seasonGrandPrixId;
   final List<String>? qualiStandingsBySeasonDriverIds;
   final String p1SeasonDriverId;
@@ -13,8 +14,9 @@ class GrandPrixResultsCreator {
   final bool wasThereSafetyCar;
   final bool wasThereRedFlag;
 
-  const GrandPrixResultsCreator({
+  const SeasonGrandPrixResultsCreator({
     this.id = '',
+    this.season = 2024,
     this.seasonGrandPrixId = '',
     this.qualiStandingsBySeasonDriverIds,
     this.p1SeasonDriverId = '',
@@ -27,9 +29,10 @@ class GrandPrixResultsCreator {
     this.wasThereRedFlag = false,
   });
 
-  GrandPrixResults create() {
-    return GrandPrixResults(
+  SeasonGrandPrixResults create() {
+    return SeasonGrandPrixResults(
       id: id,
+      season: season,
       seasonGrandPrixId: seasonGrandPrixId,
       qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
       raceResults: RaceResults(

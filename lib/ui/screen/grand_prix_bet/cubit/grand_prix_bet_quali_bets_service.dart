@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
 import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
-import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
+import '../../../../data/repository/season_grand_prix_result/season_grand_prix_results_repository.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
@@ -15,7 +15,7 @@ import 'grand_prix_bet_status_service.dart';
 @injectable
 class GrandPrixBetQualiBetsService {
   final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
-  final GrandPrixResultsRepository _grandPrixResultsRepository;
+  final SeasonGrandPrixResultsRepository _seasonGrandPrixResultsRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
       _getDetailsOfAllDriversFromSeasonUseCase;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
@@ -24,7 +24,7 @@ class GrandPrixBetQualiBetsService {
 
   GrandPrixBetQualiBetsService(
     this._seasonGrandPrixBetRepository,
-    this._grandPrixResultsRepository,
+    this._seasonGrandPrixResultsRepository,
     this._getDetailsOfAllDriversFromSeasonUseCase,
     this._seasonGrandPrixBetPointsRepository,
     this._grandPrixBetStatusService,
@@ -52,8 +52,9 @@ class GrandPrixBetQualiBetsService {
   }
 
   Stream<List<String?>?> _getResultQualiStandingsBySeasonDriverIds() {
-    return _grandPrixResultsRepository
-        .getGrandPrixResultsForSeasonGrandPrix(
+    return _seasonGrandPrixResultsRepository
+        .getResultsForSeasonGrandPrix(
+          season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )
         .map(
