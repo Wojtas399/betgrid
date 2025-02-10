@@ -1,7 +1,7 @@
+import 'package:betgrid_shared/firebase/model/user_stats_dto.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../model/player_stats.dart';
-import '../firebase/model/player_stats_dto.dart';
 import 'player_stats_points_for_driver_mapper.dart';
 import 'player_stats_points_for_gp_mapper.dart';
 
@@ -15,10 +15,9 @@ class PlayerStatsMapper {
     this._playerStatsPointsForDriverMapper,
   );
 
-  PlayerStats mapFromDto(PlayerStatsDto dto) {
+  PlayerStats mapFromDto(UserStatsDto dto) {
     return PlayerStats(
-      id: dto.id,
-      playerId: dto.playerId,
+      playerId: dto.userId,
       season: dto.season,
       bestGpPoints: _playerStatsPointsForGpMapper.mapFromDto(dto.bestGpPoints),
       bestQualiPoints: _playerStatsPointsForGpMapper.mapFromDto(

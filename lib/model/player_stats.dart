@@ -11,14 +11,13 @@ class PlayerStats extends Entity {
   final List<PlayerStatsPointsForDriver> pointsForDrivers;
 
   const PlayerStats({
-    required super.id,
     required this.playerId,
     required this.season,
     required this.bestGpPoints,
     required this.bestQualiPoints,
     required this.bestRacePoints,
     required this.pointsForDrivers,
-  });
+  }) : super(id: '$playerId-$season');
 
   PlayerStatsPointsForDriver get bestDriverPoints {
     final sortedPointsForDrivers = [...pointsForDrivers];

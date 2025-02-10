@@ -63,7 +63,6 @@ void main() {
       ];
       final List<PlayerStats> allPlayerStats = [
         PlayerStats(
-          id: 'ps1',
           playerId: allPlayers.first.id,
           season: season,
           bestGpPoints: const PlayerStatsPointsForGp(
@@ -94,7 +93,6 @@ void main() {
           ],
         ),
         PlayerStats(
-          id: 'ps2',
           playerId: allPlayers[1].id,
           season: season,
           bestGpPoints: const PlayerStatsPointsForGp(
@@ -125,7 +123,6 @@ void main() {
           ],
         ),
         PlayerStats(
-          id: 'ps3',
           playerId: allPlayers.last.id,
           season: season,
           bestGpPoints: const PlayerStatsPointsForGp(
@@ -275,7 +272,6 @@ void main() {
         username: 'logged user',
       ).create();
       const PlayerStats loggedUserStats = PlayerStats(
-        id: 'ps1',
         playerId: loggedUserId,
         season: season,
         bestGpPoints: PlayerStatsPointsForGp(

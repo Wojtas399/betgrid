@@ -1,8 +1,8 @@
+import 'package:betgrid_shared/firebase/service/firebase_user_stats_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../firebase/service/firebase_player_stats_service.dart';
 import '../../mapper/player_stats_mapper.dart';
 import '../repository.dart';
 import '../../../model/player_stats.dart';
@@ -11,12 +11,12 @@ import 'player_stats_repository.dart';
 @LazySingleton(as: PlayerStatsRepository)
 class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
     implements PlayerStatsRepository {
-  final FirebasePlayerStatsService _firebasePlayerStatsService;
+  final FirebaseUserStatsService _fireUserStatsService;
   final PlayerStatsMapper _playerStatsMapper;
   final _getPlayerStatsByPlayerIdAndSeasonMutex = Mutex();
 
   PlayerStatsRepositoryImpl(
-    this._firebasePlayerStatsService,
+    this._fireUserStatsService,
     this._playerStatsMapper,
   );
 
@@ -46,9 +46,8 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
     String playerId,
     int season,
   ) async {
-    final playerStatsDto =
-        await _firebasePlayerStatsService.fetchPlayerStatsByPlayerIdAndSeason(
-      playerId: playerId,
+    final playerStatsDto = await _fireUserStatsService.fetchUserStatsFromSeason(
+      userId: playerId,
       season: season,
     );
     if (playerStatsDto == null) return null;
