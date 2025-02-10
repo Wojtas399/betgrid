@@ -62,9 +62,9 @@ void main() {
         expectedSeasonGrandPrixes: seasonGrandPrixes,
       );
       when(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixes.first.id,
         ),
       ).thenAnswer(
@@ -75,9 +75,9 @@ void main() {
         ),
       );
       when(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixes[1].id,
         ),
       ).thenAnswer(
@@ -88,9 +88,9 @@ void main() {
         ),
       );
       when(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixes.last.id,
         ),
       ).thenAnswer(

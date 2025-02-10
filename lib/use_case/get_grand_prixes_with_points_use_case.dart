@@ -31,18 +31,24 @@ class GetGrandPrixesWithPointsUseCase {
           (List<SeasonGrandPrix> grandPrixesFromSeason) =>
               grandPrixesFromSeason.isEmpty
                   ? Stream.value([])
-                  : _getPointsForEachGrandPrix(playerId, grandPrixesFromSeason),
+                  : _getPointsForEachGrandPrix(
+                      playerId,
+                      season,
+                      grandPrixesFromSeason,
+                    ),
         );
   }
 
   Stream<List<GrandPrixWithPoints>> _getPointsForEachGrandPrix(
     String playerId,
+    int season,
     List<SeasonGrandPrix> grandPrixesFromSeason,
   ) {
     final grandPrixesWithPoints$ = grandPrixesFromSeason.map(
       (seasonGrandPrix) => _getPointsForSingleSeasonGrandPrix(
-        seasonGrandPrix,
         playerId,
+        season,
+        seasonGrandPrix,
       ),
     );
     return Rx.combineLatest(
@@ -52,16 +58,17 @@ class GetGrandPrixesWithPointsUseCase {
   }
 
   Stream<GrandPrixWithPoints?> _getPointsForSingleSeasonGrandPrix(
-    SeasonGrandPrix seasonGrandPrix,
     String playerId,
+    int season,
+    SeasonGrandPrix seasonGrandPrix,
   ) {
     return Rx.combineLatest2(
       _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
         seasonGrandPrix.grandPrixId,
       ),
-      _grandPrixBetPointsRepository
-          .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+      _grandPrixBetPointsRepository.getGrandPrixBetPoints(
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrix.id,
       ),
       (

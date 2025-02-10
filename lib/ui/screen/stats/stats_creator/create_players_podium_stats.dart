@@ -49,6 +49,7 @@ class CreatePlayersPodiumStats {
           return Rx.combineLatest2(
             _grandPrixBetPointsRepository
                 .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+              season: season,
               idsOfPlayers: playersIds,
               idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
             ),

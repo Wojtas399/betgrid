@@ -242,8 +242,7 @@ void main() {
       getDetailsOfAllDriversFromSeasonUseCase.mock(
         expectedDetailsOfAllDriversFromSeason: allDriverDetails,
       );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+      grandPrixBetPointsRepository.mockGetGrandPrixBetPoints(
         grandPrixBetPoints: GrandPrixBetPoints(
           id: '',
           playerId: playerId,
@@ -281,9 +280,9 @@ void main() {
         () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
       ).called(1);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
           playerId: playerId,
+          season: season,
           seasonGrandPrixId: seasonGrandPrixId,
         ),
       ).called(1);

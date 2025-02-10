@@ -206,8 +206,7 @@ void main() {
         raceBetsService.mockGetRedFlagBet(
           expectedRedFlagBet: raceRedFlagBet,
         );
-        grandPrixBetPointsRepository
-            .mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        grandPrixBetPointsRepository.mockGetGrandPrixBetPoints(
           grandPrixBetPoints: gpBetPoints,
         );
       });
@@ -238,9 +237,9 @@ void main() {
         verify(raceBetsService.getSafetyCarBet).called(1);
         verify(raceBetsService.getRedFlagBet).called(1);
         verify(
-          () => grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+          () => grandPrixBetPointsRepository.getGrandPrixBetPoints(
             playerId: playerId,
+            season: season,
             seasonGrandPrixId: seasonGrandPrixId,
           ),
         ).called(1);

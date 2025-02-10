@@ -249,8 +249,9 @@ class GrandPrixBetRaceBetsService {
 
   Stream<RaceBetPoints?> _getPoints() {
     return _grandPrixBetPointsRepository
-        .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+        .getGrandPrixBetPoints(
           playerId: _params.playerId,
+          season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )
         .map((grandPrixBetPoints) => grandPrixBetPoints?.raceBetPoints);

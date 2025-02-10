@@ -63,6 +63,7 @@ class CreatePointsHistoryStats {
           Stream.value(data.finishedSeasonGrandPrixes),
           _grandPrixBetPointsRepository
               .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+            season: season,
             idsOfPlayers: playersIds,
             idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
           ),
@@ -109,6 +110,7 @@ class CreatePointsHistoryStats {
           Stream.value(data.finishedSeasonGrandPrixes),
           _grandPrixBetPointsRepository
               .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+            season: season,
             idsOfPlayers: [loggedUser.id],
             idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
           ),

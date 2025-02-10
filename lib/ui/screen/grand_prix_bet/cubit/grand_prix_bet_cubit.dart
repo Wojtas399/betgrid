@@ -157,9 +157,9 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   Stream<GrandPrixBetPoints?> _getGpBetPoints() {
-    return _grandPrixBetPointsRepository
-        .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+    return _grandPrixBetPointsRepository.getGrandPrixBetPoints(
       playerId: _params.playerId,
+      season: _params.season,
       seasonGrandPrixId: _params.seasonGrandPrixId,
     );
   }

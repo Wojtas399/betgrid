@@ -1,11 +1,11 @@
+import 'package:betgrid_shared/firebase/model/grand_prix_bet_points_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_grand_prix_bet_points_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/grand_prix_bet_points.dart';
 import '../../../ui/extensions/stream_extensions.dart';
-import '../../firebase/model/grand_prix_bet_points_dto.dart';
-import '../../firebase/service/firebase_grand_prix_bet_points_service.dart';
 import '../../mapper/grand_prix_bet_points_mapper.dart';
 import '../repository.dart';
 import 'grand_prix_bet_points_repository.dart';
@@ -25,6 +25,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   @override
   Stream<List<GrandPrixBetPoints>>
       getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
+    required int season,
     required List<String> idsOfPlayers,
     required List<String> idsOfSeasonGrandPrixes,
   }) async* {
@@ -40,6 +41,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
             final GrandPrixBetPoints? existingGpBetPoints =
                 existingBetPointsForGps.firstWhereOrNull(
               (GrandPrixBetPoints gpBetPoints) =>
+                  gpBetPoints.season == season &&
                   gpBetPoints.seasonGrandPrixId == gpId &&
                   gpBetPoints.playerId == playerId,
             );
@@ -48,6 +50,7 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
             } else {
               dataOfMissingBetPointsForGps.add((
                 playerId: playerId,
+                season: season,
                 seasonGrandPrixId: gpId,
               ));
             }
@@ -73,18 +76,21 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   }
 
   @override
-  Stream<GrandPrixBetPoints?> getGrandPrixBetPointsForPlayerAndSeasonGrandPrix({
+  Stream<GrandPrixBetPoints?> getGrandPrixBetPoints({
     required String playerId,
+    required int season,
     required String seasonGrandPrixId,
   }) async* {
     await for (final entities in repositoryState$) {
       GrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
             entity.playerId == playerId &&
+            entity.season == season &&
             entity.seasonGrandPrixId == seasonGrandPrixId,
       );
       points ??= await _fetchGrandPrixBetPointsFromDb((
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
       ));
       yield points;
@@ -96,9 +102,10 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   ) async {
     final List<GrandPrixBetPoints> fetchedBetPoints = [];
     for (final gpBetPointsData in dataOfPointsForGpBets) {
-      final GrandPrixBetPointsDto? gpBetPointsDto = await _dbBetPointsService
-          .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
-        playerId: gpBetPointsData.playerId,
+      final GrandPrixBetPointsDto? gpBetPointsDto =
+          await _dbBetPointsService.fetchGrandPrixBetPoints(
+        userId: gpBetPointsData.playerId,
+        season: gpBetPointsData.season,
         seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
       );
       if (gpBetPointsDto != null) {
@@ -114,9 +121,10 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
   Future<GrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
     _GrandPrixBetPointsFetchData gpBetPointsData,
   ) async {
-    final GrandPrixBetPointsDto? dto = await _dbBetPointsService
-        .fetchGrandPrixBetPointsByPlayerIdAndSeasonGrandPrixId(
-      playerId: gpBetPointsData.playerId,
+    final GrandPrixBetPointsDto? dto =
+        await _dbBetPointsService.fetchGrandPrixBetPoints(
+      userId: gpBetPointsData.playerId,
+      season: gpBetPointsData.season,
       seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
     );
     if (dto == null) return null;
@@ -128,5 +136,6 @@ class GrandPrixBetPointsRepositoryImpl extends Repository<GrandPrixBetPoints>
 
 typedef _GrandPrixBetPointsFetchData = ({
   String playerId,
+  int season,
   String seasonGrandPrixId,
 });

@@ -29,6 +29,7 @@ class GetPlayerPointsUseCase {
         );
         final Stream<double?> totalPoints$ = _calculateTotalPoints(
           playerId,
+          season,
           idsOfAllSeasonGrandPrixes,
         );
         await for (final totalPoints in totalPoints$) {
@@ -42,14 +43,15 @@ class GetPlayerPointsUseCase {
 
   Stream<double?> _calculateTotalPoints(
     String playerId,
+    int season,
     Iterable<String> idsOfAllSeasonGrandPrixes,
   ) {
     final List<Stream<GrandPrixBetPoints?>> betPointsForGrandPrixes = [];
     for (final seasonGrandPrixId in idsOfAllSeasonGrandPrixes) {
       final Stream<GrandPrixBetPoints?> gpPoints$ =
-          _grandPrixBetPointsRepository
-              .getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+          _grandPrixBetPointsRepository.getGrandPrixBetPoints(
         playerId: playerId,
+        season: season,
         seasonGrandPrixId: seasonGrandPrixId,
       );
       betPointsForGrandPrixes.add(gpPoints$);

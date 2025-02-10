@@ -9,18 +9,20 @@ class MockGrandPrixBetPointsRepository extends Mock
   }) {
     when(
       () => getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+        season: any(named: 'season'),
         idsOfPlayers: any(named: 'idsOfPlayers'),
         idsOfSeasonGrandPrixes: any(named: 'idsOfSeasonGrandPrixes'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixesBetPoints));
   }
 
-  void mockGetGrandPrixBetPointsForPlayerAndSeasonGrandPrix({
+  void mockGetGrandPrixBetPoints({
     GrandPrixBetPoints? grandPrixBetPoints,
   }) {
     when(
-      () => getGrandPrixBetPointsForPlayerAndSeasonGrandPrix(
+      () => getGrandPrixBetPoints(
         playerId: any(named: 'playerId'),
+        season: any(named: 'season'),
         seasonGrandPrixId: any(named: 'seasonGrandPrixId'),
       ),
     ).thenAnswer((_) => Stream.value(grandPrixBetPoints));

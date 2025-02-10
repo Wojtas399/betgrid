@@ -124,6 +124,7 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
               finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
@@ -189,6 +190,7 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
               finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
@@ -276,6 +278,7 @@ void main() {
       verify(
         () => grandPrixBetPointsRepository
             .getGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          season: season,
           idsOfPlayers: players.map((player) => player.id).toList(),
           idsOfSeasonGrandPrixes:
               finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
