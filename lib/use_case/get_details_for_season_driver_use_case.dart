@@ -23,7 +23,7 @@ class GetDetailsForSeasonDriverUseCase {
       _driverPersonalDataRepository.getDriverPersonalDataById(
         seasonDriver.driverId,
       ),
-      _teamBasicInfoRepository.getTeamBasicInfoById(seasonDriver.teamId),
+      _teamBasicInfoRepository.getById(seasonDriver.teamId),
       (DriverPersonalData? personalData, TeamBasicInfo? teamBasicInfo) =>
           personalData != null && teamBasicInfo != null
               ? DriverDetails(

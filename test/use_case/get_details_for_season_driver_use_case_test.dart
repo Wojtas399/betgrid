@@ -48,7 +48,7 @@ void main() {
       ),
     ).called(1);
     verify(
-      () => teamBasicInfoRepository.getTeamBasicInfoById(seasonDriver.teamId),
+      () => teamBasicInfoRepository.getById(seasonDriver.teamId),
     ).called(1);
     reset(driverPersonalDataRepository);
     reset(teamBasicInfoRepository);
@@ -59,7 +59,7 @@ void main() {
     'DriverPersonalDataRepository',
     () async {
       driverPersonalDataRepository.mockGetDriverPersonalDataById();
-      teamBasicInfoRepository.mockGetTeamBasicInfoById();
+      teamBasicInfoRepository.mockGetById();
 
       final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
 
@@ -74,7 +74,7 @@ void main() {
       driverPersonalDataRepository.mockGetDriverPersonalDataById(
         expectedDriverPersonalData: driverPersonalData,
       );
-      teamBasicInfoRepository.mockGetTeamBasicInfoById();
+      teamBasicInfoRepository.mockGetById();
 
       final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
 
@@ -89,7 +89,7 @@ void main() {
       driverPersonalDataRepository.mockGetDriverPersonalDataById(
         expectedDriverPersonalData: driverPersonalData,
       );
-      teamBasicInfoRepository.mockGetTeamBasicInfoById(
+      teamBasicInfoRepository.mockGetById(
         expectedTeamBasicInfo: teamBasicInfo,
       );
 
