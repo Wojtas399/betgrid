@@ -132,25 +132,6 @@ void main() {
       });
 
       blocTest(
-        'should emit noData status if all grouped stats do not exist',
-        build: () => createCubit(),
-        setUp: () {
-          createPlayersPodiumStats.mock();
-          createPointsHistoryStats.mock();
-          getDetailsOfAllDriversFromSeasonUseCase.mock(
-            expectedDetailsOfAllDriversFromSeason: [],
-          );
-          createBestPoints.mock();
-        },
-        act: (cubit) => cubit.initialize(),
-        expect: () => const [
-          StatsState(
-            status: StatsStateStatus.noData,
-          ),
-        ],
-      );
-
-      blocTest(
         'should emit state with all grouped stats data without points for '
         'driver',
         build: () => createCubit(),

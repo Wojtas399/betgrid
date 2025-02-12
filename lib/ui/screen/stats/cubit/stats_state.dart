@@ -18,7 +18,6 @@ enum StatsType {
 enum StatsStateStatus {
   initial,
   pointsForDriverLoading,
-  noData,
   changingStatsType,
   completed,
   playersDontExist,
@@ -29,8 +28,6 @@ extension StatsStateStatusExtensions on StatsStateStatus {
 
   bool get arePointsForDriverLoading =>
       this == StatsStateStatus.pointsForDriverLoading;
-
-  bool get isNoData => this == StatsStateStatus.noData;
 
   bool get isChangingStatsType => this == StatsStateStatus.changingStatsType;
 }

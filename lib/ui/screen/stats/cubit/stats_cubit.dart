@@ -50,9 +50,8 @@ class StatsCubit extends Cubit<StatsState> {
   }
 
   void initialize() {
-    _listener ??= _getListenedParams(StatsType.grouped).listen(
-      _manageListenedParams,
-    );
+    _listener ??=
+        _getListenedParams(StatsType.grouped).listen(_manageListenedParams);
   }
 
   void onStatsTypeChanged(StatsType type) {
@@ -92,17 +91,11 @@ class StatsCubit extends Cubit<StatsState> {
   }
 
   void _manageListenedParams(_ListenedStatsParams params) {
-    if (params.noData) {
-      emit(state.copyWith(
-        status: StatsStateStatus.noData,
-      ));
-    } else {
-      switch (params) {
-        case _ListenedGroupedStatsParams():
-          _manageListenedGroupedStatsParams(params);
-        case _ListenedIndividualStatsParams():
-          _manageListenedIndividualStatsParams(params);
-      }
+    switch (params) {
+      case _ListenedGroupedStatsParams():
+        _manageListenedGroupedStatsParams(params);
+      case _ListenedIndividualStatsParams():
+        _manageListenedIndividualStatsParams(params);
     }
   }
 
@@ -201,8 +194,6 @@ class StatsCubit extends Cubit<StatsState> {
 
 sealed class _ListenedStatsParams extends Equatable {
   const _ListenedStatsParams();
-
-  bool get noData;
 }
 
 class _ListenedGroupedStatsParams extends _ListenedStatsParams {
@@ -225,13 +216,6 @@ class _ListenedGroupedStatsParams extends _ListenedStatsParams {
         pointsHistory,
         detailsOfDriversFromSeason,
       ];
-
-  @override
-  bool get noData =>
-      playersPodium == null &&
-      bestPoints == null &&
-      pointsHistory == null &&
-      detailsOfDriversFromSeason.isEmpty;
 }
 
 class _ListenedIndividualStatsParams extends _ListenedStatsParams {
@@ -251,10 +235,4 @@ class _ListenedIndividualStatsParams extends _ListenedStatsParams {
         pointsHistory,
         pointsForDrivers,
       ];
-
-  @override
-  bool get noData =>
-      bestPoints == null &&
-      pointsHistory == null &&
-      (pointsForDrivers == null || pointsForDrivers!.isEmpty);
 }
