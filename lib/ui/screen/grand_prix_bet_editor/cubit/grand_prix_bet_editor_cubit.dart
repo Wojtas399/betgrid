@@ -187,7 +187,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   }
 
   Stream<List<DriverDetails>> _getAllSortedDrivers() {
-    return _getDetailsOfAllDriversFromSeasonUseCase(2024).map(
+    return _getDetailsOfAllDriversFromSeasonUseCase(_season).map(
       (List<DriverDetails> detailsOfAllDriversFromSeason) {
         final sortedDetailsOfAllDriversFromSeason = [
           ...detailsOfAllDriversFromSeason
