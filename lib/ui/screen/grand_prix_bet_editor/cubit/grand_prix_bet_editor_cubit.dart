@@ -70,39 +70,39 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     ));
   }
 
-  void onRaceP1DriverChanged(String driverId) {
+  void onRaceP1DriverChanged(String seasonDriverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        p1SeasonDriverId: driverId,
-      ),
+      raceForm: state.raceForm
+          .removeFromPodiumOrP10IfExists(seasonDriverId)
+          .copyWith(p1SeasonDriverId: seasonDriverId),
     ));
   }
 
-  void onRaceP2DriverChanged(String driverId) {
+  void onRaceP2DriverChanged(String seasonDriverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        p2SeasonDriverId: driverId,
-      ),
+      raceForm: state.raceForm
+          .removeFromPodiumOrP10IfExists(seasonDriverId)
+          .copyWith(p2SeasonDriverId: seasonDriverId),
     ));
   }
 
-  void onRaceP3DriverChanged(String driverId) {
+  void onRaceP3DriverChanged(String seasonDriverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        p3SeasonDriverId: driverId,
-      ),
+      raceForm: state.raceForm
+          .removeFromPodiumOrP10IfExists(seasonDriverId)
+          .copyWith(p3SeasonDriverId: seasonDriverId),
     ));
   }
 
-  void onRaceP10DriverChanged(String driverId) {
+  void onRaceP10DriverChanged(String seasonDriverId) {
     emit(state.copyWith(
       status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        p10SeasonDriverId: driverId,
-      ),
+      raceForm: state.raceForm
+          .removeFromPodiumOrP10IfExists(seasonDriverId)
+          .copyWith(p10SeasonDriverId: seasonDriverId),
     ));
   }
 
