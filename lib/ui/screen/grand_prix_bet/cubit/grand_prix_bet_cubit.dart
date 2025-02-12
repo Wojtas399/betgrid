@@ -6,15 +6,14 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart';
-import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
 import '../../../../data/repository/season_grand_prix/season_grand_prix_repository.dart';
+import '../../../../data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart';
 import '../../../../dependency_injection.dart';
 import '../../../../model/grand_prix_basic_info.dart';
-import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
-import '../../../service/date_service.dart';
+import '../../../../model/season_grand_prix_bet_points.dart';
 import 'grand_prix_bet_quali_bets_service.dart';
 import 'grand_prix_bet_race_bets_service.dart';
 import 'grand_prix_bet_state.dart';
@@ -26,7 +25,6 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
   final PlayerRepository _playerRepository;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
-  final DateService _dateService;
   final GrandPrixBetCubitParams _params;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
 
@@ -36,7 +34,6 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     this._grandPrixBasicInfoRepository,
     this._playerRepository,
     this._seasonGrandPrixBetPointsRepository,
-    this._dateService,
     @factoryParam this._params,
   ) : super(const GrandPrixBetState());
 
@@ -49,16 +46,8 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   void initialize() {
     _listenedParamsListener ??= _getListenedParams().distinct().listen(
       (_ListenedParams listenedParams) {
-        final DateTime now = _dateService.getNow();
-        final DateTime? gpStartDate =
-            listenedParams.gpListenedParams?.startDate;
-        bool? canEdit;
-        if (gpStartDate != null) {
-          canEdit = _dateService.isDateABeforeDateB(now, gpStartDate);
-        }
         emit(state.copyWith(
           status: GrandPrixBetStateStatus.completed,
-          canEdit: canEdit,
           playerUsername: listenedParams.playerUsername,
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,

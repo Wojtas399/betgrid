@@ -24,7 +24,6 @@ class GrandPrixBetState with _$GrandPrixBetState {
   @Assert('racePodiumBets == null || racePodiumBets.length == 3')
   const factory GrandPrixBetState({
     @Default(GrandPrixBetStateStatus.loading) GrandPrixBetStateStatus status,
-    bool? canEdit,
     int? season,
     String? seasonGrandPrixId,
     String? grandPrixName,

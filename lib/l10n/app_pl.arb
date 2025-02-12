@@ -47,7 +47,7 @@
     "grandPrixBetDNFMultiplier": "Mnożnik DNF",
     "grandPrixBetOther": "Pozostałe",
     "@__________GRAND_PRIX_BET_EDITOR__________": {},
-    "grandPrixBetEditorScreenTitle": "Edytor grand prix",
+    "grandPrixBetEditorScreenTitle": "Obstaw grand prix",
     "grandPrixBetEditorQualificationDescription": "Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.",
     "grandPrixBetEditorRaceDescription": "Wytypuj poszczególne sekcje wyścigu wedle opisu.",
     "grandPrixBetEditorSelectDriver": "Wybierz kierowcę",

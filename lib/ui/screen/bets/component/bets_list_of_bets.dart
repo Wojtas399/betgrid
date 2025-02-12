@@ -15,18 +15,30 @@ import '../cubit/bets_state.dart';
 class BetsListOfBets extends StatelessWidget {
   const BetsListOfBets({super.key});
 
-  void _onGrandPrixPressed(String grandPrixId, BuildContext context) {
+  void _onGrandPrixPressed(
+    GrandPrixItemParams gpParams,
+    BuildContext context,
+  ) {
     final BetsCubit cubit = context.read<BetsCubit>();
     final int? season = cubit.state.season;
     final String? loggedUserId = cubit.state.loggedUserId;
     if (loggedUserId != null && season != null) {
-      context.navigateTo(
-        GrandPrixBetRoute(
-          playerId: loggedUserId,
-          season: season,
-          seasonGrandPrixId: grandPrixId,
-        ),
-      );
+      if (gpParams.status.isOngoing || gpParams.status.isFinished) {
+        context.navigateTo(
+          GrandPrixBetRoute(
+            playerId: loggedUserId,
+            season: season,
+            seasonGrandPrixId: gpParams.seasonGrandPrixId,
+          ),
+        );
+      } else if (gpParams.status.isNext || gpParams.status.isUpcoming) {
+        context.navigateTo(
+          GrandPrixBetEditorRoute(
+            season: season,
+            seasonGrandPrixId: gpParams.seasonGrandPrixId,
+          ),
+        );
+      }
     }
   }
 
@@ -53,10 +65,7 @@ class BetsListOfBets extends StatelessWidget {
                 child: _Item(
                   gpParams: gpParams,
                   doesOngoingGpExist: doesOngoingGpExist,
-                  onPressed: () => _onGrandPrixPressed(
-                    gpParams.seasonGrandPrixId,
-                    context,
-                  ),
+                  onPressed: () => _onGrandPrixPressed(gpParams, context),
                 ),
               );
             },

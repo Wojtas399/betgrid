@@ -21,7 +21,6 @@ import '../../../mock/repository/mock_grand_prix_basic_info_repository.dart';
 import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
 import '../../../mock/repository/mock_player_repository.dart';
 import '../../../mock/repository/mock_season_grand_prix_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_quali_bets_service.dart';
 import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_race_bets_service.dart';
 
@@ -32,7 +31,6 @@ void main() {
   final playerRepository = MockPlayerRepository();
   final seasonGrandPrixBetPointsRepository =
       MockSeasonGrandPrixBetPointsRepository();
-  final dateService = MockDateService();
   final qualiBetsService = MockGrandPrixBetQualiBetsService();
   final raceBetsService = MockGrandPrixBetRaceBetsService();
   const String playerId = 'p1';
@@ -45,7 +43,6 @@ void main() {
         grandPrixBasicInfoRepository,
         playerRepository,
         seasonGrandPrixBetPointsRepository,
-        dateService,
         const GrandPrixBetCubitParams(
           playerId: playerId,
           season: season,
@@ -68,7 +65,6 @@ void main() {
     reset(grandPrixBasicInfoRepository);
     reset(playerRepository);
     reset(seasonGrandPrixBetPointsRepository);
-    reset(dateService);
     reset(qualiBetsService);
     reset(raceBetsService);
   });
@@ -162,11 +158,8 @@ void main() {
       );
       final SeasonGrandPrixBetPoints seasonGpBetPoints =
           const SeasonGrandPrixBetPointsCreator(id: 'gpb1').create();
-      final DateTime now = DateTime(season, 2, 2);
-      const bool canEdit = false;
       final GrandPrixBetState expectedState = GrandPrixBetState(
         status: GrandPrixBetStateStatus.completed,
-        canEdit: canEdit,
         playerUsername: player.username,
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
@@ -189,8 +182,6 @@ void main() {
         grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById(
           expectedGrandPrixBasicInfo: grandPrixBasicInfo,
         );
-        dateService.mockGetNow(now: now);
-        dateService.mockIsDateABeforeDateB(expected: canEdit);
         qualiBetsService.mockGetQualiBets(expectedQualiBets: qualiBets);
         raceBetsService.mockGetPodiumBets(expectedPodiumBets: racePodiumBets);
         raceBetsService.mockGetP10Bet(expectedP10Bet: raceP10Bet);
@@ -226,9 +217,6 @@ void main() {
           () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
             seasonGrandPrix.grandPrixId,
           ),
-        ).called(1);
-        verify(
-          () => dateService.isDateABeforeDateB(now, seasonGrandPrix.startDate),
         ).called(1);
         verify(qualiBetsService.getQualiBets).called(1);
         verify(raceBetsService.getPodiumBets).called(1);

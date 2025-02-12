@@ -94,4 +94,8 @@ extension GrandPrixStatusX on GrandPrixStatus {
   bool get isOngoing => this is GrandPrixStatusOngoing;
 
   bool get isNext => this is GrandPrixStatusNext;
+
+  bool get isFinished => this is GrandPrixStatusFinished;
+
+  bool get isUpcoming => this is GrandPrixStatusUpcoming;
 }

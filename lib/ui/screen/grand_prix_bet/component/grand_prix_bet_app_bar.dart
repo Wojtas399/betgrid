@@ -1,8 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../config/router/app_router.dart';
 import '../cubit/grand_prix_bet_cubit.dart';
 
 class GrandPrixBetAppBar extends StatelessWidget
@@ -16,9 +14,6 @@ class GrandPrixBetAppBar extends StatelessWidget
   Widget build(BuildContext context) => AppBar(
         title: const _GrandPrixName(),
         scrolledUnderElevation: 0.0,
-        actions: [
-          const _EditButton(),
-        ],
       );
 }
 
@@ -45,36 +40,5 @@ class _GrandPrixName extends StatelessWidget {
       }
     }
     return Text(title);
-  }
-}
-
-class _EditButton extends StatelessWidget {
-  const _EditButton();
-
-  void _onPressed(BuildContext context) {
-    final GrandPrixBetCubit cubit = context.read<GrandPrixBetCubit>();
-    final int? season = cubit.state.season;
-    final String? seasonGrandPrixId = cubit.state.seasonGrandPrixId;
-    if (season != null && seasonGrandPrixId != null) {
-      context.pushRoute(
-        GrandPrixBetEditorRoute(
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final bool? canEdit = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.canEdit,
-    );
-
-    return IconButton(
-      onPressed: canEdit == true ? () => _onPressed(context) : null,
-      padding: const EdgeInsets.all(16),
-      icon: const Icon(Icons.edit),
-    );
   }
 }
