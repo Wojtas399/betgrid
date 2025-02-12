@@ -1,10 +1,10 @@
 import 'package:betgrid_shared/firebase/model/user_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_avatar_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../model/player.dart';
-import '../../firebase/service/firebase_avatar_service.dart';
 import '../../mapper/player_mapper.dart';
 import '../repository.dart';
 import 'player_repository.dart';
@@ -45,8 +45,8 @@ class PlayerRepositoryImpl extends Repository<Player>
     final List<UserDto> userDtos = await _fireUserService.fetchAll();
     final List<Player> players = [];
     for (final userDto in userDtos) {
-      final String? avatarUrl = await _fireAvatarService.fetchAvatarUrlForUser(
-        userId: userDto.id,
+      final String? avatarUrl = await _fireAvatarService.fetchUrlForUser(
+        userDto.id,
       );
       final Player player = _playerMapper.mapFromDto(
         userDto: userDto,
@@ -60,8 +60,8 @@ class PlayerRepositoryImpl extends Repository<Player>
   Future<Player?> _fetchById(String playerId) async {
     final UserDto? userDto = await _fireUserService.fetchById(playerId);
     if (userDto == null) return null;
-    final String? avatarUrl = await _fireAvatarService.fetchAvatarUrlForUser(
-      userId: playerId,
+    final String? avatarUrl = await _fireAvatarService.fetchUrlForUser(
+      playerId,
     );
     final Player player = _playerMapper.mapFromDto(
       userDto: userDto,

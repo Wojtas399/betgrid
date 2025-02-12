@@ -43,7 +43,7 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
     if (loggedUserId == null) return;
     try {
       _emitStatus(RequiredDataCompletionStateStatus.loading);
-      await _userRepository.addUser(
+      await _userRepository.add(
         userId: loggedUserId,
         username: state.username,
         avatarImgPath: state.avatarImgPath,

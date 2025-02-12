@@ -8,38 +8,38 @@ class MockUserRepository extends Mock implements UserRepository {
     registerFallbackValue(ThemePrimaryColor.defaultRed);
   }
 
-  void mockGetUserById({User? user}) {
+  void mockGetById({User? user}) {
     when(
-      () => getUserById(userId: any(named: 'userId')),
+      () => getById(any()),
     ).thenAnswer((_) => Stream.value(user));
   }
 
-  void mockAddUser({Object? throwable}) {
+  void mockAdd({Object? throwable}) {
     if (throwable != null) {
-      when(_addUserCall).thenThrow(throwable);
+      when(_addCall).thenThrow(throwable);
     } else {
-      when(_addUserCall).thenAnswer((_) => Future.value());
+      when(_addCall).thenAnswer((_) => Future.value());
     }
   }
 
-  void mockUpdateUserData({Object? throwable}) {
+  void mockUpdateData({Object? throwable}) {
     if (throwable != null) {
-      when(_updateUserDataCall).thenThrow(throwable);
+      when(_updateDataCall).thenThrow(throwable);
     } else {
-      when(_updateUserDataCall).thenAnswer((_) => Future.value());
+      when(_updateDataCall).thenAnswer((_) => Future.value());
     }
   }
 
-  void mockUpdateUserAvatar() {
+  void mockUpdateAvatar() {
     when(
-      () => updateUserAvatar(
+      () => updateAvatar(
         userId: any(named: 'userId'),
         avatarImgPath: any(named: 'avatarImgPath'),
       ),
     ).thenAnswer((_) => Future.value());
   }
 
-  Future<void> _addUserCall() => addUser(
+  Future<void> _addCall() => add(
         userId: any(named: 'userId'),
         username: any(named: 'username'),
         avatarImgPath: any(named: 'avatarImgPath'),
@@ -47,7 +47,7 @@ class MockUserRepository extends Mock implements UserRepository {
         themePrimaryColor: any(named: 'themePrimaryColor'),
       );
 
-  Future<void> _updateUserDataCall() => updateUserData(
+  Future<void> _updateDataCall() => updateData(
         userId: any(named: 'userId'),
         username: any(named: 'username'),
         themeMode: any(named: 'themeMode'),

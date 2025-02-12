@@ -46,7 +46,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
+          userRepository.mockGetById(user: null);
         },
         act: (cubit) async => await cubit.initialize(),
         expect: () => [
@@ -55,7 +55,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.getUserById(userId: loggedUserId),
+            () => userRepository.getById(loggedUserId),
           ).called(1);
         },
       );
@@ -65,7 +65,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(
+          userRepository.mockGetById(
             user: const User(
               id: loggedUserId,
               username: 'username',
@@ -84,7 +84,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.getUserById(userId: loggedUserId),
+            () => userRepository.getById(loggedUserId),
           ).called(1);
         },
       );
@@ -118,8 +118,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
-          userRepository.mockUpdateUserData(
+          userRepository.mockGetById(user: null);
+          userRepository.mockUpdateData(
             throwable: const UserRepositoryExceptionUserNotFound(),
           );
         },
@@ -135,7 +135,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(2);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               themeMode: newThemeMode,
             ),
@@ -149,8 +149,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
-          userRepository.mockUpdateUserData();
+          userRepository.mockGetById(user: null);
+          userRepository.mockUpdateData();
         },
         act: (cubit) async {
           await cubit.initialize();
@@ -163,7 +163,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(2);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               themeMode: newThemeMode,
             ),
@@ -200,8 +200,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
-          userRepository.mockUpdateUserData(
+          userRepository.mockGetById(user: null);
+          userRepository.mockUpdateData(
             throwable: const UserRepositoryExceptionUserNotFound(),
           );
         },
@@ -217,7 +217,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(2);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               themePrimaryColor: newThemePrimaryColor,
             ),
@@ -231,8 +231,8 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
-          userRepository.mockUpdateUserData();
+          userRepository.mockGetById(user: null);
+          userRepository.mockUpdateData();
         },
         act: (cubit) async {
           await cubit.initialize();
@@ -245,7 +245,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(2);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               themePrimaryColor: newThemePrimaryColor,
             ),

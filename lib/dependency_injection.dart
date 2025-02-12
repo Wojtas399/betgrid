@@ -1,4 +1,5 @@
 import 'package:betgrid_shared/firebase/service/firebase_auth_service.dart';
+import 'package:betgrid_shared/firebase/service/firebase_avatar_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_driver_personal_data_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_grand_prix_basic_info_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_season_driver_service.dart';
@@ -41,6 +42,8 @@ abstract class FirebaseModule {
       FirebaseSeasonGrandPrixService();
 
   FirebaseUserService get fireUserService => FirebaseUserService();
+
+  FirebaseAvatarService get fireAvatarService => FirebaseAvatarService();
 
   FirebaseSeasonGrandPrixBetService get fireSeasonGrandPrixBetService =>
       FirebaseSeasonGrandPrixBetService();

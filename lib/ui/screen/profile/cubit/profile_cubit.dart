@@ -30,7 +30,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   void initialize() {
     _loggedUserDataListener ??= _authRepository.loggedUserId$
         .whereNotNull()
-        .switchMap(_getLoggedUserById)
+        .switchMap(_userRepository.getById)
         .listen(
       (User? loggedUser) {
         emit(state.copyWith(
@@ -50,7 +50,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(state.copyWith(
         status: ProfileStateStatus.loading,
       ));
-      await _userRepository.updateUserAvatar(
+      await _userRepository.updateAvatar(
         userId: loggedUserId,
         avatarImgPath: newAvatarImgPath,
       );
@@ -68,7 +68,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(state.copyWith(
         status: ProfileStateStatus.loading,
       ));
-      await _userRepository.updateUserData(
+      await _userRepository.updateData(
         userId: loggedUserId,
         username: newUsername,
       );
@@ -80,9 +80,5 @@ class ProfileCubit extends Cubit<ProfileState> {
         status: ProfileStateStatus.newUsernameIsAlreadyTaken,
       ));
     }
-  }
-
-  Stream<User?> _getLoggedUserById(String loggedUserId) {
-    return _userRepository.getUserById(userId: loggedUserId);
   }
 }

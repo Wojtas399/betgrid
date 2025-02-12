@@ -94,7 +94,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockAddUser();
+          userRepository.mockAdd();
         },
         seed: () => state = const RequiredDataCompletionState(
           username: username,
@@ -115,7 +115,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.addUser(
+            () => userRepository.add(
               userId: loggedUserId,
               username: username,
               avatarImgPath: avatarPath,
@@ -133,7 +133,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockAddUser(
+          userRepository.mockAdd(
             throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
           );
         },
@@ -155,7 +155,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.addUser(
+            () => userRepository.add(
               userId: loggedUserId,
               username: username,
               avatarImgPath: null,

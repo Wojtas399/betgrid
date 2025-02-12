@@ -30,10 +30,7 @@ class HomeCubit extends Cubit<HomeState> {
     _loggedUserListener ??= _authRepository.loggedUserId$
         .doOnData(_manageLoggedUserId)
         .whereNotNull()
-        .switchMap(
-          (String loggedUserId) =>
-              _userRepository.getUserById(userId: loggedUserId),
-        )
+        .switchMap(_userRepository.getById)
         .listen(_manageLoggedUser);
   }
 

@@ -39,7 +39,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
       try {
-        await _userRepository.updateUserData(
+        await _userRepository.updateData(
           userId: loggedUserId,
           themeMode: themeMode,
         );
@@ -59,7 +59,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
       try {
-        await _userRepository.updateUserData(
+        await _userRepository.updateData(
           userId: loggedUserId,
           themePrimaryColor: primaryColor,
         );
@@ -73,7 +73,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Stream<User?> _getLoggedUser() => _authRepository.loggedUserId$.switchMap(
         (String? loggedUserId) => loggedUserId != null
-            ? _userRepository.getUserById(userId: loggedUserId)
+            ? _userRepository.getById(loggedUserId)
             : Stream.value(null),
       );
 }

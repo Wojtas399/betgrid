@@ -53,7 +53,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: loggedUser);
+          userRepository.mockGetById(user: loggedUser);
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
@@ -66,7 +66,7 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => userRepository.getUserById(userId: loggedUserId),
+          () => userRepository.getById(loggedUserId),
         ).called(1),
       );
     },
@@ -92,7 +92,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockUpdateUserAvatar();
+          userRepository.mockUpdateAvatar();
         },
         act: (cubit) async => await cubit.updateAvatar(newAvatarImgPath),
         expect: () => [
@@ -106,7 +106,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.updateUserAvatar(
+            () => userRepository.updateAvatar(
               userId: loggedUserId,
               avatarImgPath: newAvatarImgPath,
             ),
@@ -144,7 +144,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockUpdateUserData();
+          userRepository.mockUpdateData();
         },
         act: (cubit) async => await cubit.updateUsername(newUsername),
         expect: () => [
@@ -158,7 +158,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               username: newUsername,
             ),
@@ -173,7 +173,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockUpdateUserData(
+          userRepository.mockUpdateData(
             throwable: const UserRepositoryExceptionUsernameAlreadyTaken(),
           );
         },
@@ -189,7 +189,7 @@ void main() {
         verify: (_) {
           verify(() => authRepository.loggedUserId$).called(1);
           verify(
-            () => userRepository.updateUserData(
+            () => userRepository.updateData(
               userId: loggedUserId,
               username: newUsername,
             ),

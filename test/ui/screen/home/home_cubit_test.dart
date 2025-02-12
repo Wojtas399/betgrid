@@ -55,7 +55,7 @@ void main() {
         'user does not have personal data',
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: null);
+          userRepository.mockGetById(user: null);
         },
         build: () => createCubit(),
         act: (cubit) => cubit.initialize(),
@@ -65,7 +65,7 @@ void main() {
           )
         ],
         verify: (_) => verify(
-          () => userRepository.getUserById(userId: loggedUserId),
+          () => userRepository.getById(loggedUserId),
         ).called(1),
       );
 
@@ -75,7 +75,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetUserById(user: loggedUser);
+          userRepository.mockGetById(user: loggedUser);
         },
         act: (cubit) => cubit.initialize(),
         expect: () => [
@@ -86,7 +86,7 @@ void main() {
           ),
         ],
         verify: (_) => verify(
-          () => userRepository.getUserById(userId: loggedUserId),
+          () => userRepository.getById(loggedUserId),
         ).called(1),
       );
     },
