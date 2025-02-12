@@ -9,7 +9,7 @@ class ThemePrimaryColorMapper {
     ThemePrimaryColorDto themePrimaryColorDto,
   ) =>
       switch (themePrimaryColorDto) {
-        ThemePrimaryColorDto.defaultRed => ThemePrimaryColor.defaultRed,
+        ThemePrimaryColorDto.red => ThemePrimaryColor.defaultRed,
         ThemePrimaryColorDto.pink => ThemePrimaryColor.pink,
         ThemePrimaryColorDto.purple => ThemePrimaryColor.purple,
         ThemePrimaryColorDto.brown => ThemePrimaryColor.brown,
@@ -23,7 +23,7 @@ class ThemePrimaryColorMapper {
     ThemePrimaryColor themePrimaryColor,
   ) =>
       switch (themePrimaryColor) {
-        ThemePrimaryColor.defaultRed => ThemePrimaryColorDto.defaultRed,
+        ThemePrimaryColor.defaultRed => ThemePrimaryColorDto.red,
         ThemePrimaryColor.pink => ThemePrimaryColorDto.pink,
         ThemePrimaryColor.purple => ThemePrimaryColorDto.purple,
         ThemePrimaryColor.brown => ThemePrimaryColorDto.brown,

@@ -82,8 +82,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "4edad3d0ab32e002db9a82bde20d2e4ded6f026f"
-      resolved-ref: "4edad3d0ab32e002db9a82bde20d2e4ded6f026f"
+      ref: "0ac1c409d07148ea67ed092efcdcfa2467fe87dc"
+      resolved-ref: "0ac1c409d07148ea67ed092efcdcfa2467fe87dc"
       url: "https://github.com/Wojtas399/betgrid_shared.git"
     source: git
     version: "0.0.1"
@@ -216,7 +216,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_firestore:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_firestore
       sha256: d7204f3263ba3236c037972f1ea2821569bd7b896fa348c3d557e3b76b6dc143
@@ -240,29 +240,29 @@ packages:
     source: hosted
     version: "4.4.3"
   cloud_functions:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_functions
-      sha256: e0ed295d86e0e205793949780ab985e0297f3b6dc9af97812b7be3dd9590b67a
+      sha256: "2d9aca6b6a97926e97b48d160ec07dedd3fbc35be83bcb07455830b9861b55d6"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.1"
+    version: "5.3.2"
   cloud_functions_platform_interface:
     dependency: transitive
     description:
       name: cloud_functions_platform_interface
-      sha256: a656c1143a19451d544c01702f0512c4e1b5882217707a0dce750ce6419d9214
+      sha256: "4a1f23f21333c67bb767dffccdf3a85e8194b21ffcff5aef8039bac2107abc5e"
       url: "https://pub.dev"
     source: hosted
-    version: "5.6.1"
+    version: "5.6.2"
   cloud_functions_web:
     dependency: transitive
     description:
       name: cloud_functions_web
-      sha256: dc396d077521cebf552e43c40f21761803a0d46864e03b4abd1565b26d75a85f
+      sha256: "09a2674fc446a33ec2207e6c802a6ece4bfa3be080f9178d0bb44b07c8bd6c1e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.10.7"
+    version: "4.10.8"
   code_builder:
     dependency: transitive
     description:
@@ -408,7 +408,7 @@ packages:
     source: hosted
     version: "0.9.3+3"
   firebase_auth:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_auth
       sha256: "2886a01a895565722add556510263231390a9f1d1d51eee34c22f9b94a73dd54"
@@ -432,7 +432,7 @@ packages:
     source: hosted
     version: "5.13.8"
   firebase_core:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_core
       sha256: "93dc4dd12f9b02c5767f235307f609e61ed9211047132d07f9e02c668f0bfc33"
@@ -456,7 +456,7 @@ packages:
     source: hosted
     version: "2.20.0"
   firebase_storage:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_storage
       sha256: e84917f77ed7911837963ae4a12f345e00e6fbb7417a5dd61030ad1c70f87e87
@@ -604,7 +604,7 @@ packages:
     source: hosted
     version: "0.3.1+4"
   google_sign_in:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_sign_in
       sha256: fad6ddc80c427b0bba705f2116204ce1173e09cf299f85e053d57a55e5b2dd56
