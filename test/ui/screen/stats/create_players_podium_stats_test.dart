@@ -32,7 +32,7 @@ void main() {
   });
 
   tearDown(() {
-    verify(playerRepository.getAllPlayers).called(1);
+    verify(playerRepository.getAll).called(1);
     verify(
       () => getFinishedGrandPrixesFromSeasonUseCase.call(season: season),
     ).called(1);
@@ -44,7 +44,7 @@ void main() {
   test(
     'should emit null if list of all players is empty',
     () async {
-      playerRepository.mockGetAllPlayers(players: []);
+      playerRepository.mockGetAll(players: []);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: [
           SeasonGrandPrixCreator(id: 'sgp1').create(),
@@ -63,7 +63,7 @@ void main() {
   test(
     'should emit null if list of finished grand prixes is empty',
     () async {
-      playerRepository.mockGetAllPlayers(
+      playerRepository.mockGetAll(
         players: [
           const PlayerCreator(id: 'p1').create(),
           const PlayerCreator(id: 'p2').create(),
@@ -108,7 +108,7 @@ void main() {
           points: 25,
         ),
       );
-      playerRepository.mockGetAllPlayers(players: players);
+      playerRepository.mockGetAll(players: players);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
@@ -174,7 +174,7 @@ void main() {
           points: 20,
         ),
       );
-      playerRepository.mockGetAllPlayers(players: players);
+      playerRepository.mockGetAll(players: players);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );
@@ -262,7 +262,7 @@ void main() {
           points: 24.98,
         ),
       );
-      playerRepository.mockGetAllPlayers(players: players);
+      playerRepository.mockGetAll(players: players);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       );

@@ -209,7 +209,7 @@ void main() {
           driverSurname: driver3.surname,
         ),
       );
-      playerRepository.mockGetAllPlayers(players: allPlayers);
+      playerRepository.mockGetAll(players: allPlayers);
       when(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
@@ -370,7 +370,7 @@ void main() {
         ),
       );
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerRepository.mockGetPlayerById(player: loggedUser);
+      playerRepository.mockGetById(player: loggedUser);
       playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
         expectedPlayerStats: loggedUserStats,
       );

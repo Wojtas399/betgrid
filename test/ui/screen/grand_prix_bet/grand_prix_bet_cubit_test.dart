@@ -182,7 +182,7 @@ void main() {
       );
 
       setUp(() {
-        playerRepository.mockGetPlayerById(player: player);
+        playerRepository.mockGetById(player: player);
         seasonGrandPrixRepository.mockGetById(
           expectedSeasonGrandPrix: seasonGrandPrix,
         );
@@ -214,7 +214,7 @@ void main() {
       tearDown(() {
         verify(() => authRepository.loggedUserId$).called(1);
         verify(
-          () => playerRepository.getPlayerById(playerId: playerId),
+          () => playerRepository.getById(playerId),
         ).called(1);
         verify(
           () => seasonGrandPrixRepository.getById(

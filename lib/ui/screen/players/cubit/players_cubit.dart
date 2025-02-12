@@ -50,7 +50,7 @@ class PlayersCubit extends Cubit<PlayersState> {
     String loggedUserId,
   ) {
     return _playerRepository
-        .getAllPlayers()
+        .getAll()
         .map(
           (List<Player>? allPlayers) =>
               _getOnlyOtherPlayers(allPlayers, loggedUserId),

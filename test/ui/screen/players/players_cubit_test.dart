@@ -59,7 +59,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetAllPlayers(
+          playerRepository.mockGetAll(
             players: [players.first],
           );
         },
@@ -69,7 +69,7 @@ void main() {
             status: PlayersStateStatus.completed,
           ),
         ],
-        verify: (_) => verify(playerRepository.getAllPlayers).called(1),
+        verify: (_) => verify(playerRepository.getAll).called(1),
       );
 
       blocTest(
@@ -77,7 +77,7 @@ void main() {
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetAllPlayers(players: players);
+          playerRepository.mockGetAll(players: players);
           dateService.mockGetNow(now: now);
           when(
             () => getPlayerPointsUseCase.call(
@@ -109,7 +109,7 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => playerRepository.getAllPlayers()).called(1);
+          verify(() => playerRepository.getAll()).called(1);
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: players[1].id,

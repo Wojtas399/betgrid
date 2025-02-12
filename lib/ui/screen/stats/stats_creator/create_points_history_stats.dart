@@ -39,7 +39,7 @@ class CreatePointsHistoryStats {
 
   Stream<PointsHistory?> _getGroupedStats(int season) {
     return Rx.combineLatest2(
-      _playerRepository.getAllPlayers().whereNotNull(),
+      _playerRepository.getAll(),
       _getFinishedGrandPrixesFromSeasonUseCase(season: season),
       (
         List<Player> allPlayers,
@@ -173,7 +173,7 @@ class CreatePointsHistoryStats {
     return _authRepository.loggedUserId$.switchMap(
       (String? loggedUserId) => loggedUserId == null
           ? Stream.value(null)
-          : _playerRepository.getPlayerById(playerId: loggedUserId),
+          : _playerRepository.getById(loggedUserId),
     );
   }
 }

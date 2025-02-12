@@ -48,7 +48,7 @@ void main() {
       const StatsType statsType = StatsType.grouped;
 
       tearDown(() {
-        verify(playerRepository.getAllPlayers).called(1);
+        verify(playerRepository.getAll).called(1);
         verify(
           () => getFinishedGrandPrixesFromSeasonUseCase.call(
             season: season,
@@ -59,7 +59,7 @@ void main() {
       test(
         'should emit null if list of players is empty',
         () async {
-          playerRepository.mockGetAllPlayers(players: []);
+          playerRepository.mockGetAll(players: []);
           getFinishedGrandPrixesFromSeasonUseCase.mock(
             finishedSeasonGrandPrixes: [
               SeasonGrandPrixCreator(id: 'sgp1').create(),
@@ -80,7 +80,7 @@ void main() {
       test(
         'should return null if list of finished grand prixes is empty',
         () async {
-          playerRepository.mockGetAllPlayers(
+          playerRepository.mockGetAll(
             players: [
               const PlayerCreator(id: 'p1').create(),
               const PlayerCreator(id: 'p2').create(),
@@ -212,7 +212,7 @@ void main() {
               ),
             ],
           );
-          playerRepository.mockGetAllPlayers(players: players);
+          playerRepository.mockGetAll(players: players);
           getFinishedGrandPrixesFromSeasonUseCase.mock(
             finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
           );
@@ -280,7 +280,7 @@ void main() {
         () async {
           const String loggedUserId = 'p1';
           authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetPlayerById(player: null);
+          playerRepository.mockGetById(player: null);
           getFinishedGrandPrixesFromSeasonUseCase.mock(
             finishedSeasonGrandPrixes: [
               SeasonGrandPrixCreator(id: 'sgp1').create(),
@@ -307,7 +307,7 @@ void main() {
             username: 'logged user',
           ).create();
           authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetPlayerById(player: loggedUser);
+          playerRepository.mockGetById(player: loggedUser);
           getFinishedGrandPrixesFromSeasonUseCase.mock(
             finishedSeasonGrandPrixes: [],
           );
@@ -386,7 +386,7 @@ void main() {
             ],
           );
           authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetPlayerById(player: loggedUser);
+          playerRepository.mockGetById(player: loggedUser);
           getFinishedGrandPrixesFromSeasonUseCase.mock(
             finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
           );

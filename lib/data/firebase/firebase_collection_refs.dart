@@ -3,27 +3,12 @@ import 'package:injectable/injectable.dart';
 
 import 'firebase_collections.dart';
 import 'model/team_basic_info_dto.dart';
-import 'model/user_dto.dart';
 
 @injectable
 class FirebaseCollectionRefs {
   final FirebaseCollections _firebaseCollections;
 
   const FirebaseCollectionRefs(this._firebaseCollections);
-
-  CollectionReference<UserDto> users() => FirebaseFirestore.instance
-      .collection(_firebaseCollections.users.main)
-      .withConverter<UserDto>(
-        fromFirestore: (snapshot, _) {
-          final data = snapshot.data();
-          if (data == null) throw 'User document data was null';
-          return UserDto.fromFirebase(
-            id: snapshot.id,
-            json: data,
-          );
-        },
-        toFirestore: (UserDto dto, _) => dto.toJson(),
-      );
 
   CollectionReference<TeamBasicInfoDto> teamsBasicInfo() {
     return FirebaseFirestore.instance

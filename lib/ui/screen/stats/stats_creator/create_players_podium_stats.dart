@@ -26,7 +26,7 @@ class CreatePlayersPodiumStats {
     required int season,
   }) =>
       Rx.combineLatest2(
-        _playerRepository.getAllPlayers().whereNotNull(),
+        _playerRepository.getAll(),
         _getFinishedGrandPrixesFromSeasonUseCase(season: season),
         (
           List<Player> allPlayers,

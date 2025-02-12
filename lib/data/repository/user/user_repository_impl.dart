@@ -1,12 +1,12 @@
+import 'package:betgrid_shared/firebase/model/user_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
 
 import '../../../model/user.dart';
 import '../../exception/user_repository_exception.dart';
-import '../../firebase/model/user_dto.dart';
 import '../../firebase/service/firebase_avatar_service.dart';
-import '../../firebase/service/firebase_user_service.dart';
 import '../../mapper/theme_mode_mapper.dart';
 import '../../mapper/theme_primary_color_mapper.dart';
 import '../../mapper/user_mapper.dart';
@@ -57,7 +57,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     if (isUsernameAlreadyTaken) {
       throw const UserRepositoryExceptionUsernameAlreadyTaken();
     }
-    final UserDto? addedUserDto = await _dbUserService.addUser(
+    final UserDto? addedUserDto = await _dbUserService.add(
       userId: userId,
       username: username,
       themeMode: _themeModeMapper.mapToDto(themeMode),
@@ -91,7 +91,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     User? user = await _findExistingUserInRepoState(userId);
     if (user == null) return;
     if (username != null) await _checkIfUsernameIsAlreadyTaken(username);
-    final UserDto? updatedUserDto = await _dbUserService.updateUser(
+    final UserDto? updatedUserDto = await _dbUserService.update(
       userId: userId,
       username: username,
       themeMode:
@@ -136,7 +136,7 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<User?> _fetchUserFromDb(String userId) async {
-    final UserDto? userDto = await _dbUserService.fetchUserById(userId: userId);
+    final UserDto? userDto = await _dbUserService.fetchById(userId);
     if (userDto == null) return null;
     final String? avatarUrl = await _dbAvatarService.fetchAvatarUrlForUser(
       userId: userId,

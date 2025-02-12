@@ -21,27 +21,24 @@ class CreatePointsForDriverStats {
     required int season,
     required String seasonDriverId,
   }) =>
-      _playerRepository.getAllPlayers().switchMap(
-        (List<Player>? allPlayers) {
-          if (allPlayers == null || allPlayers.isEmpty) {
-            return Stream.value(null);
-          }
-          return Rx.combineLatest(
-            allPlayers.map(
-              (Player player) =>
-                  _playerStatsRepository.getStatsByPlayerIdAndSeason(
-                playerId: player.id,
-                season: season,
-              ),
-            ),
-            (List<PlayerStats?> playersStats) => _createPointsForDriver(
-              seasonDriverId,
-              allPlayers,
-              playersStats,
-            ),
+      _playerRepository.getAll().switchMap(
+            (List<Player> allPlayers) => allPlayers.isEmpty
+                ? Stream.value(null)
+                : Rx.combineLatest(
+                    allPlayers.map(
+                      (Player player) =>
+                          _playerStatsRepository.getStatsByPlayerIdAndSeason(
+                        playerId: player.id,
+                        season: season,
+                      ),
+                    ),
+                    (List<PlayerStats?> playersStats) => _createPointsForDriver(
+                      seasonDriverId,
+                      allPlayers,
+                      playersStats,
+                    ),
+                  ),
           );
-        },
-      );
 
   List<PlayerPoints>? _createPointsForDriver(
     String seasonDriverId,

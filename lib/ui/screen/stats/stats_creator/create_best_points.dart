@@ -49,7 +49,7 @@ class CreateBestPoints {
 
   Stream<BestPoints?> _createGroupedBestPoints(int season) {
     return _playerRepository
-        .getAllPlayers()
+        .getAll()
         .switchMap(
           (List<Player> allPlayers) => _getStatsForPlayers(allPlayers, season),
         )
@@ -163,7 +163,7 @@ class CreateBestPoints {
     int season,
   ) {
     return Rx.combineLatest2(
-      _playerRepository.getPlayerById(playerId: loggedUserId),
+      _playerRepository.getById(loggedUserId),
       _playerStatsRepository.getStatsByPlayerIdAndSeason(
         playerId: loggedUserId,
         season: season,

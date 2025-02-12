@@ -32,7 +32,7 @@ void main() {
   test(
     'should emit null if list of all players is empty',
     () async {
-      playerRepository.mockGetAllPlayers(players: []);
+      playerRepository.mockGetAll(players: []);
 
       final Stream<List<PlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
@@ -41,7 +41,7 @@ void main() {
       );
 
       expect(await pointsForDriver$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
+      verify(playerRepository.getAll).called(1);
     },
   );
 
@@ -120,7 +120,7 @@ void main() {
           points: player3Stats.pointsForDrivers[1].points,
         ),
       ];
-      playerRepository.mockGetAllPlayers(players: allPlayers);
+      playerRepository.mockGetAll(players: allPlayers);
       when(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
@@ -147,7 +147,7 @@ void main() {
       );
 
       expect(await pointsForDriver$.first, expectedPoints);
-      verify(playerRepository.getAllPlayers).called(1);
+      verify(playerRepository.getAll).called(1);
       verify(
         () => playerStatsRepository.getStatsByPlayerIdAndSeason(
           playerId: allPlayers.first.id,

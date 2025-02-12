@@ -60,7 +60,7 @@ void main() {
         'points',
         build: () => createCubit(),
         setUp: () {
-          playerRepository.mockGetPlayerById(player: player);
+          playerRepository.mockGetById(player: player);
           getPlayerPointsUseCase.mock(points: playerPoints);
           dateService.mockGetNow(now: now);
           getGrandPrixesWithPointsUseCase.mock(
@@ -79,7 +79,7 @@ void main() {
         ],
         verify: (_) {
           verify(
-            () => playerRepository.getPlayerById(playerId: playerId),
+            () => playerRepository.getById(playerId),
           ).called(1);
           verify(
             () => getPlayerPointsUseCase.call(

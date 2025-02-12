@@ -51,7 +51,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
 
   Stream<_ListenedParams> _getListenedParams(int season) {
     return Rx.combineLatest3(
-      _playerRepository.getPlayerById(playerId: _playerId),
+      _playerRepository.getById(_playerId),
       _getPlayerPointsUseCase(
         playerId: _playerId,
         season: season,

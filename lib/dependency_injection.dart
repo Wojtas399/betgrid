@@ -6,6 +6,7 @@ import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_bet_p
 import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_bet_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_results_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_season_grand_prix_service.dart';
+import 'package:betgrid_shared/firebase/service/firebase_user_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_user_stats_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -34,6 +35,8 @@ abstract class FirebaseModule {
 
   FirebaseSeasonGrandPrixService get fireSeasonGrandPrixService =>
       FirebaseSeasonGrandPrixService();
+
+  FirebaseUserService get fireUserService => FirebaseUserService();
 
   FirebaseSeasonGrandPrixBetService get fireSeasonGrandPrixBetService =>
       FirebaseSeasonGrandPrixBetService();
