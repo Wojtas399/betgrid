@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
+import '../../common_cubit/season_cubit.dart';
 import '../../service/dialog_service.dart';
 import 'component/required_data_completion_content.dart';
 import 'cubit/required_data_completion_cubit.dart';
@@ -13,7 +14,9 @@ class RequiredDataCompletionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<RequiredDataCompletionCubit>(),
+        create: (_) => getIt.get<RequiredDataCompletionCubit>(
+          param1: getIt.get<SeasonCubit>(),
+        ),
         child: const _CubitStatusListener(
           child: RequiredDataCompletionContent(),
         ),

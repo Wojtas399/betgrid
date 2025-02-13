@@ -9,26 +9,26 @@ import 'package:mocktail/mocktail.dart';
 import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/repository/mock_player_stats_repository.dart';
 import '../../../mock/repository/mock_user_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final userRepository = MockUserRepository();
   final playerStatsRepository = MockPlayerStatsRepository();
-  final dateService = MockDateService();
+  final seasonCubit = MockSeasonCubit();
 
   RequiredDataCompletionCubit createCubit() => RequiredDataCompletionCubit(
         authRepository,
         userRepository,
         playerStatsRepository,
-        dateService,
+        seasonCubit,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(userRepository);
     reset(playerStatsRepository);
-    reset(dateService);
+    reset(seasonCubit);
   });
 
   blocTest(
@@ -105,9 +105,7 @@ void main() {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockAdd();
           playerStatsRepository.mockAddInitialStatsForPlayerAndSeason();
-          dateService.mockGetNow(
-            now: DateTime(2024),
-          );
+          seasonCubit.mockState(expectedState: 2024);
         },
         seed: () => state = const RequiredDataCompletionState(
           username: username,
