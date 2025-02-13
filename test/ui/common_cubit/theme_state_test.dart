@@ -1,5 +1,5 @@
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/common_cubit/theme_state.dart';
+import 'package:betgrid/ui/common_cubit/theme/theme_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../model/user.dart';
+import '../../../model/user.dart';
 
 part 'theme_state.freezed.dart';
 

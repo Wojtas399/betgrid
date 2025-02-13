@@ -1,7 +1,7 @@
 import 'package:betgrid/data/exception/user_repository_exception.dart';
 import 'package:betgrid/model/user.dart';
-import 'package:betgrid/ui/common_cubit/theme_cubit.dart';
-import 'package:betgrid/ui/common_cubit/theme_state.dart';
+import 'package:betgrid/ui/common_cubit/theme/theme_cubit.dart';
+import 'package:betgrid/ui/common_cubit/theme/theme_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
