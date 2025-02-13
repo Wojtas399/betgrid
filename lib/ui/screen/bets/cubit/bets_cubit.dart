@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
 import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 import '../../../../use_case/get_player_points_use_case.dart';
+import '../../../common_cubit/season_cubit.dart';
 import '../../../service/date_service.dart';
 import 'bets_gp_status_service.dart';
 import 'bets_state.dart';
@@ -20,6 +21,7 @@ class BetsCubit extends Cubit<BetsState> {
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
   final BetsGpStatusService _gpStatusService;
   final DateService _dateService;
+  final SeasonCubit _seasonCubit;
   StreamSubscription<_ListenedData?>? _listener;
   StreamSubscription<Duration?>? _durationToStartNextGpListener;
 
@@ -29,6 +31,7 @@ class BetsCubit extends Cubit<BetsState> {
     this._getGrandPrixesWithPointsUseCase,
     this._gpStatusService,
     this._dateService,
+    this._seasonCubit,
   ) : super(const BetsState());
 
   @override
@@ -39,7 +42,6 @@ class BetsCubit extends Cubit<BetsState> {
   }
 
   void initialize() {
-    final int currentSeason = _dateService.getNow().year;
     _listener ??= _authRepository.loggedUserId$
         .distinct()
         .doOnData(
@@ -52,27 +54,19 @@ class BetsCubit extends Cubit<BetsState> {
           },
         )
         .whereNotNull()
-        .switchMap(
-          (String loggedUserId) =>
-              _getListenedData(loggedUserId, currentSeason),
-        )
-        .listen(
-          (_ListenedData data) => _manageListenedData(data, currentSeason),
-        );
+        .switchMap(_getListenedData)
+        .listen(_manageListenedData);
   }
 
-  Stream<_ListenedData> _getListenedData(
-    String loggedUserId,
-    int season,
-  ) {
+  Stream<_ListenedData> _getListenedData(String loggedUserId) {
     return Rx.combineLatest2(
       _getPlayerPointsUseCase(
         playerId: loggedUserId,
-        season: season,
+        season: _seasonCubit.state,
       ),
       _getGrandPrixesWithPointsUseCase(
         playerId: loggedUserId,
-        season: season,
+        season: _seasonCubit.state,
       ).map(_addStatusForEachGp),
       (
         double? totalPoints,
@@ -86,18 +80,18 @@ class BetsCubit extends Cubit<BetsState> {
     );
   }
 
-  Future<void> _manageListenedData(_ListenedData data, int season) async {
+  Future<void> _manageListenedData(_ListenedData data) async {
     if (data.totalPoints == null && data.grandPrixItems.isEmpty) {
       emit(state.copyWith(
         status: BetsStateStatus.noBets,
         loggedUserId: data.loggedUserId,
-        season: season,
+        season: _seasonCubit.state,
       ));
     } else {
       emit(state.copyWith(
         status: BetsStateStatus.completed,
         loggedUserId: data.loggedUserId,
-        season: season,
+        season: _seasonCubit.state,
         totalPoints: data.totalPoints,
         grandPrixItems: data.grandPrixItems,
       ));

@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 import '../../../mock/ui/screen/mock_bets_gp_status_service.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
@@ -17,6 +18,7 @@ void main() {
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
   final betsGpStatusService = MockBetsGpStatusService();
   final dateService = MockDateService();
+  final seasonCubit = MockSeasonCubit();
 
   BetsCubit createCubit() => BetsCubit(
         authRepository,
@@ -24,6 +26,7 @@ void main() {
         getGrandPrixesWithPointsUseCase,
         betsGpStatusService,
         dateService,
+        seasonCubit,
       );
 
   tearDown(() {
@@ -32,6 +35,7 @@ void main() {
     reset(getPlayerPointsUseCase);
     reset(betsGpStatusService);
     reset(dateService);
+    reset(seasonCubit);
   });
 
   group(
@@ -81,6 +85,7 @@ void main() {
 
       setUp(() {
         dateService.mockGetNow(now: now);
+        seasonCubit.mockState(expectedState: now.year);
       });
 
       tearDown(() {
