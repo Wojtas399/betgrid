@@ -20,5 +20,6 @@ class HomeState with _$HomeState {
     @Default(HomeStateStatus.loading) HomeStateStatus status,
     String? username,
     String? avatarUrl,
+    double? totalPoints,
   }) = _HomeState;
 }

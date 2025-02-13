@@ -1,37 +1,45 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
+import '../../../../data/repository/player_stats/player_stats_repository.dart';
 import '../../../../data/repository/user/user_repository.dart';
+import '../../../../model/player_stats.dart';
 import '../../../../model/user.dart';
+import '../../../service/date_service.dart';
 import 'home_state.dart';
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
-  StreamSubscription<User?>? _loggedUserListener;
+  final PlayerStatsRepository _playerStatsRepository;
+  final DateService _dateService;
+  StreamSubscription<_ListenedData>? _dataListener;
 
   HomeCubit(
     this._authRepository,
     this._userRepository,
+    this._playerStatsRepository,
+    this._dateService,
   ) : super(const HomeState());
 
   @override
   Future<void> close() {
-    _loggedUserListener?.cancel();
+    _dataListener?.cancel();
     return super.close();
   }
 
   void initialize() {
-    _loggedUserListener ??= _authRepository.loggedUserId$
+    _dataListener ??= _authRepository.loggedUserId$
         .doOnData(_manageLoggedUserId)
         .whereNotNull()
-        .switchMap(_userRepository.getById)
-        .listen(_manageLoggedUser);
+        .switchMap(_getListenedData)
+        .listen(_manageListenedData);
   }
 
   void _manageLoggedUserId(String? loggedUserId) {
@@ -42,8 +50,25 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  void _manageLoggedUser(User? loggedUser) {
-    if (loggedUser == null) {
+  Stream<_ListenedData> _getListenedData(String loggedUserId) {
+    return Rx.combineLatest2(
+      _userRepository.getById(loggedUserId),
+      _playerStatsRepository.getByPlayerIdAndSeason(
+        playerId: loggedUserId,
+        season: _dateService.getNow().year,
+      ),
+      (User? user, PlayerStats? stats) => _ListenedData(
+        loggedUserData: user,
+        totalPoints: stats?.totalPoints,
+      ),
+    );
+  }
+
+  void _manageListenedData(_ListenedData data) {
+    final User? loggedUser = data.loggedUserData;
+    final double? totalPoints = data.totalPoints;
+
+    if (loggedUser == null || totalPoints == null) {
       emit(state.copyWith(
         status: HomeStateStatus.loggedUserDataNotCompleted,
       ));
@@ -52,7 +77,24 @@ class HomeCubit extends Cubit<HomeState> {
         status: HomeStateStatus.completed,
         username: loggedUser.username,
         avatarUrl: loggedUser.avatarUrl,
+        totalPoints: totalPoints,
       ));
     }
   }
+}
+
+class _ListenedData with EquatableMixin {
+  final User? loggedUserData;
+  final double? totalPoints;
+
+  _ListenedData({
+    required this.loggedUserData,
+    required this.totalPoints,
+  });
+
+  @override
+  List<Object?> get props => [
+        loggedUserData,
+        totalPoints,
+      ];
 }

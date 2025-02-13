@@ -7,6 +7,7 @@ import '../../../component/text_component.dart';
 import '../../../config/router/app_router.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../cubit/home_cubit.dart';
+import '../cubit/home_state.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -63,10 +64,13 @@ class _Points extends StatelessWidget {
           Icons.star_outline_rounded,
           color: context.colorScheme.primary,
         ),
-        TitleLarge(
-          '122.4',
-          color: context.colorScheme.primary,
-          fontWeight: FontWeight.bold,
+        BlocSelector<HomeCubit, HomeState, double?>(
+          selector: (state) => state.totalPoints,
+          builder: (context, totalPoints) => TitleLarge(
+            (totalPoints ?? 0).toStringAsFixed(1),
+            color: context.colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
