@@ -9,7 +9,11 @@ class StatsNoDataInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: BodyMedium(context.str.statsNoDataTitle),
+      child: BodyMedium(
+        context.str.statsNoDataTitle,
+        color: context.colorScheme.outline,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
