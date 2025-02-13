@@ -7,20 +7,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_player_stats_repository.dart';
 import '../../../mock/repository/mock_user_repository.dart';
+import '../../../mock/ui/mock_date_service.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final userRepository = MockUserRepository();
+  final playerStatsRepository = MockPlayerStatsRepository();
+  final dateService = MockDateService();
 
   RequiredDataCompletionCubit createCubit() => RequiredDataCompletionCubit(
         authRepository,
         userRepository,
+        playerStatsRepository,
+        dateService,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(userRepository);
+    reset(playerStatsRepository);
+    reset(dateService);
   });
 
   blocTest(
@@ -90,11 +98,16 @@ void main() {
       );
 
       blocTest(
-        'should call method from UserRepository to add user data',
+        'should call method from UserRepository to add user data and should '
+        'call method from PlayerStatsRepository to add initial stats for user',
         build: () => createCubit(),
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockAdd();
+          playerStatsRepository.mockAddInitialStatsForPlayerAndSeason();
+          dateService.mockGetNow(
+            now: DateTime(2024),
+          );
         },
         seed: () => state = const RequiredDataCompletionState(
           username: username,
@@ -121,6 +134,12 @@ void main() {
               avatarImgPath: avatarPath,
               themeMode: themeMode,
               themePrimaryColor: themePrimaryColor,
+            ),
+          ).called(1);
+          verify(
+            () => playerStatsRepository.addInitialStatsForPlayerAndSeason(
+              playerId: loggedUserId,
+              season: 2024,
             ),
           ).called(1);
         },

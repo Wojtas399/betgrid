@@ -3,18 +3,24 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../data/exception/user_repository_exception.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
+import '../../../../data/repository/player_stats/player_stats_repository.dart';
 import '../../../../data/repository/user/user_repository.dart';
 import '../../../../model/user.dart';
+import '../../../service/date_service.dart';
 import 'required_data_completion_state.dart';
 
 @injectable
 class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
+  final PlayerStatsRepository _playerStatsRepository;
+  final DateService _dateService;
 
   RequiredDataCompletionCubit(
     this._authRepository,
     this._userRepository,
+    this._playerStatsRepository,
+    this._dateService,
   ) : super(const RequiredDataCompletionState());
 
   void updateAvatar(String? newAvatarImgPath) {
@@ -49,6 +55,10 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
         avatarImgPath: state.avatarImgPath,
         themeMode: themeMode,
         themePrimaryColor: themePrimaryColor,
+      );
+      await _playerStatsRepository.addInitialStatsForPlayerAndSeason(
+        playerId: loggedUserId,
+        season: _dateService.getNow().year,
       );
       _emitStatus(RequiredDataCompletionStateStatus.dataSaved);
     } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {

@@ -13,4 +13,13 @@ class MockPlayerStatsRepository extends Mock implements PlayerStatsRepository {
       ),
     ).thenAnswer((_) => Stream.value(expectedPlayerStats));
   }
+
+  void mockAddInitialStatsForPlayerAndSeason() {
+    when(
+      () => addInitialStatsForPlayerAndSeason(
+        playerId: any(named: 'playerId'),
+        season: any(named: 'season'),
+      ),
+    ).thenAnswer((_) => Future.value());
+  }
 }
