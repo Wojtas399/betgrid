@@ -7,8 +7,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../model/driver_details.dart';
 import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
+import '../../../common_cubit/season_cubit.dart';
 import '../../../extensions/list_of_driver_details_extensions.dart';
-import '../../../service/date_service.dart';
 import '../stats_creator/create_best_points.dart';
 import '../stats_creator/create_logged_user_points_for_drivers_stats.dart';
 import '../stats_creator/create_players_podium_stats.dart';
@@ -22,7 +22,6 @@ import 'stats_state.dart';
 
 @injectable
 class StatsCubit extends Cubit<StatsState> {
-  final DateService _dateService;
   final GetDetailsOfAllDriversFromSeasonUseCase
       _getDetailsOfAllDriversFromSeasonUseCase;
   final CreatePlayersPodiumStats _createPlayersPodiumStats;
@@ -31,16 +30,17 @@ class StatsCubit extends Cubit<StatsState> {
   final CreateBestPoints _createBestPoints;
   final CreateLoggedUserPointsForDriversStats
       _createLoggedUserPointsForDriversStats;
+  final SeasonCubit _seasonCubit;
   StreamSubscription<_ListenedStatsParams>? _listener;
 
   StatsCubit(
-    this._dateService,
     this._getDetailsOfAllDriversFromSeasonUseCase,
     this._createPlayersPodiumStats,
     this._createPointsHistoryStats,
     this._createPointsForDriverStats,
     this._createBestPoints,
     this._createLoggedUserPointsForDriversStats,
+    @factoryParam this._seasonCubit,
   ) : super(const StatsState());
 
   @override
@@ -69,7 +69,7 @@ class StatsCubit extends Cubit<StatsState> {
         status: StatsStateStatus.pointsForDriverLoading,
       ));
       final playersPointsForDriver$ = _createPointsForDriverStats(
-        season: _getCurrentSeason(),
+        season: _seasonCubit.state,
         seasonDriverId: seasonDriverId,
       );
       await for (final playersPointsForDriver in playersPointsForDriver$) {
@@ -102,7 +102,7 @@ class StatsCubit extends Cubit<StatsState> {
   Stream<_ListenedStatsParams> _getListenedGroupedStatsParams(
     StatsType statsType,
   ) {
-    final currentSeason = _getCurrentSeason();
+    final currentSeason = _seasonCubit.state;
     return Rx.combineLatest4(
       _createPlayersPodiumStats(season: currentSeason),
       _createBestPoints(
@@ -132,7 +132,7 @@ class StatsCubit extends Cubit<StatsState> {
   Stream<_ListenedStatsParams> _getListenedIndividualStatsParams(
     StatsType statsType,
   ) {
-    final currentSeason = _getCurrentSeason();
+    final currentSeason = _seasonCubit.state;
     return Rx.combineLatest3(
       _createBestPoints(
         statsType: statsType,
@@ -185,10 +185,6 @@ class StatsCubit extends Cubit<StatsState> {
         pointsForDrivers: params.pointsForDrivers,
       ),
     ));
-  }
-
-  int _getCurrentSeason() {
-    return _dateService.getNow().year;
   }
 }
 

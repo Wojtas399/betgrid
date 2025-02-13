@@ -17,11 +17,10 @@ import '../../../mock/ui/mock_create_logged_user_points_for_drivers_stats.dart';
 import '../../../mock/ui/mock_create_players_podium_stats.dart';
 import '../../../mock/ui/mock_create_points_for_driver_stats.dart';
 import '../../../mock/ui/mock_create_points_history_stats.dart';
-import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 import '../../../mock/use_case/mock_get_details_for_all_drivers_from_season_use_case.dart';
 
 void main() {
-  final dateService = MockDateService();
   final getDetailsOfAllDriversFromSeasonUseCase =
       MockGetDetailsOfAllDriversFromSeasonUseCase();
   final createPlayersPodiumStats = MockCreatePlayersPodiumStats();
@@ -30,32 +29,32 @@ void main() {
   final createBestPoints = MockCreateBestPoints();
   final createLoggedUserPointsForDriversStats =
       MockCreateLoggedUserPointsForDriversStats();
+  final seasonCubit = MockSeasonCubit();
 
   StatsCubit createCubit() => StatsCubit(
-        dateService,
         getDetailsOfAllDriversFromSeasonUseCase,
         createPlayersPodiumStats,
         createPointsHistoryStats,
         createPointsForDriverStats,
         createBestPoints,
         createLoggedUserPointsForDriversStats,
+        seasonCubit,
       );
 
   tearDown(() {
-    reset(dateService);
     reset(getDetailsOfAllDriversFromSeasonUseCase);
     reset(createPlayersPodiumStats);
     reset(createPointsHistoryStats);
     reset(createPointsForDriverStats);
     reset(createBestPoints);
     reset(createLoggedUserPointsForDriversStats);
+    reset(seasonCubit);
   });
 
   group(
     'initialize, ',
     () {
       const int currentSeason = 2024;
-      final DateTime now = DateTime(currentSeason);
       final PlayersPodium playersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
           player: const PlayerCreator(id: 'p3').create(),
@@ -105,7 +104,7 @@ void main() {
       );
 
       setUp(() {
-        dateService.mockGetNow(now: now);
+        seasonCubit.mockState(expectedState: currentSeason);
       });
 
       tearDown(() {
@@ -174,7 +173,6 @@ void main() {
     'onStatsTypeChanged, ',
     () {
       const int currentSeason = 2024;
-      final DateTime now = DateTime(currentSeason);
       final PlayersPodium playersPodium = PlayersPodium(
         p1Player: PlayersPodiumPlayer(
           player: const PlayerCreator(id: 'p3').create(),
@@ -243,7 +241,7 @@ void main() {
         'points for driver if new stats type is grouped',
         build: () => createCubit(),
         setUp: () {
-          dateService.mockGetNow(now: now);
+          seasonCubit.mockState(expectedState: currentSeason);
           createPlayersPodiumStats.mock(
             playersPodium: playersPodium,
           );
@@ -284,7 +282,7 @@ void main() {
         'is individual',
         build: () => createCubit(),
         setUp: () {
-          dateService.mockGetNow(now: now);
+          seasonCubit.mockState(expectedState: currentSeason);
           createPointsHistoryStats.mock(
             pointsHistory: pointsHistory,
           );
@@ -344,7 +342,7 @@ void main() {
         'playersPointsForDriver',
         build: () => createCubit(),
         setUp: () {
-          dateService.mockGetNow(now: DateTime(currentSeason));
+          seasonCubit.mockState(expectedState: currentSeason);
           createPointsForDriverStats.mock(
             playersPoints: playersPointsForDriver,
           );
