@@ -31,7 +31,7 @@ class BetsCubit extends Cubit<BetsState> {
     this._getGrandPrixesWithPointsUseCase,
     this._gpStatusService,
     this._dateService,
-    this._seasonCubit,
+    @factoryParam this._seasonCubit,
   ) : super(const BetsState());
 
   @override

@@ -8,7 +8,7 @@ import '../../../../data/repository/player/player_repository.dart';
 import '../../../../model/player.dart';
 import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 import '../../../../use_case/get_player_points_use_case.dart';
-import '../../../service/date_service.dart';
+import '../../../common_cubit/season_cubit.dart';
 import 'player_profile_state.dart';
 
 @injectable
@@ -16,7 +16,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   final PlayerRepository _playerRepository;
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
-  final DateService _dateService;
+  final SeasonCubit _seasonCubit;
   final String _playerId;
   StreamSubscription<_ListenedParams>? _listener;
 
@@ -24,7 +24,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     this._playerRepository,
     this._getPlayerPointsUseCase,
     this._getGrandPrixesWithPointsUseCase,
-    this._dateService,
+    @factoryParam this._seasonCubit,
     @factoryParam this._playerId,
   ) : super(const PlayerProfileState());
 
@@ -35,13 +35,12 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   }
 
   void initialize() {
-    final int currentYear = _dateService.getNow().year;
-    _listener ??= _getListenedParams(currentYear).listen(
+    _listener ??= _getListenedParams().listen(
       (_ListenedParams listenedParams) {
         emit(state.copyWith(
           status: PlayerProfileStateStatus.completed,
           player: listenedParams.player,
-          season: currentYear,
+          season: _seasonCubit.state,
           totalPoints: listenedParams.totalPoints,
           grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
         ));
@@ -49,16 +48,16 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
     );
   }
 
-  Stream<_ListenedParams> _getListenedParams(int season) {
+  Stream<_ListenedParams> _getListenedParams() {
     return Rx.combineLatest3(
       _playerRepository.getById(_playerId),
       _getPlayerPointsUseCase(
         playerId: _playerId,
-        season: season,
+        season: _seasonCubit.state,
       ),
       _getGrandPrixesWithPointsUseCase(
         playerId: _playerId,
-        season: season,
+        season: _seasonCubit.state,
       ),
       (
         Player? player,

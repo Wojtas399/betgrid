@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../creator/player_creator.dart';
 import '../../../mock/repository/mock_player_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 import '../../../mock/use_case/mock_get_grand_prixes_with_points_use_case.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
@@ -16,14 +16,14 @@ void main() {
   final playerRepository = MockPlayerRepository();
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
   final getGrandPrixesWithPointsUseCase = MockGetGrandPrixesWithPointsUseCase();
-  final dateService = MockDateService();
+  final seasonCubit = MockSeasonCubit();
   const String playerId = 'p1';
 
   PlayerProfileCubit createCubit() => PlayerProfileCubit(
         playerRepository,
         getPlayerPointsUseCase,
         getGrandPrixesWithPointsUseCase,
-        dateService,
+        seasonCubit,
         playerId,
       );
 
@@ -31,7 +31,6 @@ void main() {
     'initialize, ',
     () {
       const int season = 2024;
-      final DateTime now = DateTime(season);
       final Player player = const PlayerCreator(id: playerId).create();
       const double playerPoints = 10.2;
       final List<GrandPrixWithPoints> grandPrixesWithPoints = [
@@ -62,7 +61,7 @@ void main() {
         setUp: () {
           playerRepository.mockGetById(player: player);
           getPlayerPointsUseCase.mock(points: playerPoints);
-          dateService.mockGetNow(now: now);
+          seasonCubit.mockState(expectedState: season);
           getGrandPrixesWithPointsUseCase.mock(
             grandPrixesWithPoints: grandPrixesWithPoints,
           );
@@ -84,13 +83,13 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: playerId,
-              season: now.year,
+              season: season,
             ),
           ).called(1);
           verify(
             () => getGrandPrixesWithPointsUseCase.call(
               playerId: playerId,
-              season: now.year,
+              season: season,
             ),
           ).called(1);
         },
