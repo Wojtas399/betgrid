@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class BestPoints extends Equatable {
-  final BestPointsForGp bestGpPoints;
-  final BestPointsForGp bestQualiPoints;
-  final BestPointsForGp bestRacePoints;
-  final BestPointsForDriver bestDriverPoints;
+  final BestPointsForGp? bestGpPoints;
+  final BestPointsForGp? bestQualiPoints;
+  final BestPointsForGp? bestRacePoints;
+  final BestPointsForDriver? bestDriverPoints;
 
   const BestPoints({
-    required this.bestGpPoints,
-    required this.bestQualiPoints,
-    required this.bestRacePoints,
-    required this.bestDriverPoints,
+    this.bestGpPoints,
+    this.bestQualiPoints,
+    this.bestRacePoints,
+    this.bestDriverPoints,
   });
 
   @override

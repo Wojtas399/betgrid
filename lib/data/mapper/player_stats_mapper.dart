@@ -16,19 +16,27 @@ class PlayerStatsMapper {
   );
 
   PlayerStats mapFromDto(UserStatsDto dto) {
+    final bestGpPoints = dto.bestGpPoints != null
+        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestGpPoints!)
+        : null;
+    final bestQualiPoints = dto.bestQualiPoints != null
+        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestQualiPoints!)
+        : null;
+    final bestRacePoints = dto.bestRacePoints != null
+        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestRacePoints!)
+        : null;
+    final pointsForDrivers = dto.pointsForDrivers
+        ?.map(_playerStatsPointsForDriverMapper.mapFromDto)
+        .toList();
+
     return PlayerStats(
       playerId: dto.userId,
       season: dto.season,
-      bestGpPoints: _playerStatsPointsForGpMapper.mapFromDto(dto.bestGpPoints),
-      bestQualiPoints: _playerStatsPointsForGpMapper.mapFromDto(
-        dto.bestQualiPoints,
-      ),
-      bestRacePoints: _playerStatsPointsForGpMapper.mapFromDto(
-        dto.bestRacePoints,
-      ),
-      pointsForDrivers: dto.pointsForDrivers
-          .map(_playerStatsPointsForDriverMapper.mapFromDto)
-          .toList(),
+      totalPoints: dto.totalPoints,
+      bestGpPoints: bestGpPoints,
+      bestQualiPoints: bestQualiPoints,
+      bestRacePoints: bestRacePoints,
+      pointsForDrivers: pointsForDrivers,
     );
   }
 }

@@ -27,39 +27,54 @@ class CreatePointsForDriverStats {
                 : Rx.combineLatest(
                     allPlayers.map(
                       (Player player) =>
-                          _playerStatsRepository.getStatsByPlayerIdAndSeason(
-                        playerId: player.id,
-                        season: season,
-                      ),
+                          _combinePlayerWithStats(player, season),
                     ),
-                    (List<PlayerStats?> playersStats) => _createPointsForDriver(
+                    (List<_PlayerWithStats> playersWithStats) =>
+                        _createPointsForDriver(
                       seasonDriverId,
-                      allPlayers,
-                      playersStats,
+                      playersWithStats,
                     ),
                   ),
           );
 
+  Stream<_PlayerWithStats> _combinePlayerWithStats(Player player, int season) {
+    return _playerStatsRepository
+        .getByPlayerIdAndSeason(
+          playerId: player.id,
+          season: season,
+        )
+        .map(
+          (PlayerStats? stats) => (
+            player: player,
+            stats: stats,
+          ),
+        );
+  }
+
   List<PlayerPoints>? _createPointsForDriver(
     String seasonDriverId,
-    List<Player> allPlayers,
-    List<PlayerStats?> playersStats,
+    List<_PlayerWithStats> playersWithStats,
   ) {
-    return playersStats
-        .whereType<PlayerStats>()
+    return playersWithStats
+        .where(
+      (_PlayerWithStats playerWithStats) => playerWithStats.stats != null,
+    )
         .map(
-          (PlayerStats playerStats) => PlayerPoints(
-            player: allPlayers.firstWhere(
-              (player) => player.id == playerStats.playerId,
-            ),
-            points: playerStats.pointsForDrivers
-                .firstWhere(
-                  (pointsForDriver) =>
-                      pointsForDriver.seasonDriverId == seasonDriverId,
-                )
-                .points,
-          ),
-        )
-        .toList();
+      (_PlayerWithStats playerWithStats) {
+        final double? points = playerWithStats.stats!.pointsForDrivers
+            ?.firstWhere(
+              (pointsForDriver) =>
+                  pointsForDriver.seasonDriverId == seasonDriverId,
+            )
+            .points;
+
+        return PlayerPoints(
+          player: playerWithStats.player,
+          points: points ?? 0,
+        );
+      },
+    ).toList();
   }
 }
+
+typedef _PlayerWithStats = ({Player player, PlayerStats? stats});

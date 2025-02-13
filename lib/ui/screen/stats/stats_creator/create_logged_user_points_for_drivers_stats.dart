@@ -69,7 +69,7 @@ class CreateLoggedUserPointsForDriversStats {
     int season,
   ) {
     return _playerStatsRepository
-        .getStatsByPlayerIdAndSeason(
+        .getByPlayerIdAndSeason(
           playerId: loggedUserId,
           season: season,
         )

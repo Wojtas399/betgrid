@@ -109,32 +109,32 @@ void main() {
       final List<PlayerPoints> expectedPoints = [
         PlayerPoints(
           player: allPlayers.first,
-          points: player1Stats.pointsForDrivers.first.points,
+          points: player1Stats.pointsForDrivers!.first.points,
         ),
         PlayerPoints(
           player: allPlayers[1],
-          points: player2Stats.pointsForDrivers.last.points,
+          points: player2Stats.pointsForDrivers!.last.points,
         ),
         PlayerPoints(
           player: allPlayers.last,
-          points: player3Stats.pointsForDrivers[1].points,
+          points: player3Stats.pointsForDrivers![1].points,
         ),
       ];
       playerRepository.mockGetAll(players: allPlayers);
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
           season: season,
         ),
       ).thenAnswer((_) => Stream.value(player1Stats));
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers[1].id,
           season: season,
         ),
       ).thenAnswer((_) => Stream.value(player2Stats));
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.last.id,
           season: season,
         ),
@@ -149,19 +149,19 @@ void main() {
       expect(await pointsForDriver$.first, expectedPoints);
       verify(playerRepository.getAll).called(1);
       verify(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
           season: season,
         ),
       ).called(1);
       verify(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers[1].id,
           season: season,
         ),
       ).called(1);
       verify(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.last.id,
           season: season,
         ),

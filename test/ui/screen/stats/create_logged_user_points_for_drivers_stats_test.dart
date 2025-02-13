@@ -61,7 +61,7 @@ void main() {
     () async {
       const String loggedUserId = 'u1';
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason();
+      playerStatsRepository.mockGetByPlayerIdAndSeason();
 
       final Stream<List<PointsForDriver>?> pointsForDrivers$ =
           createLoggedUserPointsForDriversStats(
@@ -77,7 +77,7 @@ void main() {
     () async {
       const String loggedUserId = 'u1';
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
+      playerStatsRepository.mockGetByPlayerIdAndSeason(
         expectedPlayerStats: PlayerStatsCreator().create(),
       );
 
@@ -110,7 +110,7 @@ void main() {
         ),
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
+      playerStatsRepository.mockGetByPlayerIdAndSeason(
         expectedPlayerStats: PlayerStatsCreator(
           pointsForDrivers: pointsForDrivers,
         ).create(),
@@ -179,7 +179,7 @@ void main() {
         const SeasonDriverCreator(id: 's3').create(),
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
+      playerStatsRepository.mockGetByPlayerIdAndSeason(
         expectedPlayerStats: PlayerStatsCreator(
           pointsForDrivers: pointsForDrivers,
         ).create(),
@@ -268,7 +268,7 @@ void main() {
         ),
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
+      playerStatsRepository.mockGetByPlayerIdAndSeason(
         expectedPlayerStats: PlayerStatsCreator(
           pointsForDrivers: pointsForDrivers,
         ).create(),

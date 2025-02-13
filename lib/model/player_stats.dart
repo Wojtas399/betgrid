@@ -5,24 +5,26 @@ import 'entity.dart';
 class PlayerStats extends Entity {
   final String playerId;
   final int season;
-  final PlayerStatsPointsForGp bestGpPoints;
-  final PlayerStatsPointsForGp bestQualiPoints;
-  final PlayerStatsPointsForGp bestRacePoints;
-  final List<PlayerStatsPointsForDriver> pointsForDrivers;
+  final double totalPoints;
+  final PlayerStatsPointsForGp? bestGpPoints;
+  final PlayerStatsPointsForGp? bestQualiPoints;
+  final PlayerStatsPointsForGp? bestRacePoints;
+  final List<PlayerStatsPointsForDriver>? pointsForDrivers;
 
   const PlayerStats({
     required this.playerId,
     required this.season,
+    required this.totalPoints,
     required this.bestGpPoints,
     required this.bestQualiPoints,
     required this.bestRacePoints,
     required this.pointsForDrivers,
   }) : super(id: '$playerId-$season');
 
-  PlayerStatsPointsForDriver get bestDriverPoints {
-    final sortedPointsForDrivers = [...pointsForDrivers];
+  PlayerStatsPointsForDriver? get bestDriverPoints {
+    final sortedPointsForDrivers = [...?pointsForDrivers];
     sortedPointsForDrivers.sort((d1, d2) => d2.points.compareTo(d1.points));
-    return sortedPointsForDrivers.first;
+    return sortedPointsForDrivers.firstOrNull;
   }
 
   @override
@@ -30,6 +32,7 @@ class PlayerStats extends Entity {
         id,
         playerId,
         season,
+        totalPoints,
         bestGpPoints,
         bestQualiPoints,
         bestRacePoints,

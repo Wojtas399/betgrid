@@ -3,6 +3,7 @@ import 'package:betgrid/model/player_stats.dart';
 class PlayerStatsCreator {
   final String playerId;
   final int season;
+  final double totalPoints;
   late final PlayerStatsPointsForGp bestGpPoints;
   late final PlayerStatsPointsForGp bestQualiPoints;
   late final PlayerStatsPointsForGp bestRacePoints;
@@ -11,6 +12,7 @@ class PlayerStatsCreator {
   PlayerStatsCreator({
     this.playerId = '',
     this.season = 0,
+    this.totalPoints = 0,
     PlayerStatsPointsForGp? bestGpPoints,
     PlayerStatsPointsForGp? bestQualiPoints,
     PlayerStatsPointsForGp? bestRacePoints,
@@ -28,6 +30,7 @@ class PlayerStatsCreator {
     return PlayerStats(
       playerId: playerId,
       season: season,
+      totalPoints: totalPoints,
       bestGpPoints: bestGpPoints,
       bestQualiPoints: bestQualiPoints,
       bestRacePoints: bestRacePoints,

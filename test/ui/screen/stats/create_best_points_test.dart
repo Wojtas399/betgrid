@@ -65,6 +65,7 @@ void main() {
         PlayerStats(
           playerId: allPlayers.first.id,
           season: season,
+          totalPoints: 100,
           bestGpPoints: const PlayerStatsPointsForGp(
             seasonGrandPrixId: 'sgp1',
             points: 23.45,
@@ -95,6 +96,7 @@ void main() {
         PlayerStats(
           playerId: allPlayers[1].id,
           season: season,
+          totalPoints: 120,
           bestGpPoints: const PlayerStatsPointsForGp(
             seasonGrandPrixId: 'sgp1',
             points: 98.76,
@@ -125,6 +127,7 @@ void main() {
         PlayerStats(
           playerId: allPlayers.last.id,
           season: season,
+          totalPoints: 130,
           bestGpPoints: const PlayerStatsPointsForGp(
             seasonGrandPrixId: 'sgp1',
             points: 5.55,
@@ -188,22 +191,22 @@ void main() {
       );
       final BestPoints expectedBestPoints = BestPoints(
         bestGpPoints: BestPointsForGp(
-          points: allPlayerStats[1].bestGpPoints.points,
+          points: allPlayerStats[1].bestGpPoints!.points,
           playerName: allPlayers[1].username,
           grandPrixName: gp1.name,
         ),
         bestQualiPoints: BestPointsForGp(
-          points: allPlayerStats.first.bestQualiPoints.points,
+          points: allPlayerStats.first.bestQualiPoints!.points,
           playerName: allPlayers.first.username,
           grandPrixName: gp2.name,
         ),
         bestRacePoints: BestPointsForGp(
-          points: allPlayerStats.last.bestRacePoints.points,
+          points: allPlayerStats.last.bestRacePoints!.points,
           playerName: allPlayers.last.username,
           grandPrixName: gp3.name,
         ),
         bestDriverPoints: BestPointsForDriver(
-          points: allPlayerStats[1].pointsForDrivers.last.points,
+          points: allPlayerStats[1].pointsForDrivers!.last.points,
           playerName: allPlayers[1].username,
           driverName: driver3.name,
           driverSurname: driver3.surname,
@@ -211,19 +214,19 @@ void main() {
       );
       playerRepository.mockGetAll(players: allPlayers);
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.first.id,
           season: season,
         ),
       ).thenAnswer((_) => Stream.value(allPlayerStats.first));
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers[1].id,
           season: season,
         ),
       ).thenAnswer((_) => Stream.value(allPlayerStats[1]));
       when(
-        () => playerStatsRepository.getStatsByPlayerIdAndSeason(
+        () => playerStatsRepository.getByPlayerIdAndSeason(
           playerId: allPlayers.last.id,
           season: season,
         ),
@@ -286,6 +289,7 @@ void main() {
       const PlayerStats loggedUserStats = PlayerStats(
         playerId: loggedUserId,
         season: season,
+        totalPoints: 100,
         bestGpPoints: PlayerStatsPointsForGp(
           seasonGrandPrixId: 'sgp1',
           points: 23.45,
@@ -348,22 +352,22 @@ void main() {
       );
       final BestPoints expectedBestPoints = BestPoints(
         bestGpPoints: BestPointsForGp(
-          points: loggedUserStats.bestGpPoints.points,
+          points: loggedUserStats.bestGpPoints!.points,
           playerName: loggedUser.username,
           grandPrixName: gp1.name,
         ),
         bestQualiPoints: BestPointsForGp(
-          points: loggedUserStats.bestQualiPoints.points,
+          points: loggedUserStats.bestQualiPoints!.points,
           playerName: loggedUser.username,
           grandPrixName: gp2.name,
         ),
         bestRacePoints: BestPointsForGp(
-          points: loggedUserStats.bestRacePoints.points,
+          points: loggedUserStats.bestRacePoints!.points,
           playerName: loggedUser.username,
           grandPrixName: gp3.name,
         ),
         bestDriverPoints: BestPointsForDriver(
-          points: loggedUserStats.pointsForDrivers.first.points,
+          points: loggedUserStats.pointsForDrivers!.first.points,
           playerName: loggedUser.username,
           driverName: driver1.name,
           driverSurname: driver1.surname,
@@ -371,7 +375,7 @@ void main() {
       );
       authRepository.mockGetLoggedUserId(loggedUserId);
       playerRepository.mockGetById(player: loggedUser);
-      playerStatsRepository.mockGetStatsByPlayerIdAndSeason(
+      playerStatsRepository.mockGetByPlayerIdAndSeason(
         expectedPlayerStats: loggedUserStats,
       );
       when(

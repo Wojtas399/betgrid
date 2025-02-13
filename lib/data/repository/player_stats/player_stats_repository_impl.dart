@@ -1,3 +1,4 @@
+import 'package:betgrid_shared/firebase/model/user_stats_dto.dart';
 import 'package:betgrid_shared/firebase/service/firebase_user_stats_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
@@ -21,7 +22,7 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
   );
 
   @override
-  Stream<PlayerStats?> getStatsByPlayerIdAndSeason({
+  Stream<PlayerStats?> getByPlayerIdAndSeason({
     required String playerId,
     required int season,
   }) async* {
@@ -42,11 +43,28 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
     }
   }
 
+  @override
+  Future<void> addInitialStatsForPlayerAndSeason({
+    required String playerId,
+    required int season,
+  }) async {
+    final UserStatsDto? addedStatsDto = await _fireUserStatsService.add(
+      userStatsDto: UserStatsDto(
+        userId: playerId,
+        season: season,
+        totalPoints: 0.0,
+      ),
+    );
+    if (addedStatsDto == null) return;
+    final playerStats = _playerStatsMapper.mapFromDto(addedStatsDto);
+    addEntity(playerStats);
+  }
+
   Future<PlayerStats?> _fetchPlayerStatsByPlayerIdAndSeason(
     String playerId,
     int season,
   ) async {
-    final playerStatsDto = await _fireUserStatsService.fetchUserStatsFromSeason(
+    final playerStatsDto = await _fireUserStatsService.fetchForUser(
       userId: playerId,
       season: season,
     );
