@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
+import '../../common_cubit/season_cubit.dart';
 import 'component/players_body.dart';
 import 'cubit/players_cubit.dart';
 
@@ -12,7 +13,9 @@ class PlayersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<PlayersCubit>()..initialize(),
+        create: (_) => getIt.get<PlayersCubit>(
+          param1: getIt.get<SeasonCubit>(),
+        )..initialize(),
         child: const PlayersBody(),
       );
 }

@@ -8,34 +8,34 @@ import 'package:mocktail/mocktail.dart';
 import '../../../creator/player_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/repository/mock_player_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 import '../../../mock/use_case/mock_get_player_points_use_case.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final playerRepository = MockPlayerRepository();
   final getPlayerPointsUseCase = MockGetPlayerPointsUseCase();
-  final dateService = MockDateService();
+  final seasonCubit = MockSeasonCubit();
 
   PlayersCubit createCubit() => PlayersCubit(
         authRepository,
         playerRepository,
         getPlayerPointsUseCase,
-        dateService,
+        seasonCubit,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(playerRepository);
     reset(getPlayerPointsUseCase);
-    reset(dateService);
+    reset(seasonCubit);
   });
 
   group(
     'initialize, ',
     () {
       const String loggedUserId = 'u1';
-      final DateTime now = DateTime(2024);
+      const int season = 2024;
       final List<Player> players = [
         const PlayerCreator(id: loggedUserId).create(),
         const PlayerCreator(id: 'u2').create(),
@@ -78,17 +78,17 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           playerRepository.mockGetAll(players: players);
-          dateService.mockGetNow(now: now);
+          seasonCubit.mockState(expectedState: season);
           when(
             () => getPlayerPointsUseCase.call(
               playerId: players[1].id,
-              season: now.year,
+              season: season,
             ),
           ).thenAnswer((_) => Stream.value(12.5));
           when(
             () => getPlayerPointsUseCase.call(
               playerId: players.last.id,
-              season: now.year,
+              season: season,
             ),
           ).thenAnswer((_) => Stream.value(22.2));
         },
@@ -113,13 +113,13 @@ void main() {
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: players[1].id,
-              season: now.year,
+              season: season,
             ),
           ).called(1);
           verify(
             () => getPlayerPointsUseCase.call(
               playerId: players.last.id,
-              season: now.year,
+              season: season,
             ),
           ).called(1);
         },
