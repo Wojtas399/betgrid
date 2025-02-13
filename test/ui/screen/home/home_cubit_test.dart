@@ -11,26 +11,26 @@ import '../../../creator/user_creator.dart';
 import '../../../mock/repository/mock_auth_repository.dart';
 import '../../../mock/repository/mock_player_stats_repository.dart';
 import '../../../mock/repository/mock_user_repository.dart';
-import '../../../mock/ui/mock_date_service.dart';
+import '../../../mock/ui/mock_season_cubit.dart';
 
 void main() {
   final authRepository = MockAuthRepository();
   final userRepository = MockUserRepository();
   final playerStatsRepository = MockPlayerStatsRepository();
-  final dateService = MockDateService();
+  final seasonCubit = MockSeasonCubit();
 
   HomeCubit createCubit() => HomeCubit(
         authRepository,
         userRepository,
         playerStatsRepository,
-        dateService,
+        seasonCubit,
       );
 
   tearDown(() {
     reset(authRepository);
     reset(userRepository);
     reset(playerStatsRepository);
-    reset(dateService);
+    reset(seasonCubit);
   });
 
   group(
@@ -70,7 +70,7 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetById(user: null);
-          dateService.mockGetNow(now: DateTime(season));
+          seasonCubit.mockState(expectedState: season);
           playerStatsRepository.mockGetByPlayerIdAndSeason(
             expectedPlayerStats: stats,
           );
@@ -90,7 +90,7 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetById(user: loggedUser);
-          dateService.mockGetNow(now: DateTime(season));
+          seasonCubit.mockState(expectedState: season);
           playerStatsRepository.mockGetByPlayerIdAndSeason(
             expectedPlayerStats: null,
           );
@@ -111,7 +111,7 @@ void main() {
         setUp: () {
           authRepository.mockGetLoggedUserId(loggedUserId);
           userRepository.mockGetById(user: loggedUser);
-          dateService.mockGetNow(now: DateTime(season));
+          seasonCubit.mockState(expectedState: season);
           playerStatsRepository.mockGetByPlayerIdAndSeason(
             expectedPlayerStats: stats,
           );
