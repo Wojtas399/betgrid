@@ -5,15 +5,7 @@ class PlayerCreator {
   final String username;
   final String? avatarUrl;
 
-  const PlayerCreator({
-    this.id = '',
-    this.username = '',
-    this.avatarUrl,
-  });
+  const PlayerCreator({this.id = '', this.username = '', this.avatarUrl});
 
-  Player create() => Player(
-        id: id,
-        username: username,
-        avatarUrl: avatarUrl,
-      );
+  Player create() => Player(id: id, username: username, avatarUrl: avatarUrl);
 }

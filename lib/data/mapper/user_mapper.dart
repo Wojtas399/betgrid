@@ -10,21 +10,15 @@ class UserMapper {
   final ThemeModeMapper _themeModeMapper;
   final ThemePrimaryColorMapper _themePrimaryColorMapper;
 
-  const UserMapper(
-    this._themeModeMapper,
-    this._themePrimaryColorMapper,
-  );
+  const UserMapper(this._themeModeMapper, this._themePrimaryColorMapper);
 
-  User mapFromDto({
-    required UserDto userDto,
-    String? avatarUrl,
-  }) =>
-      User(
-        id: userDto.id,
-        username: userDto.username,
-        avatarUrl: avatarUrl,
-        themeMode: _themeModeMapper.mapFromDto(userDto.themeMode),
-        themePrimaryColor:
-            _themePrimaryColorMapper.mapFromDto(userDto.themePrimaryColor),
-      );
+  User mapFromDto({required UserDto userDto, String? avatarUrl}) => User(
+    id: userDto.id,
+    username: userDto.username,
+    avatarUrl: avatarUrl,
+    themeMode: _themeModeMapper.mapFromDto(userDto.themeMode),
+    themePrimaryColor: _themePrimaryColorMapper.mapFromDto(
+      userDto.themePrimaryColor,
+    ),
+  );
 }

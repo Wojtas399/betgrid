@@ -26,14 +26,7 @@ class GrandPrixBetRace extends StatelessWidget {
     return ExpansionTile(
       title: _Title(),
       children: [
-        const Padding16(
-          child: Column(
-            children: [
-              _Bets(),
-              _PointsSummary(),
-            ],
-          ),
-        ),
+        const Padding16(child: Column(children: [_Bets(), _PointsSummary()])),
       ],
     );
   }
@@ -88,22 +81,24 @@ class _P1 extends StatelessWidget {
       label: 'P1',
       labelColor: context.customColors?.p1,
       betStatus: bet?.status,
-      betChild: bet?.betDriver != null
-          ? DriverDescription(
-              name: bet!.betDriver!.name,
-              surname: bet.betDriver!.surname,
-              number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
-      resultsChild: bet?.resultDriver != null
-          ? DriverDescription(
-              name: bet!.resultDriver!.name,
-              surname: bet.resultDriver!.surname,
-              number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
+      betChild:
+          bet?.betDriver != null
+              ? DriverDescription(
+                name: bet!.betDriver!.name,
+                surname: bet.betDriver!.surname,
+                number: bet.betDriver!.number,
+                teamColor: bet.betDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
+      resultsChild:
+          bet?.resultDriver != null
+              ? DriverDescription(
+                name: bet!.resultDriver!.name,
+                surname: bet.resultDriver!.surname,
+                number: bet.resultDriver!.number,
+                teamColor: bet.resultDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
       points: bet?.points,
     );
   }
@@ -122,22 +117,24 @@ class _P2 extends StatelessWidget {
       label: 'P2',
       labelColor: context.customColors?.p2,
       betStatus: bet?.status,
-      betChild: bet?.betDriver != null
-          ? DriverDescription(
-              name: bet!.betDriver!.name,
-              surname: bet.betDriver!.surname,
-              number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
-      resultsChild: bet?.resultDriver != null
-          ? DriverDescription(
-              name: bet!.resultDriver!.name,
-              surname: bet.resultDriver!.surname,
-              number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
+      betChild:
+          bet?.betDriver != null
+              ? DriverDescription(
+                name: bet!.betDriver!.name,
+                surname: bet.betDriver!.surname,
+                number: bet.betDriver!.number,
+                teamColor: bet.betDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
+      resultsChild:
+          bet?.resultDriver != null
+              ? DriverDescription(
+                name: bet!.resultDriver!.name,
+                surname: bet.resultDriver!.surname,
+                number: bet.resultDriver!.number,
+                teamColor: bet.resultDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
       points: bet?.points,
     );
   }
@@ -156,22 +153,24 @@ class _P3 extends StatelessWidget {
       label: 'P3',
       labelColor: context.customColors?.p3,
       betStatus: bet?.status,
-      betChild: bet?.betDriver != null
-          ? DriverDescription(
-              name: bet!.betDriver!.name,
-              surname: bet.betDriver!.surname,
-              number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
-      resultsChild: bet?.resultDriver != null
-          ? DriverDescription(
-              name: bet!.resultDriver!.name,
-              surname: bet.resultDriver!.surname,
-              number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
+      betChild:
+          bet?.betDriver != null
+              ? DriverDescription(
+                name: bet!.betDriver!.name,
+                surname: bet.betDriver!.surname,
+                number: bet.betDriver!.number,
+                teamColor: bet.betDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
+      resultsChild:
+          bet?.resultDriver != null
+              ? DriverDescription(
+                name: bet!.resultDriver!.name,
+                surname: bet.resultDriver!.surname,
+                number: bet.resultDriver!.number,
+                teamColor: bet.resultDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
       points: bet?.points,
     );
   }
@@ -189,22 +188,24 @@ class _P10 extends StatelessWidget {
     return GrandPrixBetItem(
       label: 'P10',
       betStatus: bet?.status,
-      betChild: bet?.betDriver != null
-          ? DriverDescription(
-              name: bet!.betDriver!.name,
-              surname: bet.betDriver!.surname,
-              number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
-      resultsChild: bet?.resultDriver != null
-          ? DriverDescription(
-              name: bet!.resultDriver!.name,
-              surname: bet.resultDriver!.surname,
-              number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
+      betChild:
+          bet?.betDriver != null
+              ? DriverDescription(
+                name: bet!.betDriver!.name,
+                surname: bet.betDriver!.surname,
+                number: bet.betDriver!.number,
+                teamColor: bet.betDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
+      resultsChild:
+          bet?.resultDriver != null
+              ? DriverDescription(
+                name: bet!.resultDriver!.name,
+                surname: bet.resultDriver!.surname,
+                number: bet.resultDriver!.number,
+                teamColor: bet.resultDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
       points: bet?.points,
     );
   }
@@ -222,22 +223,24 @@ class _FastestLap extends StatelessWidget {
     return GrandPrixBetItem(
       label: context.str.fastestLap,
       betStatus: bet?.status,
-      betChild: bet?.betDriver != null
-          ? DriverDescription(
-              name: bet!.betDriver!.name,
-              surname: bet.betDriver!.surname,
-              number: bet.betDriver!.number,
-              teamColor: bet.betDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
-      resultsChild: bet?.resultDriver != null
-          ? DriverDescription(
-              name: bet!.resultDriver!.name,
-              surname: bet.resultDriver!.surname,
-              number: bet.resultDriver!.number,
-              teamColor: bet.resultDriver!.teamHexColor.toColor(),
-            )
-          : const NoText(),
+      betChild:
+          bet?.betDriver != null
+              ? DriverDescription(
+                name: bet!.betDriver!.name,
+                surname: bet.betDriver!.surname,
+                number: bet.betDriver!.number,
+                teamColor: bet.betDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
+      resultsChild:
+          bet?.resultDriver != null
+              ? DriverDescription(
+                name: bet!.resultDriver!.name,
+                surname: bet.resultDriver!.surname,
+                number: bet.resultDriver!.number,
+                teamColor: bet.resultDriver!.teamHexColor.toColor(),
+              )
+              : const NoText(),
       points: bet?.points,
     );
   }
@@ -262,14 +265,15 @@ class _DnfDrivers extends StatelessWidget {
           if (betDnfDrivers != null)
             ...betDnfDrivers
                 .map(
-                  (driver) => driver != null
-                      ? DriverDescription(
-                          name: driver.name,
-                          surname: driver.surname,
-                          number: driver.number,
-                          teamColor: driver.teamHexColor.toColor(),
-                        )
-                      : const NoText(),
+                  (driver) =>
+                      driver != null
+                          ? DriverDescription(
+                            name: driver.name,
+                            surname: driver.surname,
+                            number: driver.number,
+                            teamColor: driver.teamHexColor.toColor(),
+                          )
+                          : const NoText(),
                 )
                 .separated(const GapVertical8())
           else
@@ -281,14 +285,15 @@ class _DnfDrivers extends StatelessWidget {
           if (resultDnfDrivers?.isNotEmpty == true)
             ...?resultDnfDrivers
                 ?.map(
-                  (driver) => driver != null
-                      ? DriverDescription(
-                          name: driver.name,
-                          surname: driver.surname,
-                          number: driver.number,
-                          teamColor: driver.teamHexColor.toColor(),
-                        )
-                      : const NoText(),
+                  (driver) =>
+                      driver != null
+                          ? DriverDescription(
+                            name: driver.name,
+                            surname: driver.surname,
+                            number: driver.number,
+                            teamColor: driver.teamHexColor.toColor(),
+                          )
+                          : const NoText(),
                 )
                 .separated(const GapVertical8())
           else
@@ -314,12 +319,14 @@ class _SafetyCar extends StatelessWidget {
     return GrandPrixBetItem(
       label: context.str.safetyCar,
       betStatus: bet?.status,
-      betChild: betSafetyCarStr != null
-          ? BodyMedium(betSafetyCarStr)
-          : const GrandPrixBetNoDataField(),
-      resultsChild: resultsSafetyCarStr != null
-          ? Text(resultsSafetyCarStr)
-          : const GrandPrixBetNoDataField(),
+      betChild:
+          betSafetyCarStr != null
+              ? BodyMedium(betSafetyCarStr)
+              : const GrandPrixBetNoDataField(),
+      resultsChild:
+          resultsSafetyCarStr != null
+              ? Text(resultsSafetyCarStr)
+              : const GrandPrixBetNoDataField(),
       points: bet?.points,
     );
   }
@@ -339,12 +346,14 @@ class _RedFlag extends StatelessWidget {
     return GrandPrixBetItem(
       label: context.str.redFlag,
       betStatus: bet?.status,
-      betChild: betRedFlagStr != null
-          ? Text(betRedFlagStr)
-          : const GrandPrixBetNoDataField(),
-      resultsChild: resultsRedFlagStr != null
-          ? Text(resultsRedFlagStr)
-          : const GrandPrixBetNoDataField(),
+      betChild:
+          betRedFlagStr != null
+              ? Text(betRedFlagStr)
+              : const GrandPrixBetNoDataField(),
+      resultsChild:
+          resultsRedFlagStr != null
+              ? Text(resultsRedFlagStr)
+              : const GrandPrixBetNoDataField(),
       points: bet?.points,
     );
   }
@@ -394,7 +403,7 @@ class _PointsSummary extends StatelessWidget {
 
 extension _BoolExtensions on bool {
   String toI8nString(BuildContext context) => switch (this) {
-        true => context.str.yes,
-        false => context.str.no,
-      };
+    true => context.str.yes,
+    false => context.str.no,
+  };
 }

@@ -15,17 +15,14 @@ class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-        title: Text(context.str.signInScreenTitle),
-        actions: [
-          Icon(
-            MdiIcons.themeLightDark,
-            color: context.colorScheme.outline,
-          ),
-          const GapHorizontal8(),
-          const _ThemeSwitch(),
-          const GapHorizontal8(),
-        ],
-      );
+    title: Text(context.str.signInScreenTitle),
+    actions: [
+      Icon(MdiIcons.themeLightDark, color: context.colorScheme.outline),
+      const GapHorizontal8(),
+      const _ThemeSwitch(),
+      const GapHorizontal8(),
+    ],
+  );
 }
 
 class _ThemeSwitch extends StatelessWidget {
@@ -33,8 +30,8 @@ class _ThemeSwitch extends StatelessWidget {
 
   void _onSwitchChanged(bool isSwitched, BuildContext context) {
     context.read<ThemeCubit>().changeThemeMode(
-          isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
-        );
+      isSwitched ? user.ThemeMode.dark : user.ThemeMode.light,
+    );
   }
 
   @override

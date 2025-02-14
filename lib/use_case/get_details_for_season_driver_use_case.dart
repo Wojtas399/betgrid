@@ -27,13 +27,13 @@ class GetDetailsForSeasonDriverUseCase {
       (DriverPersonalData? personalData, TeamBasicInfo? teamBasicInfo) =>
           personalData != null && teamBasicInfo != null
               ? DriverDetails(
-                  seasonDriverId: seasonDriver.id,
-                  name: personalData.name,
-                  surname: personalData.surname,
-                  number: seasonDriver.driverNumber,
-                  teamName: teamBasicInfo.name,
-                  teamHexColor: teamBasicInfo.hexColor,
-                )
+                seasonDriverId: seasonDriver.id,
+                name: personalData.name,
+                surname: personalData.surname,
+                number: seasonDriver.driverNumber,
+                teamName: teamBasicInfo.name,
+                teamHexColor: teamBasicInfo.hexColor,
+              )
               : null,
     );
   }

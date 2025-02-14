@@ -18,12 +18,12 @@ class SeasonGrandPrixResults extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        season,
-        seasonGrandPrixId,
-        qualiStandingsBySeasonDriverIds,
-        raceResults,
-      ];
+    id,
+    season,
+    seasonGrandPrixId,
+    qualiStandingsBySeasonDriverIds,
+    raceResults,
+  ];
 }
 
 class RaceResults extends Equatable {
@@ -49,13 +49,13 @@ class RaceResults extends Equatable {
 
   @override
   List<Object?> get props => [
-        p1SeasonDriverId,
-        p2SeasonDriverId,
-        p3SeasonDriverId,
-        p10SeasonDriverId,
-        fastestLapSeasonDriverId,
-        dnfSeasonDriverIds,
-        wasThereSafetyCar,
-        wasThereRedFlag,
-      ];
+    p1SeasonDriverId,
+    p2SeasonDriverId,
+    p3SeasonDriverId,
+    p10SeasonDriverId,
+    fastestLapSeasonDriverId,
+    dnfSeasonDriverIds,
+    wasThereSafetyCar,
+    wasThereRedFlag,
+  ];
 }

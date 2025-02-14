@@ -23,27 +23,21 @@ class _State extends State<StatsBetPointsHistoryPreview> {
   }
 
   void _onPop() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override
   Widget build(BuildContext context) => PopScope(
-        onPopInvokedWithResult: (_, __) => _onPop(),
-        child: Dialog.fullscreen(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(context.str.statsPointsHistory),
-            ),
-            body: const SafeArea(
-              child: Padding24(
-                child: StatsBetPointsHistory(
-                  showPointsForEachRound: true,
-                ),
-              ),
-            ),
+    onPopInvokedWithResult: (_, __) => _onPop(),
+    child: Dialog.fullscreen(
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.str.statsPointsHistory)),
+        body: const SafeArea(
+          child: Padding24(
+            child: StatsBetPointsHistory(showPointsForEachRound: true),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

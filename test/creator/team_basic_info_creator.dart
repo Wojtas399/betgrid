@@ -12,10 +12,6 @@ class TeamBasicInfoCreator {
   });
 
   TeamBasicInfo create() {
-    return TeamBasicInfo(
-      id: id,
-      name: name,
-      hexColor: hexColor,
-    );
+    return TeamBasicInfo(id: id, name: name, hexColor: hexColor);
   }
 }

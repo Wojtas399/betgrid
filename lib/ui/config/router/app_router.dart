@@ -12,32 +12,32 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: SignInRoute.page, initial: true),
+    AutoRoute(page: SignInRoute.page, initial: true),
+    AutoRoute(
+      page: HomeBaseRoute.page,
+      children: [
         AutoRoute(
-          page: HomeBaseRoute.page,
+          page: HomeRoute.page,
           children: [
             AutoRoute(
-              page: HomeRoute.page,
-              children: [
-                AutoRoute(
-                  page: StatsRoute.page,
-                  title: (context, _) => context.str.statsScreenTitle,
-                ),
-                AutoRoute(
-                  page: BetsRoute.page,
-                  title: (context, _) => context.str.betsScreenTitle,
-                ),
-                AutoRoute(
-                  page: PlayersRoute.page,
-                  title: (context, _) => context.str.playersScreenTitle,
-                ),
-              ],
+              page: StatsRoute.page,
+              title: (context, _) => context.str.statsScreenTitle,
             ),
-            AutoRoute(page: GrandPrixBetRoute.page),
-            AutoRoute(page: GrandPrixBetEditorRoute.page),
-            AutoRoute(page: ProfileRoute.page),
-            AutoRoute(page: PlayerProfileRoute.page),
+            AutoRoute(
+              page: BetsRoute.page,
+              title: (context, _) => context.str.betsScreenTitle,
+            ),
+            AutoRoute(
+              page: PlayersRoute.page,
+              title: (context, _) => context.str.playersScreenTitle,
+            ),
           ],
         ),
-      ];
+        AutoRoute(page: GrandPrixBetRoute.page),
+        AutoRoute(page: GrandPrixBetEditorRoute.page),
+        AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: PlayerProfileRoute.page),
+      ],
+    ),
+  ];
 }

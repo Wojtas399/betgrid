@@ -32,18 +32,18 @@ class SeasonGrandPrixBet extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        playerId,
-        season,
-        seasonGrandPrixId,
-        qualiStandingsBySeasonDriverIds,
-        p1SeasonDriverId,
-        p2SeasonDriverId,
-        p3SeasonDriverId,
-        p10SeasonDriverId,
-        fastestLapSeasonDriverId,
-        dnfSeasonDriverIds,
-        willBeSafetyCar,
-        willBeRedFlag,
-      ];
+    id,
+    playerId,
+    season,
+    seasonGrandPrixId,
+    qualiStandingsBySeasonDriverIds,
+    p1SeasonDriverId,
+    p2SeasonDriverId,
+    p3SeasonDriverId,
+    p10SeasonDriverId,
+    fastestLapSeasonDriverId,
+    dnfSeasonDriverIds,
+    willBeSafetyCar,
+    willBeRedFlag,
+  ];
 }

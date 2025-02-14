@@ -18,11 +18,11 @@ class SeasonGrandPrix extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        season,
-        grandPrixId,
-        roundNumber,
-        startDate,
-        endDate,
-      ];
+    id,
+    season,
+    grandPrixId,
+    roundNumber,
+    startDate,
+    endDate,
+  ];
 }

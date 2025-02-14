@@ -14,21 +14,18 @@ class RequiredDataCompletionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<RequiredDataCompletionCubit>(
+    create:
+        (_) => getIt.get<RequiredDataCompletionCubit>(
           param1: getIt.get<SeasonCubit>(),
         ),
-        child: const _CubitStatusListener(
-          child: RequiredDataCompletionContent(),
-        ),
-      );
+    child: const _CubitStatusListener(child: RequiredDataCompletionContent()),
+  );
 }
 
 class _CubitStatusListener extends StatelessWidget {
   final Widget child;
 
-  const _CubitStatusListener({
-    required this.child,
-  });
+  const _CubitStatusListener({required this.child});
 
   void _onCubiStatusChanged(
     RequiredDataCompletionStateStatus status,
@@ -46,10 +43,11 @@ class _CubitStatusListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocListener<RequiredDataCompletionCubit, RequiredDataCompletionState>(
-        listenWhen: (prevState, currState) =>
-            prevState.status != currState.status,
-        listener: (_, RequiredDataCompletionState state) =>
-            _onCubiStatusChanged(state.status, context),
+        listenWhen:
+            (prevState, currState) => prevState.status != currState.status,
+        listener:
+            (_, RequiredDataCompletionState state) =>
+                _onCubiStatusChanged(state.status, context),
         child: child,
       );
 }

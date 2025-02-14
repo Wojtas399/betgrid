@@ -16,13 +16,9 @@ class StatsIndividualStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Column(
-        spacing: 8,
-        children: [
-          _BestPoints(),
-          _PointsHistory(),
-          _DriversPoints(),
-        ],
-      );
+    spacing: 8,
+    children: [_BestPoints(), _PointsHistory(), _DriversPoints()],
+  );
 }
 
 class _BestPoints extends StatelessWidget {
@@ -30,10 +26,10 @@ class _BestPoints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsBestPoints,
-        icon: Icons.star_outline_rounded,
-        child: const StatsBestPoints(),
-      );
+    title: context.str.statsBestPoints,
+    icon: Icons.star_outline_rounded,
+    child: const StatsBestPoints(),
+  );
 }
 
 class _PointsHistory extends StatelessWidget {
@@ -50,14 +46,11 @@ class _PointsHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsPointsHistory,
-        icon: Icons.stacked_line_chart_rounded,
-        onPressed: () => _onShowPointsHistoryPreview(context),
-        child: const SizedBox(
-          height: 300,
-          child: StatsBetPointsHistory(),
-        ),
-      );
+    title: context.str.statsPointsHistory,
+    icon: Icons.stacked_line_chart_rounded,
+    onPressed: () => _onShowPointsHistoryPreview(context),
+    child: const SizedBox(height: 300, child: StatsBetPointsHistory()),
+  );
 }
 
 class _DriversPoints extends StatelessWidget {
@@ -65,8 +58,8 @@ class _DriversPoints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const StatsCard(
-        title: 'Punkty za kierowców',
-        icon: Icons.format_list_numbered_rounded,
-        child: StatsLoggedUserPointsForDrivers(),
-      );
+    title: 'Punkty za kierowców',
+    icon: Icons.format_list_numbered_rounded,
+    child: StatsLoggedUserPointsForDrivers(),
+  );
 }

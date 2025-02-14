@@ -18,20 +18,22 @@ void main() {
     driverPersonalDataRepository,
     teamBasicInfoRepository,
   );
-  final SeasonDriver seasonDriver = const SeasonDriverCreator(
-    id: 'sd1',
-    driverId: 'd1',
-    driverNumber: 1,
-  ).create();
+  final SeasonDriver seasonDriver =
+      const SeasonDriverCreator(
+        id: 'sd1',
+        driverId: 'd1',
+        driverNumber: 1,
+      ).create();
   final DriverPersonalData driverPersonalData = DriverPersonalData(
     id: seasonDriver.driverId,
     name: 'Max',
     surname: 'Verstappen',
   );
-  final TeamBasicInfo teamBasicInfo = const TeamBasicInfoCreator(
-    name: 'Red Bull Racing',
-    hexColor: '#FFFFFF',
-  ).create();
+  final TeamBasicInfo teamBasicInfo =
+      const TeamBasicInfoCreator(
+        name: 'Red Bull Racing',
+        hexColor: '#FFFFFF',
+      ).create();
   final DriverDetails expectedDriver = DriverDetails(
     seasonDriverId: seasonDriver.id,
     name: driverPersonalData.name,
@@ -54,48 +56,37 @@ void main() {
     reset(teamBasicInfoRepository);
   });
 
-  test(
-    'should emit null if personal data of the driver does not exist in '
-    'DriverPersonalDataRepository',
-    () async {
-      driverPersonalDataRepository.mockGetDriverPersonalDataById();
-      teamBasicInfoRepository.mockGetById();
+  test('should emit null if personal data of the driver does not exist in '
+      'DriverPersonalDataRepository', () async {
+    driverPersonalDataRepository.mockGetDriverPersonalDataById();
+    teamBasicInfoRepository.mockGetById();
 
-      final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
+    final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
 
-      expect(await driver$.first, null);
-    },
-  );
+    expect(await driver$.first, null);
+  });
 
-  test(
-    'should emit null if team to which driver belongs does not exist in '
-    'TeamRepository',
-    () async {
-      driverPersonalDataRepository.mockGetDriverPersonalDataById(
-        expectedDriverPersonalData: driverPersonalData,
-      );
-      teamBasicInfoRepository.mockGetById();
+  test('should emit null if team to which driver belongs does not exist in '
+      'TeamRepository', () async {
+    driverPersonalDataRepository.mockGetDriverPersonalDataById(
+      expectedDriverPersonalData: driverPersonalData,
+    );
+    teamBasicInfoRepository.mockGetById();
 
-      final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
+    final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
 
-      expect(await driver$.first, null);
-    },
-  );
+    expect(await driver$.first, null);
+  });
 
-  test(
-    'should emit DriverDetails model which contains data from SeasonDriver, '
-    'DriverPersonalData and TeamBasicInfo',
-    () async {
-      driverPersonalDataRepository.mockGetDriverPersonalDataById(
-        expectedDriverPersonalData: driverPersonalData,
-      );
-      teamBasicInfoRepository.mockGetById(
-        expectedTeamBasicInfo: teamBasicInfo,
-      );
+  test('should emit DriverDetails model which contains data from SeasonDriver, '
+      'DriverPersonalData and TeamBasicInfo', () async {
+    driverPersonalDataRepository.mockGetDriverPersonalDataById(
+      expectedDriverPersonalData: driverPersonalData,
+    );
+    teamBasicInfoRepository.mockGetById(expectedTeamBasicInfo: teamBasicInfo);
 
-      final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
+    final Stream<DriverDetails?> driver$ = useCase(seasonDriver);
 
-      expect(await driver$.first, expectedDriver);
-    },
-  );
+    expect(await driver$.first, expectedDriver);
+  });
 }

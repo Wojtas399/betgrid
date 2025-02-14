@@ -10,14 +10,9 @@ class GrandPrixBetEditorRacePodiumAndP10 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _P1(),
-          _P2(),
-          _P3(),
-          _P10(),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [_P1(), _P2(), _P3(), _P10()],
+  );
 }
 
 class _P1 extends StatelessWidget {

@@ -9,9 +9,7 @@ class MockUserRepository extends Mock implements UserRepository {
   }
 
   void mockGetById({User? user}) {
-    when(
-      () => getById(any()),
-    ).thenAnswer((_) => Stream.value(user));
+    when(() => getById(any())).thenAnswer((_) => Stream.value(user));
   }
 
   void mockAdd({Object? throwable}) {
@@ -40,17 +38,17 @@ class MockUserRepository extends Mock implements UserRepository {
   }
 
   Future<void> _addCall() => add(
-        userId: any(named: 'userId'),
-        username: any(named: 'username'),
-        avatarImgPath: any(named: 'avatarImgPath'),
-        themeMode: any(named: 'themeMode'),
-        themePrimaryColor: any(named: 'themePrimaryColor'),
-      );
+    userId: any(named: 'userId'),
+    username: any(named: 'username'),
+    avatarImgPath: any(named: 'avatarImgPath'),
+    themeMode: any(named: 'themeMode'),
+    themePrimaryColor: any(named: 'themePrimaryColor'),
+  );
 
   Future<void> _updateDataCall() => updateData(
-        userId: any(named: 'userId'),
-        username: any(named: 'username'),
-        themeMode: any(named: 'themeMode'),
-        themePrimaryColor: any(named: 'themePrimaryColor'),
-      );
+    userId: any(named: 'userId'),
+    username: any(named: 'username'),
+    themeMode: any(named: 'themeMode'),
+    themePrimaryColor: any(named: 'themePrimaryColor'),
+  );
 }

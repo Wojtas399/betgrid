@@ -11,11 +11,7 @@ class BetsGpStatusService {
     required DateTime gpEndDateTime,
     required DateTime now,
   }) {
-    final DateTime nowDate = DateTime(
-      now.year,
-      now.month,
-      now.day,
-    );
+    final DateTime nowDate = DateTime(now.year, now.month, now.day);
     final DateTime gpStartDate = DateTime(
       gpStartDateTime.year,
       gpStartDateTime.month,

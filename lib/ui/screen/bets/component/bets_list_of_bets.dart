@@ -15,10 +15,7 @@ import '../cubit/bets_state.dart';
 class BetsListOfBets extends StatelessWidget {
   const BetsListOfBets({super.key});
 
-  void _onGrandPrixPressed(
-    GrandPrixItemParams gpParams,
-    BuildContext context,
-  ) {
+  void _onGrandPrixPressed(GrandPrixItemParams gpParams, BuildContext context) {
     final BetsCubit cubit = context.read<BetsCubit>();
     final int? season = cubit.state.season;
     final String? loggedUserId = cubit.state.loggedUserId;
@@ -52,24 +49,22 @@ class BetsListOfBets extends StatelessWidget {
     );
 
     return grandPrixItems == null
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: grandPrixItems.length,
-            itemBuilder: (_, int itemIndex) {
-              final gpParams = grandPrixItems[itemIndex];
+          padding: const EdgeInsets.all(8),
+          itemCount: grandPrixItems.length,
+          itemBuilder: (_, int itemIndex) {
+            final gpParams = grandPrixItems[itemIndex];
 
-              return ScrollAnimatedItem(
-                child: _Item(
-                  gpParams: gpParams,
-                  doesOngoingGpExist: doesOngoingGpExist,
-                  onPressed: () => _onGrandPrixPressed(gpParams, context),
-                ),
-              );
-            },
-          );
+            return ScrollAnimatedItem(
+              child: _Item(
+                gpParams: gpParams,
+                doesOngoingGpExist: doesOngoingGpExist,
+                onPressed: () => _onGrandPrixPressed(gpParams, context),
+              ),
+            );
+          },
+        );
   }
 }
 
@@ -99,23 +94,20 @@ class _Item extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: isMarked ? const EdgeInsets.all(8) : null,
-          margin: isMarked
-              ? const EdgeInsets.only(
-                  top: 8,
-                  left: 4,
-                  right: 4,
-                  bottom: 8,
-                )
-              : null,
-          decoration: isMarked
-              ? BoxDecoration(
-                  border: Border.all(
-                    color: context.colorScheme.primary,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                )
-              : null,
+          margin:
+              isMarked
+                  ? const EdgeInsets.only(top: 8, left: 4, right: 4, bottom: 8)
+                  : null,
+          decoration:
+              isMarked
+                  ? BoxDecoration(
+                    border: Border.all(
+                      color: context.colorScheme.primary,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  )
+                  : null,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -177,9 +169,7 @@ class _EndBettingTime extends StatelessWidget {
             const SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
+              child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ],
         ],

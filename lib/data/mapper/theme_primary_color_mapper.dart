@@ -5,9 +5,7 @@ import '../../model/user.dart';
 
 @injectable
 class ThemePrimaryColorMapper {
-  ThemePrimaryColor mapFromDto(
-    ThemePrimaryColorDto themePrimaryColorDto,
-  ) =>
+  ThemePrimaryColor mapFromDto(ThemePrimaryColorDto themePrimaryColorDto) =>
       switch (themePrimaryColorDto) {
         ThemePrimaryColorDto.red => ThemePrimaryColor.defaultRed,
         ThemePrimaryColorDto.pink => ThemePrimaryColor.pink,
@@ -19,9 +17,7 @@ class ThemePrimaryColorMapper {
         ThemePrimaryColorDto.blue => ThemePrimaryColor.blue,
       };
 
-  ThemePrimaryColorDto mapToDto(
-    ThemePrimaryColor themePrimaryColor,
-  ) =>
+  ThemePrimaryColorDto mapToDto(ThemePrimaryColor themePrimaryColor) =>
       switch (themePrimaryColor) {
         ThemePrimaryColor.defaultRed => ThemePrimaryColorDto.red,
         ThemePrimaryColor.pink => ThemePrimaryColorDto.pink,

@@ -22,22 +22,19 @@ class GrandPrixBetEditorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt<GrandPrixBetEditorCubit>(
+    create:
+        (_) => getIt<GrandPrixBetEditorCubit>(
           param1: season,
           param2: seasonGrandPrixId,
         )..initialize(),
-        child: const _CubitStatusListener(
-          child: GrandPrixBetEditorContent(),
-        ),
-      );
+    child: const _CubitStatusListener(child: GrandPrixBetEditorContent()),
+  );
 }
 
 class _CubitStatusListener extends StatelessWidget {
   final Widget child;
 
-  const _CubitStatusListener({
-    required this.child,
-  });
+  const _CubitStatusListener({required this.child});
 
   void _onCubitStatusChanged(
     BuildContext context,
@@ -56,12 +53,11 @@ class _CubitStatusListener extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<GrandPrixBetEditorCubit, GrandPrixBetEditorState>(
-        listenWhen: (prevState, currState) =>
-            currState.status != prevState.status,
-        listener: (context, state) =>
-            _onCubitStatusChanged(context, state.status),
-        child: child,
-      );
+  Widget build(
+    BuildContext context,
+  ) => BlocListener<GrandPrixBetEditorCubit, GrandPrixBetEditorState>(
+    listenWhen: (prevState, currState) => currState.status != prevState.status,
+    listener: (context, state) => _onCubitStatusChanged(context, state.status),
+    child: child,
+  );
 }

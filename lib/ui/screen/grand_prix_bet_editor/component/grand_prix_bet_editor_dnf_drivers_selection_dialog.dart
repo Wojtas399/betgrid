@@ -27,29 +27,30 @@ class GrandPrixBetEditorDnfDriversSelectionDialog extends StatelessWidget {
         surfaceTintColor: context.colorScheme.surfaceContainerHighest,
       ),
       body: SafeArea(
-        child: allDrivers != null
-            ? Column(
-                children: [
-                  Container(
-                    color: context.colorScheme.surfaceContainerHighest,
-                    width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                    child: Column(
-                      children: [
-                        BodyMedium(
-                          context.str.grandPrixBetEditorDnfSubtitle,
-                          textAlign: TextAlign.center,
-                        ),
-                        const _SelectedDrivers(),
-                      ],
+        child:
+            allDrivers != null
+                ? Column(
+                  children: [
+                    Container(
+                      color: context.colorScheme.surfaceContainerHighest,
+                      width: double.infinity,
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                      child: Column(
+                        children: [
+                          BodyMedium(
+                            context.str.grandPrixBetEditorDnfSubtitle,
+                            textAlign: TextAlign.center,
+                          ),
+                          const _SelectedDrivers(),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: _ListOfDriversToSelect(drivers: allDrivers),
-                  ),
-                ],
-              )
-            : const _NoDriversInfo(),
+                    Expanded(
+                      child: _ListOfDriversToSelect(drivers: allDrivers),
+                    ),
+                  ],
+                )
+                : const _NoDriversInfo(),
       ),
     );
   }
@@ -82,9 +83,10 @@ class _SelectedDrivers extends StatelessWidget {
                     height: 24,
                     width: 24,
                     child: IconButton(
-                      onPressed: () => context
-                          .read<GrandPrixBetEditorCubit>()
-                          .onDnfDriverRemoved(driver.seasonDriverId),
+                      onPressed:
+                          () => context
+                              .read<GrandPrixBetEditorCubit>()
+                              .onDnfDriverRemoved(driver.seasonDriverId),
                       iconSize: 16,
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.close),
@@ -102,9 +104,7 @@ class _SelectedDrivers extends StatelessWidget {
 class _ListOfDriversToSelect extends StatelessWidget {
   final List<DriverDetails> drivers;
 
-  const _ListOfDriversToSelect({
-    required this.drivers,
-  });
+  const _ListOfDriversToSelect({required this.drivers});
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +128,10 @@ class _ListOfDriversToSelect extends StatelessWidget {
                     (DriverDetails driver) => _DriverItem(
                       driver: driver,
                       isDisabled: dnfDrivers.length == 3,
-                      onTap: () => context
-                          .read<GrandPrixBetEditorCubit>()
-                          .onDnfDriverSelected(driver.seasonDriverId),
+                      onTap:
+                          () => context
+                              .read<GrandPrixBetEditorCubit>()
+                              .onDnfDriverSelected(driver.seasonDriverId),
                     ),
                   )
                   .separated(const SizedBox(height: 16)),
@@ -155,21 +156,21 @@ class _DriverItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: isDisabled ? null : onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(16),
-          child: DriverDescription(
-            name: driver.name,
-            surname: driver.surname,
-            number: driver.number,
-            teamColor: driver.teamHexColor.toColor(),
-          ),
-        ),
-      );
+    onTap: isDisabled ? null : onTap,
+    child: Container(
+      decoration: BoxDecoration(
+        color: context.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: DriverDescription(
+        name: driver.name,
+        surname: driver.surname,
+        number: driver.number,
+        teamColor: driver.teamHexColor.toColor(),
+      ),
+    ),
+  );
 }
 
 class _NoDriversInfo extends StatelessWidget {
@@ -177,7 +178,7 @@ class _NoDriversInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => EmptyContentInfo(
-        title: context.str.grandPrixBetEditorNoDriversInfoTitle,
-        message: context.str.grandPrixBetEditorNoDriversInfoSubtitle,
-      );
+    title: context.str.grandPrixBetEditorNoDriversInfoTitle,
+    message: context.str.grandPrixBetEditorNoDriversInfoSubtitle,
+  );
 }

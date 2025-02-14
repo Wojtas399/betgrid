@@ -22,14 +22,14 @@ class SeasonGrandPrixBetPoints extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        playerId,
-        season,
-        seasonGrandPrixId,
-        totalPoints,
-        qualiBetPoints,
-        raceBetPoints,
-      ];
+    id,
+    playerId,
+    season,
+    seasonGrandPrixId,
+    totalPoints,
+    qualiBetPoints,
+    raceBetPoints,
+  ];
 }
 
 abstract class Points extends Equatable {
@@ -103,35 +103,35 @@ class QualiBetPoints extends Points {
 
   @override
   List<Object?> get props => [
-        total,
-        q3P1,
-        q3P2,
-        q3P3,
-        q3P4,
-        q3P5,
-        q3P6,
-        q3P7,
-        q3P8,
-        q3P9,
-        q3P10,
-        q2P11,
-        q2P12,
-        q2P13,
-        q2P14,
-        q2P15,
-        q1P16,
-        q1P17,
-        q1P18,
-        q1P19,
-        q1P20,
-        totalQ1,
-        totalQ2,
-        totalQ3,
-        q1Multiplier,
-        q2Multiplier,
-        q3Multiplier,
-        multiplier,
-      ];
+    total,
+    q3P1,
+    q3P2,
+    q3P3,
+    q3P4,
+    q3P5,
+    q3P6,
+    q3P7,
+    q3P8,
+    q3P9,
+    q3P10,
+    q2P11,
+    q2P12,
+    q2P13,
+    q2P14,
+    q2P15,
+    q1P16,
+    q1P17,
+    q1P18,
+    q1P19,
+    q1P20,
+    totalQ1,
+    totalQ2,
+    totalQ3,
+    q1Multiplier,
+    q2Multiplier,
+    q3Multiplier,
+    multiplier,
+  ];
 }
 
 class RaceBetPoints extends Points {
@@ -172,21 +172,21 @@ class RaceBetPoints extends Points {
 
   @override
   List<Object?> get props => [
-        total,
-        p1,
-        p2,
-        p3,
-        p10,
-        fastestLap,
-        podiumAndP10,
-        podiumAndP10Multiplier,
-        totalDnf,
-        dnfDriver1,
-        dnfDriver2,
-        dnfDriver3,
-        dnfMultiplier,
-        safetyCar,
-        redFlag,
-        safetyCarAndRedFlag,
-      ];
+    total,
+    p1,
+    p2,
+    p3,
+    p10,
+    fastestLap,
+    podiumAndP10,
+    podiumAndP10Multiplier,
+    totalDnf,
+    dnfDriver1,
+    dnfDriver2,
+    dnfDriver3,
+    dnfMultiplier,
+    safetyCar,
+    redFlag,
+    safetyCarAndRedFlag,
+  ];
 }

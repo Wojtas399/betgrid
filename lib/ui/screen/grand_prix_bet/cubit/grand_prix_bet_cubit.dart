@@ -44,9 +44,11 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   void initialize() {
-    _listenedParamsListener ??= _getListenedParams().distinct().listen(
-      (_ListenedParams listenedParams) {
-        emit(state.copyWith(
+    _listenedParamsListener ??= _getListenedParams().distinct().listen((
+      _ListenedParams listenedParams,
+    ) {
+      emit(
+        state.copyWith(
           status: GrandPrixBetStateStatus.completed,
           playerUsername: listenedParams.playerUsername,
           season: _params.season,
@@ -62,9 +64,9 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           raceSafetyCarBet: listenedParams.raceListenedParams.safetyCarBet,
           raceRedFlagBet: listenedParams.raceListenedParams.redFlagBet,
           seasonGrandPrixBetPoints: listenedParams.seasonGrandPrixBetPoints,
-        ));
-      },
-    );
+        ),
+      );
+    });
   }
 
   Stream<_ListenedParams> _getListenedParams() {
@@ -85,8 +87,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         List<SingleDriverBet> qualiBets,
         _RaceListenedParams raceListenedParams,
         SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
-      ) =>
-          (
+      ) => (
         playerUsername: playerUsername,
         loggedUserId: loggedUserId,
         gpListenedParams: gpListenedParams,
@@ -110,18 +111,17 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )
         .switchMap(
-          (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
-              ? _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
-                  seasonGrandPrix,
-                )
-              : Stream.value(null),
+          (SeasonGrandPrix? seasonGrandPrix) =>
+              seasonGrandPrix != null
+                  ? _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
+                    seasonGrandPrix,
+                  )
+                  : Stream.value(null),
         );
   }
 
   Stream<_RaceListenedParams> _getRaceListenedParams() {
-    final raceBetsService = getIt<GrandPrixBetRaceBetsService>(
-      param1: _params,
-    );
+    final raceBetsService = getIt<GrandPrixBetRaceBetsService>(param1: _params);
     return Rx.combineLatest6(
       raceBetsService.getPodiumBets(),
       raceBetsService.getP10Bet(),
@@ -136,8 +136,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
         MultipleDriversBet dnfDriversBet,
         BooleanBet safetyCarBet,
         BooleanBet redFlagBet,
-      ) =>
-          (
+      ) => (
         podiumBets: podiumBets,
         p10Bet: p10Bet,
         fastestLapBet: fastestLapBet,
@@ -157,18 +156,19 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   Stream<_GrandPrixListenedParams?>
-      _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
+  _getGrandPrixListenedParamsBasedOnSeasonGrandPrix(
     SeasonGrandPrix seasonGrandPrix,
   ) {
     return _grandPrixBasicInfoRepository
         .getGrandPrixBasicInfoById(seasonGrandPrix.grandPrixId)
         .map(
-          (GrandPrixBasicInfo? grandPrixBasicInfo) => grandPrixBasicInfo != null
-              ? (
-                  name: grandPrixBasicInfo.name,
-                  startDate: seasonGrandPrix.startDate,
-                )
-              : null,
+          (GrandPrixBasicInfo? grandPrixBasicInfo) =>
+              grandPrixBasicInfo != null
+                  ? (
+                    name: grandPrixBasicInfo.name,
+                    startDate: seasonGrandPrix.startDate,
+                  )
+                  : null,
         );
   }
 }
@@ -185,25 +185,24 @@ class GrandPrixBetCubitParams {
   });
 }
 
-typedef _ListenedParams = ({
-  String? playerUsername,
-  String? loggedUserId,
-  _GrandPrixListenedParams? gpListenedParams,
-  List<SingleDriverBet> qualiBets,
-  _RaceListenedParams raceListenedParams,
-  SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
-});
+typedef _ListenedParams =
+    ({
+      String? playerUsername,
+      String? loggedUserId,
+      _GrandPrixListenedParams? gpListenedParams,
+      List<SingleDriverBet> qualiBets,
+      _RaceListenedParams raceListenedParams,
+      SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
+    });
 
-typedef _RaceListenedParams = ({
-  List<SingleDriverBet> podiumBets,
-  SingleDriverBet p10Bet,
-  SingleDriverBet fastestLapBet,
-  MultipleDriversBet dnfDriversBet,
-  BooleanBet safetyCarBet,
-  BooleanBet redFlagBet,
-});
+typedef _RaceListenedParams =
+    ({
+      List<SingleDriverBet> podiumBets,
+      SingleDriverBet p10Bet,
+      SingleDriverBet fastestLapBet,
+      MultipleDriversBet dnfDriversBet,
+      BooleanBet safetyCarBet,
+      BooleanBet redFlagBet,
+    });
 
-typedef _GrandPrixListenedParams = ({
-  String name,
-  DateTime startDate,
-});
+typedef _GrandPrixListenedParams = ({String name, DateTime startDate});

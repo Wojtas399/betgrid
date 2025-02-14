@@ -10,9 +10,7 @@ class GrandPrixBetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: GrandPrixBetAppBar(),
-      body: SafeArea(
-        child: GrandPrixBetBody(),
-      ),
+      body: SafeArea(child: GrandPrixBetBody()),
     );
   }
 }

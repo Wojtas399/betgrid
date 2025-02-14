@@ -29,15 +29,13 @@ class ProfileThemePrimaryColor extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleLarge(
-            context.str.color,
-            color: context.colorScheme.outline,
-          ),
+          TitleLarge(context.str.color, color: context.colorScheme.outline),
           const GapVertical24(),
           ThemePrimaryColorSelection(
             selectedColor: themePrimaryColor,
-            onColorSelected: (user.ThemePrimaryColor color) =>
-                _onPrimaryColorChanged(color, context),
+            onColorSelected:
+                (user.ThemePrimaryColor color) =>
+                    _onPrimaryColorChanged(color, context),
           ),
         ],
       ),

@@ -15,7 +15,7 @@ class SeasonGrandPrixResultsRepositoryImpl
     extends Repository<SeasonGrandPrixResults>
     implements SeasonGrandPrixResultsRepository {
   final FirebaseSeasonGrandPrixResultsService
-      _fireSeasonGrandPrixResultsService;
+  _fireSeasonGrandPrixResultsService;
   final SeasonGrandPrixResultsMapper _seasonGrandPrixResultsMapper;
   final _getResultsForSeasonGrandPrixMutex = Mutex();
 
@@ -32,10 +32,10 @@ class SeasonGrandPrixResultsRepositoryImpl
     bool didRelease = false;
     await _getResultsForSeasonGrandPrixMutex.acquire();
     await for (final seasonGrandPrixResults in repositoryState$) {
-      SeasonGrandPrixResults? matchingGpResults =
-          seasonGrandPrixResults.firstWhereOrNull(
-        (gpResults) => gpResults.seasonGrandPrixId == seasonGrandPrixId,
-      );
+      SeasonGrandPrixResults? matchingGpResults = seasonGrandPrixResults
+          .firstWhereOrNull(
+            (gpResults) => gpResults.seasonGrandPrixId == seasonGrandPrixId,
+          );
       matchingGpResults ??= await _fetchResultsForSeasonGrandPrixFromDb(
         season,
         seasonGrandPrixId,
@@ -53,33 +53,31 @@ class SeasonGrandPrixResultsRepositoryImpl
     required int season,
     required List<String> idsOfSeasonGrandPrixes,
   }) =>
-      repositoryState$.asyncMap(
-        (List<SeasonGrandPrixResults> seasonGrandPrixResults) async {
-          final List<SeasonGrandPrixResults> existingGpResults = [
-            ...seasonGrandPrixResults.where(
-              (SeasonGrandPrixResults gpResults) =>
-                  idsOfSeasonGrandPrixes.contains(
-                gpResults.seasonGrandPrixId,
-              ),
-            ),
-          ];
-          final idsOfGpsWithExistingResults = existingGpResults.map(
-            (SeasonGrandPrixResults gpResults) => gpResults.seasonGrandPrixId,
-          );
-          final idsOfGpsWithMissingResults = idsOfSeasonGrandPrixes.where(
-            (String gpId) => !idsOfGpsWithExistingResults.contains(gpId),
-          );
-          if (idsOfGpsWithMissingResults.isNotEmpty) {
-            final missingGpResults =
-                await _fetchResultsForSeasonGrandPrixesFromDb(
-              season,
-              idsOfGpsWithMissingResults,
-            );
-            existingGpResults.addAll(missingGpResults);
-          }
-          return existingGpResults;
-        },
-      ).distinctList();
+      repositoryState$.asyncMap((
+        List<SeasonGrandPrixResults> seasonGrandPrixResults,
+      ) async {
+        final List<SeasonGrandPrixResults> existingGpResults = [
+          ...seasonGrandPrixResults.where(
+            (SeasonGrandPrixResults gpResults) =>
+                idsOfSeasonGrandPrixes.contains(gpResults.seasonGrandPrixId),
+          ),
+        ];
+        final idsOfGpsWithExistingResults = existingGpResults.map(
+          (SeasonGrandPrixResults gpResults) => gpResults.seasonGrandPrixId,
+        );
+        final idsOfGpsWithMissingResults = idsOfSeasonGrandPrixes.where(
+          (String gpId) => !idsOfGpsWithExistingResults.contains(gpId),
+        );
+        if (idsOfGpsWithMissingResults.isNotEmpty) {
+          final missingGpResults =
+              await _fetchResultsForSeasonGrandPrixesFromDb(
+                season,
+                idsOfGpsWithMissingResults,
+              );
+          existingGpResults.addAll(missingGpResults);
+        }
+        return existingGpResults;
+      }).distinctList();
 
   Future<SeasonGrandPrixResults?> _fetchResultsForSeasonGrandPrixFromDb(
     int season,
@@ -87,12 +85,12 @@ class SeasonGrandPrixResultsRepositoryImpl
   ) async {
     final SeasonGrandPrixResultsDto? resultsDto =
         await _fireSeasonGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
-      season: season,
-      seasonGrandPrixId: seasonGrandPrixId,
-    );
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        );
     if (resultsDto == null) return null;
-    final SeasonGrandPrixResults results =
-        _seasonGrandPrixResultsMapper.mapFromDto(resultsDto);
+    final SeasonGrandPrixResults results = _seasonGrandPrixResultsMapper
+        .mapFromDto(resultsDto);
     addEntity(results);
     return results;
   }
@@ -106,12 +104,12 @@ class SeasonGrandPrixResultsRepositoryImpl
       final SeasonGrandPrixResultsDto? resultsDto =
           await _fireSeasonGrandPrixResultsService
               .fetchResultsForSeasonGrandPrix(
-        season: season,
-        seasonGrandPrixId: seasonGrandPrixId,
-      );
+                season: season,
+                seasonGrandPrixId: seasonGrandPrixId,
+              );
       if (resultsDto != null) {
-        final SeasonGrandPrixResults results =
-            _seasonGrandPrixResultsMapper.mapFromDto(resultsDto);
+        final SeasonGrandPrixResults results = _seasonGrandPrixResultsMapper
+            .mapFromDto(resultsDto);
         fetchedGpResults.add(results);
       }
     }

@@ -12,9 +12,7 @@ class MockSeasonGrandPrixRepository extends Mock
     ).thenAnswer((_) => Stream.value(expectedSeasonGrandPrixes));
   }
 
-  void mockGetById({
-    SeasonGrandPrix? expectedSeasonGrandPrix,
-  }) {
+  void mockGetById({SeasonGrandPrix? expectedSeasonGrandPrix}) {
     when(
       () => getById(
         season: any(named: 'season'),

@@ -20,23 +20,22 @@ class PlayersBody extends StatelessWidget {
     );
 
     return isCubitLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : playersWithTheirPoints?.isNotEmpty == true
-            ? GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                padding: const EdgeInsets.all(24),
-                itemCount: playersWithTheirPoints!.length,
-                itemBuilder: (_, int playerIndex) => PlayersPlayerItem(
-                  playerWithPoints: playersWithTheirPoints[playerIndex],
-                ),
-              )
-            : EmptyContentInfo(
-                title: context.str.playersNoOtherPlayersTitle,
-                message: context.str.playersNoOtherPlayersMessage,
-              );
+        ? GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          padding: const EdgeInsets.all(24),
+          itemCount: playersWithTheirPoints!.length,
+          itemBuilder:
+              (_, int playerIndex) => PlayersPlayerItem(
+                playerWithPoints: playersWithTheirPoints[playerIndex],
+              ),
+        )
+        : EmptyContentInfo(
+          title: context.str.playersNoOtherPlayersTitle,
+          message: context.str.playersNoOtherPlayersMessage,
+        );
   }
 }

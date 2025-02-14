@@ -4,13 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGetFinishedGrandPrixesFromSeasonUseCase extends Mock
     implements GetFinishedGrandPrixesFromSeasonUseCase {
-  void mock({
-    required List<SeasonGrandPrix> finishedSeasonGrandPrixes,
-  }) {
+  void mock({required List<SeasonGrandPrix> finishedSeasonGrandPrixes}) {
     when(
-      () => call(
-        season: any(named: 'season'),
-      ),
+      () => call(season: any(named: 'season')),
     ).thenAnswer((_) => Stream.value(finishedSeasonGrandPrixes));
   }
 }

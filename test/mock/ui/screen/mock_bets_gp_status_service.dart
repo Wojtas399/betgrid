@@ -3,9 +3,7 @@ import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockBetsGpStatusService extends Mock implements BetsGpStatusService {
-  void mockDefineStatusForGp({
-    required GrandPrixStatus expectedGpStatus,
-  }) {
+  void mockDefineStatusForGp({required GrandPrixStatus expectedGpStatus}) {
     when(
       () => defineStatusForGp(
         gpStartDateTime: any(named: 'gpStartDateTime'),

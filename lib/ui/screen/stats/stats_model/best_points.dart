@@ -15,21 +15,18 @@ class BestPoints extends Equatable {
 
   @override
   List<Object?> get props => [
-        bestGpPoints,
-        bestQualiPoints,
-        bestRacePoints,
-        bestDriverPoints,
-      ];
+    bestGpPoints,
+    bestQualiPoints,
+    bestRacePoints,
+    bestDriverPoints,
+  ];
 }
 
 abstract class BestPointsSingleStat extends Equatable {
   final double points;
   final String playerName;
 
-  const BestPointsSingleStat({
-    required this.points,
-    required this.playerName,
-  });
+  const BestPointsSingleStat({required this.points, required this.playerName});
 }
 
 class BestPointsForGp extends BestPointsSingleStat {
@@ -42,11 +39,7 @@ class BestPointsForGp extends BestPointsSingleStat {
   });
 
   @override
-  List<Object?> get props => [
-        points,
-        playerName,
-        grandPrixName,
-      ];
+  List<Object?> get props => [points, playerName, grandPrixName];
 }
 
 class BestPointsForDriver extends BestPointsSingleStat {
@@ -61,10 +54,5 @@ class BestPointsForDriver extends BestPointsSingleStat {
   });
 
   @override
-  List<Object?> get props => [
-        points,
-        playerName,
-        driverName,
-        driverSurname,
-      ];
+  List<Object?> get props => [points, playerName, driverName, driverSurname];
 }

@@ -18,14 +18,14 @@ class StatsGroupedStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Column(
-        spacing: 8,
-        children: [
-          _PlayersPodium(),
-          _BestPoints(),
-          _PointsHistory(),
-          _PointsByDriver(),
-        ],
-      );
+    spacing: 8,
+    children: [
+      _PlayersPodium(),
+      _BestPoints(),
+      _PointsHistory(),
+      _PointsByDriver(),
+    ],
+  );
 }
 
 class _PlayersPodium extends StatelessWidget {
@@ -33,13 +33,10 @@ class _PlayersPodium extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsTop3Players,
-        icon: Icons.leaderboard_outlined,
-        child: const SizedBox(
-          height: 300,
-          child: StatsPlayersPodium(),
-        ),
-      );
+    title: context.str.statsTop3Players,
+    icon: Icons.leaderboard_outlined,
+    child: const SizedBox(height: 300, child: StatsPlayersPodium()),
+  );
 }
 
 class _BestPoints extends StatelessWidget {
@@ -47,10 +44,10 @@ class _BestPoints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsBestPoints,
-        icon: Icons.star_outline_rounded,
-        child: const StatsBestPoints(),
-      );
+    title: context.str.statsBestPoints,
+    icon: Icons.star_outline_rounded,
+    child: const StatsBestPoints(),
+  );
 }
 
 class _PointsHistory extends StatelessWidget {
@@ -67,14 +64,11 @@ class _PointsHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsPointsHistory,
-        icon: Icons.stacked_line_chart_rounded,
-        onPressed: () => _onShowPointsHistoryPreview(context),
-        child: const SizedBox(
-          height: 300,
-          child: StatsBetPointsHistory(),
-        ),
-      );
+    title: context.str.statsPointsHistory,
+    icon: Icons.stacked_line_chart_rounded,
+    onPressed: () => _onShowPointsHistoryPreview(context),
+    child: const SizedBox(height: 300, child: StatsBetPointsHistory()),
+  );
 }
 
 class _PointsByDriver extends StatelessWidget {
@@ -82,13 +76,13 @@ class _PointsByDriver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StatsCard(
-        title: context.str.statsPointsByDriver,
-        icon: Icons.format_list_numbered_rounded,
-        child: const Column(
-          children: [
-            StatsPlayersPointsForDriverDropdownButton(),
-            StatsPlayersPointsForDriver(),
-          ],
-        ),
-      );
+    title: context.str.statsPointsByDriver,
+    icon: Icons.format_list_numbered_rounded,
+    child: const Column(
+      children: [
+        StatsPlayersPointsForDriverDropdownButton(),
+        StatsPlayersPointsForDriver(),
+      ],
+    ),
+  );
 }

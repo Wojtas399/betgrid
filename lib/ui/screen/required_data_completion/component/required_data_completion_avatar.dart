@@ -17,15 +17,12 @@ class RequiredDataCompletionAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
-            child: _Avatar(),
-          ),
-          GapVertical16(),
-          _AvatarButtons(),
-        ],
-      );
+    children: [
+      Padding(padding: EdgeInsets.fromLTRB(24, 24, 24, 0), child: _Avatar()),
+      GapVertical16(),
+      _AvatarButtons(),
+    ],
+  );
 }
 
 class _Avatar extends StatelessWidget {
@@ -44,13 +41,14 @@ class _Avatar extends StatelessWidget {
         child: CircleAvatar(
           backgroundImage:
               avatarImgPath != null ? FileImage(File(avatarImgPath)) : null,
-          child: avatarImgPath == null
-              ? Icon(
-                  Icons.person,
-                  size: 128,
-                  color: context.colorScheme.onSecondaryContainer,
-                )
-              : null,
+          child:
+              avatarImgPath == null
+                  ? Icon(
+                    Icons.person,
+                    size: 128,
+                    color: context.colorScheme.onSecondaryContainer,
+                  )
+                  : null,
         ),
       ),
     );

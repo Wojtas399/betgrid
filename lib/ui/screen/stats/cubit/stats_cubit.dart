@@ -23,13 +23,13 @@ import 'stats_state.dart';
 @injectable
 class StatsCubit extends Cubit<StatsState> {
   final GetDetailsOfAllDriversFromSeasonUseCase
-      _getDetailsOfAllDriversFromSeasonUseCase;
+  _getDetailsOfAllDriversFromSeasonUseCase;
   final CreatePlayersPodiumStats _createPlayersPodiumStats;
   final CreatePointsHistoryStats _createPointsHistoryStats;
   final CreatePointsForDriverStats _createPointsForDriverStats;
   final CreateBestPoints _createBestPoints;
   final CreateLoggedUserPointsForDriversStats
-      _createLoggedUserPointsForDriversStats;
+  _createLoggedUserPointsForDriversStats;
   final SeasonCubit _seasonCubit;
   StreamSubscription<_ListenedStatsParams>? _listener;
 
@@ -50,14 +50,13 @@ class StatsCubit extends Cubit<StatsState> {
   }
 
   void initialize() {
-    _listener ??=
-        _getListenedParams(StatsType.grouped).listen(_manageListenedParams);
+    _listener ??= _getListenedParams(
+      StatsType.grouped,
+    ).listen(_manageListenedParams);
   }
 
   void onStatsTypeChanged(StatsType type) {
-    emit(state.copyWith(
-      status: StatsStateStatus.changingStatsType,
-    ));
+    emit(state.copyWith(status: StatsStateStatus.changingStatsType));
     _listener?.cancel();
     _listener = _getListenedParams(type).listen(_manageListenedParams);
   }
@@ -65,20 +64,18 @@ class StatsCubit extends Cubit<StatsState> {
   Future<void> onDriverChanged(String seasonDriverId) async {
     final Stats? stats = state.stats;
     if (stats is GroupedStats) {
-      emit(state.copyWith(
-        status: StatsStateStatus.pointsForDriverLoading,
-      ));
+      emit(state.copyWith(status: StatsStateStatus.pointsForDriverLoading));
       final playersPointsForDriver$ = _createPointsForDriverStats(
         season: _seasonCubit.state,
         seasonDriverId: seasonDriverId,
       );
       await for (final playersPointsForDriver in playersPointsForDriver$) {
-        emit(state.copyWith(
-          status: StatsStateStatus.completed,
-          stats: stats.copyWithPlayersPointsForDriver(
-            playersPointsForDriver,
+        emit(
+          state.copyWith(
+            status: StatsStateStatus.completed,
+            stats: stats.copyWithPlayersPointsForDriver(playersPointsForDriver),
           ),
-        ));
+        );
       }
     }
   }
@@ -105,22 +102,15 @@ class StatsCubit extends Cubit<StatsState> {
     final currentSeason = _seasonCubit.state;
     return Rx.combineLatest4(
       _createPlayersPodiumStats(season: currentSeason),
-      _createBestPoints(
-        statsType: statsType,
-        season: currentSeason,
-      ),
-      _createPointsHistoryStats(
-        statsType: statsType,
-        season: currentSeason,
-      ),
+      _createBestPoints(statsType: statsType, season: currentSeason),
+      _createPointsHistoryStats(statsType: statsType, season: currentSeason),
       _getDetailsOfAllDriversFromSeasonUseCase(currentSeason),
       (
         PlayersPodium? playersPodium,
         BestPoints? bestPoints,
         PointsHistory? pointsHistory,
         List<DriverDetails> detailsOfDriversFromSeason,
-      ) =>
-          _ListenedGroupedStatsParams(
+      ) => _ListenedGroupedStatsParams(
         playersPodium: playersPodium,
         bestPoints: bestPoints,
         pointsHistory: pointsHistory,
@@ -134,21 +124,14 @@ class StatsCubit extends Cubit<StatsState> {
   ) {
     final currentSeason = _seasonCubit.state;
     return Rx.combineLatest3(
-      _createBestPoints(
-        statsType: statsType,
-        season: currentSeason,
-      ),
-      _createPointsHistoryStats(
-        statsType: statsType,
-        season: currentSeason,
-      ),
+      _createBestPoints(statsType: statsType, season: currentSeason),
+      _createPointsHistoryStats(statsType: statsType, season: currentSeason),
       _createLoggedUserPointsForDriversStats(season: currentSeason),
       (
         BestPoints? bestPoints,
         PointsHistory? pointsHistory,
         List<PointsForDriver>? pointsForDrivers,
-      ) =>
-          _ListenedIndividualStatsParams(
+      ) => _ListenedIndividualStatsParams(
         bestPoints: bestPoints,
         pointsHistory: pointsHistory,
         pointsForDrivers: pointsForDrivers,
@@ -156,35 +139,37 @@ class StatsCubit extends Cubit<StatsState> {
     );
   }
 
-  void _manageListenedGroupedStatsParams(
-    _ListenedGroupedStatsParams params,
-  ) {
+  void _manageListenedGroupedStatsParams(_ListenedGroupedStatsParams params) {
     final sortedDetailsOfDriversFromSeason = [
       ...params.detailsOfDriversFromSeason,
     ]..sortByTeamAndSurname();
-    emit(state.copyWith(
-      status: StatsStateStatus.completed,
-      stats: GroupedStats(
-        playersPodium: params.playersPodium,
-        bestPoints: params.bestPoints,
-        pointsHistory: params.pointsHistory,
-        detailsOfDriversFromSeason: sortedDetailsOfDriversFromSeason,
-        playersPointsForDriver: [],
+    emit(
+      state.copyWith(
+        status: StatsStateStatus.completed,
+        stats: GroupedStats(
+          playersPodium: params.playersPodium,
+          bestPoints: params.bestPoints,
+          pointsHistory: params.pointsHistory,
+          detailsOfDriversFromSeason: sortedDetailsOfDriversFromSeason,
+          playersPointsForDriver: [],
+        ),
       ),
-    ));
+    );
   }
 
   void _manageListenedIndividualStatsParams(
     _ListenedIndividualStatsParams params,
   ) {
-    emit(state.copyWith(
-      status: StatsStateStatus.completed,
-      stats: IndividualStats(
-        bestPoints: params.bestPoints,
-        pointsHistory: params.pointsHistory,
-        pointsForDrivers: params.pointsForDrivers,
+    emit(
+      state.copyWith(
+        status: StatsStateStatus.completed,
+        stats: IndividualStats(
+          bestPoints: params.bestPoints,
+          pointsHistory: params.pointsHistory,
+          pointsForDrivers: params.pointsForDrivers,
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -207,11 +192,11 @@ class _ListenedGroupedStatsParams extends _ListenedStatsParams {
 
   @override
   List<Object?> get props => [
-        playersPodium,
-        bestPoints,
-        pointsHistory,
-        detailsOfDriversFromSeason,
-      ];
+    playersPodium,
+    bestPoints,
+    pointsHistory,
+    detailsOfDriversFromSeason,
+  ];
 }
 
 class _ListenedIndividualStatsParams extends _ListenedStatsParams {
@@ -226,9 +211,5 @@ class _ListenedIndividualStatsParams extends _ListenedStatsParams {
   });
 
   @override
-  List<Object?> get props => [
-        bestPoints,
-        pointsHistory,
-        pointsForDrivers,
-      ];
+  List<Object?> get props => [bestPoints, pointsHistory, pointsForDrivers];
 }

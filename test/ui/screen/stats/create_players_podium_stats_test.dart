@@ -41,98 +41,82 @@ void main() {
     reset(seasonGrandPrixBetPointsRepository);
   });
 
-  test(
-    'should emit null if list of all players is empty',
-    () async {
-      playerRepository.mockGetAll(players: []);
-      getFinishedGrandPrixesFromSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: [
-          SeasonGrandPrixCreator(id: 'sgp1').create(),
-          SeasonGrandPrixCreator(id: 'sgp2').create(),
-        ],
-      );
-
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
-        season: season,
-      );
-
-      expect(await playersPodium$.first, null);
-    },
-  );
-
-  test(
-    'should emit null if list of finished grand prixes is empty',
-    () async {
-      playerRepository.mockGetAll(
-        players: [
-          const PlayerCreator(id: 'p1').create(),
-          const PlayerCreator(id: 'p2').create(),
-        ],
-      );
-      getFinishedGrandPrixesFromSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: [],
-      );
-
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
-        season: season,
-      );
-
-      expect(await playersPodium$.first, null);
-    },
-  );
-
-  test(
-    'should sum player total points for each grand prix and should emit '
-    'only p1 position if there is only 1 player',
-    () async {
-      final List<Player> players = [
-        const PlayerCreator(id: 'p1').create(),
-      ];
-      final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
+  test('should emit null if list of all players is empty', () async {
+    playerRepository.mockGetAll(players: []);
+    getFinishedGrandPrixesFromSeasonUseCase.mock(
+      finishedSeasonGrandPrixes: [
         SeasonGrandPrixCreator(id: 'sgp1').create(),
         SeasonGrandPrixCreator(id: 'sgp2').create(),
-      ];
-      final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
-        SeasonGrandPrixBetPointsCreator(
-          playerId: players.first.id,
-          totalPoints: 15,
-        ).create(),
-        SeasonGrandPrixBetPointsCreator(
-          playerId: players.first.id,
-          totalPoints: 10,
-        ).create(),
-      ];
-      final PlayersPodium expectedPlayersPodium = PlayersPodium(
-        p1Player: PlayersPodiumPlayer(
-          player: players.first,
-          points: 25,
-        ),
-      );
-      playerRepository.mockGetAll(players: players);
-      getFinishedGrandPrixesFromSeasonUseCase.mock(
-        finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
-      );
-      seasonGrandPrixBetPointsRepository
-          .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
-      );
+      ],
+    );
 
-      final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
-        season: season,
-      );
+    final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+      season: season,
+    );
 
-      expect(await playersPodium$.first, expectedPlayersPodium);
-      verify(
-        () => seasonGrandPrixBetPointsRepository
-            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-          season: season,
-          idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfSeasonGrandPrixes:
-              finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
-        ),
-      ).called(1);
-    },
-  );
+    expect(await playersPodium$.first, null);
+  });
+
+  test('should emit null if list of finished grand prixes is empty', () async {
+    playerRepository.mockGetAll(
+      players: [
+        const PlayerCreator(id: 'p1').create(),
+        const PlayerCreator(id: 'p2').create(),
+      ],
+    );
+    getFinishedGrandPrixesFromSeasonUseCase.mock(finishedSeasonGrandPrixes: []);
+
+    final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+      season: season,
+    );
+
+    expect(await playersPodium$.first, null);
+  });
+
+  test('should sum player total points for each grand prix and should emit '
+      'only p1 position if there is only 1 player', () async {
+    final List<Player> players = [const PlayerCreator(id: 'p1').create()];
+    final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
+      SeasonGrandPrixCreator(id: 'sgp1').create(),
+      SeasonGrandPrixCreator(id: 'sgp2').create(),
+    ];
+    final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+      SeasonGrandPrixBetPointsCreator(
+        playerId: players.first.id,
+        totalPoints: 15,
+      ).create(),
+      SeasonGrandPrixBetPointsCreator(
+        playerId: players.first.id,
+        totalPoints: 10,
+      ).create(),
+    ];
+    final PlayersPodium expectedPlayersPodium = PlayersPodium(
+      p1Player: PlayersPodiumPlayer(player: players.first, points: 25),
+    );
+    playerRepository.mockGetAll(players: players);
+    getFinishedGrandPrixesFromSeasonUseCase.mock(
+      finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
+    );
+    seasonGrandPrixBetPointsRepository
+        .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+          seasonGrandPrixesBetPoints: grandPrixesBetPoints,
+        );
+
+    final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
+      season: season,
+    );
+
+    expect(await playersPodium$.first, expectedPlayersPodium);
+    verify(
+      () => seasonGrandPrixBetPointsRepository
+          .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+            season: season,
+            idsOfPlayers: players.map((player) => player.id).toList(),
+            idsOfSeasonGrandPrixes:
+                finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
+          ),
+    ).called(1);
+  });
 
   test(
     'should sum each player total points for each grand prix and should return '
@@ -165,14 +149,8 @@ void main() {
         ).create(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
-        p1Player: PlayersPodiumPlayer(
-          player: players.first,
-          points: 25,
-        ),
-        p2Player: PlayersPodiumPlayer(
-          player: players.last,
-          points: 20,
-        ),
+        p1Player: PlayersPodiumPlayer(player: players.first, points: 25),
+        p2Player: PlayersPodiumPlayer(player: players.last, points: 20),
       );
       playerRepository.mockGetAll(players: players);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
@@ -180,8 +158,8 @@ void main() {
       );
       seasonGrandPrixBetPointsRepository
           .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
-      );
+            seasonGrandPrixesBetPoints: grandPrixesBetPoints,
+          );
 
       final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
         season: season,
@@ -191,11 +169,11 @@ void main() {
       verify(
         () => seasonGrandPrixBetPointsRepository
             .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-          season: season,
-          idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfSeasonGrandPrixes:
-              finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
-        ),
+              season: season,
+              idsOfPlayers: players.map((player) => player.id).toList(),
+              idsOfSeasonGrandPrixes:
+                  finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
+            ),
       ).called(1);
     },
   );
@@ -249,18 +227,9 @@ void main() {
         ).create(),
       ];
       final PlayersPodium expectedPlayersPodium = PlayersPodium(
-        p1Player: PlayersPodiumPlayer(
-          player: players[2],
-          points: 39.44,
-        ),
-        p2Player: PlayersPodiumPlayer(
-          player: players.first,
-          points: 25,
-        ),
-        p3Player: PlayersPodiumPlayer(
-          player: players.last,
-          points: 24.98,
-        ),
+        p1Player: PlayersPodiumPlayer(player: players[2], points: 39.44),
+        p2Player: PlayersPodiumPlayer(player: players.first, points: 25),
+        p3Player: PlayersPodiumPlayer(player: players.last, points: 24.98),
       );
       playerRepository.mockGetAll(players: players);
       getFinishedGrandPrixesFromSeasonUseCase.mock(
@@ -268,8 +237,8 @@ void main() {
       );
       seasonGrandPrixBetPointsRepository
           .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-        seasonGrandPrixesBetPoints: grandPrixesBetPoints,
-      );
+            seasonGrandPrixesBetPoints: grandPrixesBetPoints,
+          );
 
       final Stream<PlayersPodium?> playersPodium$ = createPlayersPodiumStats(
         season: season,
@@ -279,11 +248,11 @@ void main() {
       verify(
         () => seasonGrandPrixBetPointsRepository
             .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-          season: season,
-          idsOfPlayers: players.map((player) => player.id).toList(),
-          idsOfSeasonGrandPrixes:
-              finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
-        ),
+              season: season,
+              idsOfPlayers: players.map((player) => player.id).toList(),
+              idsOfSeasonGrandPrixes:
+                  finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
+            ),
       ).called(1);
     },
   );

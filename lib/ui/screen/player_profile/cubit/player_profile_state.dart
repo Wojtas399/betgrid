@@ -5,10 +5,7 @@ import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 
 part 'player_profile_state.freezed.dart';
 
-enum PlayerProfileStateStatus {
-  loading,
-  completed,
-}
+enum PlayerProfileStateStatus { loading, completed }
 
 extension PlayerProfileStateStatusExtensions on PlayerProfileStateStatus {
   bool get isLoading => this == PlayerProfileStateStatus.loading;

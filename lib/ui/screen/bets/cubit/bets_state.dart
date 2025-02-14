@@ -3,12 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bets_state.freezed.dart';
 
-enum BetsStateStatus {
-  loading,
-  completed,
-  loggedUserDoesNotExist,
-  noBets,
-}
+enum BetsStateStatus { loading, completed, loggedUserDoesNotExist, noBets }
 
 extension BetsStateStatusExtensions on BetsStateStatus {
   bool get isLoading => this == BetsStateStatus.loading;
@@ -56,15 +51,15 @@ class GrandPrixItemParams extends Equatable {
 
   @override
   List<Object?> get props => [
-        seasonGrandPrixId,
-        status,
-        grandPrixName,
-        countryAlpha2Code,
-        roundNumber,
-        startDate,
-        endDate,
-        betPoints,
-      ];
+    seasonGrandPrixId,
+    status,
+    grandPrixName,
+    countryAlpha2Code,
+    roundNumber,
+    startDate,
+    endDate,
+    betPoints,
+  ];
 }
 
 abstract class GrandPrixStatus extends Equatable {

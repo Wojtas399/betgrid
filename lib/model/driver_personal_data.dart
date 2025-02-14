@@ -11,9 +11,5 @@ class DriverPersonalData extends Entity {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        surname,
-      ];
+  List<Object?> get props => [id, name, surname];
 }

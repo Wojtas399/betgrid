@@ -8,19 +8,17 @@ class LoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
-        ),
-        contentPadding: const EdgeInsets.all(24),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const GapVertical16(),
-            Text('${context.str.loading}...'),
-          ],
-        ),
-      );
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
+    contentPadding: const EdgeInsets.all(24),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const CircularProgressIndicator(),
+        const GapVertical16(),
+        Text('${context.str.loading}...'),
+      ],
+    ),
+  );
 }

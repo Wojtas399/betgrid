@@ -10,10 +10,7 @@ import '../stats_model/points_history.dart';
 
 part 'stats_state.freezed.dart';
 
-enum StatsType {
-  grouped,
-  individual,
-}
+enum StatsType { grouped, individual }
 
 enum StatsStateStatus {
   initial,
@@ -48,16 +45,10 @@ sealed class Stats extends Equatable {
   final BestPoints? bestPoints;
   final PointsHistory? pointsHistory;
 
-  const Stats({
-    this.bestPoints,
-    this.pointsHistory,
-  });
+  const Stats({this.bestPoints, this.pointsHistory});
 
   @override
-  List<Object?> get props => [
-        bestPoints,
-        pointsHistory,
-      ];
+  List<Object?> get props => [bestPoints, pointsHistory];
 }
 
 class GroupedStats extends Stats {
@@ -75,12 +66,12 @@ class GroupedStats extends Stats {
 
   @override
   List<Object?> get props => [
-        playersPodium,
-        bestPoints,
-        pointsHistory,
-        detailsOfDriversFromSeason,
-        playersPointsForDriver,
-      ];
+    playersPodium,
+    bestPoints,
+    pointsHistory,
+    detailsOfDriversFromSeason,
+    playersPointsForDriver,
+  ];
 
   GroupedStats copyWithPlayersPointsForDriver(
     List<PlayerPoints>? playersPointsForDriver,
@@ -106,9 +97,5 @@ class IndividualStats extends Stats {
   });
 
   @override
-  List<Object?> get props => [
-        bestPoints,
-        pointsHistory,
-        pointsForDrivers,
-      ];
+  List<Object?> get props => [bestPoints, pointsHistory, pointsForDrivers];
 }

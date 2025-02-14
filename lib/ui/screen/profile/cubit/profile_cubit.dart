@@ -16,10 +16,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   final UserRepository _userRepository;
   StreamSubscription<User?>? _loggedUserDataListener;
 
-  ProfileCubit(
-    this._authRepository,
-    this._userRepository,
-  ) : super(const ProfileState());
+  ProfileCubit(this._authRepository, this._userRepository)
+    : super(const ProfileState());
 
   @override
   Future<void> close() {
@@ -31,32 +29,28 @@ class ProfileCubit extends Cubit<ProfileState> {
     _loggedUserDataListener ??= _authRepository.loggedUserId$
         .whereNotNull()
         .switchMap(_userRepository.getById)
-        .listen(
-      (User? loggedUser) {
-        emit(state.copyWith(
-          status: ProfileStateStatus.completed,
-          username: loggedUser?.username,
-          avatarUrl: loggedUser?.avatarUrl,
-          themeMode: loggedUser?.themeMode,
-          themePrimaryColor: loggedUser?.themePrimaryColor,
-        ));
-      },
-    );
+        .listen((User? loggedUser) {
+          emit(
+            state.copyWith(
+              status: ProfileStateStatus.completed,
+              username: loggedUser?.username,
+              avatarUrl: loggedUser?.avatarUrl,
+              themeMode: loggedUser?.themeMode,
+              themePrimaryColor: loggedUser?.themePrimaryColor,
+            ),
+          );
+        });
   }
 
   Future<void> updateAvatar(String? newAvatarImgPath) async {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.loading,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.loading));
       await _userRepository.updateAvatar(
         userId: loggedUserId,
         avatarImgPath: newAvatarImgPath,
       );
-      emit(state.copyWith(
-        status: ProfileStateStatus.completed,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.completed));
     }
   }
 
@@ -65,20 +59,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
     try {
-      emit(state.copyWith(
-        status: ProfileStateStatus.loading,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.loading));
       await _userRepository.updateData(
         userId: loggedUserId,
         username: newUsername,
       );
-      emit(state.copyWith(
-        status: ProfileStateStatus.usernameUpdated,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.usernameUpdated));
     } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.newUsernameIsAlreadyTaken,
-      ));
+      emit(
+        state.copyWith(status: ProfileStateStatus.newUsernameIsAlreadyTaken),
+      );
     }
   }
 }

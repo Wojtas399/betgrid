@@ -17,11 +17,9 @@ class GrandPrixBetEditorContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-        appBar: GrandPrixBetEditorAppBar(),
-        body: SafeArea(
-          child: _Body(),
-        ),
-      );
+    appBar: GrandPrixBetEditorAppBar(),
+    body: SafeArea(child: _Body()),
+  );
 }
 
 class _Body extends StatelessWidget {
@@ -34,30 +32,28 @@ class _Body extends StatelessWidget {
     );
 
     return cubitStatus.isInitial
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
-            child: Padding8(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _Section(
-                    title: context.str.qualifications,
-                    subtitle:
-                        context.str.grandPrixBetEditorQualificationDescription,
-                    body: const GrandPrixBetEditorQuali(),
-                  ),
-                  const GapVertical24(),
-                  _Section(
-                    title: context.str.race,
-                    subtitle: context.str.grandPrixBetEditorRaceDescription,
-                    body: const GrandPrixBetEditorRace(),
-                  ),
-                ],
-              ),
+          child: Padding8(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _Section(
+                  title: context.str.qualifications,
+                  subtitle:
+                      context.str.grandPrixBetEditorQualificationDescription,
+                  body: const GrandPrixBetEditorQuali(),
+                ),
+                const GapVertical24(),
+                _Section(
+                  title: context.str.race,
+                  subtitle: context.str.grandPrixBetEditorRaceDescription,
+                  body: const GrandPrixBetEditorRace(),
+                ),
+              ],
             ),
-          );
+          ),
+        );
   }
 }
 
@@ -74,18 +70,15 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TitleLarge(
-              title,
-              fontWeight: FontWeight.bold,
-            ),
-            const GapVertical4(),
-            BodyMedium(subtitle),
-            const GapVertical16(),
-            body,
-          ],
-        ),
-      );
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TitleLarge(title, fontWeight: FontWeight.bold),
+        const GapVertical4(),
+        BodyMedium(subtitle),
+        const GapVertical16(),
+        body,
+      ],
+    ),
+  );
 }

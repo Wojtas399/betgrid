@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockTeamBasicInfoRepository extends Mock
     implements TeamBasicInfoRepository {
-  void mockGetById({
-    TeamBasicInfo? expectedTeamBasicInfo,
-  }) {
+  void mockGetById({TeamBasicInfo? expectedTeamBasicInfo}) {
     when(
       () => getById(any()),
     ).thenAnswer((_) => Stream.value(expectedTeamBasicInfo));

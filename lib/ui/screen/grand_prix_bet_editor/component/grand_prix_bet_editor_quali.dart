@@ -16,9 +16,9 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
     BuildContext context,
   ) {
     context.read<GrandPrixBetEditorCubit>().onQualiStandingsChanged(
-          standing: positionIndex + 1,
-          driverId: selectedDriverId,
-        );
+      standing: positionIndex + 1,
+      driverId: selectedDriverId,
+    );
   }
 
   @override
@@ -43,11 +43,9 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
               _ => null,
             },
             selectedDriverId: qualiStandingsBySeasonDriverIds[positionIndex],
-            onDriverSelected: (String selectedDriverId) => _onDriverSelected(
-              positionIndex,
-              selectedDriverId,
-              context,
-            ),
+            onDriverSelected:
+                (String selectedDriverId) =>
+                    _onDriverSelected(positionIndex, selectedDriverId, context),
           ),
         ).separated(const Divider()),
       ],

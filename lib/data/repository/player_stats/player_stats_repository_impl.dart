@@ -33,8 +33,10 @@ class PlayerStatsRepositoryImpl extends Repository<PlayerStats>
         (playerStats) =>
             playerStats.playerId == playerId && playerStats.season == season,
       );
-      matchingPlayerStats ??=
-          await _fetchPlayerStatsByPlayerIdAndSeason(playerId, season);
+      matchingPlayerStats ??= await _fetchPlayerStatsByPlayerIdAndSeason(
+        playerId,
+        season,
+      );
       if (_getPlayerStatsByPlayerIdAndSeasonMutex.isLocked && !didRelease) {
         _getPlayerStatsByPlayerIdAndSeasonMutex.release();
         didRelease = true;

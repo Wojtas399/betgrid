@@ -73,52 +73,51 @@ class _State extends State<ProfileUsernameDialog> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<ProfileCubit, ProfileState>(
-        listenWhen: (prevState, currState) =>
-            prevState.status != currState.status,
-        listener: (_, ProfileState state) =>
-            _onProfileStateStatusChanged(state.status),
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: context.maybePop,
-              icon: const Icon(Icons.close),
-            ),
-            title: Text(context.str.profileNewUsernameDialogTitle),
-          ),
-          body: SafeArea(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: context.str.usernameHintText,
-                    ),
-                    controller: _textController,
-                    validator: (_) => _validate(context),
-                    autovalidateMode: AutovalidateMode.always,
-                    onTapOutside: (_) {
-                      FocusScope.of(context).unfocus();
-                    },
-                    onChanged: (_) {
-                      setState(() {
-                        _isUsernameAlreadyTaken = false;
-                      });
-                    },
-                  ),
-                  const GapVertical40(),
-                  BigButton(
-                    label: context.str.save,
-                    onPressed:
-                        _isSaveButtonDisabled ? null : _onSaveButtonPressed,
-                  ),
-                ],
+  Widget build(
+    BuildContext context,
+  ) => BlocListener<ProfileCubit, ProfileState>(
+    listenWhen: (prevState, currState) => prevState.status != currState.status,
+    listener:
+        (_, ProfileState state) => _onProfileStateStatusChanged(state.status),
+    child: Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: context.maybePop,
+          icon: const Icon(Icons.close),
+        ),
+        title: Text(context.str.profileNewUsernameDialogTitle),
+      ),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: context.str.usernameHintText,
+                ),
+                controller: _textController,
+                validator: (_) => _validate(context),
+                autovalidateMode: AutovalidateMode.always,
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+                onChanged: (_) {
+                  setState(() {
+                    _isUsernameAlreadyTaken = false;
+                  });
+                },
               ),
-            ),
+              const GapVertical40(),
+              BigButton(
+                label: context.str.save,
+                onPressed: _isSaveButtonDisabled ? null : _onSaveButtonPressed,
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

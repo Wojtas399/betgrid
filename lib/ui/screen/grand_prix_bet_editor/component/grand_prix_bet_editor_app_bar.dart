@@ -22,12 +22,10 @@ class GrandPrixBetEditorAppBar extends StatelessWidget
     return AppBar(
       centerTitle: false,
       title: Text(context.str.grandPrixBetEditorScreenTitle),
-      actions: cubitStatus.isInitial
-          ? null
-          : [
-              const _SaveButton(),
-              const GapHorizontal16(),
-            ],
+      actions:
+          cubitStatus.isInitial
+              ? null
+              : [const _SaveButton(), const GapHorizontal16()],
     );
   }
 }

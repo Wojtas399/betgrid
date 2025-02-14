@@ -12,10 +12,7 @@ import 'stats_no_data_info.dart';
 class StatsBetPointsHistory extends StatelessWidget {
   final bool showPointsForEachRound;
 
-  const StatsBetPointsHistory({
-    super.key,
-    this.showPointsForEachRound = false,
-  });
+  const StatsBetPointsHistory({super.key, this.showPointsForEachRound = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,45 +22,47 @@ class StatsBetPointsHistory extends StatelessWidget {
 
     return pointsHistory != null
         ? SfCartesianChart(
-            primaryXAxis: const CategoryAxis(),
-            series: <CartesianSeries>[
-              for (final player in [...pointsHistory.players])
-                LineSeries<PointsHistoryGrandPrix, String>(
-                  dataSource: pointsHistory.grandPrixes.toList(),
-                  xValueMapper: (data, _) => '${data.roundNumber}',
-                  yValueMapper: (data, _) => data.playersPoints
-                      .firstWhere((el) => el.playerId == player.id)
-                      .points,
-                  dataLabelSettings: DataLabelSettings(
-                    isVisible: true,
-                    labelAlignment: ChartDataLabelAlignment.top,
-                    builder: (_, ChartPoint point, __, int gpIndex, _____) {
-                      final bool isLastGrandPrix =
-                          gpIndex == pointsHistory.grandPrixes.length - 1;
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (isLastGrandPrix) ...[
-                            SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Avatar(
-                                avatarUrl: player.avatarUrl,
-                                username: player.username,
-                                usernameFontSize: 14,
-                              ),
+          primaryXAxis: const CategoryAxis(),
+          series: <CartesianSeries>[
+            for (final player in [...pointsHistory.players])
+              LineSeries<PointsHistoryGrandPrix, String>(
+                dataSource: pointsHistory.grandPrixes.toList(),
+                xValueMapper: (data, _) => '${data.roundNumber}',
+                yValueMapper:
+                    (data, _) =>
+                        data.playersPoints
+                            .firstWhere((el) => el.playerId == player.id)
+                            .points,
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  labelAlignment: ChartDataLabelAlignment.top,
+                  builder: (_, ChartPoint point, __, int gpIndex, _____) {
+                    final bool isLastGrandPrix =
+                        gpIndex == pointsHistory.grandPrixes.length - 1;
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (isLastGrandPrix) ...[
+                          SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: Avatar(
+                              avatarUrl: player.avatarUrl,
+                              username: player.username,
+                              usernameFontSize: 14,
                             ),
-                            const GapHorizontal8(),
-                          ],
-                          if (showPointsForEachRound || isLastGrandPrix)
-                            LabelMedium('${point.y}'),
+                          ),
+                          const GapHorizontal8(),
                         ],
-                      );
-                    },
-                  ),
+                        if (showPointsForEachRound || isLastGrandPrix)
+                          LabelMedium('${point.y}'),
+                      ],
+                    );
+                  },
                 ),
-            ],
-          )
+              ),
+          ],
+        )
         : const StatsNoDataInfo();
   }
 }

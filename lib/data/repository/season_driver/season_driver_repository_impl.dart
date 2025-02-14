@@ -58,11 +58,13 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
   }
 
   Future<void> _fetchFromSeason(int season) async {
-    final seasonDriverDtos =
-        await _fireSeasonDriverService.fetchAllFromSeason(season);
+    final seasonDriverDtos = await _fireSeasonDriverService.fetchAllFromSeason(
+      season,
+    );
     if (seasonDriverDtos.isNotEmpty) {
-      final seasonDrivers =
-          seasonDriverDtos.map(_seasonDriverMapper.mapFromDto);
+      final seasonDrivers = seasonDriverDtos.map(
+        _seasonDriverMapper.mapFromDto,
+      );
       addOrUpdateEntities(seasonDrivers);
     }
   }

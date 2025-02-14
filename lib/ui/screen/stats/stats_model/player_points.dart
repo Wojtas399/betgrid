@@ -6,10 +6,7 @@ class PlayerPoints extends Equatable {
   final Player player;
   final double points;
 
-  const PlayerPoints({
-    required this.player,
-    required this.points,
-  });
+  const PlayerPoints({required this.player, required this.points});
 
   @override
   List<Object?> get props => [player, points];

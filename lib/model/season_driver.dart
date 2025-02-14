@@ -15,11 +15,5 @@ class SeasonDriver extends Entity {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        season,
-        driverId,
-        driverNumber,
-        teamId,
-      ];
+  List<Object?> get props => [id, season, driverId, driverNumber, teamId];
 }

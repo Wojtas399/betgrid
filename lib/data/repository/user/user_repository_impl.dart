@@ -52,8 +52,8 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
     required ThemeMode themeMode,
     required ThemePrimaryColor themePrimaryColor,
   }) async {
-    final bool isUsernameAlreadyTaken =
-        await _fireUserService.isUsernameAlreadyTaken(username: username);
+    final bool isUsernameAlreadyTaken = await _fireUserService
+        .isUsernameAlreadyTaken(username: username);
     if (isUsernameAlreadyTaken) {
       throw const UserRepositoryExceptionUsernameAlreadyTaken();
     }
@@ -96,9 +96,10 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
       username: username,
       themeMode:
           themeMode != null ? _themeModeMapper.mapToDto(themeMode) : null,
-      themePrimaryColor: themePrimaryColor != null
-          ? _themePrimaryColorMapper.mapToDto(themePrimaryColor)
-          : null,
+      themePrimaryColor:
+          themePrimaryColor != null
+              ? _themePrimaryColorMapper.mapToDto(themePrimaryColor)
+              : null,
     );
     if (updatedUserDto == null) {
       throw const UserRepositoryExceptionUserNotFound();
@@ -148,8 +149,8 @@ class UserRepositoryImpl extends Repository<User> implements UserRepository {
   }
 
   Future<void> _checkIfUsernameIsAlreadyTaken(String username) async {
-    final bool isUsernameAlreadyTaken =
-        await _fireUserService.isUsernameAlreadyTaken(username: username);
+    final bool isUsernameAlreadyTaken = await _fireUserService
+        .isUsernameAlreadyTaken(username: username);
     if (isUsernameAlreadyTaken) {
       throw const UserRepositoryExceptionUsernameAlreadyTaken();
     }

@@ -13,9 +13,10 @@ class PlayersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<PlayersCubit>(
-          param1: getIt.get<SeasonCubit>(),
-        )..initialize(),
-        child: const PlayersBody(),
-      );
+    create:
+        (_) =>
+            getIt.get<PlayersCubit>(param1: getIt.get<SeasonCubit>())
+              ..initialize(),
+    child: const PlayersBody(),
+  );
 }

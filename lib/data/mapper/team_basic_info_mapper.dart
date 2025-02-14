@@ -6,10 +6,6 @@ import '../../model/team_basic_info.dart';
 @injectable
 class TeamBasicInfoMapper {
   TeamBasicInfo mapFromDto(TeamBasicInfoDto dto) {
-    return TeamBasicInfo(
-      id: dto.id,
-      name: dto.name,
-      hexColor: dto.hexColor,
-    );
+    return TeamBasicInfo(id: dto.id, name: dto.name, hexColor: dto.hexColor);
   }
 }

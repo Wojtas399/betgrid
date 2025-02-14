@@ -17,22 +17,19 @@ class EmptyContentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding24(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TitleLarge(
-                title,
-                fontWeight: FontWeight.bold,
-              ),
-              const GapVertical16(),
-              BodyMedium(
-                message,
-                textAlign: TextAlign.center,
-                color: context.colorScheme.outline,
-              ),
-            ],
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TitleLarge(title, fontWeight: FontWeight.bold),
+          const GapVertical16(),
+          BodyMedium(
+            message,
+            textAlign: TextAlign.center,
+            color: context.colorScheme.outline,
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

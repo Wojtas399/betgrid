@@ -27,22 +27,14 @@ class GrandPrixBetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomCard(
-        child: Column(
-          children: [
-            _Header(
-              label: label,
-              labelColor: labelColor,
-              betStatus: betStatus,
-            ),
-            const Divider(height: 24),
-            _Body(
-              betChild: betChild,
-              resultsChild: resultsChild,
-              points: points,
-            ),
-          ],
-        ),
-      );
+    child: Column(
+      children: [
+        _Header(label: label, labelColor: labelColor, betStatus: betStatus),
+        const Divider(height: 24),
+        _Body(betChild: betChild, resultsChild: resultsChild, points: points),
+      ],
+    ),
+  );
 }
 
 class _Header extends StatelessWidget {
@@ -58,29 +50,25 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TitleMedium(
-            label,
-            fontWeight: FontWeight.bold,
-            color: labelColor,
-          ),
-          if (betStatus != null)
-            Icon(
-              switch (betStatus!) {
-                BetStatus.pending => Icons.access_time,
-                BetStatus.win => Icons.check_circle,
-                BetStatus.loss => Icons.close,
-              },
-              size: 20,
-              color: switch (betStatus!) {
-                BetStatus.pending => context.colorScheme.outline,
-                BetStatus.win => context.customColors?.win,
-                BetStatus.loss => context.customColors?.loss,
-              },
-            ),
-        ],
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      TitleMedium(label, fontWeight: FontWeight.bold, color: labelColor),
+      if (betStatus != null)
+        Icon(
+          switch (betStatus!) {
+            BetStatus.pending => Icons.access_time,
+            BetStatus.win => Icons.check_circle,
+            BetStatus.loss => Icons.close,
+          },
+          size: 20,
+          color: switch (betStatus!) {
+            BetStatus.pending => context.colorScheme.outline,
+            BetStatus.win => context.customColors?.win,
+            BetStatus.loss => context.customColors?.loss,
+          },
+        ),
+    ],
+  );
 }
 
 class _Body extends StatelessWidget {
@@ -96,51 +84,44 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LabelMedium(
-                  context.str.grandPrixBetChoice,
-                  color: context.colorScheme.outline,
-                ),
-                const GapVertical4(),
-                betChild,
-                const GapVertical8(),
-                LabelMedium(
-                  context.str.grandPrixBetResult,
-                  color: context.colorScheme.outline,
-                ),
-                const GapVertical4(),
-                resultsChild,
-              ],
+    children: [
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LabelMedium(
+              context.str.grandPrixBetChoice,
+              color: context.colorScheme.outline,
             ),
-          ),
-          const GapHorizontal16(),
-          _Points(
-            points: points,
-          ),
-        ],
-      );
+            const GapVertical4(),
+            betChild,
+            const GapVertical8(),
+            LabelMedium(
+              context.str.grandPrixBetResult,
+              color: context.colorScheme.outline,
+            ),
+            const GapVertical4(),
+            resultsChild,
+          ],
+        ),
+      ),
+      const GapHorizontal16(),
+      _Points(points: points),
+    ],
+  );
 }
 
 class _Points extends StatelessWidget {
   final double? points;
 
-  const _Points({
-    required this.points,
-  });
+  const _Points({required this.points});
 
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          LabelLarge(
-            context.str.points,
-            color: context.colorScheme.outline,
-          ),
-          TitleMedium(points?.toString() ?? '--'),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      LabelLarge(context.str.points, color: context.colorScheme.outline),
+      TitleMedium(points?.toString() ?? '--'),
+    ],
+  );
 }

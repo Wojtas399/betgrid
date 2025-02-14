@@ -53,58 +53,60 @@ class CreateBestPoints {
         .switchMap(
           (List<Player> allPlayers) => _getStatsForPlayers(allPlayers, season),
         )
-        .switchMap(
-      (List<_PlayerWithStats>? playersWithStats) {
-        if (playersWithStats == null || playersWithStats.isEmpty) {
-          return Stream.value(null);
-        }
+        .switchMap((List<_PlayerWithStats>? playersWithStats) {
+          if (playersWithStats == null || playersWithStats.isEmpty) {
+            return Stream.value(null);
+          }
 
-        final bestGp = _selectBestGp(playersWithStats);
-        final bestQuali = _selectBestQuali(playersWithStats);
-        final bestRace = _selectBestRace(playersWithStats);
-        final bestDriver = _selectBestDriver(playersWithStats);
+          final bestGp = _selectBestGp(playersWithStats);
+          final bestQuali = _selectBestQuali(playersWithStats);
+          final bestRace = _selectBestRace(playersWithStats);
+          final bestDriver = _selectBestDriver(playersWithStats);
 
-        return _getGpAndDriverDetails(
-          season,
-          bestGp?.seasonGpPointsData.seasonGrandPrixId,
-          bestQuali?.seasonGpPointsData.seasonGrandPrixId,
-          bestRace?.seasonGpPointsData.seasonGrandPrixId,
-          bestDriver?.seasonDriverPointsData.seasonDriverId,
-        ).map(
-          (_GpAndDriverDetails gpAndDriverDetails) => BestPoints(
-            bestGpPoints: bestGp != null
-                ? BestPointsForGp(
-                    points: bestGp.seasonGpPointsData.points,
-                    playerName: bestGp.player.username,
-                    grandPrixName: gpAndDriverDetails.bestGp?.name,
-                  )
-                : null,
-            bestQualiPoints: bestQuali != null
-                ? BestPointsForGp(
-                    points: bestQuali.seasonGpPointsData.points,
-                    playerName: bestQuali.player.username,
-                    grandPrixName: gpAndDriverDetails.bestQualiGp?.name,
-                  )
-                : null,
-            bestRacePoints: bestRace != null
-                ? BestPointsForGp(
-                    points: bestRace.seasonGpPointsData.points,
-                    playerName: bestRace.player.username,
-                    grandPrixName: gpAndDriverDetails.bestRaceGp?.name,
-                  )
-                : null,
-            bestDriverPoints: bestDriver != null
-                ? BestPointsForDriver(
-                    points: bestDriver.seasonDriverPointsData.points,
-                    playerName: bestDriver.player.username,
-                    driverName: gpAndDriverDetails.bestDriver?.name,
-                    driverSurname: gpAndDriverDetails.bestDriver?.surname,
-                  )
-                : null,
-          ),
-        );
-      },
-    );
+          return _getGpAndDriverDetails(
+            season,
+            bestGp?.seasonGpPointsData.seasonGrandPrixId,
+            bestQuali?.seasonGpPointsData.seasonGrandPrixId,
+            bestRace?.seasonGpPointsData.seasonGrandPrixId,
+            bestDriver?.seasonDriverPointsData.seasonDriverId,
+          ).map(
+            (_GpAndDriverDetails gpAndDriverDetails) => BestPoints(
+              bestGpPoints:
+                  bestGp != null
+                      ? BestPointsForGp(
+                        points: bestGp.seasonGpPointsData.points,
+                        playerName: bestGp.player.username,
+                        grandPrixName: gpAndDriverDetails.bestGp?.name,
+                      )
+                      : null,
+              bestQualiPoints:
+                  bestQuali != null
+                      ? BestPointsForGp(
+                        points: bestQuali.seasonGpPointsData.points,
+                        playerName: bestQuali.player.username,
+                        grandPrixName: gpAndDriverDetails.bestQualiGp?.name,
+                      )
+                      : null,
+              bestRacePoints:
+                  bestRace != null
+                      ? BestPointsForGp(
+                        points: bestRace.seasonGpPointsData.points,
+                        playerName: bestRace.player.username,
+                        grandPrixName: gpAndDriverDetails.bestRaceGp?.name,
+                      )
+                      : null,
+              bestDriverPoints:
+                  bestDriver != null
+                      ? BestPointsForDriver(
+                        points: bestDriver.seasonDriverPointsData.points,
+                        playerName: bestDriver.player.username,
+                        driverName: gpAndDriverDetails.bestDriver?.name,
+                        driverSurname: gpAndDriverDetails.bestDriver?.surname,
+                      )
+                      : null,
+            ),
+          );
+        });
   }
 
   Stream<BestPoints?> _createIndividualBestPoints(int season) {
@@ -113,18 +115,18 @@ class CreateBestPoints {
         .switchMap(
           (String loggedUserId) => _getStatsForLoggedUser(loggedUserId, season),
         )
-        .switchMap(
-      (_PlayerWithStats? data) {
-        final String? loggedUserName = data?.player.username;
-        final PlayerStats? stats = data?.stats;
-        final PlayerStatsPointsForGp? bestGp = stats?.bestGpPoints;
-        final PlayerStatsPointsForGp? bestQuali = stats?.bestQualiPoints;
-        final PlayerStatsPointsForGp? bestRace = stats?.bestRacePoints;
-        final PlayerStatsPointsForDriver? bestDriver = stats?.bestDriverPoints;
+        .switchMap((_PlayerWithStats? data) {
+          final String? loggedUserName = data?.player.username;
+          final PlayerStats? stats = data?.stats;
+          final PlayerStatsPointsForGp? bestGp = stats?.bestGpPoints;
+          final PlayerStatsPointsForGp? bestQuali = stats?.bestQualiPoints;
+          final PlayerStatsPointsForGp? bestRace = stats?.bestRacePoints;
+          final PlayerStatsPointsForDriver? bestDriver =
+              stats?.bestDriverPoints;
 
-        return loggedUserName == null || stats == null
-            ? Stream.value(null)
-            : _getGpAndDriverDetails(
+          return loggedUserName == null || stats == null
+              ? Stream.value(null)
+              : _getGpAndDriverDetails(
                 season,
                 bestGp?.seasonGrandPrixId,
                 bestQuali?.seasonGrandPrixId,
@@ -132,39 +134,43 @@ class CreateBestPoints {
                 bestDriver?.seasonDriverId,
               ).map(
                 (_GpAndDriverDetails gpAndDriverDetails) => BestPoints(
-                  bestGpPoints: bestGp != null
-                      ? BestPointsForGp(
-                          points: bestGp.points,
-                          playerName: loggedUserName,
-                          grandPrixName: gpAndDriverDetails.bestGp?.name,
-                        )
-                      : null,
-                  bestQualiPoints: bestQuali != null
-                      ? BestPointsForGp(
-                          points: bestQuali.points,
-                          playerName: loggedUserName,
-                          grandPrixName: gpAndDriverDetails.bestQualiGp?.name,
-                        )
-                      : null,
-                  bestRacePoints: bestRace != null
-                      ? BestPointsForGp(
-                          points: bestRace.points,
-                          playerName: loggedUserName,
-                          grandPrixName: gpAndDriverDetails.bestRaceGp?.name,
-                        )
-                      : null,
-                  bestDriverPoints: bestDriver != null
-                      ? BestPointsForDriver(
-                          points: bestDriver.points,
-                          playerName: loggedUserName,
-                          driverName: gpAndDriverDetails.bestDriver?.name,
-                          driverSurname: gpAndDriverDetails.bestDriver?.surname,
-                        )
-                      : null,
+                  bestGpPoints:
+                      bestGp != null
+                          ? BestPointsForGp(
+                            points: bestGp.points,
+                            playerName: loggedUserName,
+                            grandPrixName: gpAndDriverDetails.bestGp?.name,
+                          )
+                          : null,
+                  bestQualiPoints:
+                      bestQuali != null
+                          ? BestPointsForGp(
+                            points: bestQuali.points,
+                            playerName: loggedUserName,
+                            grandPrixName: gpAndDriverDetails.bestQualiGp?.name,
+                          )
+                          : null,
+                  bestRacePoints:
+                      bestRace != null
+                          ? BestPointsForGp(
+                            points: bestRace.points,
+                            playerName: loggedUserName,
+                            grandPrixName: gpAndDriverDetails.bestRaceGp?.name,
+                          )
+                          : null,
+                  bestDriverPoints:
+                      bestDriver != null
+                          ? BestPointsForDriver(
+                            points: bestDriver.points,
+                            playerName: loggedUserName,
+                            driverName: gpAndDriverDetails.bestDriver?.name,
+                            driverSurname:
+                                gpAndDriverDetails.bestDriver?.surname,
+                          )
+                          : null,
                 ),
               );
-      },
-    );
+        });
   }
 
   Stream<List<_PlayerWithStats>> _getStatsForPlayers(
@@ -192,9 +198,10 @@ class CreateBestPoints {
         playerId: loggedUserId,
         season: season,
       ),
-      (Player? player, PlayerStats? stats) => player != null && stats != null
-          ? (player: player, stats: stats)
-          : null,
+      (Player? player, PlayerStats? stats) =>
+          player != null && stats != null
+              ? (player: player, stats: stats)
+              : null,
     );
   }
 
@@ -207,10 +214,7 @@ class CreateBestPoints {
         playerWithBestGp.stats.bestGpPoints;
 
     return bestGpPoints != null
-        ? (
-            player: playerWithBestGp.player,
-            seasonGpPointsData: bestGpPoints,
-          )
+        ? (player: playerWithBestGp.player, seasonGpPointsData: bestGpPoints)
         : null;
   }
 
@@ -225,9 +229,9 @@ class CreateBestPoints {
 
     return bestQualiPoints != null
         ? (
-            player: playerWithBestQuali.player,
-            seasonGpPointsData: bestQualiPoints,
-          )
+          player: playerWithBestQuali.player,
+          seasonGpPointsData: bestQualiPoints,
+        )
         : null;
   }
 
@@ -241,10 +245,7 @@ class CreateBestPoints {
         bestRace.stats.bestRacePoints;
 
     return bestRacePoints != null
-        ? (
-            player: bestRace.player,
-            seasonGpPointsData: bestRacePoints,
-          )
+        ? (player: bestRace.player, seasonGpPointsData: bestRacePoints)
         : null;
   }
 
@@ -258,10 +259,7 @@ class CreateBestPoints {
         bestDriver.stats.bestDriverPoints;
 
     return bestDriverPoints != null
-        ? (
-            player: bestDriver.player,
-            seasonDriverPointsData: bestDriverPoints,
-          )
+        ? (player: bestDriver.player, seasonDriverPointsData: bestDriverPoints)
         : null;
   }
 
@@ -290,8 +288,7 @@ class CreateBestPoints {
         GrandPrixBasicInfo? bestQualiGp,
         GrandPrixBasicInfo? bestRaceGp,
         DriverPersonalData? bestDriver,
-      ) =>
-          (
+      ) => (
         bestGp: bestGp,
         bestQualiGp: bestQualiGp,
         bestRaceGp: bestRaceGp,
@@ -314,16 +311,14 @@ class CreateBestPoints {
 
   Stream<GrandPrixBasicInfo?> _getGpBasicInfo(int season, String seasonGpId) {
     return _seasonGrandPrixRepository
-        .getById(
-          season: season,
-          seasonGrandPrixId: seasonGpId,
-        )
+        .getById(season: season, seasonGrandPrixId: seasonGpId)
         .switchMap(
-          (SeasonGrandPrix? seasonGrandPrix) => seasonGrandPrix != null
-              ? _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
-                  seasonGrandPrix.grandPrixId,
-                )
-              : Stream.value(null),
+          (SeasonGrandPrix? seasonGrandPrix) =>
+              seasonGrandPrix != null
+                  ? _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
+                    seasonGrandPrix.grandPrixId,
+                  )
+                  : Stream.value(null),
         );
   }
 
@@ -332,81 +327,68 @@ class CreateBestPoints {
     String seasonDriverId,
   ) {
     return _seasonDriverRepository
-        .getById(
-          season: season,
-          seasonDriverId: seasonDriverId,
-        )
+        .getById(season: season, seasonDriverId: seasonDriverId)
         .switchMap(
-          (SeasonDriver? seasonDriver) => seasonDriver != null
-              ? _driverPersonalDataRepository.getDriverPersonalDataById(
-                  seasonDriver.driverId,
-                )
-              : Stream.value(null),
+          (SeasonDriver? seasonDriver) =>
+              seasonDriver != null
+                  ? _driverPersonalDataRepository.getDriverPersonalDataById(
+                    seasonDriver.driverId,
+                  )
+                  : Stream.value(null),
         );
   }
 }
 
 typedef _PlayerWithStats = ({Player player, PlayerStats stats});
 
-typedef _PlayerWithStatsGpData = ({
-  Player player,
-  PlayerStatsPointsForGp seasonGpPointsData,
-});
+typedef _PlayerWithStatsGpData =
+    ({Player player, PlayerStatsPointsForGp seasonGpPointsData});
 
-typedef _PlayerWithStatsDriverData = ({
-  Player player,
-  PlayerStatsPointsForDriver seasonDriverPointsData,
-});
+typedef _PlayerWithStatsDriverData =
+    ({Player player, PlayerStatsPointsForDriver seasonDriverPointsData});
 
-typedef _GpAndDriverDetails = ({
-  GrandPrixBasicInfo? bestGp,
-  GrandPrixBasicInfo? bestQualiGp,
-  GrandPrixBasicInfo? bestRaceGp,
-  DriverPersonalData? bestDriver,
-});
+typedef _GpAndDriverDetails =
+    ({
+      GrandPrixBasicInfo? bestGp,
+      GrandPrixBasicInfo? bestQualiGp,
+      GrandPrixBasicInfo? bestRaceGp,
+      DriverPersonalData? bestDriver,
+    });
 
 extension _PlayerWithStatsX on List<_PlayerWithStats> {
   void sortDescendingByGpPoints() {
-    sort(
-      (_PlayerWithStats a, _PlayerWithStats b) {
-        final aPoints = a.stats.bestGpPoints?.points ?? 0;
-        final bPoints = b.stats.bestGpPoints?.points ?? 0;
+    sort((_PlayerWithStats a, _PlayerWithStats b) {
+      final aPoints = a.stats.bestGpPoints?.points ?? 0;
+      final bPoints = b.stats.bestGpPoints?.points ?? 0;
 
-        return bPoints.compareTo(aPoints);
-      },
-    );
+      return bPoints.compareTo(aPoints);
+    });
   }
 
   void sortDescendingByQualiPoints() {
-    sort(
-      (_PlayerWithStats a, _PlayerWithStats b) {
-        final aPoints = a.stats.bestQualiPoints?.points ?? 0;
-        final bPoints = b.stats.bestQualiPoints?.points ?? 0;
+    sort((_PlayerWithStats a, _PlayerWithStats b) {
+      final aPoints = a.stats.bestQualiPoints?.points ?? 0;
+      final bPoints = b.stats.bestQualiPoints?.points ?? 0;
 
-        return bPoints.compareTo(aPoints);
-      },
-    );
+      return bPoints.compareTo(aPoints);
+    });
   }
 
   void sortDescendingByRacePoints() {
-    sort(
-      (_PlayerWithStats a, _PlayerWithStats b) {
-        final aPoints = a.stats.bestRacePoints?.points ?? 0;
-        final bPoints = b.stats.bestRacePoints?.points ?? 0;
+    sort((_PlayerWithStats a, _PlayerWithStats b) {
+      final aPoints = a.stats.bestRacePoints?.points ?? 0;
+      final bPoints = b.stats.bestRacePoints?.points ?? 0;
 
-        return bPoints.compareTo(aPoints);
-      },
-    );
+      return bPoints.compareTo(aPoints);
+    });
   }
 
   void sortDescendingByDriverPoints() {
-    sort(
-      (_PlayerWithStats a, _PlayerWithStats b) {
-        final aPoints = a.stats.bestDriverPoints?.points ?? 0;
-        final bPoints = b.stats.bestDriverPoints?.points ?? 0;
+    sort((_PlayerWithStats a, _PlayerWithStats b) {
+      final aPoints = a.stats.bestDriverPoints?.points ?? 0;
+      final bPoints = b.stats.bestDriverPoints?.points ?? 0;
 
-        return bPoints.compareTo(aPoints);
-      },
-    );
+      return bPoints.compareTo(aPoints);
+    });
   }
 }

@@ -36,14 +36,14 @@ class PlayersCubit extends Cubit<PlayersState> {
     _playersWithPointsListener ??= _authRepository.loggedUserId$
         .whereNotNull()
         .switchMap(_getPlayersWithTheirPoints)
-        .listen(
-      (List<PlayerWithPoints>? playersWithPoints) {
-        emit(state.copyWith(
-          status: PlayersStateStatus.completed,
-          playersWithTheirPoints: playersWithPoints,
-        ));
-      },
-    );
+        .listen((List<PlayerWithPoints>? playersWithPoints) {
+          emit(
+            state.copyWith(
+              status: PlayersStateStatus.completed,
+              playersWithTheirPoints: playersWithPoints,
+            ),
+          );
+        });
   }
 
   Stream<List<PlayerWithPoints>?> _getPlayersWithTheirPoints(
@@ -63,9 +63,9 @@ class PlayersCubit extends Cubit<PlayersState> {
           (Iterable<Stream<PlayerWithPoints>>? streams) =>
               streams?.isNotEmpty == true
                   ? Rx.combineLatest(
-                      streams!,
-                      (List<PlayerWithPoints> values) => values,
-                    )
+                    streams!,
+                    (List<PlayerWithPoints> values) => values,
+                  )
                   : Stream.value(null),
         );
   }
@@ -82,10 +82,8 @@ class PlayersCubit extends Cubit<PlayersState> {
       playerId: player.id,
       season: _seasonCubit.state,
     ).whereNotNull().map(
-          (double totalPoints) => PlayerWithPoints(
-            player: player,
-            totalPoints: totalPoints,
-          ),
-        );
+      (double totalPoints) =>
+          PlayerWithPoints(player: player, totalPoints: totalPoints),
+    );
   }
 }

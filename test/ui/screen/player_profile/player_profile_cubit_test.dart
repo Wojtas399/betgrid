@@ -20,80 +20,73 @@ void main() {
   const String playerId = 'p1';
 
   PlayerProfileCubit createCubit() => PlayerProfileCubit(
-        playerRepository,
-        getPlayerPointsUseCase,
-        getGrandPrixesWithPointsUseCase,
-        seasonCubit,
-        playerId,
-      );
-
-  group(
-    'initialize, ',
-    () {
-      const int season = 2024;
-      final Player player = const PlayerCreator(id: playerId).create();
-      const double playerPoints = 10.2;
-      final List<GrandPrixWithPoints> grandPrixesWithPoints = [
-        GrandPrixWithPoints(
-          seasonGrandPrixId: 'gp1',
-          name: 'gp1',
-          countryAlpha2Code: 'FR',
-          roundNumber: 1,
-          startDate: DateTime(season, 1, 1),
-          endDate: DateTime(season, 1, 1),
-          points: 10.2,
-        ),
-        GrandPrixWithPoints(
-          seasonGrandPrixId: 'gp2',
-          name: 'gp2',
-          countryAlpha2Code: 'FR',
-          roundNumber: 2,
-          startDate: DateTime(season, 1, 1),
-          endDate: DateTime(season, 1, 1),
-          points: 10.2,
-        ),
-      ];
-
-      blocTest(
-        'should load and emit player data, total points and grand prixes with '
-        'points',
-        build: () => createCubit(),
-        setUp: () {
-          playerRepository.mockGetById(player: player);
-          getPlayerPointsUseCase.mock(points: playerPoints);
-          seasonCubit.mockState(expectedState: season);
-          getGrandPrixesWithPointsUseCase.mock(
-            grandPrixesWithPoints: grandPrixesWithPoints,
-          );
-        },
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          PlayerProfileState(
-            status: PlayerProfileStateStatus.completed,
-            player: player,
-            season: season,
-            totalPoints: playerPoints,
-            grandPrixesWithPoints: grandPrixesWithPoints,
-          ),
-        ],
-        verify: (_) {
-          verify(
-            () => playerRepository.getById(playerId),
-          ).called(1);
-          verify(
-            () => getPlayerPointsUseCase.call(
-              playerId: playerId,
-              season: season,
-            ),
-          ).called(1);
-          verify(
-            () => getGrandPrixesWithPointsUseCase.call(
-              playerId: playerId,
-              season: season,
-            ),
-          ).called(1);
-        },
-      );
-    },
+    playerRepository,
+    getPlayerPointsUseCase,
+    getGrandPrixesWithPointsUseCase,
+    seasonCubit,
+    playerId,
   );
+
+  group('initialize, ', () {
+    const int season = 2024;
+    final Player player = const PlayerCreator(id: playerId).create();
+    const double playerPoints = 10.2;
+    final List<GrandPrixWithPoints> grandPrixesWithPoints = [
+      GrandPrixWithPoints(
+        seasonGrandPrixId: 'gp1',
+        name: 'gp1',
+        countryAlpha2Code: 'FR',
+        roundNumber: 1,
+        startDate: DateTime(season, 1, 1),
+        endDate: DateTime(season, 1, 1),
+        points: 10.2,
+      ),
+      GrandPrixWithPoints(
+        seasonGrandPrixId: 'gp2',
+        name: 'gp2',
+        countryAlpha2Code: 'FR',
+        roundNumber: 2,
+        startDate: DateTime(season, 1, 1),
+        endDate: DateTime(season, 1, 1),
+        points: 10.2,
+      ),
+    ];
+
+    blocTest(
+      'should load and emit player data, total points and grand prixes with '
+      'points',
+      build: () => createCubit(),
+      setUp: () {
+        playerRepository.mockGetById(player: player);
+        getPlayerPointsUseCase.mock(points: playerPoints);
+        seasonCubit.mockState(expectedState: season);
+        getGrandPrixesWithPointsUseCase.mock(
+          grandPrixesWithPoints: grandPrixesWithPoints,
+        );
+      },
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            PlayerProfileState(
+              status: PlayerProfileStateStatus.completed,
+              player: player,
+              season: season,
+              totalPoints: playerPoints,
+              grandPrixesWithPoints: grandPrixesWithPoints,
+            ),
+          ],
+      verify: (_) {
+        verify(() => playerRepository.getById(playerId)).called(1);
+        verify(
+          () => getPlayerPointsUseCase.call(playerId: playerId, season: season),
+        ).called(1);
+        verify(
+          () => getGrandPrixesWithPointsUseCase.call(
+            playerId: playerId,
+            season: season,
+          ),
+        ).called(1);
+      },
+    );
+  });
 }

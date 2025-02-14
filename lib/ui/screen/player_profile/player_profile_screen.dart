@@ -11,17 +11,15 @@ import 'cubit/player_profile_cubit.dart';
 class PlayerProfileScreen extends StatelessWidget {
   final String playerId;
 
-  const PlayerProfileScreen({
-    super.key,
-    required this.playerId,
-  });
+  const PlayerProfileScreen({super.key, required this.playerId});
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<PlayerProfileCubit>(
+    create:
+        (_) => getIt.get<PlayerProfileCubit>(
           param1: getIt.get<SeasonCubit>(),
           param2: playerId,
         )..initialize(),
-        child: const PlayerProfileContent(),
-      );
+    child: const PlayerProfileContent(),
+  );
 }

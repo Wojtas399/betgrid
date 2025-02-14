@@ -30,13 +30,13 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
     bool didRelease = false;
     await _getGrandPrixBetForPlayerAndGrandprixMutex.acquire();
     await for (final seasonGrandPrixBets in repositoryState$) {
-      SeasonGrandPrixBet? seasonGrandPrixBet =
-          seasonGrandPrixBets.firstWhereOrNull(
-        (SeasonGrandPrixBet seasonGrandPrixBet) =>
-            seasonGrandPrixBet.playerId == playerId &&
-            seasonGrandPrixBet.season == season &&
-            seasonGrandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
-      );
+      SeasonGrandPrixBet? seasonGrandPrixBet = seasonGrandPrixBets
+          .firstWhereOrNull(
+            (SeasonGrandPrixBet seasonGrandPrixBet) =>
+                seasonGrandPrixBet.playerId == playerId &&
+                seasonGrandPrixBet.season == season &&
+                seasonGrandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
+          );
       seasonGrandPrixBet ??= await _fetchFromDb(
         playerId: playerId,
         season: season,
@@ -67,19 +67,19 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   }) async {
     final SeasonGrandPrixBetDto? addedSeasonGrandPrixBetDto =
         await _fireSeasonGrandPrixBetService.add(
-      userId: playerId,
-      season: season,
-      seasonGrandPrixId: seasonGrandPrixId,
-      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
-      p1SeasonDriverId: p1SeasonDriverId,
-      p2SeasonDriverId: p2SeasonDriverId,
-      p3SeasonDriverId: p3SeasonDriverId,
-      p10SeasonDriverId: p10SeasonDriverId,
-      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
-      dnfSeasonDriverIds: dnfSeasonDriverIds,
-      willBeSafetyCar: willBeSafetyCar,
-      willBeRedFlag: willBeRedFlag,
-    );
+          userId: playerId,
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+          qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+          p1SeasonDriverId: p1SeasonDriverId,
+          p2SeasonDriverId: p2SeasonDriverId,
+          p3SeasonDriverId: p3SeasonDriverId,
+          p10SeasonDriverId: p10SeasonDriverId,
+          fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+          dnfSeasonDriverIds: dnfSeasonDriverIds,
+          willBeSafetyCar: willBeSafetyCar,
+          willBeRedFlag: willBeRedFlag,
+        );
     if (addedSeasonGrandPrixBetDto != null) {
       final SeasonGrandPrixBet addedSeasonGrandPrixBet =
           _seasonGrandPrixBetMapper.mapFromDto(addedSeasonGrandPrixBetDto);
@@ -104,19 +104,19 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   }) async {
     final SeasonGrandPrixBetDto? updatedSeasonGrandPrixBetDto =
         await _fireSeasonGrandPrixBetService.update(
-      userId: playerId,
-      season: season,
-      seasonGrandPrixId: seasonGrandPrixId,
-      qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
-      p1SeasonDriverId: p1SeasonDriverId,
-      p2SeasonDriverId: p2SeasonDriverId,
-      p3SeasonDriverId: p3SeasonDriverId,
-      p10SeasonDriverId: p10SeasonDriverId,
-      fastestLapSeasonDriverId: fastestLapSeasonDriverId,
-      dnfSeasonDriverIds: dnfSeasonDriverIds,
-      willBeSafetyCar: willBeSafetyCar,
-      willBeRedFlag: willBeRedFlag,
-    );
+          userId: playerId,
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+          qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+          p1SeasonDriverId: p1SeasonDriverId,
+          p2SeasonDriverId: p2SeasonDriverId,
+          p3SeasonDriverId: p3SeasonDriverId,
+          p10SeasonDriverId: p10SeasonDriverId,
+          fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+          dnfSeasonDriverIds: dnfSeasonDriverIds,
+          willBeSafetyCar: willBeSafetyCar,
+          willBeRedFlag: willBeRedFlag,
+        );
     if (updatedSeasonGrandPrixBetDto != null) {
       final SeasonGrandPrixBet updatedSeasonGrandPrixBet =
           _seasonGrandPrixBetMapper.mapFromDto(updatedSeasonGrandPrixBetDto);
@@ -129,12 +129,12 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
     required int season,
     required String seasonGrandPrixId,
   }) async {
-    final SeasonGrandPrixBetDto? dto =
-        await _fireSeasonGrandPrixBetService.fetchBySeasonGrandPrixId(
-      userId: playerId,
-      season: season,
-      seasonGrandPrixId: seasonGrandPrixId,
-    );
+    final SeasonGrandPrixBetDto? dto = await _fireSeasonGrandPrixBetService
+        .fetchBySeasonGrandPrixId(
+          userId: playerId,
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        );
     if (dto == null) return null;
     final SeasonGrandPrixBet entity = _seasonGrandPrixBetMapper.mapFromDto(dto);
     addEntity(entity);

@@ -8,9 +8,7 @@ class MockCreateBestPoints extends Mock implements CreateBestPoints {
     registerFallbackValue(StatsType.grouped);
   }
 
-  void mock({
-    BestPoints? expectedBestPoints,
-  }) {
+  void mock({BestPoints? expectedBestPoints}) {
     when(
       () => call(
         statsType: any(named: 'statsType'),

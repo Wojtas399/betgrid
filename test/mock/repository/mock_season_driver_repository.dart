@@ -12,9 +12,7 @@ class MockSeasonDriverRepository extends Mock
     ).thenAnswer((_) => Stream.value(expectedSeasonDrivers));
   }
 
-  void mockGetById({
-    SeasonDriver? expectedSeasonDriver,
-  }) {
+  void mockGetById({SeasonDriver? expectedSeasonDriver}) {
     when(
       () => getById(
         season: any(named: 'season'),

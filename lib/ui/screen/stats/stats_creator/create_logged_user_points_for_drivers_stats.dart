@@ -24,25 +24,26 @@ class CreateLoggedUserPointsForDriversStats {
     this._getDetailsForSeasonDriverUseCase,
   );
 
-  Stream<List<PointsForDriver>?> call({
-    required int season,
-  }) {
+  Stream<List<PointsForDriver>?> call({required int season}) {
     return _authRepository.loggedUserId$
         .switchMap(
-      (String? loggedUserId) => loggedUserId != null
-          ? _getPointsForDriversFromStats(loggedUserId, season)
-          : Stream.value(null),
-    )
-        .switchMap(
-      (List<PlayerStatsPointsForDriver>? pointsForDriversFromStats) {
-        if (pointsForDriversFromStats == null ||
-            pointsForDriversFromStats.isEmpty) {
-          return Stream.value(null);
-        }
+          (String? loggedUserId) =>
+              loggedUserId != null
+                  ? _getPointsForDriversFromStats(loggedUserId, season)
+                  : Stream.value(null),
+        )
+        .switchMap((
+          List<PlayerStatsPointsForDriver>? pointsForDriversFromStats,
+        ) {
+          if (pointsForDriversFromStats == null ||
+              pointsForDriversFromStats.isEmpty) {
+            return Stream.value(null);
+          }
 
-        final Iterable<Stream<PointsForDriver?>>
-            pointsWithDriverDetailsStreams = pointsForDriversFromStats.map(
-          (PlayerStatsPointsForDriver pointsForSingleDriver) {
+          final Iterable<Stream<PointsForDriver?>>
+          pointsWithDriverDetailsStreams = pointsForDriversFromStats.map((
+            PlayerStatsPointsForDriver pointsForSingleDriver,
+          ) {
             return _getDetailsForSeasonDriver(
               season,
               pointsForSingleDriver.seasonDriverId,
@@ -52,16 +53,15 @@ class CreateLoggedUserPointsForDriversStats {
                 points: pointsForSingleDriver.points,
               ),
             );
-          },
-        );
+          });
 
-        return Rx.combineLatest(
-          pointsWithDriverDetailsStreams,
-          (List<PointsForDriver?> pointsForDrivers) =>
-              pointsForDrivers.whereType<PointsForDriver>().toList(),
-        );
-      },
-    ).map(_sortPointsForDriversInDescendingOrder);
+          return Rx.combineLatest(
+            pointsWithDriverDetailsStreams,
+            (List<PointsForDriver?> pointsForDrivers) =>
+                pointsForDrivers.whereType<PointsForDriver>().toList(),
+          );
+        })
+        .map(_sortPointsForDriversInDescendingOrder);
   }
 
   Stream<List<PlayerStatsPointsForDriver>?> _getPointsForDriversFromStats(
@@ -69,10 +69,7 @@ class CreateLoggedUserPointsForDriversStats {
     int season,
   ) {
     return _playerStatsRepository
-        .getByPlayerIdAndSeason(
-          playerId: loggedUserId,
-          season: season,
-        )
+        .getByPlayerIdAndSeason(playerId: loggedUserId, season: season)
         .map((PlayerStats? stats) => stats?.pointsForDrivers);
   }
 
@@ -81,10 +78,7 @@ class CreateLoggedUserPointsForDriversStats {
     String seasonDriverId,
   ) {
     return _seasonDriverRepository
-        .getById(
-          season: season,
-          seasonDriverId: seasonDriverId,
-        )
+        .getById(season: season, seasonDriverId: seasonDriverId)
         .switchMap(
           (SeasonDriver? seasonDriver) =>
               _getDetailsForSeasonDriverUseCase(seasonDriver!),
@@ -95,8 +89,6 @@ class CreateLoggedUserPointsForDriversStats {
     List<PointsForDriver>? pointsForDrivers,
   ) {
     if (pointsForDrivers == null) return null;
-    return [...pointsForDrivers]..sort(
-        (a, b) => b.points.compareTo(a.points),
-      );
+    return [...pointsForDrivers]..sort((a, b) => b.points.compareTo(a.points));
   }
 }

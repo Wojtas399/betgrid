@@ -22,14 +22,7 @@ class GrandPrixBetQualifications extends StatelessWidget {
     return ExpansionTile(
       title: _Title(),
       children: [
-        const Padding16(
-          child: Column(
-            children: [
-              _Bets(),
-              _PointsSummary(),
-            ],
-          ),
-        ),
+        const Padding16(child: Column(children: [_Bets(), _PointsSummary()])),
       ],
     );
   }
@@ -62,43 +55,42 @@ class _Bets extends StatelessWidget {
 
     return qualiStandingsBets != null
         ? Column(
-            children: [
-              ...List.generate(
-                qualiStandingsBets.length,
-                (int positionIndex) {
-                  final bet = qualiStandingsBets[positionIndex];
+          children: [
+            ...List.generate(qualiStandingsBets.length, (int positionIndex) {
+              final bet = qualiStandingsBets[positionIndex];
 
-                  return GrandPrixBetItem(
-                    label: 'P${positionIndex + 1}',
-                    labelColor: switch (positionIndex) {
-                      0 => customColors?.p1,
-                      1 => customColors?.p2,
-                      2 => customColors?.p3,
-                      _ => null,
-                    },
-                    betStatus: bet.status,
-                    betChild: bet.betDriver != null
-                        ? DriverDescription(
-                            name: bet.betDriver!.name,
-                            surname: bet.betDriver!.surname,
-                            number: bet.betDriver!.number,
-                            teamColor: bet.betDriver!.teamHexColor.toColor(),
-                          )
-                        : const NoText(),
-                    resultsChild: bet.resultDriver != null
-                        ? DriverDescription(
-                            name: bet.resultDriver!.name,
-                            surname: bet.resultDriver!.surname,
-                            number: bet.resultDriver!.number,
-                            teamColor: bet.resultDriver!.teamHexColor.toColor(),
-                          )
-                        : const NoText(),
-                    points: bet.points,
-                  );
+              return GrandPrixBetItem(
+                label: 'P${positionIndex + 1}',
+                labelColor: switch (positionIndex) {
+                  0 => customColors?.p1,
+                  1 => customColors?.p2,
+                  2 => customColors?.p3,
+                  _ => null,
                 },
-              ),
-            ],
-          )
+                betStatus: bet.status,
+                betChild:
+                    bet.betDriver != null
+                        ? DriverDescription(
+                          name: bet.betDriver!.name,
+                          surname: bet.betDriver!.surname,
+                          number: bet.betDriver!.number,
+                          teamColor: bet.betDriver!.teamHexColor.toColor(),
+                        )
+                        : const NoText(),
+                resultsChild:
+                    bet.resultDriver != null
+                        ? DriverDescription(
+                          name: bet.resultDriver!.name,
+                          surname: bet.resultDriver!.surname,
+                          number: bet.resultDriver!.number,
+                          teamColor: bet.resultDriver!.teamHexColor.toColor(),
+                        )
+                        : const NoText(),
+                points: bet.points,
+              );
+            }),
+          ],
+        )
         : const SizedBox();
   }
 }

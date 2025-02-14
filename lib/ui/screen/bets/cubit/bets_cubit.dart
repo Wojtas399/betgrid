@@ -44,15 +44,13 @@ class BetsCubit extends Cubit<BetsState> {
   void initialize() {
     _listener ??= _authRepository.loggedUserId$
         .distinct()
-        .doOnData(
-          (String? loggedUserId) {
-            if (loggedUserId == null) {
-              emit(state.copyWith(
-                status: BetsStateStatus.loggedUserDoesNotExist,
-              ));
-            }
-          },
-        )
+        .doOnData((String? loggedUserId) {
+          if (loggedUserId == null) {
+            emit(
+              state.copyWith(status: BetsStateStatus.loggedUserDoesNotExist),
+            );
+          }
+        })
         .whereNotNull()
         .switchMap(_getListenedData)
         .listen(_manageListenedData);
@@ -68,33 +66,34 @@ class BetsCubit extends Cubit<BetsState> {
         playerId: loggedUserId,
         season: _seasonCubit.state,
       ).map(_addStatusForEachGp),
-      (
-        double? totalPoints,
-        List<GrandPrixItemParams> grandPrixItems,
-      ) =>
+      (double? totalPoints, List<GrandPrixItemParams> grandPrixItems) =>
           _ListenedData(
-        loggedUserId: loggedUserId,
-        totalPoints: totalPoints,
-        grandPrixItems: grandPrixItems,
-      ),
+            loggedUserId: loggedUserId,
+            totalPoints: totalPoints,
+            grandPrixItems: grandPrixItems,
+          ),
     );
   }
 
   Future<void> _manageListenedData(_ListenedData data) async {
     if (data.totalPoints == null && data.grandPrixItems.isEmpty) {
-      emit(state.copyWith(
-        status: BetsStateStatus.noBets,
-        loggedUserId: data.loggedUserId,
-        season: _seasonCubit.state,
-      ));
+      emit(
+        state.copyWith(
+          status: BetsStateStatus.noBets,
+          loggedUserId: data.loggedUserId,
+          season: _seasonCubit.state,
+        ),
+      );
     } else {
-      emit(state.copyWith(
-        status: BetsStateStatus.completed,
-        loggedUserId: data.loggedUserId,
-        season: _seasonCubit.state,
-        totalPoints: data.totalPoints,
-        grandPrixItems: data.grandPrixItems,
-      ));
+      emit(
+        state.copyWith(
+          status: BetsStateStatus.completed,
+          loggedUserId: data.loggedUserId,
+          season: _seasonCubit.state,
+          totalPoints: data.totalPoints,
+          grandPrixItems: data.grandPrixItems,
+        ),
+      );
       _listenToDurationToStartNextGp();
     }
   }
@@ -103,24 +102,25 @@ class BetsCubit extends Cubit<BetsState> {
     List<GrandPrixWithPoints> grandPrixesWithPoints,
   ) {
     final now = _dateService.getNow();
-    final grandPrixesWithStatus = grandPrixesWithPoints
-        .map(
-          (gp) => GrandPrixItemParams(
-            status: _gpStatusService.defineStatusForGp(
-              gpStartDateTime: gp.startDate,
-              gpEndDateTime: gp.endDate,
-              now: now,
-            ),
-            seasonGrandPrixId: gp.seasonGrandPrixId,
-            grandPrixName: gp.name,
-            countryAlpha2Code: gp.countryAlpha2Code,
-            roundNumber: gp.roundNumber,
-            startDate: gp.startDate,
-            endDate: gp.endDate,
-            betPoints: gp.points,
-          ),
-        )
-        .toList();
+    final grandPrixesWithStatus =
+        grandPrixesWithPoints
+            .map(
+              (gp) => GrandPrixItemParams(
+                status: _gpStatusService.defineStatusForGp(
+                  gpStartDateTime: gp.startDate,
+                  gpEndDateTime: gp.endDate,
+                  now: now,
+                ),
+                seasonGrandPrixId: gp.seasonGrandPrixId,
+                grandPrixName: gp.name,
+                countryAlpha2Code: gp.countryAlpha2Code,
+                roundNumber: gp.roundNumber,
+                startDate: gp.startDate,
+                endDate: gp.endDate,
+                betPoints: gp.points,
+              ),
+            )
+            .toList();
     final sortedGrandPrixesWithStatus = [...grandPrixesWithStatus];
     sortedGrandPrixesWithStatus.sort(
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
@@ -146,22 +146,19 @@ class BetsCubit extends Cubit<BetsState> {
 
   void _listenToDurationToStartNextGp() {
     _durationToStartNextGpListener?.cancel();
-    _durationToStartNextGpListener = _dateService.getNowStream().map(
-      (DateTime now) {
-        final nextGp = state.grandPrixItems?.firstWhereOrNull(
-          (gp) => gp.status is GrandPrixStatusNext,
-        );
-        return nextGp != null
-            ? _dateService.getDurationToDateFromNow(nextGp.startDate)
-            : null;
-      },
-    ).listen(
-      (duration) {
-        emit(state.copyWith(
-          durationToStartNextGp: duration,
-        ));
-      },
-    );
+    _durationToStartNextGpListener = _dateService
+        .getNowStream()
+        .map((DateTime now) {
+          final nextGp = state.grandPrixItems?.firstWhereOrNull(
+            (gp) => gp.status is GrandPrixStatusNext,
+          );
+          return nextGp != null
+              ? _dateService.getDurationToDateFromNow(nextGp.startDate)
+              : null;
+        })
+        .listen((duration) {
+          emit(state.copyWith(durationToStartNextGp: duration));
+        });
   }
 }
 
@@ -177,9 +174,5 @@ class _ListenedData extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        loggedUserId,
-        totalPoints,
-        grandPrixItems,
-      ];
+  List<Object?> get props => [loggedUserId, totalPoints, grandPrixItems];
 }

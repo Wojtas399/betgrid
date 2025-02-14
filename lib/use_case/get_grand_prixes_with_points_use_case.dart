@@ -25,15 +25,17 @@ class GetGrandPrixesWithPointsUseCase {
     required String playerId,
     required int season,
   }) {
-    return _seasonGrandPrixRepository.getAllFromSeason(season).switchMap(
+    return _seasonGrandPrixRepository
+        .getAllFromSeason(season)
+        .switchMap(
           (List<SeasonGrandPrix> grandPrixesFromSeason) =>
               grandPrixesFromSeason.isEmpty
                   ? Stream.value([])
                   : _getPointsForEachGrandPrix(
-                      playerId,
-                      season,
-                      grandPrixesFromSeason,
-                    ),
+                    playerId,
+                    season,
+                    grandPrixesFromSeason,
+                  ),
         );
   }
 
@@ -43,11 +45,8 @@ class GetGrandPrixesWithPointsUseCase {
     List<SeasonGrandPrix> grandPrixesFromSeason,
   ) {
     final grandPrixesWithPoints$ = grandPrixesFromSeason.map(
-      (seasonGrandPrix) => _getPointsForSingleSeasonGrandPrix(
-        playerId,
-        season,
-        seasonGrandPrix,
-      ),
+      (seasonGrandPrix) =>
+          _getPointsForSingleSeasonGrandPrix(playerId, season, seasonGrandPrix),
     );
     return Rx.combineLatest(
       grandPrixesWithPoints$,
@@ -75,14 +74,14 @@ class GetGrandPrixesWithPointsUseCase {
       ) =>
           grandPrix != null
               ? GrandPrixWithPoints(
-                  seasonGrandPrixId: seasonGrandPrix.id,
-                  name: grandPrix.name,
-                  countryAlpha2Code: grandPrix.countryAlpha2Code,
-                  roundNumber: seasonGrandPrix.roundNumber,
-                  startDate: seasonGrandPrix.startDate,
-                  endDate: seasonGrandPrix.endDate,
-                  points: seasonGrandPrixBetPoints?.totalPoints,
-                )
+                seasonGrandPrixId: seasonGrandPrix.id,
+                name: grandPrix.name,
+                countryAlpha2Code: grandPrix.countryAlpha2Code,
+                roundNumber: seasonGrandPrix.roundNumber,
+                startDate: seasonGrandPrix.startDate,
+                endDate: seasonGrandPrix.endDate,
+                points: seasonGrandPrixBetPoints?.totalPoints,
+              )
               : null,
     );
   }
@@ -109,12 +108,12 @@ class GrandPrixWithPoints extends Equatable {
 
   @override
   List<Object?> get props => [
-        seasonGrandPrixId,
-        name,
-        countryAlpha2Code,
-        roundNumber,
-        startDate,
-        endDate,
-        points,
-      ];
+    seasonGrandPrixId,
+    name,
+    countryAlpha2Code,
+    roundNumber,
+    startDate,
+    endDate,
+    points,
+  ];
 }

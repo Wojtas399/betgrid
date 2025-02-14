@@ -50,31 +50,31 @@ class _State extends State<RequiredDataCompletionUsername> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<RequiredDataCompletionCubit, RequiredDataCompletionState>(
-        listenWhen: (prevState, currState) =>
-            prevState.status != currState.status,
-        listener: (_, RequiredDataCompletionState state) =>
+  Widget build(
+    BuildContext context,
+  ) => BlocListener<RequiredDataCompletionCubit, RequiredDataCompletionState>(
+    listenWhen: (prevState, currState) => prevState.status != currState.status,
+    listener:
+        (_, RequiredDataCompletionState state) =>
             _onCubitStatusChanged(state.status),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleLarge(context.str.username),
-              const GapVertical16(),
-              TextFormField(
-                decoration:
-                    InputDecoration(hintText: context.str.usernameHintText),
-                onChanged: _onTextFieldChanged,
-                validator: (_) => _validate(context),
-                autovalidateMode: AutovalidateMode.always,
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-              ),
-            ],
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleLarge(context.str.username),
+          const GapVertical16(),
+          TextFormField(
+            decoration: InputDecoration(hintText: context.str.usernameHintText),
+            onChanged: _onTextFieldChanged,
+            validator: (_) => _validate(context),
+            autovalidateMode: AutovalidateMode.always,
+            onTapOutside: (_) {
+              FocusScope.of(context).unfocus();
+            },
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

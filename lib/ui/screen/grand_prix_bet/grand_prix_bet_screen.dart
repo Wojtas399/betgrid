@@ -21,13 +21,14 @@ class GrandPrixBetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<GrandPrixBetCubit>(
+    create:
+        (_) => getIt.get<GrandPrixBetCubit>(
           param1: GrandPrixBetCubitParams(
             playerId: playerId,
             season: season,
             seasonGrandPrixId: seasonGrandPrixId,
           ),
         )..initialize(),
-        child: const GrandPrixBetContent(),
-      );
+    child: const GrandPrixBetContent(),
+  );
 }

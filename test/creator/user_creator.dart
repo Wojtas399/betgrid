@@ -26,21 +26,21 @@ class UserCreator {
   }
 
   ThemeMode get _entityThemeMode => switch (themeMode) {
-        UserCreatorThemeMode.light => ThemeMode.light,
-        UserCreatorThemeMode.dark => ThemeMode.dark,
-        UserCreatorThemeMode.system => ThemeMode.system,
-      };
+    UserCreatorThemeMode.light => ThemeMode.light,
+    UserCreatorThemeMode.dark => ThemeMode.dark,
+    UserCreatorThemeMode.system => ThemeMode.system,
+  };
 
   ThemePrimaryColor get _entityThemePrimaryColor => switch (themePrimaryColor) {
-        UserCreatorThemePrimaryColor.red => ThemePrimaryColor.defaultRed,
-        UserCreatorThemePrimaryColor.pink => ThemePrimaryColor.pink,
-        UserCreatorThemePrimaryColor.purple => ThemePrimaryColor.purple,
-        UserCreatorThemePrimaryColor.brown => ThemePrimaryColor.brown,
-        UserCreatorThemePrimaryColor.orange => ThemePrimaryColor.orange,
-        UserCreatorThemePrimaryColor.yellow => ThemePrimaryColor.yellow,
-        UserCreatorThemePrimaryColor.green => ThemePrimaryColor.green,
-        UserCreatorThemePrimaryColor.blue => ThemePrimaryColor.blue,
-      };
+    UserCreatorThemePrimaryColor.red => ThemePrimaryColor.defaultRed,
+    UserCreatorThemePrimaryColor.pink => ThemePrimaryColor.pink,
+    UserCreatorThemePrimaryColor.purple => ThemePrimaryColor.purple,
+    UserCreatorThemePrimaryColor.brown => ThemePrimaryColor.brown,
+    UserCreatorThemePrimaryColor.orange => ThemePrimaryColor.orange,
+    UserCreatorThemePrimaryColor.yellow => ThemePrimaryColor.yellow,
+    UserCreatorThemePrimaryColor.green => ThemePrimaryColor.green,
+    UserCreatorThemePrimaryColor.blue => ThemePrimaryColor.blue,
+  };
 }
 
 enum UserCreatorThemeMode { light, dark, system }

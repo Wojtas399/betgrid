@@ -29,21 +29,15 @@ void main() {
     reset(playerStatsRepository);
   });
 
-  test(
-    'should emit null if list of all players is empty',
-    () async {
-      playerRepository.mockGetAll(players: []);
+  test('should emit null if list of all players is empty', () async {
+    playerRepository.mockGetAll(players: []);
 
-      final Stream<List<PlayerPoints>?> pointsForDriver$ =
-          createPointsForDriverStats(
-        season: season,
-        seasonDriverId: 'd1',
-      );
+    final Stream<List<PlayerPoints>?> pointsForDriver$ =
+        createPointsForDriverStats(season: season, seasonDriverId: 'd1');
 
-      expect(await pointsForDriver$.first, null);
-      verify(playerRepository.getAll).called(1);
-    },
-  );
+    expect(await pointsForDriver$.first, null);
+    verify(playerRepository.getAll).called(1);
+  });
 
   test(
     'should get stats for each player and should emit list of points for given '
@@ -55,57 +49,42 @@ void main() {
         const PlayerCreator(id: 'p2').create(),
         const PlayerCreator(id: 'p3').create(),
       ];
-      final PlayerStats player1Stats = PlayerStatsCreator(
-        playerId: 'p1',
-        pointsForDrivers: const [
-          PlayerStatsPointsForDriver(
-            seasonDriverId: seasonDriverId,
-            points: 11.1,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd2',
-            points: 22.2,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd3',
-            points: 33.3,
-          ),
-        ],
-      ).create();
-      final PlayerStats player2Stats = PlayerStatsCreator(
-        playerId: 'p2',
-        pointsForDrivers: const [
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd3',
-            points: 11.1,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd2',
-            points: 22.2,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: seasonDriverId,
-            points: 33.3,
-          ),
-        ],
-      ).create();
-      final PlayerStats player3Stats = PlayerStatsCreator(
-        playerId: 'p3',
-        pointsForDrivers: const [
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd2',
-            points: 99.9,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: seasonDriverId,
-            points: 88.8,
-          ),
-          PlayerStatsPointsForDriver(
-            seasonDriverId: 'sd3',
-            points: 77.7,
-          ),
-        ],
-      ).create();
+      final PlayerStats player1Stats =
+          PlayerStatsCreator(
+            playerId: 'p1',
+            pointsForDrivers: const [
+              PlayerStatsPointsForDriver(
+                seasonDriverId: seasonDriverId,
+                points: 11.1,
+              ),
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd2', points: 22.2),
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd3', points: 33.3),
+            ],
+          ).create();
+      final PlayerStats player2Stats =
+          PlayerStatsCreator(
+            playerId: 'p2',
+            pointsForDrivers: const [
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd3', points: 11.1),
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd2', points: 22.2),
+              PlayerStatsPointsForDriver(
+                seasonDriverId: seasonDriverId,
+                points: 33.3,
+              ),
+            ],
+          ).create();
+      final PlayerStats player3Stats =
+          PlayerStatsCreator(
+            playerId: 'p3',
+            pointsForDrivers: const [
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd2', points: 99.9),
+              PlayerStatsPointsForDriver(
+                seasonDriverId: seasonDriverId,
+                points: 88.8,
+              ),
+              PlayerStatsPointsForDriver(seasonDriverId: 'sd3', points: 77.7),
+            ],
+          ).create();
       final List<PlayerPoints> expectedPoints = [
         PlayerPoints(
           player: allPlayers.first,
@@ -142,9 +121,9 @@ void main() {
 
       final Stream<List<PlayerPoints>?> pointsForDriver$ =
           createPointsForDriverStats(
-        season: season,
-        seasonDriverId: seasonDriverId,
-      );
+            season: season,
+            seasonDriverId: seasonDriverId,
+          );
 
       expect(await pointsForDriver$.first, expectedPoints);
       verify(playerRepository.getAll).called(1);

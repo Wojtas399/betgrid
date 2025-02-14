@@ -40,10 +40,9 @@ class DialogService {
     if (context == null) return null;
     return await showModalBottomSheet<T?>(
       context: context,
-      builder: (BuildContext context) => ActionsDialog(
-        actions: actions,
-        title: title,
-      ),
+      builder:
+          (BuildContext context) =>
+              ActionsDialog(actions: actions, title: title),
     );
   }
 
@@ -76,10 +75,7 @@ class DialogService {
             begin: const Offset(0.0, 1.0),
             end: Offset.zero,
           ).animate(
-            CurvedAnimation(
-              parent: anim1,
-              curve: Curves.easeInOutQuart,
-            ),
+            CurvedAnimation(parent: anim1, curve: Curves.easeInOutQuart),
           ),
           child: child,
         );

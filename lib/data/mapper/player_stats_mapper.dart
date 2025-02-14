@@ -16,18 +16,22 @@ class PlayerStatsMapper {
   );
 
   PlayerStats mapFromDto(UserStatsDto dto) {
-    final bestGpPoints = dto.bestGpPoints != null
-        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestGpPoints!)
-        : null;
-    final bestQualiPoints = dto.bestQualiPoints != null
-        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestQualiPoints!)
-        : null;
-    final bestRacePoints = dto.bestRacePoints != null
-        ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestRacePoints!)
-        : null;
-    final pointsForDrivers = dto.pointsForDrivers
-        ?.map(_playerStatsPointsForDriverMapper.mapFromDto)
-        .toList();
+    final bestGpPoints =
+        dto.bestGpPoints != null
+            ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestGpPoints!)
+            : null;
+    final bestQualiPoints =
+        dto.bestQualiPoints != null
+            ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestQualiPoints!)
+            : null;
+    final bestRacePoints =
+        dto.bestRacePoints != null
+            ? _playerStatsPointsForGpMapper.mapFromDto(dto.bestRacePoints!)
+            : null;
+    final pointsForDrivers =
+        dto.pointsForDrivers
+            ?.map(_playerStatsPointsForDriverMapper.mapFromDto)
+            .toList();
 
     return PlayerStats(
       playerId: dto.userId,

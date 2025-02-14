@@ -41,254 +41,253 @@ void main() {
     ),
   );
 
-  test(
-    'should create list with 20 SingleDriverBet elements where each element '
-    'has data corresponding to its position',
-    () async {
-      final List<DriverDetails> allDriverDetails = List.generate(
-        20,
-        (int driverIndex) => DriverDetailsCreator(
-          seasonDriverId: 'd${driverIndex + 1}',
-        ).create(),
-      );
-      final List<String?> betQualiStandingsBySeasonDriverIds = List.generate(
-        20,
-        (int positionIndex) => switch (positionIndex) {
-          0 => 'd1',
-          4 => 'd5',
-          5 => 'd6',
-          9 => 'd9',
-          12 => 'd13',
-          17 => 'd18',
-          19 => 'd8',
-          _ => null,
-        },
-      );
-      final List<String> resultQualiStandingsBySeasonDriverIds = [
-        'd1',
-        'd3',
-        'd4',
-        'd19',
-        'd5',
-        'd6',
-        'd7',
-        'd8',
-        'd9',
-        'd2',
-        'd10',
-        'd11',
-        'd13',
-        'd12',
-        'd15',
-        'd14',
-        'd18',
-        'd16',
-        'd17',
-        'd20',
-      ];
-      final QualiBetPoints qualiBetPoints = const QualiBetPointsCreator(
-        q3P1: 1,
-        q3P2: 0,
-        q3P3: 0,
-        q3P4: 0,
-        q3P5: 2,
-        q3P6: 2,
-        q3P7: 0,
-        q3P8: 0,
-        q3P9: 0,
-        q3P10: 0,
-        q2P11: 0,
-        q2P12: 0,
-        q2P13: 2,
-        q2P14: 0,
-        q2P15: 0,
-        q1P16: 0,
-        q1P17: 0,
-        q1P18: 0,
-        q1P19: 0,
-        q1P20: 0,
-      ).create();
-      final List<SingleDriverBet> expectedBets = [
-        SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: allDriverDetails.first,
-          resultDriver: allDriverDetails.first,
-          points: 1,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[2],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[3],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[18],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: allDriverDetails[4],
-          resultDriver: allDriverDetails[4],
-          points: 2,
-        ),
-        SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: allDriverDetails[5],
-          resultDriver: allDriverDetails[5],
-          points: 2,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[6],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[7],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[8],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: allDriverDetails[8],
-          resultDriver: allDriverDetails[1],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[9],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[10],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: allDriverDetails[12],
-          resultDriver: allDriverDetails[12],
-          points: 2,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[11],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[14],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[13],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[17],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: allDriverDetails[17],
-          resultDriver: allDriverDetails[15],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: null,
-          resultDriver: allDriverDetails[16],
-          points: 0,
-        ),
-        SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: allDriverDetails[7],
-          resultDriver: allDriverDetails[19],
-          points: 0,
-        ),
-      ];
-      seasonGrandPrixBetRepository.mockGetSeasonGrandPrixBet(
-        seasonGrandPrixBet: SeasonGrandPrixBetCreator(
-          qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
-        ).create(),
-      );
-      seasonGrandPrixResultsRepository.mockGetResultsForSeasonGrandPrix(
-        results: SeasonGrandPrixResultsCreator(
-          qualiStandingsBySeasonDriverIds:
-              resultQualiStandingsBySeasonDriverIds,
-        ).create(),
-      );
-      getDetailsOfAllDriversFromSeasonUseCase.mock(
-        expectedDetailsOfAllDriversFromSeason: allDriverDetails,
-      );
-      seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
-        seasonGrandPrixBetPoints: SeasonGrandPrixBetPoints(
-          id: '',
-          playerId: playerId,
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-          totalPoints: 0.0,
-          qualiBetPoints: qualiBetPoints,
-        ),
-      );
-      grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
-        expectedStatus: BetStatus.loss,
-      );
-      when(
-        () => grandPrixBetStatusService.selectStatusBasedOnPoints(
-          any(that: anyOf(1, 2)),
-        ),
-      ).thenReturn(BetStatus.win);
+  test('should create list with 20 SingleDriverBet elements where each element '
+      'has data corresponding to its position', () async {
+    final List<DriverDetails> allDriverDetails = List.generate(
+      20,
+      (int driverIndex) =>
+          DriverDetailsCreator(seasonDriverId: 'd${driverIndex + 1}').create(),
+    );
+    final List<String?> betQualiStandingsBySeasonDriverIds = List.generate(
+      20,
+      (int positionIndex) => switch (positionIndex) {
+        0 => 'd1',
+        4 => 'd5',
+        5 => 'd6',
+        9 => 'd9',
+        12 => 'd13',
+        17 => 'd18',
+        19 => 'd8',
+        _ => null,
+      },
+    );
+    final List<String> resultQualiStandingsBySeasonDriverIds = [
+      'd1',
+      'd3',
+      'd4',
+      'd19',
+      'd5',
+      'd6',
+      'd7',
+      'd8',
+      'd9',
+      'd2',
+      'd10',
+      'd11',
+      'd13',
+      'd12',
+      'd15',
+      'd14',
+      'd18',
+      'd16',
+      'd17',
+      'd20',
+    ];
+    final QualiBetPoints qualiBetPoints =
+        const QualiBetPointsCreator(
+          q3P1: 1,
+          q3P2: 0,
+          q3P3: 0,
+          q3P4: 0,
+          q3P5: 2,
+          q3P6: 2,
+          q3P7: 0,
+          q3P8: 0,
+          q3P9: 0,
+          q3P10: 0,
+          q2P11: 0,
+          q2P12: 0,
+          q2P13: 2,
+          q2P14: 0,
+          q2P15: 0,
+          q1P16: 0,
+          q1P17: 0,
+          q1P18: 0,
+          q1P19: 0,
+          q1P20: 0,
+        ).create();
+    final List<SingleDriverBet> expectedBets = [
+      SingleDriverBet(
+        status: BetStatus.win,
+        betDriver: allDriverDetails.first,
+        resultDriver: allDriverDetails.first,
+        points: 1,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[2],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[3],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[18],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.win,
+        betDriver: allDriverDetails[4],
+        resultDriver: allDriverDetails[4],
+        points: 2,
+      ),
+      SingleDriverBet(
+        status: BetStatus.win,
+        betDriver: allDriverDetails[5],
+        resultDriver: allDriverDetails[5],
+        points: 2,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[6],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[7],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[8],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: allDriverDetails[8],
+        resultDriver: allDriverDetails[1],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[9],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[10],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.win,
+        betDriver: allDriverDetails[12],
+        resultDriver: allDriverDetails[12],
+        points: 2,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[11],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[14],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[13],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[17],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: allDriverDetails[17],
+        resultDriver: allDriverDetails[15],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: null,
+        resultDriver: allDriverDetails[16],
+        points: 0,
+      ),
+      SingleDriverBet(
+        status: BetStatus.loss,
+        betDriver: allDriverDetails[7],
+        resultDriver: allDriverDetails[19],
+        points: 0,
+      ),
+    ];
+    seasonGrandPrixBetRepository.mockGetSeasonGrandPrixBet(
+      seasonGrandPrixBet:
+          SeasonGrandPrixBetCreator(
+            qualiStandingsBySeasonDriverIds: betQualiStandingsBySeasonDriverIds,
+          ).create(),
+    );
+    seasonGrandPrixResultsRepository.mockGetResultsForSeasonGrandPrix(
+      results:
+          SeasonGrandPrixResultsCreator(
+            qualiStandingsBySeasonDriverIds:
+                resultQualiStandingsBySeasonDriverIds,
+          ).create(),
+    );
+    getDetailsOfAllDriversFromSeasonUseCase.mock(
+      expectedDetailsOfAllDriversFromSeason: allDriverDetails,
+    );
+    seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
+      seasonGrandPrixBetPoints: SeasonGrandPrixBetPoints(
+        id: '',
+        playerId: playerId,
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+        totalPoints: 0.0,
+        qualiBetPoints: qualiBetPoints,
+      ),
+    );
+    grandPrixBetStatusService.mockSelectStatusBasedOnPoints(
+      expectedStatus: BetStatus.loss,
+    );
+    when(
+      () => grandPrixBetStatusService.selectStatusBasedOnPoints(
+        any(that: anyOf(1, 2)),
+      ),
+    ).thenReturn(BetStatus.win);
 
-      final Stream<List<SingleDriverBet>> bets$ = service.getQualiBets();
+    final Stream<List<SingleDriverBet>> bets$ = service.getQualiBets();
 
-      expect(await bets$.first, expectedBets);
-      verify(
-        () => seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
-          playerId: playerId,
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => seasonGrandPrixResultsRepository.getResultsForSeasonGrandPrix(
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-        ),
-      ).called(1);
-      verify(
-        () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
-      ).called(1);
-      verify(
-        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
-          playerId: playerId,
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-        ),
-      ).called(1);
-    },
-  );
+    expect(await bets$.first, expectedBets);
+    verify(
+      () => seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
+        playerId: playerId,
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+      ),
+    ).called(1);
+    verify(
+      () => seasonGrandPrixResultsRepository.getResultsForSeasonGrandPrix(
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+      ),
+    ).called(1);
+    verify(
+      () => getDetailsOfAllDriversFromSeasonUseCase.call(season),
+    ).called(1);
+    verify(
+      () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
+        playerId: playerId,
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+      ),
+    ).called(1);
+  });
 }

@@ -43,8 +43,7 @@ class GrandPrixBetRaceBetsService {
         List<DriverDetails?> betDrivers,
         List<DriverDetails?> resultDrivers,
         List<double?> points,
-      ) =>
-          List.generate(
+      ) => List.generate(
         3,
         (int positionIndex) => SingleDriverBet(
           status: _grandPrixBetStatusService.selectStatusBasedOnPoints(
@@ -63,17 +62,15 @@ class GrandPrixBetRaceBetsService {
       _getBetP10Driver(),
       _getResultP10Driver(),
       _getPoints().map((points) => points?.p10),
-      (
-        DriverDetails? betDriver,
-        DriverDetails? resultDriver,
-        double? points,
-      ) =>
+      (DriverDetails? betDriver, DriverDetails? resultDriver, double? points) =>
           SingleDriverBet(
-        status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
-        betDriver: betDriver,
-        resultDriver: resultDriver,
-        points: points,
-      ),
+            status: _grandPrixBetStatusService.selectStatusBasedOnPoints(
+              points,
+            ),
+            betDriver: betDriver,
+            resultDriver: resultDriver,
+            points: points,
+          ),
     );
   }
 
@@ -82,17 +79,15 @@ class GrandPrixBetRaceBetsService {
       _getBetFastestLapDriver(),
       _getResultFastestLapDriver(),
       _getPoints().map((points) => points?.fastestLap),
-      (
-        DriverDetails? betDriver,
-        DriverDetails? resultDriver,
-        double? points,
-      ) =>
+      (DriverDetails? betDriver, DriverDetails? resultDriver, double? points) =>
           SingleDriverBet(
-        status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
-        betDriver: betDriver,
-        resultDriver: resultDriver,
-        points: points,
-      ),
+            status: _grandPrixBetStatusService.selectStatusBasedOnPoints(
+              points,
+            ),
+            betDriver: betDriver,
+            resultDriver: resultDriver,
+            points: points,
+          ),
     );
   }
 
@@ -105,8 +100,7 @@ class GrandPrixBetRaceBetsService {
         List<DriverDetails?>? betDrivers,
         List<DriverDetails?>? resultDrivers,
         double? points,
-      ) =>
-          MultipleDriversBet(
+      ) => MultipleDriversBet(
         status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
         betDrivers: betDrivers,
         resultDrivers: resultDrivers,
@@ -126,8 +120,7 @@ class GrandPrixBetRaceBetsService {
         bool? predictionWhetherWillBeSafetyCar,
         bool? resultWhetherWasSafetyCar,
         double? points,
-      ) =>
-          BooleanBet(
+      ) => BooleanBet(
         status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
         betValue: predictionWhetherWillBeSafetyCar,
         resultValue: resultWhetherWasSafetyCar,
@@ -147,8 +140,7 @@ class GrandPrixBetRaceBetsService {
         bool? predictionWhetherWillBeRedFlag,
         bool? resultWhetherWasRedFlag,
         double? points,
-      ) =>
-          BooleanBet(
+      ) => BooleanBet(
         status: _grandPrixBetStatusService.selectStatusBasedOnPoints(points),
         betValue: predictionWhetherWillBeRedFlag,
         resultValue: resultWhetherWasRedFlag,
@@ -183,11 +175,7 @@ class GrandPrixBetRaceBetsService {
 
   Stream<List<double?>> _getPodiumPoints() {
     return _getPoints().map(
-      (RaceBetPoints? points) => [
-        points?.p1,
-        points?.p2,
-        points?.p3,
-      ],
+      (RaceBetPoints? points) => [points?.p1, points?.p2, points?.p3],
     );
   }
 
@@ -221,9 +209,10 @@ class GrandPrixBetRaceBetsService {
     return _getSeasonGrandPrixBet()
         .map((seasonGrandPrixBet) => seasonGrandPrixBet?.dnfSeasonDriverIds)
         .switchMap(
-          (dnfSeasonDriverIds) => dnfSeasonDriverIds != null
-              ? _getDetailsForEachSeasonDriver(dnfSeasonDriverIds)
-              : Stream.value(null),
+          (dnfSeasonDriverIds) =>
+              dnfSeasonDriverIds != null
+                  ? _getDetailsForEachSeasonDriver(dnfSeasonDriverIds)
+                  : Stream.value(null),
         );
   }
 
@@ -231,9 +220,10 @@ class GrandPrixBetRaceBetsService {
     return _getResults()
         .map((raceResults) => raceResults?.dnfSeasonDriverIds)
         .switchMap(
-          (dnfSeasonDriverIds) => dnfSeasonDriverIds != null
-              ? _getDetailsForEachSeasonDriver(dnfSeasonDriverIds)
-              : Stream.value(null),
+          (dnfSeasonDriverIds) =>
+              dnfSeasonDriverIds != null
+                  ? _getDetailsForEachSeasonDriver(dnfSeasonDriverIds)
+                  : Stream.value(null),
         );
   }
 
@@ -276,14 +266,12 @@ class GrandPrixBetRaceBetsService {
   Stream<DriverDetails?> _getDetailsForSeasonDriver(String? seasonDriverId) {
     return seasonDriverId != null
         ? _seasonDriverRepository
-            .getById(
-              season: _params.season,
-              seasonDriverId: seasonDriverId,
-            )
+            .getById(season: _params.season, seasonDriverId: seasonDriverId)
             .switchMap(
-              (seasonDriver) => seasonDriver != null
-                  ? _getDetailsForSeasonDriverUseCase(seasonDriver)
-                  : Stream.value(null),
+              (seasonDriver) =>
+                  seasonDriver != null
+                      ? _getDetailsForSeasonDriverUseCase(seasonDriver)
+                      : Stream.value(null),
             )
         : Stream.value(null);
   }

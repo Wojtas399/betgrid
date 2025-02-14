@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCreateLoggedUserPointsForDriversStats extends Mock
     implements CreateLoggedUserPointsForDriversStats {
-  void mock({
-    required List<PointsForDriver> expectedPointsForDrivers,
-  }) {
+  void mock({required List<PointsForDriver> expectedPointsForDrivers}) {
     when(
       () => call(season: any(named: 'season')),
     ).thenAnswer((_) => Stream.value(expectedPointsForDrivers));

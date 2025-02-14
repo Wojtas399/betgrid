@@ -23,49 +23,44 @@ void main() {
     reset(getDetailsForSeasonDriverUseCase);
   });
 
-  test(
-    'should get all season drivers from given season from '
-    'SeasonDriverRepository and should map them to DriverDetails model using '
-    'GetDetailsForSeasonDriverUseCase',
-    () async {
-      const int season = 2024;
-      final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 'sd1').create(),
-        const SeasonDriverCreator(id: 'sd2').create(),
-        const SeasonDriverCreator(id: 'sd3').create(),
-      ];
-      final List<DriverDetails> expectedDrivers = [
-        const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
-        const DriverDetailsCreator(seasonDriverId: 'sd2').create(),
-      ];
-      seasonDriverRepository.mockGetAllFromSeason(
-        expectedSeasonDrivers: seasonDrivers,
-      );
-      when(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.first),
-      ).thenAnswer((_) => Stream.value(expectedDrivers.first));
-      when(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers[1]),
-      ).thenAnswer((_) => Stream.value(null));
-      when(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.last),
-      ).thenAnswer((_) => Stream.value(expectedDrivers.last));
+  test('should get all season drivers from given season from '
+      'SeasonDriverRepository and should map them to DriverDetails model using '
+      'GetDetailsForSeasonDriverUseCase', () async {
+    const int season = 2024;
+    final List<SeasonDriver> seasonDrivers = [
+      const SeasonDriverCreator(id: 'sd1').create(),
+      const SeasonDriverCreator(id: 'sd2').create(),
+      const SeasonDriverCreator(id: 'sd3').create(),
+    ];
+    final List<DriverDetails> expectedDrivers = [
+      const DriverDetailsCreator(seasonDriverId: 'sd1').create(),
+      const DriverDetailsCreator(seasonDriverId: 'sd2').create(),
+    ];
+    seasonDriverRepository.mockGetAllFromSeason(
+      expectedSeasonDrivers: seasonDrivers,
+    );
+    when(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.first),
+    ).thenAnswer((_) => Stream.value(expectedDrivers.first));
+    when(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers[1]),
+    ).thenAnswer((_) => Stream.value(null));
+    when(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.last),
+    ).thenAnswer((_) => Stream.value(expectedDrivers.last));
 
-      final Stream<List<DriverDetails>> drivers$ = useCase(season);
+    final Stream<List<DriverDetails>> drivers$ = useCase(season);
 
-      expect(await drivers$.first, expectedDrivers);
-      verify(
-        () => seasonDriverRepository.getAllFromSeason(season),
-      ).called(1);
-      verify(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.first),
-      ).called(1);
-      verify(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers[1]),
-      ).called(1);
-      verify(
-        () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.last),
-      ).called(1);
-    },
-  );
+    expect(await drivers$.first, expectedDrivers);
+    verify(() => seasonDriverRepository.getAllFromSeason(season)).called(1);
+    verify(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.first),
+    ).called(1);
+    verify(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers[1]),
+    ).called(1);
+    verify(
+      () => getDetailsForSeasonDriverUseCase.call(seasonDrivers.last),
+    ).called(1);
+  });
 }

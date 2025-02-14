@@ -13,16 +13,16 @@ class RequiredDataCompletionThemeColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TitleLarge(context.str.color),
-            const GapVertical16(),
-            const _Colors(),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TitleLarge(context.str.color),
+        const GapVertical16(),
+        const _Colors(),
+      ],
+    ),
+  );
 }
 
 class _Colors extends StatelessWidget {
@@ -40,8 +40,8 @@ class _Colors extends StatelessWidget {
 
     return ThemePrimaryColorSelection(
       selectedColor: selectedThemePrimaryColor,
-      onColorSelected: (ThemePrimaryColor color) =>
-          _onColorSelected(color, context),
+      onColorSelected:
+          (ThemePrimaryColor color) => _onColorSelected(color, context),
     );
   }
 }

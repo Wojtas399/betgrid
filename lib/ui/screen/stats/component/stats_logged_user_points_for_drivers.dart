@@ -21,25 +21,20 @@ class StatsLoggedUserPointsForDrivers extends StatelessWidget {
 
     return pointsForDrivers != null
         ? Column(
-            spacing: 16.0,
-            children: [
-              for (final pointsForDriver in pointsForDrivers)
-                _DriverInfo(pointsForDriver: pointsForDriver),
-            ],
-          )
-        : const SizedBox(
-            height: 300,
-            child: StatsNoDataInfo(),
-          );
+          spacing: 16.0,
+          children: [
+            for (final pointsForDriver in pointsForDrivers)
+              _DriverInfo(pointsForDriver: pointsForDriver),
+          ],
+        )
+        : const SizedBox(height: 300, child: StatsNoDataInfo());
   }
 }
 
 class _DriverInfo extends StatelessWidget {
   final PointsForDriver pointsForDriver;
 
-  const _DriverInfo({
-    required this.pointsForDriver,
-  });
+  const _DriverInfo({required this.pointsForDriver});
 
   @override
   Widget build(BuildContext context) {

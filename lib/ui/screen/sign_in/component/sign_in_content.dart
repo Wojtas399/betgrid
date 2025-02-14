@@ -14,31 +14,31 @@ class SignInContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: const SignInAppBar(),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DisplayMedium(
-                  'BetGrid',
-                  fontWeight: FontWeight.bold,
-                  color: context.colorScheme.primary,
-                ),
-                const GapVertical64(),
-                TitleLarge(
-                  context.str.signInScreenInfo,
-                  textAlign: TextAlign.center,
-                ),
-                const GapVertical32(),
-                const _SignInWithGoogleButton(),
-                const GapVertical32(),
-              ],
+    appBar: const SignInAppBar(),
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DisplayMedium(
+              'BetGrid',
+              fontWeight: FontWeight.bold,
+              color: context.colorScheme.primary,
             ),
-          ),
+            const GapVertical64(),
+            TitleLarge(
+              context.str.signInScreenInfo,
+              textAlign: TextAlign.center,
+            ),
+            const GapVertical32(),
+            const _SignInWithGoogleButton(),
+            const GapVertical32(),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _SignInWithGoogleButton extends StatelessWidget {
@@ -46,21 +46,21 @@ class _SignInWithGoogleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FilledButton(
-        onPressed: context.read<SignInCubit>().signInWithGoogle,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(context.str.signInScreenSignInButtonLabel),
-              const GapHorizontal16(),
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: SvgPicture.asset('assets/google_logo.svg'),
-              ),
-            ],
+    onPressed: context.read<SignInCubit>().signInWithGoogle,
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(context.str.signInScreenSignInButtonLabel),
+          const GapHorizontal16(),
+          SizedBox(
+            height: 24,
+            width: 24,
+            child: SvgPicture.asset('assets/google_logo.svg'),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

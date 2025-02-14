@@ -22,27 +22,23 @@ class StatsBody extends StatelessWidget {
     );
 
     return stats == null || status.isInitial
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
-            child: Padding8(
-              child: Column(
-                children: [
-                  const StatsTypeSelection(),
-                  if (status.isChangingStatsType) ...[
-                    const GapVertical32(),
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ] else
-                    switch (stats) {
-                      GroupedStats() => const StatsGroupedStats(),
-                      IndividualStats() => const StatsIndividualStats(),
-                    },
-                ],
-              ),
+          child: Padding8(
+            child: Column(
+              children: [
+                const StatsTypeSelection(),
+                if (status.isChangingStatsType) ...[
+                  const GapVertical32(),
+                  const Center(child: CircularProgressIndicator()),
+                ] else
+                  switch (stats) {
+                    GroupedStats() => const StatsGroupedStats(),
+                    IndividualStats() => const StatsIndividualStats(),
+                  },
+              ],
             ),
-          );
+          ),
+        );
   }
 }

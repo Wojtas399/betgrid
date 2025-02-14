@@ -30,9 +30,10 @@ class StatsBestPoints extends StatelessWidget {
                   label: 'Grand Prix',
                   points: bestPoints?.bestGpPoints?.points,
                   value: bestPoints?.bestGpPoints?.grandPrixName,
-                  playerName: areGroupedStats
-                      ? bestPoints?.bestGpPoints?.playerName
-                      : null,
+                  playerName:
+                      areGroupedStats
+                          ? bestPoints?.bestGpPoints?.playerName
+                          : null,
                 ),
               ),
               const VerticalDivider(),
@@ -41,9 +42,10 @@ class StatsBestPoints extends StatelessWidget {
                   label: 'Kwalifikacje',
                   points: bestPoints?.bestQualiPoints?.points,
                   value: bestPoints?.bestQualiPoints?.grandPrixName,
-                  playerName: areGroupedStats
-                      ? bestPoints?.bestQualiPoints?.playerName
-                      : null,
+                  playerName:
+                      areGroupedStats
+                          ? bestPoints?.bestQualiPoints?.playerName
+                          : null,
                 ),
               ),
             ],
@@ -58,9 +60,10 @@ class StatsBestPoints extends StatelessWidget {
                   label: 'Wyścig',
                   points: bestPoints?.bestRacePoints?.points,
                   value: bestPoints?.bestRacePoints?.grandPrixName,
-                  playerName: areGroupedStats
-                      ? bestPoints?.bestRacePoints?.playerName
-                      : null,
+                  playerName:
+                      areGroupedStats
+                          ? bestPoints?.bestRacePoints?.playerName
+                          : null,
                 ),
               ),
               const VerticalDivider(),
@@ -70,9 +73,10 @@ class StatsBestPoints extends StatelessWidget {
                   points: bestPoints?.bestDriverPoints?.points,
                   value:
                       '${bestPoints?.bestDriverPoints?.driverName} ${bestPoints?.bestDriverPoints?.driverSurname}',
-                  playerName: areGroupedStats
-                      ? bestPoints?.bestDriverPoints?.playerName
-                      : null,
+                  playerName:
+                      areGroupedStats
+                          ? bestPoints?.bestDriverPoints?.playerName
+                          : null,
                 ),
               ),
             ],
@@ -98,34 +102,28 @@ class _Points extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding8(
-        child: Column(
-          children: [
-            BodyMedium(label),
-            const GapVertical8(),
-            if (playerName != null) ...[
-              BodyMedium(
-                playerName!,
-                color: context.colorScheme.primary,
-              ),
-              const GapVertical8(),
-            ],
-            if (points != null) ...[
-              TitleLarge(
-                points.toString(),
-                color: context.colorScheme.primary,
-                fontWeight: FontWeight.bold,
-              ),
-              const GapVertical8(),
-              BodyMedium(
-                value ?? context.str.statsBestPointsUnknown,
-                color: context.colorScheme.primary,
-              ),
-            ] else
-              BodyMedium(
-                '--',
-                color: context.colorScheme.outline,
-              ),
-          ],
-        ),
-      );
+    child: Column(
+      children: [
+        BodyMedium(label),
+        const GapVertical8(),
+        if (playerName != null) ...[
+          BodyMedium(playerName!, color: context.colorScheme.primary),
+          const GapVertical8(),
+        ],
+        if (points != null) ...[
+          TitleLarge(
+            points.toString(),
+            color: context.colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+          const GapVertical8(),
+          BodyMedium(
+            value ?? context.str.statsBestPointsUnknown,
+            color: context.colorScheme.primary,
+          ),
+        ] else
+          BodyMedium('--', color: context.colorScheme.outline),
+      ],
+    ),
+  );
 }

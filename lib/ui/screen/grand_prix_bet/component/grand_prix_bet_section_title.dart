@@ -7,11 +7,7 @@ class GrandPrixBetSectionTitle extends StatelessWidget {
   final String title;
   final double? points;
 
-  const GrandPrixBetSectionTitle({
-    super.key,
-    required this.title,
-    this.points,
-  });
+  const GrandPrixBetSectionTitle({super.key, required this.title, this.points});
 
   @override
   Widget build(BuildContext context) {

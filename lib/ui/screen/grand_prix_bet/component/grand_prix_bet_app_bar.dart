@@ -11,10 +11,8 @@ class GrandPrixBetAppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        title: const _GrandPrixName(),
-        scrolledUnderElevation: 0.0,
-      );
+  Widget build(BuildContext context) =>
+      AppBar(title: const _GrandPrixName(), scrolledUnderElevation: 0.0);
 }
 
 class _GrandPrixName extends StatelessWidget {

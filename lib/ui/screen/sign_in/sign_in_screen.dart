@@ -14,11 +14,9 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<SignInCubit>()..initialize(),
-        child: const _AuthStateListener(
-          child: SignInContent(),
-        ),
-      );
+    create: (_) => getIt.get<SignInCubit>()..initialize(),
+    child: const _AuthStateListener(child: SignInContent()),
+  );
 }
 
 class _AuthStateListener extends StatelessWidget {
@@ -26,10 +24,7 @@ class _AuthStateListener extends StatelessWidget {
 
   const _AuthStateListener({required this.child});
 
-  void _onAuthStateChanged(
-    BuildContext context,
-    SignInState state,
-  ) {
+  void _onAuthStateChanged(BuildContext context, SignInState state) {
     if (state is SignInStateUserIsAlreadySignedIn) {
       context.replaceRoute(const HomeRoute());
     }
@@ -37,7 +32,7 @@ class _AuthStateListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocListener<SignInCubit, SignInState>(
-        listener: _onAuthStateChanged,
-        child: child,
-      );
+    listener: _onAuthStateChanged,
+    child: child,
+  );
 }

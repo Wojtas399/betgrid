@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCreatePointsForDriverStats extends Mock
     implements CreatePointsForDriverStats {
-  void mock({
-    required List<PlayerPoints> playersPoints,
-  }) {
+  void mock({required List<PlayerPoints> playersPoints}) {
     when(
       () => call(
         season: any(named: 'season'),

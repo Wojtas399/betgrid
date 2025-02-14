@@ -15,9 +15,7 @@ class PlayerProfileContent extends StatelessWidget {
   const PlayerProfileContent({super.key});
 
   @override
-  Widget build(BuildContext context) => const Scaffold(
-        body: _Body(),
-      );
+  Widget build(BuildContext context) => const Scaffold(body: _Body());
 }
 
 class _Body extends StatelessWidget {
@@ -30,19 +28,17 @@ class _Body extends StatelessWidget {
     );
 
     return isCubitLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : CustomScrollView(
-            slivers: [
-              PlayerProfileAppBar.build(
-                backgroundColor: context.colorScheme.primary,
-                foregroundColor: Theme.of(context).canvasColor,
-              ),
-              const _TotalPoints(),
-              const _GrandPrixes(),
-            ],
-          );
+          slivers: [
+            PlayerProfileAppBar.build(
+              backgroundColor: context.colorScheme.primary,
+              foregroundColor: Theme.of(context).canvasColor,
+            ),
+            const _TotalPoints(),
+            const _GrandPrixes(),
+          ],
+        );
   }
 }
 
@@ -94,8 +90,8 @@ class _GrandPrixes extends StatelessWidget {
 
     return SliverGrandPrixesList(
       grandPrixesWithPoints: grandPrixesWithPoints,
-      onGrandPrixPressed: (String grandPrixId) =>
-          _onGrandPrixPressed(grandPrixId, context),
+      onGrandPrixPressed:
+          (String grandPrixId) => _onGrandPrixPressed(grandPrixId, context),
       isLoading: isCubitLoading,
     );
   }

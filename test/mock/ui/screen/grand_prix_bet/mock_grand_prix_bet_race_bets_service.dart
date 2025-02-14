@@ -4,21 +4,15 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetRaceBetsService extends Mock
     implements GrandPrixBetRaceBetsService {
-  void mockGetPodiumBets({
-    required List<SingleDriverBet> expectedPodiumBets,
-  }) {
+  void mockGetPodiumBets({required List<SingleDriverBet> expectedPodiumBets}) {
     when(getPodiumBets).thenAnswer((_) => Stream.value(expectedPodiumBets));
   }
 
-  void mockGetP10Bet({
-    required SingleDriverBet expectedP10Bet,
-  }) {
+  void mockGetP10Bet({required SingleDriverBet expectedP10Bet}) {
     when(getP10Bet).thenAnswer((_) => Stream.value(expectedP10Bet));
   }
 
-  void mockGetFastestLapBet({
-    required SingleDriverBet expectedFastestLapBet,
-  }) {
+  void mockGetFastestLapBet({required SingleDriverBet expectedFastestLapBet}) {
     when(
       getFastestLapBet,
     ).thenAnswer((_) => Stream.value(expectedFastestLapBet));
@@ -32,15 +26,11 @@ class MockGrandPrixBetRaceBetsService extends Mock
     ).thenAnswer((_) => Stream.value(expectedDnfDriversBet));
   }
 
-  void mockGetSafetyCarBet({
-    required BooleanBet expectedSafetyCarBet,
-  }) {
+  void mockGetSafetyCarBet({required BooleanBet expectedSafetyCarBet}) {
     when(getSafetyCarBet).thenAnswer((_) => Stream.value(expectedSafetyCarBet));
   }
 
-  void mockGetRedFlagBet({
-    required BooleanBet expectedRedFlagBet,
-  }) {
+  void mockGetRedFlagBet({required BooleanBet expectedRedFlagBet}) {
     when(getRedFlagBet).thenAnswer((_) => Stream.value(expectedRedFlagBet));
   }
 }

@@ -18,8 +18,5 @@ abstract interface class UserRepository {
     ThemePrimaryColor? themePrimaryColor,
   });
 
-  Future<void> updateAvatar({
-    required String userId,
-    String? avatarImgPath,
-  });
+  Future<void> updateAvatar({required String userId, String? avatarImgPath});
 }

@@ -24,17 +24,21 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
   ) : super(const RequiredDataCompletionState());
 
   void updateAvatar(String? newAvatarImgPath) {
-    emit(state.copyWith(
-      status: RequiredDataCompletionStateStatus.completed,
-      avatarImgPath: newAvatarImgPath,
-    ));
+    emit(
+      state.copyWith(
+        status: RequiredDataCompletionStateStatus.completed,
+        avatarImgPath: newAvatarImgPath,
+      ),
+    );
   }
 
   void updateUsername(String newUsername) {
-    emit(state.copyWith(
-      status: RequiredDataCompletionStateStatus.completed,
-      username: newUsername,
-    ));
+    emit(
+      state.copyWith(
+        status: RequiredDataCompletionStateStatus.completed,
+        username: newUsername,
+      ),
+    );
   }
 
   Future<void> submit({
@@ -67,8 +71,6 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
   }
 
   _emitStatus(RequiredDataCompletionStateStatus status) {
-    emit(state.copyWith(
-      status: status,
-    ));
+    emit(state.copyWith(status: status));
   }
 }

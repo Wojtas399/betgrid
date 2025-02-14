@@ -13,9 +13,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (BuildContext context) => getIt.get<HomeCubit>(
-          param1: context.read<SeasonCubit>(),
-        )..initialize(),
-        child: const HomeContent(),
-      );
+    create:
+        (BuildContext context) =>
+            getIt.get<HomeCubit>(param1: context.read<SeasonCubit>())
+              ..initialize(),
+    child: const HomeContent(),
+  );
 }

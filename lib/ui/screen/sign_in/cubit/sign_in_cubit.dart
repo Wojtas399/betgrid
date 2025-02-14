@@ -12,9 +12,7 @@ class SignInCubit extends Cubit<SignInState> {
   final AuthRepository _authRepository;
   StreamSubscription<AuthState>? _authStateListener;
 
-  SignInCubit(
-    this._authRepository,
-  ) : super(const SignInStateCompleted());
+  SignInCubit(this._authRepository) : super(const SignInStateCompleted());
 
   @override
   Future<void> close() {
@@ -23,15 +21,15 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   void initialize() {
-    _authStateListener ??= _authRepository.authState$.listen(
-      (AuthState authState) {
-        emit(
-          authState is AuthStateUserIsSignedIn
-              ? const SignInStateUserIsAlreadySignedIn()
-              : const SignInStateCompleted(),
-        );
-      },
-    );
+    _authStateListener ??= _authRepository.authState$.listen((
+      AuthState authState,
+    ) {
+      emit(
+        authState is AuthStateUserIsSignedIn
+            ? const SignInStateUserIsAlreadySignedIn()
+            : const SignInStateCompleted(),
+      );
+    });
   }
 
   Future<void> signInWithGoogle() async {

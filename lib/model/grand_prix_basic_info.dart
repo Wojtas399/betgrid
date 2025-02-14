@@ -11,9 +11,5 @@ class GrandPrixBasicInfo extends Entity {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        countryAlpha2Code,
-      ];
+  List<Object?> get props => [id, name, countryAlpha2Code];
 }

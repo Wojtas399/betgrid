@@ -21,7 +21,7 @@ class RequiredDataCompletionThemeMode extends StatelessWidget {
           child: TitleLarge(context.str.theme),
         ),
         const GapVertical16(),
-        const _ThemeModeTypes()
+        const _ThemeModeTypes(),
       ],
     );
   }
@@ -42,8 +42,8 @@ class _ThemeModeTypes extends StatelessWidget {
 
     return ThemeModeSelection(
       selectedThemeMode: themeMode,
-      onThemeModeChanged: (user.ThemeMode themeMode) =>
-          _onThemeModeChanged(themeMode, context),
+      onThemeModeChanged:
+          (user.ThemeMode themeMode) => _onThemeModeChanged(themeMode, context),
     );
   }
 }

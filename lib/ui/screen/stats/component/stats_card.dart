@@ -20,23 +20,18 @@ class StatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomCard(
-        onPressed: onPressed,
-        child: Column(
+    onPressed: onPressed,
+    child: Column(
+      spacing: 16,
+      children: [
+        Row(
           spacing: 16,
-          children: [
-            Row(
-              spacing: 16,
-              children: [
-                _Icon(icon),
-                Flexible(
-                  child: TitleMedium(title),
-                ),
-              ],
-            ),
-            child,
-          ],
+          children: [_Icon(icon), Flexible(child: TitleMedium(title))],
         ),
-      );
+        child,
+      ],
+    ),
+  );
 }
 
 class _Icon extends StatelessWidget {
@@ -46,14 +41,11 @@ class _Icon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          color: context.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Icon(
-          icon,
-          color: context.colorScheme.primary,
-        ),
-      );
+    decoration: BoxDecoration(
+      color: context.colorScheme.primaryContainer,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    padding: const EdgeInsets.all(8),
+    child: Icon(icon, color: context.colorScheme.primary),
+  );
 }

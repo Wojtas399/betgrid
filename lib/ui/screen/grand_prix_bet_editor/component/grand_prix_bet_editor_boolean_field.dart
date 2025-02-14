@@ -28,23 +28,23 @@ class GrandPrixBetEditorBooleanField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          Expanded(
-            child: _CheckboxWithLabel(
-              label: context.str.yes,
-              isChecked: selectedValue == true,
-              onChanged: _onYesChanged,
-            ),
-          ),
-          Expanded(
-            child: _CheckboxWithLabel(
-              label: context.str.no,
-              isChecked: selectedValue == false,
-              onChanged: _onNoChanged,
-            ),
-          ),
-        ],
-      );
+    children: [
+      Expanded(
+        child: _CheckboxWithLabel(
+          label: context.str.yes,
+          isChecked: selectedValue == true,
+          onChanged: _onYesChanged,
+        ),
+      ),
+      Expanded(
+        child: _CheckboxWithLabel(
+          label: context.str.no,
+          isChecked: selectedValue == false,
+          onChanged: _onNoChanged,
+        ),
+      ),
+    ],
+  );
 }
 
 class _CheckboxWithLabel extends StatelessWidget {
@@ -60,12 +60,9 @@ class _CheckboxWithLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          BodyMedium(label),
-          Checkbox(
-            value: isChecked,
-            onChanged: onChanged,
-          ),
-        ],
-      );
+    children: [
+      BodyMedium(label),
+      Checkbox(value: isChecked, onChanged: onChanged),
+    ],
+  );
 }

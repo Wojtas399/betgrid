@@ -17,29 +17,29 @@ class RequiredDataCompletionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(context.str.requiredDataCompletionScreenTitle),
-          automaticallyImplyLeading: false,
+    appBar: AppBar(
+      title: Text(context.str.requiredDataCompletionScreenTitle),
+      automaticallyImplyLeading: false,
+    ),
+    body: const SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            RequiredDataCompletionAvatar(),
+            GapVertical32(),
+            RequiredDataCompletionUsername(),
+            GapVertical32(),
+            RequiredDataCompletionThemeMode(),
+            GapVertical32(),
+            RequiredDataCompletionThemeColor(),
+            GapVertical32(),
+            _SubmitButton(),
+            GapVertical64(),
+          ],
         ),
-        body: const SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                RequiredDataCompletionAvatar(),
-                GapVertical32(),
-                RequiredDataCompletionUsername(),
-                GapVertical32(),
-                RequiredDataCompletionThemeMode(),
-                GapVertical32(),
-                RequiredDataCompletionThemeColor(),
-                GapVertical32(),
-                _SubmitButton(),
-                GapVertical64(),
-              ],
-            ),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 }
 
 class _SubmitButton extends StatelessWidget {
@@ -48,16 +48,16 @@ class _SubmitButton extends StatelessWidget {
   Future<void> _onPressed(BuildContext context) async {
     final ThemeState themeState = context.read<ThemeCubit>().state;
     await context.read<RequiredDataCompletionCubit>().submit(
-          themeMode: themeState.themeMode,
-          themePrimaryColor: themeState.primaryColor,
-        );
+      themeMode: themeState.themeMode,
+      themePrimaryColor: themeState.primaryColor,
+    );
   }
 
   @override
   Widget build(BuildContext context) => Center(
-        child: BigButton(
-          onPressed: () => _onPressed(context),
-          label: context.str.save,
-        ),
-      );
+    child: BigButton(
+      onPressed: () => _onPressed(context),
+      label: context.str.save,
+    ),
+  );
 }

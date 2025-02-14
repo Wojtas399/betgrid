@@ -14,16 +14,18 @@ class GetFinishedGrandPrixesFromSeasonUseCase {
     this._dateService,
   );
 
-  Stream<List<SeasonGrandPrix>> call({
-    required int season,
-  }) {
+  Stream<List<SeasonGrandPrix>> call({required int season}) {
     final DateTime now = _dateService.getNow();
-    return _seasonGrandPrixRepository.getAllFromSeason(season).map(
-          (List<SeasonGrandPrix> allSeasonGrandPrixes) => allSeasonGrandPrixes
-              .where(
-                (seasonGrandPrix) => seasonGrandPrix.startDate.isBefore(now),
-              )
-              .toList(),
+    return _seasonGrandPrixRepository
+        .getAllFromSeason(season)
+        .map(
+          (List<SeasonGrandPrix> allSeasonGrandPrixes) =>
+              allSeasonGrandPrixes
+                  .where(
+                    (seasonGrandPrix) =>
+                        seasonGrandPrix.startDate.isBefore(now),
+                  )
+                  .toList(),
         );
   }
 }

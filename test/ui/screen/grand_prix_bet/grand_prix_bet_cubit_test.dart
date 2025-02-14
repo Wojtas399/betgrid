@@ -38,25 +38,23 @@ void main() {
   const String seasonGrandPrixId = 'sgp1';
 
   GrandPrixBetCubit createCubit() => GrandPrixBetCubit(
-        authRepository,
-        seasonGrandPrixRepository,
-        grandPrixBasicInfoRepository,
-        playerRepository,
-        seasonGrandPrixBetPointsRepository,
-        const GrandPrixBetCubitParams(
-          playerId: playerId,
-          season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
-        ),
-      );
+    authRepository,
+    seasonGrandPrixRepository,
+    grandPrixBasicInfoRepository,
+    playerRepository,
+    seasonGrandPrixBetPointsRepository,
+    const GrandPrixBetCubitParams(
+      playerId: playerId,
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
+    ),
+  );
 
   setUpAll(() {
     GetIt.I.registerFactory<GrandPrixBetQualiBetsService>(
       () => qualiBetsService,
     );
-    GetIt.I.registerFactory<GrandPrixBetRaceBetsService>(
-      () => raceBetsService,
-    );
+    GetIt.I.registerFactory<GrandPrixBetRaceBetsService>(() => raceBetsService);
   });
 
   tearDown(() {
@@ -69,196 +67,169 @@ void main() {
     reset(raceBetsService);
   });
 
-  group(
-    'initialize, '
-    'should initialize canEdit, playerUsername, grandPrixId, grandPrixName, '
-    'isPlayerIdSameAsLoggedUserId, quali and race bets and grand prix bet '
-    'points',
-    () {
-      final Player player = const PlayerCreator(
-        username: 'username',
-      ).create();
-      final SeasonGrandPrix seasonGrandPrix = SeasonGrandPrixCreator(
-        id: seasonGrandPrixId,
-        grandPrixId: 'gp1',
-        startDate: DateTime(season, 3, 3),
-      ).create();
-      final GrandPrixBasicInfo grandPrixBasicInfo = GrandPrixBasicInfoCreator(
-        id: seasonGrandPrix.grandPrixId,
-        name: 'grand prix',
-      ).create();
-      final List<SingleDriverBet> qualiBets = List.generate(
-        20,
-        (int itemIndex) => SingleDriverBet(
-          status: BetStatus.loss,
-          betDriver: DriverDetailsCreator(
-            seasonDriverId: 'd$itemIndex',
-          ).create(),
-          resultDriver: DriverDetailsCreator(
-            seasonDriverId: 'd${itemIndex + 1}',
-          ).create(),
-          points: 0,
-        ),
-      );
-      final List<SingleDriverBet> racePodiumBets = List.generate(
-        3,
-        (int itemIndex) => SingleDriverBet(
-          status: BetStatus.win,
-          betDriver: DriverDetailsCreator(
-            seasonDriverId: 'd$itemIndex',
-          ).create(),
-          resultDriver: DriverDetailsCreator(
-            seasonDriverId: 'd$itemIndex',
-          ).create(),
-          points: 2,
-        ),
-      );
-      final SingleDriverBet raceP10Bet = SingleDriverBet(
+  group('initialize, '
+      'should initialize canEdit, playerUsername, grandPrixId, grandPrixName, '
+      'isPlayerIdSameAsLoggedUserId, quali and race bets and grand prix bet '
+      'points', () {
+    final Player player = const PlayerCreator(username: 'username').create();
+    final SeasonGrandPrix seasonGrandPrix =
+        SeasonGrandPrixCreator(
+          id: seasonGrandPrixId,
+          grandPrixId: 'gp1',
+          startDate: DateTime(season, 3, 3),
+        ).create();
+    final GrandPrixBasicInfo grandPrixBasicInfo =
+        GrandPrixBasicInfoCreator(
+          id: seasonGrandPrix.grandPrixId,
+          name: 'grand prix',
+        ).create();
+    final List<SingleDriverBet> qualiBets = List.generate(
+      20,
+      (int itemIndex) => SingleDriverBet(
         status: BetStatus.loss,
-        betDriver: const DriverDetailsCreator(
-          seasonDriverId: 'd10',
-        ).create(),
-        resultDriver: const DriverDetailsCreator(
-          seasonDriverId: 'd11',
-        ).create(),
+        betDriver: DriverDetailsCreator(seasonDriverId: 'd$itemIndex').create(),
+        resultDriver:
+            DriverDetailsCreator(seasonDriverId: 'd${itemIndex + 1}').create(),
         points: 0,
-      );
-      final SingleDriverBet raceFastestLapBet = SingleDriverBet(
+      ),
+    );
+    final List<SingleDriverBet> racePodiumBets = List.generate(
+      3,
+      (int itemIndex) => SingleDriverBet(
         status: BetStatus.win,
-        betDriver: const DriverDetailsCreator(
-          seasonDriverId: 'd1',
-        ).create(),
-        resultDriver: const DriverDetailsCreator(
-          seasonDriverId: 'd1',
-        ).create(),
+        betDriver: DriverDetailsCreator(seasonDriverId: 'd$itemIndex').create(),
+        resultDriver:
+            DriverDetailsCreator(seasonDriverId: 'd$itemIndex').create(),
         points: 2,
+      ),
+    );
+    final SingleDriverBet raceP10Bet = SingleDriverBet(
+      status: BetStatus.loss,
+      betDriver: const DriverDetailsCreator(seasonDriverId: 'd10').create(),
+      resultDriver: const DriverDetailsCreator(seasonDriverId: 'd11').create(),
+      points: 0,
+    );
+    final SingleDriverBet raceFastestLapBet = SingleDriverBet(
+      status: BetStatus.win,
+      betDriver: const DriverDetailsCreator(seasonDriverId: 'd1').create(),
+      resultDriver: const DriverDetailsCreator(seasonDriverId: 'd1').create(),
+      points: 2,
+    );
+    final MultipleDriversBet raceDnfDriversBet = MultipleDriversBet(
+      status: BetStatus.loss,
+      betDrivers: [
+        const DriverDetailsCreator(seasonDriverId: 'd19').create(),
+        const DriverDetailsCreator(seasonDriverId: 'd20').create(),
+      ],
+      resultDrivers: [
+        const DriverDetailsCreator(seasonDriverId: 'd18').create(),
+      ],
+      points: 0,
+    );
+    const BooleanBet raceSafetyCarBet = BooleanBet(
+      status: BetStatus.win,
+      betValue: true,
+      resultValue: true,
+      points: 2,
+    );
+    const BooleanBet raceRedFlagBet = BooleanBet(
+      status: BetStatus.loss,
+      betValue: false,
+      resultValue: true,
+      points: 0,
+    );
+    final SeasonGrandPrixBetPoints seasonGpBetPoints =
+        const SeasonGrandPrixBetPointsCreator(id: 'gpb1').create();
+    final GrandPrixBetState expectedState = GrandPrixBetState(
+      status: GrandPrixBetStateStatus.completed,
+      playerUsername: player.username,
+      season: season,
+      seasonGrandPrixId: seasonGrandPrixId,
+      grandPrixName: grandPrixBasicInfo.name,
+      qualiBets: qualiBets,
+      racePodiumBets: racePodiumBets,
+      raceP10Bet: raceP10Bet,
+      raceFastestLapBet: raceFastestLapBet,
+      raceDnfDriversBet: raceDnfDriversBet,
+      raceSafetyCarBet: raceSafetyCarBet,
+      raceRedFlagBet: raceRedFlagBet,
+      seasonGrandPrixBetPoints: seasonGpBetPoints,
+    );
+
+    setUp(() {
+      playerRepository.mockGetById(player: player);
+      seasonGrandPrixRepository.mockGetById(
+        expectedSeasonGrandPrix: seasonGrandPrix,
       );
-      final MultipleDriversBet raceDnfDriversBet = MultipleDriversBet(
-        status: BetStatus.loss,
-        betDrivers: [
-          const DriverDetailsCreator(seasonDriverId: 'd19').create(),
-          const DriverDetailsCreator(seasonDriverId: 'd20').create(),
-        ],
-        resultDrivers: [
-          const DriverDetailsCreator(seasonDriverId: 'd18').create(),
-        ],
-        points: 0,
+      grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById(
+        expectedGrandPrixBasicInfo: grandPrixBasicInfo,
       );
-      const BooleanBet raceSafetyCarBet = BooleanBet(
-        status: BetStatus.win,
-        betValue: true,
-        resultValue: true,
-        points: 2,
+      qualiBetsService.mockGetQualiBets(expectedQualiBets: qualiBets);
+      raceBetsService.mockGetPodiumBets(expectedPodiumBets: racePodiumBets);
+      raceBetsService.mockGetP10Bet(expectedP10Bet: raceP10Bet);
+      raceBetsService.mockGetFastestLapBet(
+        expectedFastestLapBet: raceFastestLapBet,
       );
-      const BooleanBet raceRedFlagBet = BooleanBet(
-        status: BetStatus.loss,
-        betValue: false,
-        resultValue: true,
-        points: 0,
+      raceBetsService.mockGetDnfDriversBet(
+        expectedDnfDriversBet: raceDnfDriversBet,
       );
-      final SeasonGrandPrixBetPoints seasonGpBetPoints =
-          const SeasonGrandPrixBetPointsCreator(id: 'gpb1').create();
-      final GrandPrixBetState expectedState = GrandPrixBetState(
-        status: GrandPrixBetStateStatus.completed,
-        playerUsername: player.username,
-        season: season,
-        seasonGrandPrixId: seasonGrandPrixId,
-        grandPrixName: grandPrixBasicInfo.name,
-        qualiBets: qualiBets,
-        racePodiumBets: racePodiumBets,
-        raceP10Bet: raceP10Bet,
-        raceFastestLapBet: raceFastestLapBet,
-        raceDnfDriversBet: raceDnfDriversBet,
-        raceSafetyCarBet: raceSafetyCarBet,
-        raceRedFlagBet: raceRedFlagBet,
+      raceBetsService.mockGetSafetyCarBet(
+        expectedSafetyCarBet: raceSafetyCarBet,
+      );
+      raceBetsService.mockGetRedFlagBet(expectedRedFlagBet: raceRedFlagBet);
+      seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
         seasonGrandPrixBetPoints: seasonGpBetPoints,
       );
+    });
 
-      setUp(() {
-        playerRepository.mockGetById(player: player);
-        seasonGrandPrixRepository.mockGetById(
-          expectedSeasonGrandPrix: seasonGrandPrix,
-        );
-        grandPrixBasicInfoRepository.mockGetGrandPrixBasicInfoById(
-          expectedGrandPrixBasicInfo: grandPrixBasicInfo,
-        );
-        qualiBetsService.mockGetQualiBets(expectedQualiBets: qualiBets);
-        raceBetsService.mockGetPodiumBets(expectedPodiumBets: racePodiumBets);
-        raceBetsService.mockGetP10Bet(expectedP10Bet: raceP10Bet);
-        raceBetsService.mockGetFastestLapBet(
-          expectedFastestLapBet: raceFastestLapBet,
-        );
-        raceBetsService.mockGetDnfDriversBet(
-          expectedDnfDriversBet: raceDnfDriversBet,
-        );
-        raceBetsService.mockGetSafetyCarBet(
-          expectedSafetyCarBet: raceSafetyCarBet,
-        );
-        raceBetsService.mockGetRedFlagBet(
-          expectedRedFlagBet: raceRedFlagBet,
-        );
-        seasonGrandPrixBetPointsRepository.mockGetSeasonGetGrandPrixBetPoints(
-          seasonGrandPrixBetPoints: seasonGpBetPoints,
-        );
-      });
+    tearDown(() {
+      verify(() => authRepository.loggedUserId$).called(1);
+      verify(() => playerRepository.getById(playerId)).called(1);
+      verify(
+        () => seasonGrandPrixRepository.getById(
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        ),
+      ).called(1);
+      verify(
+        () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
+          seasonGrandPrix.grandPrixId,
+        ),
+      ).called(1);
+      verify(qualiBetsService.getQualiBets).called(1);
+      verify(raceBetsService.getPodiumBets).called(1);
+      verify(raceBetsService.getP10Bet).called(1);
+      verify(raceBetsService.getFastestLapBet).called(1);
+      verify(raceBetsService.getDnfDriversBet).called(1);
+      verify(raceBetsService.getSafetyCarBet).called(1);
+      verify(raceBetsService.getRedFlagBet).called(1);
+      verify(
+        () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
+          playerId: playerId,
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        ),
+      ).called(1);
+    });
 
-      tearDown(() {
-        verify(() => authRepository.loggedUserId$).called(1);
-        verify(
-          () => playerRepository.getById(playerId),
-        ).called(1);
-        verify(
-          () => seasonGrandPrixRepository.getById(
-            season: season,
-            seasonGrandPrixId: seasonGrandPrixId,
-          ),
-        ).called(1);
-        verify(
-          () => grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
-            seasonGrandPrix.grandPrixId,
-          ),
-        ).called(1);
-        verify(qualiBetsService.getQualiBets).called(1);
-        verify(raceBetsService.getPodiumBets).called(1);
-        verify(raceBetsService.getP10Bet).called(1);
-        verify(raceBetsService.getFastestLapBet).called(1);
-        verify(raceBetsService.getDnfDriversBet).called(1);
-        verify(raceBetsService.getSafetyCarBet).called(1);
-        verify(raceBetsService.getRedFlagBet).called(1);
-        verify(
-          () => seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
-            playerId: playerId,
-            season: season,
-            seasonGrandPrixId: seasonGrandPrixId,
-          ),
-        ).called(1);
-      });
+    blocTest(
+      'should set isPlayerIdSameAsLoggedUserId param as true if player is '
+      'logged user',
+      build: () => createCubit(),
+      setUp: () => authRepository.mockGetLoggedUserId(playerId),
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [expectedState.copyWith(isPlayerIdSameAsLoggedUserId: true)],
+    );
 
-      blocTest(
-        'should set isPlayerIdSameAsLoggedUserId param as true if player is '
-        'logged user',
-        build: () => createCubit(),
-        setUp: () => authRepository.mockGetLoggedUserId(playerId),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          expectedState.copyWith(
-            isPlayerIdSameAsLoggedUserId: true,
-          ),
-        ],
-      );
-
-      blocTest(
-        'should set isPlayerIdSameAsLoggedUserId param as false if player is '
-        'not logged user',
-        build: () => createCubit(),
-        setUp: () => authRepository.mockGetLoggedUserId('u1'),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          expectedState.copyWith(
-            isPlayerIdSameAsLoggedUserId: false,
-          ),
-        ],
-      );
-    },
-  );
+    blocTest(
+      'should set isPlayerIdSameAsLoggedUserId param as false if player is '
+      'not logged user',
+      build: () => createCubit(),
+      setUp: () => authRepository.mockGetLoggedUserId('u1'),
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [expectedState.copyWith(isPlayerIdSameAsLoggedUserId: false)],
+    );
+  });
 }

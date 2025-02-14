@@ -28,19 +28,21 @@ class StatsPlayersPointsForDriver extends StatelessWidget {
     }
     final playersPoints = [...?playersPointsForDriver];
     playersPoints.sort(
-      (p1, p2) => p1.points != p2.points
-          ? p2.points.compareTo(p1.points)
-          : p2.player.username.compareTo(p1.player.username),
+      (p1, p2) =>
+          p1.points != p2.points
+              ? p2.points.compareTo(p1.points)
+              : p2.player.username.compareTo(p1.player.username),
     );
     return Column(
-      children: playersPoints
-          .map(
-            (playerPoints) => _PlayerInfo(
-              player: playerPoints.player,
-              points: playerPoints.points,
-            ),
-          )
-          .toList(),
+      children:
+          playersPoints
+              .map(
+                (playerPoints) => _PlayerInfo(
+                  player: playerPoints.player,
+                  points: playerPoints.points,
+                ),
+              )
+              .toList(),
     );
   }
 }
@@ -50,13 +52,11 @@ class _NoSelectedDriverInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 100,
-        child: Padding24(
-          child: Center(
-            child: LabelLarge(context.str.statsNoSelectedDriver),
-          ),
-        ),
-      );
+    height: 100,
+    child: Padding24(
+      child: Center(child: LabelLarge(context.str.statsNoSelectedDriver)),
+    ),
+  );
 }
 
 class _LoadingContent extends StatelessWidget {
@@ -64,11 +64,9 @@ class _LoadingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const SizedBox(
-        height: 100,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+    height: 100,
+    child: Center(child: CircularProgressIndicator()),
+  );
 }
 
 class _PlayerInfo extends StatelessWidget {
@@ -79,25 +77,22 @@ class _PlayerInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-        contentPadding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
-        title: Text(player.username),
-        trailing: BodyMedium(
-          points.toString(),
-          fontWeight: FontWeight.bold,
+    contentPadding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
+    title: Text(player.username),
+    trailing: BodyMedium(points.toString(), fontWeight: FontWeight.bold),
+    leading: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 32,
+          height: 32,
+          child: Avatar(
+            avatarUrl: player.avatarUrl,
+            username: player.username,
+            usernameFontSize: 16,
+          ),
         ),
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 32,
-              height: 32,
-              child: Avatar(
-                avatarUrl: player.avatarUrl,
-                username: player.username,
-                usernameFontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
+      ],
+    ),
+  );
 }

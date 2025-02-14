@@ -4,10 +4,8 @@ import 'package:injectable/injectable.dart';
 class DateService {
   DateTime getNow() => DateTime.now();
 
-  Stream<DateTime> getNowStream() => Stream.periodic(
-        const Duration(seconds: 1),
-        (_) => getNow(),
-      );
+  Stream<DateTime> getNowStream() =>
+      Stream.periodic(const Duration(seconds: 1), (_) => getNow());
 
   bool isDateABeforeDateB(DateTime dateA, DateTime dateB) =>
       dateA.year == dateB.year

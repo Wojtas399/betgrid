@@ -12,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<ProfileCubit>()..initialize(),
-        child: const ProfileContent(),
-      );
+    create: (_) => getIt.get<ProfileCubit>()..initialize(),
+    child: const ProfileContent(),
+  );
 }

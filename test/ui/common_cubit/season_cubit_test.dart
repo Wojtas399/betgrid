@@ -10,9 +10,7 @@ void main() {
   blocTest(
     'should set current year as init state',
     build: () => SeasonCubit(dateService),
-    setUp: () => dateService.mockGetNow(
-      now: DateTime(2024),
-    ),
+    setUp: () => dateService.mockGetNow(now: DateTime(2024)),
     verify: (cubit) {
       expect(cubit.state, 2024);
     },

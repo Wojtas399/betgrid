@@ -28,9 +28,7 @@ void main() async {
   }
 
   Intl.defaultLocale = 'pl';
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]).then(
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (_) => runApp(
       BlocProvider(
         create: (_) => getIt.get<ThemeCubit>()..initialize(),
@@ -50,9 +48,7 @@ class _MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'BetGrid',
       routerConfig: getIt<AppRouter>().config(
-        navigatorObservers: () => [
-          HeroController(),
-        ],
+        navigatorObservers: () => [HeroController()],
       ),
       localizationsDelegates: const [
         Str.delegate,

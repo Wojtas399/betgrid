@@ -5,10 +5,7 @@ import '../../../../model/player.dart';
 
 part 'players_state.freezed.dart';
 
-enum PlayersStateStatus {
-  loading,
-  completed,
-}
+enum PlayersStateStatus { loading, completed }
 
 extension PlayerStateStatusExtensions on PlayersStateStatus {
   bool get isLoading => this == PlayersStateStatus.loading;
@@ -28,14 +25,8 @@ class PlayerWithPoints extends Equatable {
   final Player player;
   final double totalPoints;
 
-  const PlayerWithPoints({
-    required this.player,
-    required this.totalPoints,
-  });
+  const PlayerWithPoints({required this.player, required this.totalPoints});
 
   @override
-  List<Object?> get props => [
-        player,
-        totalPoints,
-      ];
+  List<Object?> get props => [player, totalPoints];
 }

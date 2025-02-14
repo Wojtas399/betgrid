@@ -20,11 +20,11 @@ void main() {
   final seasonCubit = MockSeasonCubit();
 
   HomeCubit createCubit() => HomeCubit(
-        authRepository,
-        userRepository,
-        playerStatsRepository,
-        seasonCubit,
-      );
+    authRepository,
+    userRepository,
+    playerStatsRepository,
+    seasonCubit,
+  );
 
   tearDown(() {
     reset(authRepository);
@@ -33,99 +33,93 @@ void main() {
     reset(seasonCubit);
   });
 
-  group(
-    'initialize, ',
-    () {
-      const String loggedUserId = 'u1';
-      const int season = 2024;
-      final User loggedUser = const UserCreator(
-        id: loggedUserId,
-        username: 'username',
-        avatarUrl: 'avatar/url',
-      ).create();
-      final PlayerStats stats = PlayerStatsCreator(
-        totalPoints: 100,
-      ).create();
+  group('initialize, ', () {
+    const String loggedUserId = 'u1';
+    const int season = 2024;
+    final User loggedUser =
+        const UserCreator(
+          id: loggedUserId,
+          username: 'username',
+          avatarUrl: 'avatar/url',
+        ).create();
+    final PlayerStats stats = PlayerStatsCreator(totalPoints: 100).create();
 
-      tearDown(() {
-        verify(() => authRepository.loggedUserId$).called(1);
-      });
+    tearDown(() {
+      verify(() => authRepository.loggedUserId$).called(1);
+    });
 
-      blocTest(
-        'should emit state with loggedUserDoesNotExist status if logged user '
-        'id is null',
-        setUp: () => authRepository.mockGetLoggedUserId(null),
-        build: () => createCubit(),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          const HomeState(
-            status: HomeStateStatus.loggedUserDoesNotExist,
-          )
-        ],
-      );
+    blocTest(
+      'should emit state with loggedUserDoesNotExist status if logged user '
+      'id is null',
+      setUp: () => authRepository.mockGetLoggedUserId(null),
+      build: () => createCubit(),
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            const HomeState(status: HomeStateStatus.loggedUserDoesNotExist),
+          ],
+    );
 
-      blocTest(
-        'should emit state with loggedUserDataNotCompleted status if logged '
-        'user does not have personal data',
-        setUp: () {
-          authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetById(user: null);
-          seasonCubit.mockState(expectedState: season);
-          playerStatsRepository.mockGetByPlayerIdAndSeason(
-            expectedPlayerStats: stats,
-          );
-        },
-        build: () => createCubit(),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          const HomeState(
-            status: HomeStateStatus.loggedUserDataNotCompleted,
-          )
-        ],
-      );
+    blocTest(
+      'should emit state with loggedUserDataNotCompleted status if logged '
+      'user does not have personal data',
+      setUp: () {
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        userRepository.mockGetById(user: null);
+        seasonCubit.mockState(expectedState: season);
+        playerStatsRepository.mockGetByPlayerIdAndSeason(
+          expectedPlayerStats: stats,
+        );
+      },
+      build: () => createCubit(),
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            const HomeState(status: HomeStateStatus.loggedUserDataNotCompleted),
+          ],
+    );
 
-      blocTest(
-        'should emit state with loggedUserDataNotCompleted status if logged '
-        'user does not have stats',
-        setUp: () {
-          authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetById(user: loggedUser);
-          seasonCubit.mockState(expectedState: season);
-          playerStatsRepository.mockGetByPlayerIdAndSeason(
-            expectedPlayerStats: null,
-          );
-        },
-        build: () => createCubit(),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          const HomeState(
-            status: HomeStateStatus.loggedUserDataNotCompleted,
-          )
-        ],
-      );
+    blocTest(
+      'should emit state with loggedUserDataNotCompleted status if logged '
+      'user does not have stats',
+      setUp: () {
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        userRepository.mockGetById(user: loggedUser);
+        seasonCubit.mockState(expectedState: season);
+        playerStatsRepository.mockGetByPlayerIdAndSeason(
+          expectedPlayerStats: null,
+        );
+      },
+      build: () => createCubit(),
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            const HomeState(status: HomeStateStatus.loggedUserDataNotCompleted),
+          ],
+    );
 
-      blocTest(
-        'should emit state with username, avatarUrl, totalPoints and status '
-        'set as completed if logged user has personal data',
-        build: () => createCubit(),
-        setUp: () {
-          authRepository.mockGetLoggedUserId(loggedUserId);
-          userRepository.mockGetById(user: loggedUser);
-          seasonCubit.mockState(expectedState: season);
-          playerStatsRepository.mockGetByPlayerIdAndSeason(
-            expectedPlayerStats: stats,
-          );
-        },
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          HomeState(
-            status: HomeStateStatus.completed,
-            username: loggedUser.username,
-            avatarUrl: loggedUser.avatarUrl,
-            totalPoints: stats.totalPoints,
-          ),
-        ],
-      );
-    },
-  );
+    blocTest(
+      'should emit state with username, avatarUrl, totalPoints and status '
+      'set as completed if logged user has personal data',
+      build: () => createCubit(),
+      setUp: () {
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        userRepository.mockGetById(user: loggedUser);
+        seasonCubit.mockState(expectedState: season);
+        playerStatsRepository.mockGetByPlayerIdAndSeason(
+          expectedPlayerStats: stats,
+        );
+      },
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            HomeState(
+              status: HomeStateStatus.completed,
+              username: loggedUser.username,
+              avatarUrl: loggedUser.avatarUrl,
+              totalPoints: stats.totalPoints,
+            ),
+          ],
+    );
+  });
 }

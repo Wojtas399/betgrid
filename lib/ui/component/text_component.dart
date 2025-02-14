@@ -45,22 +45,15 @@ class _TextComponent extends StatelessWidget {
 
     return Text(
       data,
-      style: textStyle?.copyWith(
-        color: color,
-        fontWeight: fontWeight,
-      ),
+      style: textStyle?.copyWith(color: color, fontWeight: fontWeight),
       textAlign: textAlign,
     );
   }
 }
 
 class LabelMedium extends _TextComponent {
-  const LabelMedium(
-    super.data, {
-    super.key,
-    super.color,
-    super.fontWeight,
-  }) : super(textStyleType: _TextStyleType.labelMedium);
+  const LabelMedium(super.data, {super.key, super.color, super.fontWeight})
+    : super(textStyleType: _TextStyleType.labelMedium);
 }
 
 class LabelLarge extends _TextComponent {
@@ -114,28 +107,16 @@ class TitleLarge extends _TextComponent {
 }
 
 class DisplayMedium extends _TextComponent {
-  const DisplayMedium(
-    super.data, {
-    super.key,
-    super.fontWeight,
-    super.color,
-  }) : super(textStyleType: _TextStyleType.displayLarge);
+  const DisplayMedium(super.data, {super.key, super.fontWeight, super.color})
+    : super(textStyleType: _TextStyleType.displayLarge);
 }
 
 class DisplayLarge extends _TextComponent {
-  const DisplayLarge(
-    super.data, {
-    super.key,
-    super.fontWeight,
-    super.color,
-  }) : super(textStyleType: _TextStyleType.displayLarge);
+  const DisplayLarge(super.data, {super.key, super.fontWeight, super.color})
+    : super(textStyleType: _TextStyleType.displayLarge);
 }
 
 class HeadlineMedium extends _TextComponent {
-  const HeadlineMedium(
-    super.data, {
-    super.key,
-    super.fontWeight,
-    super.color,
-  }) : super(textStyleType: _TextStyleType.headlineMedium);
+  const HeadlineMedium(super.data, {super.key, super.fontWeight, super.color})
+    : super(textStyleType: _TextStyleType.headlineMedium);
 }

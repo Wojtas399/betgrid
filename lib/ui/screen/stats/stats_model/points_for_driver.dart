@@ -6,14 +6,8 @@ class PointsForDriver extends Equatable {
   final DriverDetails driverDetails;
   final double points;
 
-  const PointsForDriver({
-    required this.driverDetails,
-    required this.points,
-  });
+  const PointsForDriver({required this.driverDetails, required this.points});
 
   @override
-  List<Object?> get props => [
-        driverDetails,
-        points,
-      ];
+  List<Object?> get props => [driverDetails, points];
 }

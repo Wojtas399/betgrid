@@ -18,7 +18,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
-      _getDetailsOfAllDriversFromSeasonUseCase;
+  _getDetailsOfAllDriversFromSeasonUseCase;
   final int _season;
   final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
@@ -44,8 +44,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       (
         List<DriverDetails> detailsOfAllDriversFromSeason,
         SeasonGrandPrixBet? seasonGrandPrixBet,
-      ) =>
-          (
+      ) => (
         detailsOfAllDriversFromSeason: detailsOfAllDriversFromSeason,
         seasonGrandPrixBet: seasonGrandPrixBet,
       ),
@@ -64,55 +63,65 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       updatedQualiStandings[matchingValueIndex] = null;
     }
     updatedQualiStandings[standing - 1] = driverId;
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      qualiStandingsBySeasonDriverIds: updatedQualiStandings,
-    ));
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        qualiStandingsBySeasonDriverIds: updatedQualiStandings,
+      ),
+    );
   }
 
   void onRaceP1DriverChanged(String seasonDriverId) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm
-          .removeFromPodiumOrP10IfExists(seasonDriverId)
-          .copyWith(p1SeasonDriverId: seasonDriverId),
-    ));
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm
+            .removeFromPodiumOrP10IfExists(seasonDriverId)
+            .copyWith(p1SeasonDriverId: seasonDriverId),
+      ),
+    );
   }
 
   void onRaceP2DriverChanged(String seasonDriverId) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm
-          .removeFromPodiumOrP10IfExists(seasonDriverId)
-          .copyWith(p2SeasonDriverId: seasonDriverId),
-    ));
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm
+            .removeFromPodiumOrP10IfExists(seasonDriverId)
+            .copyWith(p2SeasonDriverId: seasonDriverId),
+      ),
+    );
   }
 
   void onRaceP3DriverChanged(String seasonDriverId) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm
-          .removeFromPodiumOrP10IfExists(seasonDriverId)
-          .copyWith(p3SeasonDriverId: seasonDriverId),
-    ));
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm
+            .removeFromPodiumOrP10IfExists(seasonDriverId)
+            .copyWith(p3SeasonDriverId: seasonDriverId),
+      ),
+    );
   }
 
   void onRaceP10DriverChanged(String seasonDriverId) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm
-          .removeFromPodiumOrP10IfExists(seasonDriverId)
-          .copyWith(p10SeasonDriverId: seasonDriverId),
-    ));
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm
+            .removeFromPodiumOrP10IfExists(seasonDriverId)
+            .copyWith(p10SeasonDriverId: seasonDriverId),
+      ),
+    );
   }
 
   void onRaceFastestLapDriverChanged(String driverId) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        fastestLapSeasonDriverId: driverId,
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm.copyWith(fastestLapSeasonDriverId: driverId),
       ),
-    ));
+    );
   }
 
   void onDnfDriverSelected(String driverId) {
@@ -128,11 +137,11 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       ...state.raceForm.dnfDrivers,
     ];
     updatedDnfDrivers.add(selectedDriver);
-    emit(state.copyWith(
-      raceForm: state.raceForm.copyWith(
-        dnfDrivers: updatedDnfDrivers,
+    emit(
+      state.copyWith(
+        raceForm: state.raceForm.copyWith(dnfDrivers: updatedDnfDrivers),
       ),
-    ));
+    );
   }
 
   void onDnfDriverRemoved(String driverId) {
@@ -142,71 +151,69 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     );
     if (indexOfDriverToRemove == -1) return;
     final List<DriverDetails> updatedDnfDrivers = [
-      ...state.raceForm.dnfDrivers
+      ...state.raceForm.dnfDrivers,
     ];
     updatedDnfDrivers.removeAt(indexOfDriverToRemove);
-    emit(state.copyWith(
-      raceForm: state.raceForm.copyWith(
-        dnfDrivers: updatedDnfDrivers,
+    emit(
+      state.copyWith(
+        raceForm: state.raceForm.copyWith(dnfDrivers: updatedDnfDrivers),
       ),
-    ));
+    );
   }
 
   void onSafetyCarPredictionChanged(bool willBeSafetyCar) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        willBeSafetyCar: willBeSafetyCar,
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm.copyWith(willBeSafetyCar: willBeSafetyCar),
       ),
-    ));
+    );
   }
 
   void onRedFlagPredictionChanged(bool willBeRedFlag) {
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
-      raceForm: state.raceForm.copyWith(
-        willBeRedFlag: willBeRedFlag,
+    emit(
+      state.copyWith(
+        status: GrandPrixBetEditorStateStatus.completed,
+        raceForm: state.raceForm.copyWith(willBeRedFlag: willBeRedFlag),
       ),
-    ));
+    );
   }
 
   Future<void> submit() async {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.saving,
-    ));
+    emit(state.copyWith(status: GrandPrixBetEditorStateStatus.saving));
     if (state.originalSeasonGrandPrixBet == null) {
       await _addSeasonGrandPrixBet(loggedUserId);
     } else {
       await _updateSeasonGrandPrixBet(loggedUserId);
     }
-    emit(state.copyWith(
-      status: GrandPrixBetEditorStateStatus.successfullySaved,
-    ));
+    emit(
+      state.copyWith(status: GrandPrixBetEditorStateStatus.successfullySaved),
+    );
   }
 
   Stream<List<DriverDetails>> _getAllSortedDrivers() {
-    return _getDetailsOfAllDriversFromSeasonUseCase(_season).map(
-      (List<DriverDetails> detailsOfAllDriversFromSeason) {
-        final sortedDetailsOfAllDriversFromSeason = [
-          ...detailsOfAllDriversFromSeason
-        ];
-        sortedDetailsOfAllDriversFromSeason.sortByTeamAndSurname();
-        return sortedDetailsOfAllDriversFromSeason;
-      },
-    );
+    return _getDetailsOfAllDriversFromSeasonUseCase(_season).map((
+      List<DriverDetails> detailsOfAllDriversFromSeason,
+    ) {
+      final sortedDetailsOfAllDriversFromSeason = [
+        ...detailsOfAllDriversFromSeason,
+      ];
+      sortedDetailsOfAllDriversFromSeason.sortByTeamAndSurname();
+      return sortedDetailsOfAllDriversFromSeason;
+    });
   }
 
   Stream<SeasonGrandPrixBet?> _getBetForGrandPrix() {
     return _authRepository.loggedUserId$.whereNotNull().switchMap(
-          (String loggedUserId) =>
-              _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
+      (String loggedUserId) =>
+          _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
             playerId: loggedUserId,
             season: _season,
             seasonGrandPrixId: _seasonGrandPrixId,
           ),
-        );
+    );
   }
 
   void _manageListenedParams(_ListenedParams listenedParams) {
@@ -222,29 +229,32 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       emit(newState);
       return;
     }
-    final List<DriverDetails> dnfDrivers = seasonGrandPrixBet.dnfSeasonDriverIds
-        .whereType<String>()
-        .map(
-          (String driverId) => detailsOfAllDriversFromSeason.firstWhere(
-            (DriverDetails driver) => driver.seasonDriverId == driverId,
-          ),
-        )
-        .toList();
-    emit(newState.copyWith(
-      originalSeasonGrandPrixBet: seasonGrandPrixBet,
-      qualiStandingsBySeasonDriverIds:
-          seasonGrandPrixBet.qualiStandingsBySeasonDriverIds,
-      raceForm: state.raceForm.copyWith(
-        p1SeasonDriverId: seasonGrandPrixBet.p1SeasonDriverId,
-        p2SeasonDriverId: seasonGrandPrixBet.p2SeasonDriverId,
-        p3SeasonDriverId: seasonGrandPrixBet.p3SeasonDriverId,
-        p10SeasonDriverId: seasonGrandPrixBet.p10SeasonDriverId,
-        fastestLapSeasonDriverId: seasonGrandPrixBet.fastestLapSeasonDriverId,
-        dnfDrivers: dnfDrivers,
-        willBeSafetyCar: seasonGrandPrixBet.willBeSafetyCar,
-        willBeRedFlag: seasonGrandPrixBet.willBeRedFlag,
+    final List<DriverDetails> dnfDrivers =
+        seasonGrandPrixBet.dnfSeasonDriverIds
+            .whereType<String>()
+            .map(
+              (String driverId) => detailsOfAllDriversFromSeason.firstWhere(
+                (DriverDetails driver) => driver.seasonDriverId == driverId,
+              ),
+            )
+            .toList();
+    emit(
+      newState.copyWith(
+        originalSeasonGrandPrixBet: seasonGrandPrixBet,
+        qualiStandingsBySeasonDriverIds:
+            seasonGrandPrixBet.qualiStandingsBySeasonDriverIds,
+        raceForm: state.raceForm.copyWith(
+          p1SeasonDriverId: seasonGrandPrixBet.p1SeasonDriverId,
+          p2SeasonDriverId: seasonGrandPrixBet.p2SeasonDriverId,
+          p3SeasonDriverId: seasonGrandPrixBet.p3SeasonDriverId,
+          p10SeasonDriverId: seasonGrandPrixBet.p10SeasonDriverId,
+          fastestLapSeasonDriverId: seasonGrandPrixBet.fastestLapSeasonDriverId,
+          dnfDrivers: dnfDrivers,
+          willBeSafetyCar: seasonGrandPrixBet.willBeSafetyCar,
+          willBeRedFlag: seasonGrandPrixBet.willBeRedFlag,
+        ),
       ),
-    ));
+    );
   }
 
   Future<void> _addSeasonGrandPrixBet(String loggedUserId) async {
@@ -258,9 +268,10 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       p3SeasonDriverId: state.raceForm.p3SeasonDriverId,
       p10SeasonDriverId: state.raceForm.p10SeasonDriverId,
       fastestLapSeasonDriverId: state.raceForm.fastestLapSeasonDriverId,
-      dnfSeasonDriverIds: state.raceForm.dnfDrivers
-          .map((DriverDetails driver) => driver.seasonDriverId)
-          .toList(),
+      dnfSeasonDriverIds:
+          state.raceForm.dnfDrivers
+              .map((DriverDetails driver) => driver.seasonDriverId)
+              .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,
       willBeRedFlag: state.raceForm.willBeRedFlag,
     );
@@ -277,16 +288,18 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
       p3SeasonDriverId: state.raceForm.p3SeasonDriverId,
       p10SeasonDriverId: state.raceForm.p10SeasonDriverId,
       fastestLapSeasonDriverId: state.raceForm.fastestLapSeasonDriverId,
-      dnfSeasonDriverIds: state.raceForm.dnfDrivers
-          .map((DriverDetails driver) => driver.seasonDriverId)
-          .toList(),
+      dnfSeasonDriverIds:
+          state.raceForm.dnfDrivers
+              .map((DriverDetails driver) => driver.seasonDriverId)
+              .toList(),
       willBeSafetyCar: state.raceForm.willBeSafetyCar,
       willBeRedFlag: state.raceForm.willBeRedFlag,
     );
   }
 }
 
-typedef _ListenedParams = ({
-  List<DriverDetails> detailsOfAllDriversFromSeason,
-  SeasonGrandPrixBet? seasonGrandPrixBet,
-});
+typedef _ListenedParams =
+    ({
+      List<DriverDetails> detailsOfAllDriversFromSeason,
+      SeasonGrandPrixBet? seasonGrandPrixBet,
+    });

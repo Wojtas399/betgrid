@@ -67,10 +67,7 @@ class _SectionHeader extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const _SectionHeader({
-    required this.title,
-    required this.subtitle,
-  });
+  const _SectionHeader({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -79,12 +76,9 @@ class _SectionHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleMedium(
-            title,
-            fontWeight: FontWeight.bold,
-          ),
+          TitleMedium(title, fontWeight: FontWeight.bold),
           const GapVertical4(),
-          BodyMedium(subtitle)
+          BodyMedium(subtitle),
         ],
       ),
     );

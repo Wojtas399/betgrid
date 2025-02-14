@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCreatePointsHistoryStats extends Mock
     implements CreatePointsHistoryStats {
-  void mock({
-    PointsHistory? pointsHistory,
-  }) {
+  void mock({PointsHistory? pointsHistory}) {
     when(
       () => call(
         statsType: any(named: 'statsType'),

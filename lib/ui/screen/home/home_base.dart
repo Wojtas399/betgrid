@@ -11,7 +11,7 @@ class HomeBaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<SeasonCubit>(),
-        child: const AutoRouter(),
-      );
+    create: (_) => getIt.get<SeasonCubit>(),
+    child: const AutoRouter(),
+  );
 }

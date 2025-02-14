@@ -29,23 +29,21 @@ class PlayerStats extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        playerId,
-        season,
-        totalPoints,
-        bestGpPoints,
-        bestQualiPoints,
-        bestRacePoints,
-        pointsForDrivers,
-      ];
+    id,
+    playerId,
+    season,
+    totalPoints,
+    bestGpPoints,
+    bestQualiPoints,
+    bestRacePoints,
+    pointsForDrivers,
+  ];
 }
 
 abstract class PlayerStatsPoints extends Equatable {
   final double points;
 
-  const PlayerStatsPoints({
-    required this.points,
-  });
+  const PlayerStatsPoints({required this.points});
 }
 
 class PlayerStatsPointsForGp extends PlayerStatsPoints {
@@ -57,10 +55,7 @@ class PlayerStatsPointsForGp extends PlayerStatsPoints {
   });
 
   @override
-  List<Object?> get props => [
-        seasonGrandPrixId,
-        points,
-      ];
+  List<Object?> get props => [seasonGrandPrixId, points];
 }
 
 class PlayerStatsPointsForDriver extends PlayerStatsPoints {
@@ -72,8 +67,5 @@ class PlayerStatsPointsForDriver extends PlayerStatsPoints {
   });
 
   @override
-  List<Object?> get props => [
-        seasonDriverId,
-        points,
-      ];
+  List<Object?> get props => [seasonDriverId, points];
 }

@@ -12,26 +12,24 @@ class ProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(context.str.profileScreenTitle),
+    appBar: AppBar(title: Text(context.str.profileScreenTitle)),
+    body: const SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GapVertical24(),
+            ProfileAvatar(),
+            GapVertical40(),
+            ProfileUsername(),
+            GapVertical24(),
+            ProfileThemeMode(),
+            GapVertical24(),
+            ProfileThemePrimaryColor(),
+            GapVertical64(),
+          ],
         ),
-        body: const SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GapVertical24(),
-                ProfileAvatar(),
-                GapVertical40(),
-                ProfileUsername(),
-                GapVertical24(),
-                ProfileThemeMode(),
-                GapVertical24(),
-                ProfileThemePrimaryColor(),
-                GapVertical64(),
-              ],
-            ),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 }

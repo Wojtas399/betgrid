@@ -11,9 +11,5 @@ class TeamBasicInfo extends Entity {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        hexColor,
-      ];
+  List<Object?> get props => [id, name, hexColor];
 }

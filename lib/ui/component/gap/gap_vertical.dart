@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class GapVertical extends StatelessWidget {
   final double gap;
 
-  const GapVertical(
-    this.gap, {
-    super.key,
-  });
+  const GapVertical(this.gap, {super.key});
 
   @override
   Widget build(BuildContext context) => SizedBox(height: gap);

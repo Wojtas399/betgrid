@@ -44,33 +44,24 @@ class StatsPlayersPodium extends StatelessWidget {
           color: context.colorScheme.primary,
           dataLabelSettings: DataLabelSettings(
             isVisible: true,
-            builder: (
-              _,
-              ChartPoint point,
-              ___,
-              int columnIndex,
-              _____,
-            ) =>
-                Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BodyLarge(
-                  '${point.y}',
-                  fontWeight: FontWeight.bold,
+            builder:
+                (_, ChartPoint point, ___, int columnIndex, _____) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BodyLarge('${point.y}', fontWeight: FontWeight.bold),
+                    const GapVertical8(),
+                    SizedBox(
+                      width: 64,
+                      height: 64,
+                      child: Avatar(
+                        avatarUrl: podiumArray[columnIndex].player.avatarUrl,
+                        username: point.x,
+                      ),
+                    ),
+                  ],
                 ),
-                const GapVertical8(),
-                SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: Avatar(
-                    avatarUrl: podiumArray[columnIndex].player.avatarUrl,
-                    username: point.x,
-                  ),
-                ),
-              ],
-            ),
           ),
-        )
+        ),
       ],
     );
   }

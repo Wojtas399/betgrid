@@ -91,10 +91,7 @@ class ProfileAvatar extends StatelessWidget {
         child: SizedBox(
           width: 250,
           height: 250,
-          child: Avatar(
-            avatarUrl: avatarUrl,
-            username: username,
-          ),
+          child: Avatar(avatarUrl: avatarUrl, username: username),
         ),
       ),
     );

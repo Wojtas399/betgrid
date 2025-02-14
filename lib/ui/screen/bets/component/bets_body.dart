@@ -17,14 +17,12 @@ class BetsBody extends StatelessWidget {
     );
 
     return cubitStatus.isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : cubitStatus.areNoBets
-            ? EmptyContentInfo(
-                title: context.str.betsNoBetsTitle,
-                message: context.str.betsNoBetsMessage,
-              )
-            : const BetsListOfBets();
+        ? EmptyContentInfo(
+          title: context.str.betsNoBetsTitle,
+          message: context.str.betsNoBetsMessage,
+        )
+        : const BetsListOfBets();
   }
 }

@@ -14,17 +14,18 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
-        backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
-        child: username == null && avatarUrl == null
+    backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
+    child:
+        username == null && avatarUrl == null
             ? const CircularProgressIndicator()
             : avatarUrl == null
-                ? Text(
-                    '${username?[0].toUpperCase()}',
-                    style: TextStyle(
-                      fontSize: usernameFontSize,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : null,
-      );
+            ? Text(
+              '${username?[0].toUpperCase()}',
+              style: TextStyle(
+                fontSize: usernameFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+            : null,
+  );
 }

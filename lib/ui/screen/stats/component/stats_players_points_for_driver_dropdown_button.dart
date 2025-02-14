@@ -41,9 +41,10 @@ class _State extends State<StatsPlayersPointsForDriverDropdownButton> {
         isExpanded: true,
         value: _selectedDriverId,
         hint: Text(context.str.statsSelectDriver),
-        items: allDrivers
-            ?.map((DriverDetails driver) => _DriverDescription(driver))
-            .toList(),
+        items:
+            allDrivers
+                ?.map((DriverDetails driver) => _DriverDescription(driver))
+                .toList(),
         onChanged: (String? driverId) => _onDriverChanged(driverId),
       ),
     );
@@ -54,20 +55,20 @@ class _DriverDescription extends DropdownMenuItem<String> {
   final DriverDetails driver;
 
   _DriverDescription(this.driver)
-      : super(
-          value: driver.seasonDriverId,
-          child: Row(
-            children: [
-              Container(
-                color: driver.teamHexColor.toColor(),
-                width: 6,
-                height: 20,
-              ),
-              const GapHorizontal16(),
-              TitleMedium('${driver.number}'),
-              const GapHorizontal16(),
-              BodyLarge('${driver.name} ${driver.surname}'),
-            ],
-          ),
-        );
+    : super(
+        value: driver.seasonDriverId,
+        child: Row(
+          children: [
+            Container(
+              color: driver.teamHexColor.toColor(),
+              width: 6,
+              height: 20,
+            ),
+            const GapHorizontal16(),
+            TitleMedium('${driver.number}'),
+            const GapHorizontal16(),
+            BodyLarge('${driver.name} ${driver.surname}'),
+          ],
+        ),
+      );
 }

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class ScrollAnimatedItem extends StatefulWidget {
   final Widget child;
 
-  const ScrollAnimatedItem({
-    super.key,
-    required this.child,
-  });
+  const ScrollAnimatedItem({super.key, required this.child});
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -25,10 +22,7 @@ class _State extends State<ScrollAnimatedItem>
       duration: const Duration(milliseconds: 300),
     )..forward();
     scaleAnimation = Tween<double>(begin: 0.25, end: 1).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOut,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
   }
 
@@ -40,11 +34,10 @@ class _State extends State<ScrollAnimatedItem>
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-        animation: _animationController,
-        child: widget.child,
-        builder: (_, Widget? child) => Transform.scale(
-          scale: scaleAnimation.value,
-          child: child,
-        ),
-      );
+    animation: _animationController,
+    child: widget.child,
+    builder:
+        (_, Widget? child) =>
+            Transform.scale(scale: scaleAnimation.value, child: child),
+  );
 }

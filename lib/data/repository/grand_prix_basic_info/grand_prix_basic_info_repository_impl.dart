@@ -26,10 +26,11 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
     bool didReleaseMutex = false;
     await _getGrandPrixBasicInfoByIdMutex.acquire();
     await for (final grandPrixesBasicInfo in repositoryState$) {
-      GrandPrixBasicInfo? matchingGrandPrixBasicInfo =
-          grandPrixesBasicInfo.firstWhereOrNull(
-        (GrandPrixBasicInfo grandPrixBasicInfo) => grandPrixBasicInfo.id == id,
-      );
+      GrandPrixBasicInfo? matchingGrandPrixBasicInfo = grandPrixesBasicInfo
+          .firstWhereOrNull(
+            (GrandPrixBasicInfo grandPrixBasicInfo) =>
+                grandPrixBasicInfo.id == id,
+          );
       matchingGrandPrixBasicInfo ??= await _fetchGrandPrixBasicInfoById(id);
       if (_getGrandPrixBasicInfoByIdMutex.isLocked && !didReleaseMutex) {
         _getGrandPrixBasicInfoByIdMutex.release();
@@ -43,8 +44,8 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
     final GrandPrixBasicInfoDto? grandPrixBasicInfoDto =
         await _fireGrandPrixBasicInfoService.fetchGrandPrixBasicInfoById(id);
     if (grandPrixBasicInfoDto == null) return null;
-    final GrandPrixBasicInfo grandPrixBasicInfo =
-        _grandPrixBasicInfoMapper.mapFromDto(grandPrixBasicInfoDto);
+    final GrandPrixBasicInfo grandPrixBasicInfo = _grandPrixBasicInfoMapper
+        .mapFromDto(grandPrixBasicInfoDto);
     addEntity(grandPrixBasicInfo);
     return grandPrixBasicInfo;
   }

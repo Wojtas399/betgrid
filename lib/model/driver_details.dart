@@ -19,11 +19,11 @@ class DriverDetails extends Equatable {
 
   @override
   List<Object?> get props => [
-        seasonDriverId,
-        name,
-        surname,
-        number,
-        teamName,
-        teamHexColor,
-      ];
+    seasonDriverId,
+    name,
+    surname,
+    number,
+    teamName,
+    teamHexColor,
+  ];
 }

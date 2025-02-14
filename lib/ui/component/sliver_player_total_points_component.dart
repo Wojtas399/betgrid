@@ -10,32 +10,33 @@ class SliverPlayerTotalPoints extends SliverPadding {
     required double points,
     bool isLoading = false,
   }) : super(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-          sliver: SliverToBoxAdapter(
-            child: Builder(
-              builder: (BuildContext context) => Column(
-                children: [
-                  HeadlineMedium(
-                    context.str.points,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const GapVertical8(),
-                  if (isLoading)
-                    Container(
-                      width: 24,
-                      height: 24,
-                      margin: const EdgeInsets.only(top: 20),
-                      child: const CircularProgressIndicator(strokeWidth: 3),
-                    ),
-                  if (!isLoading)
-                    DisplayLarge(
-                      '$points',
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primary,
-                    ),
-                ],
-              ),
-            ),
-          ),
-        );
+         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+         sliver: SliverToBoxAdapter(
+           child: Builder(
+             builder:
+                 (BuildContext context) => Column(
+                   children: [
+                     HeadlineMedium(
+                       context.str.points,
+                       fontWeight: FontWeight.bold,
+                     ),
+                     const GapVertical8(),
+                     if (isLoading)
+                       Container(
+                         width: 24,
+                         height: 24,
+                         margin: const EdgeInsets.only(top: 20),
+                         child: const CircularProgressIndicator(strokeWidth: 3),
+                       ),
+                     if (!isLoading)
+                       DisplayLarge(
+                         '$points',
+                         fontWeight: FontWeight.bold,
+                         color: context.colorScheme.primary,
+                       ),
+                   ],
+                 ),
+           ),
+         ),
+       );
 }

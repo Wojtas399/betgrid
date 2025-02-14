@@ -23,16 +23,16 @@ void main() {
   const int season = 2025;
 
   late CreateLoggedUserPointsForDriversStats
-      createLoggedUserPointsForDriversStats;
+  createLoggedUserPointsForDriversStats;
 
   setUp(() {
     createLoggedUserPointsForDriversStats =
         CreateLoggedUserPointsForDriversStats(
-      authRepository,
-      playerStatsRepository,
-      seasonDriverRepository,
-      getDetailsForSeasonDriverUseCase,
-    );
+          authRepository,
+          playerStatsRepository,
+          seasonDriverRepository,
+          getDetailsForSeasonDriverUseCase,
+        );
   });
 
   tearDown(() {
@@ -42,35 +42,25 @@ void main() {
     reset(getDetailsForSeasonDriverUseCase);
   });
 
-  test(
-    'should emit null if logged user id is null',
-    () async {
-      authRepository.mockGetLoggedUserId(null);
+  test('should emit null if logged user id is null', () async {
+    authRepository.mockGetLoggedUserId(null);
 
-      final Stream<List<PointsForDriver>?> pointsForDrivers$ =
-          createLoggedUserPointsForDriversStats(
-        season: season,
-      );
+    final Stream<List<PointsForDriver>?> pointsForDrivers$ =
+        createLoggedUserPointsForDriversStats(season: season);
 
-      expect(await pointsForDrivers$.first, null);
-    },
-  );
+    expect(await pointsForDrivers$.first, null);
+  });
 
-  test(
-    'should emit null if logged user stats do not exist',
-    () async {
-      const String loggedUserId = 'u1';
-      authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetByPlayerIdAndSeason();
+  test('should emit null if logged user stats do not exist', () async {
+    const String loggedUserId = 'u1';
+    authRepository.mockGetLoggedUserId(loggedUserId);
+    playerStatsRepository.mockGetByPlayerIdAndSeason();
 
-      final Stream<List<PointsForDriver>?> pointsForDrivers$ =
-          createLoggedUserPointsForDriversStats(
-        season: season,
-      );
+    final Stream<List<PointsForDriver>?> pointsForDrivers$ =
+        createLoggedUserPointsForDriversStats(season: season);
 
-      expect(await pointsForDrivers$.first, null);
-    },
-  );
+    expect(await pointsForDrivers$.first, null);
+  });
 
   test(
     'should emit null if logged user list of points for drivers is empty',
@@ -82,77 +72,54 @@ void main() {
       );
 
       final Stream<List<PointsForDriver>?> pointsForDrivers$ =
-          createLoggedUserPointsForDriversStats(
-        season: season,
-      );
+          createLoggedUserPointsForDriversStats(season: season);
 
       expect(await pointsForDrivers$.first, null);
     },
   );
 
-  test(
-    'should throw null check operator exception if cannot get one of the '
-    'season drivers',
-    () async {
-      const String loggedUserId = 'u1';
-      const List<PlayerStatsPointsForDriver> pointsForDrivers = [
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's1',
-          points: 10,
-        ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's2',
-          points: 20,
-        ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's3',
-          points: 30,
-        ),
-      ];
-      authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetByPlayerIdAndSeason(
-        expectedPlayerStats: PlayerStatsCreator(
-          pointsForDrivers: pointsForDrivers,
-        ).create(),
-      );
-      when(
-        () => seasonDriverRepository.getById(
-          season: season,
-          seasonDriverId: pointsForDrivers.first.seasonDriverId,
-        ),
-      ).thenAnswer(
-        (_) => Stream.value(
-          const SeasonDriverCreator().create(),
-        ),
-      );
-      when(
-        () => seasonDriverRepository.getById(
-          season: season,
-          seasonDriverId: pointsForDrivers[1].seasonDriverId,
-        ),
-      ).thenAnswer((_) => Stream.value(null));
-      when(
-        () => seasonDriverRepository.getById(
-          season: season,
-          seasonDriverId: pointsForDrivers.last.seasonDriverId,
-        ),
-      ).thenAnswer(
-        (_) => Stream.value(
-          const SeasonDriverCreator().create(),
-        ),
-      );
+  test('should throw null check operator exception if cannot get one of the '
+      'season drivers', () async {
+    const String loggedUserId = 'u1';
+    const List<PlayerStatsPointsForDriver> pointsForDrivers = [
+      PlayerStatsPointsForDriver(seasonDriverId: 's1', points: 10),
+      PlayerStatsPointsForDriver(seasonDriverId: 's2', points: 20),
+      PlayerStatsPointsForDriver(seasonDriverId: 's3', points: 30),
+    ];
+    authRepository.mockGetLoggedUserId(loggedUserId);
+    playerStatsRepository.mockGetByPlayerIdAndSeason(
+      expectedPlayerStats:
+          PlayerStatsCreator(pointsForDrivers: pointsForDrivers).create(),
+    );
+    when(
+      () => seasonDriverRepository.getById(
+        season: season,
+        seasonDriverId: pointsForDrivers.first.seasonDriverId,
+      ),
+    ).thenAnswer((_) => Stream.value(const SeasonDriverCreator().create()));
+    when(
+      () => seasonDriverRepository.getById(
+        season: season,
+        seasonDriverId: pointsForDrivers[1].seasonDriverId,
+      ),
+    ).thenAnswer((_) => Stream.value(null));
+    when(
+      () => seasonDriverRepository.getById(
+        season: season,
+        seasonDriverId: pointsForDrivers.last.seasonDriverId,
+      ),
+    ).thenAnswer((_) => Stream.value(const SeasonDriverCreator().create()));
 
-      Object? exception;
-      try {
-        final stream$ = createLoggedUserPointsForDriversStats(season: season);
-        await stream$.first;
-      } catch (e) {
-        exception = e;
-      }
+    Object? exception;
+    try {
+      final stream$ = createLoggedUserPointsForDriversStats(season: season);
+      await stream$.first;
+    } catch (e) {
+      exception = e;
+    }
 
-      expect(exception, isA<TypeError>());
-    },
-  );
+    expect(exception, isA<TypeError>());
+  });
 
   test(
     'should throw null check operator exception if cannot get details for one '
@@ -160,18 +127,9 @@ void main() {
     () async {
       const String loggedUserId = 'u1';
       const List<PlayerStatsPointsForDriver> pointsForDrivers = [
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's1',
-          points: 10,
-        ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's2',
-          points: 20,
-        ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's3',
-          points: 30,
-        ),
+        PlayerStatsPointsForDriver(seasonDriverId: 's1', points: 10),
+        PlayerStatsPointsForDriver(seasonDriverId: 's2', points: 20),
+        PlayerStatsPointsForDriver(seasonDriverId: 's3', points: 30),
       ];
       final List<SeasonDriver> seasonDrivers = [
         const SeasonDriverCreator(id: 's1').create(),
@@ -180,9 +138,8 @@ void main() {
       ];
       authRepository.mockGetLoggedUserId(loggedUserId);
       playerStatsRepository.mockGetByPlayerIdAndSeason(
-        expectedPlayerStats: PlayerStatsCreator(
-          pointsForDrivers: pointsForDrivers,
-        ).create(),
+        expectedPlayerStats:
+            PlayerStatsCreator(pointsForDrivers: pointsForDrivers).create(),
       );
       for (final seasonDriver in seasonDrivers) {
         when(
@@ -190,27 +147,17 @@ void main() {
             season: season,
             seasonDriverId: seasonDriver.id,
           ),
-        ).thenAnswer(
-          (_) => Stream.value(seasonDriver),
-        );
+        ).thenAnswer((_) => Stream.value(seasonDriver));
       }
       when(
         () => getDetailsForSeasonDriverUseCase(seasonDrivers.first),
-      ).thenAnswer(
-        (_) => Stream.value(
-          const DriverDetailsCreator().create(),
-        ),
-      );
+      ).thenAnswer((_) => Stream.value(const DriverDetailsCreator().create()));
       when(
         () => getDetailsForSeasonDriverUseCase(seasonDrivers[1]),
       ).thenAnswer((_) => Stream.value(null));
       when(
         () => getDetailsForSeasonDriverUseCase(seasonDrivers.last),
-      ).thenAnswer(
-        (_) => Stream.value(
-          const DriverDetailsCreator().create(),
-        ),
-      );
+      ).thenAnswer((_) => Stream.value(const DriverDetailsCreator().create()));
 
       Object? exception;
       try {
@@ -224,74 +171,57 @@ void main() {
     },
   );
 
-  test(
-    'should emit list of points for drivers with driver details sorted in '
-    'descending order by points',
-    () async {
-      const String loggedUserId = 'u1';
-      const List<PlayerStatsPointsForDriver> pointsForDrivers = [
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's1',
-          points: 10,
+  test('should emit list of points for drivers with driver details sorted in '
+      'descending order by points', () async {
+    const String loggedUserId = 'u1';
+    const List<PlayerStatsPointsForDriver> pointsForDrivers = [
+      PlayerStatsPointsForDriver(seasonDriverId: 's1', points: 10),
+      PlayerStatsPointsForDriver(seasonDriverId: 's2', points: 30),
+      PlayerStatsPointsForDriver(seasonDriverId: 's3', points: 20),
+    ];
+    final List<SeasonDriver> seasonDrivers = [
+      const SeasonDriverCreator(id: 's1').create(),
+      const SeasonDriverCreator(id: 's2').create(),
+      const SeasonDriverCreator(id: 's3').create(),
+    ];
+    final List<DriverDetails> driverDetails = [
+      const DriverDetailsCreator(seasonDriverId: 's1').create(),
+      const DriverDetailsCreator(seasonDriverId: 's2').create(),
+      const DriverDetailsCreator(seasonDriverId: 's3').create(),
+    ];
+    List<PointsForDriver> expectedPointsForDrivers = [
+      PointsForDriver(
+        driverDetails: driverDetails[1],
+        points: pointsForDrivers[1].points,
+      ),
+      PointsForDriver(
+        driverDetails: driverDetails.last,
+        points: pointsForDrivers.last.points,
+      ),
+      PointsForDriver(
+        driverDetails: driverDetails.first,
+        points: pointsForDrivers.first.points,
+      ),
+    ];
+    authRepository.mockGetLoggedUserId(loggedUserId);
+    playerStatsRepository.mockGetByPlayerIdAndSeason(
+      expectedPlayerStats:
+          PlayerStatsCreator(pointsForDrivers: pointsForDrivers).create(),
+    );
+    for (int i = 0; i < 3; i++) {
+      when(
+        () => seasonDriverRepository.getById(
+          season: season,
+          seasonDriverId: seasonDrivers[i].id,
         ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's2',
-          points: 30,
-        ),
-        PlayerStatsPointsForDriver(
-          seasonDriverId: 's3',
-          points: 20,
-        ),
-      ];
-      final List<SeasonDriver> seasonDrivers = [
-        const SeasonDriverCreator(id: 's1').create(),
-        const SeasonDriverCreator(id: 's2').create(),
-        const SeasonDriverCreator(id: 's3').create(),
-      ];
-      final List<DriverDetails> driverDetails = [
-        const DriverDetailsCreator(seasonDriverId: 's1').create(),
-        const DriverDetailsCreator(seasonDriverId: 's2').create(),
-        const DriverDetailsCreator(seasonDriverId: 's3').create(),
-      ];
-      List<PointsForDriver> expectedPointsForDrivers = [
-        PointsForDriver(
-          driverDetails: driverDetails[1],
-          points: pointsForDrivers[1].points,
-        ),
-        PointsForDriver(
-          driverDetails: driverDetails.last,
-          points: pointsForDrivers.last.points,
-        ),
-        PointsForDriver(
-          driverDetails: driverDetails.first,
-          points: pointsForDrivers.first.points,
-        ),
-      ];
-      authRepository.mockGetLoggedUserId(loggedUserId);
-      playerStatsRepository.mockGetByPlayerIdAndSeason(
-        expectedPlayerStats: PlayerStatsCreator(
-          pointsForDrivers: pointsForDrivers,
-        ).create(),
-      );
-      for (int i = 0; i < 3; i++) {
-        when(
-          () => seasonDriverRepository.getById(
-            season: season,
-            seasonDriverId: seasonDrivers[i].id,
-          ),
-        ).thenAnswer(
-          (_) => Stream.value(seasonDrivers[i]),
-        );
-        when(
-          () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),
-        ).thenAnswer(
-          (_) => Stream.value(driverDetails[i]),
-        );
-      }
+      ).thenAnswer((_) => Stream.value(seasonDrivers[i]));
+      when(
+        () => getDetailsForSeasonDriverUseCase(seasonDrivers[i]),
+      ).thenAnswer((_) => Stream.value(driverDetails[i]));
+    }
 
-      final stream$ = createLoggedUserPointsForDriversStats(season: season);
+    final stream$ = createLoggedUserPointsForDriversStats(season: season);
 
-      expect(await stream$.first, expectedPointsForDrivers);
-    },
-  );
+    expect(await stream$.first, expectedPointsForDrivers);
+  });
 }

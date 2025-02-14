@@ -15,7 +15,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
     extends Repository<SeasonGrandPrixBetPoints>
     implements SeasonGrandPrixBetPointsRepository {
   final FirebaseSeasonGrandPrixBetPointsService
-      _fireSeasonGrandPrixBetPointsService;
+  _fireSeasonGrandPrixBetPointsService;
   final SeasonGrandPrixBetPointsMapper _seasonGrandPrixBetPointsMapper;
   final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
 
@@ -26,52 +26,53 @@ class SeasonGrandPrixBetPointsRepositoryImpl
 
   @override
   Stream<List<SeasonGrandPrixBetPoints>>
-      getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
+  getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
     required int season,
     required List<String> idsOfPlayers,
     required List<String> idsOfSeasonGrandPrixes,
   }) async* {
     bool didRelease = false;
     await _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.acquire();
-    final stream$ = repositoryState$.asyncMap(
-      (List<SeasonGrandPrixBetPoints> existingBetPointsForGps) async {
-        final List<SeasonGrandPrixBetPoints> betPointsForGps = [];
-        final List<_GrandPrixBetPointsFetchData> dataOfMissingBetPointsForGps =
-            [];
-        for (final playerId in idsOfPlayers) {
-          for (final gpId in idsOfSeasonGrandPrixes) {
-            final SeasonGrandPrixBetPoints? existingGpBetPoints =
-                existingBetPointsForGps.firstWhereOrNull(
-              (SeasonGrandPrixBetPoints gpBetPoints) =>
-                  gpBetPoints.season == season &&
-                  gpBetPoints.seasonGrandPrixId == gpId &&
-                  gpBetPoints.playerId == playerId,
-            );
-            if (existingGpBetPoints != null) {
-              betPointsForGps.add(existingGpBetPoints);
-            } else {
-              dataOfMissingBetPointsForGps.add((
-                playerId: playerId,
-                season: season,
-                seasonGrandPrixId: gpId,
-              ));
+    final stream$ =
+        repositoryState$.asyncMap((
+          List<SeasonGrandPrixBetPoints> existingBetPointsForGps,
+        ) async {
+          final List<SeasonGrandPrixBetPoints> betPointsForGps = [];
+          final List<_GrandPrixBetPointsFetchData>
+          dataOfMissingBetPointsForGps = [];
+          for (final playerId in idsOfPlayers) {
+            for (final gpId in idsOfSeasonGrandPrixes) {
+              final SeasonGrandPrixBetPoints? existingGpBetPoints =
+                  existingBetPointsForGps.firstWhereOrNull(
+                    (SeasonGrandPrixBetPoints gpBetPoints) =>
+                        gpBetPoints.season == season &&
+                        gpBetPoints.seasonGrandPrixId == gpId &&
+                        gpBetPoints.playerId == playerId,
+                  );
+              if (existingGpBetPoints != null) {
+                betPointsForGps.add(existingGpBetPoints);
+              } else {
+                dataOfMissingBetPointsForGps.add((
+                  playerId: playerId,
+                  season: season,
+                  seasonGrandPrixId: gpId,
+                ));
+              }
             }
           }
-        }
-        if (dataOfMissingBetPointsForGps.isNotEmpty) {
-          final missingGpBetPoints = await _fetchManyGrandPrixBetPointsFromDb(
-            dataOfMissingBetPointsForGps,
-          );
-          betPointsForGps.addAll(missingGpBetPoints);
-        }
-        if (_getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.isLocked &&
-            !didRelease) {
-          _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.release();
-          didRelease = true;
-        }
-        return betPointsForGps;
-      },
-    ).distinctList();
+          if (dataOfMissingBetPointsForGps.isNotEmpty) {
+            final missingGpBetPoints = await _fetchManyGrandPrixBetPointsFromDb(
+              dataOfMissingBetPointsForGps,
+            );
+            betPointsForGps.addAll(missingGpBetPoints);
+          }
+          if (_getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.isLocked &&
+              !didRelease) {
+            _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex.release();
+            didRelease = true;
+          }
+          return betPointsForGps;
+        }).distinctList();
     await for (final data in stream$) {
       yield data;
     }
@@ -106,10 +107,10 @@ class SeasonGrandPrixBetPointsRepositoryImpl
     for (final gpBetPointsData in dataOfPointsForGpBets) {
       final SeasonGrandPrixBetPointsDto? dto =
           await _fireSeasonGrandPrixBetPointsService.fetchBySeasonGrandPrixId(
-        userId: gpBetPointsData.playerId,
-        season: gpBetPointsData.season,
-        seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
-      );
+            userId: gpBetPointsData.playerId,
+            season: gpBetPointsData.season,
+            seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
+          );
       if (dto != null) {
         final SeasonGrandPrixBetPoints gpBetPoints =
             _seasonGrandPrixBetPointsMapper.mapFromDto(dto);
@@ -125,20 +126,17 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   ) async {
     final SeasonGrandPrixBetPointsDto? dto =
         await _fireSeasonGrandPrixBetPointsService.fetchBySeasonGrandPrixId(
-      userId: gpBetPointsData.playerId,
-      season: gpBetPointsData.season,
-      seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
-    );
+          userId: gpBetPointsData.playerId,
+          season: gpBetPointsData.season,
+          seasonGrandPrixId: gpBetPointsData.seasonGrandPrixId,
+        );
     if (dto == null) return null;
-    final SeasonGrandPrixBetPoints entity =
-        _seasonGrandPrixBetPointsMapper.mapFromDto(dto);
+    final SeasonGrandPrixBetPoints entity = _seasonGrandPrixBetPointsMapper
+        .mapFromDto(dto);
     addEntity(entity);
     return entity;
   }
 }
 
-typedef _GrandPrixBetPointsFetchData = ({
-  String playerId,
-  int season,
-  String seasonGrandPrixId,
-});
+typedef _GrandPrixBetPointsFetchData =
+    ({String playerId, int season, String seasonGrandPrixId});

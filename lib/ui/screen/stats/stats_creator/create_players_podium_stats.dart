@@ -13,7 +13,7 @@ import '../stats_model/players_podium.dart';
 class CreatePlayersPodiumStats {
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesFromSeasonUseCase
-      _getFinishedGrandPrixesFromSeasonUseCase;
+  _getFinishedGrandPrixesFromSeasonUseCase;
   final SeasonGrandPrixBetPointsRepository _grandPrixBetPointsRepository;
 
   const CreatePlayersPodiumStats(
@@ -22,64 +22,57 @@ class CreatePlayersPodiumStats {
     this._grandPrixBetPointsRepository,
   );
 
-  Stream<PlayersPodium?> call({
-    required int season,
-  }) =>
-      Rx.combineLatest2(
-        _playerRepository.getAll(),
-        _getFinishedGrandPrixesFromSeasonUseCase(season: season),
-        (
-          List<Player> allPlayers,
-          List<SeasonGrandPrix> finishedSeasonGrandPrixes,
-        ) =>
-            (
-          allPlayers: allPlayers,
-          finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
-        ),
-      ).switchMap(
-        (data) {
-          if (data.allPlayers.isEmpty ||
-              data.finishedSeasonGrandPrixes.isEmpty) {
-            return Stream.value(null);
-          }
-          final playersIds = data.allPlayers.map((p) => p.id).toList();
-          final finishedSeasonGrandPrixesIds = data.finishedSeasonGrandPrixes
-              .map((grandPrix) => grandPrix.id)
-              .toList();
-          return Rx.combineLatest2(
-            _grandPrixBetPointsRepository
-                .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-              season: season,
-              idsOfPlayers: playersIds,
-              idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-            ),
-            Stream.value(data.allPlayers),
-            (
-              List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
-              List<Player> players,
-            ) =>
-                _createStats(players, seasonGrandPrixesBetPoints),
-          );
-        },
-      );
+  Stream<PlayersPodium?> call({required int season}) => Rx.combineLatest2(
+    _playerRepository.getAll(),
+    _getFinishedGrandPrixesFromSeasonUseCase(season: season),
+    (
+      List<Player> allPlayers,
+      List<SeasonGrandPrix> finishedSeasonGrandPrixes,
+    ) => (
+      allPlayers: allPlayers,
+      finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
+    ),
+  ).switchMap((data) {
+    if (data.allPlayers.isEmpty || data.finishedSeasonGrandPrixes.isEmpty) {
+      return Stream.value(null);
+    }
+    final playersIds = data.allPlayers.map((p) => p.id).toList();
+    final finishedSeasonGrandPrixesIds =
+        data.finishedSeasonGrandPrixes
+            .map((grandPrix) => grandPrix.id)
+            .toList();
+    return Rx.combineLatest2(
+      _grandPrixBetPointsRepository
+          .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+            season: season,
+            idsOfPlayers: playersIds,
+            idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+          ),
+      Stream.value(data.allPlayers),
+      (
+        List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
+        List<Player> players,
+      ) => _createStats(players, seasonGrandPrixesBetPoints),
+    );
+  });
 
   PlayersPodium _createStats(
     Iterable<Player> players,
     Iterable<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
   ) {
-    final List<PlayersPodiumPlayer> podiumData = players.map(
-      (Player player) {
-        final Iterable<double> pointsForEachGp = seasonGrandPrixesBetPoints
-            .where((betPoints) => betPoints.playerId == player.id)
-            .map((betPoints) => betPoints.totalPoints);
-        final double totalPoints = pointsForEachGp.isNotEmpty
-            ? pointsForEachGp.reduce(
-                (totalPoints, gpBetPoints) => totalPoints + gpBetPoints,
-              )
-            : 0.0;
-        return PlayersPodiumPlayer(player: player, points: totalPoints);
-      },
-    ).toList();
+    final List<PlayersPodiumPlayer> podiumData =
+        players.map((Player player) {
+          final Iterable<double> pointsForEachGp = seasonGrandPrixesBetPoints
+              .where((betPoints) => betPoints.playerId == player.id)
+              .map((betPoints) => betPoints.totalPoints);
+          final double totalPoints =
+              pointsForEachGp.isNotEmpty
+                  ? pointsForEachGp.reduce(
+                    (totalPoints, gpBetPoints) => totalPoints + gpBetPoints,
+                  )
+                  : 0.0;
+          return PlayersPodiumPlayer(player: player, points: totalPoints);
+        }).toList();
     podiumData.sort((p1, p2) => p1.points < p2.points ? 1 : -1);
     return PlayersPodium(
       p1Player: podiumData.first,

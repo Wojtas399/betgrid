@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockSeasonGrandPrixResultsRepository extends Mock
     implements SeasonGrandPrixResultsRepository {
-  void mockGetResultsForSeasonGrandPrix({
-    SeasonGrandPrixResults? results,
-  }) {
+  void mockGetResultsForSeasonGrandPrix({SeasonGrandPrixResults? results}) {
     when(
       () => getResultsForSeasonGrandPrix(
         season: any(named: 'season'),

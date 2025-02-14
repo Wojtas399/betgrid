@@ -19,22 +19,20 @@ class GrandPrixBetBody extends StatelessWidget {
     );
 
     return isCubitLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Center(child: CircularProgressIndicator())
         : const SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: Column(
-                children: [
-                  _TotalPoints(),
-                  GapVertical24(),
-                  GrandPrixBetQualifications(),
-                  GrandPrixBetRace(),
-                ],
-              ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Column(
+              children: [
+                _TotalPoints(),
+                GapVertical24(),
+                GrandPrixBetQualifications(),
+                GrandPrixBetRace(),
+              ],
             ),
-          );
+          ),
+        );
   }
 }
 
@@ -51,10 +49,7 @@ class _TotalPoints extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          HeadlineMedium(
-            context.str.points,
-            fontWeight: FontWeight.bold,
-          ),
+          HeadlineMedium(context.str.points, fontWeight: FontWeight.bold),
           const GapVertical8(),
           DisplayLarge(
             '${totalPoints ?? '--'}',

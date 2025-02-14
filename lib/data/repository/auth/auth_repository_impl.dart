@@ -8,16 +8,15 @@ import 'auth_repository.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthService _fireAuthService;
 
-  AuthRepositoryImpl(
-    this._fireAuthService,
-  );
+  AuthRepositoryImpl(this._fireAuthService);
 
   @override
   Stream<AuthState> get authState$ => _fireAuthService.loggedUserId$.map(
-        (String? loggedUserId) => loggedUserId != null
+    (String? loggedUserId) =>
+        loggedUserId != null
             ? const AuthStateUserIsSignedIn()
             : const AuthStateUserIsSignedOut(),
-      );
+  );
 
   @override
   Stream<String?> get loggedUserId$ => _fireAuthService.loggedUserId$;

@@ -4,9 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGrandPrixBetQualiBetsService extends Mock
     implements GrandPrixBetQualiBetsService {
-  void mockGetQualiBets({
-    required List<SingleDriverBet> expectedQualiBets,
-  }) {
+  void mockGetQualiBets({required List<SingleDriverBet> expectedQualiBets}) {
     when(getQualiBets).thenAnswer((_) => Stream.value(expectedQualiBets));
   }
 }

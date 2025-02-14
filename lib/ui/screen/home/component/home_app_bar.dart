@@ -37,15 +37,8 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Row(
       children: [
-        TitleLarge(
-          'Bet',
-          fontWeight: FontWeight.bold,
-        ),
-        TitleLarge(
-          'Grid',
-          color: Colors.red,
-          fontWeight: FontWeight.bold,
-        ),
+        TitleLarge('Bet', fontWeight: FontWeight.bold),
+        TitleLarge('Grid', color: Colors.red, fontWeight: FontWeight.bold),
       ],
     );
   }
@@ -60,17 +53,15 @@ class _Points extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: 6,
       children: [
-        Icon(
-          Icons.star_outline_rounded,
-          color: context.colorScheme.primary,
-        ),
+        Icon(Icons.star_outline_rounded, color: context.colorScheme.primary),
         BlocSelector<HomeCubit, HomeState, double?>(
           selector: (state) => state.totalPoints,
-          builder: (context, totalPoints) => TitleLarge(
-            (totalPoints ?? 0).toStringAsFixed(1),
-            color: context.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
+          builder:
+              (context, totalPoints) => TitleLarge(
+                (totalPoints ?? 0).toStringAsFixed(1),
+                color: context.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
         ),
       ],
     );
@@ -97,13 +88,14 @@ class _Avatar extends StatelessWidget {
       onPressed: () => _onAvatarPressed(context),
       icon: CircleAvatar(
         backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-        child: username == null && avatarUrl == null
-            ? const SizedBox(
-                height: 16,
-                width: 16,
-                child: CircularProgressIndicator(strokeWidth: 2.0),
-              )
-            : avatarUrl == null
+        child:
+            username == null && avatarUrl == null
+                ? const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2.0),
+                )
+                : avatarUrl == null
                 ? Text('${username?[0].toUpperCase()}')
                 : null,
       ),

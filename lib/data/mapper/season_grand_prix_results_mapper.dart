@@ -5,9 +5,7 @@ import '../../model/season_grand_prix_results.dart';
 
 @injectable
 class SeasonGrandPrixResultsMapper {
-  SeasonGrandPrixResults mapFromDto(
-    SeasonGrandPrixResultsDto resultsDto,
-  ) {
+  SeasonGrandPrixResults mapFromDto(SeasonGrandPrixResultsDto resultsDto) {
     RaceResults? raceResults;
     if (_areThereAllRaceResults(resultsDto)) {
       raceResults = RaceResults(

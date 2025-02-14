@@ -16,8 +16,9 @@ class ThemePrimaryColorSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: ThemePrimaryColor.values
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children:
+        ThemePrimaryColor.values
             .map(
               (ThemePrimaryColor color) => _ColorItem(
                 isSelected: selectedColor == color,
@@ -28,7 +29,7 @@ class ThemePrimaryColorSelection extends StatelessWidget {
               ),
             )
             .toList(),
-      );
+  );
 }
 
 class _ColorItem extends StatelessWidget {
@@ -44,28 +45,24 @@ class _ColorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Transform.scale(
-        scale: isSelected ? 1.25 : 1.0,
-        child: Container(
-          width: 32,
-          height: 32,
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-            border: isSelected
-                ? Border.all(
-                    color: context.colorScheme.onSurface,
-                    width: 2.0,
-                  )
+    scale: isSelected ? 1.25 : 1.0,
+    child: Container(
+      width: 32,
+      height: 32,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+        border:
+            isSelected
+                ? Border.all(color: context.colorScheme.onSurface, width: 2.0)
                 : null,
-          ),
-          child: FilledButton(
-            onPressed: onPressed,
-            style: FilledButton.styleFrom(
-              backgroundColor: color,
-            ),
-            child: const SizedBox(),
-          ),
-        ),
-      );
+      ),
+      child: FilledButton(
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(backgroundColor: color),
+        child: const SizedBox(),
+      ),
+    ),
+  );
 }

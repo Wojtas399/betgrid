@@ -12,19 +12,19 @@ class ThemeCubit extends Cubit<ThemeState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
-  ThemeCubit(
-    this._authRepository,
-    this._userRepository,
-  ) : super(const ThemeState());
+  ThemeCubit(this._authRepository, this._userRepository)
+    : super(const ThemeState());
 
   Future<void> initialize() async {
     final Stream<User?> loggedUser$ = _getLoggedUser();
     await for (final loggedUser in loggedUser$) {
       if (loggedUser != null) {
-        emit(ThemeState(
-          themeMode: loggedUser.themeMode,
-          primaryColor: loggedUser.themePrimaryColor,
-        ));
+        emit(
+          ThemeState(
+            themeMode: loggedUser.themeMode,
+            primaryColor: loggedUser.themePrimaryColor,
+          ),
+        );
       } else {
         emit(const ThemeState());
       }
@@ -33,9 +33,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changeThemeMode(ThemeMode themeMode) async {
     final ThemeState prevState = state;
-    emit(state.copyWith(
-      themeMode: themeMode,
-    ));
+    emit(state.copyWith(themeMode: themeMode));
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
       try {
@@ -53,9 +51,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changePrimaryColor(ThemePrimaryColor primaryColor) async {
     final ThemeState prevState = state;
-    emit(state.copyWith(
-      primaryColor: primaryColor,
-    ));
+    emit(state.copyWith(primaryColor: primaryColor));
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
       try {
@@ -72,8 +68,9 @@ class ThemeCubit extends Cubit<ThemeState> {
   }
 
   Stream<User?> _getLoggedUser() => _authRepository.loggedUserId$.switchMap(
-        (String? loggedUserId) => loggedUserId != null
+    (String? loggedUserId) =>
+        loggedUserId != null
             ? _userRepository.getById(loggedUserId)
             : Stream.value(null),
-      );
+  );
 }

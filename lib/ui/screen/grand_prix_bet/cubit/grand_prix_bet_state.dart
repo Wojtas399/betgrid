@@ -6,11 +6,7 @@ import '../../../../model/season_grand_prix_bet_points.dart';
 
 part 'grand_prix_bet_state.freezed.dart';
 
-enum GrandPrixBetStateStatus {
-  loading,
-  completed,
-  loggedUserDoesNotExist,
-}
+enum GrandPrixBetStateStatus { loading, completed, loggedUserDoesNotExist }
 
 extension GrandPrixBetStateStatusExtensions on GrandPrixBetStateStatus {
   bool get isLoading => this == GrandPrixBetStateStatus.loading;
@@ -45,9 +41,7 @@ enum BetStatus { pending, win, loss }
 abstract class Bet extends Equatable {
   final BetStatus status;
 
-  const Bet({
-    required this.status,
-  });
+  const Bet({required this.status});
 }
 
 class SingleDriverBet extends Bet {
@@ -63,12 +57,7 @@ class SingleDriverBet extends Bet {
   });
 
   @override
-  List<Object?> get props => [
-        status,
-        betDriver,
-        resultDriver,
-        points,
-      ];
+  List<Object?> get props => [status, betDriver, resultDriver, points];
 }
 
 class MultipleDriversBet extends Bet {
@@ -84,12 +73,7 @@ class MultipleDriversBet extends Bet {
   });
 
   @override
-  List<Object?> get props => [
-        status,
-        betDrivers,
-        resultDrivers,
-        points,
-      ];
+  List<Object?> get props => [status, betDrivers, resultDrivers, points];
 }
 
 class BooleanBet extends Bet {
@@ -105,10 +89,5 @@ class BooleanBet extends Bet {
   });
 
   @override
-  List<Object?> get props => [
-        status,
-        betValue,
-        resultValue,
-        points,
-      ];
+  List<Object?> get props => [status, betValue, resultValue, points];
 }

@@ -3,9 +3,7 @@ import 'package:betgrid/model/player_stats.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPlayerStatsRepository extends Mock implements PlayerStatsRepository {
-  void mockGetByPlayerIdAndSeason({
-    PlayerStats? expectedPlayerStats,
-  }) {
+  void mockGetByPlayerIdAndSeason({PlayerStats? expectedPlayerStats}) {
     when(
       () => getByPlayerIdAndSeason(
         playerId: any(named: 'playerId'),

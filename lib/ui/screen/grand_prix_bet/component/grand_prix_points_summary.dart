@@ -15,47 +15,42 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TitleMedium(
+          context.str.grandPrixBetPointsDetails,
+          fontWeight: FontWeight.bold,
+        ),
+        ...details.map(
+          (detail) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              BodyMedium(detail.label),
+              BodyMedium(detail.value?.toString() ?? context.str.doubleDash),
+            ],
+          ),
+        ),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            TitleMedium(context.str.grandPrixBetTotal),
             TitleMedium(
-              context.str.grandPrixBetPointsDetails,
-              fontWeight: FontWeight.bold,
-            ),
-            ...details.map(
-              (detail) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BodyMedium(detail.label),
-                  BodyMedium(
-                    detail.value?.toString() ?? context.str.doubleDash,
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TitleMedium(context.str.grandPrixBetTotal),
-                TitleMedium(
-                  totalPoints?.toString() ?? context.str.doubleDash,
-                  color: context.colorScheme.primary,
-                ),
-              ],
+              totalPoints?.toString() ?? context.str.doubleDash,
+              color: context.colorScheme.primary,
             ),
           ],
         ),
-      );
+      ],
+    ),
+  );
 }
 
 class GrandPrixPointsSummaryDetail {
   final String label;
   final double? value;
 
-  const GrandPrixPointsSummaryDetail({
-    required this.label,
-    this.value,
-  });
+  const GrandPrixPointsSummaryDetail({required this.label, this.value});
 }

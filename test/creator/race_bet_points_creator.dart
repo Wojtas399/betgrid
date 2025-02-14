@@ -38,21 +38,21 @@ class RaceBetPointsCreator {
   });
 
   RaceBetPoints create() => RaceBetPoints(
-        total: total,
-        p1: p1,
-        p2: p2,
-        p3: p3,
-        p10: p10,
-        fastestLap: fastestLap,
-        podiumAndP10: podiumAndP10,
-        podiumAndP10Multiplier: podiumAndP10Multiplier,
-        totalDnf: totalDnf,
-        dnfDriver1: dnfDriver1,
-        dnfDriver2: dnfDriver2,
-        dnfDriver3: dnfDriver3,
-        dnfMultiplier: dnfMultiplier,
-        safetyCar: safetyCar,
-        redFlag: redFlag,
-        safetyCarAndRedFlag: safetyCarAndRedFlag,
-      );
+    total: total,
+    p1: p1,
+    p2: p2,
+    p3: p3,
+    p10: p10,
+    fastestLap: fastestLap,
+    podiumAndP10: podiumAndP10,
+    podiumAndP10Multiplier: podiumAndP10Multiplier,
+    totalDnf: totalDnf,
+    dnfDriver1: dnfDriver1,
+    dnfDriver2: dnfDriver2,
+    dnfDriver3: dnfDriver3,
+    dnfMultiplier: dnfMultiplier,
+    safetyCar: safetyCar,
+    redFlag: redFlag,
+    safetyCarAndRedFlag: safetyCarAndRedFlag,
+  );
 }

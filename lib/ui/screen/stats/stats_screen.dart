@@ -13,9 +13,10 @@ class StatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => getIt.get<StatsCubit>(
-          param1: getIt.get<SeasonCubit>(),
-        )..initialize(),
-        child: const StatsBody(),
-      );
+    create:
+        (_) =>
+            getIt.get<StatsCubit>(param1: getIt.get<SeasonCubit>())
+              ..initialize(),
+    child: const StatsBody(),
+  );
 }

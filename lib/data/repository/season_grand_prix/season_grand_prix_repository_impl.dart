@@ -34,12 +34,12 @@ class SeasonGrandPrixRepositoryImpl extends Repository<SeasonGrandPrix>
     required String seasonGrandPrixId,
   }) async* {
     await for (final allSeasonGrandPrixes in repositoryState$) {
-      SeasonGrandPrix? matchingSeasonGrandPrix =
-          allSeasonGrandPrixes.firstWhereOrNull(
-        (seasonGrandPrix) =>
-            seasonGrandPrix.season == season &&
-            seasonGrandPrix.id == seasonGrandPrixId,
-      );
+      SeasonGrandPrix? matchingSeasonGrandPrix = allSeasonGrandPrixes
+          .firstWhereOrNull(
+            (seasonGrandPrix) =>
+                seasonGrandPrix.season == season &&
+                seasonGrandPrix.id == seasonGrandPrixId,
+          );
       matchingSeasonGrandPrix ??= await _fetchById(
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
@@ -49,11 +49,12 @@ class SeasonGrandPrixRepositoryImpl extends Repository<SeasonGrandPrix>
   }
 
   Future<void> _fetchAllFromSeason(int season) async {
-    final seasonGrandPrixDtos =
-        await _fireSeasonGrandPrixService.fetchAllFromSeason(season);
+    final seasonGrandPrixDtos = await _fireSeasonGrandPrixService
+        .fetchAllFromSeason(season);
     if (seasonGrandPrixDtos.isNotEmpty) {
-      final seasonGrandPrixes =
-          seasonGrandPrixDtos.map(_seasonGrandPrixMapper.mapFromDto);
+      final seasonGrandPrixes = seasonGrandPrixDtos.map(
+        _seasonGrandPrixMapper.mapFromDto,
+      );
       addOrUpdateEntities(seasonGrandPrixes);
     }
   }
@@ -67,8 +68,9 @@ class SeasonGrandPrixRepositoryImpl extends Repository<SeasonGrandPrix>
       seasonGrandPrixId: seasonGrandPrixId,
     );
     if (seasonGrandPrixDto == null) return null;
-    final seasonGrandPrix =
-        _seasonGrandPrixMapper.mapFromDto(seasonGrandPrixDto);
+    final seasonGrandPrix = _seasonGrandPrixMapper.mapFromDto(
+      seasonGrandPrixDto,
+    );
     addEntity(seasonGrandPrix);
     return seasonGrandPrix;
   }

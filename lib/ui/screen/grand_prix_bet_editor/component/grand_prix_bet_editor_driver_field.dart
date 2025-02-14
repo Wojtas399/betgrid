@@ -24,29 +24,27 @@ class GrandPrixBetEditorDriverField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          label != null
-              ? Expanded(
-                  flex: 1,
-                  child: LabelLarge(
-                    label!,
-                    textAlign: TextAlign.center,
-                    fontWeight: FontWeight.bold,
-                    color: labelColor,
-                  ),
-                )
-              : const SizedBox(
-                  width: 8,
-                ),
-          Expanded(
-            flex: 5,
-            child: _DriverSelectionFormField(
-              selectedDriverId: selectedDriverId,
-              onDriverSelected: onDriverSelected,
+    children: [
+      label != null
+          ? Expanded(
+            flex: 1,
+            child: LabelLarge(
+              label!,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+              color: labelColor,
             ),
-          ),
-        ],
-      );
+          )
+          : const SizedBox(width: 8),
+      Expanded(
+        flex: 5,
+        child: _DriverSelectionFormField(
+          selectedDriverId: selectedDriverId,
+          onDriverSelected: onDriverSelected,
+        ),
+      ),
+    ],
+  );
 }
 
 class _DriverSelectionFormField extends StatelessWidget {

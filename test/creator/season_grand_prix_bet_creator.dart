@@ -35,18 +35,18 @@ class SeasonGrandPrixBetCreator {
   }
 
   SeasonGrandPrixBet create() => SeasonGrandPrixBet(
-        id: id,
-        playerId: playerId,
-        season: season,
-        seasonGrandPrixId: seasonGrandPrixId,
-        qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
-        p1SeasonDriverId: p1SeasonDriverId,
-        p2SeasonDriverId: p2SeasonDriverId,
-        p3SeasonDriverId: p3SeasonDriverId,
-        p10SeasonDriverId: p10SeasonDriverId,
-        fastestLapSeasonDriverId: fastestLapSeasonDriverId,
-        dnfSeasonDriverIds: dnfSeasonDriverIds,
-        willBeSafetyCar: willBeSafetyCar,
-        willBeRedFlag: willBeRedFlag,
-      );
+    id: id,
+    playerId: playerId,
+    season: season,
+    seasonGrandPrixId: seasonGrandPrixId,
+    qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
+    p1SeasonDriverId: p1SeasonDriverId,
+    p2SeasonDriverId: p2SeasonDriverId,
+    p3SeasonDriverId: p3SeasonDriverId,
+    p10SeasonDriverId: p10SeasonDriverId,
+    fastestLapSeasonDriverId: fastestLapSeasonDriverId,
+    dnfSeasonDriverIds: dnfSeasonDriverIds,
+    willBeSafetyCar: willBeSafetyCar,
+    willBeRedFlag: willBeRedFlag,
+  );
 }

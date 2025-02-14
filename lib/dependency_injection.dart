@@ -49,8 +49,8 @@ abstract class FirebaseModule {
       FirebaseSeasonGrandPrixBetService();
 
   FirebaseSeasonGrandPrixBetPointsService
-      get fireSeasonGrandPrixBetPointsService =>
-          FirebaseSeasonGrandPrixBetPointsService();
+  get fireSeasonGrandPrixBetPointsService =>
+      FirebaseSeasonGrandPrixBetPointsService();
 
   FirebaseSeasonGrandPrixResultsService get fireSeasonGrandPrixResultsService =>
       FirebaseSeasonGrandPrixResultsService();

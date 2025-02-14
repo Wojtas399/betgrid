@@ -18,11 +18,11 @@ void main() {
   final seasonCubit = MockSeasonCubit();
 
   PlayersCubit createCubit() => PlayersCubit(
-        authRepository,
-        playerRepository,
-        getPlayerPointsUseCase,
-        seasonCubit,
-      );
+    authRepository,
+    playerRepository,
+    getPlayerPointsUseCase,
+    seasonCubit,
+  );
 
   tearDown(() {
     reset(authRepository);
@@ -31,99 +31,85 @@ void main() {
     reset(seasonCubit);
   });
 
-  group(
-    'initialize, ',
-    () {
-      const String loggedUserId = 'u1';
-      const int season = 2024;
-      final List<Player> players = [
-        const PlayerCreator(id: loggedUserId).create(),
-        const PlayerCreator(id: 'u2').create(),
-        const PlayerCreator(id: 'u3').create(),
-      ];
+  group('initialize, ', () {
+    const String loggedUserId = 'u1';
+    const int season = 2024;
+    final List<Player> players = [
+      const PlayerCreator(id: loggedUserId).create(),
+      const PlayerCreator(id: 'u2').create(),
+      const PlayerCreator(id: 'u3').create(),
+    ];
 
-      tearDown(() {
-        verify(() => authRepository.loggedUserId$).called(1);
-      });
+    tearDown(() {
+      verify(() => authRepository.loggedUserId$).called(1);
+    });
 
-      blocTest(
-        'should do nothing if logged user id is null',
-        build: () => createCubit(),
-        setUp: () => authRepository.mockGetLoggedUserId(null),
-        act: (cubit) => cubit.initialize(),
-        expect: () => [],
-      );
+    blocTest(
+      'should do nothing if logged user id is null',
+      build: () => createCubit(),
+      setUp: () => authRepository.mockGetLoggedUserId(null),
+      act: (cubit) => cubit.initialize(),
+      expect: () => [],
+    );
 
-      blocTest(
-        'should emit only completed status if there are no other players',
-        build: () => createCubit(),
-        setUp: () {
-          authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetAll(
-            players: [players.first],
-          );
-        },
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          const PlayersState(
-            status: PlayersStateStatus.completed,
+    blocTest(
+      'should emit only completed status if there are no other players',
+      build: () => createCubit(),
+      setUp: () {
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        playerRepository.mockGetAll(players: [players.first]);
+      },
+      act: (cubit) => cubit.initialize(),
+      expect: () => [const PlayersState(status: PlayersStateStatus.completed)],
+      verify: (_) => verify(playerRepository.getAll).called(1),
+    );
+
+    blocTest(
+      'should load and emit other players with their points',
+      build: () => createCubit(),
+      setUp: () {
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        playerRepository.mockGetAll(players: players);
+        seasonCubit.mockState(expectedState: season);
+        when(
+          () => getPlayerPointsUseCase.call(
+            playerId: players[1].id,
+            season: season,
           ),
-        ],
-        verify: (_) => verify(playerRepository.getAll).called(1),
-      );
-
-      blocTest(
-        'should load and emit other players with their points',
-        build: () => createCubit(),
-        setUp: () {
-          authRepository.mockGetLoggedUserId(loggedUserId);
-          playerRepository.mockGetAll(players: players);
-          seasonCubit.mockState(expectedState: season);
-          when(
-            () => getPlayerPointsUseCase.call(
-              playerId: players[1].id,
-              season: season,
-            ),
-          ).thenAnswer((_) => Stream.value(12.5));
-          when(
-            () => getPlayerPointsUseCase.call(
-              playerId: players.last.id,
-              season: season,
-            ),
-          ).thenAnswer((_) => Stream.value(22.2));
-        },
-        act: (cubit) => cubit.initialize(),
-        expect: () => [
-          PlayersState(
-            status: PlayersStateStatus.completed,
-            playersWithTheirPoints: [
-              PlayerWithPoints(
-                player: players[1],
-                totalPoints: 12.5,
-              ),
-              PlayerWithPoints(
-                player: players.last,
-                totalPoints: 22.2,
-              ),
-            ],
+        ).thenAnswer((_) => Stream.value(12.5));
+        when(
+          () => getPlayerPointsUseCase.call(
+            playerId: players.last.id,
+            season: season,
           ),
-        ],
-        verify: (_) {
-          verify(() => playerRepository.getAll()).called(1);
-          verify(
-            () => getPlayerPointsUseCase.call(
-              playerId: players[1].id,
-              season: season,
+        ).thenAnswer((_) => Stream.value(22.2));
+      },
+      act: (cubit) => cubit.initialize(),
+      expect:
+          () => [
+            PlayersState(
+              status: PlayersStateStatus.completed,
+              playersWithTheirPoints: [
+                PlayerWithPoints(player: players[1], totalPoints: 12.5),
+                PlayerWithPoints(player: players.last, totalPoints: 22.2),
+              ],
             ),
-          ).called(1);
-          verify(
-            () => getPlayerPointsUseCase.call(
-              playerId: players.last.id,
-              season: season,
-            ),
-          ).called(1);
-        },
-      );
-    },
-  );
+          ],
+      verify: (_) {
+        verify(() => playerRepository.getAll()).called(1);
+        verify(
+          () => getPlayerPointsUseCase.call(
+            playerId: players[1].id,
+            season: season,
+          ),
+        ).called(1);
+        verify(
+          () => getPlayerPointsUseCase.call(
+            playerId: players.last.id,
+            season: season,
+          ),
+        ).called(1);
+      },
+    );
+  });
 }

@@ -11,10 +11,7 @@ import '../../../extensions/build_context_extensions.dart';
 class ProfileThemeMode extends StatelessWidget {
   const ProfileThemeMode({super.key});
 
-  void _onThemeModeChanged(
-    user.ThemeMode themeMode,
-    BuildContext context,
-  ) {
+  void _onThemeModeChanged(user.ThemeMode themeMode, BuildContext context) {
     context.read<ThemeCubit>().changeThemeMode(themeMode);
   }
 
@@ -37,8 +34,9 @@ class ProfileThemeMode extends StatelessWidget {
         const GapVertical16(),
         ThemeModeSelection(
           selectedThemeMode: themeMode,
-          onThemeModeChanged: (user.ThemeMode themeMode) =>
-              _onThemeModeChanged(themeMode, context),
+          onThemeModeChanged:
+              (user.ThemeMode themeMode) =>
+                  _onThemeModeChanged(themeMode, context),
         ),
       ],
     );

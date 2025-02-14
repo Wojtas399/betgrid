@@ -81,25 +81,26 @@ class _Btn extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => isSelected
-      ? FilledButton(
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+  Widget build(BuildContext context) =>
+      isSelected
+          ? FilledButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-          ),
-          onPressed: onPressed,
-          child: Text(label),
-        )
-      : TextButton(
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            onPressed: onPressed,
+            child: Text(label),
+          )
+          : TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-          ),
-          onPressed: onPressed,
-          child: Text(label),
-        );
+            onPressed: onPressed,
+            child: Text(label),
+          );
 }

@@ -63,10 +63,8 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
 
   bool get _haveQualiBetsBeenChanged {
     if (originalSeasonGrandPrixBet == null) {
-      final String? firstNotNullSeasonDriverId =
-          qualiStandingsBySeasonDriverIds.firstWhereOrNull(
-        (String? driverId) => driverId != null,
-      );
+      final String? firstNotNullSeasonDriverId = qualiStandingsBySeasonDriverIds
+          .firstWhereOrNull((String? driverId) => driverId != null);
       final bool isAtLeastOnePositionPredicted =
           firstNotNullSeasonDriverId != null;
       return isAtLeastOnePositionPredicted;

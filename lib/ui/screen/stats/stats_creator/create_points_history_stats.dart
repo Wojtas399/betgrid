@@ -17,7 +17,7 @@ class CreatePointsHistoryStats {
   final AuthRepository _authRepository;
   final PlayerRepository _playerRepository;
   final GetFinishedGrandPrixesFromSeasonUseCase
-      _getFinishedGrandPrixesFromSeasonUseCase;
+  _getFinishedGrandPrixesFromSeasonUseCase;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
 
   const CreatePointsHistoryStats(
@@ -44,91 +44,84 @@ class CreatePointsHistoryStats {
       (
         List<Player> allPlayers,
         List<SeasonGrandPrix> finishedSeasonGrandPrixes,
-      ) =>
-          (
+      ) => (
         allPlayers: allPlayers,
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       ),
-    ).switchMap(
-      (data) {
-        if (data.allPlayers.isEmpty || data.finishedSeasonGrandPrixes.isEmpty) {
-          return Stream.value(null);
-        }
-        final playersIds = data.allPlayers.map((p) => p.id).toList();
-        final finishedSeasonGrandPrixesIds = data.finishedSeasonGrandPrixes
-            .map((grandPrix) => grandPrix.id)
-            .toList();
-        return Rx.combineLatest3(
-          Stream.value(data.allPlayers),
-          Stream.value(data.finishedSeasonGrandPrixes),
-          _seasonGrandPrixBetPointsRepository
-              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-            season: season,
-            idsOfPlayers: playersIds,
-            idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-          ),
-          (
-            List<Player> players,
-            List<SeasonGrandPrix> seasonGrandPrixes,
-            List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
-          ) {
-            final statsData = (
-              players: players,
-              seasonGrandPrixes: seasonGrandPrixes,
-              seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
-            );
-            return _createStats(statsData);
-          },
-        );
-      },
-    );
+    ).switchMap((data) {
+      if (data.allPlayers.isEmpty || data.finishedSeasonGrandPrixes.isEmpty) {
+        return Stream.value(null);
+      }
+      final playersIds = data.allPlayers.map((p) => p.id).toList();
+      final finishedSeasonGrandPrixesIds =
+          data.finishedSeasonGrandPrixes
+              .map((grandPrix) => grandPrix.id)
+              .toList();
+      return Rx.combineLatest3(
+        Stream.value(data.allPlayers),
+        Stream.value(data.finishedSeasonGrandPrixes),
+        _seasonGrandPrixBetPointsRepository
+            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+              season: season,
+              idsOfPlayers: playersIds,
+              idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+            ),
+        (
+          List<Player> players,
+          List<SeasonGrandPrix> seasonGrandPrixes,
+          List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
+        ) {
+          final statsData = (
+            players: players,
+            seasonGrandPrixes: seasonGrandPrixes,
+            seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
+          );
+          return _createStats(statsData);
+        },
+      );
+    });
   }
 
   Stream<PointsHistory?> _getIndividualStats(int season) {
     return Rx.combineLatest2(
       _getLoggedUser(),
       _getFinishedGrandPrixesFromSeasonUseCase(season: season),
-      (
-        Player? loggedUser,
-        List<SeasonGrandPrix> finishedSeasonGrandPrixes,
-      ) =>
-          (
+      (Player? loggedUser, List<SeasonGrandPrix> finishedSeasonGrandPrixes) => (
         loggedUser: loggedUser,
         finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
       ),
-    ).switchMap(
-      (data) {
-        final Player? loggedUser = data.loggedUser;
-        if (loggedUser == null || data.finishedSeasonGrandPrixes.isEmpty) {
-          return Stream.value(null);
-        }
-        final finishedSeasonGrandPrixesIds = data.finishedSeasonGrandPrixes
-            .map((grandPrix) => grandPrix.id)
-            .toList();
-        return Rx.combineLatest3(
-          Stream.value(loggedUser),
-          Stream.value(data.finishedSeasonGrandPrixes),
-          _seasonGrandPrixBetPointsRepository
-              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-            season: season,
-            idsOfPlayers: [loggedUser.id],
-            idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-          ),
-          (
-            Player loggedUser,
-            List<SeasonGrandPrix> seasonGrandPrixes,
-            List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
-          ) {
-            final statsData = (
-              players: [loggedUser],
-              seasonGrandPrixes: seasonGrandPrixes,
-              seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
-            );
-            return _createStats(statsData);
-          },
-        );
-      },
-    );
+    ).switchMap((data) {
+      final Player? loggedUser = data.loggedUser;
+      if (loggedUser == null || data.finishedSeasonGrandPrixes.isEmpty) {
+        return Stream.value(null);
+      }
+      final finishedSeasonGrandPrixesIds =
+          data.finishedSeasonGrandPrixes
+              .map((grandPrix) => grandPrix.id)
+              .toList();
+      return Rx.combineLatest3(
+        Stream.value(loggedUser),
+        Stream.value(data.finishedSeasonGrandPrixes),
+        _seasonGrandPrixBetPointsRepository
+            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+              season: season,
+              idsOfPlayers: [loggedUser.id],
+              idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+            ),
+        (
+          Player loggedUser,
+          List<SeasonGrandPrix> seasonGrandPrixes,
+          List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
+        ) {
+          final statsData = (
+            players: [loggedUser],
+            seasonGrandPrixes: seasonGrandPrixes,
+            seasonGrandPrixesBetPoints: seasonGrandPrixesBetPoints,
+          );
+          return _createStats(statsData);
+        },
+      );
+    });
   }
 
   PointsHistory _createStats(_StatsData data) {
@@ -138,56 +131,55 @@ class CreatePointsHistoryStats {
     final List<PointsHistoryGrandPrix> chartGrandPrixes = [];
     for (final seasonGp in sortedFinishedSeasonGrandPrixes) {
       final List<PointsHistoryPlayerPoints> playersPointsForGp =
-          data.players.map(
-        (Player player) {
-          final gpBetPoints = data.seasonGrandPrixesBetPoints.firstWhereOrNull(
-            (SeasonGrandPrixBetPoints? gpBetPoints) =>
-                gpBetPoints?.playerId == player.id &&
-                gpBetPoints?.seasonGrandPrixId == seasonGp.id,
-          );
-          final double pointsFromPreviousGrandPrixes =
-              chartGrandPrixes.isNotEmpty
-                  ? chartGrandPrixes.last.playersPoints
-                      .firstWhere((el) => el.playerId == player.id)
-                      .points
-                  : 0;
-          return PointsHistoryPlayerPoints(
-            playerId: player.id,
-            points: pointsFromPreviousGrandPrixes +
-                (gpBetPoints?.totalPoints ?? 0.0),
-          );
-        },
-      ).toList();
-      chartGrandPrixes.add(PointsHistoryGrandPrix(
-        roundNumber: seasonGp.roundNumber,
-        playersPoints: playersPointsForGp,
-      ));
+          data.players.map((Player player) {
+            final gpBetPoints = data.seasonGrandPrixesBetPoints
+                .firstWhereOrNull(
+                  (SeasonGrandPrixBetPoints? gpBetPoints) =>
+                      gpBetPoints?.playerId == player.id &&
+                      gpBetPoints?.seasonGrandPrixId == seasonGp.id,
+                );
+            final double pointsFromPreviousGrandPrixes =
+                chartGrandPrixes.isNotEmpty
+                    ? chartGrandPrixes.last.playersPoints
+                        .firstWhere((el) => el.playerId == player.id)
+                        .points
+                    : 0;
+            return PointsHistoryPlayerPoints(
+              playerId: player.id,
+              points:
+                  pointsFromPreviousGrandPrixes +
+                  (gpBetPoints?.totalPoints ?? 0.0),
+            );
+          }).toList();
+      chartGrandPrixes.add(
+        PointsHistoryGrandPrix(
+          roundNumber: seasonGp.roundNumber,
+          playersPoints: playersPointsForGp,
+        ),
+      );
     }
-    return PointsHistory(
-      players: data.players,
-      grandPrixes: chartGrandPrixes,
-    );
+    return PointsHistory(players: data.players, grandPrixes: chartGrandPrixes);
   }
 
   Stream<Player?> _getLoggedUser() {
     return _authRepository.loggedUserId$.switchMap(
-      (String? loggedUserId) => loggedUserId == null
-          ? Stream.value(null)
-          : _playerRepository.getById(loggedUserId),
+      (String? loggedUserId) =>
+          loggedUserId == null
+              ? Stream.value(null)
+              : _playerRepository.getById(loggedUserId),
     );
   }
 }
 
-typedef _StatsData = ({
-  Iterable<Player> players,
-  Iterable<SeasonGrandPrix> seasonGrandPrixes,
-  Iterable<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
-});
+typedef _StatsData =
+    ({
+      Iterable<Player> players,
+      Iterable<SeasonGrandPrix> seasonGrandPrixes,
+      Iterable<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,
+    });
 
 extension _SeasonGrandPrixesListX on List<SeasonGrandPrix> {
   void sortByRoundNumber() {
-    sort(
-      (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
-    );
+    sort((gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber));
   }
 }

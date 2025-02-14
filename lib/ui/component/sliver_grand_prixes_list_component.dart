@@ -11,38 +11,36 @@ class SliverGrandPrixesList extends SliverPadding {
     required Function(String) onGrandPrixPressed,
     bool isLoading = false,
   }) : super(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
-          sliver: isLoading
-              ? const SliverFillRemaining(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                )
-              : SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: grandPrixesWithPoints.length,
-                    (context, index) {
-                      final item = grandPrixesWithPoints[index];
+         padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
+         sliver:
+             isLoading
+                 ? const SliverFillRemaining(
+                   child: Column(
+                     mainAxisSize: MainAxisSize.max,
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [CircularProgressIndicator()],
+                   ),
+                 )
+                 : SliverList(
+                   delegate: SliverChildBuilderDelegate(
+                     childCount: grandPrixesWithPoints.length,
+                     (context, index) {
+                       final item = grandPrixesWithPoints[index];
 
-                      return ScrollAnimatedItem(
-                        child: GrandPrixItem(
-                          betPoints: item.points,
-                          name: item.name,
-                          countryAlpha2Code: item.countryAlpha2Code,
-                          roundNumber: item.roundNumber,
-                          startDate: item.startDate,
-                          endDate: item.endDate,
-                          onPressed: () => onGrandPrixPressed(
-                            item.seasonGrandPrixId,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-        );
+                       return ScrollAnimatedItem(
+                         child: GrandPrixItem(
+                           betPoints: item.points,
+                           name: item.name,
+                           countryAlpha2Code: item.countryAlpha2Code,
+                           roundNumber: item.roundNumber,
+                           startDate: item.startDate,
+                           endDate: item.endDate,
+                           onPressed:
+                               () => onGrandPrixPressed(item.seasonGrandPrixId),
+                         ),
+                       );
+                     },
+                   ),
+                 ),
+       );
 }

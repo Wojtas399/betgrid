@@ -44,9 +44,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void _manageLoggedUserId(String? loggedUserId) {
     if (loggedUserId == null) {
-      emit(state.copyWith(
-        status: HomeStateStatus.loggedUserDoesNotExist,
-      ));
+      emit(state.copyWith(status: HomeStateStatus.loggedUserDoesNotExist));
     }
   }
 
@@ -57,10 +55,8 @@ class HomeCubit extends Cubit<HomeState> {
         playerId: loggedUserId,
         season: _seasonCubit.state,
       ),
-      (User? user, PlayerStats? stats) => _ListenedData(
-        loggedUserData: user,
-        totalPoints: stats?.totalPoints,
-      ),
+      (User? user, PlayerStats? stats) =>
+          _ListenedData(loggedUserData: user, totalPoints: stats?.totalPoints),
     );
   }
 
@@ -69,16 +65,16 @@ class HomeCubit extends Cubit<HomeState> {
     final double? totalPoints = data.totalPoints;
 
     if (loggedUser == null || totalPoints == null) {
-      emit(state.copyWith(
-        status: HomeStateStatus.loggedUserDataNotCompleted,
-      ));
+      emit(state.copyWith(status: HomeStateStatus.loggedUserDataNotCompleted));
     } else {
-      emit(state.copyWith(
-        status: HomeStateStatus.completed,
-        username: loggedUser.username,
-        avatarUrl: loggedUser.avatarUrl,
-        totalPoints: totalPoints,
-      ));
+      emit(
+        state.copyWith(
+          status: HomeStateStatus.completed,
+          username: loggedUser.username,
+          avatarUrl: loggedUser.avatarUrl,
+          totalPoints: totalPoints,
+        ),
+      );
     }
   }
 }
@@ -87,14 +83,8 @@ class _ListenedData with EquatableMixin {
   final User? loggedUserData;
   final double? totalPoints;
 
-  _ListenedData({
-    required this.loggedUserData,
-    required this.totalPoints,
-  });
+  _ListenedData({required this.loggedUserData, required this.totalPoints});
 
   @override
-  List<Object?> get props => [
-        loggedUserData,
-        totalPoints,
-      ];
+  List<Object?> get props => [loggedUserData, totalPoints];
 }

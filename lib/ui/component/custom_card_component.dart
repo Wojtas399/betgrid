@@ -16,23 +16,18 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: double.infinity,
-        child: Card(
-          color: context.colorScheme.surfaceContainer,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: context.colorScheme.surfaceContainerHighest,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: onPressed,
-            child: Padding(
-              padding: padding,
-              child: child,
-            ),
-          ),
-        ),
-      );
+    width: double.infinity,
+    child: Card(
+      color: context.colorScheme.surfaceContainer,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: context.colorScheme.surfaceContainerHighest),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: onPressed,
+        child: Padding(padding: padding, child: child),
+      ),
+    ),
+  );
 }
