@@ -48,7 +48,6 @@ class _CubitStatusListener extends StatelessWidget {
       dialogService.showSnackbarMessage(
         context.str.grandPrixBetEditorSuccessfullySavedBets,
       );
-      context.maybePop();
     }
   }
 
