@@ -11,7 +11,7 @@ class SliverGrandPrixesList extends SliverPadding {
     required Function(String) onGrandPrixPressed,
     bool isLoading = false,
   }) : super(
-         padding: const EdgeInsets.fromLTRB(24, 24, 24, 64),
+         padding: const EdgeInsets.fromLTRB(8, 24, 8, 64),
          sliver:
              isLoading
                  ? const SliverFillRemaining(
