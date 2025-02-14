@@ -2,12 +2,12 @@ import 'package:betgrid_shared/firebase/firebase_betgrid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
 import 'firebase_options_dev.dart';
+import 'l10n/app_localizations.dart';
 import 'ui/common_cubit/theme/theme_cubit.dart';
 import 'ui/common_cubit/theme/theme_state.dart';
 import 'ui/config/router/app_router.dart';

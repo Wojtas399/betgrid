@@ -61,7 +61,9 @@ serviceAccountKey.json
 google-services.json
 storage.rules
 
-# FVM related
+# l10n related
+app_localizations.dart
+app_localizations_pl.dart
 
 # Mason related
 bricks.json

@@ -59,7 +59,6 @@ flutter_launcher_icons:
   adaptive_icon_background: "assets/ic_launcher_adaptive_back.png"
 
 flutter:
-  generate: true
   uses-material-design: true
 
   assets:
