@@ -36,7 +36,7 @@ class StatsBetPointsHistory extends StatelessWidget {
                 dataLabelSettings: DataLabelSettings(
                   isVisible: true,
                   labelAlignment: ChartDataLabelAlignment.top,
-                  builder: (_, ChartPoint point, __, int gpIndex, _____) {
+                  builder: (_, ChartPoint point, _, int gpIndex, _) {
                     final bool isLastGrandPrix =
                         gpIndex == pointsHistory.grandPrixes.length - 1;
                     return Row(

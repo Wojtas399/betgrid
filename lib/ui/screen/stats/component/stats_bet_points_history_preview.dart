@@ -28,7 +28,7 @@ class _State extends State<StatsBetPointsHistoryPreview> {
 
   @override
   Widget build(BuildContext context) => PopScope(
-    onPopInvokedWithResult: (_, __) => _onPop(),
+    onPopInvokedWithResult: (_, _) => _onPop(),
     child: Dialog.fullscreen(
       child: Scaffold(
         appBar: AppBar(title: Text(context.str.statsPointsHistory)),

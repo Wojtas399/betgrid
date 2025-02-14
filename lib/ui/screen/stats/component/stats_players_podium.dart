@@ -45,7 +45,7 @@ class StatsPlayersPodium extends StatelessWidget {
           dataLabelSettings: DataLabelSettings(
             isVisible: true,
             builder:
-                (_, ChartPoint point, ___, int columnIndex, _____) => Column(
+                (_, ChartPoint point, _, int columnIndex, _) => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     BodyLarge('${point.y}', fontWeight: FontWeight.bold),
