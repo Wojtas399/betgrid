@@ -35,26 +35,23 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   }
 
   void initialize() {
-    _listener ??= _getListenedParams().listen(
-      (_ListenedParams listenedParams) {
-        emit(state.copyWith(
+    _listener ??= _getListenedParams().listen((_ListenedParams listenedParams) {
+      emit(
+        state.copyWith(
           status: PlayerProfileStateStatus.completed,
           player: listenedParams.player,
           season: _seasonCubit.state,
           totalPoints: listenedParams.totalPoints,
           grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
-        ));
-      },
-    );
+        ),
+      );
+    });
   }
 
   Stream<_ListenedParams> _getListenedParams() {
     return Rx.combineLatest3(
       _playerRepository.getById(_playerId),
-      _getPlayerPointsUseCase(
-        playerId: _playerId,
-        season: _seasonCubit.state,
-      ),
+      _getPlayerPointsUseCase(playerId: _playerId, season: _seasonCubit.state),
       _getGrandPrixesWithPointsUseCase(
         playerId: _playerId,
         season: _seasonCubit.state,
@@ -63,8 +60,7 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
         Player? player,
         double? totalPoints,
         List<GrandPrixWithPoints> grandPrixesWithPoints,
-      ) =>
-          (
+      ) => (
         player: player,
         totalPoints: totalPoints,
         grandPrixesWithPoints: grandPrixesWithPoints,
@@ -73,8 +69,9 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
   }
 }
 
-typedef _ListenedParams = ({
-  Player? player,
-  double? totalPoints,
-  List<GrandPrixWithPoints> grandPrixesWithPoints,
-});
+typedef _ListenedParams =
+    ({
+      Player? player,
+      double? totalPoints,
+      List<GrandPrixWithPoints> grandPrixesWithPoints,
+    });
