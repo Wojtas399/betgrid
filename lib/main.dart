@@ -9,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
-import 'firebase_options_dev.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 import 'ui/common_cubit/theme/theme_cubit.dart';
 import 'ui/common_cubit/theme/theme_state.dart';
@@ -22,7 +22,7 @@ void main() async {
   configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseBetgrid.initialize(
-    name: 'betgrid-dev',
+    name: 'betgrid',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
