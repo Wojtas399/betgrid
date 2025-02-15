@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:betgrid_shared/firebase/firebase_betgrid.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +28,14 @@ void main() async {
 
   if (const bool.fromEnvironment('emulated', defaultValue: false)) {
     FirebaseBetgrid.useEmulators();
+  } else {
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
   }
 
   Intl.defaultLocale = 'pl';

@@ -33,9 +33,4 @@ Runner/GeneratedPluginRegistrant.*
 !default.pbxuser
 !default.perspectivev3
 
-# Additional
-GoogleService-Info.plist
-Podfile
-Podfile.lock
-firebase_app_id_file.json
 Keys.xcconfig

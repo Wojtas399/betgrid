@@ -59,6 +59,7 @@ firebase_options_dev.dart
 firebase.json
 serviceAccountKey.json
 google-services.json
+GoogleService-Info.plist
 storage.rules
 
 # l10n related
