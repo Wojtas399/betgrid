@@ -28,7 +28,7 @@ dependencies:
   collection: ^1.18.0
   flutter_sticky_header: ^0.6.5
   country_flags: ^3.0.0
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.3
   image_picker: ^1.0.7
   syncfusion_flutter_charts: ^27.1.51
   flutter_bloc: ^8.1.5
