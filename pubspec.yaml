@@ -40,6 +40,7 @@ dependencies:
       ref: 1d4a99af8ede01f701031d5c2585e7d198333e06
   firebase_crashlytics: ^4.3.2
   firebase_analytics: ^11.4.2
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:

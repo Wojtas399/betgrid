@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'home_state.freezed.dart';
 
 enum HomeStateStatus {
-  loading,
+  initial,
   completed,
   loggedUserDoesNotExist,
   loggedUserDataNotCompleted,
@@ -17,7 +17,7 @@ extension HomeStateStatusExtensions on HomeStateStatus {
 @freezed
 class HomeState with _$HomeState {
   const factory HomeState({
-    @Default(HomeStateStatus.loading) HomeStateStatus status,
+    @Default(HomeStateStatus.initial) HomeStateStatus status,
     String? username,
     String? avatarUrl,
     double? totalPoints,

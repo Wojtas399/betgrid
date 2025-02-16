@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
@@ -19,13 +20,15 @@ import 'ui/extensions/theme_mode_extensions.dart';
 import 'ui/extensions/theme_primary_color_extensions.dart';
 
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   configureDependencies();
-  WidgetsFlutterBinding.ensureInitialized();
+
   await FirebaseBetgrid.initialize(
     name: 'betgrid',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   if (const bool.fromEnvironment('emulated', defaultValue: false)) {
     FirebaseBetgrid.useEmulators();
   } else {

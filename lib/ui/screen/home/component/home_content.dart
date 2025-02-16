@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../../../../dependency_injection.dart';
 import '../../../config/router/app_router.dart';
@@ -15,6 +16,9 @@ class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
   void _onCubitStatusChanged(HomeStateStatus status) async {
+    if (status != HomeStateStatus.initial) {
+      FlutterNativeSplash.remove();
+    }
     if (status.isLoggedUserDataNotCompleted) {
       await getIt<DialogService>().showFullScreenDialog(
         const RequiredDataCompletionScreen(),
