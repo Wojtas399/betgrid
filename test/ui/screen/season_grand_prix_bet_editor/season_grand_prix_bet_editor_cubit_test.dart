@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/season_grand_prix_bet.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_cubit.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_race_form.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet_editor/cubit/grand_prix_bet_editor_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_cubit.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_race_form.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,7 +23,7 @@ void main() {
   const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
 
-  GrandPrixBetEditorCubit createCubit() => GrandPrixBetEditorCubit(
+  SeasonGrandPrixBetEditorCubit createCubit() => SeasonGrandPrixBetEditorCubit(
     authRepository,
     seasonGrandPrixBetRepository,
     getDetailsOfAllDriversFromSeasonUseCase,
@@ -86,7 +86,7 @@ void main() {
           willBeRedFlag: false,
         ).create();
     final bet$ = StreamController<SeasonGrandPrixBet>()..add(bet);
-    GrandPrixBetEditorState? state;
+    SeasonGrandPrixBetEditorState? state;
 
     blocTest(
       'should load details of all drivers, should listen to grand prix bet '
@@ -112,13 +112,13 @@ void main() {
       },
       expect:
           () => [
-            state = GrandPrixBetEditorState(
-              status: GrandPrixBetEditorStateStatus.completed,
+            state = SeasonGrandPrixBetEditorState(
+              status: SeasonGrandPrixBetEditorStateStatus.completed,
               allDrivers: [allDrivers[1], allDrivers.last, allDrivers.first],
               originalSeasonGrandPrixBet: bet,
               qualiStandingsBySeasonDriverIds:
                   bet.qualiStandingsBySeasonDriverIds,
-              raceForm: GrandPrixBetEditorRaceForm(
+              raceForm: SeasonGrandPrixBetEditorRaceForm(
                 p1SeasonDriverId: bet.p1SeasonDriverId,
                 p2SeasonDriverId: bet.p2SeasonDriverId,
                 p3SeasonDriverId: bet.p3SeasonDriverId,
@@ -164,8 +164,8 @@ void main() {
               cubit.onQualiStandingsChanged(standing: 10, driverId: driverId),
       expect:
           () => [
-            GrandPrixBetEditorState(
-              status: GrandPrixBetEditorStateStatus.completed,
+            SeasonGrandPrixBetEditorState(
+              status: SeasonGrandPrixBetEditorStateStatus.completed,
               qualiStandingsBySeasonDriverIds: List.generate(
                 20,
                 (int standingIndex) => standingIndex == 9 ? driverId : null,
@@ -179,7 +179,7 @@ void main() {
       'then should set driverId at standing - 1 position',
       build: () => createCubit(),
       seed:
-          () => GrandPrixBetEditorState(
+          () => SeasonGrandPrixBetEditorState(
             qualiStandingsBySeasonDriverIds: List.generate(
               20,
               (int standingIndex) => standingIndex == 3 ? driverId : null,
@@ -190,8 +190,8 @@ void main() {
               cubit.onQualiStandingsChanged(standing: 8, driverId: driverId),
       expect:
           () => [
-            GrandPrixBetEditorState(
-              status: GrandPrixBetEditorStateStatus.completed,
+            SeasonGrandPrixBetEditorState(
+              status: SeasonGrandPrixBetEditorStateStatus.completed,
               qualiStandingsBySeasonDriverIds: List.generate(
                 20,
                 (int standingIndex) => standingIndex == 7 ? driverId : null,
@@ -209,9 +209,9 @@ void main() {
     act: (cubit) => cubit.onRaceP1DriverChanged('d1'),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(p1SeasonDriverId: 'd1'),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(p1SeasonDriverId: 'd1'),
           ),
         ],
   );
@@ -223,9 +223,9 @@ void main() {
     act: (cubit) => cubit.onRaceP2DriverChanged('d1'),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(p2SeasonDriverId: 'd1'),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(p2SeasonDriverId: 'd1'),
           ),
         ],
   );
@@ -237,9 +237,9 @@ void main() {
     act: (cubit) => cubit.onRaceP3DriverChanged('d1'),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(p3SeasonDriverId: 'd1'),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(p3SeasonDriverId: 'd1'),
           ),
         ],
   );
@@ -251,9 +251,9 @@ void main() {
     act: (cubit) => cubit.onRaceP10DriverChanged('d1'),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(p10SeasonDriverId: 'd1'),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(p10SeasonDriverId: 'd1'),
           ),
         ],
   );
@@ -265,9 +265,9 @@ void main() {
     act: (cubit) => cubit.onRaceFastestLapDriverChanged('d1'),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(
               fastestLapSeasonDriverId: 'd1',
             ),
           ),
@@ -280,12 +280,12 @@ void main() {
       const DriverDetailsCreator(seasonDriverId: driverId).create(),
       const DriverDetailsCreator(seasonDriverId: 'd2').create(),
     ];
-    GrandPrixBetEditorState? state;
+    SeasonGrandPrixBetEditorState? state;
 
     blocTest(
       'should do nothing if allDrivers list is empty',
       build: () => createCubit(),
-      seed: () => const GrandPrixBetEditorState(allDrivers: []),
+      seed: () => const SeasonGrandPrixBetEditorState(allDrivers: []),
       act: (cubit) => cubit.onDnfDriverSelected(driverId),
       expect: () => [],
     );
@@ -295,8 +295,8 @@ void main() {
       'allDrivers list',
       build: () => createCubit(),
       seed:
-          () => GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
+          () => SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
             allDrivers: allDrivers,
           ),
       act: (cubit) => cubit.onDnfDriverSelected('d3'),
@@ -308,13 +308,13 @@ void main() {
       'dnfDrivers list of raceForm',
       build: () => createCubit(),
       seed:
-          () => GrandPrixBetEditorState(
+          () => SeasonGrandPrixBetEditorState(
             allDrivers: allDrivers,
             originalSeasonGrandPrixBet:
                 SeasonGrandPrixBetCreator(
                   dnfSeasonDriverIds: [driverId, 'd2'],
                 ).create(),
-            raceForm: GrandPrixBetEditorRaceForm(dnfDrivers: allDrivers),
+            raceForm: SeasonGrandPrixBetEditorRaceForm(dnfDrivers: allDrivers),
           ),
       act: (cubit) => cubit.onDnfDriverSelected(driverId),
       expect: () => [],
@@ -326,13 +326,13 @@ void main() {
       build: () => createCubit(),
       seed:
           () =>
-              state = GrandPrixBetEditorState(
+              state = SeasonGrandPrixBetEditorState(
                 allDrivers: allDrivers,
                 originalSeasonGrandPrixBet:
                     SeasonGrandPrixBetCreator(
                       dnfSeasonDriverIds: ['d2'],
                     ).create(),
-                raceForm: GrandPrixBetEditorRaceForm(
+                raceForm: SeasonGrandPrixBetEditorRaceForm(
                   dnfDrivers: [allDrivers.last],
                 ),
               ),
@@ -354,12 +354,12 @@ void main() {
       const DriverDetailsCreator(seasonDriverId: driverId).create(),
       const DriverDetailsCreator(seasonDriverId: 'd2').create(),
     ];
-    GrandPrixBetEditorState? state;
+    SeasonGrandPrixBetEditorState? state;
 
     blocTest(
       'should do nothing if allDrivers list is empty',
       build: () => createCubit(),
-      seed: () => const GrandPrixBetEditorState(allDrivers: []),
+      seed: () => const SeasonGrandPrixBetEditorState(allDrivers: []),
       act: (cubit) => cubit.onDnfDriverRemoved(driverId),
       expect: () => [],
     );
@@ -370,13 +370,13 @@ void main() {
       build: () => createCubit(),
       seed:
           () =>
-              state = GrandPrixBetEditorState(
+              state = SeasonGrandPrixBetEditorState(
                 allDrivers: allDrivers,
                 originalSeasonGrandPrixBet:
                     SeasonGrandPrixBetCreator(
                       dnfSeasonDriverIds: ['d2'],
                     ).create(),
-                raceForm: GrandPrixBetEditorRaceForm(
+                raceForm: SeasonGrandPrixBetEditorRaceForm(
                   dnfDrivers: [allDrivers.last],
                 ),
               ),
@@ -390,13 +390,13 @@ void main() {
       build: () => createCubit(),
       seed:
           () =>
-              state = GrandPrixBetEditorState(
+              state = SeasonGrandPrixBetEditorState(
                 allDrivers: allDrivers,
                 originalSeasonGrandPrixBet:
                     SeasonGrandPrixBetCreator(
                       dnfSeasonDriverIds: ['d2', driverId],
                     ).create(),
-                raceForm: GrandPrixBetEditorRaceForm(
+                raceForm: SeasonGrandPrixBetEditorRaceForm(
                   dnfDrivers: [allDrivers.last, allDrivers.first],
                 ),
               ),
@@ -417,9 +417,9 @@ void main() {
     act: (cubit) => cubit.onSafetyCarPredictionChanged(false),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(willBeSafetyCar: false),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(willBeSafetyCar: false),
           ),
         ],
   );
@@ -431,9 +431,9 @@ void main() {
     act: (cubit) => cubit.onRedFlagPredictionChanged(false),
     expect:
         () => [
-          const GrandPrixBetEditorState(
-            status: GrandPrixBetEditorStateStatus.completed,
-            raceForm: GrandPrixBetEditorRaceForm(willBeRedFlag: false),
+          const SeasonGrandPrixBetEditorState(
+            status: SeasonGrandPrixBetEditorStateStatus.completed,
+            raceForm: SeasonGrandPrixBetEditorRaceForm(willBeRedFlag: false),
           ),
         ],
   );
@@ -463,7 +463,7 @@ void main() {
       const DriverDetailsCreator(seasonDriverId: 'd3').create(),
       const DriverDetailsCreator(seasonDriverId: 'd10').create(),
     ];
-    GrandPrixBetEditorState? state;
+    SeasonGrandPrixBetEditorState? state;
 
     blocTest(
       'should finish method call if logged user does not exist',
@@ -484,10 +484,10 @@ void main() {
       },
       seed:
           () =>
-              state = GrandPrixBetEditorState(
+              state = SeasonGrandPrixBetEditorState(
                 qualiStandingsBySeasonDriverIds:
                     qualiStandingsBySeasonDriverIds,
-                raceForm: GrandPrixBetEditorRaceForm(
+                raceForm: SeasonGrandPrixBetEditorRaceForm(
                   p1SeasonDriverId: p1SeasonDriverId,
                   p2SeasonDriverId: p2SeasonDriverId,
                   p3SeasonDriverId: p3SeasonDriverId,
@@ -502,10 +502,10 @@ void main() {
       expect:
           () => [
             state = state!.copyWith(
-              status: GrandPrixBetEditorStateStatus.saving,
+              status: SeasonGrandPrixBetEditorStateStatus.saving,
             ),
             state = state!.copyWith(
-              status: GrandPrixBetEditorStateStatus.successfullySaved,
+              status: SeasonGrandPrixBetEditorStateStatus.successfullySaved,
             ),
           ],
       verify:
@@ -538,12 +538,12 @@ void main() {
       },
       seed:
           () =>
-              state = GrandPrixBetEditorState(
+              state = SeasonGrandPrixBetEditorState(
                 qualiStandingsBySeasonDriverIds:
                     qualiStandingsBySeasonDriverIds,
                 originalSeasonGrandPrixBet:
                     SeasonGrandPrixBetCreator(id: grandPrixBetId).create(),
-                raceForm: GrandPrixBetEditorRaceForm(
+                raceForm: SeasonGrandPrixBetEditorRaceForm(
                   p1SeasonDriverId: p1SeasonDriverId,
                   p2SeasonDriverId: p2SeasonDriverId,
                   p3SeasonDriverId: p3SeasonDriverId,
@@ -558,10 +558,10 @@ void main() {
       expect:
           () => [
             state = state!.copyWith(
-              status: GrandPrixBetEditorStateStatus.saving,
+              status: SeasonGrandPrixBetEditorStateStatus.saving,
             ),
             state = state!.copyWith(
-              status: GrandPrixBetEditorStateStatus.successfullySaved,
+              status: SeasonGrandPrixBetEditorStateStatus.successfullySaved,
             ),
           ],
       verify:

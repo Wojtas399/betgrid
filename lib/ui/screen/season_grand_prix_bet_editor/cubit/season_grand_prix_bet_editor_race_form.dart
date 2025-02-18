@@ -2,13 +2,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../model/driver_details.dart';
 
-part 'grand_prix_bet_editor_race_form.freezed.dart';
+part 'season_grand_prix_bet_editor_race_form.freezed.dart';
 
 @freezed
-class GrandPrixBetEditorRaceForm with _$GrandPrixBetEditorRaceForm {
-  const GrandPrixBetEditorRaceForm._();
+class SeasonGrandPrixBetEditorRaceForm with _$SeasonGrandPrixBetEditorRaceForm {
+  const SeasonGrandPrixBetEditorRaceForm._();
 
-  const factory GrandPrixBetEditorRaceForm({
+  const factory SeasonGrandPrixBetEditorRaceForm({
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
     String? p3SeasonDriverId,
@@ -17,9 +17,9 @@ class GrandPrixBetEditorRaceForm with _$GrandPrixBetEditorRaceForm {
     @Default([]) List<DriverDetails> dnfDrivers,
     bool? willBeRedFlag,
     bool? willBeSafetyCar,
-  }) = _GrandPrixBetEditorRaceForm;
+  }) = _SeasonGrandPrixBetEditorRaceForm;
 
-  GrandPrixBetEditorRaceForm removeFromPodiumOrP10IfExists(
+  SeasonGrandPrixBetEditorRaceForm removeFromPodiumOrP10IfExists(
     String seasonDriverId,
   ) {
     return copyWith(

@@ -3,31 +3,37 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet.dart';
-import 'grand_prix_bet_editor_race_form.dart';
+import 'season_grand_prix_bet_editor_race_form.dart';
 
-part 'grand_prix_bet_editor_state.freezed.dart';
+part 'season_grand_prix_bet_editor_state.freezed.dart';
 
-enum GrandPrixBetEditorStateStatus {
+enum SeasonGrandPrixBetEditorStateStatus {
   initial,
   completed,
   saving,
   successfullySaved,
 }
 
-extension GrandPrixBetEditorStateStatusX on GrandPrixBetEditorStateStatus {
-  bool get isInitial => this == GrandPrixBetEditorStateStatus.initial;
+extension SeasonGrandPrixBetEditorStateStatusX
+    on SeasonGrandPrixBetEditorStateStatus {
+  bool get isInitial => this == SeasonGrandPrixBetEditorStateStatus.initial;
+
+  bool get isSaving => this == SeasonGrandPrixBetEditorStateStatus.saving;
+
+  bool get isSuccessfullySaved =>
+      this == SeasonGrandPrixBetEditorStateStatus.successfullySaved;
 }
 
 @freezed
-class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
+class SeasonGrandPrixBetEditorState with _$SeasonGrandPrixBetEditorState {
   final int _maxNumberOfDnfDriverPredictions = 3;
 
-  const GrandPrixBetEditorState._();
+  const SeasonGrandPrixBetEditorState._();
 
-  const factory GrandPrixBetEditorState({
+  const factory SeasonGrandPrixBetEditorState({
     @Assert('qualiStandingsBySeasonDriverIds.length == 20')
-    @Default(GrandPrixBetEditorStateStatus.initial)
-    GrandPrixBetEditorStateStatus status,
+    @Default(SeasonGrandPrixBetEditorStateStatus.initial)
+    SeasonGrandPrixBetEditorStateStatus status,
     SeasonGrandPrixBet? originalSeasonGrandPrixBet,
     List<DriverDetails>? allDrivers,
     @Default([
@@ -53,8 +59,9 @@ class GrandPrixBetEditorState with _$GrandPrixBetEditorState {
       null,
     ])
     List<String?> qualiStandingsBySeasonDriverIds,
-    @Default(GrandPrixBetEditorRaceForm()) GrandPrixBetEditorRaceForm raceForm,
-  }) = _GrandPrixBetEditorState;
+    @Default(SeasonGrandPrixBetEditorRaceForm())
+    SeasonGrandPrixBetEditorRaceForm raceForm,
+  }) = _SeasonGrandPrixBetEditorState;
 
   bool get canSelectNextDnfDriver =>
       raceForm.dnfDrivers.length < _maxNumberOfDnfDriverPredictions;

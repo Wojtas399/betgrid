@@ -9,15 +9,16 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
-import '../cubit/grand_prix_bet_editor_cubit.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 
-class GrandPrixBetEditorDnfDriversSelectionDialog extends StatelessWidget {
-  const GrandPrixBetEditorDnfDriversSelectionDialog({super.key});
+class SeasonGrandPrixBetEditorDnfDriversSelectionDialog
+    extends StatelessWidget {
+  const SeasonGrandPrixBetEditorDnfDriversSelectionDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     final List<DriverDetails>? allDrivers = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
     );
 
     return Scaffold(
@@ -62,7 +63,7 @@ class _SelectedDrivers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DriverDetails> dnfDrivers = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
 
     return Column(
@@ -85,7 +86,7 @@ class _SelectedDrivers extends StatelessWidget {
                     child: IconButton(
                       onPressed:
                           () => context
-                              .read<GrandPrixBetEditorCubit>()
+                              .read<SeasonGrandPrixBetEditorCubit>()
                               .onDnfDriverRemoved(driver.seasonDriverId),
                       iconSize: 16,
                       padding: EdgeInsets.zero,
@@ -109,10 +110,11 @@ class _ListOfDriversToSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DriverDetails> dnfDrivers = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
     final bool canSelectNextDnfDriver = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.canSelectNextDnfDriver,
+      (SeasonGrandPrixBetEditorCubit cubit) =>
+          cubit.state.canSelectNextDnfDriver,
     );
 
     return Opacity(
@@ -130,7 +132,7 @@ class _ListOfDriversToSelect extends StatelessWidget {
                       isDisabled: dnfDrivers.length == 3,
                       onTap:
                           () => context
-                              .read<GrandPrixBetEditorCubit>()
+                              .read<SeasonGrandPrixBetEditorCubit>()
                               .onDnfDriverSelected(driver.seasonDriverId),
                     ),
                   )

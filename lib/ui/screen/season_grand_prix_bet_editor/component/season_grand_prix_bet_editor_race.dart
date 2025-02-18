@@ -10,14 +10,14 @@ import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
 import '../../../service/dialog_service.dart';
-import '../cubit/grand_prix_bet_editor_cubit.dart';
-import 'grand_prix_bet_editor_boolean_field.dart';
-import 'grand_prix_bet_editor_dnf_drivers_selection_dialog.dart';
-import 'grand_prix_bet_editor_driver_field.dart';
-import 'grand_prix_bet_editor_race_podium_and_p10.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
+import 'season_grand_prix_bet_editor_boolean_field.dart';
+import 'season_grand_prix_bet_editor_dnf_drivers_selection_dialog.dart';
+import 'season_grand_prix_bet_editor_driver_field.dart';
+import 'season_grand_prix_bet_editor_race_podium_and_p10.dart';
 
-class GrandPrixBetEditorRace extends StatelessWidget {
-  const GrandPrixBetEditorRace({super.key});
+class SeasonGrandPrixBetEditorRace extends StatelessWidget {
+  const SeasonGrandPrixBetEditorRace({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class GrandPrixBetEditorRace extends StatelessWidget {
           subtitle: context.str.grandPrixBetEditorPodiumAndP10Subtitle,
         ),
         const GapVertical16(),
-        const GrandPrixBetEditorRacePodiumAndP10(),
+        const SeasonGrandPrixBetEditorRacePodiumAndP10(),
         const Divider(height: 32),
         _SectionHeader(
           title: context.str.fastestLap,
@@ -91,14 +91,16 @@ class _FastestLap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? fastestLapSeasonDriverId = context.select(
-      (GrandPrixBetEditorCubit cubit) =>
+      (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.raceForm.fastestLapSeasonDriverId,
     );
 
-    return GrandPrixBetEditorDriverField(
+    return SeasonGrandPrixBetEditorDriverField(
       selectedDriverId: fastestLapSeasonDriverId,
       onDriverSelected:
-          context.read<GrandPrixBetEditorCubit>().onRaceFastestLapDriverChanged,
+          context
+              .read<SeasonGrandPrixBetEditorCubit>()
+              .onRaceFastestLapDriverChanged,
     );
   }
 }
@@ -109,8 +111,8 @@ class _DnfDrivers extends StatelessWidget {
   Future<void> _onAddDriverPressed(BuildContext context) async {
     await getIt<DialogService>().showFullScreenDialog(
       BlocProvider.value(
-        value: context.read<GrandPrixBetEditorCubit>(),
-        child: const GrandPrixBetEditorDnfDriversSelectionDialog(),
+        value: context.read<SeasonGrandPrixBetEditorCubit>(),
+        child: const SeasonGrandPrixBetEditorDnfDriversSelectionDialog(),
       ),
     );
   }
@@ -118,7 +120,7 @@ class _DnfDrivers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DriverDetails> dnfDrivers = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.raceForm.dnfDrivers,
     );
 
     return SizedBox(
@@ -159,13 +161,16 @@ class _SafetyCar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool? willBeSafetyCar = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.willBeSafetyCar,
+      (SeasonGrandPrixBetEditorCubit cubit) =>
+          cubit.state.raceForm.willBeSafetyCar,
     );
 
-    return GrandPrixBetEditorBooleanField(
+    return SeasonGrandPrixBetEditorBooleanField(
       selectedValue: willBeSafetyCar,
       onValueSelected:
-          context.read<GrandPrixBetEditorCubit>().onSafetyCarPredictionChanged,
+          context
+              .read<SeasonGrandPrixBetEditorCubit>()
+              .onSafetyCarPredictionChanged,
     );
   }
 }
@@ -176,13 +181,16 @@ class _RedFlag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool? willBeRedFlag = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.raceForm.willBeRedFlag,
+      (SeasonGrandPrixBetEditorCubit cubit) =>
+          cubit.state.raceForm.willBeRedFlag,
     );
 
-    return GrandPrixBetEditorBooleanField(
+    return SeasonGrandPrixBetEditorBooleanField(
       selectedValue: willBeRedFlag,
       onValueSelected:
-          context.read<GrandPrixBetEditorCubit>().onRedFlagPredictionChanged,
+          context
+              .read<SeasonGrandPrixBetEditorCubit>()
+              .onRedFlagPredictionChanged,
     );
   }
 }

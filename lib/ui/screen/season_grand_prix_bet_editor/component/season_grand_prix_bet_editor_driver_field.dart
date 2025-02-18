@@ -6,15 +6,15 @@ import '../../../component/driver_description_component.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
-import '../cubit/grand_prix_bet_editor_cubit.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 
-class GrandPrixBetEditorDriverField extends StatelessWidget {
+class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {
   final String? label;
   final Color? labelColor;
   final String? selectedDriverId;
   final Function(String)? onDriverSelected;
 
-  const GrandPrixBetEditorDriverField({
+  const SeasonGrandPrixBetEditorDriverField({
     super.key,
     this.label,
     this.labelColor,
@@ -65,7 +65,7 @@ class _DriverSelectionFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DriverDetails>? allDrivers = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
     );
 
     return DropdownButtonFormField<String>(

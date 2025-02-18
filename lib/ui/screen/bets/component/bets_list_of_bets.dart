@@ -30,7 +30,7 @@ class BetsListOfBets extends StatelessWidget {
         );
       } else if (gpParams.status.isNext || gpParams.status.isUpcoming) {
         context.navigateTo(
-          GrandPrixBetEditorRoute(
+          SeasonGrandPrixBetEditorRoute(
             season: season,
             seasonGrandPrixId: gpParams.seasonGrandPrixId,
           ),

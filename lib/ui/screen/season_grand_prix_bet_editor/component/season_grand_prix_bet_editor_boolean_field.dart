@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 
-class GrandPrixBetEditorBooleanField extends StatelessWidget {
+class SeasonGrandPrixBetEditorBooleanField extends StatelessWidget {
   final bool? selectedValue;
   final Function(bool) onValueSelected;
 
-  const GrandPrixBetEditorBooleanField({
+  const SeasonGrandPrixBetEditorBooleanField({
     super.key,
     this.selectedValue,
     required this.onValueSelected,

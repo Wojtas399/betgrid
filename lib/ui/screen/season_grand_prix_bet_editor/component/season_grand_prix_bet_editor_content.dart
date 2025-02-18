@@ -6,18 +6,18 @@ import '../../../component/gap/gap_vertical.dart';
 import '../../../component/padding/padding_components.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../cubit/grand_prix_bet_editor_cubit.dart';
-import '../cubit/grand_prix_bet_editor_state.dart';
-import 'grand_prix_bet_editor_app_bar.dart';
-import 'grand_prix_bet_editor_quali.dart';
-import 'grand_prix_bet_editor_race.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
+import '../cubit/season_grand_prix_bet_editor_state.dart';
+import 'season_grand_prix_bet_editor_app_bar.dart';
+import 'season_grand_prix_bet_editor_quali.dart';
+import 'season_grand_prix_bet_editor_race.dart';
 
-class GrandPrixBetEditorContent extends StatelessWidget {
-  const GrandPrixBetEditorContent({super.key});
+class SeasonGrandPrixBetEditorContent extends StatelessWidget {
+  const SeasonGrandPrixBetEditorContent({super.key});
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-    appBar: GrandPrixBetEditorAppBar(),
+    appBar: SeasonGrandPrixBetEditorAppBar(),
     body: SafeArea(child: _Body()),
   );
 }
@@ -27,8 +27,8 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GrandPrixBetEditorStateStatus cubitStatus = context.select(
-      (GrandPrixBetEditorCubit cubit) => cubit.state.status,
+    final SeasonGrandPrixBetEditorStateStatus cubitStatus = context.select(
+      (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.status,
     );
 
     return cubitStatus.isInitial
@@ -42,13 +42,13 @@ class _Body extends StatelessWidget {
                   title: context.str.qualifications,
                   subtitle:
                       context.str.grandPrixBetEditorQualificationDescription,
-                  body: const GrandPrixBetEditorQuali(),
+                  body: const SeasonGrandPrixBetEditorQuali(),
                 ),
                 const GapVertical24(),
                 _Section(
                   title: context.str.race,
                   subtitle: context.str.grandPrixBetEditorRaceDescription,
-                  body: const GrandPrixBetEditorRace(),
+                  body: const SeasonGrandPrixBetEditorRace(),
                 ),
               ],
             ),

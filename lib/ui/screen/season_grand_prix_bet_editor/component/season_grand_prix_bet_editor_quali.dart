@@ -4,18 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
-import '../cubit/grand_prix_bet_editor_cubit.dart';
-import 'grand_prix_bet_editor_driver_field.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
+import 'season_grand_prix_bet_editor_driver_field.dart';
 
-class GrandPrixBetEditorQuali extends StatelessWidget {
-  const GrandPrixBetEditorQuali({super.key});
+class SeasonGrandPrixBetEditorQuali extends StatelessWidget {
+  const SeasonGrandPrixBetEditorQuali({super.key});
 
   void _onDriverSelected(
     int positionIndex,
     String selectedDriverId,
     BuildContext context,
   ) {
-    context.read<GrandPrixBetEditorCubit>().onQualiStandingsChanged(
+    context.read<SeasonGrandPrixBetEditorCubit>().onQualiStandingsChanged(
       standing: positionIndex + 1,
       driverId: selectedDriverId,
     );
@@ -24,7 +24,7 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String?> qualiStandingsBySeasonDriverIds = context.select(
-      (GrandPrixBetEditorCubit cubit) =>
+      (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.qualiStandingsBySeasonDriverIds,
     );
     final CustomColors? customColors = context.customColors;
@@ -34,7 +34,7 @@ class GrandPrixBetEditorQuali extends StatelessWidget {
       children: [
         ...List.generate(
           20,
-          (int positionIndex) => GrandPrixBetEditorDriverField(
+          (int positionIndex) => SeasonGrandPrixBetEditorDriverField(
             label: 'P${positionIndex + 1}',
             labelColor: switch (positionIndex) {
               0 => customColors?.p1,

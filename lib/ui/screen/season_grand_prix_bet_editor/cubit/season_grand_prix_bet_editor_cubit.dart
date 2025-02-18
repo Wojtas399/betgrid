@@ -11,10 +11,11 @@ import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet.dart';
 import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
 import '../../../extensions/list_of_driver_details_extensions.dart';
-import 'grand_prix_bet_editor_state.dart';
+import 'season_grand_prix_bet_editor_state.dart';
 
 @injectable
-class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
+class SeasonGrandPrixBetEditorCubit
+    extends Cubit<SeasonGrandPrixBetEditorState> {
   final AuthRepository _authRepository;
   final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
   final GetDetailsOfAllDriversFromSeasonUseCase
@@ -23,13 +24,13 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams?>? _listener;
 
-  GrandPrixBetEditorCubit(
+  SeasonGrandPrixBetEditorCubit(
     this._authRepository,
     this._seasonGrandPrixBetRepository,
     this._getDetailsOfAllDriversFromSeasonUseCase,
     @factoryParam this._season,
     @factoryParam this._seasonGrandPrixId,
-  ) : super(const GrandPrixBetEditorState());
+  ) : super(const SeasonGrandPrixBetEditorState());
 
   @override
   Future<void> close() {
@@ -65,7 +66,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
     updatedQualiStandings[standing - 1] = driverId;
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         qualiStandingsBySeasonDriverIds: updatedQualiStandings,
       ),
     );
@@ -74,7 +75,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRaceP1DriverChanged(String seasonDriverId) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm
             .removeFromPodiumOrP10IfExists(seasonDriverId)
             .copyWith(p1SeasonDriverId: seasonDriverId),
@@ -85,7 +86,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRaceP2DriverChanged(String seasonDriverId) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm
             .removeFromPodiumOrP10IfExists(seasonDriverId)
             .copyWith(p2SeasonDriverId: seasonDriverId),
@@ -96,7 +97,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRaceP3DriverChanged(String seasonDriverId) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm
             .removeFromPodiumOrP10IfExists(seasonDriverId)
             .copyWith(p3SeasonDriverId: seasonDriverId),
@@ -107,7 +108,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRaceP10DriverChanged(String seasonDriverId) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm
             .removeFromPodiumOrP10IfExists(seasonDriverId)
             .copyWith(p10SeasonDriverId: seasonDriverId),
@@ -118,7 +119,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRaceFastestLapDriverChanged(String driverId) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm.copyWith(fastestLapSeasonDriverId: driverId),
       ),
     );
@@ -164,7 +165,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onSafetyCarPredictionChanged(bool willBeSafetyCar) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm.copyWith(willBeSafetyCar: willBeSafetyCar),
       ),
     );
@@ -173,7 +174,7 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   void onRedFlagPredictionChanged(bool willBeRedFlag) {
     emit(
       state.copyWith(
-        status: GrandPrixBetEditorStateStatus.completed,
+        status: SeasonGrandPrixBetEditorStateStatus.completed,
         raceForm: state.raceForm.copyWith(willBeRedFlag: willBeRedFlag),
       ),
     );
@@ -182,14 +183,16 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
   Future<void> submit() async {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
-    emit(state.copyWith(status: GrandPrixBetEditorStateStatus.saving));
+    emit(state.copyWith(status: SeasonGrandPrixBetEditorStateStatus.saving));
     if (state.originalSeasonGrandPrixBet == null) {
       await _addSeasonGrandPrixBet(loggedUserId);
     } else {
       await _updateSeasonGrandPrixBet(loggedUserId);
     }
     emit(
-      state.copyWith(status: GrandPrixBetEditorStateStatus.successfullySaved),
+      state.copyWith(
+        status: SeasonGrandPrixBetEditorStateStatus.successfullySaved,
+      ),
     );
   }
 
@@ -221,8 +224,8 @@ class GrandPrixBetEditorCubit extends Cubit<GrandPrixBetEditorState> {
         listenedParams.seasonGrandPrixBet;
     final List<DriverDetails> detailsOfAllDriversFromSeason =
         listenedParams.detailsOfAllDriversFromSeason;
-    GrandPrixBetEditorState newState = state.copyWith(
-      status: GrandPrixBetEditorStateStatus.completed,
+    SeasonGrandPrixBetEditorState newState = state.copyWith(
+      status: SeasonGrandPrixBetEditorStateStatus.completed,
       allDrivers: detailsOfAllDriversFromSeason,
     );
     if (seasonGrandPrixBet == null) {
