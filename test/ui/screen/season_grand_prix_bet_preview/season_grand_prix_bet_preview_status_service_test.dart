@@ -34,7 +34,7 @@ void main() {
 
       expect(
         exception,
-        '[GrandPrixBetStatusService] Points cannot be negative',
+        '[SeasonGrandPrixBetPreviewStatusService] Points cannot be negative',
       );
     });
   });
