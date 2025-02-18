@@ -11,28 +11,28 @@ import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 import '../../../../use_case/get_player_points_use_case.dart';
 import '../../../common_cubit/season_cubit.dart';
 import '../../../service/date_service.dart';
-import 'bets_gp_status_service.dart';
-import 'bets_state.dart';
+import 'season_grand_prix_bets_gp_status_service.dart';
+import 'season_grand_prix_bets_state.dart';
 
 @injectable
-class BetsCubit extends Cubit<BetsState> {
+class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
   final AuthRepository _authRepository;
   final GetPlayerPointsUseCase _getPlayerPointsUseCase;
   final GetGrandPrixesWithPointsUseCase _getGrandPrixesWithPointsUseCase;
-  final BetsGpStatusService _gpStatusService;
+  final SeasonGrandPrixBetsGpStatusService _gpStatusService;
   final DateService _dateService;
   final SeasonCubit _seasonCubit;
   StreamSubscription<_ListenedData?>? _listener;
   StreamSubscription<Duration?>? _durationToStartNextGpListener;
 
-  BetsCubit(
+  SeasonGrandPrixBetsCubit(
     this._authRepository,
     this._getPlayerPointsUseCase,
     this._getGrandPrixesWithPointsUseCase,
     this._gpStatusService,
     this._dateService,
     @factoryParam this._seasonCubit,
-  ) : super(const BetsState());
+  ) : super(const SeasonGrandPrixBetsState());
 
   @override
   Future<void> close() {
@@ -47,7 +47,9 @@ class BetsCubit extends Cubit<BetsState> {
         .doOnData((String? loggedUserId) {
           if (loggedUserId == null) {
             emit(
-              state.copyWith(status: BetsStateStatus.loggedUserDoesNotExist),
+              state.copyWith(
+                status: SeasonGrandPrixBetsStateStatus.loggedUserDoesNotExist,
+              ),
             );
           }
         })
@@ -66,7 +68,7 @@ class BetsCubit extends Cubit<BetsState> {
         playerId: loggedUserId,
         season: _seasonCubit.state,
       ).map(_addStatusForEachGp),
-      (double? totalPoints, List<GrandPrixItemParams> grandPrixItems) =>
+      (double? totalPoints, List<SeasonGrandPrixItemParams> grandPrixItems) =>
           _ListenedData(
             loggedUserId: loggedUserId,
             totalPoints: totalPoints,
@@ -79,7 +81,7 @@ class BetsCubit extends Cubit<BetsState> {
     if (data.totalPoints == null && data.grandPrixItems.isEmpty) {
       emit(
         state.copyWith(
-          status: BetsStateStatus.noBets,
+          status: SeasonGrandPrixBetsStateStatus.noBets,
           loggedUserId: data.loggedUserId,
           season: _seasonCubit.state,
         ),
@@ -87,7 +89,7 @@ class BetsCubit extends Cubit<BetsState> {
     } else {
       emit(
         state.copyWith(
-          status: BetsStateStatus.completed,
+          status: SeasonGrandPrixBetsStateStatus.completed,
           loggedUserId: data.loggedUserId,
           season: _seasonCubit.state,
           totalPoints: data.totalPoints,
@@ -98,14 +100,14 @@ class BetsCubit extends Cubit<BetsState> {
     }
   }
 
-  List<GrandPrixItemParams> _addStatusForEachGp(
+  List<SeasonGrandPrixItemParams> _addStatusForEachGp(
     List<GrandPrixWithPoints> grandPrixesWithPoints,
   ) {
     final now = _dateService.getNow();
     final grandPrixesWithStatus =
         grandPrixesWithPoints
             .map(
-              (gp) => GrandPrixItemParams(
+              (gp) => SeasonGrandPrixItemParams(
                 status: _gpStatusService.defineStatusForGp(
                   gpStartDateTime: gp.startDate,
                   gpEndDateTime: gp.endDate,
@@ -126,12 +128,12 @@ class BetsCubit extends Cubit<BetsState> {
       (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
     );
     final nextGp = sortedGrandPrixesWithStatus.firstWhereOrNull(
-      (gp) => gp.status is GrandPrixStatusUpcoming,
+      (gp) => gp.status is SeasonGrandPrixStatusUpcoming,
     );
     if (nextGp != null) {
       final nextGpIndex = sortedGrandPrixesWithStatus.indexOf(nextGp);
-      sortedGrandPrixesWithStatus[nextGpIndex] = GrandPrixItemParams(
-        status: const GrandPrixStatusNext(),
+      sortedGrandPrixesWithStatus[nextGpIndex] = SeasonGrandPrixItemParams(
+        status: const SeasonGrandPrixStatusNext(),
         seasonGrandPrixId: nextGp.seasonGrandPrixId,
         grandPrixName: nextGp.grandPrixName,
         countryAlpha2Code: nextGp.countryAlpha2Code,
@@ -150,7 +152,7 @@ class BetsCubit extends Cubit<BetsState> {
         .getNowStream()
         .map((DateTime now) {
           final nextGp = state.grandPrixItems?.firstWhereOrNull(
-            (gp) => gp.status is GrandPrixStatusNext,
+            (gp) => gp.status is SeasonGrandPrixStatusNext,
           );
           return nextGp != null
               ? _dateService.getDurationToDateFromNow(nextGp.startDate)
@@ -165,7 +167,7 @@ class BetsCubit extends Cubit<BetsState> {
 class _ListenedData extends Equatable {
   final String loggedUserId;
   final double? totalPoints;
-  final List<GrandPrixItemParams> grandPrixItems;
+  final List<SeasonGrandPrixItemParams> grandPrixItems;
 
   const _ListenedData({
     required this.loggedUserId,

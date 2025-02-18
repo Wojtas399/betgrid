@@ -33,7 +33,7 @@ class HomeContent extends StatelessWidget {
             currentState.status != previousState.status,
     listener: (_, HomeState state) => _onCubitStatusChanged(state.status),
     child: AutoTabsRouter.tabBar(
-      routes: const [BetsRoute(), StatsRoute(), PlayersRoute()],
+      routes: const [SeasonGrandPrixBetsRoute(), StatsRoute(), PlayersRoute()],
       builder: (context, child, _) {
         final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(

@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
 
-import 'bets_state.dart';
+import 'season_grand_prix_bets_state.dart';
 
 @injectable
-class BetsGpStatusService {
-  const BetsGpStatusService();
+class SeasonGrandPrixBetsGpStatusService {
+  const SeasonGrandPrixBetsGpStatusService();
 
-  GrandPrixStatus defineStatusForGp({
+  SeasonGrandPrixStatus defineStatusForGp({
     required DateTime gpStartDateTime,
     required DateTime gpEndDateTime,
     required DateTime now,
@@ -25,11 +25,11 @@ class BetsGpStatusService {
     if (nowDate.isAtSameMomentAs(gpStartDate) ||
         nowDate.isAtSameMomentAs(gpEndDate) ||
         (nowDate.isAfter(gpStartDate) && nowDate.isBefore(gpEndDate))) {
-      return const GrandPrixStatusOngoing();
+      return const SeasonGrandPrixStatusOngoing();
     }
     if (now.isAfter(gpEndDate)) {
-      return const GrandPrixStatusFinished();
+      return const SeasonGrandPrixStatusFinished();
     }
-    return const GrandPrixStatusUpcoming();
+    return const SeasonGrandPrixStatusUpcoming();
   }
 }

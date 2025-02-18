@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/empty_content_info_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../cubit/bets_cubit.dart';
-import '../cubit/bets_state.dart';
-import 'bets_list_of_bets.dart';
+import '../cubit/season_grand_prix_bets_cubit.dart';
+import '../cubit/season_grand_prix_bets_state.dart';
+import 'season_grand_prix_bets_list_of_bets.dart';
 
-class BetsBody extends StatelessWidget {
-  const BetsBody({super.key});
+class SeasonGrandPrixBetsBody extends StatelessWidget {
+  const SeasonGrandPrixBetsBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final BetsStateStatus cubitStatus = context.select(
-      (BetsCubit cubit) => cubit.state.status,
+    final SeasonGrandPrixBetsStateStatus cubitStatus = context.select(
+      (SeasonGrandPrixBetsCubit cubit) => cubit.state.status,
     );
 
     return cubitStatus.isLoading
@@ -23,6 +23,6 @@ class BetsBody extends StatelessWidget {
           title: context.str.betsNoBetsTitle,
           message: context.str.betsNoBetsMessage,
         )
-        : const BetsListOfBets();
+        : const SeasonGrandPrixBetsListOfBets();
   }
 }

@@ -1,9 +1,9 @@
-import 'package:betgrid/ui/screen/bets/cubit/bets_gp_status_service.dart';
-import 'package:betgrid/ui/screen/bets/cubit/bets_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bets/cubit/season_grand_prix_bets_gp_status_service.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bets/cubit/season_grand_prix_bets_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const service = BetsGpStatusService();
+  const service = SeasonGrandPrixBetsGpStatusService();
 
   group('defineStatusForGp, ', () {
     test(
@@ -20,7 +20,7 @@ void main() {
           now: now,
         );
 
-        expect(status, const GrandPrixStatusOngoing());
+        expect(status, const SeasonGrandPrixStatusOngoing());
       },
     );
 
@@ -36,7 +36,7 @@ void main() {
         now: now,
       );
 
-      expect(status, const GrandPrixStatusOngoing());
+      expect(status, const SeasonGrandPrixStatusOngoing());
     });
 
     test('should return GrandPrixStatusOngoing if now date is after gp start '
@@ -51,7 +51,7 @@ void main() {
         now: now,
       );
 
-      expect(status, const GrandPrixStatusOngoing());
+      expect(status, const SeasonGrandPrixStatusOngoing());
     });
 
     test(
@@ -67,7 +67,7 @@ void main() {
           now: now,
         );
 
-        expect(status, const GrandPrixStatusFinished());
+        expect(status, const SeasonGrandPrixStatusFinished());
       },
     );
 
@@ -83,7 +83,7 @@ void main() {
         now: now,
       );
 
-      expect(status, const GrandPrixStatusUpcoming());
+      expect(status, const SeasonGrandPrixStatusUpcoming());
     });
   });
 }

@@ -9,14 +9,18 @@ import '../../../component/text_component.dart';
 import '../../../config/router/app_router.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/duration_extensions.dart';
-import '../cubit/bets_cubit.dart';
-import '../cubit/bets_state.dart';
+import '../cubit/season_grand_prix_bets_cubit.dart';
+import '../cubit/season_grand_prix_bets_state.dart';
 
-class BetsListOfBets extends StatelessWidget {
-  const BetsListOfBets({super.key});
+class SeasonGrandPrixBetsListOfBets extends StatelessWidget {
+  const SeasonGrandPrixBetsListOfBets({super.key});
 
-  void _onGrandPrixPressed(GrandPrixItemParams gpParams, BuildContext context) {
-    final BetsCubit cubit = context.read<BetsCubit>();
+  void _onGrandPrixPressed(
+    SeasonGrandPrixItemParams gpParams,
+    BuildContext context,
+  ) {
+    final SeasonGrandPrixBetsCubit cubit =
+        context.read<SeasonGrandPrixBetsCubit>();
     final int? season = cubit.state.season;
     final String? loggedUserId = cubit.state.loggedUserId;
     if (loggedUserId != null && season != null) {
@@ -41,11 +45,11 @@ class BetsListOfBets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<GrandPrixItemParams>? grandPrixItems = context.select(
-      (BetsCubit cubit) => cubit.state.grandPrixItems,
+    final List<SeasonGrandPrixItemParams>? grandPrixItems = context.select(
+      (SeasonGrandPrixBetsCubit cubit) => cubit.state.grandPrixItems,
     );
     final bool doesOngoingGpExist = context.select(
-      (BetsCubit cubit) => cubit.state.doesOngoingGpExist,
+      (SeasonGrandPrixBetsCubit cubit) => cubit.state.doesOngoingGpExist,
     );
 
     return grandPrixItems == null
@@ -69,7 +73,7 @@ class BetsListOfBets extends StatelessWidget {
 }
 
 class _Item extends StatelessWidget {
-  final GrandPrixItemParams gpParams;
+  final SeasonGrandPrixItemParams gpParams;
   final VoidCallback onPressed;
   final bool doesOngoingGpExist;
 
@@ -151,7 +155,7 @@ class _EndBettingTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Duration? durationToEnd = context.select(
-      (BetsCubit cubit) => cubit.state.durationToStartNextGp,
+      (SeasonGrandPrixBetsCubit cubit) => cubit.state.durationToStartNextGp,
     );
 
     return Padding(
