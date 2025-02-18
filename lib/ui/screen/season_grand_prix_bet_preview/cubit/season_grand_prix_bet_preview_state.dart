@@ -4,22 +4,28 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../model/driver_details.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
 
-part 'grand_prix_bet_state.freezed.dart';
+part 'season_grand_prix_bet_preview_state.freezed.dart';
 
-enum GrandPrixBetStateStatus { loading, completed, loggedUserDoesNotExist }
+enum SeasonGrandPrixBetPreviewStateStatus {
+  loading,
+  completed,
+  loggedUserDoesNotExist,
+}
 
-extension GrandPrixBetStateStatusExtensions on GrandPrixBetStateStatus {
-  bool get isLoading => this == GrandPrixBetStateStatus.loading;
+extension SeasonGrandPrixBetPreviewStateStatusExtensions
+    on SeasonGrandPrixBetPreviewStateStatus {
+  bool get isLoading => this == SeasonGrandPrixBetPreviewStateStatus.loading;
 }
 
 @freezed
-class GrandPrixBetState with _$GrandPrixBetState {
-  const GrandPrixBetState._();
+class SeasonGrandPrixBetPreviewState with _$SeasonGrandPrixBetPreviewState {
+  const SeasonGrandPrixBetPreviewState._();
 
   @Assert('qualiBets == null || qualiBets.length == 20')
   @Assert('racePodiumBets == null || racePodiumBets.length == 3')
-  const factory GrandPrixBetState({
-    @Default(GrandPrixBetStateStatus.loading) GrandPrixBetStateStatus status,
+  const factory SeasonGrandPrixBetPreviewState({
+    @Default(SeasonGrandPrixBetPreviewStateStatus.loading)
+    SeasonGrandPrixBetPreviewStateStatus status,
     int? season,
     String? seasonGrandPrixId,
     String? grandPrixName,
@@ -33,7 +39,7 @@ class GrandPrixBetState with _$GrandPrixBetState {
     BooleanBet? raceSafetyCarBet,
     BooleanBet? raceRedFlagBet,
     SeasonGrandPrixBetPoints? seasonGrandPrixBetPoints,
-  }) = _GrandPrixBetState;
+  }) = _SeasonGrandPrixBetPreviewState;
 }
 
 enum BetStatus { pending, win, loss }

@@ -5,9 +5,9 @@ import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../cubit/grand_prix_bet_state.dart';
+import '../cubit/season_grand_prix_bet_preview_state.dart';
 
-class GrandPrixBetItem extends StatelessWidget {
+class SeasonGrandPrixBetPreviewItem extends StatelessWidget {
   final String label;
   final Color? labelColor;
   final BetStatus? betStatus;
@@ -15,7 +15,7 @@ class GrandPrixBetItem extends StatelessWidget {
   final Widget resultsChild;
   final double? points;
 
-  const GrandPrixBetItem({
+  const SeasonGrandPrixBetPreviewItem({
     super.key,
     required this.label,
     this.labelColor,

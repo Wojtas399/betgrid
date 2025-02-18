@@ -11,15 +11,15 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
 import '../../../extensions/widgets_list_extensions.dart';
-import '../cubit/grand_prix_bet_cubit.dart';
-import '../cubit/grand_prix_bet_state.dart';
-import 'grand_prix_bet_item.dart';
-import 'grand_prix_bet_no_data_field.dart';
-import 'grand_prix_bet_section_title.dart';
-import 'grand_prix_points_summary.dart';
+import '../cubit/season_grand_prix_bet_preview_cubit.dart';
+import '../cubit/season_grand_prix_bet_preview_state.dart';
+import 'season_grand_prix_bet_preview_item.dart';
+import 'season_grand_prix_bet_preview_no_data_field.dart';
+import 'season_grand_prix_bet_preview_section_title.dart';
+import 'season_grand_prix_preview_points_summary.dart';
 
-class GrandPrixBetRace extends StatelessWidget {
-  const GrandPrixBetRace({super.key});
+class SeasonGrandPrixBetPreviewRace extends StatelessWidget {
+  const SeasonGrandPrixBetPreviewRace({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,11 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double? racePoints = context.select(
-      (GrandPrixBetCubit cubit) =>
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
           cubit.state.seasonGrandPrixBetPoints?.raceBetPoints?.total,
     );
 
-    return GrandPrixBetSectionTitle(
+    return SeasonGrandPrixBetPreviewSectionTitle(
       title: context.str.race,
       points: racePoints,
     );
@@ -74,10 +74,11 @@ class _P1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingleDriverBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?.first,
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
+          cubit.state.racePodiumBets?.first,
     );
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: 'P1',
       labelColor: context.customColors?.p1,
       betStatus: bet?.status,
@@ -110,10 +111,10 @@ class _P2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingleDriverBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?[1],
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.racePodiumBets?[1],
     );
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: 'P2',
       labelColor: context.customColors?.p2,
       betStatus: bet?.status,
@@ -146,10 +147,11 @@ class _P3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingleDriverBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.racePodiumBets?.last,
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
+          cubit.state.racePodiumBets?.last,
     );
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: 'P3',
       labelColor: context.customColors?.p3,
       betStatus: bet?.status,
@@ -182,10 +184,10 @@ class _P10 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingleDriverBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.raceP10Bet,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.raceP10Bet,
     );
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: 'P10',
       betStatus: bet?.status,
       betChild:
@@ -217,10 +219,10 @@ class _FastestLap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SingleDriverBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.raceFastestLapBet,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.raceFastestLapBet,
     );
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: context.str.fastestLap,
       betStatus: bet?.status,
       betChild:
@@ -252,12 +254,12 @@ class _DnfDrivers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MultipleDriversBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.raceDnfDriversBet,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.raceDnfDriversBet,
     );
     final List<DriverDetails?>? betDnfDrivers = bet?.betDrivers;
     final List<DriverDetails?>? resultDnfDrivers = bet?.resultDrivers;
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: 'DNF',
       betStatus: bet?.status,
       betChild: Column(
@@ -311,12 +313,12 @@ class _SafetyCar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BooleanBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.raceSafetyCarBet,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.raceSafetyCarBet,
     );
     final String? betSafetyCarStr = bet?.betValue?.toI8nString(context);
     final String? resultsSafetyCarStr = bet?.resultValue?.toI8nString(context);
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: context.str.safetyCar,
       betStatus: bet?.status,
       betChild:
@@ -338,12 +340,12 @@ class _RedFlag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BooleanBet? bet = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.raceRedFlagBet,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.raceRedFlagBet,
     );
     final String? betRedFlagStr = bet?.betValue?.toI8nString(context);
     final String? resultsRedFlagStr = bet?.resultValue?.toI8nString(context);
 
-    return GrandPrixBetItem(
+    return SeasonGrandPrixBetPreviewItem(
       label: context.str.redFlag,
       betStatus: bet?.status,
       betChild:
@@ -365,33 +367,33 @@ class _PointsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RaceBetPoints? racePoints = context.select(
-      (GrandPrixBetCubit cubit) =>
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
           cubit.state.seasonGrandPrixBetPoints?.raceBetPoints,
     );
 
-    return GrandPrixBetPointsSummary(
+    return SeasonGrandPrixBetPreviewPointsSummary(
       details: [
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetPositions,
           value: racePoints?.podiumAndP10,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetPositionsMultiplier,
           value: racePoints?.podiumAndP10Multiplier,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetFastestLap,
           value: racePoints?.fastestLap,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetDNF,
           value: racePoints?.totalDnf,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetDNFMultiplier,
           value: racePoints?.dnfMultiplier,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetOther,
           value: racePoints?.safetyCarAndRedFlag,
         ),

@@ -8,14 +8,14 @@ import '../../../component/padding/padding_components.dart';
 import '../../../config/theme/custom_colors.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/string_extensions.dart';
-import '../cubit/grand_prix_bet_cubit.dart';
-import '../cubit/grand_prix_bet_state.dart';
-import 'grand_prix_bet_item.dart';
-import 'grand_prix_bet_section_title.dart';
-import 'grand_prix_points_summary.dart';
+import '../cubit/season_grand_prix_bet_preview_cubit.dart';
+import '../cubit/season_grand_prix_bet_preview_state.dart';
+import 'season_grand_prix_bet_preview_item.dart';
+import 'season_grand_prix_bet_preview_section_title.dart';
+import 'season_grand_prix_preview_points_summary.dart';
 
-class GrandPrixBetQualifications extends StatelessWidget {
-  const GrandPrixBetQualifications({super.key});
+class SeasonGrandPrixBetPreviewQualifications extends StatelessWidget {
+  const SeasonGrandPrixBetPreviewQualifications({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +32,11 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double? qualiPoints = context.select(
-      (GrandPrixBetCubit cubit) =>
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
           cubit.state.seasonGrandPrixBetPoints?.qualiBetPoints?.total,
     );
 
-    return GrandPrixBetSectionTitle(
+    return SeasonGrandPrixBetPreviewSectionTitle(
       title: context.str.qualifications,
       points: qualiPoints,
     );
@@ -49,7 +49,7 @@ class _Bets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<SingleDriverBet>? qualiStandingsBets = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.qualiBets,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.qualiBets,
     );
     final CustomColors? customColors = context.customColors;
 
@@ -59,7 +59,7 @@ class _Bets extends StatelessWidget {
             ...List.generate(qualiStandingsBets.length, (int positionIndex) {
               final bet = qualiStandingsBets[positionIndex];
 
-              return GrandPrixBetItem(
+              return SeasonGrandPrixBetPreviewItem(
                 label: 'P${positionIndex + 1}',
                 labelColor: switch (positionIndex) {
                   0 => customColors?.p1,
@@ -101,37 +101,37 @@ class _PointsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final QualiBetPoints? qualiPointsDetails = context.select(
-      (GrandPrixBetCubit cubit) =>
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
           cubit.state.seasonGrandPrixBetPoints?.qualiBetPoints,
     );
 
-    return GrandPrixBetPointsSummary(
+    return SeasonGrandPrixBetPreviewPointsSummary(
       details: [
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: 'Q1',
           value: qualiPointsDetails?.totalQ1,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: 'Q2',
           value: qualiPointsDetails?.totalQ2,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: 'Q3',
           value: qualiPointsDetails?.totalQ3,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q1',
           value: qualiPointsDetails?.q1Multiplier,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q2',
           value: qualiPointsDetails?.q2Multiplier,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: '${context.str.grandPrixBetMultiplier} Q3',
           value: qualiPointsDetails?.q3Multiplier,
         ),
-        GrandPrixPointsSummaryDetail(
+        SeasonGrandPrixBetPreviewPointsSummaryDetail(
           label: context.str.grandPrixBetMultiplier,
           value: qualiPointsDetails?.multiplier,
         ),

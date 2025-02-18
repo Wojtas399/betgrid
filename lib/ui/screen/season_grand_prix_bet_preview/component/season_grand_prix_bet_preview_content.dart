@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'grand_prix_bet_app_bar.dart';
-import 'grand_prix_bet_body.dart';
+import 'season_grand_prix_bet_preview_app_bar.dart';
+import 'season_grand_prix_bet_preview_body.dart';
 
 class GrandPrixBetContent extends StatelessWidget {
   const GrandPrixBetContent({super.key});
@@ -9,8 +9,8 @@ class GrandPrixBetContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: GrandPrixBetAppBar(),
-      body: SafeArea(child: GrandPrixBetBody()),
+      appBar: SeasonGrandPrixBetPreviewAppBar(),
+      body: SafeArea(child: SeasonGrandPrixBetPreviewBody()),
     );
   }
 }

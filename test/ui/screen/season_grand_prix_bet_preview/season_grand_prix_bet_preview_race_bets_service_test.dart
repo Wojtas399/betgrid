@@ -3,9 +3,9 @@ import 'package:betgrid/model/season_grand_prix_bet.dart';
 import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:betgrid/model/season_grand_prix_results.dart';
 import 'package:betgrid/model/season_driver.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_cubit.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_race_bets_service.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_cubit.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_race_bets_service.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -19,7 +19,7 @@ import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.da
 import '../../../mock/repository/mock_season_grand_prix_bet_repository.dart';
 import '../../../mock/repository/mock_season_grand_prix_results_repository.dart';
 import '../../../mock/repository/mock_season_driver_repository.dart';
-import '../../../mock/ui/screen/grand_prix_bet/mock_grand_prix_bet_status_service.dart';
+import '../../../mock/ui/screen/season_grand_prix_bet_preview/mock_season_grand_prix_bet_preview_status_service.dart';
 import '../../../mock/use_case/mock_get_details_for_season_driver_use_case.dart';
 
 void main() {
@@ -31,11 +31,12 @@ void main() {
       MockGetDetailsForSeasonDriverUseCase();
   final seasonGrandPrixBetPointsRepository =
       MockSeasonGrandPrixBetPointsRepository();
-  final grandPrixBetStatusService = MockGrandPrixBetStatusService();
+  final grandPrixBetStatusService =
+      MockSeasonGrandPrixBetPreviewStatusService();
   const String playerId = 'p1';
   const int season = 2024;
   const String seasonGrandPrixId = 'gp1';
-  final service = GrandPrixBetRaceBetsService(
+  final service = SeasonGrandPrixBetPreviewRaceBetsService(
     seasonGrandPrixBetRepository,
     seasonGrandPrixResultsRepository,
     seasonDriverRepository,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/grand_prix_bet_cubit.dart';
+import '../cubit/season_grand_prix_bet_preview_cubit.dart';
 
-class GrandPrixBetAppBar extends StatelessWidget
+class SeasonGrandPrixBetPreviewAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const GrandPrixBetAppBar({super.key});
+  const SeasonGrandPrixBetPreviewAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -21,13 +21,14 @@ class _GrandPrixName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? playerUsername = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.playerUsername,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.playerUsername,
     );
     final String? grandPrixName = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.grandPrixName,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.grandPrixName,
     );
     final bool? isPlayerIdSameAsLoggedUserId = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.isPlayerIdSameAsLoggedUserId,
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
+          cubit.state.isPlayerIdSameAsLoggedUserId,
     );
 
     String title = '--';

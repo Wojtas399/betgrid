@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 
-class GrandPrixBetPointsSummary extends StatelessWidget {
-  final List<GrandPrixPointsSummaryDetail> details;
+class SeasonGrandPrixBetPreviewPointsSummary extends StatelessWidget {
+  final List<SeasonGrandPrixBetPreviewPointsSummaryDetail> details;
   final double? totalPoints;
 
-  const GrandPrixBetPointsSummary({
+  const SeasonGrandPrixBetPreviewPointsSummary({
     super.key,
     required this.details,
     this.totalPoints,
@@ -48,9 +48,12 @@ class GrandPrixBetPointsSummary extends StatelessWidget {
   );
 }
 
-class GrandPrixPointsSummaryDetail {
+class SeasonGrandPrixBetPreviewPointsSummaryDetail {
   final String label;
   final double? value;
 
-  const GrandPrixPointsSummaryDetail({required this.label, this.value});
+  const SeasonGrandPrixBetPreviewPointsSummaryDetail({
+    required this.label,
+    this.value,
+  });
 }

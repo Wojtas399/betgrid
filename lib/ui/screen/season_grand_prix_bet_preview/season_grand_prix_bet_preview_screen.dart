@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
-import 'component/grand_prix_bet_content.dart';
-import 'cubit/grand_prix_bet_cubit.dart';
+import 'component/season_grand_prix_bet_preview_content.dart';
+import 'cubit/season_grand_prix_bet_preview_cubit.dart';
 
 @RoutePage()
-class GrandPrixBetScreen extends StatelessWidget {
+class SeasonGrandPrixBetPreviewScreen extends StatelessWidget {
   final String playerId;
   final int season;
   final String seasonGrandPrixId;
 
-  const GrandPrixBetScreen({
+  const SeasonGrandPrixBetPreviewScreen({
     super.key,
     required this.playerId,
     required this.season,
@@ -22,7 +22,7 @@ class GrandPrixBetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
     create:
-        (_) => getIt.get<GrandPrixBetCubit>(
+        (_) => getIt.get<SeasonGrandPrixBetPreviewCubit>(
           param1: GrandPrixBetCubitParams(
             playerId: playerId,
             season: season,

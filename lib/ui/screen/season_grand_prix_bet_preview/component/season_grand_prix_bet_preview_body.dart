@@ -4,18 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../cubit/grand_prix_bet_cubit.dart';
-import '../cubit/grand_prix_bet_state.dart';
-import 'grand_prix_bet_qualifications.dart';
-import 'grand_prix_bet_race.dart';
+import '../cubit/season_grand_prix_bet_preview_cubit.dart';
+import '../cubit/season_grand_prix_bet_preview_state.dart';
+import 'season_grand_prix_bet_preview_qualifications.dart';
+import 'season_grand_prix_bet_preview_race.dart';
 
-class GrandPrixBetBody extends StatelessWidget {
-  const GrandPrixBetBody({super.key});
+class SeasonGrandPrixBetPreviewBody extends StatelessWidget {
+  const SeasonGrandPrixBetPreviewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     final bool isCubitLoading = context.select(
-      (GrandPrixBetCubit cubit) => cubit.state.status.isLoading,
+      (SeasonGrandPrixBetPreviewCubit cubit) => cubit.state.status.isLoading,
     );
 
     return isCubitLoading
@@ -27,8 +27,8 @@ class GrandPrixBetBody extends StatelessWidget {
               children: [
                 _TotalPoints(),
                 GapVertical24(),
-                GrandPrixBetQualifications(),
-                GrandPrixBetRace(),
+                SeasonGrandPrixBetPreviewQualifications(),
+                SeasonGrandPrixBetPreviewRace(),
               ],
             ),
           ),
@@ -42,7 +42,7 @@ class _TotalPoints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double? totalPoints = context.select(
-      (GrandPrixBetCubit cubit) =>
+      (SeasonGrandPrixBetPreviewCubit cubit) =>
           cubit.state.seasonGrandPrixBetPoints?.totalPoints,
     );
 

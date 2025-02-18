@@ -14,12 +14,13 @@ import '../../../../model/grand_prix_basic_info.dart';
 import '../../../../model/player.dart';
 import '../../../../model/season_grand_prix.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
-import 'grand_prix_bet_quali_bets_service.dart';
-import 'grand_prix_bet_race_bets_service.dart';
-import 'grand_prix_bet_state.dart';
+import 'season_grand_prix_bet_preview_quali_bets_service.dart';
+import 'season_grand_prix_bet_preview_race_bets_service.dart';
+import 'season_grand_prix_bet_preview_state.dart';
 
 @injectable
-class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
+class SeasonGrandPrixBetPreviewCubit
+    extends Cubit<SeasonGrandPrixBetPreviewState> {
   final AuthRepository _authRepository;
   final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
@@ -28,14 +29,14 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   final GrandPrixBetCubitParams _params;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
 
-  GrandPrixBetCubit(
+  SeasonGrandPrixBetPreviewCubit(
     this._authRepository,
     this._seasonGrandPrixRepository,
     this._grandPrixBasicInfoRepository,
     this._playerRepository,
     this._seasonGrandPrixBetPointsRepository,
     @factoryParam this._params,
-  ) : super(const GrandPrixBetState());
+  ) : super(const SeasonGrandPrixBetPreviewState());
 
   @override
   Future<void> close() {
@@ -49,7 +50,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
     ) {
       emit(
         state.copyWith(
-          status: GrandPrixBetStateStatus.completed,
+          status: SeasonGrandPrixBetPreviewStateStatus.completed,
           playerUsername: listenedParams.playerUsername,
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
@@ -70,7 +71,7 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   Stream<_ListenedParams> _getListenedParams() {
-    final qualiBetsService = getIt<GrandPrixBetQualiBetsService>(
+    final qualiBetsService = getIt<SeasonGrandPrixBetPreviewQualiBetsService>(
       param1: _params,
     );
     return Rx.combineLatest6(
@@ -121,7 +122,9 @@ class GrandPrixBetCubit extends Cubit<GrandPrixBetState> {
   }
 
   Stream<_RaceListenedParams> _getRaceListenedParams() {
-    final raceBetsService = getIt<GrandPrixBetRaceBetsService>(param1: _params);
+    final raceBetsService = getIt<SeasonGrandPrixBetPreviewRaceBetsService>(
+      param1: _params,
+    );
     return Rx.combineLatest6(
       raceBetsService.getPodiumBets(),
       raceBetsService.getP10Bet(),

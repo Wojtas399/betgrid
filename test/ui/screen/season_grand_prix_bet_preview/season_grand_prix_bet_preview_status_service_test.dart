@@ -1,9 +1,9 @@
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_status_service.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_status_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final service = GrandPrixBetStatusService();
+  final service = SeasonGrandPrixBetPreviewStatusService();
 
   group('selectStatusBasedOnPoints', () {
     test('should return pending status if points are null', () {

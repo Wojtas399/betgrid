@@ -10,21 +10,21 @@ import '../../../../model/season_grand_prix_bet.dart';
 import '../../../../model/season_grand_prix_bet_points.dart';
 import '../../../../model/season_grand_prix_results.dart';
 import '../../../../use_case/get_details_for_season_driver_use_case.dart';
-import 'grand_prix_bet_cubit.dart';
-import 'grand_prix_bet_state.dart';
-import 'grand_prix_bet_status_service.dart';
+import 'season_grand_prix_bet_preview_cubit.dart';
+import 'season_grand_prix_bet_preview_state.dart';
+import 'season_grand_prix_bet_preview_status_service.dart';
 
 @injectable
-class GrandPrixBetRaceBetsService {
+class SeasonGrandPrixBetPreviewRaceBetsService {
   final SeasonGrandPrixBetRepository _seasonGrandPrixBetRepository;
   final SeasonGrandPrixResultsRepository _seasonGrandPrixResultsRepository;
   final SeasonDriverRepository _seasonDriverRepository;
   final GetDetailsForSeasonDriverUseCase _getDetailsForSeasonDriverUseCase;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
-  final GrandPrixBetStatusService _grandPrixBetStatusService;
+  final SeasonGrandPrixBetPreviewStatusService _grandPrixBetStatusService;
   final GrandPrixBetCubitParams _params;
 
-  GrandPrixBetRaceBetsService(
+  SeasonGrandPrixBetPreviewRaceBetsService(
     this._seasonGrandPrixBetRepository,
     this._seasonGrandPrixResultsRepository,
     this._seasonDriverRepository,

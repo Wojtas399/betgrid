@@ -22,7 +22,7 @@ class BetsListOfBets extends StatelessWidget {
     if (loggedUserId != null && season != null) {
       if (gpParams.status.isOngoing || gpParams.status.isFinished) {
         context.navigateTo(
-          GrandPrixBetRoute(
+          SeasonGrandPrixBetPreviewRoute(
             playerId: loggedUserId,
             season: season,
             seasonGrandPrixId: gpParams.seasonGrandPrixId,

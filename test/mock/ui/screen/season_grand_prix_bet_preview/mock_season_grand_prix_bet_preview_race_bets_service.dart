@@ -1,9 +1,9 @@
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_race_bets_service.dart';
-import 'package:betgrid/ui/screen/grand_prix_bet/cubit/grand_prix_bet_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_race_bets_service.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_state.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockGrandPrixBetRaceBetsService extends Mock
-    implements GrandPrixBetRaceBetsService {
+class MockSeasonGrandPrixBetPreviewRaceBetsService extends Mock
+    implements SeasonGrandPrixBetPreviewRaceBetsService {
   void mockGetPodiumBets({required List<SingleDriverBet> expectedPodiumBets}) {
     when(getPodiumBets).thenAnswer((_) => Stream.value(expectedPodiumBets));
   }

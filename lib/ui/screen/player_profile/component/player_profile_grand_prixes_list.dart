@@ -19,7 +19,7 @@ class PlayerProfileGrandPrixesList extends StatelessWidget {
 
     if (playerId != null && season != null) {
       context.navigateTo(
-        GrandPrixBetRoute(
+        SeasonGrandPrixBetPreviewRoute(
           playerId: playerId,
           season: season,
           seasonGrandPrixId: grandPrixId,
