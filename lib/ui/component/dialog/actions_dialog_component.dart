@@ -9,39 +9,35 @@ class ActionsDialog<T> extends StatelessWidget {
   final List<ActionsDialogItem<T>> actions;
   final String? title;
 
-  const ActionsDialog({
-    super.key,
-    required this.actions,
-    this.title,
-  });
+  const ActionsDialog({super.key, required this.actions, this.title});
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 48),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (title != null)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                child: TitleLarge(title!),
-              ),
-            ...actions.map(
-              (action) => ListTile(
-                title: Text(action.label),
-                leading: action.icon,
-                onTap: () => context.maybePop(action.value),
-              ),
-            ),
-            ListTile(
-              title: Text(context.str.cancel),
-              leading: const Icon(Icons.close),
-              onTap: () => context.maybePop(null),
-            ),
-          ],
+    padding: const EdgeInsets.only(top: 24, bottom: 48),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (title != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: TitleLarge(title!),
+          ),
+        ...actions.map(
+          (action) => ListTile(
+            title: Text(action.label),
+            leading: action.icon,
+            onTap: () => context.maybePop(action.value),
+          ),
         ),
-      );
+        ListTile(
+          title: Text(context.str.cancel),
+          leading: const Icon(Icons.close),
+          onTap: () => context.maybePop(null),
+        ),
+      ],
+    ),
+  );
 }
 
 class ActionsDialogItem<T> extends Equatable {

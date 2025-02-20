@@ -6,10 +6,7 @@ class PointsHistory extends Equatable {
   final Iterable<Player> players;
   final Iterable<PointsHistoryGrandPrix> grandPrixes;
 
-  const PointsHistory({
-    required this.players,
-    required this.grandPrixes,
-  });
+  const PointsHistory({required this.players, required this.grandPrixes});
 
   @override
   List<Object?> get props => [players, grandPrixes];

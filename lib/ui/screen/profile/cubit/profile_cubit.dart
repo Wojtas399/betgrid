@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/exception/user_repository_exception.dart';
 import '../../../../data/repository/auth/auth_repository.dart';
@@ -11,80 +14,61 @@ import 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
+  StreamSubscription<User?>? _loggedUserDataListener;
 
-  ProfileCubit(
-    this._authRepository,
-    this._userRepository,
-  ) : super(const ProfileState());
+  ProfileCubit(this._authRepository, this._userRepository)
+    : super(const ProfileState());
 
-  Future<void> initialize() async {
-    final Stream<String?> loggedUserId$ = _authRepository.loggedUserId$;
-    await for (final loggedUserId in loggedUserId$) {
-      if (loggedUserId == null) {
-        emit(state.copyWith(
-          status: ProfileStateStatus.loggedUserDoesNotExist,
-        ));
-      } else {
-        await _initializeLoggedUserData(loggedUserId);
-      }
-    }
+  @override
+  Future<void> close() {
+    _loggedUserDataListener?.cancel();
+    return super.close();
+  }
+
+  void initialize() {
+    _loggedUserDataListener ??= _authRepository.loggedUserId$
+        .whereNotNull()
+        .switchMap(_userRepository.getById)
+        .listen((User? loggedUser) {
+          emit(
+            state.copyWith(
+              status: ProfileStateStatus.completed,
+              username: loggedUser?.username,
+              avatarUrl: loggedUser?.avatarUrl,
+              themeMode: loggedUser?.themeMode,
+              themePrimaryColor: loggedUser?.themePrimaryColor,
+            ),
+          );
+        });
   }
 
   Future<void> updateAvatar(String? newAvatarImgPath) async {
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId != null) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.loading,
-      ));
-      await _userRepository.updateUserAvatar(
+      emit(state.copyWith(status: ProfileStateStatus.loading));
+      await _userRepository.updateAvatar(
         userId: loggedUserId,
         avatarImgPath: newAvatarImgPath,
       );
-      emit(state.copyWith(
-        status: ProfileStateStatus.completed,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.completed));
     }
   }
 
   Future<void> updateUsername(String newUsername) async {
-    if (newUsername.isEmpty) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.newUsernameIsEmpty,
-      ));
-      return;
-    }
+    if (newUsername.isEmpty) return;
     final String? loggedUserId = await _authRepository.loggedUserId$.first;
     if (loggedUserId == null) return;
     try {
-      emit(state.copyWith(
-        status: ProfileStateStatus.loading,
-      ));
-      await _userRepository.updateUserData(
+      emit(state.copyWith(status: ProfileStateStatus.loading));
+      await _userRepository.updateData(
         userId: loggedUserId,
         username: newUsername,
       );
-      emit(state.copyWith(
-        status: ProfileStateStatus.usernameUpdated,
-      ));
+      emit(state.copyWith(status: ProfileStateStatus.usernameUpdated));
     } on UserRepositoryExceptionUsernameAlreadyTaken catch (_) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.newUsernameIsAlreadyTaken,
-      ));
-    }
-  }
-
-  Future<void> _initializeLoggedUserData(String loggedUserId) async {
-    final Stream<User?> loggedUser$ = _userRepository.getUserById(
-      userId: loggedUserId,
-    );
-    await for (final loggedUser in loggedUser$) {
-      emit(state.copyWith(
-        status: ProfileStateStatus.completed,
-        username: loggedUser?.username,
-        avatarUrl: loggedUser?.avatarUrl,
-        themeMode: loggedUser?.themeMode,
-        themePrimaryColor: loggedUser?.themePrimaryColor,
-      ));
+      emit(
+        state.copyWith(status: ProfileStateStatus.newUsernameIsAlreadyTaken),
+      );
     }
   }
 }

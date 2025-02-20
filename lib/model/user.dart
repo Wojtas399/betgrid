@@ -16,12 +16,12 @@ class User extends Entity {
 
   @override
   List<Object?> get props => [
-        id,
-        username,
-        avatarUrl,
-        themeMode,
-        themePrimaryColor,
-      ];
+    id,
+    username,
+    avatarUrl,
+    themeMode,
+    themePrimaryColor,
+  ];
 }
 
 enum ThemeMode { light, dark, system }

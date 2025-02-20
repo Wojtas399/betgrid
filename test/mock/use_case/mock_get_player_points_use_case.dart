@@ -3,13 +3,10 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGetPlayerPointsUseCase extends Mock
     implements GetPlayerPointsUseCase {
-  void mock({
-    double? points,
-  }) {
+  void mock({double? points}) {
     when(
-      () => call(
-        playerId: any(named: 'playerId'),
-      ),
+      () =>
+          call(playerId: any(named: 'playerId'), season: any(named: 'season')),
     ).thenAnswer((_) => Stream.value(points));
   }
 }

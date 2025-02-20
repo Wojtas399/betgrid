@@ -1,9 +1,9 @@
 import '../../../model/user.dart';
 
 abstract interface class UserRepository {
-  Stream<User?> getUserById({required String userId});
+  Stream<User?> getById(String userId);
 
-  Future<void> addUser({
+  Future<void> add({
     required String userId,
     required String username,
     String? avatarImgPath,
@@ -11,15 +11,12 @@ abstract interface class UserRepository {
     required ThemePrimaryColor themePrimaryColor,
   });
 
-  Future<void> updateUserData({
+  Future<void> updateData({
     required String userId,
     String? username,
     ThemeMode? themeMode,
     ThemePrimaryColor? themePrimaryColor,
   });
 
-  Future<void> updateUserAvatar({
-    required String userId,
-    String? avatarImgPath,
-  });
+  Future<void> updateAvatar({required String userId, String? avatarImgPath});
 }

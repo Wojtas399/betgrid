@@ -1,21 +1,15 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'sign_in_state.freezed.dart';
-
-enum SignInStateStatus {
-  loading,
-  completed,
-  userIsAlreadySignedIn,
+abstract class SignInState {
+  const SignInState();
 }
 
-@freezed
-class SignInState with _$SignInState {
-  const SignInState._();
+class SignInStateLoading extends SignInState {
+  const SignInStateLoading();
+}
 
-  const factory SignInState({
-    @Default(SignInStateStatus.loading) SignInStateStatus status,
-  }) = _SignInState;
+class SignInStateCompleted extends SignInState {
+  const SignInStateCompleted();
+}
 
-  bool get isUserAlreadySignedIn =>
-      status == SignInStateStatus.userIsAlreadySignedIn;
+class SignInStateUserIsAlreadySignedIn extends SignInState {
+  const SignInStateUserIsAlreadySignedIn();
 }

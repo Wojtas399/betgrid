@@ -1,22 +1,26 @@
-import '../../firebase/model/grand_prix_bet_points_dto/grand_prix_bet_points_dto.dart';
-import '../../model/grand_prix_bet_points.dart';
+import 'package:betgrid_shared/firebase/model/race_bet_points_dto.dart';
+import 'package:injectable/injectable.dart';
 
-RaceBetPoints mapRaceBetPointsFromDto(RaceBetPointsDto raceBetPointsDto) =>
-    RaceBetPoints(
-      totalPoints: raceBetPointsDto.totalPoints,
-      p1Points: raceBetPointsDto.p1Points,
-      p2Points: raceBetPointsDto.p2Points,
-      p3Points: raceBetPointsDto.p3Points,
-      p10Points: raceBetPointsDto.p10Points,
-      fastestLapPoints: raceBetPointsDto.fastestLapPoints,
-      podiumAndP10Points: raceBetPointsDto.podiumAndP10Points,
-      podiumAndP10Multiplier: raceBetPointsDto.podiumAndP10Multiplier,
-      dnfPoints: raceBetPointsDto.dnfPoints,
-      dnfDriver1Points: raceBetPointsDto.dnfDriver1Points,
-      dnfDriver2Points: raceBetPointsDto.dnfDriver2Points,
-      dnfDriver3Points: raceBetPointsDto.dnfDriver3Points,
-      dnfMultiplier: raceBetPointsDto.dnfMultiplier,
-      safetyCarPoints: raceBetPointsDto.safetyCarPoints,
-      redFlagPoints: raceBetPointsDto.redFlagPoints,
-      safetyCarAndRedFlagPoints: raceBetPointsDto.safetyCarAndRedFlagPoints,
-    );
+import '../../model/season_grand_prix_bet_points.dart';
+
+@injectable
+class RaceBetPointsMapper {
+  RaceBetPoints mapFromDto(RaceBetPointsDto raceBetPointsDto) => RaceBetPoints(
+    total: raceBetPointsDto.total,
+    p1: raceBetPointsDto.p1,
+    p2: raceBetPointsDto.p2,
+    p3: raceBetPointsDto.p3,
+    p10: raceBetPointsDto.p10,
+    fastestLap: raceBetPointsDto.fastestLap,
+    podiumAndP10: raceBetPointsDto.podiumAndP10,
+    podiumAndP10Multiplier: raceBetPointsDto.podiumAndP10Multiplier,
+    totalDnf: raceBetPointsDto.totalDnf,
+    dnfDriver1: raceBetPointsDto.dnfDriver1,
+    dnfDriver2: raceBetPointsDto.dnfDriver2,
+    dnfDriver3: raceBetPointsDto.dnfDriver3,
+    dnfMultiplier: raceBetPointsDto.dnfMultiplier,
+    safetyCar: raceBetPointsDto.safetyCar,
+    redFlag: raceBetPointsDto.redFlag,
+    safetyCarAndRedFlag: raceBetPointsDto.safetyCarAndRedFlag,
+  );
+}

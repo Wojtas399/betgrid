@@ -1,208 +1,68 @@
-import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/grand_prix_bet/grand_prix_bet_repository.dart';
-import '../../../../data/repository/grand_prix_bet_points/grand_prix_bet_points_repository.dart';
-import '../../../../data/repository/grand_prix_result/grand_prix_results_repository.dart';
 import '../../../../data/repository/player/player_repository.dart';
-import '../../../../model/grand_prix.dart';
-import '../../../../model/grand_prix_bet.dart';
-import '../../../../model/grand_prix_bet_points.dart';
-import '../../../../model/grand_prix_results.dart';
+import '../../../../data/repository/player_stats/player_stats_repository.dart';
 import '../../../../model/player.dart';
-import '../../../../use_case/get_finished_grand_prixes_use_case.dart';
-import '../stats_model/points_by_driver.dart';
+import '../../../../model/player_stats.dart';
+import '../stats_model/player_points.dart';
 
 @injectable
 class CreatePointsForDriverStats {
   final PlayerRepository _playerRepository;
-  final GetFinishedGrandPrixesUseCase _getFinishedGrandPrixesUseCase;
-  final GrandPrixResultsRepository _grandPrixResultsRepository;
-  final GrandPrixBetPointsRepository _grandPrixBetPointsRepository;
-  final GrandPrixBetRepository _grandPrixBetRepository;
+  final PlayerStatsRepository _playerStatsRepository;
 
   const CreatePointsForDriverStats(
     this._playerRepository,
-    this._getFinishedGrandPrixesUseCase,
-    this._grandPrixResultsRepository,
-    this._grandPrixBetPointsRepository,
-    this._grandPrixBetRepository,
+    this._playerStatsRepository,
   );
 
-  Stream<List<PointsByDriverPlayerPoints>?> call({
-    required String driverId,
-  }) =>
-      Rx.combineLatest2(
-        _playerRepository.getAllPlayers().whereNotNull(),
-        _getFinishedGrandPrixesUseCase(),
-        (
-          List<Player> allPlayers,
-          List<GrandPrix> finishedGrandPrixes,
-        ) =>
-            (allPlayers: allPlayers, finishedGrandPrixes: finishedGrandPrixes),
-      ).switchMap(
-        (data) {
-          if (data.allPlayers.isEmpty || data.finishedGrandPrixes.isEmpty) {
-            return Stream.value(null);
-          }
-          final List<String> allPlayersIds =
-              data.allPlayers.map((p) => p.id).toList();
-          final List<String> finishedGrandPrixesIds =
-              data.finishedGrandPrixes.map((gp) => gp.id).toList();
-          return Rx.combineLatest5(
-            Stream.value(data.allPlayers),
-            Stream.value(finishedGrandPrixesIds),
-            _grandPrixResultsRepository.getGrandPrixResultsForGrandPrixes(
-              idsOfGrandPrixes: finishedGrandPrixesIds,
+  Stream<List<PlayerPoints>?> call({
+    required int season,
+    required String seasonDriverId,
+  }) => _playerRepository.getAll().switchMap(
+    (List<Player> allPlayers) =>
+        allPlayers.isEmpty
+            ? Stream.value(null)
+            : Rx.combineLatest(
+              allPlayers.map(
+                (Player player) => _combinePlayerWithStats(player, season),
+              ),
+              (List<_PlayerWithStats> playersWithStats) =>
+                  _createPointsForDriver(seasonDriverId, playersWithStats),
             ),
-            _grandPrixBetPointsRepository
-                .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-              idsOfPlayers: allPlayersIds,
-              idsOfGrandPrixes: finishedGrandPrixesIds,
-            ),
-            _grandPrixBetRepository.getGrandPrixBetsForPlayersAndGrandPrixes(
-              idsOfPlayers: allPlayersIds,
-              idsOfGrandPrixes: finishedGrandPrixesIds,
-            ),
-            (
-              List<Player> allPlayers,
-              List<String> finishedGrandPrixesIds,
-              List<GrandPrixResults> grandPrixesResults,
-              List<GrandPrixBetPoints> grandPrixesBetPoints,
-              List<GrandPrixBet> grandPrixBets,
-            ) =>
-                _calculatePointsForDriver(
-              driverId,
-              allPlayers,
-              finishedGrandPrixesIds,
-              grandPrixesResults,
-              grandPrixesBetPoints,
-              grandPrixBets,
-            ),
+  );
+
+  Stream<_PlayerWithStats> _combinePlayerWithStats(Player player, int season) {
+    return _playerStatsRepository
+        .getByPlayerIdAndSeason(playerId: player.id, season: season)
+        .map((PlayerStats? stats) => (player: player, stats: stats));
+  }
+
+  List<PlayerPoints>? _createPointsForDriver(
+    String seasonDriverId,
+    List<_PlayerWithStats> playersWithStats,
+  ) {
+    return playersWithStats
+        .where(
+          (_PlayerWithStats playerWithStats) => playerWithStats.stats != null,
+        )
+        .map((_PlayerWithStats playerWithStats) {
+          final double? points =
+              playerWithStats.stats!.pointsForDrivers
+                  ?.firstWhere(
+                    (pointsForDriver) =>
+                        pointsForDriver.seasonDriverId == seasonDriverId,
+                  )
+                  .points;
+
+          return PlayerPoints(
+            player: playerWithStats.player,
+            points: points ?? 0,
           );
-        },
-      );
-
-  List<PointsByDriverPlayerPoints>? _calculatePointsForDriver(
-    String driverId,
-    Iterable<Player> players,
-    Iterable<String> grandPrixesIds,
-    Iterable<GrandPrixResults> grandPrixesResults,
-    Iterable<GrandPrixBetPoints> grandPrixesBetPoints,
-    Iterable<GrandPrixBet> grandPrixBets,
-  ) {
-    return players.map(
-      (Player player) {
-        final pointsForDriverInEachGp = grandPrixesIds.map(
-          (String grandPrixId) {
-            final gpResults = grandPrixesResults.firstWhereOrNull(
-              (gpResults) => gpResults.grandPrixId == grandPrixId,
-            );
-            final gpBetPoints = grandPrixesBetPoints.firstWhereOrNull(
-              (gpBetPoints) =>
-                  gpBetPoints.grandPrixId == grandPrixId &&
-                  gpBetPoints.playerId == player.id,
-            );
-            final gpBet = grandPrixBets.firstWhere(
-              (gpBet) =>
-                  gpBet.grandPrixId == grandPrixId &&
-                  gpBet.playerId == player.id,
-            );
-            final qualiPoints = _calculatePointsForQuali(
-              driverId,
-              gpBetPoints?.qualiBetPoints,
-              gpResults?.qualiStandingsByDriverIds,
-            );
-            final racePoints = _calculatePointsForRace(
-              driverId,
-              gpBetPoints?.raceBetPoints,
-              gpResults?.raceResults,
-              gpBet.dnfDriverIds,
-            );
-            return qualiPoints + racePoints;
-          },
-        );
-        final double totalPointsForDriver = pointsForDriverInEachGp
-            .reduce((totalPoints, gpPoints) => totalPoints + gpPoints);
-        return PointsByDriverPlayerPoints(
-          player: player,
-          points: totalPointsForDriver,
-        );
-      },
-    ).toList();
-  }
-
-  double _calculatePointsForQuali(
-    String driverId,
-    QualiBetPoints? qualiBetPoints,
-    List<String?>? qualiResults,
-  ) {
-    final int? driverStandingsIndex = qualiResults?.indexWhere(
-      (qualiResultsDriverId) => qualiResultsDriverId == driverId,
-    );
-    if (driverStandingsIndex == null ||
-        driverStandingsIndex < 0 ||
-        qualiBetPoints == null) {
-      return 0.0;
-    }
-    final List<double> pointsForEachQualiPosition = [
-      qualiBetPoints.q3P1Points,
-      qualiBetPoints.q3P2Points,
-      qualiBetPoints.q3P3Points,
-      qualiBetPoints.q3P4Points,
-      qualiBetPoints.q3P5Points,
-      qualiBetPoints.q3P6Points,
-      qualiBetPoints.q3P7Points,
-      qualiBetPoints.q3P8Points,
-      qualiBetPoints.q3P9Points,
-      qualiBetPoints.q3P10Points,
-      qualiBetPoints.q2P11Points,
-      qualiBetPoints.q2P12Points,
-      qualiBetPoints.q2P13Points,
-      qualiBetPoints.q2P14Points,
-      qualiBetPoints.q2P15Points,
-      qualiBetPoints.q1P16Points,
-      qualiBetPoints.q1P17Points,
-      qualiBetPoints.q1P18Points,
-      qualiBetPoints.q1P19Points,
-      qualiBetPoints.q1P20Points,
-    ];
-    return pointsForEachQualiPosition[driverStandingsIndex];
-  }
-
-  double _calculatePointsForRace(
-    String driverId,
-    RaceBetPoints? raceBetPoints,
-    RaceResults? raceResults,
-    List<String?>? betDnfDriverIds,
-  ) {
-    if (raceResults == null || raceBetPoints == null) return 0.0;
-    double points = 0.0;
-    if (raceResults.p1DriverId == driverId) {
-      points += raceBetPoints.p1Points;
-    } else if (raceResults.p2DriverId == driverId) {
-      points += raceBetPoints.p2Points;
-    } else if (raceResults.p3DriverId == driverId) {
-      points += raceBetPoints.p3Points;
-    } else if (raceResults.p10DriverId == driverId) {
-      points += raceBetPoints.p10Points;
-    }
-    if (raceResults.fastestLapDriverId == driverId) {
-      points += raceBetPoints.fastestLapPoints;
-    }
-    if (raceResults.dnfDriverIds.contains(driverId) &&
-        betDnfDriverIds?.contains(driverId) == true) {
-      final int dnfIndex = betDnfDriverIds!.indexWhere(
-        (String? betDriverId) => betDriverId == driverId,
-      );
-      final List<double> pointsForEachDnfBet = [
-        raceBetPoints.dnfDriver1Points,
-        raceBetPoints.dnfDriver2Points,
-        raceBetPoints.dnfDriver3Points,
-      ];
-      points += pointsForEachDnfBet[dnfIndex];
-    }
-    return points;
+        })
+        .toList();
   }
 }
+
+typedef _PlayerWithStats = ({Player player, PlayerStats? stats});

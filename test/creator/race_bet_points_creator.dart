@@ -1,38 +1,58 @@
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 
-RaceBetPoints createRaceBetPoints({
-  double totalPoints = 0.0,
-  double p1Points = 0.0,
-  double p2Points = 0.0,
-  double p3Points = 0.0,
-  double p10Points = 0.0,
-  double fastestLapPoints = 0.0,
-  double podiumAndP10Points = 0.0,
-  double? podiumAndP10Multiplier,
-  double dnfPoints = 0.0,
-  double dnfDriver1Points = 0.0,
-  double dnfDriver2Points = 0.0,
-  double dnfDriver3Points = 0.0,
-  double? dnfMultiplier,
-  double safetyCarPoints = 0.0,
-  double redFlagPoints = 0.0,
-  double safetyCarAndRedFlagPoints = 0.0,
-}) =>
-    RaceBetPoints(
-      totalPoints: totalPoints,
-      p1Points: p1Points,
-      p2Points: p2Points,
-      p3Points: p3Points,
-      p10Points: p10Points,
-      fastestLapPoints: fastestLapPoints,
-      podiumAndP10Points: podiumAndP10Points,
-      podiumAndP10Multiplier: podiumAndP10Multiplier,
-      dnfPoints: dnfPoints,
-      dnfDriver1Points: dnfDriver1Points,
-      dnfDriver2Points: dnfDriver2Points,
-      dnfDriver3Points: dnfDriver3Points,
-      dnfMultiplier: dnfMultiplier,
-      safetyCarPoints: safetyCarPoints,
-      redFlagPoints: redFlagPoints,
-      safetyCarAndRedFlagPoints: safetyCarAndRedFlagPoints,
-    );
+class RaceBetPointsCreator {
+  final double total;
+  final double p1;
+  final double p2;
+  final double p3;
+  final double p10;
+  final double fastestLap;
+  final double podiumAndP10;
+  final double? podiumAndP10Multiplier;
+  final double totalDnf;
+  final double dnfDriver1;
+  final double dnfDriver2;
+  final double dnfDriver3;
+  final double? dnfMultiplier;
+  final double safetyCar;
+  final double redFlag;
+  final double safetyCarAndRedFlag;
+
+  const RaceBetPointsCreator({
+    this.total = 0,
+    this.p1 = 0,
+    this.p2 = 0,
+    this.p3 = 0,
+    this.p10 = 0,
+    this.fastestLap = 0,
+    this.podiumAndP10 = 0,
+    this.podiumAndP10Multiplier,
+    this.totalDnf = 0,
+    this.dnfDriver1 = 0,
+    this.dnfDriver2 = 0,
+    this.dnfDriver3 = 0,
+    this.dnfMultiplier,
+    this.safetyCar = 0,
+    this.redFlag = 0,
+    this.safetyCarAndRedFlag = 0,
+  });
+
+  RaceBetPoints create() => RaceBetPoints(
+    total: total,
+    p1: p1,
+    p2: p2,
+    p3: p3,
+    p10: p10,
+    fastestLap: fastestLap,
+    podiumAndP10: podiumAndP10,
+    podiumAndP10Multiplier: podiumAndP10Multiplier,
+    totalDnf: totalDnf,
+    dnfDriver1: dnfDriver1,
+    dnfDriver2: dnfDriver2,
+    dnfDriver3: dnfDriver3,
+    dnfMultiplier: dnfMultiplier,
+    safetyCar: safetyCar,
+    redFlag: redFlag,
+    safetyCarAndRedFlag: safetyCarAndRedFlag,
+  );
+}

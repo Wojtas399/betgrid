@@ -5,9 +5,10 @@ import '../../../../use_case/get_grand_prixes_with_points_use_case.dart';
 
 part 'player_profile_state.freezed.dart';
 
-enum PlayerProfileStateStatus {
-  loading,
-  completed,
+enum PlayerProfileStateStatus { loading, completed }
+
+extension PlayerProfileStateStatusExtensions on PlayerProfileStateStatus {
+  bool get isLoading => this == PlayerProfileStateStatus.loading;
 }
 
 @freezed
@@ -17,9 +18,8 @@ class PlayerProfileState with _$PlayerProfileState {
   const factory PlayerProfileState({
     @Default(PlayerProfileStateStatus.loading) PlayerProfileStateStatus status,
     Player? player,
+    int? season,
     double? totalPoints,
     @Default([]) List<GrandPrixWithPoints> grandPrixesWithPoints,
   }) = _PlayerProfileState;
-
-  bool get isLoading => status == PlayerProfileStateStatus.loading;
 }

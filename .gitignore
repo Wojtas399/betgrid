@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -16,10 +18,8 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VS Code related
+.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -42,12 +42,33 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Additional
+# IOS related
+Debug.xcconfig
+Release.xcconfig
+
+# Build runner related
 *.g.dart
 *.freezed.dart
 *.config.dart
 *.gr.dart
+
+# Firebase related
 firebase_options.dart
+firebase_options_dev.dart
 .firebaserc
 firebase.json
 serviceAccountKey.json
+google-services.json
+GoogleService-Info.plist
+storage.rules
+
+# Mason related
+bricks.json
+mason-lock.json
+
+# Python related
+.pylintrc
+
+# FVM Version Cache
+.fvm/
+.fvmrc

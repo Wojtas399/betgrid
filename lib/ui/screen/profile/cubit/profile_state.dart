@@ -8,9 +8,16 @@ enum ProfileStateStatus {
   loading,
   completed,
   usernameUpdated,
-  loggedUserDoesNotExist,
-  newUsernameIsEmpty,
   newUsernameIsAlreadyTaken,
+}
+
+extension ProfileStateStatusExtensions on ProfileStateStatus {
+  bool get isLoading => this == ProfileStateStatus.loading;
+
+  bool get isUsernameUpdated => this == ProfileStateStatus.usernameUpdated;
+
+  bool get isNewUsernameAlreadyTaken =>
+      this == ProfileStateStatus.newUsernameIsAlreadyTaken;
 }
 
 @freezed

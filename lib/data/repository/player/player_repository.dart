@@ -1,7 +1,7 @@
 import '../../../model/player.dart';
 
 abstract interface class PlayerRepository {
-  Stream<List<Player>?> getAllPlayers();
+  Stream<List<Player>> getAll();
 
-  Stream<Player?> getPlayerById({required String playerId});
+  Stream<Player?> getById(String playerId);
 }

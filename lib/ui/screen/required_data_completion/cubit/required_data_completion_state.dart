@@ -5,10 +5,23 @@ part 'required_data_completion_state.freezed.dart';
 enum RequiredDataCompletionStateStatus {
   loading,
   completed,
-  loggedUserDoesNotExist,
   usernameIsEmpty,
   usernameIsAlreadyTaken,
   dataSaved,
+}
+
+extension RequiredDataCompletionStateStatusExtensions
+    on RequiredDataCompletionStateStatus {
+  bool get isLoading => this == RequiredDataCompletionStateStatus.loading;
+
+  bool get isUsernameEmpty =>
+      this == RequiredDataCompletionStateStatus.usernameIsEmpty;
+
+  bool get isUsernameAlreadyTaken =>
+      this == RequiredDataCompletionStateStatus.usernameIsAlreadyTaken;
+
+  bool get hasDataBeenSaved =>
+      this == RequiredDataCompletionStateStatus.dataSaved;
 }
 
 @freezed

@@ -4,9 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCreatePlayersPodiumStats extends Mock
     implements CreatePlayersPodiumStats {
-  void mock({
-    PlayersPodium? playersPodium,
-  }) {
-    when(call).thenAnswer((_) => Stream.value(playersPodium));
+  void mock({PlayersPodium? playersPodium}) {
+    when(
+      () => call(season: any(named: 'season')),
+    ).thenAnswer((_) => Stream.value(playersPodium));
   }
 }

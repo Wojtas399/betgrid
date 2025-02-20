@@ -1,213 +1,381 @@
-import 'package:betgrid/model/grand_prix.dart';
-import 'package:betgrid/model/grand_prix_bet_points.dart';
+import 'package:betgrid/model/season_grand_prix_bet_points.dart';
 import 'package:betgrid/model/player.dart';
+import 'package:betgrid/model/season_grand_prix.dart';
+import 'package:betgrid/ui/screen/stats/cubit/stats_state.dart';
 import 'package:betgrid/ui/screen/stats/stats_creator/create_points_history_stats.dart';
 import 'package:betgrid/ui/screen/stats/stats_model/points_history.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../creator/grand_prix_bet_points_creator.dart';
-import '../../../creator/grand_prix_creator.dart';
+import '../../../creator/season_grand_prix_bet_points_creator.dart';
 import '../../../creator/player_creator.dart';
-import '../../../mock/data/repository/mock_grand_prix_bet_points_repository.dart';
-import '../../../mock/data/repository/mock_player_repository.dart';
-import '../../../mock/use_case/mock_get_finished_grand_prixes_use_case.dart';
+import '../../../creator/season_grand_prix_creator.dart';
+import '../../../mock/repository/mock_auth_repository.dart';
+import '../../../mock/repository/mock_season_grand_prix_bet_points_repository.dart';
+import '../../../mock/repository/mock_player_repository.dart';
+import '../../../mock/use_case/mock_get_finished_grand_prixes_from_season_use_case.dart';
 
 void main() {
+  final authRepository = MockAuthRepository();
   final playerRepository = MockPlayerRepository();
-  final getFinishedGrandPrixesUseCase = MockGetFinishedGrandPrixesUseCase();
-  final grandPrixBetPointsRepository = MockGrandPrixBetPointsRepository();
+  final getFinishedGrandPrixesFromSeasonUseCase =
+      MockGetFinishedGrandPrixesFromSeasonUseCase();
+  final seasonGrandPrixBetPointsRepository =
+      MockSeasonGrandPrixBetPointsRepository();
+  const season = 2025;
+
   late CreatePointsHistoryStats createPointsHistoryStats;
 
   setUp(() {
     createPointsHistoryStats = CreatePointsHistoryStats(
+      authRepository,
       playerRepository,
-      getFinishedGrandPrixesUseCase,
-      grandPrixBetPointsRepository,
+      getFinishedGrandPrixesFromSeasonUseCase,
+      seasonGrandPrixBetPointsRepository,
     );
   });
 
   tearDown(() {
+    reset(authRepository);
     reset(playerRepository);
-    reset(getFinishedGrandPrixesUseCase);
-    reset(grandPrixBetPointsRepository);
+    reset(getFinishedGrandPrixesFromSeasonUseCase);
+    reset(seasonGrandPrixBetPointsRepository);
   });
 
-  test(
-    'list of players is empty, '
-    'should emit null',
-    () async {
-      playerRepository.mockGetAllPlayers(players: []);
-      getFinishedGrandPrixesUseCase.mock(
-        finishedGrandPrixes: [
-          createGrandPrix(id: 'gp1'),
-          createGrandPrix(id: 'gp2'),
-        ],
-      );
+  group('grouped, ', () {
+    const StatsType statsType = StatsType.grouped;
 
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
-
-      expect(await pointsHistory$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
-    },
-  );
-
-  test(
-    'list of finished grand prixes is empty, '
-    'should return null',
-    () async {
-      playerRepository.mockGetAllPlayers(
-        players: [
-          createPlayer(id: 'p1'),
-          createPlayer(id: 'p2'),
-        ],
-      );
-      getFinishedGrandPrixesUseCase.mock(
-        finishedGrandPrixes: [],
-      );
-
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
-
-      expect(await pointsHistory$.first, null);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
-    },
-  );
-
-  test(
-    'for each player should create cumulative sum of points gained for each '
-    'grand prix',
-    () async {
-      final List<Player> players = [
-        createPlayer(id: 'p1'),
-        createPlayer(id: 'p2'),
-        createPlayer(id: 'p3'),
-      ];
-      final List<GrandPrix> finishedGrandPrixes = [
-        createGrandPrix(id: 'gp1', roundNumber: 2),
-        createGrandPrix(id: 'gp2', roundNumber: 3),
-        createGrandPrix(id: 'gp3', roundNumber: 1),
-      ];
-      final List<GrandPrixBetPoints> grandPrixesBetPoints = [
-        createGrandPrixBetPoints(
-          playerId: 'p1',
-          grandPrixId: 'gp1',
-          totalPoints: 20,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p1',
-          grandPrixId: 'gp2',
-          totalPoints: 12.2,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p1',
-          grandPrixId: 'gp3',
-          totalPoints: 17,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p2',
-          grandPrixId: 'gp1',
-          totalPoints: 5.5,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p2',
-          grandPrixId: 'gp2',
-          totalPoints: 17,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p2',
-          grandPrixId: 'gp3',
-          totalPoints: 9,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p3',
-          grandPrixId: 'gp1',
-          totalPoints: 15,
-        ),
-        createGrandPrixBetPoints(
-          playerId: 'p3',
-          grandPrixId: 'gp2',
-          totalPoints: 17,
-        ),
-      ];
-      final PointsHistory expectedPointsHistory = PointsHistory(
-        players: players,
-        grandPrixes: const [
-          PointsHistoryGrandPrix(
-            roundNumber: 1,
-            playersPoints: [
-              PointsHistoryPlayerPoints(
-                playerId: 'p1',
-                points: 17,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p2',
-                points: 9,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p3',
-                points: 0,
-              ),
-            ],
-          ),
-          PointsHistoryGrandPrix(
-            roundNumber: 2,
-            playersPoints: [
-              PointsHistoryPlayerPoints(
-                playerId: 'p1',
-                points: 37,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p2',
-                points: 14.5,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p3',
-                points: 15,
-              ),
-            ],
-          ),
-          PointsHistoryGrandPrix(
-            roundNumber: 3,
-            playersPoints: [
-              PointsHistoryPlayerPoints(
-                playerId: 'p1',
-                points: 49.2,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p2',
-                points: 31.5,
-              ),
-              PointsHistoryPlayerPoints(
-                playerId: 'p3',
-                points: 32,
-              ),
-            ],
-          ),
-        ],
-      );
-      playerRepository.mockGetAllPlayers(players: players);
-      getFinishedGrandPrixesUseCase.mock(
-        finishedGrandPrixes: finishedGrandPrixes,
-      );
-      grandPrixBetPointsRepository
-          .mockGetGrandPrixBetPointsForPlayersAndGrandPrixes(
-        grandPrixesBetPoints: grandPrixesBetPoints,
-      );
-
-      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats();
-
-      expect(await pointsHistory$.first, expectedPointsHistory);
-      verify(playerRepository.getAllPlayers).called(1);
-      verify(getFinishedGrandPrixesUseCase.call).called(1);
+    tearDown(() {
+      verify(playerRepository.getAll).called(1);
       verify(
-        () => grandPrixBetPointsRepository
-            .getGrandPrixBetPointsForPlayersAndGrandPrixes(
-          idsOfPlayers: ['p1', 'p2', 'p3'],
-          idsOfGrandPrixes: ['gp1', 'gp2', 'gp3'],
-        ),
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: season),
       ).called(1);
-    },
-  );
+    });
+
+    test('should emit null if list of players is empty', () async {
+      playerRepository.mockGetAll(players: []);
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
+        finishedSeasonGrandPrixes: [
+          SeasonGrandPrixCreator(id: 'sgp1').create(),
+          SeasonGrandPrixCreator(id: 'sgp2').create(),
+        ],
+      );
+
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        statsType: statsType,
+        season: season,
+      );
+
+      expect(await pointsHistory$.first, null);
+    });
+
+    test(
+      'should return null if list of finished grand prixes is empty',
+      () async {
+        playerRepository.mockGetAll(
+          players: [
+            const PlayerCreator(id: 'p1').create(),
+            const PlayerCreator(id: 'p2').create(),
+          ],
+        );
+        getFinishedGrandPrixesFromSeasonUseCase.mock(
+          finishedSeasonGrandPrixes: [],
+        );
+
+        final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+          statsType: statsType,
+          season: season,
+        );
+
+        expect(await pointsHistory$.first, null);
+      },
+    );
+
+    test(
+      'for each player should create cumulative sum of points gained for each '
+      'grand prix',
+      () async {
+        final List<Player> players = [
+          const PlayerCreator(id: 'p1').create(),
+          const PlayerCreator(id: 'p2').create(),
+          const PlayerCreator(id: 'p3').create(),
+        ];
+        final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
+          SeasonGrandPrixCreator(id: 'sgp1', roundNumber: 2).create(),
+          SeasonGrandPrixCreator(id: 'sgp2', roundNumber: 3).create(),
+          SeasonGrandPrixCreator(id: 'sgp3', roundNumber: 1).create(),
+        ];
+        final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players.first.id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
+            totalPoints: 20,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players.first.id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
+            totalPoints: 12.2,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players.first.id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
+            totalPoints: 17,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players[1].id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
+            totalPoints: 5.5,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players[1].id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
+            totalPoints: 17,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players[1].id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
+            totalPoints: 9,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players.last.id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
+            totalPoints: 15,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: players.last.id,
+            seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
+            totalPoints: 17,
+          ).create(),
+        ];
+        final PointsHistory expectedPointsHistory = PointsHistory(
+          players: players,
+          grandPrixes: [
+            PointsHistoryGrandPrix(
+              roundNumber: 1,
+              playersPoints: [
+                PointsHistoryPlayerPoints(
+                  playerId: players.first.id,
+                  points: 17,
+                ),
+                PointsHistoryPlayerPoints(playerId: players[1].id, points: 9),
+                PointsHistoryPlayerPoints(playerId: players.last.id, points: 0),
+              ],
+            ),
+            PointsHistoryGrandPrix(
+              roundNumber: 2,
+              playersPoints: [
+                PointsHistoryPlayerPoints(
+                  playerId: players.first.id,
+                  points: 37,
+                ),
+                PointsHistoryPlayerPoints(
+                  playerId: players[1].id,
+                  points: 14.5,
+                ),
+                PointsHistoryPlayerPoints(
+                  playerId: players.last.id,
+                  points: 15,
+                ),
+              ],
+            ),
+            PointsHistoryGrandPrix(
+              roundNumber: 3,
+              playersPoints: [
+                PointsHistoryPlayerPoints(
+                  playerId: players.first.id,
+                  points: 49.2,
+                ),
+                PointsHistoryPlayerPoints(
+                  playerId: players[1].id,
+                  points: 31.5,
+                ),
+                PointsHistoryPlayerPoints(
+                  playerId: players.last.id,
+                  points: 32,
+                ),
+              ],
+            ),
+          ],
+        );
+        playerRepository.mockGetAll(players: players);
+        getFinishedGrandPrixesFromSeasonUseCase.mock(
+          finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
+        );
+        seasonGrandPrixBetPointsRepository
+            .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+              seasonGrandPrixesBetPoints: grandPrixesBetPoints,
+            );
+
+        final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+          statsType: statsType,
+          season: season,
+        );
+
+        expect(await pointsHistory$.first, expectedPointsHistory);
+        verify(
+          () => seasonGrandPrixBetPointsRepository
+              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+                season: season,
+                idsOfPlayers: players.map((player) => player.id).toList(),
+                idsOfSeasonGrandPrixes:
+                    finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
+              ),
+        ).called(1);
+      },
+    );
+  });
+
+  group('individual, ', () {
+    const StatsType statsType = StatsType.individual;
+
+    tearDown(() {
+      verify(() => authRepository.loggedUserId$).called(1);
+      verify(
+        () => getFinishedGrandPrixesFromSeasonUseCase.call(season: 2025),
+      ).called(1);
+    });
+
+    test('should emit null if logged user id is null', () async {
+      authRepository.mockGetLoggedUserId(null);
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
+        finishedSeasonGrandPrixes: [
+          SeasonGrandPrixCreator(id: 'sgp1').create(),
+          SeasonGrandPrixCreator(id: 'sgp2').create(),
+        ],
+      );
+
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        statsType: statsType,
+        season: season,
+      );
+
+      expect(await pointsHistory$.first, null);
+    });
+
+    test('should emit null if logged user data does not exist', () async {
+      const String loggedUserId = 'p1';
+      authRepository.mockGetLoggedUserId(loggedUserId);
+      playerRepository.mockGetById(player: null);
+      getFinishedGrandPrixesFromSeasonUseCase.mock(
+        finishedSeasonGrandPrixes: [
+          SeasonGrandPrixCreator(id: 'sgp1').create(),
+          SeasonGrandPrixCreator(id: 'sgp2').create(),
+        ],
+      );
+
+      final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+        statsType: statsType,
+        season: season,
+      );
+
+      expect(await pointsHistory$.first, null);
+    });
+
+    test(
+      'should return null if list of finished grand prixes is empty',
+      () async {
+        const String loggedUserId = 'p1';
+        final Player loggedUser =
+            const PlayerCreator(
+              id: loggedUserId,
+              username: 'logged user',
+            ).create();
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        playerRepository.mockGetById(player: loggedUser);
+        getFinishedGrandPrixesFromSeasonUseCase.mock(
+          finishedSeasonGrandPrixes: [],
+        );
+
+        final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+          statsType: statsType,
+          season: season,
+        );
+
+        expect(await pointsHistory$.first, null);
+      },
+    );
+
+    test(
+      ' should create cumulative sum of points gained for each grand prix by '
+      'logged user',
+      () async {
+        const String loggedUserId = 'p1';
+        final Player loggedUser =
+            const PlayerCreator(
+              id: loggedUserId,
+              username: 'logged user',
+            ).create();
+        final List<SeasonGrandPrix> finishedSeasonGrandPrixes = [
+          SeasonGrandPrixCreator(id: 'sgp1', roundNumber: 2).create(),
+          SeasonGrandPrixCreator(id: 'sgp2', roundNumber: 3).create(),
+          SeasonGrandPrixCreator(id: 'sgp3', roundNumber: 1).create(),
+        ];
+        final List<SeasonGrandPrixBetPoints> grandPrixesBetPoints = [
+          SeasonGrandPrixBetPointsCreator(
+            playerId: loggedUserId,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.first.id,
+            totalPoints: 20,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: loggedUserId,
+            seasonGrandPrixId: finishedSeasonGrandPrixes[1].id,
+            totalPoints: 12.2,
+          ).create(),
+          SeasonGrandPrixBetPointsCreator(
+            playerId: loggedUserId,
+            seasonGrandPrixId: finishedSeasonGrandPrixes.last.id,
+            totalPoints: 17,
+          ).create(),
+        ];
+        final PointsHistory expectedPointsHistory = PointsHistory(
+          players: [loggedUser],
+          grandPrixes: const [
+            PointsHistoryGrandPrix(
+              roundNumber: 1,
+              playersPoints: [
+                PointsHistoryPlayerPoints(playerId: loggedUserId, points: 17),
+              ],
+            ),
+            PointsHistoryGrandPrix(
+              roundNumber: 2,
+              playersPoints: [
+                PointsHistoryPlayerPoints(playerId: loggedUserId, points: 37),
+              ],
+            ),
+            PointsHistoryGrandPrix(
+              roundNumber: 3,
+              playersPoints: [
+                PointsHistoryPlayerPoints(playerId: loggedUserId, points: 49.2),
+              ],
+            ),
+          ],
+        );
+        authRepository.mockGetLoggedUserId(loggedUserId);
+        playerRepository.mockGetById(player: loggedUser);
+        getFinishedGrandPrixesFromSeasonUseCase.mock(
+          finishedSeasonGrandPrixes: finishedSeasonGrandPrixes,
+        );
+        seasonGrandPrixBetPointsRepository
+            .mockGetSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+              seasonGrandPrixesBetPoints: grandPrixesBetPoints,
+            );
+
+        final Stream<PointsHistory?> pointsHistory$ = createPointsHistoryStats(
+          statsType: statsType,
+          season: season,
+        );
+
+        expect(await pointsHistory$.first, expectedPointsHistory);
+        verify(
+          () => seasonGrandPrixBetPointsRepository
+              .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
+                season: season,
+                idsOfPlayers: [loggedUserId],
+                idsOfSeasonGrandPrixes:
+                    finishedSeasonGrandPrixes.map((gp) => gp.id).toList(),
+              ),
+        ).called(1);
+      },
+    );
+  });
 }

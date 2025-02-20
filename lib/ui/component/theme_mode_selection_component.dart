@@ -68,15 +68,15 @@ class _ThemeModeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-        onTap: onPressed,
-        title: Text(label),
-        leading: Icon(iconData),
-        contentPadding: const EdgeInsets.only(left: 24, right: 16),
-        trailing: Checkbox(
-          value: isSelected,
-          onChanged: (_) {
-            onPressed();
-          },
-        ),
-      );
+    onTap: onPressed,
+    title: Text(label),
+    leading: Icon(iconData),
+    contentPadding: const EdgeInsets.only(left: 24, right: 16),
+    trailing: Checkbox(
+      value: isSelected,
+      onChanged: (_) {
+        onPressed();
+      },
+    ),
+  );
 }
