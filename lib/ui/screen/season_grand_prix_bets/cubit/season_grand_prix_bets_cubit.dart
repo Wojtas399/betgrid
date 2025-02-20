@@ -155,10 +155,13 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
             (gp) => gp.status is SeasonGrandPrixStatusNext,
           );
           return nextGp != null
-              ? _dateService.getDurationToDateFromNow(nextGp.startDate)
+              ? _dateService.getDurationBetweenDateTimes(
+                fromDateTime: now,
+                toDateTime: nextGp.startDate,
+              )
               : null;
         })
-        .listen((duration) {
+        .listen((Duration? duration) {
           emit(state.copyWith(durationToStartNextGp: duration));
         });
   }
