@@ -59,7 +59,7 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
   }
 
   Stream<_ListenedData> _getListenedData(String loggedUserId) {
-    return Rx.combineLatest2(
+    return Rx.combineLatest3(
       _getPlayerPointsUseCase(
         playerId: loggedUserId,
         season: _seasonCubit.state,
@@ -67,43 +67,65 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
       _getGrandPrixesWithPointsUseCase(
         playerId: loggedUserId,
         season: _seasonCubit.state,
-      ).map(_addStatusForEachGp),
-      (double? totalPoints, List<SeasonGrandPrixItemParams> grandPrixItems) =>
-          _ListenedData(
-            loggedUserId: loggedUserId,
-            totalPoints: totalPoints,
-            grandPrixItems: grandPrixItems,
-          ),
+      ),
+      _dateService.getNowStream(),
+      (
+        double? totalPoints,
+        List<GrandPrixWithPoints> grandPrixesWithPoints,
+        DateTime nowDateTime,
+      ) => _ListenedData(
+        loggedUserId: loggedUserId,
+        totalPoints: totalPoints,
+        grandPrixesWithPoints: grandPrixesWithPoints,
+        nowDateTime: nowDateTime,
+      ),
     );
   }
 
-  Future<void> _manageListenedData(_ListenedData data) async {
-    if (data.totalPoints == null && data.grandPrixItems.isEmpty) {
+  Future<void> _manageListenedData(_ListenedData listenedData) async {
+    if (listenedData.isNoBets) {
       emit(
         state.copyWith(
           status: SeasonGrandPrixBetsStateStatus.noBets,
-          loggedUserId: data.loggedUserId,
+          loggedUserId: listenedData.loggedUserId,
           season: _seasonCubit.state,
         ),
       );
     } else {
+      final List<SeasonGrandPrixItemParams> grandPrixItems =
+          _addStatusForEachGp(
+            listenedData.grandPrixesWithPoints,
+            listenedData.nowDateTime,
+          );
+      final SeasonGrandPrixItemParams? nextGp = grandPrixItems.firstWhereOrNull(
+        (gp) => gp.status is SeasonGrandPrixStatusNext,
+      );
+
+      Duration? durationToStartNextGp;
+      if (nextGp != null) {
+        durationToStartNextGp = _dateService.getDurationBetweenDateTimes(
+          fromDateTime: listenedData.nowDateTime,
+          toDateTime: nextGp.startDate,
+        );
+      }
+
       emit(
         state.copyWith(
           status: SeasonGrandPrixBetsStateStatus.completed,
-          loggedUserId: data.loggedUserId,
+          loggedUserId: listenedData.loggedUserId,
           season: _seasonCubit.state,
-          totalPoints: data.totalPoints,
-          grandPrixItems: data.grandPrixItems,
+          totalPoints: listenedData.totalPoints,
+          grandPrixItems: grandPrixItems,
+          durationToStartNextGp: durationToStartNextGp,
         ),
       );
-      _listenToDurationToStartNextGp();
     }
   }
 
   List<SeasonGrandPrixItemParams> _addStatusForEachGp(
     List<GrandPrixWithPoints> grandPrixesWithPoints,
+    DateTime nowDateTime,
   ) {
-    final now = _dateService.getNow();
     final grandPrixesWithStatus =
         grandPrixesWithPoints
             .map(
@@ -111,7 +133,7 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
                 status: _gpStatusService.defineStatusForGp(
                   gpStartDateTime: gp.startDate,
                   gpEndDateTime: gp.endDate,
-                  now: now,
+                  now: nowDateTime,
                 ),
                 seasonGrandPrixId: gp.seasonGrandPrixId,
                 grandPrixName: gp.name,
@@ -130,6 +152,7 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
     final nextGp = sortedGrandPrixesWithStatus.firstWhereOrNull(
       (gp) => gp.status is SeasonGrandPrixStatusUpcoming,
     );
+
     if (nextGp != null) {
       final nextGpIndex = sortedGrandPrixesWithStatus.indexOf(nextGp);
       sortedGrandPrixesWithStatus[nextGpIndex] = SeasonGrandPrixItemParams(
@@ -145,39 +168,28 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
     }
     return sortedGrandPrixesWithStatus;
   }
-
-  void _listenToDurationToStartNextGp() {
-    _durationToStartNextGpListener?.cancel();
-    _durationToStartNextGpListener = _dateService
-        .getNowStream()
-        .map((DateTime now) {
-          final nextGp = state.grandPrixItems?.firstWhereOrNull(
-            (gp) => gp.status is SeasonGrandPrixStatusNext,
-          );
-          return nextGp != null
-              ? _dateService.getDurationBetweenDateTimes(
-                fromDateTime: now,
-                toDateTime: nextGp.startDate,
-              )
-              : null;
-        })
-        .listen((Duration? duration) {
-          emit(state.copyWith(durationToStartNextGp: duration));
-        });
-  }
 }
 
 class _ListenedData extends Equatable {
   final String loggedUserId;
   final double? totalPoints;
-  final List<SeasonGrandPrixItemParams> grandPrixItems;
+  final List<GrandPrixWithPoints> grandPrixesWithPoints;
+  final DateTime nowDateTime;
 
   const _ListenedData({
     required this.loggedUserId,
     required this.totalPoints,
-    required this.grandPrixItems,
+    required this.grandPrixesWithPoints,
+    required this.nowDateTime,
   });
 
   @override
-  List<Object?> get props => [loggedUserId, totalPoints, grandPrixItems];
+  List<Object?> get props => [
+    loggedUserId,
+    totalPoints,
+    grandPrixesWithPoints,
+    nowDateTime,
+  ];
+
+  bool get isNoBets => totalPoints == null && grandPrixesWithPoints.isEmpty;
 }
