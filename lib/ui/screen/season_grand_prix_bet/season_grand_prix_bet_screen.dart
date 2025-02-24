@@ -1,5 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../dependency_injection.dart';
+import 'component/season_grand_prix_bet_content.dart';
+import 'cubit/season_grand_prix_bet_cubit.dart';
 
 @RoutePage()
 class SeasonGrandPrixBetScreen extends StatelessWidget {
@@ -14,6 +19,13 @@ class SeasonGrandPrixBetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Text('Season Grand Prix Bet'));
+    return BlocProvider(
+      create:
+          (_) => getIt<SeasonGrandPrixBetCubit>(
+            param1: season,
+            param2: seasonGrandPrixId,
+          )..initialize(),
+      child: const SeasonGrandPrixBetContent(),
+    );
   }
 }

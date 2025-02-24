@@ -26,7 +26,6 @@ void main() async {
   configureDependencies();
 
   await FirebaseBetgrid.initialize(
-    name: 'betgrid',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   if (const bool.fromEnvironment('emulated', defaultValue: false)) {
