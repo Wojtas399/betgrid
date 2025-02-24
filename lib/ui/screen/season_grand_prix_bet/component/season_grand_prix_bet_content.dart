@@ -13,12 +13,12 @@ class SeasonGrandPrixBetContent extends StatelessWidget {
     final SeasonGrandPrixBetState state =
         context.watch<SeasonGrandPrixBetCubit>().state;
 
-    return state.when(
-      initial: () => const _LoadingContent(),
-      editor: () => const SeasonGrandPrixBetEditorContent(),
-      preview: () => const Center(child: Text('Preview')),
+    return state.map(
+      initial: (_) => const _LoadingContent(),
+      editor: (_) => const SeasonGrandPrixBetEditorContent(),
+      preview: (_) => const Center(child: Text('Preview')),
       seasonGrandPrixNotFound:
-          () => const Center(child: Text('Season Grand Prix Not Found')),
+          (_) => const Center(child: Text('Season Grand Prix Not Found')),
     );
   }
 }

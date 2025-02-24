@@ -154,7 +154,7 @@ class _EndBettingTime extends StatelessWidget {
           BodyMedium('${context.str.betsEndBettingTime} '),
           if (durationToEnd != null)
             BodyMedium(
-              durationToEnd.toDaysHoursMinutes(),
+              durationToEnd.toUIDuration(),
               fontWeight: FontWeight.bold,
             )
           else ...[

@@ -6,10 +6,11 @@ import '../../../../component/gap/gap_vertical.dart';
 import '../../../../component/padding/padding_components.dart';
 import '../../../../component/text_component.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import 'season_grand_prix_bet_editor_quali.dart';
-import 'season_grand_prix_bet_editor_race.dart';
 import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 import '../cubit/season_grand_prix_bet_editor_state.dart';
+import 'season_grand_prix_bet_editor_gp_bet_info.dart';
+import 'season_grand_prix_bet_editor_quali.dart';
+import 'season_grand_prix_bet_editor_race.dart';
 
 class SeasonGrandPrixBetEditorBody extends StatelessWidget {
   const SeasonGrandPrixBetEditorBody({super.key});
@@ -27,6 +28,9 @@ class SeasonGrandPrixBetEditorBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const GapVertical16(),
+                const SeasonGrandPrixBetEditorGpBetInfo(),
+                const GapVertical24(),
                 _Section(
                   title: context.str.qualifications,
                   subtitle:
