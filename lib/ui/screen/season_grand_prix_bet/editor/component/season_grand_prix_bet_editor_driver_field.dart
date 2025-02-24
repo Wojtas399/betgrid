@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/driver_details.dart';
-import '../../../component/driver_description_component.dart';
-import '../../../component/text_component.dart';
-import '../../../extensions/build_context_extensions.dart';
-import '../../../extensions/string_extensions.dart';
+import '../../../../../model/driver_details.dart';
+import '../../../../component/driver_description_component.dart';
+import '../../../../component/text_component.dart';
+import '../../../../extensions/build_context_extensions.dart';
+import '../../../../extensions/string_extensions.dart';
 import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 
 class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {

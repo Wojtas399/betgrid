@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver_details.dart';
-import '../../../../model/season_grand_prix_bet.dart';
+import '../../../../../model/driver_details.dart';
+import '../../../../../model/season_grand_prix_bet.dart';
 import 'season_grand_prix_bet_editor_race_form.dart';
 
 part 'season_grand_prix_bet_editor_state.freezed.dart';

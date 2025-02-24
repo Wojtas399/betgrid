@@ -14,15 +14,15 @@ import 'season_grand_prix_bet_state.dart';
 class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
   final SeasonGrandPrixRepository _seasonGrandPrixRepository;
   final DateService _dateService;
-  final int _season;
-  final String _seasonGrandPrixId;
+  final int season;
+  final String seasonGrandPrixId;
   StreamSubscription<_ListenedParams>? _listener;
 
   SeasonGrandPrixBetCubit(
     this._seasonGrandPrixRepository,
     this._dateService,
-    @factoryParam this._season,
-    @factoryParam this._seasonGrandPrixId,
+    @factoryParam this.season,
+    @factoryParam this.seasonGrandPrixId,
   ) : super(const SeasonGrandPrixBetState.initial());
 
   @override
@@ -31,12 +31,17 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
     return super.close();
   }
 
-  void initialize() {
+  void initialize() async {
     _listener = _getListenedParams().listen((_ListenedParams params) {
+      if (params.seasonGrandPrix == null) {
+        emit(const SeasonGrandPrixBetState.seasonGrandPrixNotFound());
+        return;
+      }
+
       final Duration durationToStartGp = _dateService
           .getDurationBetweenDateTimes(
             fromDateTime: params.nowDateTime,
-            toDateTime: params.seasonGrandPrix.startDate,
+            toDateTime: params.seasonGrandPrix!.startDate,
           );
 
       if (durationToStartGp.isNegative) {
@@ -49,11 +54,12 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
 
   Stream<_ListenedParams> _getListenedParams() {
     return Rx.combineLatest2(
-      _seasonGrandPrixRepository
-          .getById(season: _season, seasonGrandPrixId: _seasonGrandPrixId)
-          .whereNotNull(),
+      _seasonGrandPrixRepository.getById(
+        season: season,
+        seasonGrandPrixId: seasonGrandPrixId,
+      ),
       _dateService.getNowStream(),
-      (SeasonGrandPrix seasonGrandPrix, DateTime nowDateTime) =>
+      (SeasonGrandPrix? seasonGrandPrix, DateTime nowDateTime) =>
           _ListenedParams(
             seasonGrandPrix: seasonGrandPrix,
             nowDateTime: nowDateTime,
@@ -63,7 +69,7 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
 }
 
 class _ListenedParams extends Equatable {
-  final SeasonGrandPrix seasonGrandPrix;
+  final SeasonGrandPrix? seasonGrandPrix;
   final DateTime nowDateTime;
 
   const _ListenedParams({

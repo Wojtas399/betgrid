@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../data/repository/auth/auth_repository.dart';
-import '../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
-import '../../../../model/driver_details.dart';
-import '../../../../model/season_grand_prix_bet.dart';
-import '../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
-import '../../../extensions/list_of_driver_details_extensions.dart';
+import '../../../../../data/repository/auth/auth_repository.dart';
+import '../../../../../data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart';
+import '../../../../../model/driver_details.dart';
+import '../../../../../model/season_grand_prix_bet.dart';
+import '../../../../../use_case/get_details_of_all_drivers_from_season_use_case.dart';
+import '../../../../extensions/list_of_driver_details_extensions.dart';
 import 'season_grand_prix_bet_editor_state.dart';
 
 @injectable

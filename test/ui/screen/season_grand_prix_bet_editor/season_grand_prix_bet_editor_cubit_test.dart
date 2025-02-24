@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:betgrid/model/driver_details.dart';
 import 'package:betgrid/model/season_grand_prix_bet.dart';
-import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_cubit.dart';
-import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_race_form.dart';
-import 'package:betgrid/ui/screen/season_grand_prix_bet_editor/cubit/season_grand_prix_bet_editor_state.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_cubit.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_race_form.dart';
+import 'package:betgrid/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

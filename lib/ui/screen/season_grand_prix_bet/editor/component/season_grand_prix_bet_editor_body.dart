@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../component/custom_card_component.dart';
-import '../../../component/gap/gap_vertical.dart';
-import '../../../component/padding/padding_components.dart';
-import '../../../component/text_component.dart';
-import '../../../extensions/build_context_extensions.dart';
-import '../cubit/season_grand_prix_bet_editor_cubit.dart';
-import '../cubit/season_grand_prix_bet_editor_state.dart';
-import 'season_grand_prix_bet_editor_app_bar.dart';
+import '../../../../component/custom_card_component.dart';
+import '../../../../component/gap/gap_vertical.dart';
+import '../../../../component/padding/padding_components.dart';
+import '../../../../component/text_component.dart';
+import '../../../../extensions/build_context_extensions.dart';
 import 'season_grand_prix_bet_editor_quali.dart';
 import 'season_grand_prix_bet_editor_race.dart';
+import '../cubit/season_grand_prix_bet_editor_cubit.dart';
+import '../cubit/season_grand_prix_bet_editor_state.dart';
 
-class SeasonGrandPrixBetEditorContent extends StatelessWidget {
-  const SeasonGrandPrixBetEditorContent({super.key});
-
-  @override
-  Widget build(BuildContext context) => const Scaffold(
-    appBar: SeasonGrandPrixBetEditorAppBar(),
-    body: SafeArea(child: _Body()),
-  );
-}
-
-class _Body extends StatelessWidget {
-  const _Body();
+class SeasonGrandPrixBetEditorBody extends StatelessWidget {
+  const SeasonGrandPrixBetEditorBody({super.key});
 
   @override
   Widget build(BuildContext context) {
