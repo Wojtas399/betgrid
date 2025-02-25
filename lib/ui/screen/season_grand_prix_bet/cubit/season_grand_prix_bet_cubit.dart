@@ -190,7 +190,7 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
 
   Stream<String?> _getGrandPrixName(String grandPrixId) {
     return _grandPrixBasicInfoRepository
-        .getGrandPrixBasicInfoById(grandPrixId)
+        .getById(grandPrixId)
         .map((GrandPrixBasicInfo? basicInfo) => basicInfo?.name);
   }
 

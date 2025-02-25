@@ -175,7 +175,7 @@ class SeasonGrandPrixBetPreviewCubit
     SeasonGrandPrix seasonGrandPrix,
   ) {
     return _grandPrixBasicInfoRepository
-        .getGrandPrixBasicInfoById(seasonGrandPrix.grandPrixId)
+        .getById(seasonGrandPrix.grandPrixId)
         .map(
           (GrandPrixBasicInfo? grandPrixBasicInfo) =>
               grandPrixBasicInfo != null
