@@ -63,7 +63,7 @@ class _EditorCubitStatusListener extends StatelessWidget {
     } else if (status.isSuccessfullySaved) {
       dialogService.closeLoadingDialog();
       dialogService.showSnackbarMessage(
-        context.str.grandPrixBetEditorSuccessfullySavedBets,
+        context.str.seasonGrandPrixBetEditorSuccessfullySavedBets,
       );
       seasonGrandPrixBetCubit.onSaveFinished();
     }

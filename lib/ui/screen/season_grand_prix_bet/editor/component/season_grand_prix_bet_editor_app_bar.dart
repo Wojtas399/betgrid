@@ -21,7 +21,7 @@ class SeasonGrandPrixBetEditorAppBar extends StatelessWidget
 
     return AppBar(
       centerTitle: false,
-      title: Text(context.str.grandPrixBetEditorScreenTitle),
+      title: Text(context.str.seasonGrandPrixBetEditorScreenTitle),
       actions:
           cubitStatus.isInitial
               ? null

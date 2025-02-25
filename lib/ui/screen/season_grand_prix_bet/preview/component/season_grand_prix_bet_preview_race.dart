@@ -374,27 +374,27 @@ class _PointsSummary extends StatelessWidget {
     return SeasonGrandPrixBetPreviewPointsSummary(
       details: [
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetPositions,
+          label: context.str.seasonGrandPrixBetPreviewPositions,
           value: racePoints?.podiumAndP10,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetPositionsMultiplier,
+          label: context.str.seasonGrandPrixBetPreviewPositionsMultiplier,
           value: racePoints?.podiumAndP10Multiplier,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetFastestLap,
+          label: context.str.seasonGrandPrixBetPreviewFastestLap,
           value: racePoints?.fastestLap,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetDNF,
+          label: context.str.seasonGrandPrixBetPreviewDnf,
           value: racePoints?.totalDnf,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetDNFMultiplier,
+          label: context.str.seasonGrandPrixBetPreviewDnfMultiplier,
           value: racePoints?.dnfMultiplier,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetOther,
+          label: context.str.seasonGrandPrixBetPreviewOther,
           value: racePoints?.safetyCarAndRedFlag,
         ),
       ],

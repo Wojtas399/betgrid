@@ -34,13 +34,15 @@ class SeasonGrandPrixBetEditorBody extends StatelessWidget {
                 _Section(
                   title: context.str.qualifications,
                   subtitle:
-                      context.str.grandPrixBetEditorQualificationDescription,
+                      context
+                          .str
+                          .seasonGrandPrixBetEditorQualificationDescription,
                   body: const SeasonGrandPrixBetEditorQuali(),
                 ),
                 const GapVertical24(),
                 _Section(
                   title: context.str.race,
-                  subtitle: context.str.grandPrixBetEditorRaceDescription,
+                  subtitle: context.str.seasonGrandPrixBetEditorRaceDescription,
                   body: const SeasonGrandPrixBetEditorRace(),
                 ),
               ],

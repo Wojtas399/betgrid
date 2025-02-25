@@ -20,7 +20,7 @@ class SeasonGrandPrixBetPreviewPointsSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleMedium(
-          context.str.grandPrixBetPointsDetails,
+          context.str.seasonGrandPrixBetPreviewPointsDetails,
           fontWeight: FontWeight.bold,
         ),
         ...details.map(
@@ -36,7 +36,7 @@ class SeasonGrandPrixBetPreviewPointsSummary extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TitleMedium(context.str.grandPrixBetTotal),
+            TitleMedium(context.str.seasonGrandPrixBetPreviewTotal),
             TitleMedium(
               totalPoints?.toString() ?? context.str.doubleDash,
               color: context.colorScheme.primary,

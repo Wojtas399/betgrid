@@ -25,36 +25,36 @@ class SeasonGrandPrixBetEditorRace extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionHeader(
-          title: context.str.grandPrixBetEditorPodiumAndP10Title,
-          subtitle: context.str.grandPrixBetEditorPodiumAndP10Subtitle,
+          title: context.str.seasonGrandPrixBetEditorPodiumAndP10Title,
+          subtitle: context.str.seasonGrandPrixBetEditorPodiumAndP10Subtitle,
         ),
         const GapVertical16(),
         const SeasonGrandPrixBetEditorRacePodiumAndP10(),
         const Divider(height: 32),
         _SectionHeader(
           title: context.str.fastestLap,
-          subtitle: context.str.grandPrixBetEditorFastestLapSubtitle,
+          subtitle: context.str.seasonGrandPrixBetEditorFastestLapSubtitle,
         ),
         const GapVertical16(),
         const _FastestLap(),
         const Divider(height: 32),
         _SectionHeader(
-          title: context.str.grandPrixBetEditorDnfTitle,
-          subtitle: context.str.grandPrixBetEditorDnfSubtitle,
+          title: context.str.seasonGrandPrixBetEditorDnfTitle,
+          subtitle: context.str.seasonGrandPrixBetEditorDnfSubtitle,
         ),
         const GapVertical16(),
         const _DnfDrivers(),
         const Divider(height: 32),
         _SectionHeader(
           title: context.str.safetyCar,
-          subtitle: context.str.grandPrixBetEditorSafetyCarSubtitle,
+          subtitle: context.str.seasonGrandPrixBetEditorSafetyCarSubtitle,
         ),
         const GapVertical16(),
         const _SafetyCar(),
         const Divider(height: 32),
         _SectionHeader(
           title: context.str.redFlag,
-          subtitle: context.str.grandPrixBetEditorRedFlagSubtitle,
+          subtitle: context.str.seasonGrandPrixBetEditorRedFlagSubtitle,
         ),
         const GapVertical16(),
         const _RedFlag(),
@@ -145,8 +145,8 @@ class _DnfDrivers extends StatelessWidget {
             onPressed: () => _onAddDriverPressed(context),
             child: Text(
               dnfDrivers.isEmpty
-                  ? context.str.grandPrixBetEditorAddDriversToDnfList
-                  : context.str.grandPrixBetEditorEditDnfList,
+                  ? context.str.seasonGrandPrixBetEditorAddDriversToDnfList
+                  : context.str.seasonGrandPrixBetEditorEditDnfList,
             ),
           ),
         ],

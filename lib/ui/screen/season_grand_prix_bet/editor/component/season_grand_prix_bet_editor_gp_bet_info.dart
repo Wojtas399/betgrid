@@ -22,7 +22,7 @@ class SeasonGrandPrixBetEditorGpBetInfo extends StatelessWidget {
           const _GrandPrixName(),
           Row(
             children: [
-              BodyMedium('${context.str.betsEndBettingTime} '),
+              BodyMedium('${context.str.seasonGrandPrixBetsEndBettingTime} '),
               const _DurationToStart(),
             ],
           ),

@@ -120,19 +120,19 @@ class _PointsSummary extends StatelessWidget {
           value: qualiPointsDetails?.totalQ3,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: '${context.str.grandPrixBetMultiplier} Q1',
+          label: '${context.str.seasonGrandPrixBetPreviewMultiplier} Q1',
           value: qualiPointsDetails?.q1Multiplier,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: '${context.str.grandPrixBetMultiplier} Q2',
+          label: '${context.str.seasonGrandPrixBetPreviewMultiplier} Q2',
           value: qualiPointsDetails?.q2Multiplier,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: '${context.str.grandPrixBetMultiplier} Q3',
+          label: '${context.str.seasonGrandPrixBetPreviewMultiplier} Q3',
           value: qualiPointsDetails?.q3Multiplier,
         ),
         SeasonGrandPrixBetPreviewPointsSummaryDetail(
-          label: context.str.grandPrixBetMultiplier,
+          label: context.str.seasonGrandPrixBetPreviewMultiplier,
           value: qualiPointsDetails?.multiplier,
         ),
       ],

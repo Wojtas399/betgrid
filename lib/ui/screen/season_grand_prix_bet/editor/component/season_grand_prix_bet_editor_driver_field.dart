@@ -79,7 +79,7 @@ class _DriverSelectionFormField extends StatelessWidget {
       ),
       hint: Align(
         alignment: Alignment.centerLeft,
-        child: Text(context.str.grandPrixBetEditorSelectDriver),
+        child: Text(context.str.seasonGrandPrixBetEditorSelectDriver),
       ),
       items: [
         ...?allDrivers?.map(

@@ -23,7 +23,7 @@ class SeasonGrandPrixBetEditorDnfDriversSelectionDialog
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.str.grandPrixBetEditorDnfTitle),
+        title: Text(context.str.seasonGrandPrixBetEditorDnfTitle),
         backgroundColor: context.colorScheme.surfaceContainerHighest,
         surfaceTintColor: context.colorScheme.surfaceContainerHighest,
       ),
@@ -39,7 +39,7 @@ class SeasonGrandPrixBetEditorDnfDriversSelectionDialog
                       child: Column(
                         children: [
                           BodyMedium(
-                            context.str.grandPrixBetEditorDnfSubtitle,
+                            context.str.seasonGrandPrixBetEditorDnfSubtitle,
                             textAlign: TextAlign.center,
                           ),
                           const _SelectedDrivers(),
@@ -180,7 +180,7 @@ class _NoDriversInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => EmptyContentInfo(
-    title: context.str.grandPrixBetEditorNoDriversInfoTitle,
-    message: context.str.grandPrixBetEditorNoDriversInfoSubtitle,
+    title: context.str.seasonGrandPrixBetEditorNoDriversInfoTitle,
+    message: context.str.seasonGrandPrixBetEditorNoDriversInfoSubtitle,
   );
 }

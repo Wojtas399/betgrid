@@ -93,23 +93,65 @@ abstract class Str {
     Locale('pl')
   ];
 
-  /// No description provided for @signInScreenTitle.
+  /// No description provided for @playersScreenTitle.
   ///
   /// In pl, this message translates to:
-  /// **'Logowanie'**
-  String get signInScreenTitle;
+  /// **'Gracze'**
+  String get playersScreenTitle;
 
-  /// No description provided for @signInScreenInfo.
+  /// No description provided for @playersNoOtherPlayersTitle.
   ///
   /// In pl, this message translates to:
-  /// **'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google'**
-  String get signInScreenInfo;
+  /// **'Brak innych graczy'**
+  String get playersNoOtherPlayersTitle;
 
-  /// No description provided for @signInScreenSignInButtonLabel.
+  /// No description provided for @playersNoOtherPlayersMessage.
   ///
   /// In pl, this message translates to:
-  /// **'Zaloguj'**
-  String get signInScreenSignInButtonLabel;
+  /// **'Aktualnie nie ma zarejestrowanych innych graczy'**
+  String get playersNoOtherPlayersMessage;
+
+  /// No description provided for @profileScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Profil'**
+  String get profileScreenTitle;
+
+  /// No description provided for @profileNewUsernameDialogTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowa nazwa użytkownika'**
+  String get profileNewUsernameDialogTitle;
+
+  /// No description provided for @profileSuccessfullySavedUsername.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pomyślnie zmieniono nazwę użytkownika'**
+  String get profileSuccessfullySavedUsername;
+
+  /// No description provided for @profileAvatarActionsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Edycja avataru'**
+  String get profileAvatarActionsTitle;
+
+  /// No description provided for @profileAvatarActionsSelectFromGallery.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybierz z galerii'**
+  String get profileAvatarActionsSelectFromGallery;
+
+  /// No description provided for @profileAvatarActionsCapturePhoto.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zrób zdjęcie'**
+  String get profileAvatarActionsCapturePhoto;
+
+  /// No description provided for @profileAvatarActionsDeleteImage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Usuń zdjęcie'**
+  String get profileAvatarActionsDeleteImage;
 
   /// No description provided for @requiredDataCompletionScreenTitle.
   ///
@@ -146,6 +188,222 @@ abstract class Str {
   /// In pl, this message translates to:
   /// **'Wybierz źródło avataru'**
   String get requiredDataCompletionSelectAvatarSource;
+
+  /// No description provided for @seasonGrandPrixBetPreviewTotal.
+  ///
+  /// In pl, this message translates to:
+  /// **'Razem'**
+  String get seasonGrandPrixBetPreviewTotal;
+
+  /// No description provided for @seasonGrandPrixBetPreviewPointsDetails.
+  ///
+  /// In pl, this message translates to:
+  /// **'Punktacja'**
+  String get seasonGrandPrixBetPreviewPointsDetails;
+
+  /// No description provided for @seasonGrandPrixBetPreviewChoice.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybór'**
+  String get seasonGrandPrixBetPreviewChoice;
+
+  /// No description provided for @seasonGrandPrixBetPreviewResult.
+  ///
+  /// In pl, this message translates to:
+  /// **'Rezultat'**
+  String get seasonGrandPrixBetPreviewResult;
+
+  /// No description provided for @seasonGrandPrixBetPreviewMultiplier.
+  ///
+  /// In pl, this message translates to:
+  /// **'Mnożnik'**
+  String get seasonGrandPrixBetPreviewMultiplier;
+
+  /// No description provided for @seasonGrandPrixBetPreviewPositions.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pozycje'**
+  String get seasonGrandPrixBetPreviewPositions;
+
+  /// No description provided for @seasonGrandPrixBetPreviewPositionsMultiplier.
+  ///
+  /// In pl, this message translates to:
+  /// **'Mnożnik punktów za pozycje'**
+  String get seasonGrandPrixBetPreviewPositionsMultiplier;
+
+  /// No description provided for @seasonGrandPrixBetPreviewFastestLap.
+  ///
+  /// In pl, this message translates to:
+  /// **'Najszybsze okrążenie'**
+  String get seasonGrandPrixBetPreviewFastestLap;
+
+  /// No description provided for @seasonGrandPrixBetPreviewDnf.
+  ///
+  /// In pl, this message translates to:
+  /// **'DNF'**
+  String get seasonGrandPrixBetPreviewDnf;
+
+  /// No description provided for @seasonGrandPrixBetPreviewDnfMultiplier.
+  ///
+  /// In pl, this message translates to:
+  /// **'Mnożnik DNF'**
+  String get seasonGrandPrixBetPreviewDnfMultiplier;
+
+  /// No description provided for @seasonGrandPrixBetPreviewOther.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pozostałe'**
+  String get seasonGrandPrixBetPreviewOther;
+
+  /// No description provided for @seasonGrandPrixBetEditorScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Obstaw grand prix'**
+  String get seasonGrandPrixBetEditorScreenTitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorQualificationDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.'**
+  String get seasonGrandPrixBetEditorQualificationDescription;
+
+  /// No description provided for @seasonGrandPrixBetEditorRaceDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wytypuj poszczególne sekcje wyścigu wedle opisu.'**
+  String get seasonGrandPrixBetEditorRaceDescription;
+
+  /// No description provided for @seasonGrandPrixBetEditorSelectDriver.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybierz kierowcę'**
+  String get seasonGrandPrixBetEditorSelectDriver;
+
+  /// No description provided for @seasonGrandPrixBetEditorPodiumAndP10Title.
+  ///
+  /// In pl, this message translates to:
+  /// **'Podium oraz P10'**
+  String get seasonGrandPrixBetEditorPodiumAndP10Title;
+
+  /// No description provided for @seasonGrandPrixBetEditorPodiumAndP10Subtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.'**
+  String get seasonGrandPrixBetEditorPodiumAndP10Subtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorFastestLapSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.'**
+  String get seasonGrandPrixBetEditorFastestLapSubtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorDnfTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'DNF'**
+  String get seasonGrandPrixBetEditorDnfTitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorDnfSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.'**
+  String get seasonGrandPrixBetEditorDnfSubtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorAddDriversToDnfList.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj kierowców'**
+  String get seasonGrandPrixBetEditorAddDriversToDnfList;
+
+  /// No description provided for @seasonGrandPrixBetEditorEditDnfList.
+  ///
+  /// In pl, this message translates to:
+  /// **'Edytuj listę'**
+  String get seasonGrandPrixBetEditorEditDnfList;
+
+  /// No description provided for @seasonGrandPrixBetEditorNoDriversInfoTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak kierowców'**
+  String get seasonGrandPrixBetEditorNoDriversInfoTitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorNoDriversInfoSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Niestety nie znaleziono żadnych kierowców do wyboru'**
+  String get seasonGrandPrixBetEditorNoDriversInfoSubtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorSafetyCarSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy w wyścigu pojawi się samochód bezpieczeństwa?'**
+  String get seasonGrandPrixBetEditorSafetyCarSubtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorRedFlagSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy w wyścigu pojawi się czerwona flaga?'**
+  String get seasonGrandPrixBetEditorRedFlagSubtitle;
+
+  /// No description provided for @seasonGrandPrixBetEditorSuccessfullySavedBets.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pomyślnie zapisano typy'**
+  String get seasonGrandPrixBetEditorSuccessfullySavedBets;
+
+  /// No description provided for @seasonGrandPrixBetsScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Typy'**
+  String get seasonGrandPrixBetsScreenTitle;
+
+  /// No description provided for @seasonGrandPrixBetsNoBetsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak możliwości typowania'**
+  String get seasonGrandPrixBetsNoBetsTitle;
+
+  /// No description provided for @seasonGrandPrixBetsNoBetsMessage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione'**
+  String get seasonGrandPrixBetsNoBetsMessage;
+
+  /// No description provided for @seasonGrandPrixBetsOngoingStatus.
+  ///
+  /// In pl, this message translates to:
+  /// **'Trwa'**
+  String get seasonGrandPrixBetsOngoingStatus;
+
+  /// No description provided for @seasonGrandPrixBetsNextStatus.
+  ///
+  /// In pl, this message translates to:
+  /// **'Następne'**
+  String get seasonGrandPrixBetsNextStatus;
+
+  /// No description provided for @seasonGrandPrixBetsEndBettingTime.
+  ///
+  /// In pl, this message translates to:
+  /// **'Koniec typowania za'**
+  String get seasonGrandPrixBetsEndBettingTime;
+
+  /// No description provided for @signInScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Logowanie'**
+  String get signInScreenTitle;
+
+  /// No description provided for @signInScreenInfo.
+  ///
+  /// In pl, this message translates to:
+  /// **'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google'**
+  String get signInScreenInfo;
+
+  /// No description provided for @signInScreenSignInButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zaloguj'**
+  String get signInScreenSignInButtonLabel;
 
   /// No description provided for @statsScreenTitle.
   ///
@@ -218,264 +476,6 @@ abstract class Str {
   /// In pl, this message translates to:
   /// **'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk'**
   String get statsNoDataMessage;
-
-  /// No description provided for @betsScreenTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Typy'**
-  String get betsScreenTitle;
-
-  /// No description provided for @betsNoBetsTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Brak możliwości typowania'**
-  String get betsNoBetsTitle;
-
-  /// No description provided for @betsNoBetsMessage.
-  ///
-  /// In pl, this message translates to:
-  /// **'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione'**
-  String get betsNoBetsMessage;
-
-  /// No description provided for @betsOngoingStatus.
-  ///
-  /// In pl, this message translates to:
-  /// **'Trwa'**
-  String get betsOngoingStatus;
-
-  /// No description provided for @betsNextStatus.
-  ///
-  /// In pl, this message translates to:
-  /// **'Następne'**
-  String get betsNextStatus;
-
-  /// No description provided for @betsEndBettingTime.
-  ///
-  /// In pl, this message translates to:
-  /// **'Koniec typowania za'**
-  String get betsEndBettingTime;
-
-  /// No description provided for @playersScreenTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Gracze'**
-  String get playersScreenTitle;
-
-  /// No description provided for @playersNoOtherPlayersTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Brak innych graczy'**
-  String get playersNoOtherPlayersTitle;
-
-  /// No description provided for @playersNoOtherPlayersMessage.
-  ///
-  /// In pl, this message translates to:
-  /// **'Aktualnie nie ma zarejestrowanych innych graczy'**
-  String get playersNoOtherPlayersMessage;
-
-  /// No description provided for @grandPrixBetTotal.
-  ///
-  /// In pl, this message translates to:
-  /// **'Razem'**
-  String get grandPrixBetTotal;
-
-  /// No description provided for @grandPrixBetPointsDetails.
-  ///
-  /// In pl, this message translates to:
-  /// **'Punktacja'**
-  String get grandPrixBetPointsDetails;
-
-  /// No description provided for @grandPrixBetChoice.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wybór'**
-  String get grandPrixBetChoice;
-
-  /// No description provided for @grandPrixBetResult.
-  ///
-  /// In pl, this message translates to:
-  /// **'Rezultat'**
-  String get grandPrixBetResult;
-
-  /// No description provided for @grandPrixBetMultiplier.
-  ///
-  /// In pl, this message translates to:
-  /// **'Mnożnik'**
-  String get grandPrixBetMultiplier;
-
-  /// No description provided for @grandPrixBetPositions.
-  ///
-  /// In pl, this message translates to:
-  /// **'Pozycje'**
-  String get grandPrixBetPositions;
-
-  /// No description provided for @grandPrixBetPositionsMultiplier.
-  ///
-  /// In pl, this message translates to:
-  /// **'Mnożnik punktów za pozycje'**
-  String get grandPrixBetPositionsMultiplier;
-
-  /// No description provided for @grandPrixBetFastestLap.
-  ///
-  /// In pl, this message translates to:
-  /// **'Najszybsze okrążenie'**
-  String get grandPrixBetFastestLap;
-
-  /// No description provided for @grandPrixBetDNF.
-  ///
-  /// In pl, this message translates to:
-  /// **'DNF'**
-  String get grandPrixBetDNF;
-
-  /// No description provided for @grandPrixBetDNFMultiplier.
-  ///
-  /// In pl, this message translates to:
-  /// **'Mnożnik DNF'**
-  String get grandPrixBetDNFMultiplier;
-
-  /// No description provided for @grandPrixBetOther.
-  ///
-  /// In pl, this message translates to:
-  /// **'Pozostałe'**
-  String get grandPrixBetOther;
-
-  /// No description provided for @grandPrixBetEditorScreenTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Obstaw grand prix'**
-  String get grandPrixBetEditorScreenTitle;
-
-  /// No description provided for @grandPrixBetEditorQualificationDescription.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.'**
-  String get grandPrixBetEditorQualificationDescription;
-
-  /// No description provided for @grandPrixBetEditorRaceDescription.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wytypuj poszczególne sekcje wyścigu wedle opisu.'**
-  String get grandPrixBetEditorRaceDescription;
-
-  /// No description provided for @grandPrixBetEditorSelectDriver.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wybierz kierowcę'**
-  String get grandPrixBetEditorSelectDriver;
-
-  /// No description provided for @grandPrixBetEditorPodiumAndP10Title.
-  ///
-  /// In pl, this message translates to:
-  /// **'Podium oraz P10'**
-  String get grandPrixBetEditorPodiumAndP10Title;
-
-  /// No description provided for @grandPrixBetEditorPodiumAndP10Subtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.'**
-  String get grandPrixBetEditorPodiumAndP10Subtitle;
-
-  /// No description provided for @grandPrixBetEditorFastestLapSubtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.'**
-  String get grandPrixBetEditorFastestLapSubtitle;
-
-  /// No description provided for @grandPrixBetEditorDnfTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'DNF'**
-  String get grandPrixBetEditorDnfTitle;
-
-  /// No description provided for @grandPrixBetEditorDnfSubtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.'**
-  String get grandPrixBetEditorDnfSubtitle;
-
-  /// No description provided for @grandPrixBetEditorAddDriversToDnfList.
-  ///
-  /// In pl, this message translates to:
-  /// **'Dodaj kierowców'**
-  String get grandPrixBetEditorAddDriversToDnfList;
-
-  /// No description provided for @grandPrixBetEditorEditDnfList.
-  ///
-  /// In pl, this message translates to:
-  /// **'Edytuj listę'**
-  String get grandPrixBetEditorEditDnfList;
-
-  /// No description provided for @grandPrixBetEditorNoDriversInfoTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Brak kierowców'**
-  String get grandPrixBetEditorNoDriversInfoTitle;
-
-  /// No description provided for @grandPrixBetEditorNoDriversInfoSubtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Niestety nie znaleziono żadnych kierowców do wyboru'**
-  String get grandPrixBetEditorNoDriversInfoSubtitle;
-
-  /// No description provided for @grandPrixBetEditorSafetyCarSubtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Czy w wyścigu pojawi się samochód bezpieczeństwa?'**
-  String get grandPrixBetEditorSafetyCarSubtitle;
-
-  /// No description provided for @grandPrixBetEditorRedFlagSubtitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Czy w wyścigu pojawi się czerwona flaga?'**
-  String get grandPrixBetEditorRedFlagSubtitle;
-
-  /// No description provided for @grandPrixBetEditorSuccessfullySavedBets.
-  ///
-  /// In pl, this message translates to:
-  /// **'Pomyślnie zapisano typy'**
-  String get grandPrixBetEditorSuccessfullySavedBets;
-
-  /// No description provided for @profileScreenTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Profil'**
-  String get profileScreenTitle;
-
-  /// No description provided for @profileNewUsernameDialogTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Nowa nazwa użytkownika'**
-  String get profileNewUsernameDialogTitle;
-
-  /// No description provided for @profileSuccessfullySavedUsername.
-  ///
-  /// In pl, this message translates to:
-  /// **'Pomyślnie zmieniono nazwę użytkownika'**
-  String get profileSuccessfullySavedUsername;
-
-  /// No description provided for @profileAvatarActionsTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Edycja avataru'**
-  String get profileAvatarActionsTitle;
-
-  /// No description provided for @profileAvatarActionsSelectFromGallery.
-  ///
-  /// In pl, this message translates to:
-  /// **'Wybierz z galerii'**
-  String get profileAvatarActionsSelectFromGallery;
-
-  /// No description provided for @profileAvatarActionsCapturePhoto.
-  ///
-  /// In pl, this message translates to:
-  /// **'Zrób zdjęcie'**
-  String get profileAvatarActionsCapturePhoto;
-
-  /// No description provided for @profileAvatarActionsDeleteImage.
-  ///
-  /// In pl, this message translates to:
-  /// **'Usuń zdjęcie'**
-  String get profileAvatarActionsDeleteImage;
 
   /// No description provided for @loading.
   ///

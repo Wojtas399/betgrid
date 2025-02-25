@@ -90,14 +90,14 @@ class _Body extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LabelMedium(
-              context.str.grandPrixBetChoice,
+              context.str.seasonGrandPrixBetPreviewChoice,
               color: context.colorScheme.outline,
             ),
             const GapVertical4(),
             betChild,
             const GapVertical8(),
             LabelMedium(
-              context.str.grandPrixBetResult,
+              context.str.seasonGrandPrixBetPreviewResult,
               color: context.colorScheme.outline,
             ),
             const GapVertical4(),

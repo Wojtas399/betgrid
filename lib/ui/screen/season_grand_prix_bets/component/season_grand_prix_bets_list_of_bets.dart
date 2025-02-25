@@ -126,8 +126,8 @@ class _Item extends StatelessWidget {
               color: context.colorScheme.surface,
               child: TitleMedium(
                 gpStatus.isOngoing
-                    ? context.str.betsOngoingStatus
-                    : context.str.betsNextStatus,
+                    ? context.str.seasonGrandPrixBetsOngoingStatus
+                    : context.str.seasonGrandPrixBetsNextStatus,
                 color: context.colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -151,7 +151,7 @@ class _EndBettingTime extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          BodyMedium('${context.str.betsEndBettingTime} '),
+          BodyMedium('${context.str.seasonGrandPrixBetsEndBettingTime} '),
           if (durationToEnd != null)
             BodyMedium(
               durationToEnd.toUIDuration(),
