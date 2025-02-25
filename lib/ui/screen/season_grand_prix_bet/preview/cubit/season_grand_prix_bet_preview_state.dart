@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/driver_details.dart';
-import '../../../../model/season_grand_prix_bet_points.dart';
+import '../../../../../model/driver_details.dart';
+import '../../../../../model/season_grand_prix_bet_points.dart';
 
 part 'season_grand_prix_bet_preview_state.freezed.dart';
 

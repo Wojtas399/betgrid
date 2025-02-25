@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
-import '../../season_grand_prix_bet_preview/component/season_grand_prix_bet_preview_app_bar.dart';
-import '../../season_grand_prix_bet_preview/component/season_grand_prix_bet_preview_body.dart';
-import '../../season_grand_prix_bet_preview/cubit/season_grand_prix_bet_preview_cubit.dart';
+import '../preview/component/season_grand_prix_bet_preview_app_bar.dart';
+import '../preview/component/season_grand_prix_bet_preview_body.dart';
+import '../preview/cubit/season_grand_prix_bet_preview_cubit.dart';
 import '../cubit/season_grand_prix_bet_cubit.dart';
 import '../cubit/season_grand_prix_bet_state.dart';
 

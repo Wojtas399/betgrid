@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../model/season_grand_prix_bet_points.dart';
-import '../../../component/driver_description_component.dart';
-import '../../../component/no_text_component.dart';
-import '../../../component/padding/padding_components.dart';
-import '../../../config/theme/custom_colors.dart';
-import '../../../extensions/build_context_extensions.dart';
-import '../../../extensions/string_extensions.dart';
+import '../../../../../model/season_grand_prix_bet_points.dart';
+import '../../../../component/driver_description_component.dart';
+import '../../../../component/no_text_component.dart';
+import '../../../../component/padding/padding_components.dart';
+import '../../../../config/theme/custom_colors.dart';
+import '../../../../extensions/build_context_extensions.dart';
+import '../../../../extensions/string_extensions.dart';
 import '../cubit/season_grand_prix_bet_preview_cubit.dart';
 import '../cubit/season_grand_prix_bet_preview_state.dart';
 import 'season_grand_prix_bet_preview_item.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/custom_card_component.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/gap/gap_vertical.dart';
-import '../../../component/text_component.dart';
-import '../../../extensions/build_context_extensions.dart';
+import '../../../../component/custom_card_component.dart';
+import '../../../../component/gap/gap_horizontal.dart';
+import '../../../../component/gap/gap_vertical.dart';
+import '../../../../component/text_component.dart';
+import '../../../../extensions/build_context_extensions.dart';
 import '../cubit/season_grand_prix_bet_preview_state.dart';
 
 class SeasonGrandPrixBetPreviewItem extends StatelessWidget {
