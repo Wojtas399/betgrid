@@ -228,7 +228,7 @@ class SeasonGrandPrixBetPreviewRaceBetsService {
   }
 
   Stream<SeasonGrandPrixBet?> _getSeasonGrandPrixBet() {
-    return _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
+    return _seasonGrandPrixBetRepository.getBySeasonGrandPrixId(
       playerId: _params.playerId,
       season: _params.season,
       seasonGrandPrixId: _params.seasonGrandPrixId,

@@ -213,7 +213,7 @@ class SeasonGrandPrixBetEditorCubit
   Stream<SeasonGrandPrixBet?> _getBetForGrandPrix() {
     return _authRepository.loggedUserId$.whereNotNull().switchMap(
       (String loggedUserId) =>
-          _seasonGrandPrixBetRepository.getSeasonGrandPrixBet(
+          _seasonGrandPrixBetRepository.getBySeasonGrandPrixId(
             playerId: loggedUserId,
             season: _season,
             seasonGrandPrixId: _seasonGrandPrixId,
@@ -263,7 +263,7 @@ class SeasonGrandPrixBetEditorCubit
   }
 
   Future<void> _addSeasonGrandPrixBet(String loggedUserId) async {
-    await _seasonGrandPrixBetRepository.addSeasonGrandPrixBet(
+    await _seasonGrandPrixBetRepository.add(
       playerId: loggedUserId,
       season: _season,
       seasonGrandPrixId: _seasonGrandPrixId,
@@ -283,7 +283,7 @@ class SeasonGrandPrixBetEditorCubit
   }
 
   Future<void> _updateSeasonGrandPrixBet(String loggedUserId) async {
-    await _seasonGrandPrixBetRepository.updateSeasonGrandPrixBet(
+    await _seasonGrandPrixBetRepository.update(
       playerId: loggedUserId,
       season: _season,
       seasonGrandPrixId: state.originalSeasonGrandPrixBet!.id,
