@@ -237,7 +237,7 @@ class SeasonGrandPrixBetPreviewRaceBetsService {
 
   Stream<RaceResults?> _getResults() {
     return _seasonGrandPrixResultsRepository
-        .getResultsForSeasonGrandPrix(
+        .getForSeasonGrandPrix(
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )

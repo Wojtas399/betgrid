@@ -53,7 +53,7 @@ class SeasonGrandPrixBetPreviewQualiBetsService {
 
   Stream<List<String?>?> _getResultQualiStandingsBySeasonDriverIds() {
     return _seasonGrandPrixResultsRepository
-        .getResultsForSeasonGrandPrix(
+        .getForSeasonGrandPrix(
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,
         )
