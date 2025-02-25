@@ -331,9 +331,7 @@ class CreateBestPoints {
         .switchMap(
           (SeasonDriver? seasonDriver) =>
               seasonDriver != null
-                  ? _driverPersonalDataRepository.getDriverPersonalDataById(
-                    seasonDriver.driverId,
-                  )
+                  ? _driverPersonalDataRepository.getById(seasonDriver.driverId)
                   : Stream.value(null),
         );
   }

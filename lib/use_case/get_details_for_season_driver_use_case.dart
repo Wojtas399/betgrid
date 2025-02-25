@@ -20,9 +20,7 @@ class GetDetailsForSeasonDriverUseCase {
 
   Stream<DriverDetails?> call(SeasonDriver seasonDriver) {
     return Rx.combineLatest2(
-      _driverPersonalDataRepository.getDriverPersonalDataById(
-        seasonDriver.driverId,
-      ),
+      _driverPersonalDataRepository.getById(seasonDriver.driverId),
       _teamBasicInfoRepository.getById(seasonDriver.teamId),
       (DriverPersonalData? personalData, TeamBasicInfo? teamBasicInfo) =>
           personalData != null && teamBasicInfo != null
