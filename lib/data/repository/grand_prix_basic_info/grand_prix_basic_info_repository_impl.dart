@@ -42,7 +42,7 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
 
   Future<GrandPrixBasicInfo?> _fetchGrandPrixBasicInfoById(String id) async {
     final GrandPrixBasicInfoDto? grandPrixBasicInfoDto =
-        await _fireGrandPrixBasicInfoService.fetchGrandPrixBasicInfoById(id);
+        await _fireGrandPrixBasicInfoService.fetchById(id);
     if (grandPrixBasicInfoDto == null) return null;
     final GrandPrixBasicInfo grandPrixBasicInfo = _grandPrixBasicInfoMapper
         .mapFromDto(grandPrixBasicInfoDto);

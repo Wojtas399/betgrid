@@ -40,7 +40,7 @@ class DriverPersonalDataRepositoryImpl extends Repository<DriverPersonalData>
 
   Future<DriverPersonalData?> _fetchDriverPersonalDataById(String id) async {
     final DriverPersonalDataDto? dto = await _fireDriverPersonalDataService
-        .fetchDriverPersonalDataById(id);
+        .fetchById(id);
     if (dto == null) return null;
     final DriverPersonalData driverPersonalData = _driverPersonalDataMapper
         .mapFromDto(dto);
