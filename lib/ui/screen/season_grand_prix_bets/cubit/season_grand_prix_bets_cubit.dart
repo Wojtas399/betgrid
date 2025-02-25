@@ -92,14 +92,16 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
         ),
       );
     } else {
-      final List<SeasonGrandPrixItemParams> grandPrixItems =
+      final List<GrandPrixWithPoints> sortedGrandPrixesWithPoints = [
+        ...listenedData.grandPrixesWithPoints,
+      ]..sort((gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber));
+      final List<SeasonGrandPrixItemParams> sortedGrandPrixItems =
           _addStatusForEachGp(
-            listenedData.grandPrixesWithPoints,
+            sortedGrandPrixesWithPoints,
             listenedData.nowDateTime,
           );
-      final SeasonGrandPrixItemParams? nextGp = grandPrixItems.firstWhereOrNull(
-        (gp) => gp.status is SeasonGrandPrixStatusNext,
-      );
+      final SeasonGrandPrixItemParams? nextGp = sortedGrandPrixItems
+          .firstWhereOrNull((gp) => gp.status is SeasonGrandPrixStatusNext);
 
       Duration? durationToStartNextGp;
       if (nextGp != null) {
@@ -115,7 +117,7 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
           loggedUserId: listenedData.loggedUserId,
           season: _seasonCubit.state,
           totalPoints: listenedData.totalPoints,
-          grandPrixItems: grandPrixItems,
+          grandPrixItems: sortedGrandPrixItems,
           durationToStartNextGp: durationToStartNextGp,
         ),
       );
@@ -123,11 +125,11 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
   }
 
   List<SeasonGrandPrixItemParams> _addStatusForEachGp(
-    List<GrandPrixWithPoints> grandPrixesWithPoints,
+    List<GrandPrixWithPoints> sortedGrandPrixesWithPoints,
     DateTime nowDateTime,
   ) {
-    final grandPrixesWithStatus =
-        grandPrixesWithPoints
+    final sortedGrandPrixesWithStatus =
+        sortedGrandPrixesWithPoints
             .map(
               (gp) => SeasonGrandPrixItemParams(
                 status: _gpStatusService.defineStatusForGp(
@@ -145,10 +147,6 @@ class SeasonGrandPrixBetsCubit extends Cubit<SeasonGrandPrixBetsState> {
               ),
             )
             .toList();
-    final sortedGrandPrixesWithStatus = [...grandPrixesWithStatus];
-    sortedGrandPrixesWithStatus.sort(
-      (gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber),
-    );
     final nextGp = sortedGrandPrixesWithStatus.firstWhereOrNull(
       (gp) => gp.status is SeasonGrandPrixStatusUpcoming,
     );
