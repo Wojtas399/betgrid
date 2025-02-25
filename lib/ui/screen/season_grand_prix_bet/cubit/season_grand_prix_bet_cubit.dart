@@ -72,6 +72,14 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
     }
   }
 
+  void onSaveStarted() {
+    emit((state as SeasonGrandPrixBetStateEditor).copyWith(isSaving: true));
+  }
+
+  void onSaveFinished() {
+    emit((state as SeasonGrandPrixBetStateEditor).copyWith(isSaving: false));
+  }
+
   Stream<SeasonGrandPrix?> _getSeasonGrandPrix() {
     return _seasonGrandPrixRepository.getById(
       season: _params.season,
@@ -99,6 +107,7 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
 
   void _initializeEditorState() {
     _listener = _getListenedParams().listen((_ListenedParams params) async {
+      final SeasonGrandPrixBetState currentState = state;
       final _SeasonGrandPrixInfo seasonGrandPrix = params.seasonGrandPrix!;
       final String? loggedUserId = await _authRepository.loggedUserId$.first;
       final Duration durationToStartGp = _dateService
@@ -107,7 +116,8 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
             toDateTime: seasonGrandPrix.startDateTime,
           );
 
-      if (durationToStartGp.isNegative) {
+      if (durationToStartGp.isNegative &&
+          (currentState as SeasonGrandPrixBetStateEditor).isSaving == false) {
         emit(
           SeasonGrandPrixBetState.preview(
             season: _params.season,
@@ -119,13 +129,20 @@ class SeasonGrandPrixBetCubit extends Cubit<SeasonGrandPrixBetState> {
         _listener?.cancel();
       } else {
         emit(
-          SeasonGrandPrixBetState.editor(
-            season: _params.season,
-            seasonGrandPrixId: _params.seasonGrandPrixId,
-            roundNumber: seasonGrandPrix.roundNumber,
-            grandPrixName: seasonGrandPrix.grandPrixName,
-            durationToStart: durationToStartGp,
-          ),
+          currentState is SeasonGrandPrixBetStateEditor
+              ? currentState.copyWith(
+                durationToStart:
+                    durationToStartGp.isNegative
+                        ? Duration.zero
+                        : durationToStartGp,
+              )
+              : SeasonGrandPrixBetState.editor(
+                season: _params.season,
+                seasonGrandPrixId: _params.seasonGrandPrixId,
+                roundNumber: seasonGrandPrix.roundNumber,
+                grandPrixName: seasonGrandPrix.grandPrixName,
+                durationToStart: durationToStartGp,
+              ),
         );
       }
     });

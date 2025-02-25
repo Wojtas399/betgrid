@@ -257,10 +257,12 @@ class SeasonGrandPrixBetPreviewRaceBetsService {
   Stream<List<DriverDetails?>> _getDetailsForEachSeasonDriver(
     List<String?> seasonDriverIds,
   ) {
-    return Rx.combineLatest(
-      seasonDriverIds.map(_getDetailsForSeasonDriver),
-      (driverDetailsStreams) => driverDetailsStreams,
-    );
+    return seasonDriverIds.isNotEmpty
+        ? Rx.combineLatest(
+          seasonDriverIds.map(_getDetailsForSeasonDriver),
+          (driverDetailsStreams) => driverDetailsStreams,
+        )
+        : Stream.value([]);
   }
 
   Stream<DriverDetails?> _getDetailsForSeasonDriver(String? seasonDriverId) {

@@ -181,14 +181,16 @@ class SeasonGrandPrixBetEditorCubit
   }
 
   Future<void> submit() async {
-    final String? loggedUserId = await _authRepository.loggedUserId$.first;
-    if (loggedUserId == null) return;
     emit(state.copyWith(status: SeasonGrandPrixBetEditorStateStatus.saving));
+
+    final String? loggedUserId = await _authRepository.loggedUserId$.first;
+
     if (state.originalSeasonGrandPrixBet == null) {
-      await _addSeasonGrandPrixBet(loggedUserId);
+      await _addSeasonGrandPrixBet(loggedUserId!);
     } else {
-      await _updateSeasonGrandPrixBet(loggedUserId);
+      await _updateSeasonGrandPrixBet(loggedUserId!);
     }
+
     emit(
       state.copyWith(
         status: SeasonGrandPrixBetEditorStateStatus.successfullySaved,

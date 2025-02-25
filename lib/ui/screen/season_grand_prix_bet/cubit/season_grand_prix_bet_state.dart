@@ -11,6 +11,7 @@ class SeasonGrandPrixBetState with _$SeasonGrandPrixBetState {
     required int roundNumber,
     required String grandPrixName,
     required Duration durationToStart,
+    @Default(false) bool isSaving,
   }) = SeasonGrandPrixBetStateEditor;
   const factory SeasonGrandPrixBetState.preview({
     required int season,
