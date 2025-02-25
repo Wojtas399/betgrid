@@ -6,11 +6,19 @@ part 'season_grand_prix_bet_state.freezed.dart';
 class SeasonGrandPrixBetState with _$SeasonGrandPrixBetState {
   const factory SeasonGrandPrixBetState.initial() = _Initial;
   const factory SeasonGrandPrixBetState.editor({
+    required int season,
+    required String seasonGrandPrixId,
     required int roundNumber,
     required String grandPrixName,
     required Duration durationToStart,
   }) = SeasonGrandPrixBetStateEditor;
-  const factory SeasonGrandPrixBetState.preview() = _Preview;
+  const factory SeasonGrandPrixBetState.preview({
+    required int season,
+    required String seasonGrandPrixId,
+    required String grandPrixName,
+    required String playerId,
+    String? playerUsername,
+  }) = SeasonGrandPrixBetStatePreview;
   const factory SeasonGrandPrixBetState.seasonGrandPrixNotFound() =
       _SeasonGrandPrixNotFound;
 }

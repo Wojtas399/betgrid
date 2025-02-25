@@ -20,7 +20,7 @@ class SeasonGrandPrixBetPreviewQualiBetsService {
   _getDetailsOfAllDriversFromSeasonUseCase;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
   final SeasonGrandPrixBetPreviewStatusService _grandPrixBetStatusService;
-  final GrandPrixBetCubitParams _params;
+  final SeasonGrandPrixBetPreviewCubitParams _params;
 
   SeasonGrandPrixBetPreviewQualiBetsService(
     this._seasonGrandPrixBetRepository,

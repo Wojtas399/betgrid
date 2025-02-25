@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/season_grand_prix_bet_cubit.dart';
 import '../cubit/season_grand_prix_bet_state.dart';
 import 'season_grand_prix_bet_editor_content.dart';
+import 'season_grand_prix_bet_preview_content.dart';
 
 class SeasonGrandPrixBetContent extends StatelessWidget {
   const SeasonGrandPrixBetContent({super.key});
@@ -16,7 +17,7 @@ class SeasonGrandPrixBetContent extends StatelessWidget {
     return state.map(
       initial: (_) => const _LoadingContent(),
       editor: (_) => const SeasonGrandPrixBetEditorContent(),
-      preview: (_) => const Center(child: Text('Preview')),
+      preview: (_) => const SeasonGrandPrixBetPreviewContent(),
       seasonGrandPrixNotFound:
           (_) => const Center(child: Text('Season Grand Prix Not Found')),
     );

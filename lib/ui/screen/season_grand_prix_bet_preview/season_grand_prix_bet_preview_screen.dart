@@ -23,7 +23,7 @@ class SeasonGrandPrixBetPreviewScreen extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider(
     create:
         (_) => getIt.get<SeasonGrandPrixBetPreviewCubit>(
-          param1: GrandPrixBetCubitParams(
+          param1: SeasonGrandPrixBetPreviewCubitParams(
             playerId: playerId,
             season: season,
             seasonGrandPrixId: seasonGrandPrixId,

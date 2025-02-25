@@ -18,6 +18,18 @@ import 'season_grand_prix_bet_preview_quali_bets_service.dart';
 import 'season_grand_prix_bet_preview_race_bets_service.dart';
 import 'season_grand_prix_bet_preview_state.dart';
 
+class SeasonGrandPrixBetPreviewCubitParams {
+  final String playerId;
+  final int season;
+  final String seasonGrandPrixId;
+
+  const SeasonGrandPrixBetPreviewCubitParams({
+    required this.playerId,
+    required this.season,
+    required this.seasonGrandPrixId,
+  });
+}
+
 @injectable
 class SeasonGrandPrixBetPreviewCubit
     extends Cubit<SeasonGrandPrixBetPreviewState> {
@@ -26,7 +38,7 @@ class SeasonGrandPrixBetPreviewCubit
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
   final PlayerRepository _playerRepository;
   final SeasonGrandPrixBetPointsRepository _seasonGrandPrixBetPointsRepository;
-  final GrandPrixBetCubitParams _params;
+  final SeasonGrandPrixBetPreviewCubitParams _params;
   StreamSubscription<_ListenedParams>? _listenedParamsListener;
 
   SeasonGrandPrixBetPreviewCubit(
@@ -174,18 +186,6 @@ class SeasonGrandPrixBetPreviewCubit
                   : null,
         );
   }
-}
-
-class GrandPrixBetCubitParams {
-  final String playerId;
-  final int season;
-  final String seasonGrandPrixId;
-
-  const GrandPrixBetCubitParams({
-    required this.playerId,
-    required this.season,
-    required this.seasonGrandPrixId,
-  });
 }
 
 typedef _ListenedParams =

@@ -10,11 +10,13 @@ import 'cubit/season_grand_prix_bet_cubit.dart';
 class SeasonGrandPrixBetScreen extends StatelessWidget {
   final int season;
   final String seasonGrandPrixId;
+  final String? playerId;
 
   const SeasonGrandPrixBetScreen({
     super.key,
     required this.season,
     required this.seasonGrandPrixId,
+    this.playerId,
   });
 
   @override
@@ -22,8 +24,11 @@ class SeasonGrandPrixBetScreen extends StatelessWidget {
     return BlocProvider(
       create:
           (_) => getIt<SeasonGrandPrixBetCubit>(
-            param1: season,
-            param2: seasonGrandPrixId,
+            param1: SeasonGrandPrixBetCubitParams(
+              season: season,
+              seasonGrandPrixId: seasonGrandPrixId,
+              playerId: playerId,
+            ),
           )..initialize(),
       child: const SeasonGrandPrixBetContent(),
     );
