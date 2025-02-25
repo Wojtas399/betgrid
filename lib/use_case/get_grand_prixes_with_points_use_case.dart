@@ -61,7 +61,7 @@ class GetGrandPrixesWithPointsUseCase {
   ) {
     return Rx.combineLatest2(
       _grandPrixBasicInfoRepository.getById(seasonGrandPrix.grandPrixId),
-      _seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
+      _seasonGrandPrixBetPointsRepository.getBySeasonGrandPrixId(
         playerId: playerId,
         season: season,
         seasonGrandPrixId: seasonGrandPrix.id,

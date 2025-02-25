@@ -60,12 +60,11 @@ class CreatePointsHistoryStats {
       return Rx.combineLatest3(
         Stream.value(data.allPlayers),
         Stream.value(data.finishedSeasonGrandPrixes),
-        _seasonGrandPrixBetPointsRepository
-            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-              season: season,
-              idsOfPlayers: playersIds,
-              idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-            ),
+        _seasonGrandPrixBetPointsRepository.getForPlayersAndSeasonGrandPrixes(
+          season: season,
+          idsOfPlayers: playersIds,
+          idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+        ),
         (
           List<Player> players,
           List<SeasonGrandPrix> seasonGrandPrixes,
@@ -102,12 +101,11 @@ class CreatePointsHistoryStats {
       return Rx.combineLatest3(
         Stream.value(loggedUser),
         Stream.value(data.finishedSeasonGrandPrixes),
-        _seasonGrandPrixBetPointsRepository
-            .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-              season: season,
-              idsOfPlayers: [loggedUser.id],
-              idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-            ),
+        _seasonGrandPrixBetPointsRepository.getForPlayersAndSeasonGrandPrixes(
+          season: season,
+          idsOfPlayers: [loggedUser.id],
+          idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+        ),
         (
           Player loggedUser,
           List<SeasonGrandPrix> seasonGrandPrixes,

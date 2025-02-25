@@ -65,7 +65,7 @@ class SeasonGrandPrixBetPreviewQualiBetsService {
 
   Stream<QualiBetPoints?> _getQualiBetPoints() {
     return _seasonGrandPrixBetPointsRepository
-        .getSeasonGrandPrixBetPoints(
+        .getBySeasonGrandPrixId(
           playerId: _params.playerId,
           season: _params.season,
           seasonGrandPrixId: _params.seasonGrandPrixId,

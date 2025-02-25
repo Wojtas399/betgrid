@@ -25,8 +25,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   );
 
   @override
-  Stream<List<SeasonGrandPrixBetPoints>>
-  getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes({
+  Stream<List<SeasonGrandPrixBetPoints>> getForPlayersAndSeasonGrandPrixes({
     required int season,
     required List<String> idsOfPlayers,
     required List<String> idsOfSeasonGrandPrixes,
@@ -61,7 +60,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
             }
           }
           if (dataOfMissingBetPointsForGps.isNotEmpty) {
-            final missingGpBetPoints = await _fetchManyGrandPrixBetPointsFromDb(
+            final missingGpBetPoints = await _fetchManyGrandPrixBetPoints(
               dataOfMissingBetPointsForGps,
             );
             betPointsForGps.addAll(missingGpBetPoints);
@@ -79,7 +78,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   }
 
   @override
-  Stream<SeasonGrandPrixBetPoints?> getSeasonGrandPrixBetPoints({
+  Stream<SeasonGrandPrixBetPoints?> getBySeasonGrandPrixId({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -91,7 +90,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
             entity.season == season &&
             entity.seasonGrandPrixId == seasonGrandPrixId,
       );
-      points ??= await _fetchGrandPrixBetPointsFromDb((
+      points ??= await _fetchGrandPrixBetPoints((
         playerId: playerId,
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
@@ -100,7 +99,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
     }
   }
 
-  Future<List<SeasonGrandPrixBetPoints>> _fetchManyGrandPrixBetPointsFromDb(
+  Future<List<SeasonGrandPrixBetPoints>> _fetchManyGrandPrixBetPoints(
     Iterable<_GrandPrixBetPointsFetchData> dataOfPointsForGpBets,
   ) async {
     final List<SeasonGrandPrixBetPoints> fetchedBetPoints = [];
@@ -121,7 +120,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
     return fetchedBetPoints;
   }
 
-  Future<SeasonGrandPrixBetPoints?> _fetchGrandPrixBetPointsFromDb(
+  Future<SeasonGrandPrixBetPoints?> _fetchGrandPrixBetPoints(
     _GrandPrixBetPointsFetchData gpBetPointsData,
   ) async {
     final SeasonGrandPrixBetPointsDto? dto =

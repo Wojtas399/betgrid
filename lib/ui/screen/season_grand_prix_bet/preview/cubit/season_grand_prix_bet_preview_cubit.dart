@@ -163,7 +163,7 @@ class SeasonGrandPrixBetPreviewCubit
   }
 
   Stream<SeasonGrandPrixBetPoints?> _getSeasonGrandPrixBetPoints() {
-    return _seasonGrandPrixBetPointsRepository.getSeasonGrandPrixBetPoints(
+    return _seasonGrandPrixBetPointsRepository.getBySeasonGrandPrixId(
       playerId: _params.playerId,
       season: _params.season,
       seasonGrandPrixId: _params.seasonGrandPrixId,
