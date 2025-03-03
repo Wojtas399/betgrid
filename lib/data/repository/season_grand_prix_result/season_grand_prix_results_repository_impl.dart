@@ -52,7 +52,7 @@ class SeasonGrandPrixResultsRepositoryImpl
     String seasonGrandPrixId,
   ) async {
     final SeasonGrandPrixResultsDto? resultsDto =
-        await _fireSeasonGrandPrixResultsService.fetchResultsForSeasonGrandPrix(
+        await _fireSeasonGrandPrixResultsService.fetchBySeasonGrandPrixId(
           season: season,
           seasonGrandPrixId: seasonGrandPrixId,
         );

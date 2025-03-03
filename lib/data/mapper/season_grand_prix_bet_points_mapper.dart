@@ -15,20 +15,17 @@ class SeasonGrandPrixBetPointsMapper {
     this._raceBetPointsMapper,
   );
 
-  SeasonGrandPrixBetPoints mapFromDto(SeasonGrandPrixBetPointsDto dto) =>
-      SeasonGrandPrixBetPoints(
-        id: dto.id,
-        playerId: dto.userId,
-        season: dto.season,
-        seasonGrandPrixId: dto.seasonGrandPrixId,
-        totalPoints: dto.totalPoints,
-        qualiBetPoints:
-            dto.qualiBetPointsDto != null
-                ? _qualiBetPointsMapper.mapFromDto(dto.qualiBetPointsDto!)
-                : null,
-        raceBetPoints:
-            dto.raceBetPointsDto != null
-                ? _raceBetPointsMapper.mapFromDto(dto.raceBetPointsDto!)
-                : null,
-      );
+  SeasonGrandPrixBetPoints mapFromDto(
+    SeasonGrandPrixBetPointsDto dto,
+  ) => SeasonGrandPrixBetPoints(
+    id: dto.id,
+    playerId: dto.userId,
+    season: dto.season,
+    seasonGrandPrixId: dto.seasonGrandPrixId,
+    totalPoints: dto.total,
+    qualiBetPoints:
+        dto.quali != null ? _qualiBetPointsMapper.mapFromDto(dto.quali!) : null,
+    raceBetPoints:
+        dto.race != null ? _raceBetPointsMapper.mapFromDto(dto.race!) : null,
+  );
 }
