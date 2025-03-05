@@ -91,7 +91,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   Future<void> update({
     required String playerId,
     required int season,
-    required String seasonGrandPrixId,
+    required String seasonGrandPrixBetId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
@@ -106,7 +106,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
         await _fireSeasonGrandPrixBetService.update(
           userId: playerId,
           season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
+          seasonGrandPrixBetId: seasonGrandPrixBetId,
           qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
           p1SeasonDriverId: p1SeasonDriverId,
           p2SeasonDriverId: p2SeasonDriverId,

@@ -286,7 +286,7 @@ class SeasonGrandPrixBetEditorCubit
     await _seasonGrandPrixBetRepository.update(
       playerId: loggedUserId,
       season: _season,
-      seasonGrandPrixId: state.originalSeasonGrandPrixBet!.id,
+      seasonGrandPrixBetId: state.originalSeasonGrandPrixBet!.id,
       qualiStandingsBySeasonDriverIds: state.qualiStandingsBySeasonDriverIds,
       p1SeasonDriverId: state.raceForm.p1SeasonDriverId,
       p2SeasonDriverId: state.raceForm.p2SeasonDriverId,

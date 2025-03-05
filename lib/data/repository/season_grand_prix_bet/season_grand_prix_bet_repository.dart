@@ -25,7 +25,7 @@ abstract interface class SeasonGrandPrixBetRepository {
   Future<void> update({
     required String playerId,
     required int season,
-    required String seasonGrandPrixId,
+    required String seasonGrandPrixBetId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
