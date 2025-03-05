@@ -33,7 +33,7 @@ class DriverDescription extends StatelessWidget {
           ),
         ),
         const GapHorizontal8(),
-        BodyMedium('$number'),
+        SizedBox(width: 20.0, child: Center(child: BodyMedium('$number'))),
         const GapHorizontal16(),
         BodyMedium(name),
         const GapHorizontal4(),
