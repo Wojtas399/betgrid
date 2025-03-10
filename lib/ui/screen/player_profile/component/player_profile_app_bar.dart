@@ -49,13 +49,10 @@ class PlayerProfileAppBar extends SliverAppBar {
                     child: SizedBox(
                       width: avatarSize,
                       height: avatarSize,
-                      child: Hero(
-                        tag: player.id,
-                        child: Avatar(
-                          avatarUrl: player.avatarUrl,
-                          username: player.username,
-                          usernameFontSize: 56,
-                        ),
+                      child: Avatar(
+                        avatarUrl: player.avatarUrl,
+                        username: player.username,
+                        usernameFontSize: 56,
                       ),
                     ),
                   );

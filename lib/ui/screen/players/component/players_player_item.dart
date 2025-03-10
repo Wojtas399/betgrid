@@ -46,18 +46,16 @@ class _Avatar extends StatelessWidget {
   const _Avatar({required this.player});
 
   @override
-  Widget build(BuildContext context) => Hero(
-    tag: player.id,
-    child: LayoutBuilder(
-      builder: (_, BoxConstraints constraints) {
-        final double avatarSize = constraints.maxWidth * 0.5;
-        return SizedBox(
-          width: avatarSize,
-          height: avatarSize,
-          child: Avatar(avatarUrl: player.avatarUrl, username: player.username),
-        );
-      },
-    ),
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (_, BoxConstraints constraints) {
+      final double avatarSize = constraints.maxWidth * 0.5;
+
+      return SizedBox(
+        width: avatarSize,
+        height: avatarSize,
+        child: Avatar(avatarUrl: player.avatarUrl, username: player.username),
+      );
+    },
   );
 }
 
