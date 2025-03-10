@@ -45,6 +45,7 @@ app.*.map.json
 # IOS related
 Debug.xcconfig
 Release.xcconfig
+Keys.xcconfig
 
 # Build runner related
 *.g.dart
@@ -72,3 +73,6 @@ mason-lock.json
 # FVM Version Cache
 .fvm/
 .fvmrc
+
+# Envied related
+.env
