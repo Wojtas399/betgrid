@@ -7,7 +7,6 @@ import '../../../../component/driver_description_component.dart';
 import '../../../../component/gap/gap_vertical.dart';
 import '../../../../component/text_component.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import '../../../../extensions/string_extensions.dart';
 import '../../../../extensions/widgets_list_extensions.dart';
 import '../../../../service/dialog_service.dart';
 import '../cubit/season_grand_prix_bet_editor_cubit.dart';
@@ -131,12 +130,8 @@ class _DnfDrivers extends StatelessWidget {
           if (dnfDrivers.isNotEmpty) ...[
             ...dnfDrivers
                 .map(
-                  (DriverDetails driverDetails) => DriverDescription(
-                    name: driverDetails.name,
-                    surname: driverDetails.surname,
-                    number: driverDetails.number,
-                    teamColor: driverDetails.teamHexColor.toColor(),
-                  ),
+                  (DriverDetails driverDetails) =>
+                      DriverDescription(driverDetails: driverDetails),
                 )
                 .separated(const GapVertical16()),
             const GapVertical16(),

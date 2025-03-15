@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum _TextStyleType {
+  labelSmall,
   labelMedium,
   labelLarge,
   bodyMedium,
@@ -32,6 +33,7 @@ class _TextComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textStyle = switch (textStyleType) {
+      _TextStyleType.labelSmall => textTheme.labelSmall,
       _TextStyleType.labelMedium => textTheme.labelMedium,
       _TextStyleType.labelLarge => textTheme.labelLarge,
       _TextStyleType.bodyMedium => textTheme.bodyMedium,
@@ -49,6 +51,11 @@ class _TextComponent extends StatelessWidget {
       textAlign: textAlign,
     );
   }
+}
+
+class LabelSmall extends _TextComponent {
+  const LabelSmall(super.data, {super.key, super.color})
+    : super(textStyleType: _TextStyleType.labelSmall);
 }
 
 class LabelMedium extends _TextComponent {

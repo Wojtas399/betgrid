@@ -7,7 +7,6 @@ import '../../../../component/empty_content_info_component.dart';
 import '../../../../component/gap/gap_vertical.dart';
 import '../../../../component/text_component.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import '../../../../extensions/string_extensions.dart';
 import '../../../../extensions/widgets_list_extensions.dart';
 import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 
@@ -74,12 +73,7 @@ class _SelectedDrivers extends StatelessWidget {
               (DriverDetails driver) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DriverDescription(
-                    name: driver.name,
-                    surname: driver.surname,
-                    number: driver.number,
-                    teamColor: driver.teamHexColor.toColor(),
-                  ),
+                  DriverDescription(driverDetails: driver),
                   SizedBox(
                     height: 24,
                     width: 24,
@@ -165,12 +159,7 @@ class _DriverItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(16),
-      child: DriverDescription(
-        name: driver.name,
-        surname: driver.surname,
-        number: driver.number,
-        teamColor: driver.teamHexColor.toColor(),
-      ),
+      child: DriverDescription(driverDetails: driver),
     ),
   );
 }

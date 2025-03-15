@@ -5,7 +5,6 @@ import '../../../../../model/driver_details.dart';
 import '../../../../component/driver_description_component.dart';
 import '../../../../component/text_component.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import '../../../../extensions/string_extensions.dart';
 import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 
 class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {
@@ -75,6 +74,7 @@ class _DriverSelectionFormField extends StatelessWidget {
 
     return DropdownButtonFormField<String>(
       value: selectedSeasonDriverId,
+      isDense: false,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
@@ -105,12 +105,7 @@ class _DriverSelectionFormField extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DriverDescription(
-                    name: driverDetails.name,
-                    surname: driverDetails.surname,
-                    number: driverDetails.number,
-                    teamColor: driverDetails.teamHexColor.toColor(),
-                  ),
+                  DriverDescription(driverDetails: driverDetails),
                   if (isAlreadySelectedInOtherField &&
                       driverDetails.seasonDriverId != selectedSeasonDriverId)
                     Icon(
@@ -127,12 +122,8 @@ class _DriverSelectionFormField extends StatelessWidget {
       selectedItemBuilder:
           (_) => [
             ...?allDriversDetails?.map(
-              (DriverDetails driverDetails) => DriverDescription(
-                name: driverDetails.name,
-                surname: driverDetails.surname,
-                number: driverDetails.number,
-                teamColor: driverDetails.teamHexColor.toColor(),
-              ),
+              (DriverDetails driverDetails) =>
+                  DriverDescription(driverDetails: driverDetails),
             ),
           ],
       onChanged: _onSeasonDriverSelected,

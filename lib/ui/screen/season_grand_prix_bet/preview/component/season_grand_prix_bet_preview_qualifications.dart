@@ -7,7 +7,6 @@ import '../../../../component/no_text_component.dart';
 import '../../../../component/padding/padding_components.dart';
 import '../../../../config/theme/custom_colors.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import '../../../../extensions/string_extensions.dart';
 import '../cubit/season_grand_prix_bet_preview_cubit.dart';
 import '../cubit/season_grand_prix_bet_preview_state.dart';
 import 'season_grand_prix_bet_preview_item.dart';
@@ -70,21 +69,11 @@ class _Bets extends StatelessWidget {
                 betStatus: bet.status,
                 betChild:
                     bet.betDriver != null
-                        ? DriverDescription(
-                          name: bet.betDriver!.name,
-                          surname: bet.betDriver!.surname,
-                          number: bet.betDriver!.number,
-                          teamColor: bet.betDriver!.teamHexColor.toColor(),
-                        )
+                        ? DriverDescription(driverDetails: bet.betDriver!)
                         : const NoText(),
                 resultsChild:
                     bet.resultDriver != null
-                        ? DriverDescription(
-                          name: bet.resultDriver!.name,
-                          surname: bet.resultDriver!.surname,
-                          number: bet.resultDriver!.number,
-                          teamColor: bet.resultDriver!.teamHexColor.toColor(),
-                        )
+                        ? DriverDescription(driverDetails: bet.resultDriver!)
                         : const NoText(),
                 points: bet.points,
               );

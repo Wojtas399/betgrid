@@ -9,7 +9,6 @@ import '../../../../component/no_text_component.dart';
 import '../../../../component/padding/padding_components.dart';
 import '../../../../component/text_component.dart';
 import '../../../../extensions/build_context_extensions.dart';
-import '../../../../extensions/string_extensions.dart';
 import '../../../../extensions/widgets_list_extensions.dart';
 import '../cubit/season_grand_prix_bet_preview_cubit.dart';
 import '../cubit/season_grand_prix_bet_preview_state.dart';
@@ -84,21 +83,11 @@ class _P1 extends StatelessWidget {
       betStatus: bet?.status,
       betChild:
           bet?.betDriver != null
-              ? DriverDescription(
-                name: bet!.betDriver!.name,
-                surname: bet.betDriver!.surname,
-                number: bet.betDriver!.number,
-                teamColor: bet.betDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.betDriver!)
               : const NoText(),
       resultsChild:
           bet?.resultDriver != null
-              ? DriverDescription(
-                name: bet!.resultDriver!.name,
-                surname: bet.resultDriver!.surname,
-                number: bet.resultDriver!.number,
-                teamColor: bet.resultDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.resultDriver!)
               : const NoText(),
       points: bet?.points,
     );
@@ -120,21 +109,11 @@ class _P2 extends StatelessWidget {
       betStatus: bet?.status,
       betChild:
           bet?.betDriver != null
-              ? DriverDescription(
-                name: bet!.betDriver!.name,
-                surname: bet.betDriver!.surname,
-                number: bet.betDriver!.number,
-                teamColor: bet.betDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.betDriver!)
               : const NoText(),
       resultsChild:
           bet?.resultDriver != null
-              ? DriverDescription(
-                name: bet!.resultDriver!.name,
-                surname: bet.resultDriver!.surname,
-                number: bet.resultDriver!.number,
-                teamColor: bet.resultDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.resultDriver!)
               : const NoText(),
       points: bet?.points,
     );
@@ -157,21 +136,11 @@ class _P3 extends StatelessWidget {
       betStatus: bet?.status,
       betChild:
           bet?.betDriver != null
-              ? DriverDescription(
-                name: bet!.betDriver!.name,
-                surname: bet.betDriver!.surname,
-                number: bet.betDriver!.number,
-                teamColor: bet.betDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.betDriver!)
               : const NoText(),
       resultsChild:
           bet?.resultDriver != null
-              ? DriverDescription(
-                name: bet!.resultDriver!.name,
-                surname: bet.resultDriver!.surname,
-                number: bet.resultDriver!.number,
-                teamColor: bet.resultDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.resultDriver!)
               : const NoText(),
       points: bet?.points,
     );
@@ -192,21 +161,11 @@ class _P10 extends StatelessWidget {
       betStatus: bet?.status,
       betChild:
           bet?.betDriver != null
-              ? DriverDescription(
-                name: bet!.betDriver!.name,
-                surname: bet.betDriver!.surname,
-                number: bet.betDriver!.number,
-                teamColor: bet.betDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.betDriver!)
               : const NoText(),
       resultsChild:
           bet?.resultDriver != null
-              ? DriverDescription(
-                name: bet!.resultDriver!.name,
-                surname: bet.resultDriver!.surname,
-                number: bet.resultDriver!.number,
-                teamColor: bet.resultDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.resultDriver!)
               : const NoText(),
       points: bet?.points,
     );
@@ -227,21 +186,11 @@ class _FastestLap extends StatelessWidget {
       betStatus: bet?.status,
       betChild:
           bet?.betDriver != null
-              ? DriverDescription(
-                name: bet!.betDriver!.name,
-                surname: bet.betDriver!.surname,
-                number: bet.betDriver!.number,
-                teamColor: bet.betDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.betDriver!)
               : const NoText(),
       resultsChild:
           bet?.resultDriver != null
-              ? DriverDescription(
-                name: bet!.resultDriver!.name,
-                surname: bet.resultDriver!.surname,
-                number: bet.resultDriver!.number,
-                teamColor: bet.resultDriver!.teamHexColor.toColor(),
-              )
+              ? DriverDescription(driverDetails: bet!.resultDriver!)
               : const NoText(),
       points: bet?.points,
     );
@@ -269,12 +218,7 @@ class _DnfDrivers extends StatelessWidget {
                 .map(
                   (driver) =>
                       driver != null
-                          ? DriverDescription(
-                            name: driver.name,
-                            surname: driver.surname,
-                            number: driver.number,
-                            teamColor: driver.teamHexColor.toColor(),
-                          )
+                          ? DriverDescription(driverDetails: driver)
                           : const NoText(),
                 )
                 .separated(const GapVertical8())
@@ -289,12 +233,7 @@ class _DnfDrivers extends StatelessWidget {
                 ?.map(
                   (driver) =>
                       driver != null
-                          ? DriverDescription(
-                            name: driver.name,
-                            surname: driver.surname,
-                            number: driver.number,
-                            teamColor: driver.teamHexColor.toColor(),
-                          )
+                          ? DriverDescription(driverDetails: driver)
                           : const NoText(),
                 )
                 .separated(const GapVertical8())
