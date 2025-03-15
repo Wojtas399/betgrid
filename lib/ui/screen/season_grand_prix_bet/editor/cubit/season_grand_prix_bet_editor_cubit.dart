@@ -204,9 +204,18 @@ class SeasonGrandPrixBetEditorCubit
     ) {
       final sortedDetailsOfAllDriversFromSeason = [
         ...detailsOfAllDriversFromSeason,
-      ];
-      sortedDetailsOfAllDriversFromSeason.sortByTeamAndSurname();
-      return sortedDetailsOfAllDriversFromSeason;
+      ]..sortByTeamAndSurname();
+
+      final List<DriverDetails> drivers =
+          sortedDetailsOfAllDriversFromSeason
+              .where((DriverDetails driverDetails) => driverDetails.number > 0)
+              .toList();
+      final List<DriverDetails> reserveDrivers =
+          sortedDetailsOfAllDriversFromSeason
+              .where((DriverDetails driverDetails) => driverDetails.number == 0)
+              .toList();
+
+      return [...drivers, ...reserveDrivers];
     });
   }
 
