@@ -11,15 +11,17 @@ import '../cubit/season_grand_prix_bet_editor_cubit.dart';
 class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {
   final String? label;
   final Color? labelColor;
-  final String? selectedDriverId;
-  final Function(String)? onDriverSelected;
+  final String? selectedSeasonDriverId;
+  final List<String>? allSelectedSeasonDriverIds;
+  final Function(String)? onSeasonDriverSelected;
 
   const SeasonGrandPrixBetEditorDriverField({
     super.key,
     this.label,
     this.labelColor,
-    this.selectedDriverId,
-    this.onDriverSelected,
+    this.selectedSeasonDriverId,
+    this.allSelectedSeasonDriverIds,
+    this.onSeasonDriverSelected,
   });
 
   @override
@@ -39,8 +41,9 @@ class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {
       Expanded(
         flex: 5,
         child: _DriverSelectionFormField(
-          selectedDriverId: selectedDriverId,
-          onDriverSelected: onDriverSelected,
+          selectedSeasonDriverId: selectedSeasonDriverId,
+          allSelectedSeasonDriverIds: allSelectedSeasonDriverIds,
+          onSeasonDriverSelected: onSeasonDriverSelected,
         ),
       ),
     ],
@@ -48,28 +51,30 @@ class SeasonGrandPrixBetEditorDriverField extends StatelessWidget {
 }
 
 class _DriverSelectionFormField extends StatelessWidget {
-  final String? selectedDriverId;
-  final Function(String)? onDriverSelected;
+  final String? selectedSeasonDriverId;
+  final List<String>? allSelectedSeasonDriverIds;
+  final Function(String)? onSeasonDriverSelected;
 
   const _DriverSelectionFormField({
-    this.selectedDriverId,
-    this.onDriverSelected,
+    this.selectedSeasonDriverId,
+    this.allSelectedSeasonDriverIds,
+    this.onSeasonDriverSelected,
   });
 
-  void _onDriverSelected(String? selectedDriverId) {
-    if (onDriverSelected != null && selectedDriverId != null) {
-      onDriverSelected!(selectedDriverId);
+  void _onSeasonDriverSelected(String? selectedSeasonDriverId) {
+    if (onSeasonDriverSelected != null && selectedSeasonDriverId != null) {
+      onSeasonDriverSelected!(selectedSeasonDriverId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<DriverDetails>? allDrivers = context.select(
+    final List<DriverDetails>? allDriversDetails = context.select(
       (SeasonGrandPrixBetEditorCubit cubit) => cubit.state.allDrivers,
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedDriverId,
+      value: selectedSeasonDriverId,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
@@ -82,19 +87,55 @@ class _DriverSelectionFormField extends StatelessWidget {
         child: Text(context.str.seasonGrandPrixBetEditorSelectDriver),
       ),
       items: [
-        ...?allDrivers?.map(
-          (driver) => DropdownMenuItem(
-            value: driver.seasonDriverId,
-            child: DriverDescription(
-              name: driver.name,
-              surname: driver.surname,
-              number: driver.number,
-              teamColor: driver.teamHexColor.toColor(),
+        ...?allDriversDetails?.map((DriverDetails driverDetails) {
+          final bool isAlreadySelectedInOtherField =
+              allSelectedSeasonDriverIds?.contains(
+                driverDetails.seasonDriverId,
+              ) ==
+              true;
+
+          return DropdownMenuItem(
+            value: driverDetails.seasonDriverId,
+            child: Container(
+              color:
+                  driverDetails.seasonDriverId == selectedSeasonDriverId
+                      ? context.colorScheme.primaryContainer
+                      : null,
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DriverDescription(
+                    name: driverDetails.name,
+                    surname: driverDetails.surname,
+                    number: driverDetails.number,
+                    teamColor: driverDetails.teamHexColor.toColor(),
+                  ),
+                  if (isAlreadySelectedInOtherField &&
+                      driverDetails.seasonDriverId != selectedSeasonDriverId)
+                    Icon(
+                      Icons.check,
+                      color: context.colorScheme.outline,
+                      size: 20,
+                    ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ],
-      onChanged: _onDriverSelected,
+      selectedItemBuilder:
+          (_) => [
+            ...?allDriversDetails?.map(
+              (DriverDetails driverDetails) => DriverDescription(
+                name: driverDetails.name,
+                surname: driverDetails.surname,
+                number: driverDetails.number,
+                teamColor: driverDetails.teamHexColor.toColor(),
+              ),
+            ),
+          ],
+      onChanged: _onSeasonDriverSelected,
     );
   }
 }

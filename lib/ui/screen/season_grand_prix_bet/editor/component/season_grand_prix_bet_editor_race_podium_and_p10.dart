@@ -9,87 +9,73 @@ class SeasonGrandPrixBetEditorRacePodiumAndP10 extends StatelessWidget {
   const SeasonGrandPrixBetEditorRacePodiumAndP10({super.key});
 
   @override
-  Widget build(BuildContext context) => const Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [_P1(), _P2(), _P3(), _P10()],
-  );
-}
-
-class _P1 extends StatelessWidget {
-  const _P1();
-
-  @override
   Widget build(BuildContext context) {
     final String? p1SeasonDriverId = context.select(
       (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.raceForm.p1SeasonDriverId,
     );
-
-    return SeasonGrandPrixBetEditorDriverField(
-      label: 'P1',
-      labelColor: context.customColors?.p1,
-      selectedDriverId: p1SeasonDriverId,
-      onDriverSelected:
-          context.read<SeasonGrandPrixBetEditorCubit>().onRaceP1DriverChanged,
-    );
-  }
-}
-
-class _P2 extends StatelessWidget {
-  const _P2();
-
-  @override
-  Widget build(BuildContext context) {
     final String? p2SeasonDriverId = context.select(
       (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.raceForm.p2SeasonDriverId,
     );
-
-    return SeasonGrandPrixBetEditorDriverField(
-      label: 'P2',
-      labelColor: context.customColors?.p2,
-      selectedDriverId: p2SeasonDriverId,
-      onDriverSelected:
-          context.read<SeasonGrandPrixBetEditorCubit>().onRaceP2DriverChanged,
-    );
-  }
-}
-
-class _P3 extends StatelessWidget {
-  const _P3();
-
-  @override
-  Widget build(BuildContext context) {
     final String? p3SeasonDriverId = context.select(
       (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.raceForm.p3SeasonDriverId,
     );
-
-    return SeasonGrandPrixBetEditorDriverField(
-      label: 'P3',
-      labelColor: context.customColors?.p3,
-      selectedDriverId: p3SeasonDriverId,
-      onDriverSelected:
-          context.read<SeasonGrandPrixBetEditorCubit>().onRaceP3DriverChanged,
-    );
-  }
-}
-
-class _P10 extends StatelessWidget {
-  const _P10();
-
-  @override
-  Widget build(BuildContext context) {
     final String? p10SeasonDriverId = context.select(
       (SeasonGrandPrixBetEditorCubit cubit) =>
           cubit.state.raceForm.p10SeasonDriverId,
     );
+    final List<String> allSelectedSeasonDriverIdsFromPodium = [
+      if (p1SeasonDriverId != null) p1SeasonDriverId,
+      if (p2SeasonDriverId != null) p2SeasonDriverId,
+      if (p3SeasonDriverId != null) p3SeasonDriverId,
+      if (p10SeasonDriverId != null) p10SeasonDriverId,
+    ];
 
-    return SeasonGrandPrixBetEditorDriverField(
-      label: 'P10',
-      selectedDriverId: p10SeasonDriverId,
-      onDriverSelected:
-          context.read<SeasonGrandPrixBetEditorCubit>().onRaceP10DriverChanged,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SeasonGrandPrixBetEditorDriverField(
+          label: 'P1',
+          labelColor: context.customColors?.p1,
+          selectedSeasonDriverId: p1SeasonDriverId,
+          allSelectedSeasonDriverIds: allSelectedSeasonDriverIdsFromPodium,
+          onSeasonDriverSelected:
+              context
+                  .read<SeasonGrandPrixBetEditorCubit>()
+                  .onRaceP1DriverChanged,
+        ),
+        SeasonGrandPrixBetEditorDriverField(
+          label: 'P2',
+          labelColor: context.customColors?.p2,
+          selectedSeasonDriverId: p2SeasonDriverId,
+          allSelectedSeasonDriverIds: allSelectedSeasonDriverIdsFromPodium,
+          onSeasonDriverSelected:
+              context
+                  .read<SeasonGrandPrixBetEditorCubit>()
+                  .onRaceP2DriverChanged,
+        ),
+        SeasonGrandPrixBetEditorDriverField(
+          label: 'P3',
+          labelColor: context.customColors?.p3,
+          selectedSeasonDriverId: p3SeasonDriverId,
+          allSelectedSeasonDriverIds: allSelectedSeasonDriverIdsFromPodium,
+          onSeasonDriverSelected:
+              context
+                  .read<SeasonGrandPrixBetEditorCubit>()
+                  .onRaceP3DriverChanged,
+        ),
+        SeasonGrandPrixBetEditorDriverField(
+          label: 'P10',
+          selectedSeasonDriverId: p10SeasonDriverId,
+          allSelectedSeasonDriverIds: allSelectedSeasonDriverIdsFromPodium,
+          onSeasonDriverSelected:
+              context
+                  .read<SeasonGrandPrixBetEditorCubit>()
+                  .onRaceP10DriverChanged,
+        ),
+      ],
     );
   }
 }

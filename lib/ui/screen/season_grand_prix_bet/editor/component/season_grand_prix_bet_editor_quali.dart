@@ -42,10 +42,16 @@ class SeasonGrandPrixBetEditorQuali extends StatelessWidget {
               2 => customColors?.p3,
               _ => null,
             },
-            selectedDriverId: qualiStandingsBySeasonDriverIds[positionIndex],
-            onDriverSelected:
-                (String selectedDriverId) =>
-                    _onDriverSelected(positionIndex, selectedDriverId, context),
+            selectedSeasonDriverId:
+                qualiStandingsBySeasonDriverIds[positionIndex],
+            allSelectedSeasonDriverIds:
+                qualiStandingsBySeasonDriverIds.whereType<String>().toList(),
+            onSeasonDriverSelected:
+                (String selectedSeasonDriverId) => _onDriverSelected(
+                  positionIndex,
+                  selectedSeasonDriverId,
+                  context,
+                ),
           ),
         ).separated(const Divider()),
       ],

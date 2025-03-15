@@ -96,8 +96,8 @@ class _FastestLap extends StatelessWidget {
     );
 
     return SeasonGrandPrixBetEditorDriverField(
-      selectedDriverId: fastestLapSeasonDriverId,
-      onDriverSelected:
+      selectedSeasonDriverId: fastestLapSeasonDriverId,
+      onSeasonDriverSelected:
           context
               .read<SeasonGrandPrixBetEditorCubit>()
               .onRaceFastestLapDriverChanged,
