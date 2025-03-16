@@ -2,7 +2,7 @@ name: betgrid
 description: "A new Flutter project."
 publish_to: 'none'
 
-version: 1.5.2+10
+version: 1.5.3+11
 
 environment:
   sdk: '>=3.7.0 <4.0.0'
@@ -36,7 +36,7 @@ dependencies:
   betgrid_shared:
     git:
       url: https://github.com/Wojtas399/betgrid_shared.git
-      ref: 4431ccc3e6b54cd32b1f813a197af4eaf6230ec3
+      ref: 4c98310219427d720245822446a3e6d6a0e80adf
   firebase_analytics: ^11.4.2
   flutter_native_splash: ^2.4.5
   image_picker: ^1.1.2
