@@ -101,7 +101,7 @@ class _DriverSelectionFormField extends StatelessWidget {
                   driverDetails.seasonDriverId == selectedSeasonDriverId
                       ? context.colorScheme.primaryContainer
                       : null,
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
