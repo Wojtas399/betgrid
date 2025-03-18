@@ -13,8 +13,7 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     implements SeasonDriverRepository {
   final FirebaseSeasonDriverService _fireSeasonDriverService;
   final SeasonDriverMapper _seasonDriverMapper;
-  final _getAllFromSeasonMutex = Mutex();
-  final _getByIdMutex = Mutex();
+  final _mutex = Mutex();
 
   SeasonDriverRepositoryImpl(
     this._fireSeasonDriverService,
@@ -24,11 +23,11 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
   @override
   Stream<List<SeasonDriver>> getAllFromSeason(int season) async* {
     bool didRelease = false;
-    await _getAllFromSeasonMutex.acquire();
+    await _mutex.acquire();
     await _fetchFromSeason(season);
     await for (final allSeasonDrivers in repositoryState$) {
-      if (_getAllFromSeasonMutex.isLocked && !didRelease) {
-        _getAllFromSeasonMutex.release();
+      if (_mutex.isLocked && !didRelease) {
+        _mutex.release();
         didRelease = true;
       }
       yield allSeasonDrivers
@@ -43,14 +42,14 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     required String seasonDriverId,
   }) async* {
     bool didRelease = false;
-    await _getByIdMutex.acquire();
+    await _mutex.acquire();
     await for (final allSeasonDrivers in repositoryState$) {
       SeasonDriver? matchingSeasonDriver = allSeasonDrivers.firstWhereOrNull(
         (seasonDriver) => seasonDriver.id == seasonDriverId,
       );
       matchingSeasonDriver ??= await _fetchById(season, seasonDriverId);
-      if (_getByIdMutex.isLocked && !didRelease) {
-        _getByIdMutex.release();
+      if (_mutex.isLocked && !didRelease) {
+        _mutex.release();
         didRelease = true;
       }
       yield matchingSeasonDriver;

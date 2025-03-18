@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/driver_details.dart';
-import '../../../component/gap/gap_horizontal.dart';
-import '../../../component/text_component.dart';
+import '../../../component/driver_description_component.dart';
 import '../../../extensions/build_context_extensions.dart';
-import '../../../extensions/string_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
 
@@ -37,38 +35,25 @@ class _State extends State<StatsPlayersPointsForDriverDropdownButton> {
 
     return SizedBox(
       width: double.infinity,
-      child: DropdownButton<String>(
-        isExpanded: true,
+      child: DropdownButtonFormField<String>(
+        isDense: false,
         value: _selectedDriverId,
+        decoration: const InputDecoration(fillColor: Colors.transparent),
         hint: Text(context.str.statsSelectDriver),
         items:
             allDrivers
-                ?.map((DriverDetails driver) => _DriverDescription(driver))
+                ?.map(
+                  (DriverDetails driver) => DropdownMenuItem<String>(
+                    value: driver.seasonDriverId,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: DriverDescription(driverDetails: driver),
+                    ),
+                  ),
+                )
                 .toList(),
         onChanged: (String? driverId) => _onDriverChanged(driverId),
       ),
     );
   }
-}
-
-class _DriverDescription extends DropdownMenuItem<String> {
-  final DriverDetails driver;
-
-  _DriverDescription(this.driver)
-    : super(
-        value: driver.seasonDriverId,
-        child: Row(
-          children: [
-            Container(
-              color: driver.teamHexColor.toColor(),
-              width: 6,
-              height: 20,
-            ),
-            const GapHorizontal16(),
-            TitleMedium('${driver.number}'),
-            const GapHorizontal16(),
-            BodyLarge('${driver.name} ${driver.surname}'),
-          ],
-        ),
-      );
 }

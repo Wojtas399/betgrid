@@ -36,13 +36,17 @@ class PlayerProfileCubit extends Cubit<PlayerProfileState> {
 
   void initialize() {
     _listener ??= _getListenedParams().listen((_ListenedParams listenedParams) {
+      final List<GrandPrixWithPoints> sortedGrandPrixesWithPoints = [
+        ...listenedParams.grandPrixesWithPoints,
+      ]..sort((gp1, gp2) => gp1.roundNumber.compareTo(gp2.roundNumber));
+
       emit(
         state.copyWith(
           status: PlayerProfileStateStatus.completed,
           player: listenedParams.player,
           season: _seasonCubit.state,
           totalPoints: listenedParams.totalPoints,
-          grandPrixesWithPoints: listenedParams.grandPrixesWithPoints,
+          grandPrixesWithPoints: sortedGrandPrixesWithPoints,
         ),
       );
     });

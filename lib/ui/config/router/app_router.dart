@@ -25,7 +25,7 @@ class AppRouter extends RootStackRouter {
             ),
             AutoRoute(
               page: SeasonGrandPrixBetsRoute.page,
-              title: (context, _) => context.str.betsScreenTitle,
+              title: (context, _) => context.str.seasonGrandPrixBetsScreenTitle,
             ),
             AutoRoute(
               page: PlayersRoute.page,
@@ -33,8 +33,7 @@ class AppRouter extends RootStackRouter {
             ),
           ],
         ),
-        AutoRoute(page: SeasonGrandPrixBetPreviewRoute.page),
-        AutoRoute(page: SeasonGrandPrixBetEditorRoute.page),
+        AutoRoute(page: SeasonGrandPrixBetRoute.page),
         AutoRoute(page: ProfileRoute.page),
         AutoRoute(page: PlayerProfileRoute.page),
       ],

@@ -315,7 +315,7 @@ class CreateBestPoints {
         .switchMap(
           (SeasonGrandPrix? seasonGrandPrix) =>
               seasonGrandPrix != null
-                  ? _grandPrixBasicInfoRepository.getGrandPrixBasicInfoById(
+                  ? _grandPrixBasicInfoRepository.getById(
                     seasonGrandPrix.grandPrixId,
                   )
                   : Stream.value(null),
@@ -331,9 +331,7 @@ class CreateBestPoints {
         .switchMap(
           (SeasonDriver? seasonDriver) =>
               seasonDriver != null
-                  ? _driverPersonalDataRepository.getDriverPersonalDataById(
-                    seasonDriver.driverId,
-                  )
+                  ? _driverPersonalDataRepository.getById(seasonDriver.driverId)
                   : Stream.value(null),
         );
   }

@@ -14,8 +14,10 @@ class DateService {
               : dateA.month < dateB.month
           : dateA.year < dateB.year;
 
-  Duration getDurationToDateFromNow(DateTime dateTime) {
-    final date = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    return date.difference(getNow());
+  Duration getDurationBetweenDateTimes({
+    required DateTime fromDateTime,
+    required DateTime toDateTime,
+  }) {
+    return toDateTime.difference(fromDateTime);
   }
 }

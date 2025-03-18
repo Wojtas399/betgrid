@@ -45,7 +45,7 @@ class HomeContent extends StatelessWidget {
             selectedItemColor: context.colorScheme.primary,
             items: [
               BottomNavigationBarItem(
-                label: context.str.betsScreenTitle,
+                label: context.str.seasonGrandPrixBetsScreenTitle,
                 icon: const Icon(Icons.menu_rounded),
               ),
               BottomNavigationBarItem(

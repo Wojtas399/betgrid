@@ -9,13 +9,34 @@ class StrPl extends Str {
   StrPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get signInScreenTitle => 'Logowanie';
+  String get playersScreenTitle => 'Gracze';
 
   @override
-  String get signInScreenInfo => 'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google';
+  String get playersNoOtherPlayersTitle => 'Brak innych graczy';
 
   @override
-  String get signInScreenSignInButtonLabel => 'Zaloguj';
+  String get playersNoOtherPlayersMessage => 'Aktualnie nie ma zarejestrowanych innych graczy';
+
+  @override
+  String get profileScreenTitle => 'Profil';
+
+  @override
+  String get profileNewUsernameDialogTitle => 'Nowa nazwa użytkownika';
+
+  @override
+  String get profileSuccessfullySavedUsername => 'Pomyślnie zmieniono nazwę użytkownika';
+
+  @override
+  String get profileAvatarActionsTitle => 'Edycja avataru';
+
+  @override
+  String get profileAvatarActionsSelectFromGallery => 'Wybierz z galerii';
+
+  @override
+  String get profileAvatarActionsCapturePhoto => 'Zrób zdjęcie';
+
+  @override
+  String get profileAvatarActionsDeleteImage => 'Usuń zdjęcie';
 
   @override
   String get requiredDataCompletionScreenTitle => 'Wymagane dane';
@@ -34,6 +55,114 @@ class StrPl extends Str {
 
   @override
   String get requiredDataCompletionSelectAvatarSource => 'Wybierz źródło avataru';
+
+  @override
+  String get seasonGrandPrixBetPreviewTotal => 'Razem';
+
+  @override
+  String get seasonGrandPrixBetPreviewPointsDetails => 'Punktacja';
+
+  @override
+  String get seasonGrandPrixBetPreviewChoice => 'Wybór';
+
+  @override
+  String get seasonGrandPrixBetPreviewResult => 'Rezultat';
+
+  @override
+  String get seasonGrandPrixBetPreviewMultiplier => 'Mnożnik';
+
+  @override
+  String get seasonGrandPrixBetPreviewPositions => 'Pozycje';
+
+  @override
+  String get seasonGrandPrixBetPreviewPositionsMultiplier => 'Mnożnik punktów za pozycje';
+
+  @override
+  String get seasonGrandPrixBetPreviewFastestLap => 'Najszybsze okrążenie';
+
+  @override
+  String get seasonGrandPrixBetPreviewDnf => 'DNF';
+
+  @override
+  String get seasonGrandPrixBetPreviewDnfMultiplier => 'Mnożnik DNF';
+
+  @override
+  String get seasonGrandPrixBetPreviewOther => 'Pozostałe';
+
+  @override
+  String get seasonGrandPrixBetEditorScreenTitle => 'Obstaw grand prix';
+
+  @override
+  String get seasonGrandPrixBetEditorQualificationDescription => 'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.';
+
+  @override
+  String get seasonGrandPrixBetEditorRaceDescription => 'Wytypuj poszczególne sekcje wyścigu wedle opisu.';
+
+  @override
+  String get seasonGrandPrixBetEditorSelectDriver => 'Wybierz kierowcę';
+
+  @override
+  String get seasonGrandPrixBetEditorPodiumAndP10Title => 'Podium oraz P10';
+
+  @override
+  String get seasonGrandPrixBetEditorPodiumAndP10Subtitle => 'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.';
+
+  @override
+  String get seasonGrandPrixBetEditorFastestLapSubtitle => 'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.';
+
+  @override
+  String get seasonGrandPrixBetEditorDnfTitle => 'DNF';
+
+  @override
+  String get seasonGrandPrixBetEditorDnfSubtitle => 'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.';
+
+  @override
+  String get seasonGrandPrixBetEditorAddDriversToDnfList => 'Dodaj kierowców';
+
+  @override
+  String get seasonGrandPrixBetEditorEditDnfList => 'Edytuj listę';
+
+  @override
+  String get seasonGrandPrixBetEditorNoDriversInfoTitle => 'Brak kierowców';
+
+  @override
+  String get seasonGrandPrixBetEditorNoDriversInfoSubtitle => 'Niestety nie znaleziono żadnych kierowców do wyboru';
+
+  @override
+  String get seasonGrandPrixBetEditorSafetyCarSubtitle => 'Czy w wyścigu pojawi się samochód bezpieczeństwa?';
+
+  @override
+  String get seasonGrandPrixBetEditorRedFlagSubtitle => 'Czy w wyścigu pojawi się czerwona flaga?';
+
+  @override
+  String get seasonGrandPrixBetEditorSuccessfullySavedBets => 'Pomyślnie zapisano typy';
+
+  @override
+  String get seasonGrandPrixBetsScreenTitle => 'Typy';
+
+  @override
+  String get seasonGrandPrixBetsNoBetsTitle => 'Brak możliwości typowania';
+
+  @override
+  String get seasonGrandPrixBetsNoBetsMessage => 'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione';
+
+  @override
+  String get seasonGrandPrixBetsOngoingStatus => 'Trwa';
+
+  @override
+  String get seasonGrandPrixBetsNextStatus => 'Następne';
+
+  @override
+  String get seasonGrandPrixBetsEndBettingTime => 'Koniec typowania za';
+
+  @override
+  String get signInScreenTitle => 'Logowanie';
+
+  @override
+  String get signInScreenInfo => 'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google';
+
+  @override
+  String get signInScreenSignInButtonLabel => 'Zaloguj';
 
   @override
   String get statsScreenTitle => 'Statystyki';
@@ -70,135 +199,6 @@ class StrPl extends Str {
 
   @override
   String get statsNoDataMessage => 'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk';
-
-  @override
-  String get betsScreenTitle => 'Typy';
-
-  @override
-  String get betsNoBetsTitle => 'Brak możliwości typowania';
-
-  @override
-  String get betsNoBetsMessage => 'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione';
-
-  @override
-  String get betsOngoingStatus => 'Trwa';
-
-  @override
-  String get betsNextStatus => 'Następne';
-
-  @override
-  String get betsEndBettingTime => 'Koniec typowania za';
-
-  @override
-  String get playersScreenTitle => 'Gracze';
-
-  @override
-  String get playersNoOtherPlayersTitle => 'Brak innych graczy';
-
-  @override
-  String get playersNoOtherPlayersMessage => 'Aktualnie nie ma zarejestrowanych innych graczy';
-
-  @override
-  String get grandPrixBetTotal => 'Razem';
-
-  @override
-  String get grandPrixBetPointsDetails => 'Punktacja';
-
-  @override
-  String get grandPrixBetChoice => 'Wybór';
-
-  @override
-  String get grandPrixBetResult => 'Rezultat';
-
-  @override
-  String get grandPrixBetMultiplier => 'Mnożnik';
-
-  @override
-  String get grandPrixBetPositions => 'Pozycje';
-
-  @override
-  String get grandPrixBetPositionsMultiplier => 'Mnożnik punktów za pozycje';
-
-  @override
-  String get grandPrixBetFastestLap => 'Najszybsze okrążenie';
-
-  @override
-  String get grandPrixBetDNF => 'DNF';
-
-  @override
-  String get grandPrixBetDNFMultiplier => 'Mnożnik DNF';
-
-  @override
-  String get grandPrixBetOther => 'Pozostałe';
-
-  @override
-  String get grandPrixBetEditorScreenTitle => 'Obstaw grand prix';
-
-  @override
-  String get grandPrixBetEditorQualificationDescription => 'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.';
-
-  @override
-  String get grandPrixBetEditorRaceDescription => 'Wytypuj poszczególne sekcje wyścigu wedle opisu.';
-
-  @override
-  String get grandPrixBetEditorSelectDriver => 'Wybierz kierowcę';
-
-  @override
-  String get grandPrixBetEditorPodiumAndP10Title => 'Podium oraz P10';
-
-  @override
-  String get grandPrixBetEditorPodiumAndP10Subtitle => 'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.';
-
-  @override
-  String get grandPrixBetEditorFastestLapSubtitle => 'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.';
-
-  @override
-  String get grandPrixBetEditorDnfTitle => 'DNF';
-
-  @override
-  String get grandPrixBetEditorDnfSubtitle => 'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.';
-
-  @override
-  String get grandPrixBetEditorAddDriversToDnfList => 'Dodaj kierowców';
-
-  @override
-  String get grandPrixBetEditorEditDnfList => 'Edytuj listę';
-
-  @override
-  String get grandPrixBetEditorNoDriversInfoTitle => 'Brak kierowców';
-
-  @override
-  String get grandPrixBetEditorNoDriversInfoSubtitle => 'Niestety nie znaleziono żadnych kierowców do wyboru';
-
-  @override
-  String get grandPrixBetEditorSafetyCarSubtitle => 'Czy w wyścigu pojawi się samochód bezpieczeństwa?';
-
-  @override
-  String get grandPrixBetEditorRedFlagSubtitle => 'Czy w wyścigu pojawi się czerwona flaga?';
-
-  @override
-  String get grandPrixBetEditorSuccessfullySavedBets => 'Pomyślnie zapisano typy';
-
-  @override
-  String get profileScreenTitle => 'Profil';
-
-  @override
-  String get profileNewUsernameDialogTitle => 'Nowa nazwa użytkownika';
-
-  @override
-  String get profileSuccessfullySavedUsername => 'Pomyślnie zmieniono nazwę użytkownika';
-
-  @override
-  String get profileAvatarActionsTitle => 'Edycja avataru';
-
-  @override
-  String get profileAvatarActionsSelectFromGallery => 'Wybierz z galerii';
-
-  @override
-  String get profileAvatarActionsCapturePhoto => 'Zrób zdjęcie';
-
-  @override
-  String get profileAvatarActionsDeleteImage => 'Usuń zdjęcie';
 
   @override
   String get loading => 'Ładowanie';

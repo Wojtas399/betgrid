@@ -24,7 +24,7 @@ class PlayerRepositoryImpl extends Repository<Player>
 
   @override
   Stream<List<Player>> getAll() async* {
-    if (isRepositoryStateEmpty) await _fetchAll();
+    await _fetchAll();
     await for (final allPlayers in repositoryState$) {
       yield allPlayers;
     }

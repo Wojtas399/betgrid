@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../model/player.dart';
 import '../../../component/avatar_component.dart';
+import '../../../component/custom_card_component.dart';
 import '../../../component/gap/gap_horizontal.dart';
 import '../../../component/gap/gap_vertical.dart';
 import '../../../component/text_component.dart';
@@ -22,24 +23,19 @@ class PlayersPlayerItem extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Card(
-    color: context.colorScheme.primary,
-    clipBehavior: Clip.hardEdge,
-    child: InkWell(
-      onTap: () => _onTap(context),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _Avatar(player: playerWithPoints.player),
-          const GapVertical8(),
-          TitleMedium(
-            playerWithPoints.player.username,
-            color: Theme.of(context).canvasColor,
-            fontWeight: FontWeight.bold,
-          ),
-          _Points(points: playerWithPoints.totalPoints),
-        ],
-      ),
+  Widget build(BuildContext context) => CustomCard(
+    onPressed: () => _onTap(context),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _Avatar(player: playerWithPoints.player),
+        const GapVertical8(),
+        TitleMedium(
+          playerWithPoints.player.username,
+          fontWeight: FontWeight.bold,
+        ),
+        _Points(points: playerWithPoints.totalPoints),
+      ],
     ),
   );
 }
@@ -50,18 +46,16 @@ class _Avatar extends StatelessWidget {
   const _Avatar({required this.player});
 
   @override
-  Widget build(BuildContext context) => Hero(
-    tag: player.id,
-    child: LayoutBuilder(
-      builder: (_, BoxConstraints constraints) {
-        final double avatarSize = constraints.maxWidth * 0.5;
-        return SizedBox(
-          width: avatarSize,
-          height: avatarSize,
-          child: Avatar(avatarUrl: player.avatarUrl, username: player.username),
-        );
-      },
-    ),
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (_, BoxConstraints constraints) {
+      final double avatarSize = constraints.maxWidth * 0.5;
+
+      return SizedBox(
+        width: avatarSize,
+        height: avatarSize,
+        child: Avatar(avatarUrl: player.avatarUrl, username: player.username),
+      );
+    },
   );
 }
 
@@ -74,12 +68,13 @@ class _Points extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      BodyMedium(
-        '${context.str.points}:',
-        color: context.colorScheme.outlineVariant,
-      ),
+      BodyMedium('${context.str.points}:', color: context.colorScheme.outline),
       const GapHorizontal4(),
-      BodyMedium('$points', color: context.colorScheme.outlineVariant),
+      BodyMedium(
+        '$points',
+        color: context.colorScheme.outline,
+        fontWeight: FontWeight.bold,
+      ),
     ],
   );
 }

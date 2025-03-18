@@ -15,56 +15,45 @@ import '../cubit/season_grand_prix_bets_state.dart';
 class SeasonGrandPrixBetsListOfBets extends StatelessWidget {
   const SeasonGrandPrixBetsListOfBets({super.key});
 
-  void _onGrandPrixPressed(
-    SeasonGrandPrixItemParams gpParams,
-    BuildContext context,
-  ) {
+  void _onGrandPrixPressed(String seasonGrandPrixId, BuildContext context) {
     final SeasonGrandPrixBetsCubit cubit =
         context.read<SeasonGrandPrixBetsCubit>();
     final int? season = cubit.state.season;
-    final String? loggedUserId = cubit.state.loggedUserId;
-    if (loggedUserId != null && season != null) {
-      if (gpParams.status.isOngoing || gpParams.status.isFinished) {
-        context.navigateTo(
-          SeasonGrandPrixBetPreviewRoute(
-            playerId: loggedUserId,
-            season: season,
-            seasonGrandPrixId: gpParams.seasonGrandPrixId,
-          ),
-        );
-      } else if (gpParams.status.isNext || gpParams.status.isUpcoming) {
-        context.navigateTo(
-          SeasonGrandPrixBetEditorRoute(
-            season: season,
-            seasonGrandPrixId: gpParams.seasonGrandPrixId,
-          ),
-        );
-      }
+    if (season != null) {
+      context.navigateTo(
+        SeasonGrandPrixBetRoute(
+          season: season,
+          seasonGrandPrixId: seasonGrandPrixId,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<SeasonGrandPrixItemParams>? grandPrixItems = context.select(
-      (SeasonGrandPrixBetsCubit cubit) => cubit.state.grandPrixItems,
-    );
+    final List<SeasonGrandPrixItemParams>? seasonGrandPrixItems = context
+        .select((SeasonGrandPrixBetsCubit cubit) => cubit.state.grandPrixItems);
     final bool doesOngoingGpExist = context.select(
       (SeasonGrandPrixBetsCubit cubit) => cubit.state.doesOngoingGpExist,
     );
 
-    return grandPrixItems == null
+    return seasonGrandPrixItems == null
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: grandPrixItems.length,
+          itemCount: seasonGrandPrixItems.length,
           itemBuilder: (_, int itemIndex) {
-            final gpParams = grandPrixItems[itemIndex];
+            final seasonGpParams = seasonGrandPrixItems[itemIndex];
 
             return ScrollAnimatedItem(
               child: _Item(
-                gpParams: gpParams,
+                gpParams: seasonGpParams,
                 doesOngoingGpExist: doesOngoingGpExist,
-                onPressed: () => _onGrandPrixPressed(gpParams, context),
+                onPressed:
+                    () => _onGrandPrixPressed(
+                      seasonGpParams.seasonGrandPrixId,
+                      context,
+                    ),
               ),
             );
           },
@@ -137,8 +126,8 @@ class _Item extends StatelessWidget {
               color: context.colorScheme.surface,
               child: TitleMedium(
                 gpStatus.isOngoing
-                    ? context.str.betsOngoingStatus
-                    : context.str.betsNextStatus,
+                    ? context.str.seasonGrandPrixBetsOngoingStatus
+                    : context.str.seasonGrandPrixBetsNextStatus,
                 color: context.colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -162,10 +151,10 @@ class _EndBettingTime extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          BodyMedium('${context.str.betsEndBettingTime} '),
+          BodyMedium('${context.str.seasonGrandPrixBetsEndBettingTime} '),
           if (durationToEnd != null)
             BodyMedium(
-              durationToEnd.toDaysHoursMinutes(),
+              durationToEnd.toUIDuration(),
               fontWeight: FontWeight.bold,
             )
           else ...[

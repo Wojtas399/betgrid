@@ -20,8 +20,8 @@ class SeasonGrandPrixBetsBody extends StatelessWidget {
         ? const Center(child: CircularProgressIndicator())
         : cubitStatus.areNoBets
         ? EmptyContentInfo(
-          title: context.str.betsNoBetsTitle,
-          message: context.str.betsNoBetsMessage,
+          title: context.str.seasonGrandPrixBetsNoBetsTitle,
+          message: context.str.seasonGrandPrixBetsNoBetsMessage,
         )
         : const SeasonGrandPrixBetsListOfBets();
   }

@@ -42,12 +42,11 @@ class CreatePlayersPodiumStats {
             .map((grandPrix) => grandPrix.id)
             .toList();
     return Rx.combineLatest2(
-      _grandPrixBetPointsRepository
-          .getSeasonGrandPrixBetPointsForPlayersAndSeasonGrandPrixes(
-            season: season,
-            idsOfPlayers: playersIds,
-            idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
-          ),
+      _grandPrixBetPointsRepository.getForPlayersAndSeasonGrandPrixes(
+        season: season,
+        idsOfPlayers: playersIds,
+        idsOfSeasonGrandPrixes: finishedSeasonGrandPrixesIds,
+      ),
       Stream.value(data.allPlayers),
       (
         List<SeasonGrandPrixBetPoints> seasonGrandPrixesBetPoints,

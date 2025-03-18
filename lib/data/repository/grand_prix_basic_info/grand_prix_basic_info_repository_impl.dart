@@ -22,7 +22,7 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
   );
 
   @override
-  Stream<GrandPrixBasicInfo?> getGrandPrixBasicInfoById(String id) async* {
+  Stream<GrandPrixBasicInfo?> getById(String id) async* {
     bool didReleaseMutex = false;
     await _getGrandPrixBasicInfoByIdMutex.acquire();
     await for (final grandPrixesBasicInfo in repositoryState$) {
@@ -31,7 +31,7 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
             (GrandPrixBasicInfo grandPrixBasicInfo) =>
                 grandPrixBasicInfo.id == id,
           );
-      matchingGrandPrixBasicInfo ??= await _fetchGrandPrixBasicInfoById(id);
+      matchingGrandPrixBasicInfo ??= await _fetchById(id);
       if (_getGrandPrixBasicInfoByIdMutex.isLocked && !didReleaseMutex) {
         _getGrandPrixBasicInfoByIdMutex.release();
         didReleaseMutex = true;
@@ -40,9 +40,9 @@ class GrandPrixBasicInfoRepositoryImpl extends Repository<GrandPrixBasicInfo>
     }
   }
 
-  Future<GrandPrixBasicInfo?> _fetchGrandPrixBasicInfoById(String id) async {
+  Future<GrandPrixBasicInfo?> _fetchById(String id) async {
     final GrandPrixBasicInfoDto? grandPrixBasicInfoDto =
-        await _fireGrandPrixBasicInfoService.fetchGrandPrixBasicInfoById(id);
+        await _fireGrandPrixBasicInfoService.fetchById(id);
     if (grandPrixBasicInfoDto == null) return null;
     final GrandPrixBasicInfo grandPrixBasicInfo = _grandPrixBasicInfoMapper
         .mapFromDto(grandPrixBasicInfoDto);

@@ -22,7 +22,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   );
 
   @override
-  Stream<SeasonGrandPrixBet?> getSeasonGrandPrixBet({
+  Stream<SeasonGrandPrixBet?> getBySeasonGrandPrixId({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -37,7 +37,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
                 seasonGrandPrixBet.season == season &&
                 seasonGrandPrixBet.seasonGrandPrixId == seasonGrandPrixId,
           );
-      seasonGrandPrixBet ??= await _fetchFromDb(
+      seasonGrandPrixBet ??= await _fetchBySeasonGrandPrixId(
         playerId: playerId,
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
@@ -51,7 +51,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   }
 
   @override
-  Future<void> addSeasonGrandPrixBet({
+  Future<void> add({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -88,10 +88,10 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
   }
 
   @override
-  Future<void> updateSeasonGrandPrixBet({
+  Future<void> update({
     required String playerId,
     required int season,
-    required String seasonGrandPrixId,
+    required String seasonGrandPrixBetId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,
@@ -106,7 +106,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
         await _fireSeasonGrandPrixBetService.update(
           userId: playerId,
           season: season,
-          seasonGrandPrixId: seasonGrandPrixId,
+          seasonGrandPrixBetId: seasonGrandPrixBetId,
           qualiStandingsBySeasonDriverIds: qualiStandingsBySeasonDriverIds,
           p1SeasonDriverId: p1SeasonDriverId,
           p2SeasonDriverId: p2SeasonDriverId,
@@ -124,7 +124,7 @@ class SeasonGrandPrixBetRepositoryImpl extends Repository<SeasonGrandPrixBet>
     }
   }
 
-  Future<SeasonGrandPrixBet?> _fetchFromDb({
+  Future<SeasonGrandPrixBet?> _fetchBySeasonGrandPrixId({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,

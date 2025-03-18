@@ -22,14 +22,14 @@ class DriverPersonalDataRepositoryImpl extends Repository<DriverPersonalData>
   );
 
   @override
-  Stream<DriverPersonalData?> getDriverPersonalDataById(String id) async* {
+  Stream<DriverPersonalData?> getById(String id) async* {
     bool didRelease = false;
     await _getDriverPersonalDataByIdMutex.acquire();
     await for (final driversPersonalData in repositoryState$) {
       DriverPersonalData? matchingDriver = driversPersonalData.firstWhereOrNull(
         (driverPersonalData) => driverPersonalData.id == id,
       );
-      matchingDriver ??= await _fetchDriverPersonalDataById(id);
+      matchingDriver ??= await _fetchById(id);
       if (_getDriverPersonalDataByIdMutex.isLocked && !didRelease) {
         _getDriverPersonalDataByIdMutex.release();
         didRelease = true;
@@ -38,9 +38,9 @@ class DriverPersonalDataRepositoryImpl extends Repository<DriverPersonalData>
     }
   }
 
-  Future<DriverPersonalData?> _fetchDriverPersonalDataById(String id) async {
+  Future<DriverPersonalData?> _fetchById(String id) async {
     final DriverPersonalDataDto? dto = await _fireDriverPersonalDataService
-        .fetchDriverPersonalDataById(id);
+        .fetchById(id);
     if (dto == null) return null;
     final DriverPersonalData driverPersonalData = _driverPersonalDataMapper
         .mapFromDto(dto);

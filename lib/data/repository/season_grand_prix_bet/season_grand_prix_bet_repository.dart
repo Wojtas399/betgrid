@@ -1,13 +1,13 @@
 import '../../../model/season_grand_prix_bet.dart';
 
 abstract interface class SeasonGrandPrixBetRepository {
-  Stream<SeasonGrandPrixBet?> getSeasonGrandPrixBet({
+  Stream<SeasonGrandPrixBet?> getBySeasonGrandPrixId({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
   });
 
-  Future<void> addSeasonGrandPrixBet({
+  Future<void> add({
     required String playerId,
     required int season,
     required String seasonGrandPrixId,
@@ -22,10 +22,10 @@ abstract interface class SeasonGrandPrixBetRepository {
     bool? willBeRedFlag,
   });
 
-  Future<void> updateSeasonGrandPrixBet({
+  Future<void> update({
     required String playerId,
     required int season,
-    required String seasonGrandPrixId,
+    required String seasonGrandPrixBetId,
     List<String?>? qualiStandingsBySeasonDriverIds,
     String? p1SeasonDriverId,
     String? p2SeasonDriverId,

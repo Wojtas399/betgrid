@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../component/driver_description_component.dart';
 import '../../../component/text_component.dart';
-import '../../../extensions/string_extensions.dart';
 import '../cubit/stats_cubit.dart';
 import '../cubit/stats_state.dart';
 import '../stats_model/points_for_driver.dart';
@@ -43,10 +42,7 @@ class _DriverInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         DriverDescription(
-          name: pointsForDriver.driverDetails.name,
-          surname: pointsForDriver.driverDetails.surname,
-          number: pointsForDriver.driverDetails.number,
-          teamColor: pointsForDriver.driverDetails.teamHexColor.toColor(),
+          driverDetails: pointsForDriver.driverDetails,
           boldedSurname: false,
         ),
         BodyMedium('${pointsForDriver.points}'),
