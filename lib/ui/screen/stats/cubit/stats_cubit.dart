@@ -143,6 +143,15 @@ class StatsCubit extends Cubit<StatsState> {
     final sortedDetailsOfDriversFromSeason = [
       ...params.detailsOfDriversFromSeason,
     ]..sortByTeamAndSurname();
+    final List<DriverDetails> drivers =
+        sortedDetailsOfDriversFromSeason
+            .where((DriverDetails driverDetails) => driverDetails.number > 0)
+            .toList();
+    final List<DriverDetails> reserveDrivers =
+        sortedDetailsOfDriversFromSeason
+            .where((DriverDetails driverDetails) => driverDetails.number == 0)
+            .toList();
+
     emit(
       state.copyWith(
         status: StatsStateStatus.completed,
@@ -150,7 +159,7 @@ class StatsCubit extends Cubit<StatsState> {
           playersPodium: params.playersPodium,
           bestPoints: params.bestPoints,
           pointsHistory: params.pointsHistory,
-          detailsOfDriversFromSeason: sortedDetailsOfDriversFromSeason,
+          detailsOfDriversFromSeason: [...drivers, ...reserveDrivers],
           playersPointsForDriver: [],
         ),
       ),
