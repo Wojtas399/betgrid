@@ -69,7 +69,6 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
   }
 
   Future<SeasonDriver?> _fetchById(int season, String seasonDriverId) async {
-    print('fetchById $season $seasonDriverId');
     final seasonDriverDto = await _fireSeasonDriverService.fetchById(
       season: season,
       seasonDriverId: seasonDriverId,
