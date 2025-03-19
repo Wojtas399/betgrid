@@ -4,16 +4,16 @@ class SeasonDriver extends Entity {
   final int season;
   final String driverId;
   final int driverNumber;
-  final String teamId;
+  final String seasonTeamId;
 
   const SeasonDriver({
     required super.id,
     required this.season,
     required this.driverId,
     required this.driverNumber,
-    required this.teamId,
+    required this.seasonTeamId,
   });
 
   @override
-  List<Object?> get props => [id, season, driverId, driverNumber, teamId];
+  List<Object?> get props => [id, season, driverId, driverNumber, seasonTeamId];
 }

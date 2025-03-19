@@ -36,7 +36,7 @@ dependencies:
   betgrid_shared:
     git:
       url: https://github.com/Wojtas399/betgrid_shared.git
-      ref: 4c98310219427d720245822446a3e6d6a0e80adf
+      ref: d07a874791a4550fbfcba23754a35480918741be
   firebase_analytics: ^11.4.2
   flutter_native_splash: ^2.4.5
   image_picker: ^1.1.2
