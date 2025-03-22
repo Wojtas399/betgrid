@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
+import '../../../global/notifications_listener.dart';
 import '../../common_cubit/season_cubit.dart';
 
 @RoutePage()
@@ -10,8 +11,10 @@ class HomeBaseScreen extends StatelessWidget {
   const HomeBaseScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt.get<SeasonCubit>(),
-    child: const AutoRouter(),
+  Widget build(BuildContext context) => NotificationsListener(
+    child: BlocProvider(
+      create: (_) => getIt.get<SeasonCubit>(),
+      child: const AutoRouter(),
+    ),
   );
 }
