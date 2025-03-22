@@ -1,22 +1,22 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:injectable/injectable.dart';
 
-import '../../../dependency_injection.dart';
 import '../../../model/notification.dart';
 import '../../mapper/notification_mapper.dart';
 import 'notifications_repository.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await getIt<NotificationsRepositoryImpl>().showNotification(message);
+  await NotificationsRepositoryImpl.instance.showNotification(message);
 }
 
-@LazySingleton(as: NotificationsRepository)
 class NotificationsRepositoryImpl implements NotificationsRepository {
-  final NotificationMapper _notificationMapper;
+  final NotificationMapper _notificationMapper = NotificationMapper();
 
-  NotificationsRepositoryImpl(this._notificationMapper);
+  NotificationsRepositoryImpl._();
+
+  static final NotificationsRepositoryImpl instance =
+      NotificationsRepositoryImpl._();
 
   final _messaging = FirebaseMessaging.instance;
   final _localNotifications = FlutterLocalNotificationsPlugin();
@@ -38,9 +38,9 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   Future<void> initialize() async {
     _setupNotifications();
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
     await _requestPermission();
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
   Future<void> showNotification(RemoteMessage message) async {
@@ -58,7 +58,6 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
                 'This channel is used for high importance notifications.',
             importance: Importance.high,
             priority: Priority.high,
-            icon: '@mipmap/ic_launcher',
           ),
           iOS: DarwinNotificationDetails(
             presentAlert: true,
@@ -88,7 +87,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
         ?.createNotificationChannel(channel);
 
     const initializationSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_launhcer',
+      '@mipmap/launcher_icon',
     );
     const initializationSettingsIos = DarwinInitializationSettings();
 

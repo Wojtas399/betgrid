@@ -4,16 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../data/repository/notifications/notifications_repository.dart';
+import '../../../data/repository/notifications/notifications_repository_impl.dart';
 import '../../../model/notification.dart';
 import 'notifications_state.dart';
 
 @injectable
 class NotificationsCubit extends Cubit<NotificationsState> {
-  final NotificationsRepository _notificationsRepository;
+  final NotificationsRepository _notificationsRepository =
+      NotificationsRepositoryImpl.instance;
   StreamSubscription<Notification>? _openedNotificationSubscription;
 
-  NotificationsCubit(this._notificationsRepository)
-    : super(NotificationsStateInitial());
+  NotificationsCubit() : super(NotificationsStateInitial());
 
   @override
   Future<void> close() {

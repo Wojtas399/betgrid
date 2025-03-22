@@ -1,9 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../model/notification.dart';
 
-@injectable
 class NotificationMapper {
   Notification mapFromFirebaseMessage(RemoteMessage message) {
     final Map<String, dynamic> dataJson = message.data;
