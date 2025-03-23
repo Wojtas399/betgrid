@@ -2,7 +2,7 @@ import '../../model/notification.dart';
 
 class NotificationMapper {
   Notification mapFromJson(Map<String, dynamic> dataJson) {
-    final String type = dataJson['type'];
+    final String? type = dataJson['type'];
 
     if (type == 'season_gp_bet') {
       return SeasonGpBetNotification(
@@ -11,6 +11,6 @@ class NotificationMapper {
       );
     }
 
-    throw Exception('Unknown notification type: $type');
+    return const EmptyNotification();
   }
 }
