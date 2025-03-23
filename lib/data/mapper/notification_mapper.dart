@@ -1,10 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 import '../../model/notification.dart';
 
 class NotificationMapper {
-  Notification mapFromFirebaseMessage(RemoteMessage message) {
-    final Map<String, dynamic> dataJson = message.data;
+  Notification mapFromJson(Map<String, dynamic> dataJson) {
     final String type = dataJson['type'];
 
     if (type == 'season_gp_bet') {

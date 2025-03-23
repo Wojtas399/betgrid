@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../model/notification.dart';
 import '../../mapper/notification_mapper.dart';
@@ -12,6 +16,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationsRepositoryImpl implements NotificationsRepository {
   final NotificationMapper _notificationMapper = NotificationMapper();
+  final BehaviorSubject<Notification> _foregroundOpenedNotificationsSubject =
+      BehaviorSubject();
 
   NotificationsRepositoryImpl._();
 
@@ -26,11 +32,19 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   Stream<Notification> getOpenedNotification() async* {
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
-      yield _notificationMapper.mapFromFirebaseMessage(initialMessage);
+      yield _notificationMapper.mapFromJson(initialMessage.data);
     }
 
-    await for (RemoteMessage message in FirebaseMessaging.onMessageOpenedApp) {
-      yield _notificationMapper.mapFromFirebaseMessage(message);
+    final Stream openedNotifications$ = Rx.merge([
+      _foregroundOpenedNotificationsSubject.stream,
+      FirebaseMessaging.onMessageOpenedApp.map(
+        (RemoteMessage remoteMessage) =>
+            _notificationMapper.mapFromJson(remoteMessage.data),
+      ),
+    ]);
+
+    await for (Notification notification in openedNotifications$) {
+      yield notification;
     }
   }
 
@@ -39,6 +53,8 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
     _setupNotifications();
 
     await _requestPermission();
+
+    FirebaseMessaging.onMessage.listen(showNotification);
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
@@ -65,7 +81,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
             presentSound: true,
           ),
         ),
-        payload: message.data.toString(),
+        payload: jsonEncode(message.data),
       );
     }
   }
@@ -98,7 +114,16 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
 
     await _localNotifications.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (details) {},
+      onDidReceiveNotificationResponse: (NotificationResponse details) {
+        final String? dataString = details.payload;
+
+        if (dataString != null) {
+          final dataJson = jsonDecode(dataString);
+          final notification = _notificationMapper.mapFromJson(dataJson);
+
+          _foregroundOpenedNotificationsSubject.add(notification);
+        }
+      },
     );
 
     _isLocalNotificationsInitialized = true;
