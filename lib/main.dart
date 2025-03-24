@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'dependency_injection.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
+import 'ui/common_cubit/notifications/notifications_cubit.dart';
 import 'ui/common_cubit/theme/theme_cubit.dart';
 import 'ui/common_cubit/theme/theme_state.dart';
 import 'ui/config/router/app_router.dart';
@@ -43,8 +44,14 @@ void main() async {
   Intl.defaultLocale = 'pl';
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (_) => runApp(
-      BlocProvider(
-        create: (_) => getIt.get<ThemeCubit>()..initialize(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => getIt.get<ThemeCubit>()..initialize()),
+          BlocProvider(
+            lazy: false,
+            create: (_) => getIt.get<NotificationsCubit>()..initialize(),
+          ),
+        ],
         child: const _MyApp(),
       ),
     ),

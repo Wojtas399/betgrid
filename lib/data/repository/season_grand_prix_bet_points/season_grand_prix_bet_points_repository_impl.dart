@@ -18,6 +18,7 @@ class SeasonGrandPrixBetPointsRepositoryImpl
   _fireSeasonGrandPrixBetPointsService;
   final SeasonGrandPrixBetPointsMapper _seasonGrandPrixBetPointsMapper;
   final _getGrandPrixesBetPointsForPlayersAndGrandPrixesMutex = Mutex();
+  final _getBySeasonGrandPrixIdMutex = Mutex();
 
   SeasonGrandPrixBetPointsRepositoryImpl(
     this._fireSeasonGrandPrixBetPointsService,
@@ -83,6 +84,8 @@ class SeasonGrandPrixBetPointsRepositoryImpl
     required int season,
     required String seasonGrandPrixId,
   }) async* {
+    bool didRelease = false;
+    await _getBySeasonGrandPrixIdMutex.acquire();
     await for (final entities in repositoryState$) {
       SeasonGrandPrixBetPoints? points = entities.firstWhereOrNull(
         (entity) =>
@@ -95,6 +98,10 @@ class SeasonGrandPrixBetPointsRepositoryImpl
         season: season,
         seasonGrandPrixId: seasonGrandPrixId,
       ));
+      if (_getBySeasonGrandPrixIdMutex.isLocked && !didRelease) {
+        _getBySeasonGrandPrixIdMutex.release();
+        didRelease = true;
+      }
       yield points;
     }
   }
