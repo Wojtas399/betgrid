@@ -39,5 +39,6 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         ),
       );
     }
+    emit(NotificationsStateInitial());
   }
 }
