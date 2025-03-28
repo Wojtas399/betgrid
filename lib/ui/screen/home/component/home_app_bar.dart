@@ -18,8 +18,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: false,
-      title: const _Logo(),
+      title: const _PageTitle(),
       actions: const [
         _Points(),
         GapHorizontal16(),
@@ -30,17 +29,22 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _Logo extends StatelessWidget {
-  const _Logo();
+class _PageTitle extends StatelessWidget {
+  const _PageTitle();
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        TitleLarge('Bet', fontWeight: FontWeight.bold),
-        TitleLarge('Grid', color: Colors.red, fontWeight: FontWeight.bold),
-      ],
+    final List<String> titles = [
+      context.str.seasonGrandPrixBetsScreenTitle,
+      context.str.statsScreenTitle,
+      context.str.playersScreenTitle,
+      context.str.teamsDetailsScreenTitle,
+    ];
+    final HomePage selectedPage = context.select(
+      (HomeCubit cubit) => cubit.state.loaded.selectedPage,
     );
+
+    return Text(titles[selectedPage.index]);
   }
 }
 
@@ -55,7 +59,7 @@ class _Points extends StatelessWidget {
       children: [
         Icon(Icons.star_outline_rounded, color: context.colorScheme.primary),
         BlocSelector<HomeCubit, HomeState, double?>(
-          selector: (state) => state.totalPoints,
+          selector: (state) => state.loaded.totalPoints,
           builder:
               (context, totalPoints) => TitleLarge(
                 (totalPoints ?? 0).toStringAsFixed(1),
@@ -78,10 +82,10 @@ class _Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? username = context.select(
-      (HomeCubit cubit) => cubit.state.username,
+      (HomeCubit cubit) => cubit.state.loaded.username,
     );
     final String? avatarUrl = context.select(
-      (HomeCubit cubit) => cubit.state.avatarUrl,
+      (HomeCubit cubit) => cubit.state.loaded.avatarUrl,
     );
 
     return IconButton(

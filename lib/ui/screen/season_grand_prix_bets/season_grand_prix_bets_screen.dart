@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,7 +6,6 @@ import '../../common_cubit/season_cubit.dart';
 import 'component/season_grand_prix_bets_body.dart';
 import 'cubit/season_grand_prix_bets_cubit.dart';
 
-@RoutePage()
 class SeasonGrandPrixBetsScreen extends StatelessWidget {
   const SeasonGrandPrixBetsScreen({super.key});
 

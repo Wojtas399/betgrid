@@ -201,6 +201,9 @@ class StrPl extends Str {
   String get statsNoDataMessage => 'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk';
 
   @override
+  String get teamsDetailsScreenTitle => 'Zespoły';
+
+  @override
   String get loading => 'Ładowanie';
 
   @override

@@ -477,6 +477,12 @@ abstract class Str {
   /// **'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk'**
   String get statsNoDataMessage;
 
+  /// No description provided for @teamsDetailsScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zespoły'**
+  String get teamsDetailsScreenTitle;
+
   /// No description provided for @loading.
   ///
   /// In pl, this message translates to:

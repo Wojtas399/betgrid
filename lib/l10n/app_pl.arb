@@ -71,6 +71,8 @@
     "statsNoSelectedDriver": "Nie wybrano kierowcy",
     "statsNoDataTitle": "Brak dostępnych statystyk",
     "statsNoDataMessage": "Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk",
+    "@__________TEAMS_DETAILS__________": {},
+    "teamsDetailsScreenTitle": "Zespoły",
     "@__________COMMON__________": {},
     "loading": "Ładowanie",
     "qualifications": "Kwalifikacje",

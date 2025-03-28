@@ -2,24 +2,23 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'home_state.freezed.dart';
 
-enum HomeStateStatus {
-  initial,
-  completed,
-  loggedUserDoesNotExist,
-  loggedUserDataNotCompleted,
-}
-
-extension HomeStateStatusExtensions on HomeStateStatus {
-  bool get isLoggedUserDataNotCompleted =>
-      this == HomeStateStatus.loggedUserDataNotCompleted;
-}
+enum HomePage { bets, stats, players, teamsDetails }
 
 @freezed
-class HomeState with _$HomeState {
-  const factory HomeState({
-    @Default(HomeStateStatus.initial) HomeStateStatus status,
+sealed class HomeState with _$HomeState {
+  const HomeState._();
+
+  const factory HomeState.initial() = HomeStateInitial;
+
+  const factory HomeState.loggedUserDataNotCompleted() =
+      HomeStateLoggedUserDataNotCompleted;
+
+  const factory HomeState.loaded({
     String? username,
     String? avatarUrl,
     double? totalPoints,
-  }) = _HomeState;
+    @Default(HomePage.bets) HomePage selectedPage,
+  }) = HomeStateLoaded;
+
+  HomeStateLoaded get loaded => this as HomeStateLoaded;
 }

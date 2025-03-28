@@ -26,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
     this._userRepository,
     this._playerStatsRepository,
     @factoryParam this._seasonCubit,
-  ) : super(const HomeState());
+  ) : super(const HomeState.initial());
 
   @override
   Future<void> close() {
@@ -42,9 +42,13 @@ class HomeCubit extends Cubit<HomeState> {
         .listen(_manageListenedData);
   }
 
+  void changePage(HomePage page) {
+    emit(state.loaded.copyWith(selectedPage: page));
+  }
+
   void _manageLoggedUserId(String? loggedUserId) {
     if (loggedUserId == null) {
-      emit(state.copyWith(status: HomeStateStatus.loggedUserDoesNotExist));
+      throw Exception('Logged user id is null');
     }
   }
 
@@ -65,15 +69,20 @@ class HomeCubit extends Cubit<HomeState> {
     final double? totalPoints = data.totalPoints;
 
     if (loggedUser == null || totalPoints == null) {
-      emit(state.copyWith(status: HomeStateStatus.loggedUserDataNotCompleted));
+      emit(const HomeState.loggedUserDataNotCompleted());
     } else {
       emit(
-        state.copyWith(
-          status: HomeStateStatus.completed,
-          username: loggedUser.username,
-          avatarUrl: loggedUser.avatarUrl,
-          totalPoints: totalPoints,
-        ),
+        state is HomeStateLoaded
+            ? state.loaded.copyWith(
+              username: loggedUser.username,
+              avatarUrl: loggedUser.avatarUrl,
+              totalPoints: totalPoints,
+            )
+            : HomeStateLoaded(
+              username: loggedUser.username,
+              avatarUrl: loggedUser.avatarUrl,
+              totalPoints: totalPoints,
+            ),
       );
     }
   }
