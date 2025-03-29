@@ -41,6 +41,14 @@ class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
     }
   }
 
+  @override
+  Stream<List<SeasonTeam>> getAllFromSeason(int season) async* {
+    await _fetchAllFromSeason(season);
+    await for (final entities in repositoryState$) {
+      yield entities.where((entity) => entity.season == season).toList();
+    }
+  }
+
   Future<SeasonTeam?> _fetchById(String id, int season) async {
     final SeasonTeamDto? dto = await _fireSeasonTeamService.fetchById(
       id: id,
@@ -50,5 +58,12 @@ class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
     final SeasonTeam entity = _seasonTeamMapper.mapFromDto(dto);
     addEntity(entity);
     return entity;
+  }
+
+  Future<void> _fetchAllFromSeason(int season) async {
+    final dtos = await _fireSeasonTeamService.fetchAllTeamsFromSeason(season);
+    final entities =
+        dtos.map((dto) => _seasonTeamMapper.mapFromDto(dto)).toList();
+    addOrUpdateEntities(entities);
   }
 }
