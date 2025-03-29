@@ -43,7 +43,7 @@ class HomeLoadedContent extends StatelessWidget {
             const _DrawerHeader(),
             ListTile(
               title: Text(context.str.seasonGrandPrixBetsScreenTitle),
-              leading: const Icon(Icons.menu_rounded),
+              leading: const Icon(Icons.view_stream),
               selected: selectedPage == HomePage.bets,
               onTap: () => _changePage(HomePage.bets, context),
             ),
