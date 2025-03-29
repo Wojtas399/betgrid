@@ -31,6 +31,8 @@ class TeamsDetailsCubit extends Cubit<TeamsDetailsState> {
   }
 
   void _manageUpdatedTeams(List<SeasonTeam> teams) {
-    emit(TeamsDetailsStateLoaded(teams: teams));
+    final List<SeasonTeam> sortedTeams = [...teams]
+      ..sort((team1, team2) => team1.shortName.compareTo(team2.shortName));
+    emit(TeamsDetailsStateLoaded(teams: sortedTeams));
   }
 }
