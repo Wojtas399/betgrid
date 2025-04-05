@@ -1,4 +1,5 @@
 import 'package:betgrid_shared/firebase/model/season_team_dto.dart';
+import 'package:betgrid_shared/firebase/service/firebase_car_img_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_season_team_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
@@ -13,10 +14,15 @@ import 'season_team_repository.dart';
 class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
     implements SeasonTeamRepository {
   final FirebaseSeasonTeamService _fireSeasonTeamService;
+  final FirebaseCarImgService _fireCarImgService;
   final SeasonTeamMapper _seasonTeamMapper;
   final _getByIdMutex = Mutex();
 
-  SeasonTeamRepositoryImpl(this._fireSeasonTeamService, this._seasonTeamMapper);
+  SeasonTeamRepositoryImpl(
+    this._fireSeasonTeamService,
+    this._fireCarImgService,
+    this._seasonTeamMapper,
+  );
 
   @override
   Stream<SeasonTeam?> getById({
@@ -55,15 +61,34 @@ class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
       season: season,
     );
     if (dto == null) return null;
-    final SeasonTeam entity = _seasonTeamMapper.mapFromDto(dto);
+
+    final String? carImgUrl = await _fireCarImgService.fetchUrl(
+      season: season,
+      imgFileName: dto.carImgName,
+    );
+    if (carImgUrl == null) return null;
+
+    final SeasonTeam entity = _seasonTeamMapper.mapFromDto(dto, carImgUrl);
     addEntity(entity);
+
     return entity;
   }
 
   Future<void> _fetchAllFromSeason(int season) async {
     final dtos = await _fireSeasonTeamService.fetchAllTeamsFromSeason(season);
-    final entities =
-        dtos.map((dto) => _seasonTeamMapper.mapFromDto(dto)).toList();
+
+    final List<SeasonTeam> entities = [];
+    for (final dto in dtos) {
+      final String? carImgUrl = await _fireCarImgService.fetchUrl(
+        season: season,
+        imgFileName: dto.carImgName,
+      );
+
+      if (carImgUrl == null) continue;
+
+      entities.add(_seasonTeamMapper.mapFromDto(dto, carImgUrl));
+    }
+
     addOrUpdateEntities(entities);
   }
 }

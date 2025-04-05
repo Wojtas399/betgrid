@@ -34,7 +34,11 @@ class _ListOfTeams extends StatelessWidget {
       itemBuilder: (_, int index) {
         final SeasonTeam team = teams[index];
 
-        return CustomCard(child: Column(children: [Text(team.shortName)]));
+        return CustomCard(
+          child: Column(
+            children: [Text(team.shortName), Image.network(team.carImgUrl)],
+          ),
+        );
       },
     );
   }
