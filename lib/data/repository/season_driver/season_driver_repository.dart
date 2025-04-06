@@ -7,4 +7,9 @@ abstract interface class SeasonDriverRepository {
     required int season,
     required String seasonDriverId,
   });
+
+  Stream<List<SeasonDriver>> getBySeasonTeamId({
+    required int season,
+    required String seasonTeamId,
+  });
 }

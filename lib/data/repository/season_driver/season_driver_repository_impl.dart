@@ -56,6 +56,24 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     }
   }
 
+  @override
+  Stream<List<SeasonDriver>> getBySeasonTeamId({
+    required int season,
+    required String seasonTeamId,
+  }) async* {
+    await _fetchBySeasonTeamId(season, seasonTeamId);
+
+    await for (final entities in repositoryState$) {
+      yield entities
+          .where(
+            (seasonDriver) =>
+                seasonDriver.season == season &&
+                seasonDriver.seasonTeamId == seasonTeamId,
+          )
+          .toList();
+    }
+  }
+
   Future<void> _fetchFromSeason(int season) async {
     final seasonDriverDtos = await _fireSeasonDriverService.fetchAllFromSeason(
       season,
@@ -77,5 +95,17 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     final seasonDriver = _seasonDriverMapper.mapFromDto(seasonDriverDto);
     addEntity(seasonDriver);
     return seasonDriver;
+  }
+
+  Future<void> _fetchBySeasonTeamId(int season, String seasonTeamId) async {
+    final seasonDriverDtos = await _fireSeasonDriverService.fetchAllFromSeason(
+      season,
+    );
+    if (seasonDriverDtos.isNotEmpty) {
+      final seasonDrivers = seasonDriverDtos.map(
+        _seasonDriverMapper.mapFromDto,
+      );
+      addOrUpdateEntities(seasonDrivers);
+    }
   }
 }
