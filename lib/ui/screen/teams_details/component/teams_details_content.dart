@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/season_team.dart';
 import '../../../component/custom_card_component.dart';
 import '../../../component/text_component.dart';
+import '../../../config/router/app_router.dart';
 import '../../../extensions/string_extensions.dart';
 import '../cubit/teams_details_cubit.dart';
 import '../cubit/teams_details_state.dart';
@@ -48,9 +50,16 @@ class _TeamItem extends StatelessWidget {
 
   const _TeamItem({required this.team});
 
+  void _onPressed(BuildContext context) {
+    context.navigateTo(
+      SeasonTeamDetailsRoute(season: team.season, seasonTeamId: team.id),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      onPressed: () => _onPressed(context),
       child: Column(
         children: [
           Row(

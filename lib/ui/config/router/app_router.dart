@@ -18,6 +18,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SeasonGrandPrixBetRoute.page),
         AutoRoute(page: ProfileRoute.page),
         AutoRoute(page: PlayerProfileRoute.page),
+        AutoRoute(page: SeasonTeamDetailsRoute.page),
       ],
     ),
   ];

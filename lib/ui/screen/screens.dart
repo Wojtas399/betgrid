@@ -8,3 +8,4 @@ export 'season_grand_prix_bets/season_grand_prix_bets_screen.dart';
 export 'sign_in/sign_in_screen.dart';
 export 'stats/stats_screen.dart';
 export 'teams_details/teams_details_screen.dart';
+export 'season_team_details/season_team_details_screen.dart';
