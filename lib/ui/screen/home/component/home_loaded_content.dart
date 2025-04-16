@@ -7,7 +7,7 @@ import '../../../extensions/build_context_extensions.dart';
 import '../../players/players_screen.dart';
 import '../../season_grand_prix_bets/season_grand_prix_bets_screen.dart';
 import '../../stats/stats_screen.dart';
-import '../../teams_details/teams_details_screen.dart';
+import '../../season_teams/season_teams_screen.dart';
 import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 import 'home_app_bar.dart';
@@ -19,7 +19,7 @@ class HomeLoadedContent extends StatelessWidget {
     const SeasonGrandPrixBetsScreen(),
     const StatsScreen(),
     const PlayersScreen(),
-    const TeamsDetailsScreen(),
+    const SeasonTeamsScreen(),
   ];
 
   void _changePage(HomePage page, BuildContext context) {

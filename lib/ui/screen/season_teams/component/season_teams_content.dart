@@ -7,18 +7,18 @@ import '../../../component/custom_card_component.dart';
 import '../../../component/text_component.dart';
 import '../../../config/router/app_router.dart';
 import '../../../extensions/string_extensions.dart';
-import '../cubit/teams_details_cubit.dart';
-import '../cubit/teams_details_state.dart';
+import '../cubit/season_teams_cubit.dart';
+import '../cubit/season_teams_state.dart';
 
-class TeamsDetailsContent extends StatelessWidget {
-  const TeamsDetailsContent({super.key});
+class SeasonTeamsContent extends StatelessWidget {
+  const SeasonTeamsContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TeamsDetailsState state = context.watch<TeamsDetailsCubit>().state;
+    final SeasonTeamsState state = context.watch<SeasonTeamsCubit>().state;
 
     return switch (state) {
-      TeamsDetailsStateLoaded() => const _ListOfTeams(),
+      SeasonTeamsStateLoaded() => const _ListOfTeams(),
       _ => const Center(child: CircularProgressIndicator()),
     };
   }
@@ -30,7 +30,7 @@ class _ListOfTeams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<SeasonTeam> teams = context.select(
-      (TeamsDetailsCubit cubit) => cubit.state.loaded.teams,
+      (SeasonTeamsCubit cubit) => cubit.state.loaded.teams,
     );
 
     return ListView.builder(
