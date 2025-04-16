@@ -61,22 +61,22 @@ class _TeamItem extends StatelessWidget {
     return CustomCard(
       onPressed: () => _onPressed(context),
       child: Column(
+        spacing: 16,
         children: [
           Row(
+            spacing: 12,
             children: [
               Container(
-                width: 24,
-                height: 24,
+                width: 4,
+                height: 25,
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
                   color: team.baseHexColor.toColor(),
-                  shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 16),
               TitleMedium(team.shortName),
             ],
           ),
-          const SizedBox(height: 16),
           Image.network(team.carImgUrl),
         ],
       ),
