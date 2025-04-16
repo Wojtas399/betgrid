@@ -31,38 +31,41 @@ class _LoadedState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
-      child: Padding16(
-        child: Column(
-          spacing: 24.0,
-          children: [
-            _CarImage(),
-            _TeamFullName(),
-            Divider(height: 0),
-            _Drivers(),
-            Divider(height: 0),
-            _Details(),
-          ],
+      child: SingleChildScrollView(
+        child: Padding16(
+          child: Column(
+            children: [
+              _Logo(),
+              SizedBox(height: 16),
+              _Drivers(),
+              _CarImage(),
+              SizedBox(height: 24),
+              _Details(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _CarImage extends StatelessWidget {
-  const _CarImage();
+class _Logo extends StatelessWidget {
+  const _Logo();
 
   @override
   Widget build(BuildContext context) {
     final String? teamBaseHexColor = context.select(
       (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team.baseHexColor,
     );
-    final String? carImageUrl = context.select(
-      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team.carImgUrl,
+    final String? logoUrl = context.select(
+      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team.logoImgUrl,
     );
 
-    return carImageUrl == null
+    return logoUrl == null
         ? const SizedBox.shrink()
         : Container(
+          height: 150,
+          width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: teamBaseHexColor?.toColor().withAlpha(100),
@@ -71,62 +74,9 @@ class _CarImage extends StatelessWidget {
               color: teamBaseHexColor?.toColor() ?? context.colorScheme.surface,
             ),
           ),
-          padding: const EdgeInsets.all(24),
-          child: Image.network(carImageUrl),
+          padding: const EdgeInsets.all(16),
+          child: Image.network(logoUrl),
         );
-  }
-}
-
-class _TeamFullName extends StatelessWidget {
-  const _TeamFullName();
-
-  @override
-  Widget build(BuildContext context) {
-    final String fullName = context.select(
-      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team.fullName,
-    );
-
-    return TitleLarge(fullName);
-  }
-}
-
-class _Details extends StatelessWidget {
-  const _Details();
-
-  @override
-  Widget build(BuildContext context) {
-    final SeasonTeam team = context.select(
-      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team,
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          _buildLabeledText('Szef', team.teamChief),
-          _buildLabeledText('Szef techniczny', team.technicalChief),
-          _buildLabeledText('Model samochodu', team.chassis),
-          _buildLabeledText('Silnik', team.powerUnit),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLabeledText(String label, String value) {
-    return Row(
-      children: [
-        Expanded(child: BodyMedium(label)),
-        Expanded(
-          child: BodyMedium(
-            value,
-            textAlign: TextAlign.end,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
   }
 }
 
@@ -136,16 +86,19 @@ class _Drivers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<SeasonTeamDetailsDriverInfo> drivers = context.select(
-      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.drivers,
+      (SeasonTeamDetailsCubit cubit) => cubit.state.mainDrivers,
     );
 
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          Expanded(child: _DriverInfo(drivers.first)),
-          const VerticalDivider(),
-          Expanded(child: _DriverInfo(drivers.last)),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Expanded(child: _DriverInfo(drivers.first)),
+            const VerticalDivider(),
+            Expanded(child: _DriverInfo(drivers.last)),
+          ],
+        ),
       ),
     );
   }
@@ -158,14 +111,94 @@ class _DriverInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          TitleLarge('${driver.number}', fontWeight: FontWeight.bold),
+          TitleMedium(
+            '${driver.name} ${driver.surname}',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CarImage extends StatelessWidget {
+  const _CarImage();
+
+  @override
+  Widget build(BuildContext context) {
+    final String? carImageUrl = context.select(
+      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team.carImgUrl,
+    );
+
+    return carImageUrl == null
+        ? const SizedBox.shrink()
+        : Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.network(carImageUrl),
+        );
+  }
+}
+
+class _Details extends StatelessWidget {
+  const _Details();
+
+  @override
+  Widget build(BuildContext context) {
+    final SeasonTeam team = context.select(
+      (SeasonTeamDetailsCubit cubit) => cubit.state.loaded.team,
+    );
+    final List<SeasonTeamDetailsDriverInfo> reserveDrivers = context.select(
+      (SeasonTeamDetailsCubit cubit) => cubit.state.reserveDrivers,
+    );
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
       children: [
-        TitleLarge('${driver.number}', fontWeight: FontWeight.bold),
-        TitleMedium(
-          '${driver.name} ${driver.surname}',
-          textAlign: TextAlign.center,
+        _buildLabeledText('Nazwa', team.fullName),
+        const Divider(height: 8),
+        _buildLabeledText('Szef', team.teamChief),
+        const Divider(height: 8),
+        _buildLabeledText('Szef techniczny', team.technicalChief),
+        const Divider(height: 8),
+        _buildLabeledText('Model samochodu', team.chassis),
+        const Divider(height: 8),
+        _buildLabeledText('Silnik', team.powerUnit),
+        const Divider(height: 8),
+        _buildLabeledText(
+          'Kierowcy rezerwowi',
+          reserveDrivers.isNotEmpty
+              ? reserveDrivers
+                  .map((driver) => '${driver.name} ${driver.surname}')
+                  .join('\n')
+              : '- - -',
         ),
       ],
+    );
+  }
+
+  Widget _buildLabeledText(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        spacing: 8,
+        children: [
+          Expanded(flex: 1, child: BodyMedium(label)),
+          Expanded(
+            flex: 2,
+            child: BodyMedium(
+              value,
+              textAlign: TextAlign.end,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

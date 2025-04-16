@@ -1,6 +1,6 @@
 import 'package:betgrid_shared/firebase/model/season_team_dto.dart';
-import 'package:betgrid_shared/firebase/service/firebase_car_img_service.dart';
 import 'package:betgrid_shared/firebase/service/firebase_season_team_service.dart';
+import 'package:betgrid_shared/firebase/service/firebase_storage_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mutex/mutex.dart';
@@ -14,13 +14,13 @@ import 'season_team_repository.dart';
 class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
     implements SeasonTeamRepository {
   final FirebaseSeasonTeamService _fireSeasonTeamService;
-  final FirebaseCarImgService _fireCarImgService;
+  final FirebaseStorageService _fireStorageService;
   final SeasonTeamMapper _seasonTeamMapper;
   final _getByIdMutex = Mutex();
 
   SeasonTeamRepositoryImpl(
     this._fireSeasonTeamService,
-    this._fireCarImgService,
+    this._fireStorageService,
     this._seasonTeamMapper,
   );
 
@@ -62,13 +62,7 @@ class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
     );
     if (dto == null) return null;
 
-    final String? carImgUrl = await _fireCarImgService.fetchUrl(
-      season: season,
-      imgFileName: dto.carImgName,
-    );
-    if (carImgUrl == null) return null;
-
-    final SeasonTeam entity = _seasonTeamMapper.mapFromDto(dto, carImgUrl);
+    final SeasonTeam entity = await _mapSeasonTeamFromDto(dto);
     addEntity(entity);
 
     return entity;
@@ -79,16 +73,27 @@ class SeasonTeamRepositoryImpl extends Repository<SeasonTeam>
 
     final List<SeasonTeam> entities = [];
     for (final dto in dtos) {
-      final String? carImgUrl = await _fireCarImgService.fetchUrl(
-        season: season,
-        imgFileName: dto.carImgName,
-      );
-
-      if (carImgUrl == null) continue;
-
-      entities.add(_seasonTeamMapper.mapFromDto(dto, carImgUrl));
+      final SeasonTeam entity = await _mapSeasonTeamFromDto(dto);
+      entities.add(entity);
     }
 
     addOrUpdateEntities(entities);
+  }
+
+  Future<SeasonTeam> _mapSeasonTeamFromDto(SeasonTeamDto dto) async {
+    final String? logoImgUrl = await _fireStorageService.fetchTeamLogoImgUrl(
+      season: dto.season,
+      teamLogoImgFileName: dto.logoImgName,
+    );
+    final String? carImgUrl = await _fireStorageService.fetchCarImgUrl(
+      season: dto.season,
+      carImgFileName: dto.carImgName,
+    );
+
+    if (logoImgUrl == null || carImgUrl == null) {
+      throw Exception('Failed to fetch logo or car image');
+    }
+
+    return _seasonTeamMapper.mapFromDto(dto, logoImgUrl, carImgUrl);
   }
 }

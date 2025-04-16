@@ -9,6 +9,7 @@ class SeasonTeam extends Entity {
   final String chassis;
   final String powerUnit;
   final String baseHexColor;
+  final String logoImgUrl;
   final String carImgUrl;
 
   const SeasonTeam({
@@ -21,6 +22,7 @@ class SeasonTeam extends Entity {
     required this.chassis,
     required this.powerUnit,
     required this.baseHexColor,
+    required this.logoImgUrl,
     required this.carImgUrl,
   });
 
@@ -35,6 +37,7 @@ class SeasonTeam extends Entity {
     chassis,
     powerUnit,
     baseHexColor,
+    logoImgUrl,
     carImgUrl,
   ];
 }

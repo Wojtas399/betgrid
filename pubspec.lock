@@ -90,8 +90,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "9708372713262ae9099d25a21a72a2791a94c0af"
-      resolved-ref: "9708372713262ae9099d25a21a72a2791a94c0af"
+      ref: ea078765977cd2ff426168d24aa54a3da98f3ad0
+      resolved-ref: ea078765977cd2ff426168d24aa54a3da98f3ad0
       url: "https://github.com/Wojtas399/betgrid_shared.git"
     source: git
     version: "0.0.1"

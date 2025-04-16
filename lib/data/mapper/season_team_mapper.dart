@@ -5,7 +5,11 @@ import '../../model/season_team.dart';
 
 @injectable
 class SeasonTeamMapper {
-  SeasonTeam mapFromDto(SeasonTeamDto dto, String carImgUrl) {
+  SeasonTeam mapFromDto(
+    SeasonTeamDto dto,
+    String logoImgUrl,
+    String carImgUrl,
+  ) {
     return SeasonTeam(
       id: dto.id,
       season: dto.season,
@@ -16,6 +20,7 @@ class SeasonTeamMapper {
       chassis: dto.chassis,
       powerUnit: dto.powerUnit,
       baseHexColor: dto.baseHexColor,
+      logoImgUrl: logoImgUrl,
       carImgUrl: carImgUrl,
     );
   }

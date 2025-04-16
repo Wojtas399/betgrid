@@ -18,6 +18,12 @@ class SeasonTeamDetailsState with _$SeasonTeamDetailsState {
 
   SeasonTeamDetailsStateLoaded get loaded =>
       this as SeasonTeamDetailsStateLoaded;
+
+  List<SeasonTeamDetailsDriverInfo> get mainDrivers =>
+      loaded.drivers.where((driver) => driver.number > 0).toList();
+
+  List<SeasonTeamDetailsDriverInfo> get reserveDrivers =>
+      loaded.drivers.where((driver) => driver.number == 0).toList();
 }
 
 class SeasonTeamDetailsDriverInfo extends Equatable {
