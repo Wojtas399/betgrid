@@ -60,7 +60,7 @@ class HomeLoadedContent extends StatelessWidget {
               onTap: () => _changePage(HomePage.players, context),
             ),
             ListTile(
-              title: Text(context.str.teamsDetailsScreenTitle),
+              title: Text(context.str.seasonTeamsScreenTitle),
               leading: const Icon(Icons.info),
               selected: selectedPage == HomePage.teamsDetails,
               onTap: () => _changePage(HomePage.teamsDetails, context),

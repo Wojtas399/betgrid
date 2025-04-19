@@ -38,7 +38,7 @@ class _PageTitle extends StatelessWidget {
       context.str.seasonGrandPrixBetsScreenTitle,
       context.str.statsScreenTitle,
       context.str.playersScreenTitle,
-      context.str.teamsDetailsScreenTitle,
+      context.str.seasonTeamsScreenTitle,
     ];
     final HomePage selectedPage = context.select(
       (HomeCubit cubit) => cubit.state.loaded.selectedPage,

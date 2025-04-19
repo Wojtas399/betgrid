@@ -156,6 +156,27 @@ class StrPl extends Str {
   String get seasonGrandPrixBetsEndBettingTime => 'Koniec typowania za';
 
   @override
+  String get seasonTeamsScreenTitle => 'Zespoły';
+
+  @override
+  String get seasonTeamDetailsName => 'Nazwa';
+
+  @override
+  String get seasonTeamDetailsTeamChief => 'Szef zespołu';
+
+  @override
+  String get seasonTeamDetailsTechnicalChief => 'Szef techniczny';
+
+  @override
+  String get seasonTeamDetailsChassis => 'Model samochodu';
+
+  @override
+  String get seasonTeamDetailsPowerUnit => 'Silnik';
+
+  @override
+  String get seasonTeamDetailsReserveDrivers => 'Kierowcy rezerwowi';
+
+  @override
   String get signInScreenTitle => 'Logowanie';
 
   @override
@@ -199,9 +220,6 @@ class StrPl extends Str {
 
   @override
   String get statsNoDataMessage => 'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk';
-
-  @override
-  String get teamsDetailsScreenTitle => 'Zespoły';
 
   @override
   String get loading => 'Ładowanie';

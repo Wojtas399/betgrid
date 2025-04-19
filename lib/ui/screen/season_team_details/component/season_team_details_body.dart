@@ -160,18 +160,27 @@ class _Details extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        _buildLabeledText('Nazwa', team.fullName),
-        const Divider(height: 8),
-        _buildLabeledText('Szef', team.teamChief),
-        const Divider(height: 8),
-        _buildLabeledText('Szef techniczny', team.technicalChief),
-        const Divider(height: 8),
-        _buildLabeledText('Model samochodu', team.chassis),
-        const Divider(height: 8),
-        _buildLabeledText('Silnik', team.powerUnit),
+        _buildLabeledText(context.str.seasonTeamDetailsName, team.fullName),
         const Divider(height: 8),
         _buildLabeledText(
-          'Kierowcy rezerwowi',
+          context.str.seasonTeamDetailsTeamChief,
+          team.teamChief,
+        ),
+        const Divider(height: 8),
+        _buildLabeledText(
+          context.str.seasonTeamDetailsTechnicalChief,
+          team.technicalChief,
+        ),
+        const Divider(height: 8),
+        _buildLabeledText(context.str.seasonTeamDetailsChassis, team.chassis),
+        const Divider(height: 8),
+        _buildLabeledText(
+          context.str.seasonTeamDetailsPowerUnit,
+          team.powerUnit,
+        ),
+        const Divider(height: 8),
+        _buildLabeledText(
+          context.str.seasonTeamDetailsReserveDrivers,
           reserveDrivers.isNotEmpty
               ? reserveDrivers
                   .map((driver) => '${driver.name} ${driver.surname}')

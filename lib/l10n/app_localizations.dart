@@ -387,6 +387,48 @@ abstract class Str {
   /// **'Koniec typowania za'**
   String get seasonGrandPrixBetsEndBettingTime;
 
+  /// No description provided for @seasonTeamsScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zespoły'**
+  String get seasonTeamsScreenTitle;
+
+  /// No description provided for @seasonTeamDetailsName.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nazwa'**
+  String get seasonTeamDetailsName;
+
+  /// No description provided for @seasonTeamDetailsTeamChief.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szef zespołu'**
+  String get seasonTeamDetailsTeamChief;
+
+  /// No description provided for @seasonTeamDetailsTechnicalChief.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szef techniczny'**
+  String get seasonTeamDetailsTechnicalChief;
+
+  /// No description provided for @seasonTeamDetailsChassis.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model samochodu'**
+  String get seasonTeamDetailsChassis;
+
+  /// No description provided for @seasonTeamDetailsPowerUnit.
+  ///
+  /// In pl, this message translates to:
+  /// **'Silnik'**
+  String get seasonTeamDetailsPowerUnit;
+
+  /// No description provided for @seasonTeamDetailsReserveDrivers.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kierowcy rezerwowi'**
+  String get seasonTeamDetailsReserveDrivers;
+
   /// No description provided for @signInScreenTitle.
   ///
   /// In pl, this message translates to:
@@ -476,12 +518,6 @@ abstract class Str {
   /// In pl, this message translates to:
   /// **'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk'**
   String get statsNoDataMessage;
-
-  /// No description provided for @teamsDetailsScreenTitle.
-  ///
-  /// In pl, this message translates to:
-  /// **'Zespoły'**
-  String get teamsDetailsScreenTitle;
 
   /// No description provided for @loading.
   ///
