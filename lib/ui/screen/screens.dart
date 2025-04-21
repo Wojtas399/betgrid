@@ -1,5 +1,6 @@
 export 'home/home_base.dart';
 export 'home/home_screen.dart';
+export 'new_version_available/new_version_available_screen.dart';
 export 'player_profile/player_profile_screen.dart';
 export 'players/players_screen.dart';
 export 'profile/profile_screen.dart';
