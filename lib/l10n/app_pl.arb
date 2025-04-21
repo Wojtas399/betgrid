@@ -1,4 +1,14 @@
 {
+    "@__________HOME__________": {},
+    "homeAppVersion": "Wersja aplikacji: {appVersion}",
+    "@homeAppVersion": {
+      "placeholders": {
+        "appVersion": {
+          "type": "String",
+          "example": "1.0.0"
+        }
+      }
+    },
     "@__________NEW_VERSION_AVAILABLE__________": {},
     "newVersionAvailableScreenTitle": "Nowa wersja aplikacji",
     "newVersionAvailableDescription": "Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.",

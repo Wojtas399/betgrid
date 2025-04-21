@@ -93,6 +93,12 @@ abstract class Str {
     Locale('pl')
   ];
 
+  /// No description provided for @homeAppVersion.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wersja aplikacji: {appVersion}'**
+  String homeAppVersion(String appVersion);
+
   /// No description provided for @newVersionAvailableScreenTitle.
   ///
   /// In pl, this message translates to:

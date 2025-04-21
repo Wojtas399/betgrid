@@ -6,8 +6,8 @@ import '../../../component/text_component.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../players/players_screen.dart';
 import '../../season_grand_prix_bets/season_grand_prix_bets_screen.dart';
-import '../../stats/stats_screen.dart';
 import '../../season_teams/season_teams_screen.dart';
+import '../../stats/stats_screen.dart';
 import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 import 'home_app_bar.dart';
@@ -37,33 +37,43 @@ class HomeLoadedContent extends StatelessWidget {
       appBar: const HomeAppBar(),
       body: SafeArea(child: _pages[selectedPage.index]),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const _DrawerHeader(),
-            ListTile(
-              title: Text(context.str.seasonGrandPrixBetsScreenTitle),
-              leading: const Icon(Icons.view_stream),
-              selected: selectedPage == HomePage.bets,
-              onTap: () => _changePage(HomePage.bets, context),
+            Column(
+              children: [
+                const _DrawerHeader(),
+                ListTile(
+                  title: Text(context.str.seasonGrandPrixBetsScreenTitle),
+                  leading: const Icon(Icons.view_stream),
+                  selected: selectedPage == HomePage.bets,
+                  onTap: () => _changePage(HomePage.bets, context),
+                ),
+                ListTile(
+                  title: Text(context.str.statsScreenTitle),
+                  leading: const Icon(Icons.bar_chart_rounded),
+                  selected: selectedPage == HomePage.stats,
+                  onTap: () => _changePage(HomePage.stats, context),
+                ),
+                ListTile(
+                  title: Text(context.str.playersScreenTitle),
+                  leading: const Icon(Icons.people_rounded),
+                  selected: selectedPage == HomePage.players,
+                  onTap: () => _changePage(HomePage.players, context),
+                ),
+                ListTile(
+                  title: Text(context.str.seasonTeamsScreenTitle),
+                  leading: const Icon(Icons.info),
+                  selected: selectedPage == HomePage.teamsDetails,
+                  onTap: () => _changePage(HomePage.teamsDetails, context),
+                ),
+              ],
             ),
-            ListTile(
-              title: Text(context.str.statsScreenTitle),
-              leading: const Icon(Icons.bar_chart_rounded),
-              selected: selectedPage == HomePage.stats,
-              onTap: () => _changePage(HomePage.stats, context),
-            ),
-            ListTile(
-              title: Text(context.str.playersScreenTitle),
-              leading: const Icon(Icons.people_rounded),
-              selected: selectedPage == HomePage.players,
-              onTap: () => _changePage(HomePage.players, context),
-            ),
-            ListTile(
-              title: Text(context.str.seasonTeamsScreenTitle),
-              leading: const Icon(Icons.info),
-              selected: selectedPage == HomePage.teamsDetails,
-              onTap: () => _changePage(HomePage.teamsDetails, context),
+            const SafeArea(
+              child: Column(
+                spacing: 8,
+                children: [Divider(), _AppVersion(), SizedBox(height: 8)],
+              ),
             ),
           ],
         ),
@@ -98,5 +108,18 @@ class _Logo extends StatelessWidget {
         HeadlineMedium('Grid', color: Colors.red, fontWeight: FontWeight.bold),
       ],
     );
+  }
+}
+
+class _AppVersion extends StatelessWidget {
+  const _AppVersion();
+
+  @override
+  Widget build(BuildContext context) {
+    final String appVersion = context.select(
+      (HomeCubit cubit) => cubit.state.loaded.appVersion,
+    );
+
+    return LabelMedium(context.str.homeAppVersion(appVersion));
   }
 }

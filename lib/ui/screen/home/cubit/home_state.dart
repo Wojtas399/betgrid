@@ -18,6 +18,7 @@ sealed class HomeState with _$HomeState {
     String? avatarUrl,
     double? totalPoints,
     @Default(HomePage.bets) HomePage selectedPage,
+    required String appVersion,
   }) = HomeStateLoaded;
 
   HomeStateLoaded get loaded => this as HomeStateLoaded;

@@ -9,6 +9,11 @@ class StrPl extends Str {
   StrPl([String locale = 'pl']) : super(locale);
 
   @override
+  String homeAppVersion(String appVersion) {
+    return 'Wersja aplikacji: $appVersion';
+  }
+
+  @override
   String get newVersionAvailableScreenTitle => 'Nowa wersja aplikacji';
 
   @override

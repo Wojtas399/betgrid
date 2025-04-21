@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/auth/auth_repository.dart';
@@ -34,12 +35,15 @@ class HomeCubit extends Cubit<HomeState> {
     return super.close();
   }
 
-  void initialize() {
+  Future<void> initialize() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    final currentAppVersion = packageInfo.version;
+
     _dataListener ??= _authRepository.loggedUserId$
         .doOnData(_manageLoggedUserId)
         .whereNotNull()
         .switchMap(_getListenedData)
-        .listen(_manageListenedData);
+        .listen((data) => _manageListenedData(data, currentAppVersion));
   }
 
   void changePage(HomePage page) {
@@ -64,7 +68,7 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void _manageListenedData(_ListenedData data) {
+  void _manageListenedData(_ListenedData data, String currentAppVersion) {
     final User? loggedUser = data.loggedUserData;
     final double? totalPoints = data.totalPoints;
 
@@ -82,6 +86,7 @@ class HomeCubit extends Cubit<HomeState> {
               username: loggedUser.username,
               avatarUrl: loggedUser.avatarUrl,
               totalPoints: totalPoints,
+              appVersion: currentAppVersion,
             ),
       );
     }
