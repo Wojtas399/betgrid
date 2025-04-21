@@ -9,6 +9,18 @@ class StrPl extends Str {
   StrPl([String locale = 'pl']) : super(locale);
 
   @override
+  String get newVersionAvailableScreenTitle => 'Nowa wersja aplikacji';
+
+  @override
+  String get newVersionAvailableDescription => 'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.';
+
+  @override
+  String get newVersionAvailableDownloadButtonLabel => 'Pobierz';
+
+  @override
+  String get newVersionAvailableLaterButtonLabel => 'Nie teraz';
+
+  @override
   String get playersScreenTitle => 'Gracze';
 
   @override

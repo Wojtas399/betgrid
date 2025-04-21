@@ -55,7 +55,7 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-    child: BigButton(
+    child: BigButton.filled(
       onPressed: () => _onPressed(context),
       label: context.str.save,
     ),

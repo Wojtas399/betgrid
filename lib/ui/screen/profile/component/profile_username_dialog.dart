@@ -110,7 +110,7 @@ class _State extends State<ProfileUsernameDialog> {
                 },
               ),
               const GapVertical40(),
-              BigButton(
+              BigButton.filled(
                 label: context.str.save,
                 onPressed: _isSaveButtonDisabled ? null : _onSaveButtonPressed,
               ),

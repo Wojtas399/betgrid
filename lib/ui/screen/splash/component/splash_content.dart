@@ -11,31 +11,31 @@ class SplashContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Material(
-      color: Colors.black,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DisplayLarge(
-                'Bet',
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              DisplayLarge(
-                'Grid',
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
-              ),
-            ],
-          ),
+          _Logo(),
           SizedBox(height: 32),
-          TitleLarge('Ładowanie...', color: Colors.white),
+          TitleLarge('Ładowanie...'),
           SizedBox(height: 16),
           _ProgressIndicator(),
         ],
       ),
+    );
+  }
+}
+
+class _Logo extends StatelessWidget {
+  const _Logo();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DisplayLarge('Bet', fontWeight: FontWeight.bold),
+        DisplayLarge('Grid', color: Colors.red, fontWeight: FontWeight.bold),
+      ],
     );
   }
 }

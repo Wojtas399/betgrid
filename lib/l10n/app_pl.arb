@@ -1,4 +1,9 @@
 {
+    "@__________NEW_VERSION_AVAILABLE__________": {},
+    "newVersionAvailableScreenTitle": "Nowa wersja aplikacji",
+    "newVersionAvailableDescription": "Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.",
+    "newVersionAvailableDownloadButtonLabel": "Pobierz",
+    "newVersionAvailableLaterButtonLabel": "Nie teraz",
     "@__________PLAYERS__________": {},
     "playersScreenTitle": "Gracze",
     "playersNoOtherPlayersTitle": "Brak innych graczy",

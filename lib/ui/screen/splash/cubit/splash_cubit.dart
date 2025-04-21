@@ -20,7 +20,8 @@ class SplashCubit extends Cubit<SplashState> {
     emit(const SplashState.loading(progress: 0.1));
 
     final packageInfo = await PackageInfo.fromPlatform();
-    final installedVersion = Version.fromString(packageInfo.version);
+    // final installedVersion = Version.fromString(packageInfo.version);
+    const installedVersion = Version(major: 1, minor: 0, patch: 0);
     final latestVersion = Version.fromString(
       _appVersionRepository.getCurrentAppVersion(),
     );

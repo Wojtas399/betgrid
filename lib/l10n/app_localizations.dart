@@ -93,6 +93,30 @@ abstract class Str {
     Locale('pl')
   ];
 
+  /// No description provided for @newVersionAvailableScreenTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowa wersja aplikacji'**
+  String get newVersionAvailableScreenTitle;
+
+  /// No description provided for @newVersionAvailableDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.'**
+  String get newVersionAvailableDescription;
+
+  /// No description provided for @newVersionAvailableDownloadButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pobierz'**
+  String get newVersionAvailableDownloadButtonLabel;
+
+  /// No description provided for @newVersionAvailableLaterButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie teraz'**
+  String get newVersionAvailableLaterButtonLabel;
+
   /// No description provided for @playersScreenTitle.
   ///
   /// In pl, this message translates to:
