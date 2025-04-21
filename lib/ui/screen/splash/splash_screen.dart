@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
     FlutterNativeSplash.remove();
 
     return BlocProvider(
-      create: (_) => getIt<SplashCubit>()..init(),
+      create: (_) => getIt<SplashCubit>()..checkAppVersion(),
       child: const _SplashCubitListener(child: SplashContent()),
     );
   }
@@ -29,9 +29,15 @@ class _SplashCubitListener extends StatelessWidget {
 
   const _SplashCubitListener({required this.child});
 
-  void _onStateChanged(BuildContext context, SplashState state) {
-    if (state is SplashStateNewAppVersionAvailable) {
-      context.pushRoute(const NewVersionAvailableRoute());
+  Future<void> _onStateChanged(BuildContext context, SplashState state) async {
+    if (state is SplashStateAppVersionChecked) {
+      if (state.isNewVersionAvailable) {
+        await context.pushRoute(const NewVersionAvailableRoute());
+      }
+
+      if (context.mounted) {
+        context.read<SplashCubit>().init();
+      }
     } else if (state is SplashStateLoaded) {
       context.pushRoute(
         state.isLoggedIn ? const HomeRoute() : const SignInRoute(),

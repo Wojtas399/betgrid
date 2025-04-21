@@ -16,21 +16,23 @@ class SplashCubit extends Cubit<SplashState> {
   SplashCubit(this._appVersionRepository, this._authRepository)
     : super(const SplashState.initial());
 
-  Future<void> init() async {
+  Future<void> checkAppVersion() async {
     emit(const SplashState.loading(progress: 0.1));
 
     final packageInfo = await PackageInfo.fromPlatform();
-    // final installedVersion = Version.fromString(packageInfo.version);
-    const installedVersion = Version(major: 1, minor: 0, patch: 0);
+    final installedVersion = Version.fromString(packageInfo.version);
     final latestVersion = Version.fromString(
       _appVersionRepository.getCurrentAppVersion(),
     );
 
-    if (latestVersion.isNewerThan(installedVersion)) {
-      emit(const SplashState.newAppVersionAvailable());
-      return;
-    }
+    emit(
+      SplashState.appVersionChecked(
+        isNewVersionAvailable: latestVersion.isNewerThan(installedVersion),
+      ),
+    );
+  }
 
+  Future<void> init() async {
     emit(const SplashState.loading(progress: 0.5));
 
     final auth = await _authRepository.authState$.first;

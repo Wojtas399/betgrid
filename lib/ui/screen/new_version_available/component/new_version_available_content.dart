@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../component/button/big_button.dart';
@@ -64,13 +65,9 @@ class _Actions extends StatelessWidget {
     return Column(
       spacing: 16,
       children: [
-        BigButton.filled(
-          label: context.str.newVersionAvailableDownloadButtonLabel,
-          onPressed: () {},
-        ),
         BigButton.outlined(
-          label: context.str.newVersionAvailableLaterButtonLabel,
-          onPressed: () {},
+          label: context.str.close,
+          onPressed: context.maybePop,
         ),
       ],
     );

@@ -15,12 +15,6 @@ class StrPl extends Str {
   String get newVersionAvailableDescription => 'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.';
 
   @override
-  String get newVersionAvailableDownloadButtonLabel => 'Pobierz';
-
-  @override
-  String get newVersionAvailableLaterButtonLabel => 'Nie teraz';
-
-  @override
   String get playersScreenTitle => 'Gracze';
 
   @override
@@ -304,6 +298,9 @@ class StrPl extends Str {
 
   @override
   String get doubleDash => '--';
+
+  @override
+  String get close => 'Zamknij';
 
   @override
   String get red => 'Czerwony';

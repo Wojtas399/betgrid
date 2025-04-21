@@ -105,18 +105,6 @@ abstract class Str {
   /// **'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.'**
   String get newVersionAvailableDescription;
 
-  /// No description provided for @newVersionAvailableDownloadButtonLabel.
-  ///
-  /// In pl, this message translates to:
-  /// **'Pobierz'**
-  String get newVersionAvailableDownloadButtonLabel;
-
-  /// No description provided for @newVersionAvailableLaterButtonLabel.
-  ///
-  /// In pl, this message translates to:
-  /// **'Nie teraz'**
-  String get newVersionAvailableLaterButtonLabel;
-
   /// No description provided for @playersScreenTitle.
   ///
   /// In pl, this message translates to:
@@ -686,6 +674,12 @@ abstract class Str {
   /// In pl, this message translates to:
   /// **'--'**
   String get doubleDash;
+
+  /// No description provided for @close.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zamknij'**
+  String get close;
 
   /// No description provided for @red.
   ///
