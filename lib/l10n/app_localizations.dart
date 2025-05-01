@@ -99,6 +99,12 @@ abstract class Str {
   /// **'Wersja aplikacji: {appVersion}'**
   String homeAppVersion(String appVersion);
 
+  /// No description provided for @homeSignOut.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wyloguj'**
+  String get homeSignOut;
+
   /// No description provided for @newVersionAvailableScreenTitle.
   ///
   /// In pl, this message translates to:

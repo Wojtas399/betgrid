@@ -9,6 +9,7 @@
         }
       }
     },
+    "homeSignOut": "Wyloguj",
     "@__________NEW_VERSION_AVAILABLE__________": {},
     "newVersionAvailableScreenTitle": "Nowa wersja aplikacji",
     "newVersionAvailableDescription": "Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.",

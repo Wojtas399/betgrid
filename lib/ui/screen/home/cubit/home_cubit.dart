@@ -40,7 +40,6 @@ class HomeCubit extends Cubit<HomeState> {
     final currentAppVersion = packageInfo.version;
 
     _dataListener ??= _authRepository.loggedUserId$
-        .doOnData(_manageLoggedUserId)
         .whereNotNull()
         .switchMap(_getListenedData)
         .listen((data) => _manageListenedData(data, currentAppVersion));
@@ -50,10 +49,9 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.loaded.copyWith(selectedPage: page));
   }
 
-  void _manageLoggedUserId(String? loggedUserId) {
-    if (loggedUserId == null) {
-      throw Exception('Logged user id is null');
-    }
+  Future<void> signOut() async {
+    await _authRepository.signOut();
+    emit(state.loaded.copyWith(actionStatus: HomeActionStatus.userSignedOut));
   }
 
   Stream<_ListenedData> _getListenedData(String loggedUserId) {
@@ -73,7 +71,11 @@ class HomeCubit extends Cubit<HomeState> {
     final double? totalPoints = data.totalPoints;
 
     if (loggedUser == null || totalPoints == null) {
-      emit(const HomeState.loggedUserDataNotCompleted());
+      emit(
+        state.loaded.copyWith(
+          actionStatus: HomeActionStatus.userDataNotCompleted,
+        ),
+      );
     } else {
       emit(
         state is HomeStateLoaded

@@ -71,8 +71,13 @@ class HomeLoadedContent extends StatelessWidget {
             ),
             const SafeArea(
               child: Column(
-                spacing: 8,
-                children: [Divider(), _AppVersion(), SizedBox(height: 8)],
+                children: [
+                  _SignOutBtn(),
+                  Divider(),
+                  SizedBox(height: 12),
+                  _AppVersion(),
+                  SizedBox(height: 16),
+                ],
               ),
             ),
           ],
@@ -107,6 +112,19 @@ class _Logo extends StatelessWidget {
         HeadlineMedium('Bet', fontWeight: FontWeight.bold),
         HeadlineMedium('Grid', color: Colors.red, fontWeight: FontWeight.bold),
       ],
+    );
+  }
+}
+
+class _SignOutBtn extends StatelessWidget {
+  const _SignOutBtn();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: const Text('Wyloguj'),
+      leading: const Icon(Icons.logout_rounded),
+      onTap: () => context.read<HomeCubit>().signOut(),
     );
   }
 }

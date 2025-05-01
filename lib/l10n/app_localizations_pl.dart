@@ -14,6 +14,9 @@ class StrPl extends Str {
   }
 
   @override
+  String get homeSignOut => 'Wyloguj';
+
+  @override
   String get newVersionAvailableScreenTitle => 'Nowa wersja aplikacji';
 
   @override

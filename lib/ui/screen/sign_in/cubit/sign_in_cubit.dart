@@ -16,7 +16,8 @@ class SignInCubit extends Cubit<SignInState> {
 
   @override
   Future<void> close() {
-    _authStateListener;
+    _authStateListener?.cancel();
+    _authStateListener = null;
     return super.close();
   }
 
