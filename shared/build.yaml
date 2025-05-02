@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        generate_for:
+          - lib/firebase/model/
+      injectable_generator:
+        generate_for:
+          - lib/firebase/service/
+          - lib/firebase/firebase_collections.dart
+          - lib/firebase/firebase_collections_references.dart
