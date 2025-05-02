@@ -21,11 +21,6 @@ migrate_working_dir/
 # VS Code related
 .vscode/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
@@ -47,36 +42,37 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Firebase related
-firebase.json
-firebase_dev.json
-firebase_options.dart
-GoogleService-Info.plist
-.firebaserc
-
-# build_runner related
-*.gr.dart
-*.config.dart
-*.freezed.dart
-*.g.dart
-
 # IOS related
 Debug.xcconfig
 Release.xcconfig
+Keys.xcconfig
 
-# FVM
+# Build runner related
+*.g.dart
+*.freezed.dart
+*.config.dart
+*.gr.dart
+
+# Firebase related
+firebase_options.dart
+firebase_options_dev.dart
+.firebaserc
+firebase.json
+serviceAccountKey.json
+google-services.json
+GoogleService-Info.plist
+storage.rules
+
+# Mason related
+bricks.json
+mason-lock.json
+
+# Python related
+.pylintrc
+
+# FVM Version Cache
 .fvm/
 .fvmrc
 
-# Mason related
-.mason/
-mason-lock.json
-
-# IDE - VSCode
-.vscode/
-
-# IDE - IntelliJ
-.idea/
-
-# macOS
-.DS_Store
+# Envied related
+.env

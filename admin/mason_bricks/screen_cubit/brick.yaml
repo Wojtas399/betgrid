@@ -1,0 +1,13 @@
+name: screen_cubit
+description: A new brick created with the Mason CLI.
+
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  screen_name:
+    type: string
+    description: Your screen name
+    prompt: 'Enter your screen name:'
