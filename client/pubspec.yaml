@@ -1,0 +1,72 @@
+name: betgrid
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.7.0+14
+
+environment:
+  sdk: '>=3.7.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  equatable: ^2.0.5
+  freezed: ^2.5.2
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  injectable: ^2.4.0
+  get_it:
+  mocktail: ^1.0.3
+  auto_route: ^9.2.2
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  flutter_svg: ^2.0.9
+  material_design_icons_flutter: ^7.0.7296
+  rxdart: ^0.28.0
+  collection: ^1.18.0
+  flutter_sticky_header: ^0.6.5
+  country_flags: ^3.0.0
+  flutter_launcher_icons: ^0.14.3
+  syncfusion_flutter_charts: ^27.1.51
+  flutter_bloc: ^8.1.5
+  bloc_test: ^9.1.7
+  mutex: ^3.1.0
+  betgrid_shared:
+    git:
+      url: https://github.com/Wojtas399/betgrid_shared.git
+      ref: 7bae1154cf28fc5c5400c9d4f3c9c7e11511c5c5
+  firebase_analytics: ^11.4.2
+  flutter_native_splash: ^2.4.5
+  image_picker: ^1.1.2
+  firebase_crashlytics: ^4.3.4
+  firebase_core: ^3.12.1
+  firebase_messaging: ^15.2.4
+  flutter_local_notifications: ^19.0.0
+  package_info_plus: ^8.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.8
+  custom_lint: ^0.6.7
+  json_serializable: ^6.7.1
+  injectable_generator:
+  auto_route_generator: ^9.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/ic_launcher.png"
+  image_path_ios: "assets/ic_launcher_ios.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "assets/ic_launcher_adaptive_back.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
