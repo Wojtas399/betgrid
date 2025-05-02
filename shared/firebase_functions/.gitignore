@@ -1,0 +1,7 @@
+venv/
+emulators_data/
+__pycache__/
+serviceAccountKey.json
+ui-debug.log
+firestore-debug.log
+.DS_Store

@@ -1,0 +1,13 @@
+name: component
+description: A new brick created with the Mason CLI.
+
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  component_name:
+    type: string
+    description: Your component name
+    prompt: 'Enter new component name:'

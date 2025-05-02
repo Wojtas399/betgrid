@@ -1,0 +1,18 @@
+# Register bricks which can be consumed via the Mason CLI.
+# Run "mason get" to install all registered bricks.
+# To learn more, visit https://docs.brickhub.dev.
+bricks:
+  screen:
+    path: mason_bricks/screen
+  screen_component:
+    path: mason_bricks/screen_component
+  screen_cubit:
+    path: mason_bricks/screen_cubit
+  component:
+    path: mason_bricks/component
+  repository:
+    path: mason_bricks/repository
+  firebase_service:
+    path: mason_bricks/firebase_service
+  mapper:
+    path: mason_bricks/mapper

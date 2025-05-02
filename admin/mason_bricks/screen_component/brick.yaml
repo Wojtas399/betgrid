@@ -1,0 +1,17 @@
+name: screen_component
+description: A new brick created with the Mason CLI.
+
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  screen_name:
+    type: string
+    description: Your screen name
+    prompt: 'Enter screen name:'
+  component_name:
+    type: string
+    description: Your component name
+    prompt: 'Enter your component name:'

@@ -1,0 +1,151 @@
+{
+  "@----------DRIVERS_EDITOR----------": {},
+  "driversEditorScreenTitle": "Edytuj kierowców",
+  "driversEditorAddDriver": "Dodaj kierowcę",
+  "driversEditorDeleteDriverConfirmationTitle": "Usuwanie kierowcy",
+  "driversEditorDeleteDriverConfirmationMessage": "Czy na pewno chcesz usunąć kierowcę {driverName}?",
+  "@driversEditorDeleteDriverConfirmationMessage": {
+    "placeholders": {
+      "driverName": {
+        "type": "String"
+      }
+    }
+  },
+  "driversEditorSuccessfullyAddedDriver": "Pomyślnie dodano nowego kierowcę",
+  "driversEditorSuccessfullyDeletedDriver": "Pomyślnie usunięto kierowcę",
+  "@----------EDITORS----------": {},
+  "editorsScreenTitle": "Edytory",
+  "@----------GRAND_PRIXES_EDITOR----------": {},
+  "grandPrixesEditorScreenTitle": "Edytuj grand prixy",
+  "grandPrixesEditorDeleteGrandPrixConfirmationTitle": "Usuwanie grand prixu",
+  "grandPrixesEditorDeleteGrandPrixConfirmationMessage": "Czy na pewno chcesz usunąć grand prix {grandPrixName}?",
+  "@grandPrixesEditorDeleteGrandPrixConfirmationMessage": {
+    "placeholders": {
+      "grandPrixName": {
+        "type": "String"
+      }
+    }
+  },
+  "grandPrixesEditorSuccessfullyDeletedGrandPrix": "Pomyślnie usunięto grand prix",
+  "grandPrixesEditorSuccessfullyAddedGrandPrix": "Pomyślnie dodano nowe grand prix",
+  "grandPrixesEditorAddGrandPrix": "Dodaj grand prix",
+  "grandPrixesEditorGrandPrixName": "Nazwa grand prix",
+  "grandPrixesEditorCountryAlpha2Code": "Kod kraju",
+  "@----------HOME----------": {},
+  "homeScreenTitle": "Strona główna",
+  "homeCreateGrandPrixButton": "Stwórz nowe grand prix",
+  "homeEditDriversButton": "Edytuj kierowców",
+  "homeEditSeasonDriversButton": "Edytuj kierowców z sezonu",
+  "homeEditTeamsButton": "Edytuj zespoły",
+  "homeEditSeasonTeamsButton": "Edytuj zespoły z sezonu",
+  "homeEditGrandPrixesButton": "Edytuj grand prixy",
+  "homeEditSeasonGrandPrixesButton": "Edytuj grand prixy z sezonu",
+  "@----------SEASON_DRIVERS_EDITOR": {},
+  "seasonDriversEditorScreenTitle": "Edytuj kierowców sezonu",
+  "seasonDriversEditorAddSeasonDriver": "Dodaj kierowcę do sezonu",
+  "seasonDriversEditorDriver": "Kierowca",
+  "seasonDriversEditorDriverNumber": "Numer kierowcy",
+  "seasonDriversEditorTeam": "Zespół",
+  "seasonDriversEditorSeasonDriverDeletionConfirmationTitle": "Usuwanie kierowcy z sezonu",
+  "seasonDriversEditorSeasonDriverDeletionConfirmationMessage": "Czy na pewno chcesz usunąć kierowcę {driverName} z sezonu {season}?",
+  "@seasonDriversEditorSeasonDriverDeletionConfirmationMessage": {
+    "placeholders": {
+      "driverName": {
+        "type": "String"
+      },
+      "season": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonDriversEditorSuccessfullyAddedDriver": "Pomyślnie dodano kierowcę do sezonu",
+  "seasonDriversEditorSuccessfullyDeletedSeasonDriver": "Pomyślnie usunięto kierowcę z sezonu",
+  "@----------SEASON_GRAND_PRIX_RESULTS_EDITOR----------": {},
+  "seasonGrandPrixResultsEditorQualifications": "Kwalifikacje",
+  "seasonGrandPrixResultsEditorRace": "Wyścig",
+  "seasonGrandPrixResultsEditorSelectDriver": "Wybierz kierowcę",
+  "seasonGrandPrixResultsEditorPodiumAndP10": "Podium i p10",
+  "seasonGrandPrixResultsEditorFastestLap": "Najszybsze okrążenie",
+  "seasonGrandPrixResultsEditorDnf": "DNF",
+  "seasonGrandPrixResultsEditorSafetyCar": "Samochód bezpieczeństwa",
+  "seasonGrandPrixResultsEditorRedFlag": "Czerwona flaga",
+  "seasonGrandPrixResultsEditorEditDnfList": "Edytuj listę DNF",
+  "seasonGrandPrixResultsEditorAddDriversToDnfList": "Dodaj kierowców do listy DNF",
+  "seasonGrandPrixResultsEditorNoDriversInfoTitle": "Brak kierowców",
+  "seasonGrandPrixResultsEditorNoDriversInfoSubtitle": "Dodaj kierowców do listy DNF",
+  "seasonGrandPrixResultsEditorSuccessfullySavedResults": "Pomyślnie zapisano wyniki GP",
+  "@----------SEASON_GRAND_PRIXES_EDITOR----------": {},
+  "seasonGrandPrixesEditorScreenTitle": "Edytuj grand prixy sezonu",
+  "seasonGrandPrixesEditorAddSeasonGrandPrix": "Dodaj grand prix do sezonu",
+  "seasonGrandPrixesEditorGrandPrix": "Grand prix",
+  "seasonGrandPrixesEditorSelectGrandPrix": "Wybierz grand prix",
+  "seasonGrandPrixesEditorRoundNumber": "Numer rundy",
+  "seasonGrandPrixesEditorStartDate": "Data rozpoczęcia",
+  "seasonGrandPrixesEditorEndDate": "Data zakończenia",
+  "seasonGrandPrixesEditorInvalidFormTitle": "Niepoprawne dane formularza",
+  "seasonGrandPrixesEditorInvalidFormMessage": "Niektóre pola zawierają niepoprawne dane",
+  "seasonGrandPrixesEditorSeasonGrandPrixDeletionConfirmationTitle": "Usuwanie grand prixu z sezonu",
+  "seasonGrandPrixesEditorSeasonGrandPrixDeletionConfirmationMessage": "Czy na pewno chcesz usunąć grand prix {grandPrixName} z sezonu {season}?",
+  "@seasonGrandPrixesEditorSeasonGrandPrixDeletionConfirmationMessage": {
+    "placeholders": {
+      "grandPrixName": {
+        "type": "String"
+      },
+      "season": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonGrandPrixesEditorSuccessfullyDeletedGrandPrixFromSeason": "Pomyślnie usunięto grand prix z sezonu",
+  "seasonGrandPrixesEditorSuccessfullyAddedGrandPrix": "Pomyślnie dodano grand prix do sezonu",
+  "@----------SEASON_GRAND_PRIXES_RESULTS----------": {},
+  "seasonGrandPrixesResultsScreenTitle": "Wyniki",
+  "@----------SEASON_TEAMS_EDITOR----------": {},
+  "seasonTeamsEditorScreenTitle": "Nowy zespół w sezonie",
+  "seasonTeamsEditorAddSeasonTeam": "Dodaj zespół do sezonu",
+  "seasonTeamsEditorTeam": "Zespół",
+  "seasonTeamsEditorSelectTeam": "Wybierz zespół",
+  "seasonTeamsEditorSeasonTeamDeletionConfirmationTitle": "Usuwanie zespołu z sezonu",
+  "seasonTeamsEditorSeasonTeamDeletionConfirmationMessage": "Czy na pewno chcesz usunąć zespół {teamName} z sezonu {season}?",
+  "@seasonTeamsEditorSeasonTeamDeletionConfirmationMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      },
+      "season": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonTeamsEditorSuccessfullyAddedTeam": "Pomyślnie dodano zespół do sezonu",
+  "seasonTeamsEditorSuccessfullyDeletedSeasonTeam": "Pomyślnie usunięto zespół z sezonu",
+  "@----------TEAMS_EDITOR----------": {},
+  "teamsEditorScreenTitle": "Edytuj zespoły",
+  "teamsEditorAddTeam": "Dodaj zespół",
+  "teamsEditorTeam": "Zespół",
+  "teamsEditorTeamName": "Nazwa zespołu",
+  "teamsEditorTeamHexColor": "Kolor zespołu",
+  "teamsEditorDeleteTeamConfirmationTitle": "Usuwanie zespołu",
+  "teamsEditorDeleteTeamConfirmationMessage": "Czy na pewno chcesz usunąć zespół {teamName}?",
+  "@teamsEditorDeleteTeamConfirmationMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      }
+    }
+  },
+  "teamsEditorSuccessfullyAddedTeam": "Pomyślnie dodano nowy zespół",
+  "teamsEditorSuccessfullyDeletedTeam": "Pomyślnie usunięto zespół",
+  "@----------COMMON----------": {},
+  "season": "Sezon",
+  "driverPersonalDataName": "Imię",
+  "driverPersonalDataSurname": "Nazwisko",
+  "requiredFieldInfo": "To pole jest wymagane",
+  "add": "Dodaj",
+  "delete": "Usuń",
+  "cancel": "Anuluj",
+  "close": "Zamknij",
+  "save": "Zapisz",
+  "yes": "Tak",
+  "no": "Nie"
+}
