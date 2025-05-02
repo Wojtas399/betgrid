@@ -4,374 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="259c1cf4-aee1-4a19-a76b-12fc5bfedaf7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/main.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.metadata" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis_options.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/betgrid/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/ic_stat_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/ic_stat_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-v21/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-v21/launch_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/ic_stat_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/ic_stat_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/ic_stat_bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/launch_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-hdpi/launcher_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-mdpi/launcher_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xhdpi/launcher_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/launcher_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/launcher_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-night-v31/styles.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-night/styles.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-v31/styles.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values/styles.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/google_logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/ic_launcher_ios.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_launcher_icons.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_native_splash.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-50x50@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-50x50@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-57x57@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-57x57@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-72x72@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-72x72@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Base.lproj/LaunchScreen.storyboard" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Base.lproj/Main.storyboard" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Runner-Bridging-Header.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Runner.entitlements" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/RunnerTests/RunnerTests.swift" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/l10n.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/exception/user_repository_exception.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/driver_personal_data_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/grand_prix_basic_info_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/notification_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/player_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/player_stats_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/player_stats_points_for_driver_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/player_stats_points_for_gp_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/quali_bet_points_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/race_bet_points_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_driver_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_grand_prix_bet_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_grand_prix_bet_points_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_grand_prix_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_grand_prix_results_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/season_team_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/theme_mode_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/theme_primary_color_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/mapper/user_mapper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/app_version/app_version_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/app_version/app_version_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/auth/auth_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/auth/auth_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/driver_personal_data/driver_personal_data_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/driver_personal_data/driver_personal_data_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/grand_prix_basic_info/grand_prix_basic_info_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/grand_prix_basic_info/grand_prix_basic_info_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/notifications/notifications_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/notifications/notifications_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/player/player_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/player/player_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/player_stats/player_stats_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/player_stats/player_stats_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_driver/season_driver_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_driver/season_driver_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix/season_grand_prix_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix/season_grand_prix_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_bet/season_grand_prix_bet_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_bet/season_grand_prix_bet_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_bet_points/season_grand_prix_bet_points_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_result/season_grand_prix_results_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_grand_prix_result/season_grand_prix_results_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_team/season_team_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/season_team/season_team_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/user/user_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/data/repository/user/user_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/dependency_injection.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/global/notifications_listener.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_pl.arb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/auth_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/driver_details.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/driver_personal_data.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/entity.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/grand_prix_basic_info.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/notification.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/player.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/player_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_driver.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_grand_prix.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_grand_prix_bet.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_grand_prix_bet_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_grand_prix_results.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/season_team.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/user.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/version.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/common_cubit/notifications/notifications_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/common_cubit/notifications/notifications_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/common_cubit/season_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/common_cubit/theme/theme_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/common_cubit/theme/theme_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/avatar_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/button/big_button.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/custom_card_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/dialog/actions_dialog_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/dialog/loading_dialog.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/driver_description_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/empty_content_info_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/gap/gap_horizontal.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/gap/gap_vertical.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/grand_prix_item_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/no_text_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/padding/padding_components.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/scroll_animated_item_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/text_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/theme_mode_selection_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/component/theme_primary_color_selection_component.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/bet_points_config.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/bet_points_multipliers_config.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/router/app_router.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/season_config.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/theme/custom_colors.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/config/theme/theme.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/build_context_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/duration_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/list_of_driver_details_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/stream_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/string_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/theme_mode_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/theme_primary_color_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/extensions/widgets_list_extensions.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/component/home_app_bar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/component/home_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/component/home_loaded_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/cubit/home_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/cubit/home_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/home_base.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/home/home_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/new_version_available/component/new_version_available_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/new_version_available/new_version_available_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/component/player_profile_app_bar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/component/player_profile_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/component/player_profile_grand_prixes_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/component/player_profile_total_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/cubit/player_profile_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/cubit/player_profile_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/player_profile/player_profile_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/players/component/players_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/players/component/players_player_item.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/players/cubit/players_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/players/cubit/players_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/players/players_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_avatar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_theme_mode.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_theme_primary_color.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_username.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/component/profile_username_dialog.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/cubit/profile_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/cubit/profile_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/profile/profile_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/component/required_data_completion_avatar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/component/required_data_completion_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/component/required_data_completion_theme_color.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/component/required_data_completion_theme_mode.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/component/required_data_completion_username.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/cubit/required_data_completion_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/cubit/required_data_completion_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/required_data_completion/required_data_completion_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/screens.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/component/season_grand_prix_bet_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/component/season_grand_prix_bet_editor_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/component/season_grand_prix_bet_preview_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/cubit/season_grand_prix_bet_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/cubit/season_grand_prix_bet_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_app_bar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_boolean_field.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_dnf_drivers_selection_dialog.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_driver_field.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_gp_bet_info.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_quali.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_race.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/component/season_grand_prix_bet_editor_race_podium_and_p10.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_race_form.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/editor/cubit/season_grand_prix_bet_editor_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_app_bar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_item.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_no_data_field.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_qualifications.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_race.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_bet_preview_section_title.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/component/season_grand_prix_preview_points_summary.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/cubit/season_grand_prix_bet_preview_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/cubit/season_grand_prix_bet_preview_quali_bets_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/cubit/season_grand_prix_bet_preview_race_bets_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/cubit/season_grand_prix_bet_preview_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/preview/cubit/season_grand_prix_bet_preview_status_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bet/season_grand_prix_bet_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/component/season_grand_prix_bets_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/component/season_grand_prix_bets_list_of_bets.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/cubit/season_grand_prix_bets_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/cubit/season_grand_prix_bets_gp_status_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/cubit/season_grand_prix_bets_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_grand_prix_bets/season_grand_prix_bets_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_team_details/component/season_team_details_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_team_details/component/season_team_details_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_team_details/cubit/season_team_details_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_team_details/cubit/season_team_details_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_team_details/season_team_details_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_teams/component/season_teams_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_teams/cubit/season_teams_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_teams/cubit/season_teams_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/season_teams/season_teams_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/sign_in/component/sign_in_app_bar.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/sign_in/component/sign_in_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/sign_in/cubit/sign_in_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/sign_in/cubit/sign_in_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/sign_in/sign_in_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/splash/component/splash_content.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/splash/cubit/splash_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/splash/cubit/splash_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/splash/splash_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_best_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_bet_points_history.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_bet_points_history_preview.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_body.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_card.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_grouped_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_individual_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_logged_user_points_for_drivers.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_no_data_info.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_players_podium.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_players_points_for_driver.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_players_points_for_driver_dropdown_button.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/component/stats_type_selection.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/cubit/stats_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/cubit/stats_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_creator/create_best_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_creator/create_logged_user_points_for_drivers_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_creator/create_players_podium_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_creator/create_points_for_driver_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_creator/create_points_history_stats.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_model/best_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_model/player_points.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_model/players_podium.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_model/points_for_driver.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_model/points_history.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/screen/stats/stats_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/service/date_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/service/dialog_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/service/formatter_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/service/image_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/use_case/get_details_for_season_driver_use_case.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/use_case/get_details_of_all_drivers_from_season_use_case.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/use_case/get_finished_grand_prixes_from_season_use_case.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/use_case/get_grand_prixes_with_points_use_case.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/use_case/get_player_points_use_case.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/__brick__/HELLO.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/__brick__/lib/data/firebase/service/firebase_{{name.snakeCase()}}_service.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/firebase_service/brick.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/__brick__/lib/data/repository/{{model_name.snakeCase()}}/{{model_name.snakeCase()}}_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/__brick__/lib/data/repository/{{model_name.snakeCase()}}/{{model_name.snakeCase()}}_repository_impl.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/repository/brick.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/__brick__/HELLO.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/__brick__/lib/ui/screen/{{screen_name.snakeCase()}}/{{screen_name.snakeCase()}}_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen/brick.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/__brick__/HELLO.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/__brick__/lib/ui/screen/{{screen_name.snakeCase()}}/component/{{screen_name.snakeCase()}}_{{component_name.snakeCase()}}.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_component/brick.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/__brick__/HELLO.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/__brick__/lib/ui/screen/{{screen_name.snakeCase()}}/cubit/{{screen_name.snakeCase()}}_cubit.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/__brick__/lib/ui/screen/{{screen_name.snakeCase()}}/cubit/{{screen_name.snakeCase()}}_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/__brick__/test/ui/screen/{{screen_name.snakeCase()}}/{{screen_name.snakeCase()}}_cubit_test.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/__brick__/test/ui/screen/{{screen_name.snakeCase()}}/{{screen_name.snakeCase()}}_state_test.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mason_bricks/screen_cubit/brick.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" />
+    <list default="true" id="259c1cf4-aee1-4a19-a76b-12fc5bfedaf7" name="Changes" comment="Moved client files to client folder.">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/.metadata" beforeDir="false" afterPath="$PROJECT_DIR$/admin/.metadata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/README.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -384,10 +20,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2wY4TQw3pQEHMBtNRRBNYDC47co" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -402,6 +38,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "more-team-details",
     "kotlin-language-version-configured": "true",
     "settings.editor.selected.configurable": "AndroidSdkUpdater",
     "show.migrate.to.gradle.popup": "false"
@@ -422,6 +59,19 @@
       <option name="presentableId" value="Default" />
       <updated>1746205181658</updated>
     </task>
+    <task id="LOCAL-00001" summary="Moved client files to client folder.">
+      <option name="closed" value="true" />
+      <created>1746205564450</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746205564450</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Moved client files to client folder." />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved client files to client folder." />
   </component>
 </project>
