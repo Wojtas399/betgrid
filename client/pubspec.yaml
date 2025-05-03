@@ -34,9 +34,7 @@ dependencies:
   bloc_test: ^9.1.7
   mutex: ^3.1.0
   betgrid_shared:
-    git:
-      url: https://github.com/Wojtas399/betgrid_shared.git
-      ref: 7bae1154cf28fc5c5400c9d4f3c9c7e11511c5c5
+    path: ../shared
   firebase_analytics: ^11.4.2
   flutter_native_splash: ^2.4.5
   image_picker: ^1.1.2
