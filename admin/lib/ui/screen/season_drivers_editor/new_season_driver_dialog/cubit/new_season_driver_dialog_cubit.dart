@@ -7,10 +7,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../data/repository/driver_personal_data/driver_personal_data_repository.dart';
 import '../../../../../data/repository/season_driver/season_driver_repository.dart';
 import '../../../../../data/repository/season_team/season_team_repository.dart';
-import '../../../../../data/repository/team_basic_info/team_basic_info_repository.dart';
 import '../../../../../model/driver_personal_data.dart';
 import '../../../../../model/season_driver.dart';
-import '../../../../../model/team_basic_info.dart';
+import '../../../../../model/season_team.dart';
 import 'new_season_driver_dialog_state.dart';
 
 @injectable
@@ -18,7 +17,6 @@ class NewSeasonDriverDialogCubit extends Cubit<NewSeasonDriverDialogState> {
   final SeasonDriverRepository _seasonDriverRepository;
   final SeasonTeamRepository _seasonTeamRepository;
   final DriverPersonalDataRepository _driverPersonalDataRepository;
-  final TeamBasicInfoRepository _teamBasicInfoRepository;
   final int _season;
   StreamSubscription? _listener;
 
@@ -26,7 +24,6 @@ class NewSeasonDriverDialogCubit extends Cubit<NewSeasonDriverDialogState> {
     this._seasonDriverRepository,
     this._seasonTeamRepository,
     this._driverPersonalDataRepository,
-    this._teamBasicInfoRepository,
     @factoryParam this._season,
   ) : super(const NewSeasonDriverDialogState());
 
@@ -94,7 +91,7 @@ class NewSeasonDriverDialogCubit extends Cubit<NewSeasonDriverDialogState> {
       season: _season,
       driverId: selectedDriverId!,
       driverNumber: driverNumber!,
-      teamId: selectedTeamId!,
+      seasonTeamId: selectedTeamId!,
     );
     emit(
       state.copyWith(
@@ -109,10 +106,10 @@ class NewSeasonDriverDialogCubit extends Cubit<NewSeasonDriverDialogState> {
   Stream<_ListenedParams> _getListenedParams() {
     return Rx.combineLatest2(
       _getDriversToSelect(),
-      _getTeamsToSelect(),
+      _seasonTeamRepository.getAllFromSeason(_season),
       (
         List<DriverPersonalData> driversToSelect,
-        List<TeamBasicInfo> teamsToSelect,
+        List<SeasonTeam> teamsToSelect,
       ) => (driversToSelect: driversToSelect, teamsToSelect: teamsToSelect),
     );
   }
@@ -137,24 +134,10 @@ class NewSeasonDriverDialogCubit extends Cubit<NewSeasonDriverDialogState> {
       },
     );
   }
-
-  Stream<List<TeamBasicInfo>> _getTeamsToSelect() {
-    return _seasonTeamRepository
-        .getAllFromSeason(_season)
-        .switchMap(
-          (seasonTeams) => Rx.combineLatest(
-            seasonTeams.map(
-              (seasonTeam) =>
-                  _teamBasicInfoRepository.getById(seasonTeam.teamId),
-            ),
-            (teamStreams) => teamStreams.whereType<TeamBasicInfo>().toList(),
-          ),
-        );
-  }
 }
 
 typedef _ListenedParams =
     ({
       List<DriverPersonalData> driversToSelect,
-      List<TeamBasicInfo> teamsToSelect,
+      List<SeasonTeam> teamsToSelect,
     });

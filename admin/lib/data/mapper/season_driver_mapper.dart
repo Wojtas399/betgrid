@@ -11,7 +11,7 @@ class SeasonDriverMapper {
       season: seasonDriverDto.season,
       driverId: seasonDriverDto.driverId,
       driverNumber: seasonDriverDto.driverNumber,
-      teamId: seasonDriverDto.teamId,
+      teamId: seasonDriverDto.seasonTeamId,
     );
   }
 }

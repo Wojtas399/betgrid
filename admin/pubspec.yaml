@@ -30,9 +30,7 @@ dependencies:
   mutex: ^3.1.0
   flutter_slidable: ^3.1.2
   betgrid_shared:
-    git:
-      url: https://github.com/Wojtas399/betgrid_shared.git
-      ref: 15ad58bdb3da41b0765e3cb510a1cdcdd1cc4330
+    path: ../shared
   freezed: ^3.0.0
 
 dev_dependencies:

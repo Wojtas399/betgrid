@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
-import '../../../../model/team_basic_info.dart';
+import '../../../../model/season_team.dart';
 import '../../../extensions/build_context_extensions.dart';
 import '../../../extensions/widget_list_extensions.dart';
 import '../../../service/dialog_service.dart';
@@ -33,7 +33,7 @@ class SeasonTeamsEditorListOfSeasonTeams extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<TeamBasicInfo>? teamsFromSeason = context.select(
+    final List<SeasonTeam>? teamsFromSeason = context.select(
       (SeasonTeamsEditorCubit cubit) => cubit.state.teamsFromSeason,
     );
 
@@ -41,14 +41,9 @@ class SeasonTeamsEditorListOfSeasonTeams extends StatelessWidget {
         ? Column(
           children: [
             ...teamsFromSeason.map(
-              (teamBasicInfo) => SeasonTeamsCreatorTeamItem(
-                teamBasicInfo: teamBasicInfo,
-                onDelete:
-                    () => _onDeleteTeam(
-                      context,
-                      teamBasicInfo.id,
-                      teamBasicInfo.name,
-                    ),
+              (team) => SeasonTeamsCreatorTeamItem(
+                team: team,
+                onDelete: () => _onDeleteTeam(context, team.id, team.shortName),
               ),
             ),
           ].divide(const Divider(height: 0)),

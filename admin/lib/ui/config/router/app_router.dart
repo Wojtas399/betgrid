@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:injectable/injectable.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../screen/screens.dart';
 
@@ -24,7 +24,6 @@ class AppRouter extends RootStackRouter {
         ),
         AutoRoute(page: DriversEditorRoute.page),
         AutoRoute(page: SeasonDriversEditorRoute.page),
-        AutoRoute(page: TeamsEditorRoute.page),
         AutoRoute(page: SeasonTeamsEditorRoute.page),
         AutoRoute(page: GrandPrixesEditorRoute.page),
         AutoRoute(page: SeasonGrandPrixesEditorRoute.page),

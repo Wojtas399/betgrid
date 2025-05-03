@@ -7,7 +7,7 @@ abstract interface class SeasonDriverRepository {
     required int season,
     required String driverId,
     required int driverNumber,
-    required String teamId,
+    required String seasonTeamId,
   });
 
   Future<void> delete({required int season, required String seasonDriverId});

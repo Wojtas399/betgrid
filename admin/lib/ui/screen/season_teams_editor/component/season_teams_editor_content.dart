@@ -37,18 +37,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool? areThereOtherTeamsToAdd = context.select(
-      (SeasonTeamsEditorCubit cubit) => cubit.state.areThereOtherTeamsToAdd,
-    );
-
     return AppBar(
       title: Text(context.str.seasonTeamsEditorScreenTitle),
       actions: [
         IconButton(
-          onPressed:
-              areThereOtherTeamsToAdd == true
-                  ? () => _addTeamToSeason(context)
-                  : null,
+          onPressed: () => _addTeamToSeason(context),
           icon: const Icon(Icons.add),
         ),
       ],

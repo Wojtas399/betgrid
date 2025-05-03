@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../model/driver_personal_data.dart';
-import '../../../../../model/team_basic_info.dart';
+import '../../../../../model/season_team.dart';
 
 part 'new_season_driver_dialog_state.freezed.dart';
 
@@ -27,7 +27,7 @@ abstract class NewSeasonDriverDialogState with _$NewSeasonDriverDialogState {
     @Default(NewSeasonDriverDialogStateStatus.loading)
     NewSeasonDriverDialogStateStatus status,
     List<DriverPersonalData>? driversToSelect,
-    List<TeamBasicInfo>? teamsToSelect,
+    List<SeasonTeam>? teamsToSelect,
     String? selectedDriverId,
     int? driverNumber,
     String? selectedTeamId,

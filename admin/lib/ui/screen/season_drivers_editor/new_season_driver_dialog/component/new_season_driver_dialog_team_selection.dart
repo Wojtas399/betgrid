@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../model/team_basic_info.dart';
+import '../../../../../model/season_team.dart';
 import '../cubit/new_season_driver_dialog_cubit.dart';
 
 class NewSeasonDriverDialogTeamSelection extends StatelessWidget {
@@ -15,7 +15,7 @@ class NewSeasonDriverDialogTeamSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<TeamBasicInfo>? teamsToSelect = context.select(
+    final List<SeasonTeam>? teamsToSelect = context.select(
       (NewSeasonDriverDialogCubit cubit) => cubit.state.teamsToSelect,
     );
     final String? selectedTeamId = context.select(
@@ -26,8 +26,10 @@ class NewSeasonDriverDialogTeamSelection extends StatelessWidget {
       value: selectedTeamId,
       items: [
         ...?teamsToSelect?.map(
-          (team) =>
-              DropdownMenuItem<String>(value: team.id, child: Text(team.name)),
+          (team) => DropdownMenuItem<String>(
+            value: team.id,
+            child: Text(team.shortName),
+          ),
         ),
       ],
       onChanged: (String? driverId) => _onChanged(driverId, context),

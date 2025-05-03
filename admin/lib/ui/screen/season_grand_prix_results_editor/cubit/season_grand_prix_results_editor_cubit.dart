@@ -11,13 +11,13 @@ import '../../../../data/repository/grand_prix_basic_info/grand_prix_basic_info_
 import '../../../../data/repository/season_driver/season_driver_repository.dart';
 import '../../../../data/repository/season_grand_prix/season_grand_prix_repository.dart';
 import '../../../../data/repository/season_grand_prix_results/season_grand_prix_results_repository.dart';
-import '../../../../data/repository/team_basic_info/team_basic_info_repository.dart';
+import '../../../../data/repository/season_team/season_team_repository.dart';
 import '../../../../model/driver_personal_data.dart';
 import '../../../../model/grand_prix_basic_info.dart';
 import '../../../../model/season_driver.dart';
 import '../../../../model/season_grand_prix.dart';
 import '../../../../model/season_grand_prix_results.dart';
-import '../../../../model/team_basic_info.dart';
+import '../../../../model/season_team.dart';
 import 'season_grand_prix_results_editor_race_form.dart';
 import 'season_grand_prix_results_editor_state.dart';
 
@@ -29,7 +29,7 @@ class SeasonGrandPrixResultsEditorCubit
   final GrandPrixBasicInfoRepository _grandPrixBasicInfoRepository;
   final SeasonDriverRepository _seasonDriverRepository;
   final DriverPersonalDataRepository _driverPersonalDataRepository;
-  final TeamBasicInfoRepository _teamBasicInfoRepository;
+  final SeasonTeamRepository _seasonTeamRepository;
   final int _season;
   final String _seasonGrandPrixId;
   StreamSubscription<_ListenedParams>? _listener;
@@ -40,7 +40,7 @@ class SeasonGrandPrixResultsEditorCubit
     this._grandPrixBasicInfoRepository,
     this._seasonDriverRepository,
     this._driverPersonalDataRepository,
-    this._teamBasicInfoRepository,
+    this._seasonTeamRepository,
     @factoryParam this._season,
     @factoryParam this._seasonGrandPrixId,
   ) : super(const SeasonGrandPrixResultsEditorState.initial());
@@ -413,17 +413,17 @@ class SeasonGrandPrixResultsEditorCubit
   Stream<DriverDetails?> _getDetailsForSeasonDriver(SeasonDriver seasonDriver) {
     return Rx.combineLatest2(
       _driverPersonalDataRepository.getById(seasonDriver.driverId),
-      _teamBasicInfoRepository.getById(seasonDriver.teamId),
-      (DriverPersonalData? driverPersonalData, TeamBasicInfo? teamBasicInfo) =>
-          driverPersonalData == null || teamBasicInfo == null
+      _seasonTeamRepository.getById(id: seasonDriver.teamId, season: _season),
+      (DriverPersonalData? driverPersonalData, SeasonTeam? team) =>
+          driverPersonalData == null || team == null
               ? null
               : DriverDetails(
                 seasonDriverId: seasonDriver.id,
                 name: driverPersonalData.name,
                 surname: driverPersonalData.surname,
                 number: seasonDriver.driverNumber,
-                teamName: teamBasicInfo.name,
-                teamHexColor: teamBasicInfo.hexColor,
+                teamName: team.shortName,
+                teamHexColor: team.baseHexColor,
               ),
     ).distinct();
   }

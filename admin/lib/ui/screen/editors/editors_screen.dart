@@ -25,10 +25,6 @@ class _Buttons extends StatelessWidget {
     context.pushRoute(const SeasonDriversEditorRoute());
   }
 
-  void _navigateToTeamsEditor(BuildContext context) {
-    context.pushRoute(const TeamsEditorRoute());
-  }
-
   void _navigateToSeasonTeamCreator(BuildContext context) {
     context.pushRoute(const SeasonTeamsEditorRoute());
   }
@@ -54,10 +50,6 @@ class _Buttons extends StatelessWidget {
         FilledButton(
           onPressed: () => _navigateToSeasonDriversEditor(context),
           child: Text(context.str.homeEditSeasonDriversButton),
-        ),
-        FilledButton(
-          onPressed: () => _navigateToTeamsEditor(context),
-          child: Text(context.str.homeEditTeamsButton),
         ),
         FilledButton(
           onPressed: () => _navigateToSeasonTeamCreator(context),

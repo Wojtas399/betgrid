@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../model/team_basic_info.dart';
+import '../../../../model/season_team.dart';
 
 part 'season_teams_editor_state.freezed.dart';
 
@@ -28,7 +28,6 @@ abstract class SeasonTeamsEditorState with _$SeasonTeamsEditorState {
     SeasonTeamsEditorStateStatus status,
     int? currentSeason,
     int? selectedSeason,
-    List<TeamBasicInfo>? teamsFromSeason,
-    bool? areThereOtherTeamsToAdd,
+    List<SeasonTeam>? teamsFromSeason,
   }) = _SeasonTeamsEditorState;
 }

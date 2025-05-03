@@ -6,10 +6,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../data/repository/driver_personal_data/driver_personal_data_repository.dart';
 import '../../../../data/repository/season_driver/season_driver_repository.dart';
-import '../../../../data/repository/team_basic_info/team_basic_info_repository.dart';
+import '../../../../data/repository/season_team/season_team_repository.dart';
 import '../../../../model/driver_personal_data.dart';
 import '../../../../model/season_driver.dart';
-import '../../../../model/team_basic_info.dart';
+import '../../../../model/season_team.dart';
 import '../../../service/date_service.dart';
 import 'season_drivers_editor_state.dart';
 
@@ -17,14 +17,14 @@ import 'season_drivers_editor_state.dart';
 class SeasonDriversEditorCubit extends Cubit<SeasonDriversEditorState> {
   final SeasonDriverRepository _seasonDriverRepository;
   final DriverPersonalDataRepository _driverPersonalDataRepository;
-  final TeamBasicInfoRepository _teamBasicInfoRepository;
+  final SeasonTeamRepository _seasonTeamRepository;
   final DateService _dateService;
   StreamSubscription? _listener;
 
   SeasonDriversEditorCubit(
     this._seasonDriverRepository,
     this._driverPersonalDataRepository,
-    this._teamBasicInfoRepository,
+    this._seasonTeamRepository,
     this._dateService,
   ) : super(const SeasonDriversEditorState());
 
@@ -154,18 +154,18 @@ class SeasonDriversEditorCubit extends Cubit<SeasonDriversEditorState> {
     SeasonDriver seasonDriver,
     DriverPersonalData driverPersonalData,
   ) {
-    return _teamBasicInfoRepository
-        .getById(seasonDriver.teamId)
+    return _seasonTeamRepository
+        .getById(id: seasonDriver.teamId, season: state.selectedSeason!)
         .map(
-          (TeamBasicInfo? teamBasicInfo) =>
-              teamBasicInfo != null
+          (SeasonTeam? seasonTeam) =>
+              seasonTeam != null
                   ? SeasonDriverDescription(
                     seasonDriverId: seasonDriver.id,
                     driverId: driverPersonalData.id,
                     name: driverPersonalData.name,
                     surname: driverPersonalData.surname,
                     numberInSeason: seasonDriver.driverNumber,
-                    teamNameInSeason: teamBasicInfo.name,
+                    teamNameInSeason: seasonTeam.shortName,
                   )
                   : null,
         )

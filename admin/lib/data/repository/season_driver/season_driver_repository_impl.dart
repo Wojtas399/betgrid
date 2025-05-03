@@ -33,14 +33,14 @@ class SeasonDriverRepositoryImpl extends Repository<SeasonDriver>
     required int season,
     required String driverId,
     required int driverNumber,
-    required String teamId,
+    required String seasonTeamId,
   }) async {
     final SeasonDriverDto? addedSeasonDriverDto =
         await _firebaseSeasonDriverService.add(
           season: season,
           driverId: driverId,
           driverNumber: driverNumber,
-          teamId: teamId,
+          seasonTeamId: seasonTeamId,
         );
     if (addedSeasonDriverDto != null) {
       final SeasonDriver addedSeasonDriver = _seasonDriverMapper.mapFromDto(
