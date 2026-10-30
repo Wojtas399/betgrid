@@ -8,7 +8,7 @@ enum {{screen_name.pascalCase()}}StateStatus {
 }
 
 @freezed
-class {{screen_name.pascalCase()}}State with _${{screen_name.pascalCase()}}State {
+abstract class {{screen_name.pascalCase()}}State with _${{screen_name.pascalCase()}}State {
   const factory {{screen_name.pascalCase()}}State({
     @Default({{screen_name.pascalCase()}}StateStatus.loading)
     {{screen_name.pascalCase()}}StateStatus status,
