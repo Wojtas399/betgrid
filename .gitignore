@@ -73,7 +73,6 @@ mason-lock.json
 
 # FVM Version Cache
 .fvm/
-.fvmrc
 
 # Envied related
 .env
