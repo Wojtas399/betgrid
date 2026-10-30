@@ -6,7 +6,7 @@ import '../../../../model/season_team.dart';
 part 'season_team_details_state.freezed.dart';
 
 @freezed
-class SeasonTeamDetailsState with _$SeasonTeamDetailsState {
+sealed class SeasonTeamDetailsState with _$SeasonTeamDetailsState {
   const SeasonTeamDetailsState._();
 
   const factory SeasonTeamDetailsState.initial() =

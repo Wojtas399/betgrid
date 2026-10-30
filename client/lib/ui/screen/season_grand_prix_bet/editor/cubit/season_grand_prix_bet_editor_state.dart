@@ -25,7 +25,7 @@ extension SeasonGrandPrixBetEditorStateStatusX
 }
 
 @freezed
-class SeasonGrandPrixBetEditorState with _$SeasonGrandPrixBetEditorState {
+abstract class SeasonGrandPrixBetEditorState with _$SeasonGrandPrixBetEditorState {
   final int _maxNumberOfDnfDriverPredictions = 3;
 
   const SeasonGrandPrixBetEditorState._();

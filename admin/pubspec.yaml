@@ -5,45 +5,47 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.7.0 <4.0.0'
+  sdk: ^3.13.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  equatable: ^2.0.5
-  injectable: ^2.4.2
-  auto_route: ^9.2.2
-  flutter_bloc: ^8.1.5
+  equatable: ^3.0.0
+  injectable: ^3.0.0
+  auto_route: ^11.2.0
+  flutter_bloc: ^9.1.1
   freezed_annotation: ^3.0.0
   flutter_svg: ^2.0.10+1
   rxdart: ^0.28.0
-  country_flags: ^3.0.0
-  intl: ^0.19.0
+  country_flags: ^4.1.2
+  intl: ^0.20.3
   collection: ^1.18.0
-  get_it: ^8.0.3
+  get_it: ^9.3.0
   flutter_localizations:
     sdk: flutter
   mutex: ^3.1.0
-  flutter_slidable: ^3.1.2
+  flutter_slidable: ^4.0.3
   betgrid_shared:
     path: ../shared
+  firebase_core: ^4.15.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^5.0.0
-  freezed: ^3.0.0
+  flutter_lints: ^6.0.0
+  freezed: ^4.0.1
   mocktail: ^1.0.3
-  bloc_test: ^9.1.7
+  bloc_test: ^10.0.0
   build_runner: ^2.4.10
   json_serializable: ^6.7.1
   injectable_generator:
-  auto_route_generator: ^9.0.0
+  auto_route_generator: ^10.6.0
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
      - assets/

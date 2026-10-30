@@ -13,5 +13,5 @@ class GrandPrixBasicInfo extends Entity {
   @override
   List<Object?> get props => [id, name, countryAlpha2Code];
 
-  get countryCode => null;
+  Null get countryCode => null;
 }

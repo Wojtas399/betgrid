@@ -68,26 +68,17 @@ class FirebaseSeasonGrandPrixResultsService {
     final docRef =
         _firebaseCollectionReferences.seasonGrandPrixesResults(season).doc(id);
     await docRef.update({
-      if (qualiStandingsBySeasonDriverIds != null)
-        SeasonGrandPrixResultsFields.qualiStandingsBySeasonDriverIds:
-            qualiStandingsBySeasonDriverIds,
-      if (p1SeasonDriverId != null)
-        SeasonGrandPrixResultsFields.p1SeasonDriverId: p1SeasonDriverId,
-      if (p2SeasonDriverId != null)
-        SeasonGrandPrixResultsFields.p2SeasonDriverId: p2SeasonDriverId,
-      if (p3SeasonDriverId != null)
-        SeasonGrandPrixResultsFields.p3SeasonDriverId: p3SeasonDriverId,
-      if (p10SeasonDriverId != null)
-        SeasonGrandPrixResultsFields.p10SeasonDriverId: p10SeasonDriverId,
-      if (fastestLapSeasonDriverId != null)
-        SeasonGrandPrixResultsFields.fastestLapSeasonDriverId:
-            fastestLapSeasonDriverId,
-      if (dnfSeasonDriverIds != null)
-        SeasonGrandPrixResultsFields.dnfSeasonDriverIds: dnfSeasonDriverIds,
-      if (wasThereSafetyCar != null)
-        SeasonGrandPrixResultsFields.wasThereSafetyCar: wasThereSafetyCar,
-      if (wasThereRedFlag != null)
-        SeasonGrandPrixResultsFields.wasThereRedFlag: wasThereRedFlag,
+      SeasonGrandPrixResultsFields.qualiStandingsBySeasonDriverIds:
+            ?qualiStandingsBySeasonDriverIds,
+      SeasonGrandPrixResultsFields.p1SeasonDriverId: ?p1SeasonDriverId,
+      SeasonGrandPrixResultsFields.p2SeasonDriverId: ?p2SeasonDriverId,
+      SeasonGrandPrixResultsFields.p3SeasonDriverId: ?p3SeasonDriverId,
+      SeasonGrandPrixResultsFields.p10SeasonDriverId: ?p10SeasonDriverId,
+      SeasonGrandPrixResultsFields.fastestLapSeasonDriverId:
+            ?fastestLapSeasonDriverId,
+      SeasonGrandPrixResultsFields.dnfSeasonDriverIds: ?dnfSeasonDriverIds,
+      SeasonGrandPrixResultsFields.wasThereSafetyCar: ?wasThereSafetyCar,
+      SeasonGrandPrixResultsFields.wasThereRedFlag: ?wasThereRedFlag,
     });
     final snapshot = await docRef.get();
     return snapshot.data();

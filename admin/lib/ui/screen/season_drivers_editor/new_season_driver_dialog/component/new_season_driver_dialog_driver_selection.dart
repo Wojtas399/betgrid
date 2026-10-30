@@ -23,7 +23,7 @@ class NewSeasonDriverDialogDriverSelection extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedDriverId,
+      initialValue: selectedDriverId,
       items: [
         ...?driversToSelect?.map(
           (driver) => DropdownMenuItem<String>(

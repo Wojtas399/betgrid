@@ -27,10 +27,10 @@ class SeasonGrandPrixBetEditorRacePodiumAndP10 extends StatelessWidget {
           cubit.state.raceForm.p10SeasonDriverId,
     );
     final List<String> allSelectedSeasonDriverIdsFromPodium = [
-      if (p1SeasonDriverId != null) p1SeasonDriverId,
-      if (p2SeasonDriverId != null) p2SeasonDriverId,
-      if (p3SeasonDriverId != null) p3SeasonDriverId,
-      if (p10SeasonDriverId != null) p10SeasonDriverId,
+      ?p1SeasonDriverId,
+      ?p2SeasonDriverId,
+      ?p3SeasonDriverId,
+      ?p10SeasonDriverId,
     ];
 
     return Column(

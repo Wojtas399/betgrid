@@ -14,6 +14,9 @@ analyzer:
     invalid_annotation_target: ignore
   exclude:
     - mason_bricks
+    - build/**
+    - android/**
+    - ios/**
 
 linter:
   rules:

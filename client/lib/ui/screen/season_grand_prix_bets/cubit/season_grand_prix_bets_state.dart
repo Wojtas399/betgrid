@@ -18,7 +18,7 @@ extension SeasonGrandPrixBetsStateStatusExtensions
 }
 
 @freezed
-class SeasonGrandPrixBetsState with _$SeasonGrandPrixBetsState {
+abstract class SeasonGrandPrixBetsState with _$SeasonGrandPrixBetsState {
   const SeasonGrandPrixBetsState._();
 
   const factory SeasonGrandPrixBetsState({

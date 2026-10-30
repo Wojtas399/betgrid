@@ -70,7 +70,7 @@ class RequiredDataCompletionCubit extends Cubit<RequiredDataCompletionState> {
     }
   }
 
-  _emitStatus(RequiredDataCompletionStateStatus status) {
+  void _emitStatus(RequiredDataCompletionStateStatus status) {
     emit(state.copyWith(status: status));
   }
 }

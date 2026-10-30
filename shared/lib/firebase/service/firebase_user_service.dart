@@ -50,7 +50,7 @@ class FirebaseUserService {
   }) async {
     final docRef = _firebaseCollectionReferences.users().doc(userId);
     await docRef.update({
-      if (username != null) UserFields.username: username,
+      UserFields.username: ?username,
       if (themeMode != null) UserFields.themeMode: themeMode.name,
       if (themePrimaryColor != null)
         UserFields.themePrimaryColor: themePrimaryColor.name,

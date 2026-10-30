@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -20,7 +21,8 @@ class StrPl extends Str {
   String get newVersionAvailableScreenTitle => 'Nowa wersja aplikacji';
 
   @override
-  String get newVersionAvailableDescription => 'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.';
+  String get newVersionAvailableDescription =>
+      'Dostępna jest nowa wersja aplikacji. Pobierz ją, aby w pełni korzystać z najnowszych funkcjonalności.';
 
   @override
   String get playersScreenTitle => 'Gracze';
@@ -29,7 +31,8 @@ class StrPl extends Str {
   String get playersNoOtherPlayersTitle => 'Brak innych graczy';
 
   @override
-  String get playersNoOtherPlayersMessage => 'Aktualnie nie ma zarejestrowanych innych graczy';
+  String get playersNoOtherPlayersMessage =>
+      'Aktualnie nie ma zarejestrowanych innych graczy';
 
   @override
   String get profileScreenTitle => 'Profil';
@@ -38,7 +41,8 @@ class StrPl extends Str {
   String get profileNewUsernameDialogTitle => 'Nowa nazwa użytkownika';
 
   @override
-  String get profileSuccessfullySavedUsername => 'Pomyślnie zmieniono nazwę użytkownika';
+  String get profileSuccessfullySavedUsername =>
+      'Pomyślnie zmieniono nazwę użytkownika';
 
   @override
   String get profileAvatarActionsTitle => 'Edycja avataru';
@@ -68,7 +72,8 @@ class StrPl extends Str {
   String get requiredDataCompletionChangeAvatar => 'Zmień';
 
   @override
-  String get requiredDataCompletionSelectAvatarSource => 'Wybierz źródło avataru';
+  String get requiredDataCompletionSelectAvatarSource =>
+      'Wybierz źródło avataru';
 
   @override
   String get seasonGrandPrixBetPreviewTotal => 'Razem';
@@ -89,7 +94,8 @@ class StrPl extends Str {
   String get seasonGrandPrixBetPreviewPositions => 'Pozycje';
 
   @override
-  String get seasonGrandPrixBetPreviewPositionsMultiplier => 'Mnożnik punktów za pozycje';
+  String get seasonGrandPrixBetPreviewPositionsMultiplier =>
+      'Mnożnik punktów za pozycje';
 
   @override
   String get seasonGrandPrixBetPreviewFastestLap => 'Najszybsze okrążenie';
@@ -107,10 +113,12 @@ class StrPl extends Str {
   String get seasonGrandPrixBetEditorScreenTitle => 'Obstaw grand prix';
 
   @override
-  String get seasonGrandPrixBetEditorQualificationDescription => 'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.';
+  String get seasonGrandPrixBetEditorQualificationDescription =>
+      'Wytypuj końcowy rezultat kwalifikacji, tzn. rezultat po wszystkich 3 sesjach kwalifikacyjnych.';
 
   @override
-  String get seasonGrandPrixBetEditorRaceDescription => 'Wytypuj poszczególne sekcje wyścigu wedle opisu.';
+  String get seasonGrandPrixBetEditorRaceDescription =>
+      'Wytypuj poszczególne sekcje wyścigu wedle opisu.';
 
   @override
   String get seasonGrandPrixBetEditorSelectDriver => 'Wybierz kierowcę';
@@ -119,16 +127,19 @@ class StrPl extends Str {
   String get seasonGrandPrixBetEditorPodiumAndP10Title => 'Podium oraz P10';
 
   @override
-  String get seasonGrandPrixBetEditorPodiumAndP10Subtitle => 'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.';
+  String get seasonGrandPrixBetEditorPodiumAndP10Subtitle =>
+      'Wytypuj kierowców, którzy staną na podium oraz kierowcę, który ukończy wyścig na 10 pozycji.';
 
   @override
-  String get seasonGrandPrixBetEditorFastestLapSubtitle => 'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.';
+  String get seasonGrandPrixBetEditorFastestLapSubtitle =>
+      'Wytypuj kierowcę, który przejedzie najszybsze okrążenie.';
 
   @override
   String get seasonGrandPrixBetEditorDnfTitle => 'DNF';
 
   @override
-  String get seasonGrandPrixBetEditorDnfSubtitle => 'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.';
+  String get seasonGrandPrixBetEditorDnfSubtitle =>
+      'Wytypuj 3 kierowców, którzy nie ukończą wyścigu.';
 
   @override
   String get seasonGrandPrixBetEditorAddDriversToDnfList => 'Dodaj kierowców';
@@ -140,16 +151,20 @@ class StrPl extends Str {
   String get seasonGrandPrixBetEditorNoDriversInfoTitle => 'Brak kierowców';
 
   @override
-  String get seasonGrandPrixBetEditorNoDriversInfoSubtitle => 'Niestety nie znaleziono żadnych kierowców do wyboru';
+  String get seasonGrandPrixBetEditorNoDriversInfoSubtitle =>
+      'Niestety nie znaleziono żadnych kierowców do wyboru';
 
   @override
-  String get seasonGrandPrixBetEditorSafetyCarSubtitle => 'Czy w wyścigu pojawi się samochód bezpieczeństwa?';
+  String get seasonGrandPrixBetEditorSafetyCarSubtitle =>
+      'Czy w wyścigu pojawi się samochód bezpieczeństwa?';
 
   @override
-  String get seasonGrandPrixBetEditorRedFlagSubtitle => 'Czy w wyścigu pojawi się czerwona flaga?';
+  String get seasonGrandPrixBetEditorRedFlagSubtitle =>
+      'Czy w wyścigu pojawi się czerwona flaga?';
 
   @override
-  String get seasonGrandPrixBetEditorSuccessfullySavedBets => 'Pomyślnie zapisano typy';
+  String get seasonGrandPrixBetEditorSuccessfullySavedBets =>
+      'Pomyślnie zapisano typy';
 
   @override
   String get seasonGrandPrixBetsScreenTitle => 'Typy';
@@ -158,7 +173,8 @@ class StrPl extends Str {
   String get seasonGrandPrixBetsNoBetsTitle => 'Brak możliwości typowania';
 
   @override
-  String get seasonGrandPrixBetsNoBetsMessage => 'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione';
+  String get seasonGrandPrixBetsNoBetsMessage =>
+      'Na ten moment nie masz możliwości typowania. Wszystkie wymagane dane są w procesie konfiguracji i niebawem zostaną udostępnione';
 
   @override
   String get seasonGrandPrixBetsOngoingStatus => 'Trwa';
@@ -194,7 +210,8 @@ class StrPl extends Str {
   String get signInScreenTitle => 'Logowanie';
 
   @override
-  String get signInScreenInfo => 'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google';
+  String get signInScreenInfo =>
+      'Logowanie do aplikacji jest możliwe tylko z wykorzystaniem konta Google';
 
   @override
   String get signInScreenSignInButtonLabel => 'Zaloguj';
@@ -233,7 +250,8 @@ class StrPl extends Str {
   String get statsNoDataTitle => 'Brak dostępnych statystyk';
 
   @override
-  String get statsNoDataMessage => 'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk';
+  String get statsNoDataMessage =>
+      'Na ten moment brakuje odpowiednich danych do wyświetlenia statystyk';
 
   @override
   String get loading => 'Ładowanie';

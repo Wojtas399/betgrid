@@ -61,7 +61,8 @@ import 'app_localizations_pl.dart';
 /// be consistent with the languages listed in the Str.supportedLocales
 /// property.
 abstract class Str {
-  Str(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  Str(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -81,17 +82,16 @@ abstract class Str {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('pl')
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('pl')];
 
   /// No description provided for @homeAppVersion.
   ///
@@ -751,24 +751,24 @@ class _StrDelegate extends LocalizationsDelegate<Str> {
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['pl'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['pl'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_StrDelegate old) => false;
 }
 
 Str lookupStr(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'pl': return StrPl();
+    case 'pl':
+      return StrPl();
   }
 
   throw FlutterError(
     'Str.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

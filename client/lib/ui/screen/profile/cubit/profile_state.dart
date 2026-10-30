@@ -21,7 +21,7 @@ extension ProfileStateStatusExtensions on ProfileStateStatus {
 }
 
 @freezed
-class ProfileState with _$ProfileState {
+abstract class ProfileState with _$ProfileState {
   const factory ProfileState({
     @Default(ProfileStateStatus.loading) ProfileStateStatus status,
     String? avatarUrl,

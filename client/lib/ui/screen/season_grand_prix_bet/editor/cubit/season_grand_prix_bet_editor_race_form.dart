@@ -5,7 +5,7 @@ import '../../../../../model/driver_details.dart';
 part 'season_grand_prix_bet_editor_race_form.freezed.dart';
 
 @freezed
-class SeasonGrandPrixBetEditorRaceForm with _$SeasonGrandPrixBetEditorRaceForm {
+abstract class SeasonGrandPrixBetEditorRaceForm with _$SeasonGrandPrixBetEditorRaceForm {
   const SeasonGrandPrixBetEditorRaceForm._();
 
   const factory SeasonGrandPrixBetEditorRaceForm({

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../../model/user.dart' as user;
 import '../../../common_cubit/theme/theme_cubit.dart';
@@ -17,7 +16,7 @@ class SignInAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => AppBar(
     title: Text(context.str.signInScreenTitle),
     actions: [
-      Icon(MdiIcons.themeLightDark, color: context.colorScheme.outline),
+      Icon(Icons.brightness_6, color: context.colorScheme.outline),
       const GapHorizontal8(),
       const _ThemeSwitch(),
       const GapHorizontal8(),

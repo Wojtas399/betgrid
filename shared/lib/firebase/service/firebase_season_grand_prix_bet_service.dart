@@ -80,26 +80,17 @@ class FirebaseSeasonGrandPrixBetService {
         )
         .doc(seasonGrandPrixBetId);
     await docRef.update({
-      if (qualiStandingsBySeasonDriverIds != null)
-        SeasonGrandPrixBetFields.qualiStandingsBySeasonDriverIds:
-            qualiStandingsBySeasonDriverIds,
-      if (dnfSeasonDriverIds != null)
-        SeasonGrandPrixBetFields.dnfSeasonDriverIds: dnfSeasonDriverIds,
-      if (p1SeasonDriverId != null)
-        SeasonGrandPrixBetFields.p1SeasonDriverId: p1SeasonDriverId,
-      if (p2SeasonDriverId != null)
-        SeasonGrandPrixBetFields.p2SeasonDriverId: p2SeasonDriverId,
-      if (p3SeasonDriverId != null)
-        SeasonGrandPrixBetFields.p3SeasonDriverId: p3SeasonDriverId,
-      if (p10SeasonDriverId != null)
-        SeasonGrandPrixBetFields.p10SeasonDriverId: p10SeasonDriverId,
-      if (fastestLapSeasonDriverId != null)
-        SeasonGrandPrixBetFields.fastestLapSeasonDriverId:
-            fastestLapSeasonDriverId,
-      if (willBeSafetyCar != null)
-        SeasonGrandPrixBetFields.willBeSafetyCar: willBeSafetyCar,
-      if (willBeRedFlag != null)
-        SeasonGrandPrixBetFields.willBeRedFlag: willBeRedFlag,
+      SeasonGrandPrixBetFields.qualiStandingsBySeasonDriverIds:
+            ?qualiStandingsBySeasonDriverIds,
+      SeasonGrandPrixBetFields.dnfSeasonDriverIds: ?dnfSeasonDriverIds,
+      SeasonGrandPrixBetFields.p1SeasonDriverId: ?p1SeasonDriverId,
+      SeasonGrandPrixBetFields.p2SeasonDriverId: ?p2SeasonDriverId,
+      SeasonGrandPrixBetFields.p3SeasonDriverId: ?p3SeasonDriverId,
+      SeasonGrandPrixBetFields.p10SeasonDriverId: ?p10SeasonDriverId,
+      SeasonGrandPrixBetFields.fastestLapSeasonDriverId:
+            ?fastestLapSeasonDriverId,
+      SeasonGrandPrixBetFields.willBeSafetyCar: ?willBeSafetyCar,
+      SeasonGrandPrixBetFields.willBeRedFlag: ?willBeRedFlag,
     });
     final snapshot = await docRef.get();
     return snapshot.data();
