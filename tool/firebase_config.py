@@ -20,7 +20,9 @@ APPS = {
 
 
 def firebase(*args):
-    out = subprocess.run(['firebase', *args, '--json'], capture_output=True, text=True, check=True)
+    out = subprocess.run(['firebase', *args, '--json'], capture_output=True, text=True)
+    if out.returncode != 0:
+        sys.exit(f'firebase {" ".join(args)} failed:\n{out.stdout}{out.stderr}')
     return json.loads(out.stdout)['result']
 
 
@@ -92,7 +94,10 @@ def pull(env):
                 plist = plistlib.loads(contents.encode())
                 options[platform] = ios_options(plist)
                 client_id = plist['CLIENT_ID'].removesuffix('.apps.googleusercontent.com')
-                write(app_dir / f'ios/Runner/Keys-{env}.xcconfig', f'FIREBASE_CLIENT_ID = {client_id}\n')
+                write(
+                    app_dir / f'ios/Runner/Keys-{env}.xcconfig',
+                    f'FIREBASE_CLIENT_ID = {client_id}\nFIREBASE_IOS_APP_ID = {plist["GOOGLE_APP_ID"]}\n',
+                )
             else:
                 options[platform] = android_options(json.loads(contents), bundle_id)
                 write(app_dir / f'android/app/src/{env}/google-services.json', contents)

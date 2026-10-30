@@ -43,7 +43,7 @@ app.*.map.json
 /android/app/release
 
 # IOS related
-Keys-*.xcconfig
+Keys*.xcconfig
 Runner *
 
 # Build runner related
@@ -53,7 +53,7 @@ Runner *
 *.gr.dart
 
 # Firebase related
-firebase_options_*.dart
+firebase_options*.dart
 .firebaserc
 firebase.json
 serviceAccountKey.json
