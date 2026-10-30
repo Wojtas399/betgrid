@@ -45,7 +45,7 @@ app.*.map.json
 # IOS related
 Debug.xcconfig
 Release.xcconfig
-Keys.xcconfig
+Keys*.xcconfig
 Runner *
 
 # Build runner related
@@ -55,8 +55,7 @@ Runner *
 *.gr.dart
 
 # Firebase related
-firebase_options.dart
-firebase_options_dev.dart
+firebase_options*.dart
 .firebaserc
 firebase.json
 serviceAccountKey.json
