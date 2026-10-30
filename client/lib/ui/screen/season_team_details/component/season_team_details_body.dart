@@ -20,7 +20,6 @@ class SeasonTeamDetailsBody extends StatelessWidget {
     return switch (state) {
       SeasonTeamDetailsStateInitial() => const LinearProgressIndicator(),
       SeasonTeamDetailsStateLoaded() => const _LoadedState(),
-      _ => const Placeholder(),
     };
   }
 }

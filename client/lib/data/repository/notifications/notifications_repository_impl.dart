@@ -63,10 +63,10 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
     RemoteNotification? notification = message.notification;
     if (notification != null) {
       await _localNotifications.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        const NotificationDetails(
+        id: notification.hashCode,
+        title: notification.title,
+        body: notification.body,
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel',
             'High Importance Notifications',
@@ -113,7 +113,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
     );
 
     await _localNotifications.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse details) {
         final String? dataString = details.payload;
 

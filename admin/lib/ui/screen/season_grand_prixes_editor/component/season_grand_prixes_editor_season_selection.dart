@@ -40,7 +40,7 @@ class _DropdownButton extends StatelessWidget {
 
     return currentSeason != null && selectedSeason != null
         ? DropdownButtonFormField(
-          value: selectedSeason,
+          initialValue: selectedSeason,
           items: [
             DropdownMenuItem(
               value: currentSeason,

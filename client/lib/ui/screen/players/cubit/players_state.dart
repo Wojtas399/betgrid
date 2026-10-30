@@ -12,7 +12,7 @@ extension PlayerStateStatusExtensions on PlayersStateStatus {
 }
 
 @freezed
-class PlayersState with _$PlayersState {
+abstract class PlayersState with _$PlayersState {
   const PlayersState._();
 
   const factory PlayersState({

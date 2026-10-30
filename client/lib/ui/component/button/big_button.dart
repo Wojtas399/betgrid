@@ -8,10 +8,10 @@ class BigButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const BigButton._({
-    required _Type type,
+    required this._type,
     required this.label,
     required this.onPressed,
-  }) : _type = type;
+  });
 
   factory BigButton.filled({required String label, VoidCallback? onPressed}) {
     return BigButton._(type: _Type.filled, label: label, onPressed: onPressed);

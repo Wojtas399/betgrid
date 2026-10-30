@@ -12,7 +12,7 @@ extension PlayerProfileStateStatusExtensions on PlayerProfileStateStatus {
 }
 
 @freezed
-class PlayerProfileState with _$PlayerProfileState {
+abstract class PlayerProfileState with _$PlayerProfileState {
   const PlayerProfileState._();
 
   const factory PlayerProfileState({

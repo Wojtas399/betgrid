@@ -37,7 +37,7 @@ class _State extends State<StatsPlayersPointsForDriverDropdownButton> {
       width: double.infinity,
       child: DropdownButtonFormField<String>(
         isDense: false,
-        value: _selectedDriverId,
+        initialValue: _selectedDriverId,
         decoration: const InputDecoration(fillColor: Colors.transparent),
         hint: Text(context.str.statsSelectDriver),
         items:

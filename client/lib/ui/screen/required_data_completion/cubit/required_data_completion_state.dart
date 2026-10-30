@@ -25,7 +25,7 @@ extension RequiredDataCompletionStateStatusExtensions
 }
 
 @freezed
-class RequiredDataCompletionState with _$RequiredDataCompletionState {
+abstract class RequiredDataCompletionState with _$RequiredDataCompletionState {
   const RequiredDataCompletionState._();
 
   const factory RequiredDataCompletionState({

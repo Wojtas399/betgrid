@@ -30,7 +30,7 @@ extension StatsStateStatusExtensions on StatsStateStatus {
 }
 
 @freezed
-class StatsState with _$StatsState {
+abstract class StatsState with _$StatsState {
   const StatsState._();
 
   const factory StatsState({

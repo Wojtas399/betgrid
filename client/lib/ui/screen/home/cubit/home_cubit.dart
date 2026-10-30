@@ -95,11 +95,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 }
 
-class _ListenedData with EquatableMixin {
+class _ListenedData extends Equatable {
   final User? loggedUserData;
   final double? totalPoints;
 
-  _ListenedData({required this.loggedUserData, required this.totalPoints});
+  const _ListenedData({required this.loggedUserData, required this.totalPoints});
 
   @override
   List<Object?> get props => [loggedUserData, totalPoints];

@@ -23,7 +23,7 @@ class NewSeasonDriverDialogTeamSelection extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedTeamId,
+      initialValue: selectedTeamId,
       items: [
         ...?teamsToSelect?.map(
           (team) => DropdownMenuItem<String>(

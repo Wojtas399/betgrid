@@ -26,7 +26,7 @@ class NewSeasonGrandPrixDialogGrandPrixSelection extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedGrandPrixId,
+      initialValue: selectedGrandPrixId,
       decoration: InputDecoration(
         hintText: context.str.seasonGrandPrixesEditorSelectGrandPrix,
       ),

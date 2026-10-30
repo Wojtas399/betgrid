@@ -23,7 +23,7 @@ class NewSeasonTeamDialogTeamSelection extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedTeamId,
+      initialValue: selectedTeamId,
       items: [
         ...?teamsToSelect?.map(
           (team) =>

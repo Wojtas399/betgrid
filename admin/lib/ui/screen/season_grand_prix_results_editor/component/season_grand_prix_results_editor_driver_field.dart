@@ -71,7 +71,7 @@ class _DriverSelectionFormField extends StatelessWidget {
     );
 
     return DropdownButtonFormField<String>(
-      value: selectedDriverId,
+      initialValue: selectedDriverId,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,

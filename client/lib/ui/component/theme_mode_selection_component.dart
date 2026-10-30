@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../model/user.dart' as user;
 import '../extensions/build_context_extensions.dart';
@@ -43,7 +42,7 @@ class ThemeModeSelection extends StatelessWidget {
         _ThemeModeItem(
           isSelected: selectedThemeMode == user.ThemeMode.system,
           label: context.str.systemTheme,
-          iconData: MdiIcons.themeLightDark,
+          iconData: Icons.brightness_6,
           onPressed: () {
             onThemeModeChanged(user.ThemeMode.system);
           },

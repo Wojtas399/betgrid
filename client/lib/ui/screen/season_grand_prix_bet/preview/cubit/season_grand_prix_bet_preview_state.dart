@@ -18,7 +18,7 @@ extension SeasonGrandPrixBetPreviewStateStatusExtensions
 }
 
 @freezed
-class SeasonGrandPrixBetPreviewState with _$SeasonGrandPrixBetPreviewState {
+abstract class SeasonGrandPrixBetPreviewState with _$SeasonGrandPrixBetPreviewState {
   const SeasonGrandPrixBetPreviewState._();
 
   @Assert('qualiBets == null || qualiBets.length == 20')
