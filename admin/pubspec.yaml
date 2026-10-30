@@ -44,6 +44,7 @@ dev_dependencies:
   auto_route_generator: ^10.6.0
 
 flutter:
+  default-flavor: dev
   uses-material-design: true
   generate: true
 
