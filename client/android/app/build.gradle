@@ -30,6 +30,19 @@ android {
         multiDexEnabled = true
     }
 
+    flavorDimensions = ["environment"]
+    productFlavors {
+        dev {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders = [appName: "Betgrid Dev"]
+        }
+        prod {
+            dimension = "environment"
+            manifestPlaceholders = [appName: "Betgrid"]
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

@@ -10,7 +10,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/intl.dart';
 
 import 'dependency_injection.dart';
-import 'firebase_options.dart';
+import 'firebase_options_dev.dart' as dev;
+import 'firebase_options_prod.dart' as prod;
 import 'l10n/app_localizations.dart';
 import 'ui/common_cubit/notifications/notifications_cubit.dart';
 import 'ui/common_cubit/theme/theme_cubit.dart';
@@ -27,7 +28,11 @@ void main() async {
   configureDependencies();
 
   await FirebaseBetgrid.initialize(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: switch (appFlavor) {
+      'dev' => dev.DefaultFirebaseOptions.currentPlatform,
+      'prod' => prod.DefaultFirebaseOptions.currentPlatform,
+      _ => throw UnsupportedError('Unknown flavor: $appFlavor'),
+    },
   );
   if (const bool.fromEnvironment('emulated', defaultValue: false)) {
     FirebaseBetgrid.useEmulators();
